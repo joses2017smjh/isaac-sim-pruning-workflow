@@ -35,8 +35,10 @@ import data_utils.data_logger as data_logger
 import data_utils.pose_generator as pose_generator
 import pprint as pp
 import os
+import re
 
 import time
+from isaacsim.core.utils import stage as stage_utils
 
 
 def main():
@@ -52,19 +54,10 @@ def main():
     # reset environment
     env.reset()
 
-    # print(env.unwrapped.cfg.__dict__.keys())
+    robot = env.unwrapped.robot
 
-    time.sleep(10)
-
-    # set up data file paths and metadata
-    # tree_name = os.path.splitext(os.path.basename(env_cfg.tree_usd_path))[
-    #     0
-    # ]  # TODO: move tree path as arg to set up multiple envs
-    tree_name = "test_tree_00000"  # TODO: remove after testing
-    _tree = tree_name.split("_")
-    tree_namespace, tree_type, tree_id = _tree[0], _tree[1], _tree[2]
-    dlog = data_logger.DataLogger(tree_name=tree_name)
-    datafile_path, trial_name = dlog.get_file_path(tree_name=tree_name)
+    # Set up data logger
+    dlog = data_logger.DataLogger()
 
     # generate discrete poses
     x_range = (-1.0, 1.0)
@@ -90,10 +83,10 @@ def main():
         start_orientation=start_orientation,
     )
 
-    # metadata dicts
+    # trial metadata
     trial_metadata = {
-        "trial_name": trial_name,
-        "n_envs": env.unwrapped.cfg.n_envs,
+        "trial_name": dlog.trial_name,
+        "num_envs": env.unwrapped.cfg.num_envs,
         "x_range": x_range,
         "y_range": y_range,
         "z_range": z_range,
@@ -105,14 +98,29 @@ def main():
         "angles_size": angles_size,
         "poses": discrete_poses,
     }
-    tree_metadata = {
-        "tree_usd_path": "testtesttesttest",
-        "tree_namespace": tree_namespace,
-        "tree_type": tree_type,
-        "tree_id": tree_id,
-        "pose": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
-    }
-    
+    # tree metadata
+    print(stage_utils.print_stage_prim_paths())
+    tree_metadata = {}
+    tree_prims = [prim for prim in stage_utils.get_current_stage().Traverse() if prim.GetName() == "tree"]
+    for tree_prim in tree_prims:
+        # print(pp.pformat(dir(tree_prim)))
+        prim_path = tree_prim.GetPath()
+        match = re.search(r"env_(\d+)", str(prim_path))
+        if match:
+            env_idx = int(match.group(1))
+        usd_path = tree_prim.GetMetadata("references").prependedItems[0].assetPath
+        tree_str = os.path.basename(usd_path).split(".")[0].strip("_uv")
+        tree_namespace, tree_type, tree_id = tree_str.split("_")
+        tree_metadata[env_idx] = {
+            "tree_usd_path": usd_path,
+            "prim_path": str(prim_path),
+            "env_idx": env_idx,
+            "tree_namespace": tree_namespace,
+            "tree_type": tree_type,
+            "tree_id": tree_id,
+            "pose": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        }
+
     # sensors
     sensor_metadata = {}
     for sensor_name, sensor in env.unwrapped.sensors.items():
@@ -139,7 +147,7 @@ def main():
     dlog.save_trial_metadata(trial_metadata=trial_metadata)
     dlog.save_tree_metadata(tree_metadata=tree_metadata)
     dlog.save_sensor_metadata(
-        sensor_metadata=sensor_metadata, n_poses=discrete_poses.shape[0], n_envs=env.unwrapped.cfg.n_envs
+        sensor_metadata=sensor_metadata, n_poses=discrete_poses.shape[0], num_envs=env.unwrapped.cfg.num_envs
     )
 
     # simulate environment
@@ -149,16 +157,43 @@ def main():
         # run everything in inference mode
         with torch.inference_mode():
             # compute zero actions
-            actions = torch.tensor(discrete_poses[pose_idx][np.newaxis, :], device=env.unwrapped.device)
+            actions = torch.tensor(
+                discrete_poses[pose_idx][np.newaxis, :], dtype=torch.float32, device=env.unwrapped.device
+            ).repeat(env.unwrapped.num_envs, 1)
+            # print(actions.shape)
             observations, rewards, terminated, truncated, info = env.step(actions)
+            # print(observations['tof0'].output['rgb'].shape)
 
-            pose_idx += 1
-            if pose_idx >= len(discrete_poses):
-                dlog.save_observations(observations=observations, last_obs=True)
-                break
-            else:
-                dlog.save_observations(observations=observations)
-            # break
+            break # remove after testing
+            if torch.allclose(
+                robot.data.body_pos_w[:, robot.find_bodies("wrist_3_link")[0]],
+                torch.tensor([discrete_poses[pose_idx][0:3]], dtype=torch.float32, device=env.unwrapped.device),
+                atol=0.005,
+            ) and torch.allclose(
+                robot.data.body_quat_w[:, robot.find_bodies("wrist_3_link")[0]],
+                torch.tensor([discrete_poses[pose_idx][3:7]], dtype=torch.float32, device=env.unwrapped.device),
+                atol=0.005,
+            ):
+
+                pose_full = torch.cat(
+                    [
+                        robot.data.body_pos_w[:, robot.find_bodies("wrist_3_link")[0]],
+                        robot.data.body_quat_w[:, robot.find_bodies("wrist_3_link")[0]],
+                    ],
+                    dim=0,
+                )
+                if pose_idx >= len(discrete_poses):
+                    dlog.save_observations(observations=observations, pose=pose_full, last_obs=True)
+                    break
+                else:
+                    dlog.save_observations(observations=observations, pose=pose_full)
+                break  # remove after testing
+                pose_idx += 1
+
+            # Remove after testing
+            print(f"\nGoal pos: {discrete_poses[pose_idx][0:3]}, goal quat: {discrete_poses[pose_idx][3:7]}")
+            print(f"Curr pos: {robot.data.body_pos_w[:, robot.find_bodies('wrist_3_link')[0]]}")
+            print(f"Curr quat: {robot.data.body_quat_w[:, robot.find_bodies('wrist_3_link')[0]]}")
 
     # close the simulator
     env.close()

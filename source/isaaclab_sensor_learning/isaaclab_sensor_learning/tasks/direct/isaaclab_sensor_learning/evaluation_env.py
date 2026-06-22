@@ -41,11 +41,7 @@ class PoseEvaluationEnv(DirectRLEnv):
         #     body_names=["fr3_link8"],
         # )
         # self.robot_entity_cfg = SceneEntityCfg("robot", joint_names=["panda_joint.*"], body_names=["panda_hand"])
-        self.robot_entity_cfg = SceneEntityCfg(
-            name="robot",
-            joint_names=[".*"],
-            body_names=["wrist_3_link"]
-        )
+        self.robot_entity_cfg = SceneEntityCfg(name="robot", joint_names=[".*"], body_names=["wrist_3_link"])
         self.robot_entity_cfg.resolve(self.scene)
 
         joint_pos = self.robot.data.default_joint_pos.clone()
@@ -76,7 +72,9 @@ class PoseEvaluationEnv(DirectRLEnv):
             device=self.device,
         )
         self.ik_controller.reset()
-        self.actions = torch.zeros((self.cfg.n_envs, self.ik_controller.action_dim), device=self.device)  # (N, 7) target pose in world frame
+        self.actions = torch.zeros(
+            (self.cfg.n_envs, self.ik_controller.action_dim), device=self.device
+        )  # (N, 7) target pose in world frame
 
         # Markers
         frame_marker_cfg = FRAME_MARKER_CFG.copy()
@@ -85,12 +83,13 @@ class PoseEvaluationEnv(DirectRLEnv):
         self.goal_markers = VisualizationMarkers(frame_marker_cfg.replace(prim_path="/Visuals/ee_goal"))
 
         # add sensors to robot. read rig data from h5 file and spawn cameras based on rig config
+
         self.scene.clone_environments(copy_from_source=False)
         self.scene.filter_collisions()
         return
 
     def _pre_physics_step(self, actions: torch.Tensor) -> None:
-        actions = actions.clone().to(dtype=torch.float32).reshape((1,-1))
+        actions = actions.clone().to(dtype=torch.float32).reshape((1, -1))
         if not torch.allclose(actions, self.actions):
             self.actions = actions
             self._new_action = True
@@ -98,14 +97,14 @@ class PoseEvaluationEnv(DirectRLEnv):
 
     def _apply_action(self) -> None:
         if self._new_action:
-            self.ik_controller.set_command(self.actions) # (N, 7) target pose in world frame
+            self.ik_controller.set_command(self.actions)  # (N, 7) target pose in world frame
             self._new_action = False
         # self.ik_controller.set_command(self.actions) # (N, 7) target pose in world frame
 
         if self.robot.is_fixed_base:
             eef_jacobi_idx = self.robot_entity_cfg.body_ids[0] - 1
         else:
-            eef_jacobi_idx = self.robot_entity_cfg.body_ids[0]  
+            eef_jacobi_idx = self.robot_entity_cfg.body_ids[0]
 
         # print("body_names:", self.robot.data.body_names)
         # print("body_ids:", self.robot_entity_cfg.body_ids)
@@ -122,20 +121,11 @@ class PoseEvaluationEnv(DirectRLEnv):
         joint_pos_des = self.ik_controller.compute(eef_pos_b, eef_quat_b, jacobians, joint_pos)
         # apply actions
         self.robot.set_joint_position_target(joint_pos_des, joint_ids=self.robot_entity_cfg.joint_ids)
-        # self.scene.write_data_to_sim()
-        # self.sim.step()
-        # self.scene.update(self.sim.get_physics_dt())
-        # print("eef_pos_b:", eef_pos_b)
-        # print("eef_quat_b:", eef_quat_b)
-        # print("target:", self.actions)
-        # print("joint_pos_des:", joint_pos_des)
-
 
         # update marker poses
         eef_pose_w = self.robot.data.body_pose_w[:, self.robot_entity_cfg.body_ids[0], 0:7]
         self.eef_markers.visualize(eef_pose_w[:, 0:3], eef_pose_w[:, 3:7])
         self.goal_markers.visualize(self.actions[:, 0:3] + self.scene.env_origins, self.actions[:, 3:7])
-
 
         return
 

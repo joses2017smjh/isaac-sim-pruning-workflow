@@ -9,8 +9,16 @@ parser.add_argument(
 )
 parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default="Template-Pose-Evaluation-Direct-v0", help="Name of the task.")
-parser.add_argument("--allow-root", action="store_true", default=True, help="Allow running as root user (not recommended).")
-parser.add_argument("--robot", type=str, default="ur10e", help="Name of the robot to use in the evaluation.", choices=["fr3", "ur10e", "panda"])
+parser.add_argument(
+    "--allow-root", action="store_true", default=True, help="Allow running as root user (not recommended)."
+)
+parser.add_argument(
+    "--robot",
+    type=str,
+    default="ur10e",
+    help="Name of the robot to use in the evaluation.",
+    choices=["fr3", "ur10e", "panda"],
+)
 # parser.add_argument("--enable_cameras", action="store_true", default=True, help="Enable cameras in the environment.")
 
 # append AppLauncher cli args
@@ -63,7 +71,7 @@ def main():
     #         return torch.cat([pose, quat], dim=-1)
     #     source_pos, source_quat = pose, quat
     #     print(f"Source pos: {source_pos}, source quat: {source_quat}")
-        
+
     #     target_pos, target_quat = (
     #         robot.data.body_pos_w[:, robot.find_bodies(target_frame)[0]],
     #         robot.data.body_quat_w[:, robot.find_bodies(target_frame)[0]],
@@ -86,13 +94,20 @@ def main():
         [0.5, 0, 0.5, 0.0, 1.0, 0.0, 0.0],
     ]
 
-
     idx = 0
     # # simulate environment
     while simulation_app.is_running():
         with torch.inference_mode():
 
-            if torch.allclose(robot.data.body_pos_w[:, robot.find_bodies("wrist_3_link")[0]], torch.tensor([eef_goals[idx][0:3]], device=env.unwrapped.device), atol=0.01) and torch.allclose(robot.data.body_quat_w[:, robot.find_bodies("wrist_3_link")[0]], torch.tensor([eef_goals[idx][3:7]], device=env.unwrapped.device), atol=0.01):
+            if torch.allclose(
+                robot.data.body_pos_w[:, robot.find_bodies("wrist_3_link")[0]],
+                torch.tensor([eef_goals[idx][0:3]], device=env.unwrapped.device),
+                atol=0.01,
+            ) and torch.allclose(
+                robot.data.body_quat_w[:, robot.find_bodies("wrist_3_link")[0]],
+                torch.tensor([eef_goals[idx][3:7]], device=env.unwrapped.device),
+                atol=0.01,
+            ):
                 print(f"Reached goal {idx}!")
                 idx = (idx + 1) % len(eef_goals)
                 print(f"Moving to goal {idx}...")
@@ -104,7 +119,6 @@ def main():
             # actions = torch.cat([target_pos, target_quat], dim=-1)
             actions = torch.tensor([eef_goals[idx]], device=env.unwrapped.device)
             observations, rewards, terminated, truncated, info = env.step(actions)
-
 
     return
 

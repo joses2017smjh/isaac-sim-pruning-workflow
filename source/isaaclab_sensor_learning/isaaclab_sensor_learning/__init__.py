@@ -17,6 +17,8 @@ import os
 
 PKG_DIR = os.path.dirname(os.path.abspath(__file__))
 
+CFG_DIR = os.path.join(PKG_DIR, "config")
+
 USD_DIR = os.path.join(PKG_DIR, "usd")
 
 URDF_DIR = os.path.join(PKG_DIR, "urdf")

@@ -9,6 +9,8 @@ from isaaclab.scene import InteractiveSceneCfg
 from isaaclab.sim import SimulationCfg, RenderCfg, MultiUsdFileCfg, SpawnerCfg, RigidBodyPropertiesCfg
 from isaaclab.utils import configclass
 
+from isaaclab_assets.robots.universal_robots import UR10e_CFG
+
 
 from isaaclab_sensor_learning import USD_DIR, TREES_DIR
 import glob
@@ -22,10 +24,10 @@ class PoseDataCaptureEnvCfg(DirectRLEnvCfg):
     decimation = 2
     episode_length_s = 60.0
     # - spaces definition
-    action_space = 1
+    action_space = 7
     observation_space = 4
     state_space = 0
-    n_envs = 2
+    num_envs = 2
 
     # simulation
     sim: SimulationCfg = SimulationCfg(
@@ -34,27 +36,22 @@ class PoseDataCaptureEnvCfg(DirectRLEnvCfg):
 
     # scene
     scene = InteractiveSceneCfg(
-        num_envs=n_envs,
-        lazy_sensor_update=True,  # Change to false for evaluation
+        num_envs=num_envs,
+        lazy_sensor_update=False,  # Change to false for evaluation
         replicate_physics=True,
-        env_spacing=2.0,
+        env_spacing=5.0,
     )
+
+    # trees
+    trees_collection_cfg = MultiUsdFileCfg(
+        usd_path=glob.glob(os.path.join(TREES_DIR, "models", "*_uv.usda")),
+        random_choice=False,
+    )
+
+    # robot
+    robot_cfg: ArticulationCfg = UR10e_CFG.copy().replace(prim_path="/World/envs/env_.*/robot")
 
     rig_yaml_path: str = (
-        Path(__file__).parent.parent.parent.parent / "config/rigs/rig0.yaml"
+        Path(__file__).parent.parent.parent.parent / "config/rigs/test_rig0.yaml"
     )  # NOTE: Standin for now, will be replaced by arguments from evolutionary outputs
     # rig_yaml_path: str = "pose_data_capture/pose_data_capture/assets/rigs/rig0.yaml"
-
-
-
-    # tree_usd_path: str = ""
-    # trees
-    trees_collection = AssetBaseCfg(
-        prim_path="/World/envs/env_.*/tree",
-        spawn=MultiUsdFileCfg(
-            usd_path=glob.glob(os.path.join(TREES_DIR, "models", "*_uv.usda")),
-            random_choice=False,
-            rigid_props=RigidBodyPropertiesCfg(kinematic_enabled=True),
-        ),
-        debug_vis=True,
-    )

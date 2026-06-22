@@ -9,16 +9,15 @@ from isaaclab.sim import SimulationCfg, RenderCfg
 from isaaclab.utils import configclass
 
 from isaaclab_sensor_learning.robot.franka_cfg import FRANKA_FR3_CFG
+
 # from isaaclab_sensor_learning.motion_planning.rmp_flow import FR3_RMPFLOW_CFG
 
 from isaaclab_assets.robots.franka import FRANKA_PANDA_CFG
 from isaaclab_assets.robots.universal_robots import UR10e_CFG
 
-
 # from pathlib import Path
 
 # from isaaclab_assets import FRANKA_PANDA_HIGH_PD_CFG
-
 
 
 @configclass
@@ -30,7 +29,7 @@ class PoseEvaluationEnvCfg(DirectRLEnvCfg):
     action_space = 1
     observation_space = 4
     state_space = 0
-    n_envs = 1
+    num_envs = 1
 
     # simulation
     sim: SimulationCfg = SimulationCfg(
@@ -39,7 +38,7 @@ class PoseEvaluationEnvCfg(DirectRLEnvCfg):
 
     # scene
     scene = InteractiveSceneCfg(
-        num_envs=n_envs,
+        num_envs=num_envs,
         lazy_sensor_update=True,  # Change to false for evaluation
         replicate_physics=True,
         env_spacing=2.0,
