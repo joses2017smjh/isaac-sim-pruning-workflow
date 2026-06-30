@@ -44,14 +44,13 @@ class PoseDataCaptureEnv(DirectRLEnv):
         if not cfg.rig_yaml_path:
             raise ValueError("cfg.rig_yaml_path must be set before instantiating PoseDataCaptureEnv.")
 
-        self._sensor_cfgs = yaml_to_cfg.rig_yaml_to_sensor_cfgs(rig_yaml_path=cfg.rig_yaml_path) # TODO: change to dict later
-        # self.rig_generator = RigGenerator(sensor_cfgs=self._sensor_cfgs)
-        # self._rig_cfg = self.rig_generator.generate_rig()
-
-        # self._sensor_cfgs =
+        # self._sensor_cfgs = yaml_to_cfg.rig_yaml_to_sensor_cfgs(rig_yaml_path=cfg.rig_yaml_path) # TODO: change to dict later
+        self._rig_cfg = yaml_to_cfg.load_rig_yaml(rig_yaml_path=cfg.rig_yaml_path)
+        
 
         self.camera_poses: np.ndarray
         self.curr_pose_idx = 0
+        self._new_action = False
 
         self.sensors = {}
         self.sensor_groups = {
@@ -60,7 +59,6 @@ class PoseDataCaptureEnv(DirectRLEnv):
             "tof": [],
         }
 
-        self._new_action = False
 
         super().__init__(cfg, render_mode, **kwargs)
 
@@ -93,8 +91,22 @@ class PoseDataCaptureEnv(DirectRLEnv):
         self.robot = Articulation(cfg=self.cfg.robot_cfg)
         self.scene.articulations["robot"] = self.robot
 
-        # add sensors
-        
+        # add sensors # TODO: Put in reset function and call that? No, that is only for epochs, i need full evolutionary runs
+        self.rig_generator = RigGenerator(rig_sensor_cfgs=self._rig_cfg["sensors"])
+        # self._rig_cfg = self.rig_generator.generate_rig()
+        self.eef_layout_dict = {
+            # "sensor_model": "filler_sensor_model",
+            "layout_type": "sphere",
+            "radius": 0.2,
+            "colatitude": 25, # degrees
+            "max_iter": 200,
+            "tol": 1e-6,
+            "mesh_points": 8000
+        }
+        self.eef_sensor_layout = self.rig_generator.generate_eef_layout(layout_dict=self.eef_layout_dict)
+        self.eef_sensor_cfgs = self.rig_generator.generate_eef_sensor_cfgs(sensor_layout=self.eef_sensor_layout)
+        self.eef_sensors = self.rig_generator.generate_rig(sensor_cfgs=self.eef_sensor_cfgs)
+
 
         # for sensor_name, sensor_dict in self._sensor_cfgs.items():
         #     sensor_cfg = sensor_dict["cfg"]
@@ -130,16 +142,10 @@ class PoseDataCaptureEnv(DirectRLEnv):
 
     def _pre_physics_step(self, actions: torch.Tensor) -> None:
         self.actions[:] = actions.clone().to(dtype=torch.float32)
-        if not torch.allclose(actions, self.actions):
-            self.actions = actions
-            self._new_action = True
         return
 
     def _apply_action(self) -> None:
-        if self._new_action:
-            self.ik_controller.set_command(self.actions)  # (N, 7) target pose in world frame
-            self._new_action = False
-        # self.ik_controller.set_command(self.actions) # (N, 7) target pose in world frame
+        self.ik_controller.set_command(self.actions) # (N, 7) target pose in world frame
 
         if self.robot.is_fixed_base:
             eef_jacobi_idx = self.robot_entity_cfg.body_ids[0] - 1
@@ -161,6 +167,8 @@ class PoseDataCaptureEnv(DirectRLEnv):
         joint_pos_des = self.ik_controller.compute(eef_pos_b, eef_quat_b, jacobians, joint_pos)
         # apply actions
         self.robot.set_joint_position_target(joint_pos_des, joint_ids=self.robot_entity_cfg.joint_ids)
+        self.scene.write_data_to_sim()
+        self.scene.update(1/120)
 
         # update marker poses
         eef_pose_w = self.robot.data.body_pose_w[:, self.robot_entity_cfg.body_ids[0], 0:7]

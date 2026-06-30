@@ -12,7 +12,7 @@ class SensorLayoutGenerator:
     The class provides methods to generate the sensor layouts based on the specified parameters.
     """
 
-    sensor_model: str
+    # sensor_model: str
     n_sensors: int
 
 

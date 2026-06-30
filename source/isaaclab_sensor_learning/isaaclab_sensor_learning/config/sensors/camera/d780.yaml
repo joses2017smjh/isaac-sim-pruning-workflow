@@ -1,0 +1,21 @@
+model: "d780" # https://www.nikonusa.com/p/d780/1618/overview
+lens_model: "AF-S_NIKKOR_24mm_f/1.8G_ED" # https://www.nikonusa.com/p/af-s-nikkor-24mm-f18g-ed/20057/overview
+sensor_type: "camera"
+data_type: "rgb"
+mass: 0.840 # kg
+dimensions:
+  shape: box
+  x: 0.1435
+  y: 0.1155
+  z: 0.076
+rgb:
+  z_near: 0.23 # m
+  z_far: 10000.0 # m
+  focal_length: 24.0
+  min_aperture: 16
+  max_aperture: 1.8
+  horizontal_aperture: 35.9 #  mm 
+  vertical_aperture: 23.9 #  mm 
+  width: 3840
+  height: 2160
+data_rate_hz: 29.97

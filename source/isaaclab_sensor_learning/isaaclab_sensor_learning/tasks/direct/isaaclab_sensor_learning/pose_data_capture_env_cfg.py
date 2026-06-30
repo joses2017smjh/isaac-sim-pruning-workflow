@@ -27,7 +27,7 @@ class PoseDataCaptureEnvCfg(DirectRLEnvCfg):
     action_space = 7
     observation_space = 4
     state_space = 0
-    num_envs = 2
+    num_envs = 1
 
     # simulation
     sim: SimulationCfg = SimulationCfg(

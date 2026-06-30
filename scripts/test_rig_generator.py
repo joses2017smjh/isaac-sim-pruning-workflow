@@ -64,10 +64,25 @@ def main():
     # reset environment
     env.reset()
 
-    test_rig = os.path.join(CFG_DIR, "rigs", "test_rig0.yaml")
-    rig_cfg = load_rig_yaml(test_rig)
-    rig_generator = RigGenerator(sensor_cfgs=rig_cfg["sensors"])
-    rig_generator.generate_rig(layout_type="sphere")
+    # # print(stage_utils.print_stage_prim_paths())
+
+
+    # test_rig = os.path.join(CFG_DIR, "rigs", "test_rig0.yaml")
+    # rig_cfg = load_rig_yaml(test_rig)
+    # rig_generator = RigGenerator(sensor_cfgs=rig_cfg["sensors"])
+    # layout_dict = {
+    #     # "sensor_model": "filler_sensor_model",
+    #     "layout_type": "sphere",
+    #     "radius": 0.2,
+    #     "colatitude": 25, # degrees
+    #     "max_iter": 200,
+    #     "tol": 1e-6,
+    #     "mesh_points": 8000
+    # }
+    # eef_sensor_layout = rig_generator.generate_eef_layout(layout_dict=layout_dict)
+    # rig_generator.generate_eef_sensor_cfgs(sensor_layout=eef_sensor_layout)
+    # print(eef_sensor_layout)
+    # rig_generator.generate_rig(layout_type="sphere")
 
 
     
