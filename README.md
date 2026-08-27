@@ -1,135 +1,161 @@
-# Template for Isaac Lab Projects
+# Isaac Sim Pruning Workflow
 
-## Overview
+Closed perception-to-motion research workflow for dormant apple-tree pruning in
+Isaac Lab.
 
-This project/repository serves as a template for building projects or extensions based on Isaac Lab.
-It allows you to develop in an isolated environment, outside of the core Isaac Lab repository.
+Jose Sanchez — Oregon State University — <sanchej7@oregonstate.edu>
 
-**Key Features:**
+Anchors:
 
-- `Isolation` Work outside the core Isaac Lab repository, ensuring that your development efforts remain self-contained.
-- `Flexibility` This template is set up to allow your code to be run as an extension in Omniverse.
+- [`spur-depth-service`](https://github.com/joses2017smjh/spur-depth-service):
+  metric depth and reconstruction.
+- [`bhl-robustness-ladder`](https://github.com/joses2017smjh/bhl-robustness-ladder):
+  continuous randomization and sim2sim evaluation.
+- [`lukestroh/isaaclab-sensor-learning`](https://github.com/lukestroh/isaaclab-sensor-learning):
+  inherited Isaac Lab harness, pinned at `5701a77`.
 
-**Keywords:** extension, template, isaaclab
+## Current status
 
-## Installation
+This repository contains a tested simulator-independent foundation. It does
+**not** yet claim an imported UR5e/pruner, a passing headless Isaac job, a
+trained policy, or pruning success numbers.
 
-- Install Isaac Lab by following the [installation guide](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html).
-  We recommend using the conda or uv installation as it simplifies calling Python scripts from the terminal.
+Implemented:
 
-- Clone or copy this project/repository separately from the Isaac Lab installation (i.e. outside the `IsaacLab` directory):
+- OpenCV camera-to-world/world-to-camera conversion that also emits the legacy
+  Blender Euler fields expected by current `spur-depth` consumers.
+- Planar-z depth conversion and unprojection, including an analytic three-view
+  1 m cube contract test.
+- Validated L-Py `cylinder_data` and full world-sidecar loaders.
+- Direct semantic `UsdGeom.Cylinder` authoring with collision LOD.
+- Fixed two-sensor VL53L8CX rig at the real mock-pruner offsets.
+- Batched ToF range noise, variance, status, and thin-target dropout.
+- Batched mouth/failure oriented-box intersection and perpendicularity gates.
+- Ground-truth cut-point oracle ordered by radius, then neighbourhood clutter.
+- Immutable source manifest and fetch tool for robot/orchard dependencies.
 
-- Using a python interpreter that has Isaac Lab installed, install the library in editable mode using:
+See [`docs/ROADMAP.md`](docs/ROADMAP.md) for passed and open gates.
 
-    ```bash
-    # use 'PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-    python -m pip install -e source/isaaclab_sensor_learning
+## Control architecture
 
-- Verify that the extension is correctly installed by:
+```text
+episode start:
+  wrist RGB -> spur-depth -> cut point + branch axis
 
-    - Listing the available tasks:
+20–50 Hz final approach:
+  ToF / flow / metric-student / fused observation
+      -> PPO policy -> differential IK -> UR5e joint targets
 
-        Note: It the task name changes, it may be necessary to update the search pattern `"Template-"`
-        (in the `scripts/list_envs.py` file) so that it can be listed.
+terminal success:
+  target intersects cutter mouth
+  AND wood clears failure zone
+  AND cutter is perpendicular within the evaluated tolerance
+  AND arm/pruner collision is absent
+```
 
-        ```bash
-        # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-        python scripts/list_envs.py
-        ```
+DA2-ft is not run at every PPO step. The measured 185 ms fp16 latency on an
+RTX 8000 is incompatible with massively parallel PPO. It proposes the target
+once per episode; cheap sensors close the loop.
 
-    - Running a task:
+## Install the core package
 
-        ```bash
-        # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-        python scripts/<RL_LIBRARY>/train.py --task=<TASK_NAME>
-        ```
-
-    - Running a task with dummy agents:
-
-        These include dummy agents that output zero or random agents. They are useful to ensure that the environments are configured correctly.
-
-        - Zero-action agent
-
-            ```bash
-            # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-            python scripts/zero_agent.py --task=<TASK_NAME>
-            ```
-        - Random-action agent
-
-            ```bash
-            # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-            python scripts/random_agent.py --task=<TASK_NAME>
-            ```
-
-### Set up IDE (Optional)
-
-To setup the IDE, please follow these instructions:
-
-- Run VSCode Tasks, by pressing `Ctrl+Shift+P`, selecting `Tasks: Run Task` and running the `setup_python_env` in the drop down menu.
-  When running this task, you will be prompted to add the absolute path to your Isaac Sim installation.
-
-If everything executes correctly, it should create a file .python.env in the `.vscode` directory.
-The file contains the python paths to all the extensions provided by Isaac Sim and Omniverse.
-This helps in indexing all the python modules for intelligent suggestions while writing code.
-
-### Setup as Omniverse Extension (Optional)
-
-We provide an example UI extension that will load upon enabling your extension defined in `source/isaaclab_sensor_learning/isaaclab_sensor_learning/ui_extension_example.py`.
-
-To enable your extension, follow these steps:
-
-1. **Add the search path of this project/repository** to the extension manager:
-    - Navigate to the extension manager using `Window` -> `Extensions`.
-    - Click on the **Hamburger Icon**, then go to `Settings`.
-    - In the `Extension Search Paths`, enter the absolute path to the `source` directory of this project/repository.
-    - If not already present, in the `Extension Search Paths`, enter the path that leads to Isaac Lab's extension directory directory (`IsaacLab/source`)
-    - Click on the **Hamburger Icon**, then click `Refresh`.
-
-2. **Search and enable your extension**:
-    - Find your extension under the `Third Party` category.
-    - Toggle it to enable your extension.
-
-## Code formatting
-
-We have a pre-commit template to automatically format your code.
-To install pre-commit:
+The core tests do not launch Isaac Sim:
 
 ```bash
-pip install pre-commit
+python -m pip install -e "source/isaaclab_pruning[dev]"
+python -m pytest -q
+ruff check source/isaaclab_pruning tests tools
+ruff format --check source/isaaclab_pruning tests tools
 ```
 
-Then you can run pre-commit with:
+Isaac-dependent commands must run through the Python interpreter shipped with
+the pinned Isaac Sim/Isaac Lab environment.
+
+## Fetch pinned robot and orchard sources
+
+No moving branches or submodules:
 
 ```bash
-pre-commit run --all-files
+python tools/fetch_sources.py
+python tools/fetch_sources.py --check
 ```
 
-## Troubleshooting
+Checkouts land under ignored `third_party/src/`. Repositories without declared
+licenses stay fetch-only; see [`NOTICE.md`](NOTICE.md).
 
-### Pylance Missing Indexing of Extensions
+## Convert L-Py cylinders to USD
 
-In some VsCode versions, the indexing of part of the extensions is missing.
-In this case, add the path to your extension in `.vscode/settings.json` under the key `"python.analysis.extraPaths"`.
+The Blender generator builds finite cylinders, so this converter writes
+`UsdGeom.Cylinder`, not capsules. That distinction matters for the target
+2 mm cross-renderer depth check.
 
-```json
-{
-    "python.analysis.extraPaths": [
-        "<path-to-ext-repo>/source/isaaclab_sensor_learning"
-    ]
-}
+```bash
+python tools/cyl_to_usd.py \
+  /path/to/trees/metadata/lpy_envy_00000_metadata.json \
+  generated/trees/lpy_envy_00000.usda
 ```
 
-### Pylance Crash
+Defaults:
 
-If you encounter a crash in `pylance`, it is probable that too many files are indexed and you run out of memory.
-A possible solution is to exclude some of omniverse packages that are not used in your project.
-To do so, modify `.vscode/settings.json` and comment out packages under the key `"python.analysis.extraPaths"`
-Some examples of packages that can likely be excluded are:
+- X tilt: `-17.143°`, matching the Blender orchard generator.
+- collision: trunk + branch globally.
+- spur/nontrunk: visual and semantic, with optional collision within
+  `--active-radius-m` of `--active-cut-point X Y Z`.
 
-```json
-"<path-to-isaac-sim>/extscache/omni.anim.*"         // Animation packages
-"<path-to-isaac-sim>/extscache/omni.kit.*"          // Kit UI tools
-"<path-to-isaac-sim>/extscache/omni.graph.*"        // Graph UI tools
-"<path-to-isaac-sim>/extscache/omni.services.*"     // Services tools
-...
+A full `cylinders_world/{bark}/{tree}.json` can be supplied with
+`--world-sidecar`. Do not pass an `ann/*.json` centroid list; it lacks radius,
+length, orientation, and part labels.
+
+## Sensor contract
+
+`mock_pruner_vl53l8cx.yaml` keeps the source hardware offsets:
+
+```text
+tof0 = ( +0.04685226669, 0.0, 0.14444246761 ) m
+tof1 = ( -0.04685226669, 0.0, 0.14444246761 ) m
 ```
+
+The wrist camera remains disabled with `offset: null`. The source robot
+description leaves `camera_offset` empty, so this project will not fabricate an
+extrinsic before visibility/occlusion experiments.
+
+## Depth and pose contract
+
+- Use `distance_to_image_plane` / planar optical-axis z-depth.
+- Do not substitute `distance_to_camera` (Euclidean range).
+- Isaac input pose: camera origin in world + `quat_w_opencv` `(w, x, y, z)`.
+- Stored pose: explicit OpenCV `T_wc`.
+- Compatibility fields: Blender `camera.location` + `rotation_euler`.
+
+Current `spur-depth-service` reads the compatibility fields and does not yet
+prefer `_T_wc`; both are emitted and tested to agree.
+
+## Compute gate
+
+Slurm inventory includes RTX 8000, L40S, A40, H100, and H200 nodes, while the
+usual DGX2 nodes are V100. The V100 has no RT cores: reserve it for CUDA
+ray-cast training, not RTX rendering.
+
+[`docs/HPC.md`](docs/HPC.md) records the inventory and smoke command. Visibility
+in `sinfo` is not proof of partition access. Gate 0 remains open until the
+headless job exits zero with a pinned SIF.
+
+## Research comparison
+
+One environment and reward, five seeds per learned variant:
+
+- A — ground-truth flow first, then RAFT flow.
+- B — two noisy 8×8 VL53L8CX sensors.
+- C — distilled metric-depth student.
+- D — variance-weighted ToF + metric fusion.
+
+Required baselines before policy claims: scripted ToF servoing and a
+collision-aware CuRobo oracle. Evaluation keeps Envy `00042` and `00065`
+aligned with `spur-depth`, then tests untouched UFO trees and PyBullet sim2sim.
+
+## Provenance note
+
+The upstream harness commit is dated 2026-06-30, not 2026-08-27, and its
+repository has no declared root license. This fork preserves its history and
+does not apply a blanket license to inherited content. See
+[`NOTICE.md`](NOTICE.md) and [`third_party/sources.yaml`](third_party/sources.yaml).

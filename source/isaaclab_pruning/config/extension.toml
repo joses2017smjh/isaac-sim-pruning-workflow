@@ -1,0 +1,19 @@
+[package]
+version = "0.1.0"
+category = "isaaclab"
+readme = "../README.md"
+title = "Isaac Lab Pruning"
+author = "Jose Sanchez"
+maintainer = "Jose Sanchez"
+description = "Closed-loop dormant apple-tree pruning research workflow"
+repository = "https://github.com/joses2017smjh/isaac-sim-pruning-workflow"
+keywords = ["isaaclab", "pruning", "robotics", "perception"]
+
+[dependencies]
+"isaaclab" = {}
+"isaaclab_assets" = {}
+"isaaclab_rl" = {}
+"isaaclab_tasks" = {}
+
+[[python.module]]
+name = "isaaclab_pruning"

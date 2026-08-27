@@ -219,5 +219,13 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-data/
+# Root dataset dumps only. Do not ignore package modules named data/.
+/data/
 # *.usda
+
+# Pruning workflow: fetched sources and generated simulator artifacts
+/third_party/src/
+/artifacts/
+/generated/
+/_isaac_sim/
+.python.env

@@ -1,0 +1,37 @@
+name: mock_pruner_vl53l8cx
+description: Fixed hardware-matched mock-pruner sensor rig
+mount_link: mock_pruner__tool0
+offset_convention: ros
+
+sensors:
+  - name: tof0
+    model: vl53l8cx
+    sensor_type: tof
+    mount_offset_m: [0.04685226669, 0.0, 0.14444246761]
+    mount_quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+    image_size: [8, 8]
+    diagonal_fov_deg: 65.0
+    clipping_range_m: [0.03, 3.4]
+    update_rate_hz: 15
+
+  - name: tof1
+    model: vl53l8cx
+    sensor_type: tof
+    mount_offset_m: [-0.04685226669, 0.0, 0.14444246761]
+    mount_quaternion_wxyz: [1.0, 0.0, 0.0, 0.0]
+    image_size: [8, 8]
+    diagonal_fov_deg: 65.0
+    clipping_range_m: [0.03, 3.4]
+    update_rate_hz: 15
+
+wrist_camera:
+  enabled: false
+  offset: null
+  reason: camera_offset is unset in the source robot description; do not invent extrinsics
+
+noise:
+  min_sigma_m: 0.003
+  range_sigma_fraction: 0.03
+  dropout_probability: 0.05
+  thin_radius_threshold_m: 0.008
+  thin_dropout_probability: 0.30

@@ -1,0 +1,72 @@
+schema_version: 1
+resolved_at: "2026-08-27"
+
+sources:
+  isaaclab_sensor_learning:
+    repository: https://github.com/lukestroh/isaaclab-sensor-learning.git
+    branch: develop
+    revision: 5701a774af7b8579269f924689aaf79b9574a53c
+    license: NOASSERTION
+    integration: fork_history
+    take:
+      - source/isaaclab_sensor_learning
+
+  branch_detection_system:
+    repository: https://github.com/lukestroh/branch_detection_system.git
+    branch: develop
+    revision: dfede4c0f251358ebed7a1f90ff887847c2fbeb0
+    license: NOASSERTION
+    integration: fetch_only
+    take:
+      - branch_detection_system_description/config/mock_pruner.yaml
+      - branch_detection_system_description/urdf/end_effectors/mock_pruner
+      - branch_detection_system_description/meshes/end_effectors/mock_pruner
+      - final_approach_controller
+
+  ag_robot:
+    repository: https://github.com/lukestroh/ag-robot.git
+    branch: main
+    revision: 60b3bee2323ff04d404516c6630db3626cc51fe0
+    license: NOASSERTION
+    integration: fetch_only
+    take:
+      - ag_robot_description/config/robot_config.yaml
+      - ag_robot_description/urdf/tmp/ag_robot_isaac_lab.urdf
+
+  linear_slider:
+    repository: https://github.com/lukestroh/linear-slider.git
+    branch: develop
+    revision: f27450ea207ea096ce24c0c124647aab0080f426
+    license: NOASSERTION
+    integration: fetch_only
+
+  pybullet_tree_sim:
+    repository: https://github.com/OSUrobotics/pybullet-tree-sim.git
+    branch: develop
+    revision: 4d9f8384da9ddd3329175cc8ce1f2c7df9720387
+    license: BSD-3-Clause
+    integration: fetch_only
+    take:
+      - pybullet_tree_sim/urdf/ur5e/collision
+      - pybullet_tree_sim/envs/pruning_env.py
+
+  lpy_treesim:
+    repository: https://github.com/OSUrobotics/lpy_treesim.git
+    branch: main
+    revision: 49b2f8dfd506792b45dc3bc1728ed887d2a867d1
+    license: NOASSERTION
+    integration: fetch_only
+
+  blender_virtual_orchard:
+    repository: https://github.com/OSUrobotics/blender_virtual_orchard.git
+    branch: main
+    revision: 2c872e6df397ed4cdd6ac21cb55663920394e815
+    license: NOASSERTION
+    integration: fetch_only
+
+  universal_robots_ros2_description:
+    repository: https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
+    branch: rolling
+    revision: 89bbe795f38a7ab00fb66fe8831dfff79dc99edf
+    license: BSD-3-Clause
+    integration: fetch_only

@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "isaaclab-pruning"
+version = "0.1.0"
+description = "Perception-to-motion pruning workflow for Isaac Lab"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Jose Sanchez", email = "sanchej7@oregonstate.edu" },
+]
+dependencies = [
+    "numpy>=1.24",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.14",
+    "torch",
+]
+
+[project.scripts]
+cyl-to-usd = "isaaclab_pruning.usd.cylinders:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["isaaclab_pruning*"]
+
+[tool.setuptools.package-data]
+isaaclab_pruning = ["config/**/*.yaml"]
