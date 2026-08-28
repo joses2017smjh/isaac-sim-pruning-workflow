@@ -16,9 +16,9 @@ Anchors:
 
 ## Current status
 
-This repository contains a tested simulator-independent foundation. It does
-**not** yet claim an imported UR5e/pruner, a passing headless Isaac job, a
-trained policy, or pruning success numbers.
+Phases 1–5 are implemented as Isaac-free, unit-tested modules plus a gated
+DirectRLEnv. This repository does **not** yet claim an imported UR5e/pruner, a
+passing headless Isaac job, a trained policy, or pruning success numbers.
 
 Implemented:
 
@@ -28,11 +28,16 @@ Implemented:
   1 m cube contract test.
 - Validated L-Py `cylinder_data` and full world-sidecar loaders.
 - Direct semantic `UsdGeom.Cylinder` authoring with collision LOD.
-- Fixed two-sensor VL53L8CX rig at the real mock-pruner offsets.
-- Batched ToF range noise, variance, status, and thin-target dropout.
-- Batched mouth/failure oriented-box intersection and perpendicularity gates.
-- Ground-truth cut-point oracle ordered by radius, then neighbourhood clutter.
-- Immutable source manifest and fetch tool for robot/orchard dependencies.
+- V-trellis posts, wires, ground, and lighting as ASCII USDA.
+- Held-out Envy `00042` / `00065` and a five-seed protocol.
+- UR5e + slider joint spec (`<part>__` prefixes); slider held fixed.
+- STL OBB fitting and nominal cutter mouth/failure volumes.
+- Inverse-variance fusion and wrist-camera *candidate* sweep (none selected).
+- Dense reward, curriculum, nearby-wood failure-zone test.
+- Scripted ToF servoing and a not-yet-configured CuRobo oracle status.
+- Observation variants A/B/C/D, robustness ladder `d ∈ [0, 1]`.
+- Evaluation: success vs cut error, 30 cm box helper, sim2sim ranking inversion.
+- `tools/train.py` refuses to start without both baselines.
 
 See [`docs/ROADMAP.md`](docs/ROADMAP.md) for passed and open gates.
 
@@ -152,6 +157,13 @@ One environment and reward, five seeds per learned variant:
 Required baselines before policy claims: scripted ToF servoing and a
 collision-aware CuRobo oracle. Evaluation keeps Envy `00042` and `00065`
 aligned with `spur-depth`, then tests untouched UFO trees and PyBullet sim2sim.
+
+```bash
+python tools/write_orchard.py generated/orchard/v_trellis.usda
+python tools/batch_cyl_to_usd.py /path/to/trees/metadata generated/trees
+python tools/fit_cutter_boxes.py
+python tools/train.py --variant B_tof --seed 0   # refuses until both baselines exist
+```
 
 ## Provenance note
 

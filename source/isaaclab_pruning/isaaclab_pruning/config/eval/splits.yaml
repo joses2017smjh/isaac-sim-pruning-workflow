@@ -1,0 +1,23 @@
+# Held-out trees match spur-depth-service exactly.
+held_out_envy:
+  - lpy_envy_00042
+  - lpy_envy_00065
+
+# Borrowed Isaac USDA files used to debug the pipeline. Not an eval set.
+debug_envy:
+  - lpy_envy_00000
+  - lpy_envy_00001
+  - lpy_envy_00002
+  - lpy_envy_00003
+  - lpy_envy_00004
+  - lpy_envy_00005
+  - lpy_envy_00006
+  - lpy_envy_00007
+  - lpy_envy_00008
+  - lpy_envy_00009
+
+# UFO meshes have never been rendered in spur-depth. Architecture-transfer set.
+held_out_ufo_policy: untouched
+train_envy_exclude_held_out: true
+camera_rect_depth_m: 0.30
+seeds: [0, 1, 2, 3, 4]

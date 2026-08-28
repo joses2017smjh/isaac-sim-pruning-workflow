@@ -1,0 +1,22 @@
+name: v_trellis_envy
+description: V-trellis furniture matching the Blender orchard generator contract.
+tree_tilt_x_deg: -17.143
+trees_per_env: 3
+in_row_spacing_m: 1.5
+row_y_m: 1.0
+ground:
+  size_m: [8.0, 8.0, 0.02]
+  color: [0.18, 0.22, 0.12]
+posts:
+  height_m: 3.2
+  radius_m: 0.05
+  y_offset_m: -0.35
+wires:
+  heights_m: [0.60, 1.20, 1.80, 2.40]
+  radius_m: 0.004
+  length_m: 6.0
+baseline_bark: bark_brown_02
+lighting:
+  dome_intensity: 1000.0
+  sun_intensity: 1200.0
+  sun_angle_deg: [45.0, 0.0, 30.0]

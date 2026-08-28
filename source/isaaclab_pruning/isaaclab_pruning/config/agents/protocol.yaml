@@ -1,0 +1,28 @@
+name: pruning_variants_v1
+description: One env, one reward, four observations, five seeds.
+seeds: [0, 1, 2, 3, 4]
+num_envs_raycast: 1024
+num_envs_tiled_rgb: 128
+episode_length_s: 60.0
+sim_dt: 0.008333333333333333
+decimation: 2
+control_hz: 60
+slider_held_fixed: true
+da2_in_ppo_loop: false
+variants:
+  A_flow:
+    observation: flow
+    notes: ICRA 2025 reproduction. Train on GT motion_vectors first, then RAFT.
+  B_tof:
+    observation: tof
+    notes: Real mock-pruner sensing.
+  C_metric:
+    observation: metric_student
+    notes: Distilled student only. DA2-ft proposes the cut once per episode.
+  D_fused:
+    observation: fused
+    notes: Inverse-variance ToF + metric fusion.
+baselines:
+  - scripted_tof
+  - curobo_oracle
+hard_gate: do not report a learned policy without both baselines
