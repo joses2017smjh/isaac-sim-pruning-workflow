@@ -52,14 +52,19 @@ def _write_axis_aligned_box_stl(path, minimum, maximum) -> None:
     path.write_bytes(payload)
 
 
-def test_ur5e_spec_uses_hardware_prefixes_and_holds_slider() -> None:
+def test_ur5e_spec_uses_hardware_prefixes_and_does_not_spawn_slider() -> None:
     spec = load_ur5e_pruner_spec()
     assert spec.eef_body == "mock_pruner__tool0"
     assert spec.slider_held_fixed
-    assert spec.action_dim == 7
+    assert spec.action_dim == 7  # EE pose xyz+wxyz, not 6R+slider
+    assert spec.joint_names_expr == ("ur5e__.*",)
+    assert all("linear_slider" not in expr for expr in spec.joint_names_expr)
     assert [joint.name for joint in spec.arm_joints][0] == "ur5e__shoulder_pan_joint"
     assert spec.slider_joint.name == "linear_slider__joint1"
     assert spec.ik_method == "dls"
+    assert spec.ik_relative_mode is False
+    assert spec.cutter_source.startswith("stl_aabb_pybullet_tree_sim_")
+    assert spec.mouth_half_extents_m[0] < spec.mouth_half_extents_m[1]
 
 
 def test_stl_obb_recovers_a_known_box(tmp_path) -> None:
@@ -95,6 +100,15 @@ def test_cutter_boxes_follow_eef_pose() -> None:
     )
     torch.testing.assert_close(mouth.center_w, torch.tensor([[0.0, 0.0, 1.0]]))
     torch.testing.assert_close(failure.center_w, torch.tensor([[0.0, 0.0, 0.96]]))
+
+    mouth_off, _ = cutter_boxes_from_spec(
+        eef_pose_w=pose,
+        mouth_half_extents=(0.02, 0.02, 0.01),
+        failure_half_extents=(0.03, 0.03, 0.02),
+        failure_offset_eef=(0.0, 0.0, -0.04),
+        mouth_offset_eef=(0.0, 0.0, 0.02),
+    )
+    torch.testing.assert_close(mouth_off.center_w, torch.tensor([[0.0, 0.0, 1.02]]))
 
 
 def test_nearby_wood_flags_a_non_target_cylinder() -> None:

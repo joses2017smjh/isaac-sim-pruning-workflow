@@ -227,5 +227,6 @@ __marimo__/
 /third_party/src/
 /artifacts/
 /generated/
+/logs/
 /_isaac_sim/
 .python.env

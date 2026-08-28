@@ -1,0 +1,7 @@
+{
+  "imported": true,
+  "urdf": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/urdf/ur5e_pruner_abs.urdf",
+  "usd": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_pruner_abs/ur5e_pruner_abs.usda",
+  "bytes": 1248,
+  "node": "cn-r-2.hpc.engr.oregonstate.edu"
+}

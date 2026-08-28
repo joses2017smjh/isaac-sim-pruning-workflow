@@ -9,8 +9,8 @@ def test_pruning_env_is_gated_without_isaac_lab() -> None:
     try:
         import isaaclab  # noqa: F401
     except ImportError:
-        with pytest.raises(RuntimeError, match="Gate 0"):
+        with pytest.raises(RuntimeError, match="v60"):
             require_isaaclab()
-        assert "create_empty.py" in ISAAC_IMPORT_ERROR
+        assert "v60" in ISAAC_IMPORT_ERROR
     else:
         require_isaaclab()

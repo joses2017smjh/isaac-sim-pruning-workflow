@@ -21,6 +21,7 @@ FAILURE = "pybullet_tree_sim/urdf/ur5e/collision/cutter-failure-zone.stl"
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=DEFAULT_ROOT)
+    parser.add_argument("--json-out", type=Path, default=None)
     args = parser.parse_args(argv)
     mouth_path = args.root / MOUTH
     failure_path = args.root / FAILURE
@@ -40,24 +41,27 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     mouth = fit_oriented_box_from_stl(mouth_path)
     failure = fit_oriented_box_from_stl(failure_path)
-    print(
-        json.dumps(
-            {
-                "fitted": True,
-                "mouth": {
-                    "center": mouth.center.tolist(),
-                    "half_extents": mouth.half_extents.tolist(),
-                    "vertices": mouth.vertex_count,
-                },
-                "failure": {
-                    "center": failure.center.tolist(),
-                    "half_extents": failure.half_extents.tolist(),
-                    "vertices": failure.vertex_count,
-                },
-            },
-            indent=2,
-        )
-    )
+    payload = {
+        "fitted": True,
+        "source_revision": "4d9f8384da9ddd3329175cc8ce1f2c7df9720387",
+        "mouth": {
+            "path": MOUTH,
+            "center": mouth.center.tolist(),
+            "half_extents": mouth.half_extents.tolist(),
+            "vertices": mouth.vertex_count,
+        },
+        "failure": {
+            "path": FAILURE,
+            "center": failure.center.tolist(),
+            "half_extents": failure.half_extents.tolist(),
+            "vertices": failure.vertex_count,
+        },
+    }
+    text = json.dumps(payload, indent=2)
+    print(text)
+    if args.json_out is not None:
+        args.json_out.parent.mkdir(parents=True, exist_ok=True)
+        args.json_out.write_text(text + "\n", encoding="utf-8")
     return 0
 
 

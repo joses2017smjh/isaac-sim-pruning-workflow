@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from importlib import resources
 from pathlib import Path
@@ -32,11 +33,27 @@ class Ur5ePrunerSpec:
     slider_joint: JointSpec
     ik_method: str
     ik_lambda: float
+    ik_relative_mode: bool
     mouth_half_extents_m: tuple[float, float, float]
+    mouth_offset_m: tuple[float, float, float]
     failure_half_extents_m: tuple[float, float, float]
     failure_offset_m: tuple[float, float, float]
+    cutter_source: str
     perpendicularity_tolerance_deg: float
     joint_names_expr: tuple[str, ...]
+
+
+def repository_root() -> Path:
+    return Path(__file__).resolve().parents[4]
+
+
+def imported_usd_path(cfg: dict[str, Any] | None = None) -> Path:
+    """USD written by job 21077217. Override with ``PRUNING_USD``."""
+    payload = cfg if cfg is not None else load_ur5e_pruner_config()
+    override = os.environ.get("PRUNING_USD")
+    if override:
+        return Path(override)
+    return repository_root() / str(payload["usd"]["relative_path"])
 
 
 def load_ur5e_pruner_config(path: str | Path | None = None) -> dict[str, Any]:
@@ -79,9 +96,12 @@ def load_ur5e_pruner_spec(path: str | Path | None = None) -> Ur5ePrunerSpec:
         slider_joint=slider_spec,
         ik_method=str(cfg["ik"]["method"]),
         ik_lambda=float(cfg["ik"]["lambda_val"]),
+        ik_relative_mode=bool(cfg["ik"]["use_relative_mode"]),
         mouth_half_extents_m=tuple(float(v) for v in cutter["mouth_half_extents_m"]),
+        mouth_offset_m=tuple(float(v) for v in cutter.get("mouth_offset_m", (0.0, 0.0, 0.0))),
         failure_half_extents_m=tuple(float(v) for v in cutter["failure_half_extents_m"]),
         failure_offset_m=tuple(float(v) for v in cutter["failure_offset_m"]),
+        cutter_source=str(cutter["source"]),
         perpendicularity_tolerance_deg=float(cutter["perpendicularity_tolerance_deg"]),
-        joint_names_expr=("ur5e__.*", "linear_slider__joint1"),
+        joint_names_expr=tuple(str(expr) for expr in actuators["arm"]["joint_names_expr"]),
     )

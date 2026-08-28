@@ -34,7 +34,11 @@ def main(argv: list[str] | None = None) -> int:
         }
     )
     require_isaaclab()
-    raise SystemExit("Isaac Lab is importable, but URDF import and headless smoke are still gated.")
+    raise SystemExit(
+        "Gate 0 and URDF import passed. Next gate is hpc/slurm/env_smoke.sbatch "
+        "(one v60 slot: trainer import, A–D obs asserts, step, PhysX). PPO stays "
+        "blocked until both baselines have Isaac job logs. See docs/ISAAC_STACK.md."
+    )
 
 
 if __name__ == "__main__":

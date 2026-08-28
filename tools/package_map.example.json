@@ -1,0 +1,5 @@
+{
+  "branch_detection_system_description": "third_party/src/branch_detection_system/branch_detection_system_description",
+  "ur_description": "third_party/src/universal_robots_ros2_description",
+  "linear_slider_description": "third_party/src/linear_slider/linear_slider_description"
+}

@@ -14,6 +14,7 @@ from isaaclab_pruning.policies import (
     assert_ready_for_policy_claim,
     build_observation,
     load_training_protocol,
+    observation_width,
     proprioception,
 )
 from isaaclab_pruning.sensors import CANDIDATES, fuse_depths, score_candidate
@@ -109,6 +110,61 @@ def test_observation_variants_and_five_seed_protocol() -> None:
     flow = torch.zeros(1, 4, 4, 2)
     obs_a = build_observation(ObservationVariant.FLOW, goal_w=goal, proprio=proprio, flow_hw2=flow)
     assert obs_b.shape[-1] > obs_a.shape[-1]
+    widths = {
+        observation_width(ObservationVariant.FLOW, n_joints=6, flow_hw=(4, 4)),
+        observation_width(ObservationVariant.TOF, n_joints=6, tof_hw=(8, 8)),
+        observation_width(ObservationVariant.METRIC, n_joints=6, metric_hw=(8, 8)),
+    }
+    assert len(widths) == 3
+    matched = {
+        observation_width(ObservationVariant.TOF),
+        observation_width(ObservationVariant.METRIC),
+        observation_width(ObservationVariant.FUSED),
+        observation_width(ObservationVariant.FLOW),
+    }
+    assert 128 not in matched
+    assert observation_width(ObservationVariant.METRIC) == observation_width(ObservationVariant.FUSED)
+    assert len(
+        {
+            observation_width(ObservationVariant.FLOW),
+            observation_width(ObservationVariant.TOF),
+            observation_width(ObservationVariant.METRIC),
+        }
+    ) == 3
+    native = observation_width(ObservationVariant.METRIC, metric_hw=(256, 256))
+    assert native != observation_width(ObservationVariant.METRIC)
+    metric = torch.full((1, 8, 8), 2.0)
+    obs_c = build_observation(ObservationVariant.METRIC, goal_w=goal, proprio=proprio, metric_depth=metric)
+    obs_d = build_observation(
+        ObservationVariant.FUSED,
+        goal_w=goal,
+        proprio=proprio,
+        tof0=tof,
+        tof1=tof,
+        tof0_valid=valid,
+        tof1_valid=valid,
+        metric_depth=metric,
+        tof0_var=torch.full_like(tof, 1e-8),
+        tof1_var=torch.full_like(tof, 1e-8),
+        metric_var=torch.full_like(metric, 1e6),
+    )
+    assert obs_c.shape == obs_d.shape
+    assert not torch.allclose(obs_c, obs_d)
+    native_metric = torch.full((1, 16, 16), 2.0)
+    obs_d_native = build_observation(
+        ObservationVariant.FUSED,
+        goal_w=goal,
+        proprio=proprio,
+        tof0=tof,
+        tof1=tof,
+        tof0_valid=valid,
+        tof1_valid=valid,
+        metric_depth=native_metric,
+        tof0_var=torch.full_like(tof, 1e-8),
+        tof1_var=torch.full_like(tof, 1e-8),
+        metric_var=torch.full_like(native_metric, 1e6),
+    )
+    assert obs_d_native.shape == obs_d.shape
 
 
 def test_ladder_is_nominal_at_zero_and_injects_cut_error() -> None:

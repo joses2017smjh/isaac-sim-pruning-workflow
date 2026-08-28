@@ -12,16 +12,25 @@ da2_in_ppo_loop: false
 variants:
   A_flow:
     observation: flow
-    notes: ICRA 2025 reproduction. Train on GT motion_vectors first, then RAFT.
+    grid: [8, 8]
+    notes: >
+      ICRA 2025 reproduction. Width is 2*H*W on the ToF grid and stays a different
+      last-dim than B/C. Do not pad A to match.
   B_tof:
     observation: tof
-    notes: Real mock-pruner sensing.
+    grid: [8, 8]
+    notes: Real mock-pruner sensing. Width-matched with C and D.
   C_metric:
     observation: metric_student
-    notes: Distilled student only. DA2-ft proposes the cut once per episode.
+    grid: [8, 8]
+    native_grid: [256, 256]
+    notes: >
+      Default table is 8×8 vs ToF (content, not width). Native 256×256 is a second
+      table for the performance ceiling, not the causal comparison.
   D_fused:
     observation: fused
-    notes: Inverse-variance ToF + metric fusion.
+    grid: [8, 8]
+    notes: Inverse-variance ToF + metric fusion. Same width as C; contents must differ.
 baselines:
   - scripted_tof
   - curobo_oracle

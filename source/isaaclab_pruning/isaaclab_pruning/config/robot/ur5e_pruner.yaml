@@ -1,17 +1,28 @@
 name: ur5e_pruner
-description: 6R UR5e + 1P slider. Amiga base is fixed during a cut.
+description: >
+  6R UR5e + mock-pruner. Imported USD is the BDS flatten (Amiga base, no slider).
+  v1 holds the real-machine slider fixed before the approach and does not spawn it.
+usd:
+  relative_path: artifacts/usd/ur5e_pruner_abs/ur5e_pruner_abs.usda
+  import_job: "21077217"
+  contains_slider: false
+  prim_path: /pruning_robot
+  eef_body: mock_pruner__tool0
 prefixes:
   slider: linear_slider__
   arm: ur5e__
   eef: mock_pruner__
 eef_body: mock_pruner__tool0
 slider_held_fixed: true
+# EE pose command (xyz + wxyz), not 6R+slider. The slider is documented below
+# for the real machine and is not in ArticulationCfg.joint_names_expr.
 action_dim: 7
 ik:
   method: dls
   lambda_val: 1.0e-4
   command_type: pose
-  use_relative_mode: true
+  # Absolute EE pose (xyz + wxyz) is 7-D. Relative mode is 6-D (pos + axis-angle).
+  use_relative_mode: false
 joints:
   slider:
     - name: linear_slider__joint1
@@ -56,14 +67,19 @@ actuators:
     joint_names_expr: ["ur5e__.*"]
     stiffness: 800.0
     damping: 40.0
+  # Not spawned in v1. Kept as a record of the hardware slider.
   slider:
     joint_names_expr: ["linear_slider__joint1"]
     stiffness: 1.0e5
     damping: 1.0e3
+    spawned: false
 cutter:
-  mouth_half_extents_m: [0.025, 0.018, 0.012]
-  failure_half_extents_m: [0.040, 0.035, 0.025]
-  failure_offset_m: [0.0, 0.0, -0.035]
-  source: nominal_until_stl_fit
+  # Axis-aligned AABB in the cutter-link frame, from pybullet-tree-sim STLs
+  # (BSD-3-Clause, 4d9f838). PCA OBBs are in docs/evidence/cutter_boxes_fitted.json.
+  mouth_half_extents_m: [0.007652, 0.027309, 0.024962]
+  mouth_offset_m: [0.000693, 0.014691, 0.024962]
+  failure_half_extents_m: [0.007000, 0.080000, 0.030000]
+  failure_offset_m: [0.000447, 0.014543, 0.012502]
+  source: stl_aabb_pybullet_tree_sim_4d9f838
   perpendicularity_tolerance_deg: 15.0
   report_as_sweep: true

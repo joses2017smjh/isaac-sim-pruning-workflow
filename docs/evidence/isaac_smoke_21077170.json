@@ -1,0 +1,40 @@
+{
+  "ok": true,
+  "node": "cn-r-4.hpc.engr.oregonstate.edu",
+  "isaacsim": "6.0.0.1",
+  "isaaclab": "3.0.0b2",
+  "venv": "/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60",
+  "sif": "/nfs/hpc/share/sanchej7/Humanoid_Lite/container/bhl.sif",
+  "meters_per_unit": 1.0,
+  "cube_depth_m": 1.5,
+  "cube_finite_frac": 1.0,
+  "cube_spread_m": 1.1920928955078125e-07,
+  "cube_expected_m": 1.5,
+  "plane_depth_m": 2.0,
+  "plane_finite_frac": 1.0,
+  "plane_spread_m": 3.5762786865234375e-07,
+  "plane_expected_m": 2.0,
+  "cube_rgb_mean": 172.81787109375,
+  "cube_rgb_std": 37.994384765625,
+  "checks": {
+    "cube": true,
+    "plane": true,
+    "rgb": true
+  },
+  "trees": {
+    "converted": [
+      "lpy_envy_00000",
+      "lpy_envy_00001",
+      "lpy_envy_00002",
+      "lpy_envy_00003",
+      "lpy_envy_00004",
+      "lpy_envy_00005",
+      "lpy_envy_00006",
+      "lpy_envy_00007",
+      "lpy_envy_00008",
+      "lpy_envy_00009"
+    ],
+    "count": 10,
+    "output_dir": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/trees"
+  }
+}

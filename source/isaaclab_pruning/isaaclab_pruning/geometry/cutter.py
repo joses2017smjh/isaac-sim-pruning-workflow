@@ -75,8 +75,9 @@ def cutter_boxes_from_spec(
     mouth_half_extents: tuple[float, float, float],
     failure_half_extents: tuple[float, float, float],
     failure_offset_eef: tuple[float, float, float],
+    mouth_offset_eef: tuple[float, float, float] = (0.0, 0.0, 0.0),
 ) -> tuple[OrientedBox, OrientedBox]:
-    """Place nominal mouth/failure OBBs in the EEF frame.
+    """Place mouth/failure AABBs in the EEF frame.
 
     ``eef_pose_w`` is ``(N, 7)`` position + wxyz quaternion.
     """
@@ -84,8 +85,9 @@ def cutter_boxes_from_spec(
         raise ValueError("eef_pose_w must have shape (N, 7).")
     rotation = _quat_wxyz_to_matrix(eef_pose_w[:, 3:7])
     position = eef_pose_w[:, 0:3]
+    mouth_offset = torch.as_tensor(mouth_offset_eef, device=eef_pose_w.device, dtype=eef_pose_w.dtype)
     mouth = OrientedBox(
-        center_w=position,
+        center_w=position + torch.matmul(rotation, mouth_offset.unsqueeze(-1)).squeeze(-1),
         rotation_bw=rotation,
         half_extents=torch.as_tensor(mouth_half_extents, device=eef_pose_w.device, dtype=eef_pose_w.dtype).expand(
             eef_pose_w.shape[0], 3

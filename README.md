@@ -1,173 +1,65 @@
-# Isaac Sim Pruning Workflow
+# Dormant-spur pruning in Isaac Sim 6.0
 
-Closed perception-to-motion research workflow for dormant apple-tree pruning in
-Isaac Lab.
+**Measured on this cluster, not a tutorial screenshot.**
 
-Jose Sanchez — Oregon State University — <sanchej7@oregonstate.edu>
+Jose Sanchez — Oregon State University
 
-Anchors:
+[![Gate 0](docs/demo/gate0_rtx.png)](docs/evidence/isaac_smoke_21077170.json)
 
-- [`spur-depth-service`](https://github.com/joses2017smjh/spur-depth-service):
-  metric depth and reconstruction.
-- [`bhl-robustness-ladder`](https://github.com/joses2017smjh/bhl-robustness-ladder):
-  continuous randomization and sim2sim evaluation.
-- [`lukestroh/isaaclab-sensor-learning`](https://github.com/lukestroh/isaaclab-sensor-learning):
-  inherited Isaac Lab harness, pinned at `5701a77`.
+Isaac Sim **5.1 RTX segfaults** here. **6.0 does not.** Cube planar-z is **1.5000 m**. Plane is **2.0000 m**. RGB std **38** — a bare cube with no material looked black; that was lighting, not a dead renderer.
 
-## Current status
-
-Phases 1–5 are implemented as Isaac-free, unit-tested modules plus a gated
-DirectRLEnv. This repository does **not** yet claim an imported UR5e/pruner, a
-passing headless Isaac job, a trained policy, or pruning success numbers.
-
-Implemented:
-
-- OpenCV camera-to-world/world-to-camera conversion that also emits the legacy
-  Blender Euler fields expected by current `spur-depth` consumers.
-- Planar-z depth conversion and unprojection, including an analytic three-view
-  1 m cube contract test.
-- Validated L-Py `cylinder_data` and full world-sidecar loaders.
-- Direct semantic `UsdGeom.Cylinder` authoring with collision LOD.
-- V-trellis posts, wires, ground, and lighting as ASCII USDA.
-- Held-out Envy `00042` / `00065` and a five-seed protocol.
-- UR5e + slider joint spec (`<part>__` prefixes); slider held fixed.
-- STL OBB fitting and nominal cutter mouth/failure volumes.
-- Inverse-variance fusion and wrist-camera *candidate* sweep (none selected).
-- Dense reward, curriculum, nearby-wood failure-zone test.
-- Scripted ToF servoing and a not-yet-configured CuRobo oracle status.
-- Observation variants A/B/C/D, robustness ladder `d ∈ [0, 1]`.
-- Evaluation: success vs cut error, 30 cm box helper, sim2sim ranking inversion.
-- `tools/train.py` refuses to start without both baselines.
-
-See [`docs/ROADMAP.md`](docs/ROADMAP.md) for passed and open gates.
-
-## Control architecture
-
-```text
-episode start:
-  wrist RGB -> spur-depth -> cut point + branch axis
-
-20–50 Hz final approach:
-  ToF / flow / metric-student / fused observation
-      -> PPO policy -> differential IK -> UR5e joint targets
-
-terminal success:
-  target intersects cutter mouth
-  AND wood clears failure zone
-  AND cutter is perpendicular within the evaluated tolerance
-  AND arm/pruner collision is absent
+```
+150  A  flow 8×8
+278  B  two VL53L8CX
+ 86  C  metric student   ⎤ same width — content differs
+ 86  D  fuse(ToF0+ToF1+C) ⎦
 ```
 
-DA2-ft is not run at every PPO step. The measured 185 ms fp16 latency on an
-RTX 8000 is incompatible with massively parallel PPO. It proposes the target
-once per episode; cheap sensors close the loop.
+![Observation widths](docs/demo/obs_widths.png)
 
-## Install the core package
+Cameras on the stage are not observations. BHL reported 9/9 ok at width **194 for every task**. This repo **asserts** A≠B≠C and `cfg.observation_space == obs.shape[-1]`.
 
-The core tests do not launch Isaac Sim:
+## What you can see today
+
+| Component | Demo | Evidence |
+|---|---|---|
+| RTX cube / plane | ![gate0](docs/demo/gate0_rtx.png) | [job 21077170](docs/evidence/isaac_smoke_21077170.json) |
+| Finite cylinders, not capsules | ![tree](docs/demo/tree_cylinders.png) | Envy `00000`–`00009` USDA |
+| Cutter mouth / failure from STL | ![cutter](docs/demo/cutter_boxes.png) | [fitted AABB](docs/evidence/cutter_boxes_fitted.json) |
+| D fuses **both** ToF + resampled metric | ![fusion](docs/demo/fusion_d.gif) | 8×8 causal table; native C is a second table |
+| UR5e + mock-pruner USD | — | [job 21077217](docs/evidence/urdf_import_21077217.json) · **no slider** |
+
+v1 does not spawn the hardware slider. IK is **absolute 7-D pose** (`use_relative_mode: false`). Relative mode is 6-D; keeping 7 with relative on would fail `set_command`.
+
+## Stack that actually runs
+
+`bhl.sif` + `venv-isaac60` · Isaac Sim **6.0.0.1** · Lab **3.0.0b2** · `BHL_STACK=v60`
+
+Not NVIDIA 5.x `create_empty.py`. Not V100 (no RT cores). How we got here: [`docs/ISAAC_STACK.md`](docs/ISAAC_STACK.md).
+
+```bash
+source /nfs/hpc/share/$USER/Humanoid_Lite/bhl-robustness-ladder/slurm/_env.sh
+slurm_clean sbatch hpc/slurm/isaac_headless_smoke.sbatch   # Gate 0 (passed)
+slurm_clean sbatch hpc/slurm/env_smoke.sbatch              # next: one slot, A–D asserts
+```
+
+PPO is **refused** until both baselines have Isaac job logs.
+
+```bash
+python tools/train.py --variant B_tof --seed 0
+# exits: missing baselines
+```
+
+## Reproduce the demos (no GPU)
 
 ```bash
 python -m pip install -e "source/isaaclab_pruning[dev]"
-python -m pytest -q
-ruff check source/isaaclab_pruning tests tools
-ruff format --check source/isaaclab_pruning tests tools
+python -m pytest -q -m "not isaacsim_ci"
+python tools/render_demos.py
 ```
 
-Isaac-dependent commands must run through the Python interpreter shipped with
-the pinned Isaac Sim/Isaac Lab environment.
+Control loop: DA2-ft once per episode (185 ms fp16 — not inside PPO). ToF / flow / student close at 20–50 Hz.
 
-## Fetch pinned robot and orchard sources
+Full gates: [`docs/ROADMAP.md`](docs/ROADMAP.md) · HPC: [`docs/HPC.md`](docs/HPC.md)
 
-No moving branches or submodules:
-
-```bash
-python tools/fetch_sources.py
-python tools/fetch_sources.py --check
-```
-
-Checkouts land under ignored `third_party/src/`. Repositories without declared
-licenses stay fetch-only; see [`NOTICE.md`](NOTICE.md).
-
-## Convert L-Py cylinders to USD
-
-The Blender generator builds finite cylinders, so this converter writes
-`UsdGeom.Cylinder`, not capsules. That distinction matters for the target
-2 mm cross-renderer depth check.
-
-```bash
-python tools/cyl_to_usd.py \
-  /path/to/trees/metadata/lpy_envy_00000_metadata.json \
-  generated/trees/lpy_envy_00000.usda
-```
-
-Defaults:
-
-- X tilt: `-17.143°`, matching the Blender orchard generator.
-- collision: trunk + branch globally.
-- spur/nontrunk: visual and semantic, with optional collision within
-  `--active-radius-m` of `--active-cut-point X Y Z`.
-
-A full `cylinders_world/{bark}/{tree}.json` can be supplied with
-`--world-sidecar`. Do not pass an `ann/*.json` centroid list; it lacks radius,
-length, orientation, and part labels.
-
-## Sensor contract
-
-`mock_pruner_vl53l8cx.yaml` keeps the source hardware offsets:
-
-```text
-tof0 = ( +0.04685226669, 0.0, 0.14444246761 ) m
-tof1 = ( -0.04685226669, 0.0, 0.14444246761 ) m
-```
-
-The wrist camera remains disabled with `offset: null`. The source robot
-description leaves `camera_offset` empty, so this project will not fabricate an
-extrinsic before visibility/occlusion experiments.
-
-## Depth and pose contract
-
-- Use `distance_to_image_plane` / planar optical-axis z-depth.
-- Do not substitute `distance_to_camera` (Euclidean range).
-- Isaac input pose: camera origin in world + `quat_w_opencv` `(w, x, y, z)`.
-- Stored pose: explicit OpenCV `T_wc`.
-- Compatibility fields: Blender `camera.location` + `rotation_euler`.
-
-Current `spur-depth-service` reads the compatibility fields and does not yet
-prefer `_T_wc`; both are emitted and tested to agree.
-
-## Compute gate
-
-Slurm inventory includes RTX 8000, L40S, A40, H100, and H200 nodes, while the
-usual DGX2 nodes are V100. The V100 has no RT cores: reserve it for CUDA
-ray-cast training, not RTX rendering.
-
-[`docs/HPC.md`](docs/HPC.md) records the inventory and smoke command. Visibility
-in `sinfo` is not proof of partition access. Gate 0 remains open until the
-headless job exits zero with a pinned SIF.
-
-## Research comparison
-
-One environment and reward, five seeds per learned variant:
-
-- A — ground-truth flow first, then RAFT flow.
-- B — two noisy 8×8 VL53L8CX sensors.
-- C — distilled metric-depth student.
-- D — variance-weighted ToF + metric fusion.
-
-Required baselines before policy claims: scripted ToF servoing and a
-collision-aware CuRobo oracle. Evaluation keeps Envy `00042` and `00065`
-aligned with `spur-depth`, then tests untouched UFO trees and PyBullet sim2sim.
-
-```bash
-python tools/write_orchard.py generated/orchard/v_trellis.usda
-python tools/batch_cyl_to_usd.py /path/to/trees/metadata generated/trees
-python tools/fit_cutter_boxes.py
-python tools/train.py --variant B_tof --seed 0   # refuses until both baselines exist
-```
-
-## Provenance note
-
-The upstream harness commit is dated 2026-06-30, not 2026-08-27, and its
-repository has no declared root license. This fork preserves its history and
-does not apply a blanket license to inherited content. See
-[`NOTICE.md`](NOTICE.md) and [`third_party/sources.yaml`](third_party/sources.yaml).
+Anchors: [spur-depth-service](https://github.com/joses2017smjh/spur-depth-service) · [bhl-robustness-ladder](https://github.com/joses2017smjh/bhl-robustness-ladder) · harness `5701a77`
