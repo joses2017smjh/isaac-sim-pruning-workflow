@@ -88,4 +88,5 @@ def test_mock_pruner_rig_preserves_hardware_offsets_and_no_camera_guess() -> Non
     assert sensors["tof0"]["mount_offset_m"] == [0.04685226669, 0.0, 0.14444246761]
     assert sensors["tof1"]["mount_offset_m"] == [-0.04685226669, 0.0, 0.14444246761]
     assert config["wrist_camera"]["enabled"] is False
-    assert config["wrist_camera"]["offset"] is None
+    assert config["wrist_camera"]["offset"] == [0.0, -0.06, 0.10]
+    assert config["wrist_camera"]["selected"] == "close_lateral"

@@ -1,0 +1,92 @@
+{
+  "source": "pybullet_tree_sim/urdf/ur5e/collision",
+  "license": "BSD-3-Clause",
+  "revision": "4d9f8384da9ddd3329175cc8ce1f2c7df9720387",
+  "usd": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_pruner_abs/ur5e_pruner_abs.usda",
+  "spheres": {
+    "ur5e__base_link": [
+      {
+        "center_m": [
+          0.0010216005034233326,
+          0.0002501838715074078,
+          0.03490642367795416
+        ],
+        "radius_m": 0.08721726072104947
+      }
+    ],
+    "ur5e__shoulder_link": [
+      {
+        "center_m": [
+          -0.00018971028113741608,
+          -0.005940605283585933,
+          0.039058842643412174
+        ],
+        "radius_m": 0.1263769060154094
+      }
+    ],
+    "ur5e__upper_arm_link": [
+      {
+        "center_m": [
+          -0.00011054654058660798,
+          0.03437884124725249,
+          0.23025156119656043
+        ],
+        "radius_m": 0.304923417594947
+      }
+    ],
+    "ur5e__forearm_link": [
+      {
+        "center_m": [
+          0.000505748001992094,
+          -0.00924883907267448,
+          0.2440634293325867
+        ],
+        "radius_m": 0.3087959986563816
+      }
+    ],
+    "ur5e__wrist_1_link": [
+      {
+        "center_m": [
+          0.00012458339682797044,
+          0.12991516690398633,
+          -0.025180595697207684
+        ],
+        "radius_m": 0.09868680217317226
+      }
+    ],
+    "ur5e__wrist_2_link": [
+      {
+        "center_m": [
+          -0.00016575188114434296,
+          -0.01927273430765957,
+          0.1007954341099586
+        ],
+        "radius_m": 0.08180454579838344
+      }
+    ],
+    "ur5e__wrist_3_link": [
+      {
+        "center_m": [
+          -0.0001997235763305361,
+          0.08127912752190386,
+          0.0018984073786143685
+        ],
+        "radius_m": 0.04897307986732064
+      }
+    ],
+    "mock_pruner__tool0": [
+      {
+        "center_m": [
+          -0.07213099748372384,
+          0.023025941405765676,
+          -0.004186215487837993
+        ],
+        "radius_m": 0.17366468309026134
+      }
+    ]
+  },
+  "status": {
+    "configured": true,
+    "reason": "USD present and link spheres fitted from pybullet-tree-sim collision STLs (BSD-3-Clause 4d9f838). CuRobo runtime still needs an Isaac job log."
+  }
+}

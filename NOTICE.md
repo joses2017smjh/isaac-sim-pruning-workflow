@@ -19,5 +19,9 @@ repository until the owner documents a license or grants permission.
 the pinned revisions. Their notices must travel with any files later vendored
 from them.
 
+The packed `bark_brown_02_diff.jpg` is a 512² downsample of the spur-depth
+orchard albedo used as the Blender baseline (`bark_brown_02`). It is a
+material sample for UsdPreviewSurface, not a relicense of blender_virtual_orchard.
+
 For permission or licensing clarification, contact Jose Sanchez
 <sanchej7@oregonstate.edu> and the relevant upstream owner.

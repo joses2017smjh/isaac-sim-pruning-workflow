@@ -1,0 +1,28 @@
+{
+  "n_cylinders": 1798,
+  "n_trunk": 80,
+  "tilt_x_deg": -17.143,
+  "translation_m": [
+    -9.975375505065918,
+    -9.712549445726811,
+    -1.055678173350616e-09
+  ],
+  "median_trunk_error_m": 5.486787137945265e-07,
+  "median_trunk_error_mm": 0.0005486787137945266,
+  "max_trunk_error_m": 1.0224712271846198e-06,
+  "p95_trunk_error_m": 8.885232692203889e-07,
+  "median_all_error_m": 5.128335346906017e-07,
+  "limit_m": 0.002,
+  "pass": true,
+  "ok": true,
+  "metadata": "/nfs/hpc/share/sanchej7/Computer_Vision/trees/metadata/lpy_envy_00000_metadata.json",
+  "blender_pose": "/nfs/hpc/share/sanchej7/Computer_Vision/Data/full_spur/ann/bark_brown_02/lpy_envy_00000/box/lpy_envy_00000_shot01.json",
+  "tree_id": "lpy_envy_00000",
+  "shot": 1,
+  "camera_location": [
+    -9.820751190185547,
+    -7.150839805603027,
+    0.8500000238418579
+  ],
+  "note": "cylinders_world is centroids-only and is not used as a cylinder sidecar; this is a rigid pose check after orchard tilt."
+}

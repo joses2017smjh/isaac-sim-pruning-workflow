@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "method": "raycast_cylinders",
+  "renderer": null,
+  "tree": "/nfs/hpc/share/sanchej7/Computer_Vision/trees/metadata/lpy_envy_00000_metadata.json",
+  "n_cylinders": 1798,
+  "n_cuts": 1478,
+  "range_band_m": [
+    0.3,
+    0.5
+  ],
+  "scores": [
+    {
+      "name": "close_lateral",
+      "offset_eef_m": [
+        0.0,
+        -0.06,
+        0.1
+      ],
+      "n_cuts": 1478,
+      "n_in_band": 1478,
+      "n_visible": 1259,
+      "n_jaw_occluded": 0,
+      "n_wood_occluded": 219,
+      "visible_fraction": 0.8518267929634641,
+      "selected": true,
+      "notes": "Sees the mouth at 0.3-0.5 m; jaws may occlude the lower third."
+    },
+    {
+      "name": "raised_clearance",
+      "offset_eef_m": [
+        0.0,
+        -0.08,
+        0.14
+      ],
+      "n_cuts": 1478,
+      "n_in_band": 0,
+      "n_visible": 0,
+      "n_jaw_occluded": 0,
+      "n_wood_occluded": 181,
+      "visible_fraction": 0.0,
+      "selected": false,
+      "notes": "More jaw clearance, less angular resolution on a spur."
+    },
+    {
+      "name": "aft_dovetail",
+      "offset_eef_m": [
+        0.0,
+        0.0,
+        0.04
+      ],
+      "n_cuts": 1478,
+      "n_in_band": 1478,
+      "n_visible": 0,
+      "n_jaw_occluded": 1478,
+      "n_wood_occluded": 247,
+      "visible_fraction": 0.0,
+      "selected": false,
+      "notes": "Mounted back toward the dovetail; likely occluded by the cutter body."
+    }
+  ],
+  "selected": {
+    "name": "close_lateral",
+    "offset_eef_m": [
+      0.0,
+      -0.06,
+      0.1
+    ],
+    "n_cuts": 1478,
+    "n_in_band": 1478,
+    "n_visible": 1259,
+    "n_jaw_occluded": 0,
+    "n_wood_occluded": 219,
+    "visible_fraction": 0.8518267929634641,
+    "selected": true,
+    "notes": "Sees the mouth at 0.3-0.5 m; jaws may occlude the lower third."
+  }
+}

@@ -53,6 +53,11 @@ distinct A/B/C last-dims, C==D width with `not allclose` when ToF ≠ metric,
 one `env.step(0)`, and a finite PhysX contact tensor. Asserts, not log greps.
 v60 may have `rsl_rl` and not `skrl`; record both and do not pip-install in the job.
 
+Job `21079145` reached an A40 (`cn-r-1`) and then died: Apptainer killed
+`squashfuse_ll` after Kit left a background process, so
+`docs/evidence/smoke_21079145.json` was never written. That is **not** a pass.
+The inner script now flushes JSON at each phase; requeue the same sbatch.
+
 ## Gate 0: 1 m cube + 2 m plane (v60, headless RTX)
 
 ```bash
@@ -87,6 +92,30 @@ This gate **passed** on job `21077170` (2026-08-28, `cn-r-4` A40, driver
 
 Job `21076907` on the same stack started Kit and then died serializing a NumPy
 `bool_`. That log is not a pass.
+
+## Trees (CPU, no RTX)
+
+```bash
+PYTHONPATH=source/isaaclab_pruning python tools/batch_cyl_to_usd.py \
+  /nfs/hpc/share/$USER/Computer_Vision/trees/metadata \
+  artifacts/trees --include-held-out \
+  --manifest docs/evidence/trees_converted_manifest.json
+PYTHONPATH=source/isaaclab_pruning python tools/score_blender_trunk.py
+PYTHONPATH=source/isaaclab_pruning python tools/score_camera_offset.py
+PYTHONPATH=source/isaaclab_pruning python tools/fit_curobo_spheres.py
+```
+
+## 30 cm camera-rect and scripted baselines (v60 RTX)
+
+```bash
+source /nfs/hpc/share/$USER/Humanoid_Lite/bhl-robustness-ladder/slurm/_env.sh
+slurm_clean sbatch hpc/slurm/camera_rect.sbatch
+slurm_clean sbatch hpc/slurm/baselines.sbatch
+```
+
+Pass files: `docs/evidence/camera_rect_<jobid>.json` and
+`docs/evidence/baselines_<jobid>.json` with `"ok": true`. Do not tick those
+ROADMAP rows from a script that never ran on a GPU.
 
 ## URDF import
 

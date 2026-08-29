@@ -25,6 +25,10 @@ Cameras on the stage are not observations. BHL reported 9/9 ok at width **194 fo
 |---|---|---|
 | RTX cube / plane | ![gate0](docs/demo/gate0_rtx.png) | [job 21077170](docs/evidence/isaac_smoke_21077170.json) |
 | Finite cylinders, not capsules | ![tree](docs/demo/tree_cylinders.png) | Envy `00000`–`00009` USDA |
+| 100 Envy + 100 UFO | — | [200 USDA](docs/evidence/trees_converted_manifest.json) |
+| Blender pose, trunk median | — | [0.00055 mm](docs/evidence/blender_trunk_mm_lpy_envy_00000.json) |
+| `bark_brown_02` UsdPreviewSurface | — | tree + orchard `Looks/` materials |
+| Wrist camera offset (RGB still off) | — | [`close_lateral`](docs/evidence/camera_offset_raycast.json) |
 | Cutter mouth / failure from STL | ![cutter](docs/demo/cutter_boxes.png) | [fitted AABB](docs/evidence/cutter_boxes_fitted.json) |
 | D fuses **both** ToF + resampled metric | ![fusion](docs/demo/fusion_d.gif) | 8×8 causal table; native C is a second table |
 | UR5e + mock-pruner USD | — | [job 21077217](docs/evidence/urdf_import_21077217.json) · **no slider** |

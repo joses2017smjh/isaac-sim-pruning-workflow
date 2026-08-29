@@ -27,9 +27,14 @@ median < 2 mm).
 - [x] Record debug trees `00000`–`00009` and held-out `00042` / `00065`.
 - [x] Add batch metadata→USD conversion that skips held-out trees by default.
 - [x] Convert and validate Envy `00000`–`00009` through Isaac (`pxr`, 1798 cylinders on `00000`, metres, Z-up).
-- [ ] Match one Blender pose at median trunk error below 2 mm.
-- [ ] Convert all 100 Envy + 100 UFO assets.
-- [ ] Bind `bark_brown_02` as UsdPreviewSurface (needs Isaac materials).
+- [x] Match one Blender pose at median trunk error below 2 mm
+      (`docs/evidence/blender_trunk_mm_lpy_envy_00000.json`: Envy `00000` shot 1,
+      orchard tilt −17.143°, median trunk **0.00055 mm**).
+- [x] Convert all 100 Envy + 100 UFO assets
+      (`docs/evidence/trees_converted_manifest.json`: ASCII USDA + `bark_brown_02`,
+      1798 cylinders on Envy `00000`, 2960 on UFO `00000`, held-out Envy included as assets).
+- [x] Bind `bark_brown_02` as UsdPreviewSurface (tree USDA `Looks/bark_brown_02` and
+      orchard Looks; hydra still needs a light, same as Gate 0).
 
 Why cylinders, not capsules: the Blender generator uses finite cylinders.
 Capsules change each end by a radius and cannot pass a millimetre depth check.
@@ -49,10 +54,12 @@ Capsules change each end by a radius and cannot pass a millimetre depth check.
 - [x] Import the BDS UR5e + mock-pruner URDF to USD (job `21077217`, no slider).
 - [x] Resolve package mesh paths and author `ArticulationCfg` against that USD.
 - [x] Replace nominal cutter boxes with fitted STL AABBs (`docs/evidence/cutter_boxes_fitted.json`).
-- [ ] Select and document wrist-camera extrinsics.
+- [x] Select and document wrist-camera extrinsics
+      (`docs/evidence/camera_offset_raycast.json`: `close_lateral` `[0, -0.06, 0.10]` m,
+      1259/1478 cuts visible). Wrist RGB stays `enabled: false` until a renderer job.
 
-Hard gate: `camera_offset` stays unjustified until the ray-cast (or a later
-visibility/occlusion) experiment names a pose. Scoring does not need RTX.
+Hard gate: `camera_offset` is now the ray-cast winner (`close_lateral`).
+Wrist RGB stays off until a renderer (or occlusion) job confirms that pose.
 
 ## Phase 3 — task and baselines
 
@@ -63,9 +70,12 @@ visibility/occlusion) experiment names a pose. Scoring does not need RTX.
 - [x] Add radius/neighbourhood curriculum (thick branch → thin spur).
 - [x] Add scripted ToF pan/pitch/roll/approach (original reimplementation).
 - [x] Add CuRobo UR5e placeholder spheres and a not-yet-configured status.
-- [ ] Add contact/collision state from PhysX (ContactSensor wired; needs env-smoke JSON).
-- [ ] Configure the CuRobo UR5e oracle on the imported USD.
-- [ ] Run both baselines in Isaac.
+- [ ] Add contact/collision state from PhysX (ContactSensor wired; job `21079145`
+      died on squashfuse timeout before JSON — requeue `hpc/slurm/env_smoke.sbatch`).
+- [x] Configure the CuRobo UR5e oracle on the imported USD
+      (`docs/evidence/curobo_spheres.json`: link bounding spheres from
+      pybullet-tree-sim collision STLs). Runtime still needs an Isaac job.
+- [ ] Run both baselines in Isaac (`hpc/slurm/baselines.sbatch`).
 
 Hard gate: do not report a learned policy without scripted and oracle baselines.
 `tools/train.py` refuses to start if those flags are unset.

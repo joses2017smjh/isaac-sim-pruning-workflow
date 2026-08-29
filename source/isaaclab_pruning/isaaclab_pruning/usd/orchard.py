@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from isaaclab_pruning.assets.orchard import OrchardLayout, build_v_trellis_layout
+from isaaclab_pruning.usd.bark import bark_material_usda, packaged_bark_texture
 
 
 def _fmt(values) -> str:
@@ -95,6 +96,22 @@ def write_orchard_usda(
             f"        custom double pruning:dome_intensity = {float(layout.lighting['dome_intensity']):.6f}",
             f"        custom double pruning:sun_intensity = {float(layout.lighting['sun_intensity']):.6f}",
             f"        custom double3 pruning:sun_angle_deg = ({_fmt(layout.lighting['sun_angle_deg'])})",
+            '        def Material "ground"',
+            "        {",
+            "            token outputs:surface.connect = </orchard/Looks/ground/PreviewSurface.outputs:surface>",
+            '            def Shader "PreviewSurface"',
+            "            {",
+            '                uniform token info:id = "UsdPreviewSurface"',
+            f"                color3f inputs:diffuseColor = ({_fmt(layout.ground_color)})",
+            "                float inputs:roughness = 0.900000",
+            "                token outputs:surface",
+            "            }",
+            "        }",
+            *bark_material_usda(
+                "/orchard/Looks",
+                texture_path=packaged_bark_texture() if packaged_bark_texture().is_file() else None,
+                indent="        ",
+            ),
             "    }",
             "}",
             "",

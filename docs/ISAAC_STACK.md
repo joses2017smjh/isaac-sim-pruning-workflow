@@ -76,7 +76,8 @@ env smoke **asserts** `cfg.observation_space == obs.shape[-1]` per variant and
 
 RGB at 8×8 is 192 numbers per camera against depth's 64. If RGB ever wins a
 comparison, colour vs width is a separate question. Wrist RGB stays off until
-the geometrically selected `camera_offset` is renderer-validated.
+a renderer job validates the geometrically selected `camera_offset`
+(`close_lateral`, `[0.0, -0.06, 0.10]` m, `docs/evidence/camera_offset_raycast.json`).
 
 ## Batched env smoke (one RTX slot)
 

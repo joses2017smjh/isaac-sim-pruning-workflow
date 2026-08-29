@@ -11,6 +11,7 @@ from typing import Any
 import numpy as np
 
 ORGAN_CLASSES = ("trunk", "branch", "spur", "nontrunk")
+_ORGAN_ALIASES = {"tertiarybranch": "branch"}
 
 
 def _vector3(value: Any, *, field: str) -> np.ndarray:
@@ -22,6 +23,7 @@ def _vector3(value: Any, *, field: str) -> np.ndarray:
 
 def _organ_class(part_name: str) -> str:
     prefix = part_name.split("_", maxsplit=1)[0].lower()
+    prefix = _ORGAN_ALIASES.get(prefix, prefix)
     return prefix if prefix in ORGAN_CLASSES else "other"
 
 

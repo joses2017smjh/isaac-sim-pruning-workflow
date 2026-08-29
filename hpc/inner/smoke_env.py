@@ -29,16 +29,27 @@ report: dict = {
     "bhl_stack": os.environ.get("BHL_STACK"),
     "skrl": _probe_trainer("skrl"),
     "rsl_rl": _probe_trainer("rsl_rl"),
+    "phase": "import",
 }
 
 
-def _write(code: int) -> None:
-    out = Path(os.environ.get("BENCH_OUT", "/tmp/pruning_env_smoke.json"))
+def _bench_path() -> Path:
+    return Path(os.environ.get("BENCH_OUT", "/tmp/pruning_env_smoke.json"))
+
+
+def _flush_report() -> None:
+    out = _bench_path()
     out.parent.mkdir(parents=True, exist_ok=True)
-    text = json.dumps(report, indent=2, default=str)
-    print(text, flush=True)
-    out.write_text(text + "\n", encoding="utf-8")
+    out.write_text(json.dumps(report, indent=2, default=str) + "\n", encoding="utf-8")
+
+
+def _write(code: int) -> None:
+    print(json.dumps(report, indent=2, default=str), flush=True)
+    _flush_report()
     raise SystemExit(code)
+
+
+_flush_report()
 
 
 if report["skrl"] is None and report["rsl_rl"] is None:
@@ -82,7 +93,11 @@ try:
     assert spaces["C_metric"] == spaces["D_fused"]
 
     Env = make_pruning_env_cls()
+    report["phase"] = "construct"
+    _flush_report()
     env = Env(cfg=cfgs["B_tof"])
+    report["phase"] = "reset"
+    _flush_report()
     obs, _ = env.reset(seed=0)
     policy = obs["policy"]
     assert policy.shape[-1] == spaces["B_tof"], (policy.shape, spaces["B_tof"])

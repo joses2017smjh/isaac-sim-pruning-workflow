@@ -37,6 +37,7 @@ class OrchardLayout:
     posts: tuple[Post, ...]
     wires: tuple[Wire, ...]
     ground_size_m: tuple[float, float, float]
+    ground_color: tuple[float, float, float]
     baseline_bark: str
     lighting: dict[str, Any]
 
@@ -89,6 +90,7 @@ def build_v_trellis_layout(config: dict[str, Any] | None = None) -> OrchardLayou
         posts=posts,
         wires=wires,
         ground_size_m=tuple(float(value) for value in cfg["ground"]["size_m"]),
+        ground_color=tuple(float(value) for value in cfg["ground"]["color"]),
         baseline_bark=str(cfg["baseline_bark"]),
         lighting=dict(cfg["lighting"]),
     )

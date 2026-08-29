@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 import torch
 
-from isaaclab_pruning.baselines import scripted_tof_action, ur5e_pruner_oracle_status
+from isaaclab_pruning.baselines import scripted_absolute_pose, scripted_tof_action, ur5e_pruner_oracle_status
 from isaaclab_pruning.eval import CAMERA_RECT_DEPTH_M, ranking_inversion, success_vs_cut_error
 from isaaclab_pruning.eval.box_check import assert_box_agrees, camera_rect_extent
 from isaaclab_pruning.geometry import Cylinder
@@ -83,6 +83,9 @@ def test_scripted_tof_moves_toward_a_centered_return() -> None:
     action = scripted_tof_action(ranges, ranges, valid, valid)
     assert action.shape == (1, 7)
     assert action[0, 2] > 0
+    identity = torch.tensor([[0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]])
+    posed = scripted_absolute_pose(identity, action)
+    assert posed[0, 2] > 0
     assert not ur5e_pruner_oracle_status(urdf_usd_path=None).configured
 
 

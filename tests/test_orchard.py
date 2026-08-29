@@ -28,3 +28,5 @@ def test_v_trellis_places_three_trees_posts_and_wires(tmp_path) -> None:
     assert "post_0" in text
     assert "wire_0" in text
     assert "bark_brown_02" in text
+    assert 'uniform token info:id = "UsdPreviewSurface"' in text
+    assert 'def Material "bark_brown_02"' in text

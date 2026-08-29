@@ -19,6 +19,7 @@ from isaaclab_pruning.geometry.cylinders import (
     load_cylinders,
     transform_cylinders,
 )
+from isaaclab_pruning.usd.bark import BARK_DIFFUSE, BARK_MATERIAL_NAME, BARK_ROUGHNESS, packaged_bark_texture
 
 DEFAULT_TREE_TILT_X_DEG = -17.143
 _DISPLAY_COLORS = {
@@ -32,13 +33,13 @@ _DISPLAY_COLORS = {
 
 def _require_pxr() -> tuple[Any, ...]:
     try:
-        from pxr import Gf, Sdf, Usd, UsdGeom, UsdPhysics
+        from pxr import Gf, Sdf, Usd, UsdGeom, UsdPhysics, UsdShade
     except ImportError as error:
         raise RuntimeError(
             "USD authoring requires the `pxr` modules bundled with Isaac Sim. "
             "Run this command through Isaac Lab's Python interpreter."
         ) from error
-    return Gf, Sdf, Usd, UsdGeom, UsdPhysics
+    return Gf, Sdf, Usd, UsdGeom, UsdPhysics, UsdShade
 
 
 def _prim_name(value: str) -> str:
@@ -82,6 +83,7 @@ def write_cylinder_tree_usd(
     collision_classes: Iterable[str] = ("trunk", "branch"),
     active_cut_point: Iterable[float] | None = None,
     active_radius_m: float = 0.5,
+    bind_bark: bool = True,
 ) -> dict[str, Any]:
     """Write one ``UsdGeom.Cylinder`` per metadata cylinder.
 
@@ -89,7 +91,7 @@ def write_cylinder_tree_usd(
     cylinders, not capsules. Using capsules changes the end geometry and breaks
     the millimetre-level Blender/Isaac depth comparison.
     """
-    gf, sdf, usd, usd_geom, usd_physics = _require_pxr()
+    gf, sdf, usd, usd_geom, usd_physics, usd_shade = _require_pxr()
     records = list(cylinders)
     if not records:
         raise ValueError("Cannot write an empty cylinder tree.")
@@ -103,6 +105,25 @@ def write_cylinder_tree_usd(
     root_name = _prim_name(tree_id)
     root = usd_geom.Xform.Define(stage, f"/{root_name}")
     stage.SetDefaultPrim(root.GetPrim())
+    bark_material = None
+    if bind_bark:
+        usd_geom.Xform.Define(stage, f"/{root_name}/Looks")
+        material_path = f"/{root_name}/Looks/{BARK_MATERIAL_NAME}"
+        bark_material = usd_shade.Material.Define(stage, material_path)
+        shader = usd_shade.Shader.Define(stage, f"{material_path}/PreviewSurface")
+        shader.CreateIdAttr("UsdPreviewSurface")
+        shader.CreateInput("diffuseColor", sdf.ValueTypeNames.Color3f).Set(gf.Vec3f(*BARK_DIFFUSE))
+        shader.CreateInput("roughness", sdf.ValueTypeNames.Float).Set(BARK_ROUGHNESS)
+        bark_material.CreateSurfaceOutput().ConnectToSource(shader.ConnectableAPI(), "surface")
+        texture = packaged_bark_texture()
+        if texture.is_file():
+            tex = usd_shade.Shader.Define(stage, f"{material_path}/diffuseTex")
+            tex.CreateIdAttr("UsdUVTexture")
+            tex.CreateInput("file", sdf.ValueTypeNames.Asset).Set(str(texture.resolve()))
+            shader.CreateInput("diffuseColor", sdf.ValueTypeNames.Color3f).ConnectToSource(
+                tex.ConnectableAPI(), "rgb"
+            )
+        usd_shade.MaterialBindingAPI.Apply(root.GetPrim()).Bind(bark_material)
 
     class_groups: dict[str, Any] = {}
     part_groups: dict[tuple[str, str], Any] = {}
@@ -131,7 +152,7 @@ def write_cylinder_tree_usd(
         cylinder.GetAxisAttr().Set(usd_geom.Tokens.z)
         cylinder.GetHeightAttr().Set(record.length)
         cylinder.GetRadiusAttr().Set(record.radius)
-        cylinder.CreateDisplayColorAttr().Set([gf.Vec3f(*_DISPLAY_COLORS[organ_class])])
+        cylinder.CreateDisplayColorAttr().Set([gf.Vec3f(*_DISPLAY_COLORS.get(organ_class, _DISPLAY_COLORS["other"]))])
         cylinder.GetPrim().CreateAttribute("pruning:recordId", sdf.ValueTypeNames.String, custom=True).Set(
             record.record_id
         )
@@ -143,6 +164,8 @@ def write_cylinder_tree_usd(
         )
         transformable.AddOrientOp(precision=usd_geom.XformOp.PrecisionDouble).Set(rotation)
 
+        if bark_material is not None:
+            usd_shade.MaterialBindingAPI.Apply(cylinder.GetPrim()).Bind(bark_material)
         if collision_enabled(
             record,
             classes=collision_classes,
@@ -159,6 +182,7 @@ def write_cylinder_tree_usd(
         "cylinders": len(records),
         "collision_cylinders": collision_count,
         "organ_counts": dict(sorted(class_counts.items())),
+        "material": BARK_MATERIAL_NAME if bind_bark else None,
     }
 
 

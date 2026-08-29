@@ -116,3 +116,32 @@ def scripted_tof_action(
     half = 0.5 * torch.where(no_lock, zeros, roll)
     quat = torch.stack((torch.cos(half), torch.sin(half), zeros, zeros), dim=-1)
     return torch.cat((torch.stack((dx, dy, dz), dim=-1), quat), dim=-1)
+
+
+def _quat_rotate(quaternion_wxyz: torch.Tensor, vector: torch.Tensor) -> torch.Tensor:
+    qvec = quaternion_wxyz[..., 1:]
+    uv = torch.cross(qvec, vector, dim=-1)
+    uuv = torch.cross(qvec, uv, dim=-1)
+    return vector + 2.0 * (quaternion_wxyz[..., :1] * uv + uuv)
+
+
+def _quat_multiply(left_wxyz: torch.Tensor, right_wxyz: torch.Tensor) -> torch.Tensor:
+    w1, x1, y1, z1 = left_wxyz.unbind(-1)
+    w2, x2, y2, z2 = right_wxyz.unbind(-1)
+    return torch.stack(
+        (
+            w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2,
+            w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2,
+            w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2,
+            w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2,
+        ),
+        dim=-1,
+    )
+
+
+def scripted_absolute_pose(eef_pose_w: torch.Tensor, delta_eef: torch.Tensor) -> torch.Tensor:
+    """Compose an EEF-frame scripted delta onto an absolute world pose (xyz + wxyz)."""
+    position = eef_pose_w[:, :3] + _quat_rotate(eef_pose_w[:, 3:7], delta_eef[:, :3])
+    quaternion = _quat_multiply(eef_pose_w[:, 3:7], delta_eef[:, 3:7])
+    quaternion = quaternion / torch.clamp(torch.linalg.vector_norm(quaternion, dim=-1, keepdim=True), min=1e-8)
+    return torch.cat((position, quaternion), dim=-1)

@@ -1,0 +1,2715 @@
+{
+  "ok": true,
+  "writer": "ascii_usda",
+  "material": "bark_brown_02",
+  "usdpreviewsurface": true,
+  "tilt_x_deg": -17.143,
+  "metadata_dir": "/nfs/hpc/share/sanchej7/Computer_Vision/trees/metadata",
+  "output_dir": "artifacts/trees",
+  "count": 200,
+  "envy": 100,
+  "ufo": 100,
+  "skipped_held_out": [],
+  "trees": [
+    {
+      "tree_id": "lpy_envy_00000",
+      "output_path": "artifacts/trees/lpy_envy_00000.usda",
+      "cylinders": 1798,
+      "collision_cylinders": 524,
+      "organ_counts": {
+        "branch": 444,
+        "nontrunk": 240,
+        "spur": 1034,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00001",
+      "output_path": "artifacts/trees/lpy_envy_00001.usda",
+      "cylinders": 1570,
+      "collision_cylinders": 492,
+      "organ_counts": {
+        "branch": 412,
+        "nontrunk": 186,
+        "spur": 892,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00002",
+      "output_path": "artifacts/trees/lpy_envy_00002.usda",
+      "cylinders": 1719,
+      "collision_cylinders": 496,
+      "organ_counts": {
+        "branch": 416,
+        "nontrunk": 192,
+        "spur": 1031,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00003",
+      "output_path": "artifacts/trees/lpy_envy_00003.usda",
+      "cylinders": 1794,
+      "collision_cylinders": 526,
+      "organ_counts": {
+        "branch": 446,
+        "nontrunk": 264,
+        "spur": 1004,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00004",
+      "output_path": "artifacts/trees/lpy_envy_00004.usda",
+      "cylinders": 1805,
+      "collision_cylinders": 572,
+      "organ_counts": {
+        "branch": 492,
+        "nontrunk": 217,
+        "spur": 1016,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00005",
+      "output_path": "artifacts/trees/lpy_envy_00005.usda",
+      "cylinders": 1076,
+      "collision_cylinders": 366,
+      "organ_counts": {
+        "branch": 286,
+        "nontrunk": 108,
+        "spur": 602,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00006",
+      "output_path": "artifacts/trees/lpy_envy_00006.usda",
+      "cylinders": 1410,
+      "collision_cylinders": 448,
+      "organ_counts": {
+        "branch": 368,
+        "nontrunk": 264,
+        "spur": 698,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00007",
+      "output_path": "artifacts/trees/lpy_envy_00007.usda",
+      "cylinders": 1561,
+      "collision_cylinders": 488,
+      "organ_counts": {
+        "branch": 408,
+        "nontrunk": 204,
+        "spur": 869,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00008",
+      "output_path": "artifacts/trees/lpy_envy_00008.usda",
+      "cylinders": 1606,
+      "collision_cylinders": 432,
+      "organ_counts": {
+        "branch": 352,
+        "nontrunk": 258,
+        "spur": 916,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00009",
+      "output_path": "artifacts/trees/lpy_envy_00009.usda",
+      "cylinders": 1672,
+      "collision_cylinders": 476,
+      "organ_counts": {
+        "branch": 396,
+        "nontrunk": 288,
+        "spur": 908,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00010",
+      "output_path": "artifacts/trees/lpy_envy_00010.usda",
+      "cylinders": 1090,
+      "collision_cylinders": 360,
+      "organ_counts": {
+        "branch": 280,
+        "nontrunk": 144,
+        "spur": 586,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00011",
+      "output_path": "artifacts/trees/lpy_envy_00011.usda",
+      "cylinders": 1376,
+      "collision_cylinders": 388,
+      "organ_counts": {
+        "branch": 308,
+        "nontrunk": 312,
+        "spur": 676,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00012",
+      "output_path": "artifacts/trees/lpy_envy_00012.usda",
+      "cylinders": 1426,
+      "collision_cylinders": 446,
+      "organ_counts": {
+        "branch": 366,
+        "nontrunk": 174,
+        "spur": 806,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00013",
+      "output_path": "artifacts/trees/lpy_envy_00013.usda",
+      "cylinders": 1644,
+      "collision_cylinders": 526,
+      "organ_counts": {
+        "branch": 446,
+        "nontrunk": 234,
+        "spur": 884,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00014",
+      "output_path": "artifacts/trees/lpy_envy_00014.usda",
+      "cylinders": 1548,
+      "collision_cylinders": 448,
+      "organ_counts": {
+        "branch": 368,
+        "nontrunk": 300,
+        "spur": 800,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00015",
+      "output_path": "artifacts/trees/lpy_envy_00015.usda",
+      "cylinders": 2228,
+      "collision_cylinders": 622,
+      "organ_counts": {
+        "branch": 542,
+        "nontrunk": 252,
+        "spur": 1354,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00016",
+      "output_path": "artifacts/trees/lpy_envy_00016.usda",
+      "cylinders": 1416,
+      "collision_cylinders": 388,
+      "organ_counts": {
+        "branch": 308,
+        "nontrunk": 240,
+        "spur": 788,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00017",
+      "output_path": "artifacts/trees/lpy_envy_00017.usda",
+      "cylinders": 1259,
+      "collision_cylinders": 398,
+      "organ_counts": {
+        "branch": 318,
+        "nontrunk": 180,
+        "spur": 681,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00018",
+      "output_path": "artifacts/trees/lpy_envy_00018.usda",
+      "cylinders": 950,
+      "collision_cylinders": 300,
+      "organ_counts": {
+        "branch": 220,
+        "nontrunk": 150,
+        "spur": 500,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00019",
+      "output_path": "artifacts/trees/lpy_envy_00019.usda",
+      "cylinders": 1530,
+      "collision_cylinders": 432,
+      "organ_counts": {
+        "branch": 352,
+        "nontrunk": 216,
+        "spur": 882,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00020",
+      "output_path": "artifacts/trees/lpy_envy_00020.usda",
+      "cylinders": 1621,
+      "collision_cylinders": 444,
+      "organ_counts": {
+        "branch": 364,
+        "nontrunk": 258,
+        "spur": 919,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00021",
+      "output_path": "artifacts/trees/lpy_envy_00021.usda",
+      "cylinders": 1138,
+      "collision_cylinders": 344,
+      "organ_counts": {
+        "branch": 264,
+        "nontrunk": 174,
+        "spur": 620,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00022",
+      "output_path": "artifacts/trees/lpy_envy_00022.usda",
+      "cylinders": 1722,
+      "collision_cylinders": 520,
+      "organ_counts": {
+        "branch": 440,
+        "nontrunk": 174,
+        "spur": 1028,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00023",
+      "output_path": "artifacts/trees/lpy_envy_00023.usda",
+      "cylinders": 1744,
+      "collision_cylinders": 520,
+      "organ_counts": {
+        "branch": 440,
+        "nontrunk": 264,
+        "spur": 960,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00024",
+      "output_path": "artifacts/trees/lpy_envy_00024.usda",
+      "cylinders": 1594,
+      "collision_cylinders": 444,
+      "organ_counts": {
+        "branch": 364,
+        "nontrunk": 288,
+        "spur": 862,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00025",
+      "output_path": "artifacts/trees/lpy_envy_00025.usda",
+      "cylinders": 1290,
+      "collision_cylinders": 390,
+      "organ_counts": {
+        "branch": 310,
+        "nontrunk": 216,
+        "spur": 684,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00026",
+      "output_path": "artifacts/trees/lpy_envy_00026.usda",
+      "cylinders": 1141,
+      "collision_cylinders": 354,
+      "organ_counts": {
+        "branch": 274,
+        "nontrunk": 134,
+        "spur": 653,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00027",
+      "output_path": "artifacts/trees/lpy_envy_00027.usda",
+      "cylinders": 854,
+      "collision_cylinders": 256,
+      "organ_counts": {
+        "branch": 176,
+        "nontrunk": 114,
+        "spur": 484,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00028",
+      "output_path": "artifacts/trees/lpy_envy_00028.usda",
+      "cylinders": 1468,
+      "collision_cylinders": 442,
+      "organ_counts": {
+        "branch": 362,
+        "nontrunk": 150,
+        "spur": 876,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00029",
+      "output_path": "artifacts/trees/lpy_envy_00029.usda",
+      "cylinders": 1436,
+      "collision_cylinders": 452,
+      "organ_counts": {
+        "branch": 372,
+        "nontrunk": 168,
+        "spur": 816,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00030",
+      "output_path": "artifacts/trees/lpy_envy_00030.usda",
+      "cylinders": 1824,
+      "collision_cylinders": 536,
+      "organ_counts": {
+        "branch": 456,
+        "nontrunk": 312,
+        "spur": 976,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00031",
+      "output_path": "artifacts/trees/lpy_envy_00031.usda",
+      "cylinders": 2084,
+      "collision_cylinders": 564,
+      "organ_counts": {
+        "branch": 484,
+        "nontrunk": 348,
+        "spur": 1172,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00032",
+      "output_path": "artifacts/trees/lpy_envy_00032.usda",
+      "cylinders": 1772,
+      "collision_cylinders": 566,
+      "organ_counts": {
+        "branch": 486,
+        "nontrunk": 222,
+        "spur": 984,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00033",
+      "output_path": "artifacts/trees/lpy_envy_00033.usda",
+      "cylinders": 1671,
+      "collision_cylinders": 500,
+      "organ_counts": {
+        "branch": 420,
+        "nontrunk": 294,
+        "spur": 877,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00034",
+      "output_path": "artifacts/trees/lpy_envy_00034.usda",
+      "cylinders": 1799,
+      "collision_cylinders": 528,
+      "organ_counts": {
+        "branch": 448,
+        "nontrunk": 270,
+        "spur": 1001,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00035",
+      "output_path": "artifacts/trees/lpy_envy_00035.usda",
+      "cylinders": 1170,
+      "collision_cylinders": 346,
+      "organ_counts": {
+        "branch": 266,
+        "nontrunk": 192,
+        "spur": 632,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00036",
+      "output_path": "artifacts/trees/lpy_envy_00036.usda",
+      "cylinders": 1852,
+      "collision_cylinders": 534,
+      "organ_counts": {
+        "branch": 454,
+        "nontrunk": 306,
+        "spur": 1012,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00037",
+      "output_path": "artifacts/trees/lpy_envy_00037.usda",
+      "cylinders": 1672,
+      "collision_cylinders": 540,
+      "organ_counts": {
+        "branch": 460,
+        "nontrunk": 202,
+        "spur": 930,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00038",
+      "output_path": "artifacts/trees/lpy_envy_00038.usda",
+      "cylinders": 1311,
+      "collision_cylinders": 392,
+      "organ_counts": {
+        "branch": 312,
+        "nontrunk": 168,
+        "spur": 751,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00039",
+      "output_path": "artifacts/trees/lpy_envy_00039.usda",
+      "cylinders": 1270,
+      "collision_cylinders": 388,
+      "organ_counts": {
+        "branch": 308,
+        "nontrunk": 138,
+        "spur": 744,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00040",
+      "output_path": "artifacts/trees/lpy_envy_00040.usda",
+      "cylinders": 930,
+      "collision_cylinders": 300,
+      "organ_counts": {
+        "branch": 220,
+        "nontrunk": 186,
+        "spur": 444,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00041",
+      "output_path": "artifacts/trees/lpy_envy_00041.usda",
+      "cylinders": 1799,
+      "collision_cylinders": 480,
+      "organ_counts": {
+        "branch": 400,
+        "nontrunk": 300,
+        "spur": 1019,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00042",
+      "output_path": "artifacts/trees/lpy_envy_00042.usda",
+      "cylinders": 1904,
+      "collision_cylinders": 522,
+      "organ_counts": {
+        "branch": 442,
+        "nontrunk": 258,
+        "spur": 1124,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00043",
+      "output_path": "artifacts/trees/lpy_envy_00043.usda",
+      "cylinders": 1705,
+      "collision_cylinders": 520,
+      "organ_counts": {
+        "branch": 440,
+        "nontrunk": 300,
+        "spur": 885,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00044",
+      "output_path": "artifacts/trees/lpy_envy_00044.usda",
+      "cylinders": 1505,
+      "collision_cylinders": 448,
+      "organ_counts": {
+        "branch": 368,
+        "nontrunk": 186,
+        "spur": 871,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00045",
+      "output_path": "artifacts/trees/lpy_envy_00045.usda",
+      "cylinders": 1520,
+      "collision_cylinders": 440,
+      "organ_counts": {
+        "branch": 360,
+        "nontrunk": 228,
+        "spur": 852,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00046",
+      "output_path": "artifacts/trees/lpy_envy_00046.usda",
+      "cylinders": 1042,
+      "collision_cylinders": 348,
+      "organ_counts": {
+        "branch": 268,
+        "nontrunk": 126,
+        "spur": 568,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00047",
+      "output_path": "artifacts/trees/lpy_envy_00047.usda",
+      "cylinders": 1619,
+      "collision_cylinders": 478,
+      "organ_counts": {
+        "branch": 398,
+        "nontrunk": 222,
+        "spur": 919,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00048",
+      "output_path": "artifacts/trees/lpy_envy_00048.usda",
+      "cylinders": 974,
+      "collision_cylinders": 300,
+      "organ_counts": {
+        "branch": 220,
+        "nontrunk": 102,
+        "spur": 572,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00049",
+      "output_path": "artifacts/trees/lpy_envy_00049.usda",
+      "cylinders": 1393,
+      "collision_cylinders": 460,
+      "organ_counts": {
+        "branch": 380,
+        "nontrunk": 180,
+        "spur": 753,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00050",
+      "output_path": "artifacts/trees/lpy_envy_00050.usda",
+      "cylinders": 1312,
+      "collision_cylinders": 388,
+      "organ_counts": {
+        "branch": 308,
+        "nontrunk": 228,
+        "spur": 696,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00051",
+      "output_path": "artifacts/trees/lpy_envy_00051.usda",
+      "cylinders": 1220,
+      "collision_cylinders": 388,
+      "organ_counts": {
+        "branch": 308,
+        "nontrunk": 120,
+        "spur": 712,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00052",
+      "output_path": "artifacts/trees/lpy_envy_00052.usda",
+      "cylinders": 1147,
+      "collision_cylinders": 352,
+      "organ_counts": {
+        "branch": 272,
+        "nontrunk": 151,
+        "spur": 644,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00053",
+      "output_path": "artifacts/trees/lpy_envy_00053.usda",
+      "cylinders": 1550,
+      "collision_cylinders": 476,
+      "organ_counts": {
+        "branch": 396,
+        "nontrunk": 198,
+        "spur": 876,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00054",
+      "output_path": "artifacts/trees/lpy_envy_00054.usda",
+      "cylinders": 1524,
+      "collision_cylinders": 478,
+      "organ_counts": {
+        "branch": 398,
+        "nontrunk": 150,
+        "spur": 896,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00055",
+      "output_path": "artifacts/trees/lpy_envy_00055.usda",
+      "cylinders": 1442,
+      "collision_cylinders": 432,
+      "organ_counts": {
+        "branch": 352,
+        "nontrunk": 138,
+        "spur": 872,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00056",
+      "output_path": "artifacts/trees/lpy_envy_00056.usda",
+      "cylinders": 1506,
+      "collision_cylinders": 434,
+      "organ_counts": {
+        "branch": 354,
+        "nontrunk": 252,
+        "spur": 820,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00057",
+      "output_path": "artifacts/trees/lpy_envy_00057.usda",
+      "cylinders": 1548,
+      "collision_cylinders": 466,
+      "organ_counts": {
+        "branch": 386,
+        "nontrunk": 242,
+        "spur": 840,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00058",
+      "output_path": "artifacts/trees/lpy_envy_00058.usda",
+      "cylinders": 1666,
+      "collision_cylinders": 492,
+      "organ_counts": {
+        "branch": 412,
+        "nontrunk": 254,
+        "spur": 920,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00059",
+      "output_path": "artifacts/trees/lpy_envy_00059.usda",
+      "cylinders": 1964,
+      "collision_cylinders": 610,
+      "organ_counts": {
+        "branch": 530,
+        "nontrunk": 210,
+        "spur": 1144,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00060",
+      "output_path": "artifacts/trees/lpy_envy_00060.usda",
+      "cylinders": 1126,
+      "collision_cylinders": 344,
+      "organ_counts": {
+        "branch": 264,
+        "nontrunk": 150,
+        "spur": 632,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00061",
+      "output_path": "artifacts/trees/lpy_envy_00061.usda",
+      "cylinders": 1222,
+      "collision_cylinders": 388,
+      "organ_counts": {
+        "branch": 308,
+        "nontrunk": 150,
+        "spur": 684,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00062",
+      "output_path": "artifacts/trees/lpy_envy_00062.usda",
+      "cylinders": 1498,
+      "collision_cylinders": 436,
+      "organ_counts": {
+        "branch": 356,
+        "nontrunk": 240,
+        "spur": 822,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00063",
+      "output_path": "artifacts/trees/lpy_envy_00063.usda",
+      "cylinders": 1587,
+      "collision_cylinders": 496,
+      "organ_counts": {
+        "branch": 416,
+        "nontrunk": 174,
+        "spur": 917,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00064",
+      "output_path": "artifacts/trees/lpy_envy_00064.usda",
+      "cylinders": 1637,
+      "collision_cylinders": 444,
+      "organ_counts": {
+        "branch": 364,
+        "nontrunk": 253,
+        "spur": 940,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00065",
+      "output_path": "artifacts/trees/lpy_envy_00065.usda",
+      "cylinders": 1376,
+      "collision_cylinders": 394,
+      "organ_counts": {
+        "branch": 314,
+        "nontrunk": 258,
+        "spur": 724,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00066",
+      "output_path": "artifacts/trees/lpy_envy_00066.usda",
+      "cylinders": 1562,
+      "collision_cylinders": 478,
+      "organ_counts": {
+        "branch": 398,
+        "nontrunk": 144,
+        "spur": 940,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00067",
+      "output_path": "artifacts/trees/lpy_envy_00067.usda",
+      "cylinders": 954,
+      "collision_cylinders": 306,
+      "organ_counts": {
+        "branch": 226,
+        "nontrunk": 132,
+        "spur": 516,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00068",
+      "output_path": "artifacts/trees/lpy_envy_00068.usda",
+      "cylinders": 1178,
+      "collision_cylinders": 348,
+      "organ_counts": {
+        "branch": 268,
+        "nontrunk": 174,
+        "spur": 656,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00069",
+      "output_path": "artifacts/trees/lpy_envy_00069.usda",
+      "cylinders": 1515,
+      "collision_cylinders": 482,
+      "organ_counts": {
+        "branch": 402,
+        "nontrunk": 192,
+        "spur": 841,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00070",
+      "output_path": "artifacts/trees/lpy_envy_00070.usda",
+      "cylinders": 1651,
+      "collision_cylinders": 490,
+      "organ_counts": {
+        "branch": 410,
+        "nontrunk": 240,
+        "spur": 921,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00071",
+      "output_path": "artifacts/trees/lpy_envy_00071.usda",
+      "cylinders": 1697,
+      "collision_cylinders": 534,
+      "organ_counts": {
+        "branch": 454,
+        "nontrunk": 271,
+        "spur": 892,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00072",
+      "output_path": "artifacts/trees/lpy_envy_00072.usda",
+      "cylinders": 1225,
+      "collision_cylinders": 370,
+      "organ_counts": {
+        "branch": 290,
+        "nontrunk": 150,
+        "spur": 705,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00073",
+      "output_path": "artifacts/trees/lpy_envy_00073.usda",
+      "cylinders": 1536,
+      "collision_cylinders": 456,
+      "organ_counts": {
+        "branch": 376,
+        "nontrunk": 300,
+        "spur": 780,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00074",
+      "output_path": "artifacts/trees/lpy_envy_00074.usda",
+      "cylinders": 1910,
+      "collision_cylinders": 528,
+      "organ_counts": {
+        "branch": 448,
+        "nontrunk": 258,
+        "spur": 1124,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00075",
+      "output_path": "artifacts/trees/lpy_envy_00075.usda",
+      "cylinders": 1003,
+      "collision_cylinders": 312,
+      "organ_counts": {
+        "branch": 232,
+        "nontrunk": 96,
+        "spur": 595,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00076",
+      "output_path": "artifacts/trees/lpy_envy_00076.usda",
+      "cylinders": 1562,
+      "collision_cylinders": 488,
+      "organ_counts": {
+        "branch": 408,
+        "nontrunk": 191,
+        "spur": 883,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00077",
+      "output_path": "artifacts/trees/lpy_envy_00077.usda",
+      "cylinders": 1390,
+      "collision_cylinders": 434,
+      "organ_counts": {
+        "branch": 354,
+        "nontrunk": 156,
+        "spur": 800,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00078",
+      "output_path": "artifacts/trees/lpy_envy_00078.usda",
+      "cylinders": 1670,
+      "collision_cylinders": 436,
+      "organ_counts": {
+        "branch": 356,
+        "nontrunk": 294,
+        "spur": 940,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00079",
+      "output_path": "artifacts/trees/lpy_envy_00079.usda",
+      "cylinders": 1464,
+      "collision_cylinders": 450,
+      "organ_counts": {
+        "branch": 370,
+        "nontrunk": 216,
+        "spur": 798,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00080",
+      "output_path": "artifacts/trees/lpy_envy_00080.usda",
+      "cylinders": 1244,
+      "collision_cylinders": 376,
+      "organ_counts": {
+        "branch": 296,
+        "nontrunk": 162,
+        "spur": 706,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00081",
+      "output_path": "artifacts/trees/lpy_envy_00081.usda",
+      "cylinders": 1030,
+      "collision_cylinders": 306,
+      "organ_counts": {
+        "branch": 226,
+        "nontrunk": 120,
+        "spur": 604,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00082",
+      "output_path": "artifacts/trees/lpy_envy_00082.usda",
+      "cylinders": 1592,
+      "collision_cylinders": 476,
+      "organ_counts": {
+        "branch": 396,
+        "nontrunk": 204,
+        "spur": 912,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00083",
+      "output_path": "artifacts/trees/lpy_envy_00083.usda",
+      "cylinders": 1350,
+      "collision_cylinders": 388,
+      "organ_counts": {
+        "branch": 308,
+        "nontrunk": 186,
+        "spur": 776,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00084",
+      "output_path": "artifacts/trees/lpy_envy_00084.usda",
+      "cylinders": 1998,
+      "collision_cylinders": 578,
+      "organ_counts": {
+        "branch": 498,
+        "nontrunk": 372,
+        "spur": 1048,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00085",
+      "output_path": "artifacts/trees/lpy_envy_00085.usda",
+      "cylinders": 1700,
+      "collision_cylinders": 536,
+      "organ_counts": {
+        "branch": 456,
+        "nontrunk": 228,
+        "spur": 936,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00086",
+      "output_path": "artifacts/trees/lpy_envy_00086.usda",
+      "cylinders": 1836,
+      "collision_cylinders": 538,
+      "organ_counts": {
+        "branch": 458,
+        "nontrunk": 277,
+        "spur": 1021,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00087",
+      "output_path": "artifacts/trees/lpy_envy_00087.usda",
+      "cylinders": 1872,
+      "collision_cylinders": 584,
+      "organ_counts": {
+        "branch": 504,
+        "nontrunk": 240,
+        "spur": 1048,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00088",
+      "output_path": "artifacts/trees/lpy_envy_00088.usda",
+      "cylinders": 1755,
+      "collision_cylinders": 520,
+      "organ_counts": {
+        "branch": 440,
+        "nontrunk": 384,
+        "spur": 851,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00089",
+      "output_path": "artifacts/trees/lpy_envy_00089.usda",
+      "cylinders": 1652,
+      "collision_cylinders": 476,
+      "organ_counts": {
+        "branch": 396,
+        "nontrunk": 204,
+        "spur": 972,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00090",
+      "output_path": "artifacts/trees/lpy_envy_00090.usda",
+      "cylinders": 1364,
+      "collision_cylinders": 442,
+      "organ_counts": {
+        "branch": 362,
+        "nontrunk": 162,
+        "spur": 760,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00091",
+      "output_path": "artifacts/trees/lpy_envy_00091.usda",
+      "cylinders": 1098,
+      "collision_cylinders": 344,
+      "organ_counts": {
+        "branch": 264,
+        "nontrunk": 114,
+        "spur": 640,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00092",
+      "output_path": "artifacts/trees/lpy_envy_00092.usda",
+      "cylinders": 1404,
+      "collision_cylinders": 432,
+      "organ_counts": {
+        "branch": 352,
+        "nontrunk": 204,
+        "spur": 768,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00093",
+      "output_path": "artifacts/trees/lpy_envy_00093.usda",
+      "cylinders": 1894,
+      "collision_cylinders": 520,
+      "organ_counts": {
+        "branch": 440,
+        "nontrunk": 294,
+        "spur": 1080,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00094",
+      "output_path": "artifacts/trees/lpy_envy_00094.usda",
+      "cylinders": 1409,
+      "collision_cylinders": 432,
+      "organ_counts": {
+        "branch": 352,
+        "nontrunk": 270,
+        "spur": 707,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00095",
+      "output_path": "artifacts/trees/lpy_envy_00095.usda",
+      "cylinders": 1774,
+      "collision_cylinders": 536,
+      "organ_counts": {
+        "branch": 456,
+        "nontrunk": 198,
+        "spur": 1040,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00096",
+      "output_path": "artifacts/trees/lpy_envy_00096.usda",
+      "cylinders": 1682,
+      "collision_cylinders": 476,
+      "organ_counts": {
+        "branch": 396,
+        "nontrunk": 318,
+        "spur": 888,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00097",
+      "output_path": "artifacts/trees/lpy_envy_00097.usda",
+      "cylinders": 1680,
+      "collision_cylinders": 526,
+      "organ_counts": {
+        "branch": 446,
+        "nontrunk": 198,
+        "spur": 956,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00098",
+      "output_path": "artifacts/trees/lpy_envy_00098.usda",
+      "cylinders": 1550,
+      "collision_cylinders": 444,
+      "organ_counts": {
+        "branch": 364,
+        "nontrunk": 187,
+        "spur": 919,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_envy_00099",
+      "output_path": "artifacts/trees/lpy_envy_00099.usda",
+      "cylinders": 2109,
+      "collision_cylinders": 632,
+      "organ_counts": {
+        "branch": 552,
+        "nontrunk": 303,
+        "spur": 1174,
+        "trunk": 80
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00000",
+      "output_path": "artifacts/trees/lpy_ufo_00000.usda",
+      "cylinders": 2960,
+      "collision_cylinders": 1430,
+      "organ_counts": {
+        "branch": 1280,
+        "spur": 1530,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00001",
+      "output_path": "artifacts/trees/lpy_ufo_00001.usda",
+      "cylinders": 3340,
+      "collision_cylinders": 1600,
+      "organ_counts": {
+        "branch": 1450,
+        "spur": 1740,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00002",
+      "output_path": "artifacts/trees/lpy_ufo_00002.usda",
+      "cylinders": 3155,
+      "collision_cylinders": 1475,
+      "organ_counts": {
+        "branch": 1325,
+        "spur": 1680,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00003",
+      "output_path": "artifacts/trees/lpy_ufo_00003.usda",
+      "cylinders": 3380,
+      "collision_cylinders": 1610,
+      "organ_counts": {
+        "branch": 1460,
+        "spur": 1770,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00004",
+      "output_path": "artifacts/trees/lpy_ufo_00004.usda",
+      "cylinders": 3270,
+      "collision_cylinders": 1515,
+      "organ_counts": {
+        "branch": 1365,
+        "spur": 1755,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00005",
+      "output_path": "artifacts/trees/lpy_ufo_00005.usda",
+      "cylinders": 3425,
+      "collision_cylinders": 1680,
+      "organ_counts": {
+        "branch": 1530,
+        "spur": 1745,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00006",
+      "output_path": "artifacts/trees/lpy_ufo_00006.usda",
+      "cylinders": 3395,
+      "collision_cylinders": 1725,
+      "organ_counts": {
+        "branch": 1575,
+        "spur": 1670,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00007",
+      "output_path": "artifacts/trees/lpy_ufo_00007.usda",
+      "cylinders": 3440,
+      "collision_cylinders": 1750,
+      "organ_counts": {
+        "branch": 1600,
+        "spur": 1690,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00008",
+      "output_path": "artifacts/trees/lpy_ufo_00008.usda",
+      "cylinders": 2590,
+      "collision_cylinders": 1275,
+      "organ_counts": {
+        "branch": 1125,
+        "spur": 1315,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00009",
+      "output_path": "artifacts/trees/lpy_ufo_00009.usda",
+      "cylinders": 3210,
+      "collision_cylinders": 1400,
+      "organ_counts": {
+        "branch": 1250,
+        "spur": 1810,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00010",
+      "output_path": "artifacts/trees/lpy_ufo_00010.usda",
+      "cylinders": 2940,
+      "collision_cylinders": 1400,
+      "organ_counts": {
+        "branch": 1250,
+        "spur": 1540,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00011",
+      "output_path": "artifacts/trees/lpy_ufo_00011.usda",
+      "cylinders": 3460,
+      "collision_cylinders": 1800,
+      "organ_counts": {
+        "branch": 1650,
+        "spur": 1660,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00012",
+      "output_path": "artifacts/trees/lpy_ufo_00012.usda",
+      "cylinders": 3230,
+      "collision_cylinders": 1800,
+      "organ_counts": {
+        "branch": 1650,
+        "spur": 1430,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00013",
+      "output_path": "artifacts/trees/lpy_ufo_00013.usda",
+      "cylinders": 3285,
+      "collision_cylinders": 1460,
+      "organ_counts": {
+        "branch": 1310,
+        "spur": 1825,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00014",
+      "output_path": "artifacts/trees/lpy_ufo_00014.usda",
+      "cylinders": 3390,
+      "collision_cylinders": 1650,
+      "organ_counts": {
+        "branch": 1500,
+        "spur": 1740,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00015",
+      "output_path": "artifacts/trees/lpy_ufo_00015.usda",
+      "cylinders": 3300,
+      "collision_cylinders": 1550,
+      "organ_counts": {
+        "branch": 1400,
+        "spur": 1750,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00016",
+      "output_path": "artifacts/trees/lpy_ufo_00016.usda",
+      "cylinders": 3465,
+      "collision_cylinders": 1785,
+      "organ_counts": {
+        "branch": 1635,
+        "spur": 1680,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00017",
+      "output_path": "artifacts/trees/lpy_ufo_00017.usda",
+      "cylinders": 3335,
+      "collision_cylinders": 1585,
+      "organ_counts": {
+        "branch": 1435,
+        "spur": 1750,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00018",
+      "output_path": "artifacts/trees/lpy_ufo_00018.usda",
+      "cylinders": 3400,
+      "collision_cylinders": 1640,
+      "organ_counts": {
+        "branch": 1490,
+        "spur": 1760,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00019",
+      "output_path": "artifacts/trees/lpy_ufo_00019.usda",
+      "cylinders": 3360,
+      "collision_cylinders": 1600,
+      "organ_counts": {
+        "branch": 1450,
+        "spur": 1760,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00020",
+      "output_path": "artifacts/trees/lpy_ufo_00020.usda",
+      "cylinders": 3575,
+      "collision_cylinders": 2170,
+      "organ_counts": {
+        "branch": 2020,
+        "spur": 1405,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00021",
+      "output_path": "artifacts/trees/lpy_ufo_00021.usda",
+      "cylinders": 3415,
+      "collision_cylinders": 1675,
+      "organ_counts": {
+        "branch": 1525,
+        "spur": 1740,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00022",
+      "output_path": "artifacts/trees/lpy_ufo_00022.usda",
+      "cylinders": 3340,
+      "collision_cylinders": 1770,
+      "organ_counts": {
+        "branch": 1620,
+        "spur": 1570,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00023",
+      "output_path": "artifacts/trees/lpy_ufo_00023.usda",
+      "cylinders": 3175,
+      "collision_cylinders": 1325,
+      "organ_counts": {
+        "branch": 1175,
+        "spur": 1850,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00024",
+      "output_path": "artifacts/trees/lpy_ufo_00024.usda",
+      "cylinders": 3555,
+      "collision_cylinders": 1855,
+      "organ_counts": {
+        "branch": 1705,
+        "spur": 1700,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00025",
+      "output_path": "artifacts/trees/lpy_ufo_00025.usda",
+      "cylinders": 3175,
+      "collision_cylinders": 1535,
+      "organ_counts": {
+        "branch": 1385,
+        "spur": 1640,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00026",
+      "output_path": "artifacts/trees/lpy_ufo_00026.usda",
+      "cylinders": 3420,
+      "collision_cylinders": 1630,
+      "organ_counts": {
+        "branch": 1480,
+        "spur": 1790,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00027",
+      "output_path": "artifacts/trees/lpy_ufo_00027.usda",
+      "cylinders": 3340,
+      "collision_cylinders": 1600,
+      "organ_counts": {
+        "branch": 1450,
+        "spur": 1740,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00028",
+      "output_path": "artifacts/trees/lpy_ufo_00028.usda",
+      "cylinders": 3110,
+      "collision_cylinders": 1700,
+      "organ_counts": {
+        "branch": 1550,
+        "spur": 1410,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00029",
+      "output_path": "artifacts/trees/lpy_ufo_00029.usda",
+      "cylinders": 3545,
+      "collision_cylinders": 1885,
+      "organ_counts": {
+        "branch": 1735,
+        "spur": 1660,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00030",
+      "output_path": "artifacts/trees/lpy_ufo_00030.usda",
+      "cylinders": 2560,
+      "collision_cylinders": 1275,
+      "organ_counts": {
+        "branch": 1125,
+        "spur": 1285,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00031",
+      "output_path": "artifacts/trees/lpy_ufo_00031.usda",
+      "cylinders": 2510,
+      "collision_cylinders": 1180,
+      "organ_counts": {
+        "branch": 1030,
+        "spur": 1330,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00032",
+      "output_path": "artifacts/trees/lpy_ufo_00032.usda",
+      "cylinders": 3400,
+      "collision_cylinders": 1660,
+      "organ_counts": {
+        "branch": 1510,
+        "spur": 1740,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00033",
+      "output_path": "artifacts/trees/lpy_ufo_00033.usda",
+      "cylinders": 2895,
+      "collision_cylinders": 1275,
+      "organ_counts": {
+        "branch": 1125,
+        "spur": 1620,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00034",
+      "output_path": "artifacts/trees/lpy_ufo_00034.usda",
+      "cylinders": 3005,
+      "collision_cylinders": 1525,
+      "organ_counts": {
+        "branch": 1375,
+        "spur": 1480,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00035",
+      "output_path": "artifacts/trees/lpy_ufo_00035.usda",
+      "cylinders": 2825,
+      "collision_cylinders": 1190,
+      "organ_counts": {
+        "branch": 1040,
+        "spur": 1635,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00036",
+      "output_path": "artifacts/trees/lpy_ufo_00036.usda",
+      "cylinders": 3005,
+      "collision_cylinders": 1525,
+      "organ_counts": {
+        "branch": 1375,
+        "spur": 1480,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00037",
+      "output_path": "artifacts/trees/lpy_ufo_00037.usda",
+      "cylinders": 3210,
+      "collision_cylinders": 1645,
+      "organ_counts": {
+        "branch": 1495,
+        "spur": 1565,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00038",
+      "output_path": "artifacts/trees/lpy_ufo_00038.usda",
+      "cylinders": 3000,
+      "collision_cylinders": 1420,
+      "organ_counts": {
+        "branch": 1270,
+        "spur": 1580,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00039",
+      "output_path": "artifacts/trees/lpy_ufo_00039.usda",
+      "cylinders": 3325,
+      "collision_cylinders": 1510,
+      "organ_counts": {
+        "branch": 1360,
+        "spur": 1815,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00040",
+      "output_path": "artifacts/trees/lpy_ufo_00040.usda",
+      "cylinders": 2960,
+      "collision_cylinders": 1450,
+      "organ_counts": {
+        "branch": 1300,
+        "spur": 1510,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00041",
+      "output_path": "artifacts/trees/lpy_ufo_00041.usda",
+      "cylinders": 2990,
+      "collision_cylinders": 1430,
+      "organ_counts": {
+        "branch": 1280,
+        "spur": 1560,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00042",
+      "output_path": "artifacts/trees/lpy_ufo_00042.usda",
+      "cylinders": 3225,
+      "collision_cylinders": 1395,
+      "organ_counts": {
+        "branch": 1245,
+        "spur": 1830,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00043",
+      "output_path": "artifacts/trees/lpy_ufo_00043.usda",
+      "cylinders": 3375,
+      "collision_cylinders": 1655,
+      "organ_counts": {
+        "branch": 1505,
+        "spur": 1720,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00044",
+      "output_path": "artifacts/trees/lpy_ufo_00044.usda",
+      "cylinders": 3490,
+      "collision_cylinders": 1830,
+      "organ_counts": {
+        "branch": 1680,
+        "spur": 1660,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00045",
+      "output_path": "artifacts/trees/lpy_ufo_00045.usda",
+      "cylinders": 3275,
+      "collision_cylinders": 1460,
+      "organ_counts": {
+        "branch": 1310,
+        "spur": 1815,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00046",
+      "output_path": "artifacts/trees/lpy_ufo_00046.usda",
+      "cylinders": 2945,
+      "collision_cylinders": 1415,
+      "organ_counts": {
+        "branch": 1265,
+        "spur": 1530,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00047",
+      "output_path": "artifacts/trees/lpy_ufo_00047.usda",
+      "cylinders": 3340,
+      "collision_cylinders": 1600,
+      "organ_counts": {
+        "branch": 1450,
+        "spur": 1740,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00048",
+      "output_path": "artifacts/trees/lpy_ufo_00048.usda",
+      "cylinders": 3205,
+      "collision_cylinders": 1375,
+      "organ_counts": {
+        "branch": 1225,
+        "spur": 1830,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00049",
+      "output_path": "artifacts/trees/lpy_ufo_00049.usda",
+      "cylinders": 3005,
+      "collision_cylinders": 1555,
+      "organ_counts": {
+        "branch": 1405,
+        "spur": 1450,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00050",
+      "output_path": "artifacts/trees/lpy_ufo_00050.usda",
+      "cylinders": 3020,
+      "collision_cylinders": 1550,
+      "organ_counts": {
+        "branch": 1400,
+        "spur": 1470,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00051",
+      "output_path": "artifacts/trees/lpy_ufo_00051.usda",
+      "cylinders": 2885,
+      "collision_cylinders": 1305,
+      "organ_counts": {
+        "branch": 1155,
+        "spur": 1580,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00052",
+      "output_path": "artifacts/trees/lpy_ufo_00052.usda",
+      "cylinders": 2585,
+      "collision_cylinders": 1375,
+      "organ_counts": {
+        "branch": 1225,
+        "spur": 1210,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00053",
+      "output_path": "artifacts/trees/lpy_ufo_00053.usda",
+      "cylinders": 3330,
+      "collision_cylinders": 1600,
+      "organ_counts": {
+        "branch": 1450,
+        "spur": 1730,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00054",
+      "output_path": "artifacts/trees/lpy_ufo_00054.usda",
+      "cylinders": 2970,
+      "collision_cylinders": 1420,
+      "organ_counts": {
+        "branch": 1270,
+        "spur": 1550,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00055",
+      "output_path": "artifacts/trees/lpy_ufo_00055.usda",
+      "cylinders": 2930,
+      "collision_cylinders": 1470,
+      "organ_counts": {
+        "branch": 1320,
+        "spur": 1460,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00056",
+      "output_path": "artifacts/trees/lpy_ufo_00056.usda",
+      "cylinders": 3170,
+      "collision_cylinders": 1790,
+      "organ_counts": {
+        "branch": 1640,
+        "spur": 1380,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00057",
+      "output_path": "artifacts/trees/lpy_ufo_00057.usda",
+      "cylinders": 3520,
+      "collision_cylinders": 1860,
+      "organ_counts": {
+        "branch": 1710,
+        "spur": 1660,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00058",
+      "output_path": "artifacts/trees/lpy_ufo_00058.usda",
+      "cylinders": 3355,
+      "collision_cylinders": 1605,
+      "organ_counts": {
+        "branch": 1455,
+        "spur": 1750,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00059",
+      "output_path": "artifacts/trees/lpy_ufo_00059.usda",
+      "cylinders": 3310,
+      "collision_cylinders": 1550,
+      "organ_counts": {
+        "branch": 1400,
+        "spur": 1760,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00060",
+      "output_path": "artifacts/trees/lpy_ufo_00060.usda",
+      "cylinders": 3210,
+      "collision_cylinders": 1400,
+      "organ_counts": {
+        "branch": 1250,
+        "spur": 1810,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00061",
+      "output_path": "artifacts/trees/lpy_ufo_00061.usda",
+      "cylinders": 2495,
+      "collision_cylinders": 1315,
+      "organ_counts": {
+        "branch": 1165,
+        "spur": 1180,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00062",
+      "output_path": "artifacts/trees/lpy_ufo_00062.usda",
+      "cylinders": 2910,
+      "collision_cylinders": 1340,
+      "organ_counts": {
+        "branch": 1190,
+        "spur": 1570,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00063",
+      "output_path": "artifacts/trees/lpy_ufo_00063.usda",
+      "cylinders": 2215,
+      "collision_cylinders": 1175,
+      "organ_counts": {
+        "branch": 1025,
+        "spur": 1040,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00064",
+      "output_path": "artifacts/trees/lpy_ufo_00064.usda",
+      "cylinders": 3080,
+      "collision_cylinders": 1650,
+      "organ_counts": {
+        "branch": 1500,
+        "spur": 1430,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00065",
+      "output_path": "artifacts/trees/lpy_ufo_00065.usda",
+      "cylinders": 2430,
+      "collision_cylinders": 1050,
+      "organ_counts": {
+        "branch": 900,
+        "spur": 1380,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00066",
+      "output_path": "artifacts/trees/lpy_ufo_00066.usda",
+      "cylinders": 3485,
+      "collision_cylinders": 1835,
+      "organ_counts": {
+        "branch": 1685,
+        "spur": 1650,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00067",
+      "output_path": "artifacts/trees/lpy_ufo_00067.usda",
+      "cylinders": 3430,
+      "collision_cylinders": 1675,
+      "organ_counts": {
+        "branch": 1525,
+        "spur": 1755,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00068",
+      "output_path": "artifacts/trees/lpy_ufo_00068.usda",
+      "cylinders": 3110,
+      "collision_cylinders": 1700,
+      "organ_counts": {
+        "branch": 1550,
+        "spur": 1410,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00069",
+      "output_path": "artifacts/trees/lpy_ufo_00069.usda",
+      "cylinders": 3355,
+      "collision_cylinders": 1625,
+      "organ_counts": {
+        "branch": 1475,
+        "spur": 1730,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00070",
+      "output_path": "artifacts/trees/lpy_ufo_00070.usda",
+      "cylinders": 2065,
+      "collision_cylinders": 1000,
+      "organ_counts": {
+        "branch": 850,
+        "spur": 1065,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00071",
+      "output_path": "artifacts/trees/lpy_ufo_00071.usda",
+      "cylinders": 3475,
+      "collision_cylinders": 1825,
+      "organ_counts": {
+        "branch": 1675,
+        "spur": 1650,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00072",
+      "output_path": "artifacts/trees/lpy_ufo_00072.usda",
+      "cylinders": 3320,
+      "collision_cylinders": 1545,
+      "organ_counts": {
+        "branch": 1395,
+        "spur": 1775,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00073",
+      "output_path": "artifacts/trees/lpy_ufo_00073.usda",
+      "cylinders": 2535,
+      "collision_cylinders": 1215,
+      "organ_counts": {
+        "branch": 1065,
+        "spur": 1320,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00074",
+      "output_path": "artifacts/trees/lpy_ufo_00074.usda",
+      "cylinders": 2980,
+      "collision_cylinders": 1500,
+      "organ_counts": {
+        "branch": 1350,
+        "spur": 1480,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00075",
+      "output_path": "artifacts/trees/lpy_ufo_00075.usda",
+      "cylinders": 2945,
+      "collision_cylinders": 1415,
+      "organ_counts": {
+        "branch": 1265,
+        "spur": 1530,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00076",
+      "output_path": "artifacts/trees/lpy_ufo_00076.usda",
+      "cylinders": 2605,
+      "collision_cylinders": 1295,
+      "organ_counts": {
+        "branch": 1145,
+        "spur": 1310,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00077",
+      "output_path": "artifacts/trees/lpy_ufo_00077.usda",
+      "cylinders": 3370,
+      "collision_cylinders": 1650,
+      "organ_counts": {
+        "branch": 1500,
+        "spur": 1720,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00078",
+      "output_path": "artifacts/trees/lpy_ufo_00078.usda",
+      "cylinders": 2910,
+      "collision_cylinders": 1350,
+      "organ_counts": {
+        "branch": 1200,
+        "spur": 1560,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00079",
+      "output_path": "artifacts/trees/lpy_ufo_00079.usda",
+      "cylinders": 3475,
+      "collision_cylinders": 1790,
+      "organ_counts": {
+        "branch": 1640,
+        "spur": 1685,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00080",
+      "output_path": "artifacts/trees/lpy_ufo_00080.usda",
+      "cylinders": 3455,
+      "collision_cylinders": 1785,
+      "organ_counts": {
+        "branch": 1635,
+        "spur": 1670,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00081",
+      "output_path": "artifacts/trees/lpy_ufo_00081.usda",
+      "cylinders": 3310,
+      "collision_cylinders": 1550,
+      "organ_counts": {
+        "branch": 1400,
+        "spur": 1760,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00082",
+      "output_path": "artifacts/trees/lpy_ufo_00082.usda",
+      "cylinders": 3370,
+      "collision_cylinders": 1620,
+      "organ_counts": {
+        "branch": 1470,
+        "spur": 1750,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00083",
+      "output_path": "artifacts/trees/lpy_ufo_00083.usda",
+      "cylinders": 3335,
+      "collision_cylinders": 1575,
+      "organ_counts": {
+        "branch": 1425,
+        "spur": 1760,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00084",
+      "output_path": "artifacts/trees/lpy_ufo_00084.usda",
+      "cylinders": 2980,
+      "collision_cylinders": 1370,
+      "organ_counts": {
+        "branch": 1220,
+        "spur": 1610,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00085",
+      "output_path": "artifacts/trees/lpy_ufo_00085.usda",
+      "cylinders": 2850,
+      "collision_cylinders": 1435,
+      "organ_counts": {
+        "branch": 1285,
+        "spur": 1415,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00086",
+      "output_path": "artifacts/trees/lpy_ufo_00086.usda",
+      "cylinders": 3505,
+      "collision_cylinders": 1875,
+      "organ_counts": {
+        "branch": 1725,
+        "spur": 1630,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00087",
+      "output_path": "artifacts/trees/lpy_ufo_00087.usda",
+      "cylinders": 2960,
+      "collision_cylinders": 1450,
+      "organ_counts": {
+        "branch": 1300,
+        "spur": 1510,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00088",
+      "output_path": "artifacts/trees/lpy_ufo_00088.usda",
+      "cylinders": 2410,
+      "collision_cylinders": 1200,
+      "organ_counts": {
+        "branch": 1050,
+        "spur": 1210,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00089",
+      "output_path": "artifacts/trees/lpy_ufo_00089.usda",
+      "cylinders": 2895,
+      "collision_cylinders": 1275,
+      "organ_counts": {
+        "branch": 1125,
+        "spur": 1620,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00090",
+      "output_path": "artifacts/trees/lpy_ufo_00090.usda",
+      "cylinders": 3020,
+      "collision_cylinders": 1490,
+      "organ_counts": {
+        "branch": 1340,
+        "spur": 1530,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00091",
+      "output_path": "artifacts/trees/lpy_ufo_00091.usda",
+      "cylinders": 3400,
+      "collision_cylinders": 1690,
+      "organ_counts": {
+        "branch": 1540,
+        "spur": 1710,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00092",
+      "output_path": "artifacts/trees/lpy_ufo_00092.usda",
+      "cylinders": 3530,
+      "collision_cylinders": 1795,
+      "organ_counts": {
+        "branch": 1645,
+        "spur": 1735,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00093",
+      "output_path": "artifacts/trees/lpy_ufo_00093.usda",
+      "cylinders": 2670,
+      "collision_cylinders": 1260,
+      "organ_counts": {
+        "branch": 1110,
+        "spur": 1410,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00094",
+      "output_path": "artifacts/trees/lpy_ufo_00094.usda",
+      "cylinders": 3410,
+      "collision_cylinders": 1695,
+      "organ_counts": {
+        "branch": 1545,
+        "spur": 1715,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00095",
+      "output_path": "artifacts/trees/lpy_ufo_00095.usda",
+      "cylinders": 1760,
+      "collision_cylinders": 900,
+      "organ_counts": {
+        "branch": 750,
+        "spur": 860,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00096",
+      "output_path": "artifacts/trees/lpy_ufo_00096.usda",
+      "cylinders": 3295,
+      "collision_cylinders": 1525,
+      "organ_counts": {
+        "branch": 1375,
+        "spur": 1770,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00097",
+      "output_path": "artifacts/trees/lpy_ufo_00097.usda",
+      "cylinders": 3190,
+      "collision_cylinders": 1350,
+      "organ_counts": {
+        "branch": 1200,
+        "spur": 1840,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00098",
+      "output_path": "artifacts/trees/lpy_ufo_00098.usda",
+      "cylinders": 3045,
+      "collision_cylinders": 1590,
+      "organ_counts": {
+        "branch": 1440,
+        "spur": 1455,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    },
+    {
+      "tree_id": "lpy_ufo_00099",
+      "output_path": "artifacts/trees/lpy_ufo_00099.usda",
+      "cylinders": 3115,
+      "collision_cylinders": 1645,
+      "organ_counts": {
+        "branch": 1495,
+        "spur": 1470,
+        "trunk": 150
+      },
+      "writer": "ascii",
+      "material": "bark_brown_02"
+    }
+  ]
+}

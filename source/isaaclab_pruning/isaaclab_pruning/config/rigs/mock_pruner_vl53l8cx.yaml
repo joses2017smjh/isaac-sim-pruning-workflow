@@ -26,8 +26,13 @@ sensors:
 
 wrist_camera:
   enabled: false
-  offset: null
-  reason: camera_offset is unset in the source robot description; do not invent extrinsics
+  offset: [0.0, -0.06, 0.10]
+  selected: close_lateral
+  evidence: docs/evidence/camera_offset_raycast.json
+  visible_fraction: 0.8518
+  reason: >
+    Ray-cast on lpy_envy_00000 (1259/1478 cuts unoccluded in 0.3-0.5 m).
+    RGB stays off until a renderer job validates this offset.
 
 noise:
   min_sigma_m: 0.003
