@@ -1,13 +1,17 @@
 schema_version: 1
-resolved_at: "2026-08-27"
+resolved_at: "2026-09-01"
 
 sources:
   isaaclab_sensor_learning:
     repository: https://github.com/lukestroh/isaaclab-sensor-learning.git
+    archive_repository: https://github.com/joses2017smjh/isaac-sim-pruning-workflow.git
     branch: develop
     revision: 5701a774af7b8579269f924689aaf79b9574a53c
+    revision_date: "2026-06-30T12:17:32-07:00"
     license: NOASSERTION
     integration: fork_history
+    upstream_status: unavailable_as_of_2026-08-31
+    note: The named upstream returns repository-not-found; do not substitute lukestroh/sensor-learning, which is a different project.
     take:
       - source/isaaclab_sensor_learning
 
@@ -16,19 +20,31 @@ sources:
     branch: develop
     revision: dfede4c0f251358ebed7a1f90ff887847c2fbeb0
     license: NOASSERTION
+    license_scope:
+      root: NOASSERTION
+      branch_detection_system_description: BSD-3-Clause
+      final_approach_controller: BSD-3-Clause
+      vl53l8cx_bringup: BSD-3-Clause
+      vl53l8cx_msgs: BSD-3-Clause
+      solidworks_archive: no_CAD_specific_notice_found
     integration: fetch_only
+    note: Full repository checkout is required for Xacro generation; take lists the reviewed in-scope packages, not a selective dependency closure.
     take:
-      - branch_detection_system_description/config/mock_pruner.yaml
-      - branch_detection_system_description/urdf/end_effectors/mock_pruner
-      - branch_detection_system_description/meshes/end_effectors/mock_pruner
+      - branch_detection_system_description
       - final_approach_controller
+      - vl53l8cx_bringup
+      - branch_detection_interfaces/vl53l8cx_msgs
 
   ag_robot:
     repository: https://github.com/lukestroh/ag-robot.git
     branch: main
     revision: 60b3bee2323ff04d404516c6630db3626cc51fe0
     license: NOASSERTION
+    license_scope:
+      root: NOASSERTION
+      ag_robot_description: BSD-3-Clause
     integration: fetch_only
+    note: Composition reference only; the tracked tmp URDF is host-path-dependent and omits mock-pruner and sensor links.
     take:
       - ag_robot_description/config/robot_config.yaml
       - ag_robot_description/urdf/tmp/ag_robot_isaac_lab.urdf
@@ -38,6 +54,9 @@ sources:
     branch: develop
     revision: f27450ea207ea096ce24c0c124647aab0080f426
     license: NOASSERTION
+    license_scope:
+      root: NOASSERTION
+      linear_slider_description: BSD-3-Clause
     integration: fetch_only
 
   pybullet_tree_sim:
@@ -46,6 +65,7 @@ sources:
     revision: 4d9f8384da9ddd3329175cc8ce1f2c7df9720387
     license: BSD-3-Clause
     integration: fetch_only
+    note: The selected legacy URDF references cutter-mouth collision geometry; failure-zone meshes are repository assets, not a selected runtime link.
     take:
       - pybullet_tree_sim/urdf/ur5e/collision
       - pybullet_tree_sim/envs/pruning_env.py
@@ -66,7 +86,72 @@ sources:
 
   universal_robots_ros2_description:
     repository: https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git
-    branch: rolling
-    revision: 89bbe795f38a7ab00fb66fe8831dfff79dc99edf
+    branch: humble
+    revision: 18e6f603b3ebc2ec479fecb62d6be544b15755e9
     license: BSD-3-Clause
     integration: fetch_only
+    note: >
+      Release 2.13.0 is the latest Humble revision whose ur_robot macro accepts
+      the ROS 2 control and driver parameters passed by the pinned BDS Xacro.
+      Rolling revision 89bbe795 removed that API and cannot expand this stack.
+
+  final_approach_controller_legacy:
+    repository: https://github.com/lukestroh/final-approach-controller.git
+    branch: main
+    revision: a3a74b73d3a3a4c18e178234639c773ca23506d7
+    license: BSD-3-Clause
+    integration: reference_only
+    note: Legacy D435i plus dual-VL6180 controller generation; not the current VL53L8CX rig.
+    take:
+      - final_approach_controller/config/sensors.yaml
+
+  follow_the_leader:
+    repository: https://github.com/OSUrobotics/follow-the-leader.git
+    branch: develop
+    revision: ca92d314a8dd756e50e362ecfca8187f25fc7868
+    license: NOASSERTION
+    integration: reference_only
+    note: UR5e plus RealSense D435 scanning reference; its transforms are not mock-pruner calibration.
+    take:
+      - follow_the_leader/config/camera_d435.yaml
+      - follow_the_leader/launch/ur_startup.launch.py
+      - follow_the_leader/launch/follow_the_leader.launch.py
+
+  vl53l8cx_firmware:
+    repository: https://github.com/lukestroh/nucleo-f446re-microros-vl53l8cx-static.git
+    branch: main
+    revision: 0a9ebdf54f3bd2eb892b3fb8b9ae6ca4b30f1d83
+    license: NOASSERTION
+    integration: reference_only
+    note: Firmware evidence for continuous 8x8 operation at 15 Hz and raw millimetre publication.
+    take:
+      - src/freertos.c
+
+  apple_harvest:
+    repository: https://github.com/OSUrobotics/apple-harvest.git
+    branch: develop
+    revision: 7ee995ab4fc7f6bac0dc44b9a2403fea3c2a3bc3
+    license: NOASSERTION
+    integration: reference_only
+    note: Newer D435i Xacro and MoveIt integration pattern for a harvesting gripper, not the mock-pruner.
+    take:
+      - harvest_hardware/harvest_hardware_description/urdf/_d435i.urdf.xacro
+      - harvest_hardware/harvest_hardware_description/urdf/ur_gripper.urdf.xacro
+      - harvest_hardware/harvest_hardware_moveit_config/config/sensors_3d.yaml
+
+  orchard_slam:
+    repository: https://github.com/lukestroh/orchard-slam.git
+    branch: develop
+    revision: 9fdbdbeb00429b5acd5d89ec390c7a901f57dfdd
+    license: NOASSERTION
+    license_scope:
+      root: NOASSERTION
+      amiga_description: BSD-3-Clause
+      orchard_slam_sensors: BSD-3-Clause
+    integration: reference_only
+    note: Amiga IMU, GPS, lidar, and orchard-layout reference; deferred from the arm-only v1.
+    take:
+      - amiga_description/urdf/amiga_macro.urdf.xacro
+      - amiga_description/urdf/amiga_gps.urdf.xacro
+      - amiga_description/urdf/amiga_imu.urdf.xacro
+      - amiga_description/urdf/amiga_lidar.urdf.xacro

@@ -12,6 +12,8 @@ from dataclasses import dataclass
 
 import torch
 
+DEFAULT_EEF_TRANSLATION_IN_SENSOR_PARENT_M = (0.0, 0.0, 0.1601525)
+
 
 @dataclass(frozen=True)
 class ToFServoGains:
@@ -43,7 +45,7 @@ def deproject_tof(
     *,
     dfov_deg: float = 65.0,
 ) -> torch.Tensor:
-    """Deproject an ``(..., H, W)`` ToF image into EEF-frame points."""
+    """Deproject into the parent frame in which ``offset_m`` is expressed."""
     *batch, height, width = ranges_m.shape
     rays = _pinhole_rays(width, height, dfov_deg, ranges_m.device, ranges_m.dtype)
     points = ranges_m.unsqueeze(-1) * rays
@@ -82,17 +84,28 @@ def scripted_tof_action(
     *,
     tof0_offset: tuple[float, float, float] = (0.04685226669, 0.0, 0.14444246761),
     tof1_offset: tuple[float, float, float] = (-0.04685226669, 0.0, 0.14444246761),
+    eef_translation_in_sensor_parent_m: tuple[float, float, float] = DEFAULT_EEF_TRANSLATION_IN_SENSOR_PARENT_M,
     gains: ToFServoGains | None = None,
 ) -> torch.Tensor:
-    """Return a 7-D EEF pose delta ``(dx, dy, dz, qx, qy, qz, qw relative)`` as xyz + axis-angle-ish xyzw.
+    """Return a 7-D EEF pose delta ``(dx, dy, dz, qw, qx, qy, qz)``.
 
     The action is ``(N, 7)``: position delta in the EEF frame and a wxyz quaternion
-    delta approximating pan/pitch/roll corrections.
+    delta approximating pan/pitch/roll corrections. The reviewed default offsets
+    are expressed from ``mock_pruner__base``. The reviewed Xacro aligns the base
+    and tool axes, so ``eef_translation_in_sensor_parent_m`` shifts the fitted
+    points into ``mock_pruner__tool0``. The live implementation must source this
+    transform from the regenerated asset instead of assuming it stays constant.
     """
     cfg = gains or ToFServoGains()
     points0 = deproject_tof(ranges_tof0, valid_tof0, tof0_offset)
     points1 = deproject_tof(ranges_tof1, valid_tof1, tof1_offset)
     points = torch.cat((points0, points1), dim=1)
+    eef_translation = torch.as_tensor(
+        eef_translation_in_sensor_parent_m,
+        device=points.device,
+        dtype=points.dtype,
+    )
+    points = points - eef_translation
     centroid, axis, counts = fit_branch_axis(points)
 
     # Pan/pitch: drive the estimated centroid onto the cutter forward axis (z).

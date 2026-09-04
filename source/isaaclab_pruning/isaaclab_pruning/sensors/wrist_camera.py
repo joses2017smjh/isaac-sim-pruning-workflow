@@ -22,8 +22,11 @@ class WristCameraCandidate:
     notes: str
 
 
-# camera_offset is empty on the real URDF. These are sweep seeds. The selected
-# pose lives in mock_pruner_vl53l8cx.yaml after the ray-cast experiment.
+# The upstream YAML camera_offset is empty, but the Xacro ignores that argument
+# and hard-codes a camera0 frame from mock_pruner__base. It does not identify a
+# camera model or calibrated optical-frame rotation. These EEF-frame candidates
+# are simulation sweep seeds, not replacements for that unresolved hardware
+# contract. The selected candidate lives in mock_pruner_vl53l8cx.yaml.
 CANDIDATES: tuple[WristCameraCandidate, ...] = (
     WristCameraCandidate(
         "close_lateral",
@@ -231,9 +234,7 @@ def score_candidate_on_tree(
         band = range_band_m[0] <= t_cut <= range_band_m[1]
         if band:
             in_band += 1
-        mouth_center, mouth_rot, mouth_he = _mouth_world(
-            eef_pos, rotation, mouth_offset_eef, mouth_half_extents
-        )
+        mouth_center, mouth_rot, mouth_he = _mouth_world(eef_pos, rotation, mouth_offset_eef, mouth_half_extents)
         t_jaw = ray_obb_t(camera_w, direction, mouth_center, mouth_rot, mouth_he, t_max=t_cut)
         jaw_hit = t_jaw < t_cut - _EPS_T
         t_wood = float("inf")

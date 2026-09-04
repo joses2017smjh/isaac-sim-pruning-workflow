@@ -1,18 +1,31 @@
 name: ur5e_pruner
 description: >
-  6R UR5e + mock-pruner. Imported USD is the BDS flatten (Amiga base, no slider).
-  v1 holds the real-machine slider fixed before the approach and does not spawn it.
+  6R UR5e + mock-pruner generated from pinned source and a selected UR5e
+  calibration, then validated on Isaac Sim 6.0. v1 holds the real-machine
+  slider fixed before the approach and does not spawn it.
 usd:
-  relative_path: artifacts/usd/ur5e_pruner_abs/ur5e_pruner_abs.usda
-  import_job: "21077217"
+  relative_path: artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda
+  asset_id: ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be
+  import_evidence: docs/evidence/urdf_import_21136450.json
+  import_job: "21136450"
+  status: validated_content_addressed
+  hardware_transform_match: true
+  reimport_required: false
   contains_slider: false
   prim_path: /pruning_robot
-  eef_body: mock_pruner__tool0
+  physics_eef_body: mock_pruner__base
+  control_tool_frame: mock_pruner__tool0
 prefixes:
   slider: linear_slider__
   arm: ur5e__
   eef: mock_pruner__
-eef_body: mock_pruner__tool0
+# Differential IK must query a rigid physics body. mock_pruner__tool0 is a
+# fixed Xacro frame and may be merged away by URDF import, so commands and
+# task geometry use the reviewed fixed transform below.
+physics_eef_body: mock_pruner__base
+control_tool_frame: mock_pruner__tool0
+control_tool_translation_in_physics_body_m: [0.0, 0.0, 0.1601525]
+control_tool_quaternion_wxyz_in_physics_body: [1.0, 0.0, 0.0, 0.0]
 slider_held_fixed: true
 # EE pose command (xyz + wxyz), not 6R+slider. The slider is documented below
 # for the real machine and is not in ArticulationCfg.joint_names_expr.
@@ -74,8 +87,10 @@ actuators:
     damping: 1.0e3
     spawned: false
 cutter:
-  # Axis-aligned AABB in the cutter-link frame, from pybullet-tree-sim STLs
-  # (BSD-3-Clause, 4d9f838). PCA OBBs are in docs/evidence/cutter_boxes_fitted.json.
+  # Versioned legacy proxies in the cutter-link frame, from pybullet-tree-sim
+  # assets (BSD-3-Clause, 4d9f838). The selected legacy URDF references the
+  # mouth mesh, not a failure-zone runtime link. These are not validated current
+  # BDS mock-pruner CAD. PCA OBBs are in cutter_boxes_fitted.json.
   mouth_half_extents_m: [0.007652, 0.027309, 0.024962]
   mouth_offset_m: [0.000693, 0.014691, 0.024962]
   failure_half_extents_m: [0.007000, 0.080000, 0.030000]

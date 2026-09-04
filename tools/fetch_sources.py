@@ -43,6 +43,12 @@ def _is_dirty(path: Path) -> bool:
 
 
 def _fetch(name: str, source: dict, destination: Path) -> None:
+    if source.get("integration") == "fork_history":
+        archive = source.get("archive_repository", "the current fork")
+        raise RuntimeError(
+            f"{name} is preserved as fork history, not a fetchable dependency. "
+            f"Inspect revision {source['revision']} in {archive}."
+        )
     revision = str(source["revision"])
     target = destination / name
     if target.exists():

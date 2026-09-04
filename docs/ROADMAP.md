@@ -6,7 +6,8 @@ complete.
 
 ## Phase 0 — contracts and compute
 
-- [x] Preserve the upstream Isaac Lab harness at `5701a77`.
+- [x] Preserve the now-unavailable upstream Isaac Lab harness at `5701a77` in
+      Jose's fork history.
 - [x] Record immutable revisions for external robot/orchard sources.
 - [x] Implement OpenCV `T_wc` plus legacy Blender-Euler annotation output.
 - [x] Add an analytic three-view 1 m cube reconstruction test.
@@ -41,25 +42,43 @@ Capsules change each end by a radius and cannot pass a millimetre depth check.
 
 ## Phase 2 — robot and sensors
 
-- [x] Encode the two real mock-pruner ToF offsets without inventing a camera pose.
+- [x] Record the two reviewed mock-pruner ToF offsets and their source parent
+      `mock_pruner__base` separately from control EEF `mock_pruner__tool0`.
 - [x] Add batched range noise, status, random dropout, and thin-target dropout.
 - [x] Encode UR5e joint names, limits, and actuators (`ur5e__`). Slider is
       documented on the real machine and is **not** spawned in v1
       (`joint_names_expr` is arm-only; imported USD has no slider).
-- [x] Place mouth/failure AABBs in the EEF frame.
+- [x] Place versioned legacy mouth/failure proxy AABBs in the EEF frame.
 - [x] Fit OBBs from binary STL (run `tools/fit_cutter_boxes.py` after fetch).
 - [x] Inverse-variance depth fusion for variant D.
 - [x] Wrist-camera extrinsic *candidates* with geometric ray-cast scoring
       (cylinder colliders + jaw AABB; no renderer).
-- [x] Import the BDS UR5e + mock-pruner URDF to USD (job `21077217`, no slider).
+- [x] Prove the tracked BDS generated snapshot imports to USD (job `21077217`,
+      no slider). This snapshot has stale ToF/tool fixed transforms.
+- [x] Mark the stale snapshot non-runtime and reject default articulation spawn;
+      retain an explicit diagnostic-only override.
 - [x] Resolve package mesh paths and author `ArticulationCfg` against that USD.
 - [x] Replace nominal cutter boxes with fitted STL AABBs (`docs/evidence/cutter_boxes_fitted.json`).
 - [x] Select and document wrist-camera extrinsics
       (`docs/evidence/camera_offset_raycast.json`: `close_lateral` `[0, -0.06, 0.10]` m,
-      1259/1478 cuts visible). Wrist RGB stays `enabled: false` until a renderer job.
+      1259/1478 cuts visible). This is a simulation candidate, not the physical
+      BDS camera0 frame. Wrist RGB stays `enabled: false`.
+- [x] Generate URDF from pinned BDS Xacro/config and selected UR5e calibration;
+      record source/calibration/generated-file/mesh hashes and fixed transforms
+      (`docs/evidence/urdf_generation_ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.json`).
+- [x] Import that fresh URDF and promote the exact content-addressed root
+      (`docs/evidence/urdf_import_21136450.json`: `status: complete`, `ok: true`,
+      six UR joints, no slider, provenance-verified fixed transforms).
+- [ ] GPU-validate the implemented pair of live 8x8
+      `MultiMeshRayCasterCamera` sensors. They track `mock_pruner__base` with
+      the reviewed `mock_pruner__tof0/tof1` offsets; require both range tables
+      to respond to controlled EEF motion before accepting the runtime gate.
+- [ ] Identify the physical camera model and calibrated optical transform; then
+      renderer-check the selected simulation view.
 
-Hard gate: `camera_offset` is now the ray-cast winner (`close_lateral`).
-Wrist RGB stays off until a renderer (or occlusion) job confirms that pose.
+Hard gate: the BDS Xacro has a camera0 translation and its CAD archive has a
+RealSense-named mount, but model/optical calibration remain unknown.
+`close_lateral` is only the ray-cast simulation winner. Wrist RGB stays off.
 
 ## Phase 3 — task and baselines
 
@@ -69,31 +88,46 @@ Wrist RGB stays off until a renderer (or occlusion) job confirms that pose.
 - [x] Add dense reward with an alignment-weight ablation hook.
 - [x] Add radius/neighbourhood curriculum (thick branch → thin spur).
 - [x] Add scripted ToF pan/pitch/roll/approach (original reimplementation).
+- [x] Transform reviewed base-frame ToF points to `mock_pruner__tool0` in the
+      scripted baseline and regression-test the 8 cm standoff. Runtime link-pose
+      validation remains open until the live-sensor smoke passes.
 - [x] Add CuRobo UR5e placeholder spheres and a not-yet-configured status.
-- [ ] Add contact/collision state from PhysX (ContactSensor wired; job `21079145`
-      died on squashfuse timeout before JSON — requeue `hpc/slurm/env_smoke.sbatch`).
+- [ ] Validate contact/collision state from the wired PhysX `ContactSensor`.
+      Job `21146271` failed opaquely at `phase: construct` because its evidence
+      flush preceded cleanup/exception capture. Job `21153271` then preserved
+      the exact unresolved `{ENV_REGEX_NS}/Robot` error; directly constructed
+      assets now use globally rooted v60 paths. Retry `21153411` is pending on
+      `QOSGrpGRES` (see `SLURM_JOBS.md`).
 - [x] Configure the CuRobo UR5e oracle on the imported USD
       (`docs/evidence/curobo_spheres.json`: link bounding spheres from
       pybullet-tree-sim collision STLs). Runtime still needs an Isaac job.
-- [ ] Run both baselines in Isaac (`hpc/slurm/baselines.sbatch`).
+- [ ] Run both baselines on live sensor observations in Isaac
+      (`hpc/slurm/baselines.sbatch`), after a green environment smoke.
 
 Hard gate: do not report a learned policy without scripted and oracle baselines.
 `tools/train.py` refuses to start if those flags are unset.
 
 ## Phase 4 — policies and the robustness ladder
 
-- [x] Observation variants A flow / B ToF / C metric-student / D fused.
+- [x] Observation builders/contracts A flow / B ToF / C metric-student / D fused.
 - [x] Five-seed protocol (`0..4`) and 20 run IDs.
 - [x] skrl PPO config sized for the pruning task.
 - [x] Continuous ladder `d ∈ [0, 1]` with the plan's randomization axes.
 - [x] Injected cut-point error for the perception-sensitivity sweep.
 - [x] Variant A/B/C observation widths must differ; C/D match at 8×8
       (`observation_width()`, `PruningEnvCfg.__post_init__`).
+- [ ] Close all live observation feeds: dual ToF is implemented but awaits a
+      passing GPU smoke; flow and metric-student remain placeholders.
 - [ ] One v60 job: trainer import + env construct A–D + obs asserts + step +
-      PhysX contact (`hpc/slurm/env_smoke.sbatch` → `docs/evidence/smoke_<jobid>.json`).
+      PhysX contact + sensor prim/transform evidence + geometry-response delta
+      (`hpc/slurm/env_smoke.sbatch` → `docs/evidence/smoke_<jobid>.json`).
+      Attempt `21146271` is an opaque construct failure and `21153271` is the
+      diagnosed global-path failure. Retry `21153411` is pending and is not a
+      pass until its JSON is complete and green.
 - [ ] Port DirectRLEnv through Lab 3.x if that smoke needs more than the three
       existing surface shims — subclass Lab 3 rather than add a fourth.
-- [ ] Train variants A–D × 5 seeds on ray-cast ToF.
+- [ ] Train variants A–D × 5 seeds on ray-cast ToF, only after the live env
+      smoke and both baseline gates pass.
 - [ ] Per-axis ladder sensitivity.
 
 DA2-ft runs once to propose a target, not at every PPO step. Protocol field
@@ -104,7 +138,7 @@ DA2-ft runs once to propose a target, not at every PPO step. Protocol field
 - [x] Episode metrics: success, cut error, perpendicularity, collisions, steps.
 - [x] Success vs injected cut-point error bins.
 - [x] 30 cm camera-rect helper (`CAMERA_RECT_DEPTH = 0.30`).
-- [x] Isaac vs PyBullet ranking-inversion test.
+- [x] Synthetic ranking-inversion unit test (not Isaac-vs-PyBullet results).
 - [ ] Held-out Envy `00042` / `00065` and untouched UFO rollouts in Isaac.
 - [ ] PyBullet sim2sim numbers.
 - [ ] 30 cm box rendered in Isaac and compared to Blender.

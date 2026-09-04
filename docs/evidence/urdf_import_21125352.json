@@ -1,0 +1,109 @@
+{
+  "asset_id": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+  "converter_config": {
+    "asset_path": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/urdf/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.urdf",
+    "fix_base": true,
+    "force_usd_conversion": true,
+    "make_instanceable": true,
+    "merge_fixed_joints": false,
+    "self_collision": false,
+    "usd_dir": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+    "usd_file_name": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.usda"
+  },
+  "created_at": "2026-09-02T03:11:19.787984+00:00",
+  "imported": false,
+  "input": {
+    "absolute_urdf_sha256_verified": true,
+    "provenance": "docs/evidence/urdf_generation_ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.json",
+    "provenance_asset_id_verified": true,
+    "provenance_sha256": "6e646c7930bb92038b7fd15c35ccc787ca30b058b879614dc7f7bff62cc8746b",
+    "urdf": "artifacts/urdf/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.urdf",
+    "urdf_sha256": "a5c04da197c7de2588f1716bb7b25fee47b500ee98856bdc4d640fea90218f44"
+  },
+  "job": {
+    "array_job_id": null,
+    "array_task_id": null,
+    "cluster": null,
+    "id": null,
+    "name": null,
+    "partition": null,
+    "submit_dir": null
+  },
+  "node": {
+    "cuda_visible_devices": "0",
+    "hostname": "cn-gpu5.hpc.engr.oregonstate.edu",
+    "slurmd_nodename": null
+  },
+  "ok": false,
+  "output": {
+    "directory": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+    "files": [
+      {
+        "bytes": 32,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/.asset_hash",
+        "sha256": "431c08b9f86e369f4b58227aa0f41af65539fce27e3975100c5a342289025a4b"
+      },
+      {
+        "bytes": 1206,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/config.yaml",
+        "sha256": "c76e1f010deb9290530a86c1b5e37cd977d5a91579b0e12c1c95e374c9593459"
+      },
+      {
+        "bytes": 17780,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/Physics/mujoco.usda",
+        "sha256": "cc31d8611c7cefd0b30f8facee4280f42d4c05dfc720dad4933fb9a79b51bd52"
+      },
+      {
+        "bytes": 35458,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/Physics/physics.usda",
+        "sha256": "55796b9f6e4b375317cbf7b2f526b39dcc0b4ea935135537ebc95f80b3578456"
+      },
+      {
+        "bytes": 2381,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/Physics/physx.usda",
+        "sha256": "ae00ac3ad231ba09ce773bcb168d49161de83bb6ccd429602f6c46eeb9bb8b48"
+      },
+      {
+        "bytes": 59588,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/base.usda",
+        "sha256": "cdc4c40c1186ddc013d3f8f512555c68ffe491356cf5f6ec61425d52b501b376"
+      },
+      {
+        "bytes": 3018127,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/geometries.usd",
+        "sha256": "1238adc448fca9a626ebd077a51ec78e46c5dff10097872cbb4cb7b541b81476"
+      },
+      {
+        "bytes": 25796,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/instances.usda",
+        "sha256": "201b8ae35bd9fcce813c659ceebcf249939c73003847b04a2bf0d25d81494046"
+      },
+      {
+        "bytes": 11658,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/materials.usda",
+        "sha256": "983d99c2697629f95008ee8974dd45d67c68ca361e06184bca08bf4ba8b8b60e"
+      },
+      {
+        "bytes": 19859,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/robot.usda",
+        "sha256": "951d080fe19e746d21efcedb0c133b5d448bf99bcf0324bb81df7a3e2ddf918b"
+      },
+      {
+        "bytes": 1757,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda",
+        "sha256": "03d80e6999b0fbc9825e947dc412fde1fb6dc6bf898839e422b54278af23a7cc"
+      }
+    ],
+    "root_layer": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.usda"
+  },
+  "reason": "RuntimeError: converter returned unexpected USD path: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda != /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.usda",
+  "schema_version": 1,
+  "stack": {
+    "bhl_stack": "v60",
+    "python_executable": "/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/bin/python",
+    "python_version": "3.12.14"
+  },
+  "stage_validation": null,
+  "status": "failed",
+  "updated_at": "2026-09-02T03:12:24.983811+00:00"
+}

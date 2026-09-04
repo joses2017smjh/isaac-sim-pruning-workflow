@@ -54,7 +54,11 @@ def _write_axis_aligned_box_stl(path, minimum, maximum) -> None:
 
 def test_ur5e_spec_uses_hardware_prefixes_and_does_not_spawn_slider() -> None:
     spec = load_ur5e_pruner_spec()
-    assert spec.eef_body == "mock_pruner__tool0"
+    assert spec.physics_eef_body == "mock_pruner__base"
+    assert spec.eef_body == spec.physics_eef_body  # compatibility alias
+    assert spec.control_tool_frame == "mock_pruner__tool0"
+    assert spec.control_tool_translation_in_physics_body_m == (0.0, 0.0, 0.1601525)
+    assert spec.control_tool_quaternion_wxyz_in_physics_body == (1.0, 0.0, 0.0, 0.0)
     assert spec.slider_held_fixed
     assert spec.action_dim == 7  # EE pose xyz+wxyz, not 6R+slider
     assert spec.joint_names_expr == ("ur5e__.*",)

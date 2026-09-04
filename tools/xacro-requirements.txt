@@ -1,0 +1,3 @@
+# CPU-only robot-description generator. Install with --target under artifacts/tools.
+xacro==2.1.1
+PyYAML==6.0.3

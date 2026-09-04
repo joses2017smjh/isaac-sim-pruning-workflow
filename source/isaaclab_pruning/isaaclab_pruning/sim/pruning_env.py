@@ -19,7 +19,7 @@ def require_isaaclab() -> None:
         raise RuntimeError(ISAAC_IMPORT_ERROR) from error
 
 
-def make_pruning_env_cls():
+def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isaac import gate.
     """Build the DirectRLEnv subclass only after Isaac Lab is importable."""
     require_isaaclab()
 
@@ -33,19 +33,34 @@ def make_pruning_env_cls():
     import numpy as np
     import torch
 
+    from pxr import UsdPhysics
+
     from isaaclab.assets import Articulation
     from isaaclab.controllers import DifferentialIKController, DifferentialIKControllerCfg
     from isaaclab.envs import DirectRLEnv
     from isaaclab.managers import SceneEntityCfg
-    from isaaclab.sensors import ContactSensor
+    from isaaclab.sensors import ContactSensor, MultiMeshRayCasterCamera
     from isaaclab.sim.spawners.from_files import GroundPlaneCfg, UsdFileCfg, spawn_from_usd, spawn_ground_plane
+    from isaaclab.sim.spawners.shapes import CuboidCfg
+    from isaaclab.sim.utils import resolve_prim_pose, resolve_prim_scale
 
     from isaaclab_pruning.geometry.cut_point import CutPoint
     from isaaclab_pruning.geometry.cutter import cutter_boxes_from_spec
     from isaaclab_pruning.geometry.wood import nearby_wood_in_failure_zone
     from isaaclab_pruning.policies.observations import ObservationVariant, build_observation, proprioception
-    from isaaclab_pruning.robot import load_ur5e_pruner_spec, repository_root
-    from isaaclab_pruning.sensors.tof_noise import ToFNoiseConfig, apply_tof_noise
+    from isaaclab_pruning.robot import (
+        compose_physics_body_to_control_tool_pose,
+        load_ur5e_pruner_spec,
+        point_offset_in_jacobian_frame,
+        repository_root,
+        shift_spatial_jacobian_to_point,
+    )
+    from isaaclab_pruning.sensors.tof_noise import ToFNoiseConfig, ToFStatus, apply_tof_noise
+    from isaaclab_pruning.sensors.tof_raycaster import (
+        TOF_SITE_PRIM_EXPRS,
+        VL53L8CX_DATA_TYPE,
+    )
+    from isaaclab_pruning.sim.tof_smoke_geometry import TOF_SMOKE_TARGET
     from isaaclab_pruning.task.loop import episode_start_target
     from isaaclab_pruning.task.reward import dense_pruning_reward
     from isaaclab_pruning.task.success import evaluate_cut_success
@@ -71,21 +86,44 @@ def make_pruning_env_cls():
                     cfg=UsdFileCfg(usd_path=str(tree_usd.resolve())),
                     translation=(0.0, 1.0, 0.0),
                 )
+            self._tof_smoke_target_prim = None
+            if self.cfg.tof_smoke_target_enabled:
+                if int(self.cfg.scene.num_envs) != 1:
+                    raise ValueError("The deterministic ToF smoke target is validated only for one environment.")
+                expected_targets = [TOF_SMOKE_TARGET.prim_expr]
+                if any(
+                    list(sensor_cfg.mesh_prim_paths) != expected_targets
+                    for sensor_cfg in (self.cfg.tof0_cfg, self.cfg.tof1_cfg)
+                ):
+                    raise ValueError(
+                        "The ToF smoke target was enabled without routing both ray-casters exclusively to it."
+                    )
+                target_cfg = CuboidCfg(size=tuple(self.cfg.tof_smoke_target_size_m))
+                self._tof_smoke_target_prim = target_cfg.func(
+                    TOF_SMOKE_TARGET.prim_path,
+                    target_cfg,
+                    translation=tuple(self.cfg.tof_smoke_target_position_w_m),
+                )
             self.robot = Articulation(self.cfg.robot_cfg)
             self.contact = ContactSensor(self.cfg.contact_cfg)
+            self.tof_sensors = {
+                "tof0": MultiMeshRayCasterCamera(self.cfg.tof0_cfg),
+                "tof1": MultiMeshRayCasterCamera(self.cfg.tof1_cfg),
+            }
             self.scene.clone_environments(copy_from_source=False)
             if self.device == "cpu":
                 self.scene.filter_collisions(global_prim_paths=["/World/ground"])
             self.scene.articulations["robot"] = self.robot
             self.scene.sensors["arm_contact"] = self.contact
+            self.scene.sensors.update(self.tof_sensors)
             self.robot_entity_cfg = SceneEntityCfg(
                 name="robot",
                 joint_names=[joint.name for joint in self.spec.arm_joints],
-                body_names=[self.spec.eef_body],
+                body_names=[self.spec.physics_eef_body],
             )
             self.robot_entity_cfg.resolve(self.scene)
             self._ensure_target()
-            self._fill_observation_buffers()
+            self._initialize_observation_buffers()
             self.ik_controller = DifferentialIKController(
                 cfg=DifferentialIKControllerCfg(
                     command_type="pose",
@@ -109,17 +147,38 @@ def make_pruning_env_cls():
             jacobians = as_torch(self.robot.root_physx_view.get_jacobians())[
                 :, jacobi_idx, :, self.robot_entity_cfg.joint_ids
             ]
-            eef_pose_w = as_torch(self.robot.data.body_pose_w)[:, eef_idx]
+            physics_body_pose_w = as_torch(self.robot.data.body_pose_w)[:, eef_idx]
             root_pose_w = as_torch(self.robot.data.root_pose_w)
-            from isaaclab.utils.math import subtract_frame_transforms
+            from isaaclab.utils.math import matrix_from_quat, quat_inv, subtract_frame_transforms
 
-            eef_pos_b, eef_quat_b = subtract_frame_transforms(
-                root_pose_w[:, 0:3], root_pose_w[:, 3:7], eef_pose_w[:, 0:3], eef_pose_w[:, 3:7]
+            physics_body_pos_b, physics_body_quat_b = subtract_frame_transforms(
+                root_pose_w[:, 0:3],
+                root_pose_w[:, 3:7],
+                physics_body_pose_w[:, 0:3],
+                physics_body_pose_w[:, 3:7],
             )
+            physics_body_pose_b = torch.cat((physics_body_pos_b, physics_body_quat_b), dim=-1)
+            # PhysX exposes the geometric Jacobian in world coordinates while
+            # DifferentialIKController consumes it with a root-frame pose.
+            # Rotate both spatial blocks before shifting the reference point.
+            root_rotation_bw = matrix_from_quat(quat_inv(root_pose_w[:, 3:7]))
+            jacobians = jacobians.clone()
+            jacobians[:, :3, :] = torch.bmm(root_rotation_bw, jacobians[:, :3, :])
+            jacobians[:, 3:6, :] = torch.bmm(root_rotation_bw, jacobians[:, 3:6, :])
+            control_tool_pose_b = compose_physics_body_to_control_tool_pose(
+                physics_body_pose_b,
+                self.spec.control_tool_translation_in_physics_body_m,
+                self.spec.control_tool_quaternion_wxyz_in_physics_body,
+            )
+            tool_offset_b = point_offset_in_jacobian_frame(
+                physics_body_quat_b,
+                self.spec.control_tool_translation_in_physics_body_m,
+            )
+            control_tool_jacobians = shift_spatial_jacobian_to_point(jacobians, tool_offset_b)
             joint_pos_des = self.ik_controller.compute(
-                eef_pos_b,
-                eef_quat_b,
-                jacobians,
+                control_tool_pose_b[:, 0:3],
+                control_tool_pose_b[:, 3:7],
+                control_tool_jacobians,
                 as_torch(self.robot.data.joint_pos)[:, self.robot_entity_cfg.joint_ids],
             )
             self.robot.set_joint_position_target(joint_pos_des, joint_ids=self.robot_entity_cfg.joint_ids)
@@ -138,7 +197,7 @@ def make_pruning_env_cls():
             return self._cut_cache
 
         def _compute_cut_success(self):
-            eef_pose = as_torch(self.robot.data.body_pose_w)[:, self.robot_entity_cfg.body_ids[0], 0:7]
+            eef_pose = self._control_tool_pose_w()
             mouth, failure = cutter_boxes_from_spec(
                 eef_pose_w=eef_pose,
                 mouth_half_extents=self.spec.mouth_half_extents_m,
@@ -170,7 +229,7 @@ def make_pruning_env_cls():
             )
 
         def _get_rewards(self) -> torch.Tensor:
-            eef = as_torch(self.robot.data.body_pose_w)[:, self.robot_entity_cfg.body_ids[0], 0:3]
+            eef = self._control_tool_pose_w()[:, 0:3]
             return dense_pruning_reward(eef, self.target.position_w, self._cut_success(), self.actions)
 
         def _get_dones(self):
@@ -178,21 +237,105 @@ def make_pruning_env_cls():
             time_out = self.episode_length_buf >= self.max_episode_length
             return success, time_out
 
-        def _fill_observation_buffers(self) -> None:
-            """ToF ≠ metric by construction so C vs D cannot be a silent copy."""
+        def _initialize_observation_buffers(self) -> None:
+            """Allocate observations; ToF starts invalid until a live frame arrives.
+
+            Flow and metric depth remain explicit Phase-3 placeholders. Unlike
+            the old smoke constants, both ToF channels are populated only from
+            registered scene sensors.
+            """
             n = self.num_envs
             th, tw = self.cfg.tof_hw
             fh, fw = self.cfg.flow_hw
             mh, mw = self.cfg.metric_hw
             self.flow = torch.zeros((n, fh, fw, 2), device=self.device)
-            self.tof0 = torch.full((n, th, tw), 0.40, device=self.device)
-            self.tof1 = torch.full((n, th, tw), 0.42, device=self.device)
-            self.tof0_valid = torch.ones((n, th, tw), dtype=torch.bool, device=self.device)
-            self.tof1_valid = torch.ones((n, th, tw), dtype=torch.bool, device=self.device)
-            self.tof0_var = torch.full((n, th, tw), 1e-4, device=self.device)
-            self.tof1_var = torch.full((n, th, tw), 1e-4, device=self.device)
             self.metric_student = torch.full((n, mh, mw), 1.20, device=self.device)
             self.metric_var = torch.full((n, mh, mw), 1e-2, device=self.device)
+            self._tof_noise_cfg = ToFNoiseConfig(
+                min_range_m=float(self.cfg.tof_min_range_m),
+                max_range_m=float(self.cfg.tof_max_range_m),
+                min_sigma_m=0.003 if self.cfg.tof_noise_enabled else 0.0,
+                range_sigma_fraction=0.03 if self.cfg.tof_noise_enabled else 0.0,
+                dropout_probability=0.05 if self.cfg.tof_noise_enabled else 0.0,
+                thin_dropout_probability=0.30 if self.cfg.tof_noise_enabled else 0.0,
+            )
+            self.tof0 = torch.empty((n, th, tw), device=self.device)
+            self.tof1 = torch.empty((n, th, tw), device=self.device)
+            self.tof0_raw = torch.empty((n, th, tw), device=self.device)
+            self.tof1_raw = torch.empty((n, th, tw), device=self.device)
+            self.tof0_valid = torch.empty((n, th, tw), dtype=torch.bool, device=self.device)
+            self.tof1_valid = torch.empty((n, th, tw), dtype=torch.bool, device=self.device)
+            self.tof0_var = torch.empty((n, th, tw), device=self.device)
+            self.tof1_var = torch.empty((n, th, tw), device=self.device)
+            self.tof0_status = torch.empty((n, th, tw), dtype=torch.int8, device=self.device)
+            self.tof1_status = torch.empty((n, th, tw), dtype=torch.int8, device=self.device)
+            self._tof_last_frame = {
+                name: torch.full((n,), -1, dtype=torch.int64, device=self.device) for name in self.tof_sensors
+            }
+            self._tof_source = "live_multi_mesh_ray_caster"
+            self._reset_tof_buffers()
+
+        def _reset_tof_buffers(self, env_ids: torch.Tensor | slice | None = None) -> None:
+            ids = slice(None) if env_ids is None else env_ids
+            for name in self.tof_sensors:
+                ranges = getattr(self, name)
+                raw = getattr(self, f"{name}_raw")
+                valid = getattr(self, f"{name}_valid")
+                variance = getattr(self, f"{name}_var")
+                status = getattr(self, f"{name}_status")
+                ranges[ids] = float("nan")
+                raw[ids] = float("nan")
+                valid[ids] = False
+                variance[ids] = float("inf")
+                status[ids] = int(ToFStatus.OUT_OF_RANGE)
+                self._tof_last_frame[name][ids] = -1
+
+        def _refresh_live_tof(self) -> None:
+            """Consume each new 15 Hz ray-caster frame exactly once.
+
+            The environment steps at 60 Hz. Frame counters prevent stochastic
+            noise/dropout from being re-sampled three extra times while the
+            underlying 15 Hz range image is unchanged.
+            """
+            expected_shape = (self.num_envs, *tuple(self.cfg.tof_hw), 1)
+            refreshed = False
+            for name, sensor in self.tof_sensors.items():
+                data = sensor.data
+                output = data.output
+                if output is None or VL53L8CX_DATA_TYPE not in output:
+                    raise RuntimeError(f"{name} produced no {VL53L8CX_DATA_TYPE!r} output.")
+                raw_hwc = as_torch(output[VL53L8CX_DATA_TYPE])
+                if tuple(raw_hwc.shape) != expected_shape:
+                    raise RuntimeError(f"{name} output shape {tuple(raw_hwc.shape)} != expected {expected_shape}.")
+                frame = as_torch(sensor.frame).reshape(-1).to(device=self.device, dtype=torch.int64)
+                if frame.shape != self._tof_last_frame[name].shape:
+                    raise RuntimeError(
+                        f"{name} frame shape {tuple(frame.shape)} != {tuple(self._tof_last_frame[name].shape)}."
+                    )
+                changed = frame != self._tof_last_frame[name]
+                if not bool(changed.any().item()):
+                    continue
+                ids = changed.nonzero(as_tuple=False).squeeze(-1)
+                refreshed = True
+                raw = raw_hwc[ids, ..., 0]
+                observation = apply_tof_noise(raw, config=self._tof_noise_cfg)
+                getattr(self, f"{name}_raw")[ids] = raw
+                getattr(self, name)[ids] = observation.range_m
+                getattr(self, f"{name}_valid")[ids] = observation.valid
+                variance = observation.variance_m2
+                if not self.cfg.tof_noise_enabled:
+                    # Zero noise is useful for a geometry smoke, but a zero
+                    # variance would make valid ToF disappear from fusion.
+                    variance = torch.where(
+                        observation.valid,
+                        torch.full_like(variance, 1.0e-12),
+                        torch.full_like(variance, float("inf")),
+                    )
+                getattr(self, f"{name}_var")[ids] = variance
+                getattr(self, f"{name}_status")[ids] = observation.status
+                self._tof_last_frame[name][ids] = frame[ids]
+            if refreshed:
+                self._tof_source = "live_multi_mesh_ray_caster"
 
         def _require_buffer(self, name: str):
             if not hasattr(self, name):
@@ -202,9 +345,17 @@ def make_pruning_env_cls():
                 )
             return getattr(self, name)
 
+        def _control_tool_pose_w(self) -> torch.Tensor:
+            physics_body_pose_w = as_torch(self.robot.data.body_pose_w)[:, self.robot_entity_cfg.body_ids[0], 0:7]
+            return compose_physics_body_to_control_tool_pose(
+                physics_body_pose_w,
+                self.spec.control_tool_translation_in_physics_body_m,
+                self.spec.control_tool_quaternion_wxyz_in_physics_body,
+            )
+
         def _proprio(self) -> torch.Tensor:
             joints = self.robot_entity_cfg.joint_ids
-            eef = as_torch(self.robot.data.body_pose_w)[:, self.robot_entity_cfg.body_ids[0], 0:7]
+            eef = self._control_tool_pose_w()
             return proprioception(
                 as_torch(self.robot.data.joint_pos)[:, joints],
                 as_torch(self.robot.data.joint_vel)[:, joints],
@@ -212,6 +363,7 @@ def make_pruning_env_cls():
             )
 
         def observation_for_variant(self, variant: ObservationVariant) -> torch.Tensor:
+            self._refresh_live_tof()
             return build_observation(
                 variant,
                 goal_w=self.target.position_w,
@@ -253,17 +405,121 @@ def make_pruning_env_cls():
                 env_ids=ids,
             )
             self._ensure_target()
-            self._fill_observation_buffers()
+            self._reset_tof_buffers(ids)
             self._cut_cache = None
 
         def apply_tof_observation(
             self, ranges0, ranges1, radii0=None, radii1=None, config: ToFNoiseConfig | None = None
         ):
+            """Inject debug ToF tables until the next live ray-caster frame."""
             noisy0 = apply_tof_noise(ranges0, hit_radii_m=radii0, config=config)
             noisy1 = apply_tof_noise(ranges1, hit_radii_m=radii1, config=config)
             self.tof0, self.tof1 = noisy0.range_m, noisy1.range_m
+            self.tof0_raw, self.tof1_raw = ranges0.clone(), ranges1.clone()
             self.tof0_valid, self.tof1_valid = noisy0.valid, noisy1.valid
             self.tof0_var, self.tof1_var = noisy0.variance_m2, noisy1.variance_m2
+            self.tof0_status, self.tof1_status = noisy0.status, noisy1.status
+            for name, sensor in self.tof_sensors.items():
+                self._tof_last_frame[name][:] = (
+                    as_torch(sensor.frame).reshape(-1).to(device=self.device, dtype=torch.int64)
+                )
+            self._tof_source = "external_debug_injection"
+
+        def _range_stats(self, ranges: torch.Tensor, valid: torch.Tensor | None = None) -> dict:
+            mask = torch.isfinite(ranges)
+            if valid is not None:
+                mask &= valid
+            selected = ranges[mask]
+            stats = {
+                "shape": list(ranges.shape),
+                "finite_fraction": float(torch.isfinite(ranges).to(dtype=torch.float32).mean().item()),
+                "valid_fraction": float(mask.to(dtype=torch.float32).mean().item()),
+                "min_m": None,
+                "median_m": None,
+                "max_m": None,
+            }
+            if selected.numel():
+                stats.update(
+                    min_m=float(selected.min().item()),
+                    median_m=float(selected.median().item()),
+                    max_m=float(selected.max().item()),
+                )
+            return stats
+
+        def tof_state(self) -> dict:
+            """Return JSON-safe live sensor provenance, poses, frames, and ranges."""
+            self._refresh_live_tof()
+            sensors = {}
+            for name, sensor in self.tof_sensors.items():
+                data = sensor.data
+                frame = as_torch(sensor.frame).reshape(-1)
+                sensors[name] = {
+                    "class": type(sensor).__name__,
+                    "tracking_prim_expr": sensor.cfg.prim_path,
+                    "logical_site_prim_expr": TOF_SITE_PRIM_EXPRS[name],
+                    "mesh_prim_paths": [
+                        target if isinstance(target, str) else target.prim_expr for target in sensor.cfg.mesh_prim_paths
+                    ],
+                    "update_period_s": float(sensor.cfg.update_period),
+                    "frame": frame.detach().cpu().tolist(),
+                    "consumed_frame": self._tof_last_frame[name].detach().cpu().tolist(),
+                    "position_w_m": as_torch(data.pos_w).detach().cpu().tolist(),
+                    "quaternion_w_ros_xyzw": as_torch(data.quat_w_ros).detach().cpu().tolist(),
+                    "raw": self._range_stats(getattr(self, f"{name}_raw")),
+                    "observation": self._range_stats(getattr(self, name), getattr(self, f"{name}_valid")),
+                }
+            return {
+                "source": self._tof_source,
+                "noise_enabled": bool(self.cfg.tof_noise_enabled),
+                "range_limits_m": [
+                    float(self.cfg.tof_min_range_m),
+                    float(self.cfg.tof_max_range_m),
+                ],
+                "sensors": sensors,
+            }
+
+        def tof_smoke_target_state(self) -> dict:
+            """Return authored and actual stage state for the opt-in smoke wall."""
+            state = TOF_SMOKE_TARGET.manifest()
+            state.update(
+                enabled=bool(self.cfg.tof_smoke_target_enabled),
+                position_w_m=list(self.cfg.tof_smoke_target_position_w_m),
+                size_m=list(self.cfg.tof_smoke_target_size_m),
+                sensor_mesh_prim_paths={
+                    name: [
+                        target if isinstance(target, str) else target.prim_expr for target in sensor.cfg.mesh_prim_paths
+                    ]
+                    for name, sensor in self.tof_sensors.items()
+                },
+            )
+            prim = self._tof_smoke_target_prim
+            if prim is None:
+                state.update(
+                    stage_prim_valid=False,
+                    stage_prim_type=None,
+                    geometry_prim_path=None,
+                    geometry_prim_type=None,
+                    collision_api_applied=None,
+                    rigid_body_api_applied=None,
+                )
+            else:
+                geometry_path = f"{TOF_SMOKE_TARGET.prim_path}/geometry/mesh"
+                geometry_prim = prim.GetStage().GetPrimAtPath(geometry_path)
+                actual_position, actual_orientation = resolve_prim_pose(prim)
+                cube_size = float(geometry_prim.GetAttribute("size").Get())
+                geometry_scale = resolve_prim_scale(geometry_prim)
+                state.update(
+                    stage_prim_valid=bool(prim.IsValid()),
+                    stage_prim_type=str(prim.GetTypeName()),
+                    geometry_prim_path=geometry_path,
+                    geometry_prim_type=(str(geometry_prim.GetTypeName()) if geometry_prim.IsValid() else None),
+                    actual_position_w_m=[float(value) for value in actual_position],
+                    actual_orientation_xyzw=[float(value) for value in actual_orientation],
+                    actual_size_m=[cube_size * float(value) for value in geometry_scale],
+                    collision_api_applied=bool(geometry_prim.HasAPI(UsdPhysics.CollisionAPI)),
+                    rigid_body_api_applied=bool(prim.HasAPI(UsdPhysics.RigidBodyAPI)),
+                )
+            return state
 
         def contact_state(self) -> dict:
             forces = as_torch(self.contact.data.net_forces_w)

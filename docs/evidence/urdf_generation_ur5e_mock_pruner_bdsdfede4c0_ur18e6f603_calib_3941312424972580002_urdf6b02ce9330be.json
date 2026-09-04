@@ -1,0 +1,603 @@
+{
+  "asset_id": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+  "generator": "tools/generate_robot_urdf.py",
+  "inputs": {
+    "calibration": {
+      "hash": "calib_3941312424972580002",
+      "path": "third_party/src/branch_detection_system/branch_detection_system_description/config/robot_calibration.yaml",
+      "sha256": "042e408b56d78a20d442529783a5a1418c42f56202bceafa9fedafc2cda47274"
+    },
+    "manifest": "third_party/sources.yaml",
+    "mappings": {
+      "kinematics_params": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/branch_detection_system/branch_detection_system_description/config/robot_calibration.yaml",
+      "name": "pruning_robot",
+      "parent0": "world",
+      "parent1": "ur5e",
+      "robot_part0": "ur5e",
+      "robot_part1": "mock_pruner",
+      "robot_stack_qty": "2",
+      "tof0_offset": "0.04685226669 0.0 0.14444246761",
+      "tof1_offset": "-0.04685226669 0.0 0.14444246761",
+      "ur_prefix": "ur5e__"
+    },
+    "package_map": {
+      "path": "artifacts/urdf/package_map.json",
+      "sha256": "1641d9a9bd0dbd9da71bf2329005bbd25577d0c8ae500d7ab7daff5440ba87c1"
+    },
+    "rig": "source/isaaclab_pruning/isaaclab_pruning/config/rigs/mock_pruner_vl53l8cx.yaml",
+    "root_xacro": {
+      "path": "third_party/src/branch_detection_system/branch_detection_system_description/urdf/robot/robot.urdf.xacro",
+      "sha256": "6e3deb39e9b5885ec3bc32b837fdf47d76e538fbf1a961e788a102d01e9d0583"
+    }
+  },
+  "ok": true,
+  "outputs": {
+    "canonical_urdf": {
+      "bytes": 36207,
+      "path": "artifacts/urdf/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.urdf",
+      "sha256": "6b02ce9330beff2ceded6a870d68c4fde1601c1c5f35a0ddb1cef98d1fa25c32"
+    },
+    "isaac_absolute_urdf": {
+      "bytes": 37919,
+      "path": "artifacts/urdf/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.urdf",
+      "sha256": "a5c04da197c7de2588f1716bb7b25fee47b500ee98856bdc4d640fea90218f44"
+    }
+  },
+  "sources": {
+    "branch_detection_system": {
+      "actual_revision": "dfede4c0f251358ebed7a1f90ff887847c2fbeb0",
+      "branch": "develop",
+      "clean": true,
+      "expected_revision": "dfede4c0f251358ebed7a1f90ff887847c2fbeb0"
+    },
+    "universal_robots_ros2_description": {
+      "actual_revision": "18e6f603b3ebc2ec479fecb62d6be544b15755e9",
+      "branch": "humble",
+      "clean": true,
+      "expected_revision": "18e6f603b3ebc2ec479fecb62d6be544b15755e9"
+    }
+  },
+  "validation": {
+    "active_joint_names": [
+      "ur5e__elbow_joint",
+      "ur5e__shoulder_lift_joint",
+      "ur5e__shoulder_pan_joint",
+      "ur5e__wrist_1_joint",
+      "ur5e__wrist_2_joint",
+      "ur5e__wrist_3_joint"
+    ],
+    "calibrated_joint_origins": {
+      "ur5e__elbow_joint": {
+        "rpy": [
+          3.1387591721521306,
+          3.1399085359904455,
+          -3.1415918617568104
+        ],
+        "xyz": [
+          -0.42524589830738563,
+          0.0,
+          0.0
+        ]
+      },
+      "ur5e__shoulder_lift_joint": {
+        "rpy": [
+          1.5700255468535702,
+          0.0,
+          6.116397232492479e-06
+        ],
+        "xyz": [
+          7.455974030158607e-05,
+          0.0,
+          0.0
+        ]
+      },
+      "ur5e__shoulder_pan_joint": {
+        "rpy": [
+          0.0,
+          0.0,
+          -3.760787960355172e-07
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.16240115283914125
+        ]
+      },
+      "ur5e__wrist_1_joint": {
+        "rpy": [
+          3.141249910527881,
+          -3.139353316372347,
+          3.141587447645202
+        ],
+        "xyz": [
+          -0.39250060269969583,
+          4.57820459493617e-05,
+          0.13357540748232918
+        ]
+      },
+      "ur5e__wrist_2_joint": {
+        "rpy": [
+          1.5697623437830126,
+          0.0,
+          7.739976857351617e-07
+        ],
+        "xyz": [
+          8.251127002428217e-05,
+          -0.09960307840644618,
+          0.00010298792770580052
+        ]
+      },
+      "ur5e__wrist_3_joint": {
+        "rpy": [
+          1.5726431278555015,
+          3.141592653589793,
+          -3.1415925731666685
+        ],
+        "xyz": [
+          0.00011029652149354629,
+          0.09942390073933743,
+          0.00018361637408681963
+        ]
+      }
+    },
+    "calibration_hash": "calib_3941312424972580002",
+    "fixed_frames": {
+      "mock_pruner__base_to_camera0": {
+        "rpy_rad": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation_m": [
+          -0.0017977,
+          -0.0715747,
+          0.0711646
+        ]
+      },
+      "mock_pruner__base_to_tof0": {
+        "rpy_rad": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation_m": [
+          0.04685226669,
+          0.0,
+          0.14444246761
+        ]
+      },
+      "mock_pruner__base_to_tof1": {
+        "rpy_rad": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation_m": [
+          -0.04685226669,
+          0.0,
+          0.14444246761
+        ]
+      },
+      "mock_pruner__base_to_tool0": {
+        "rpy_rad": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation_m": [
+          0.0,
+          0.0,
+          0.1601525
+        ]
+      }
+    },
+    "fixed_joint_table": [
+      {
+        "child": "dovetail_female_mount__body",
+        "name": "dovetail_female_mount__base--body",
+        "parent": "dovetail_female_mount__base",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "dovetail_female_mount__tool0",
+        "name": "dovetail_female_mount__body--tool0",
+        "parent": "dovetail_female_mount__body",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.008
+        ]
+      },
+      {
+        "child": "mock_pruner__base",
+        "name": "dovetail_female_mount__tool0--mock_pruner__base",
+        "parent": "dovetail_female_mount__tool0",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "dovetail_male_mount__body",
+        "name": "dovetail_male_mount__base--body",
+        "parent": "dovetail_male_mount__base",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "dovetail_male_mount__tool0",
+        "name": "dovetail_male_mount__body--tool0",
+        "parent": "dovetail_male_mount__body",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.02293
+        ]
+      },
+      {
+        "child": "dovetail_female_mount__base",
+        "name": "dovetail_male_mount__tool0--dovetail_female_mount__base",
+        "parent": "dovetail_male_mount__tool0",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "mock_pruner__camera0",
+        "name": "mock_pruner__base--camera0",
+        "parent": "mock_pruner__base",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          -0.0017977,
+          -0.0715747,
+          0.0711646
+        ]
+      },
+      {
+        "child": "mock_pruner__tof0",
+        "name": "mock_pruner__base--tof0",
+        "parent": "mock_pruner__base",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.04685226669,
+          0.0,
+          0.14444246761
+        ]
+      },
+      {
+        "child": "mock_pruner__tof1",
+        "name": "mock_pruner__base--tof1",
+        "parent": "mock_pruner__base",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          -0.04685226669,
+          0.0,
+          0.14444246761
+        ]
+      },
+      {
+        "child": "mock_pruner__tool0",
+        "name": "mock_pruner__base--tool0",
+        "parent": "mock_pruner__base",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.1601525
+        ]
+      },
+      {
+        "child": "rotation_correction_plate__body",
+        "name": "rotation_correction_plate__base--body",
+        "parent": "rotation_correction_plate__base",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "rotation_correction_plate__tool0",
+        "name": "rotation_correction_plate__body--tool0",
+        "parent": "rotation_correction_plate__body",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.01268
+        ]
+      },
+      {
+        "child": "dovetail_male_mount__base",
+        "name": "rotation_correction_plate__tool0--dovetail_male_mount__base",
+        "parent": "rotation_correction_plate__tool0",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "ur5e__base_link",
+        "name": "ur5e__base_joint",
+        "parent": "world",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "ur5e__base",
+        "name": "ur5e__base_link-base_fixed_joint",
+        "parent": "ur5e__base_link",
+        "rpy": [
+          0.0,
+          0.0,
+          3.141592653589793
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "ur5e__base_link_inertia",
+        "name": "ur5e__base_link-base_link_inertia",
+        "parent": "ur5e__base_link",
+        "rpy": [
+          0.0,
+          0.0,
+          3.141592653589793
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "ur5e__tool0",
+        "name": "ur5e__flange-tool0",
+        "parent": "ur5e__flange",
+        "rpy": [
+          1.5707963267948966,
+          0.0,
+          1.5707963267948966
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "rotation_correction_plate__base",
+        "name": "ur5e__tool0--rotation_correction_plate__base",
+        "parent": "ur5e__tool0",
+        "rpy": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "ur5e__flange",
+        "name": "ur5e__wrist_3-flange",
+        "parent": "ur5e__wrist_3_link",
+        "rpy": [
+          0.0,
+          -1.5707963267948966,
+          -1.5707963267948966
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "child": "ur5e__ft_frame",
+        "name": "ur5e__wrist_3_link-ft_frame",
+        "parent": "ur5e__wrist_3_link",
+        "rpy": [
+          3.141592653589793,
+          0.0,
+          0.0
+        ],
+        "xyz": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "fixed_joint_table_sha256": "9f307c5c90ec3986507bbe655e0d8cf6141df1b135e46c5808010d8317548827",
+    "forbidden_names": [],
+    "joint_count": 26,
+    "link_count": 27,
+    "meshes": [
+      {
+        "bytes": 206384,
+        "path": "third_party/src/branch_detection_system/branch_detection_system_description/meshes/end_effectors/dovetail/DovetailFemale.STL",
+        "sha256": "9a9c1a5782d0f6c591e3f34d81cba02ea7f4d2faadf3faa34183a60075b8b76f"
+      },
+      {
+        "bytes": 92484,
+        "path": "third_party/src/branch_detection_system/branch_detection_system_description/meshes/end_effectors/dovetail/DovetailMale.STL",
+        "sha256": "a238a87bfd1cfec889f91b8b074b7da1898a9211e09f5dc179042ca804424a58"
+      },
+      {
+        "bytes": 409584,
+        "path": "third_party/src/branch_detection_system/branch_detection_system_description/meshes/end_effectors/mock_pruner/MockPruner.STL",
+        "sha256": "3e8dd876588f9b60b20f3752a45be6699d38aa5d22b5d0bc1d606fcb689133ca"
+      },
+      {
+        "bytes": 135184,
+        "path": "third_party/src/branch_detection_system/branch_detection_system_description/meshes/end_effectors/rotation_correction_plate/RotationCorrectionPlate.STL",
+        "sha256": "b4396f982506d99bf68e0dde412080b3aa7197ef251485231c65e4a14e941c25"
+      },
+      {
+        "bytes": 21084,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/base.stl",
+        "sha256": "9a145e0d46f2130afdf2a2e8825a00a929870c4c3d6d8e4d1adc5f04db3aac1b"
+      },
+      {
+        "bytes": 53284,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/forearm.stl",
+        "sha256": "2e7423cab807c34160ec4f770daee5e747d70e777eb01b7beeace2b8c5751816"
+      },
+      {
+        "bytes": 70084,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/shoulder.stl",
+        "sha256": "ceb92532177daa77682f5fbd628e01c2137d168f949a7a706ce1dabe9f002387"
+      },
+      {
+        "bytes": 99684,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/upperarm.stl",
+        "sha256": "ee893044caf00075cb55b4cf666d1f1311c7979786212a501009f33bee945209"
+      },
+      {
+        "bytes": 59584,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/wrist1.stl",
+        "sha256": "f8c9f9337b6fd98c75f052e96de10e14a107ddb6874ba6b904e546f8a4e4f43a"
+      },
+      {
+        "bytes": 67584,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/wrist2.stl",
+        "sha256": "2964a63f60ce3e3cf3ad55bcf190d7876d50e373cb64b70a57cea5885eaf3c86"
+      },
+      {
+        "bytes": 7184,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/wrist3.stl",
+        "sha256": "83b3666b4ae2badd54af0d2c25a921682ecbc29e849eec646c3ed55fb74c78a3"
+      },
+      {
+        "bytes": 358056,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/visual/base.dae",
+        "sha256": "c30e4d7228ef633dca2a02c26df2316741f6642cb6333e8289dba6e6d0b22819"
+      },
+      {
+        "bytes": 1140937,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/visual/forearm.dae",
+        "sha256": "04694bf57dac46e9b8bc7c30f2eec75a1bc762e1f1a879ea30c944f24cacbad8"
+      },
+      {
+        "bytes": 1797083,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/visual/shoulder.dae",
+        "sha256": "c581bfa55b86061d9b99d315ed53817b6b693e6a500643bbf9bbb783322d585d"
+      },
+      {
+        "bytes": 3082486,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/visual/upperarm.dae",
+        "sha256": "c040a05bb224f14cfab6aa6704d70cbb773ada940eca9a3e34e6ce486c4c4c29"
+      },
+      {
+        "bytes": 1334663,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/visual/wrist1.dae",
+        "sha256": "a07a3d96d2540f9be12e4a07bcb8577d9f1e36005920c396a407804343a3b588"
+      },
+      {
+        "bytes": 1554839,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/visual/wrist2.dae",
+        "sha256": "982fa42933c6f81629882ad7975e9ba5dac5d474a6b56694e233708376cf840e"
+      },
+      {
+        "bytes": 66077,
+        "path": "third_party/src/universal_robots_ros2_description/meshes/ur5e/visual/wrist3.dae",
+        "sha256": "7a7664ac4adcd53b0870fe6a2b8b975693d846dd4d07a5f44194c7d16f4890ba"
+      }
+    ],
+    "required_frames": [
+      "mock_pruner__base",
+      "mock_pruner__camera0",
+      "mock_pruner__tof0",
+      "mock_pruner__tof1",
+      "mock_pruner__tool0"
+    ],
+    "robot_name": "pruning_robot",
+    "unresolved_uri_count": 0
+  },
+  "xacro_version": "2.1.1"
+}

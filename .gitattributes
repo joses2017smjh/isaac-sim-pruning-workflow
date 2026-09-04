@@ -11,4 +11,8 @@
 *.jit filter=lfs diff=lfs merge=lfs -text
 *.hdf5 filter=lfs diff=lfs merge=lfs -text
 
+# Reproducible documentation animations are deliberately small (<1 MiB) and
+# must remain cloneable on this HPC checkout, where Git LFS is unavailable.
+docs/demo/*.gif -filter -diff -merge -text
+
 *.bat text eol=crlf

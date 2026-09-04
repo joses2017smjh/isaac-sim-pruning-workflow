@@ -19,10 +19,17 @@ source /nfs/hpc/share/$USER/Humanoid_Lite/bhl-robustness-ladder/slurm/_env.sh
 setup_node_cache
 
 export PRUNING_ROOT=/nfs/hpc/share/$USER/isaac-sim-pruning-workflow
+: "${PRUNING_ASSET_ID:?set PRUNING_ASSET_ID to the completed import asset_id}"
+: "${PRUNING_USD:?set PRUNING_USD to the completed content-addressed root layer}"
+: "${PRUNING_USD_EVIDENCE:?set PRUNING_USD_EVIDENCE to the completed import report}"
+export PRUNING_ASSET_ID PRUNING_USD PRUNING_USD_EVIDENCE
 export PYTHONPATH=$PRUNING_ROOT/source/isaaclab_pruning${PYTHONPATH:+:$PYTHONPATH}
 export BENCH_OUT=$PRUNING_ROOT/docs/evidence/smoke_${SLURM_JOB_ID}.json
-export BHL_FORWARD_VARS="$BHL_FORWARD_VARS PRUNING_ROOT BENCH_OUT PYTHONPATH SLURM_JOB_ID SLURMD_NODENAME"
+export BHL_FORWARD_VARS="$BHL_FORWARD_VARS PRUNING_ROOT PRUNING_ASSET_ID PRUNING_USD PRUNING_USD_EVIDENCE BENCH_OUT PYTHONPATH SLURM_JOB_ID SLURMD_NODENAME"
 mkdir -p "$PRUNING_ROOT/logs" "$PRUNING_ROOT/docs/evidence"
+
+[[ -f "$PRUNING_USD" ]] || { echo "missing $PRUNING_USD"; exit 1; }
+[[ -f "$PRUNING_USD_EVIDENCE" ]] || { echo "missing $PRUNING_USD_EVIDENCE"; exit 1; }
 
 echo "=== node: $(hostname) gpu=$(nvidia-smi --query-gpu=name,driver_version --format=csv,noheader | head -1) | $(date) ==="
 bhl_exec "$PRUNING_ROOT/hpc/inner/smoke_env.sh"

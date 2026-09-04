@@ -18,8 +18,12 @@ and never asks for a Hydra engine. That gave depth without RTX (BHL: 1.6% of
 throughput at 4,096 envs; plane check 100% finite, 2.9% mean relative error).
 A mesh ray-cast has no colour. Depth yes, RGB never.
 
-For pruning, ray-cast ToF / Warp depth can still train on v51. RGB, rendered
-depth, and anything that needs materials must use v60.
+The pruning environment now instantiates two 8x8
+`MultiMeshRayCasterCamera` sensors and consumes their 15 Hz
+`distance_to_camera` output. That implementation targets the pinned v60 API;
+it is not evidence of v51 compatibility, and it still needs a passing v60
+environment smoke. RGB, rendered depth, and anything that needs materials must
+use v60.
 
 ## 3. The actual fix — Isaac Sim 6.0
 
@@ -74,15 +78,39 @@ through is the BHL trap. `observation_width()` is the contract;
 env smoke **asserts** `cfg.observation_space == obs.shape[-1]` per variant and
 `not allclose(C, D)` when ToF ≠ metric. Do not substitute a log grep.
 
+Width checks remain insufficient on their own. Flow is still zero and metric
+depth is still fixed at 1.20 m, but ToF no longer comes from the old 0.40/0.42 m
+constants: its buffers start invalid and are refreshed from two registered
+`MultiMeshRayCasterCamera` instances. The smoke therefore must record both
+sensor frames/poses and prove their raw 8x8 tables change after controlled EEF
+motion against the opt-in, non-colliding cuboid target. Until that job is green,
+this is a live-ToF implementation claim, not a live-ToF runtime result.
+
 RGB at 8×8 is 192 numbers per camera against depth's 64. If RGB ever wins a
-comparison, colour vs width is a separate question. Wrist RGB stays off until
-a renderer job validates the geometrically selected `camera_offset`
-(`close_lateral`, `[0.0, -0.06, 0.10]` m, `docs/evidence/camera_offset_raycast.json`).
+comparison, colour vs width is a separate question. BDS has a hard-coded
+camera0 translation and a RealSense-named CAD mount, but the exact model and
+calibrated optical transform are unresolved. `close_lateral`
+(`[0.0, -0.06, 0.10]` m from the control EEF) is a separate simulation
+candidate. Wrist RGB stays off until source calibration and renderer checks are
+complete. See [`ROBOT_SENSOR_SOURCES.md`](ROBOT_SENSOR_SOURCES.md).
 
 ## Batched env smoke (one RTX slot)
 
-`hpc/slurm/env_smoke.sbatch` is the next gate. One job, in order: trainer
-import on `$PY` inside `bhl_exec`, construct A/B/C/D cfgs, one DirectRLEnv,
-assert last-dims, `env.step(0)`, read PhysX contacts, write
-`docs/evidence/smoke_<jobid>.json`. v60 has `rsl_rl` and may not have `skrl`;
-do not fight a dependency install on a beta Lab.
+The source/import prerequisites are now closed: job `21136450` passed and its
+content-addressed USD is selected by the robot config, while the dual-ToF
+wiring exists in the environment. `hpc/slurm/env_smoke.sbatch` remains the GPU
+gate. It imports the available trainer, constructs the A/B/C/D configs and one
+DirectRLEnv, asserts last-dims, holds the absolute tool pose, reads PhysX
+contacts, then commands a 5 mm optical-axis motion and requires both ToF tables
+to respond before writing a green `docs/evidence/smoke_<jobid>.json`.
+
+Attempt `21146271` reached `phase: construct` but failed with `ok: false` and no
+traceback because the old cleanup ordering swallowed the caught diagnostic.
+Retry `21153271` wrote the exact error first: the manually constructed
+`DirectRLEnv` passed `{ENV_REGEX_NS}/Robot` directly into a v60 spawn function,
+which requires a globally rooted path. All directly constructed robot/sensor/
+target expressions now use `/World/envs/env_.*/...`; retry `21153411` is
+pending on `QOSGrpGRES`. Job-specific JSON, not queue state, decides the gate.
+The failures did confirm `rsl_rl` imports and `skrl` does not. Baselines and PPO
+remain blocked until a smoke report is green. See the
+[`SLURM job ledger`](../SLURM_JOBS.md).

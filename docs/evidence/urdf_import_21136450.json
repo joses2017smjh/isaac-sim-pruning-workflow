@@ -1,0 +1,575 @@
+{
+  "asset_id": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+  "converter_config": {
+    "asset_path": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/urdf/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.urdf",
+    "fix_base": true,
+    "force_usd_conversion": true,
+    "make_instanceable": true,
+    "merge_fixed_joints": false,
+    "self_collision": false,
+    "usd_dir": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+    "usd_file_name": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda"
+  },
+  "created_at": "2026-09-03T11:29:32.997735+00:00",
+  "imported": true,
+  "input": {
+    "absolute_urdf_sha256_verified": true,
+    "provenance": "docs/evidence/urdf_generation_ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.json",
+    "provenance_asset_id_verified": true,
+    "provenance_sha256": "6e646c7930bb92038b7fd15c35ccc787ca30b058b879614dc7f7bff62cc8746b",
+    "urdf": "artifacts/urdf/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.urdf",
+    "urdf_sha256": "a5c04da197c7de2588f1716bb7b25fee47b500ee98856bdc4d640fea90218f44"
+  },
+  "job": {
+    "array_job_id": null,
+    "array_task_id": null,
+    "cluster": null,
+    "id": "21136450",
+    "name": "prune-urdf-import",
+    "partition": "gpu",
+    "submit_dir": null
+  },
+  "node": {
+    "cuda_visible_devices": "0",
+    "hostname": "cn-gpu7.hpc.engr.oregonstate.edu",
+    "slurmd_nodename": "cn-gpu7"
+  },
+  "ok": true,
+  "output": {
+    "directory": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+    "files": [
+      {
+        "bytes": 32,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/.asset_hash",
+        "sha256": "431c08b9f86e369f4b58227aa0f41af65539fce27e3975100c5a342289025a4b"
+      },
+      {
+        "bytes": 1206,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/config.yaml",
+        "sha256": "8310eb72a7352589c2a34b2427a009ade401a4ad637bc22e6244fecbbb00ce7f"
+      },
+      {
+        "bytes": 17780,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/Physics/mujoco.usda",
+        "sha256": "7989236097f1bdee28af7bce22686deb44eb6633b616e6a7f802a9f01e175fd4"
+      },
+      {
+        "bytes": 35458,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/Physics/physics.usda",
+        "sha256": "c48a03b1d88b921392f5716cf90cda500cfa083456eb5fb11809b4e1d86f3539"
+      },
+      {
+        "bytes": 2381,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/Physics/physx.usda",
+        "sha256": "0eb7ed1dcf9250c64db5cd386c64f33a982f10a5fdf04b40c3bde770cbaef0fc"
+      },
+      {
+        "bytes": 59588,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/base.usda",
+        "sha256": "92df5bd73bd721cb0579bebe17a1a1759444df7acb216f5f4bfdb02e84455a26"
+      },
+      {
+        "bytes": 3018135,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/geometries.usd",
+        "sha256": "983049fdb823aea7aaa2ca111c1d53c10892fd8fe25adb1836367c155aa33afa"
+      },
+      {
+        "bytes": 25796,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/instances.usda",
+        "sha256": "b2a968821c36617b32fcf4ff9862f28c0310ce04759095122c62824bc7a5c947"
+      },
+      {
+        "bytes": 11658,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/materials.usda",
+        "sha256": "bdd1cb212c5529797c073cf35306d42505416a903522624842d0031b53e727bc"
+      },
+      {
+        "bytes": 19859,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/robot.usda",
+        "sha256": "a9583aad39f9167b18c8a39622becf2016205ea07db02b9650db85ee1984d313"
+      },
+      {
+        "bytes": 1757,
+        "path": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda",
+        "sha256": "6ffa65568f8585f7ea5938c4f49263a8b12fd7dc03e18e6872d75761efa2da82"
+      }
+    ],
+    "root_layer": "artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda"
+  },
+  "schema_version": 1,
+  "stack": {
+    "bhl_stack": "v60",
+    "isaaclab_version": "3.0.0b2",
+    "isaacsim_version": "6.0.0.1",
+    "python_executable": "/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/bin/python",
+    "python_version": "3.12.14"
+  },
+  "stage_validation": {
+    "active_ur_joint_count": 6,
+    "active_ur_joints": [
+      {
+        "name": "ur5e__shoulder_pan_joint",
+        "path": "/pruning_robot/Physics/ur5e__shoulder_pan_joint",
+        "type": "PhysicsRevoluteJoint"
+      },
+      {
+        "name": "ur5e__shoulder_lift_joint",
+        "path": "/pruning_robot/Physics/ur5e__shoulder_lift_joint",
+        "type": "PhysicsRevoluteJoint"
+      },
+      {
+        "name": "ur5e__elbow_joint",
+        "path": "/pruning_robot/Physics/ur5e__elbow_joint",
+        "type": "PhysicsRevoluteJoint"
+      },
+      {
+        "name": "ur5e__wrist_1_joint",
+        "path": "/pruning_robot/Physics/ur5e__wrist_1_joint",
+        "type": "PhysicsRevoluteJoint"
+      },
+      {
+        "name": "ur5e__wrist_2_joint",
+        "path": "/pruning_robot/Physics/ur5e__wrist_2_joint",
+        "type": "PhysicsRevoluteJoint"
+      },
+      {
+        "name": "ur5e__wrist_3_joint",
+        "path": "/pruning_robot/Physics/ur5e__wrist_3_joint",
+        "type": "PhysicsRevoluteJoint"
+      }
+    ],
+    "frames": {
+      "mock_pruner__base": {
+        "path": "/pruning_robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base",
+        "type": "Xform",
+        "world_matrix": [
+          [
+            -0.9999998399284102,
+            0.0005658029756025293,
+            3.185496615236136e-06,
+            0.0
+          ],
+          [
+            1.402530144328797e-06,
+            -0.0031511868207468787,
+            0.9999950349975019,
+            0.0
+          ],
+          [
+            0.000565810204484737,
+            0.9999948749311741,
+            0.003151185522775218,
+            0.0
+          ],
+          [
+            0.8173327016283037,
+            0.277774563105584,
+            0.06377919516371314,
+            1.0
+          ]
+        ],
+        "world_translation_m": [
+          0.8173327016283037,
+          0.277774563105584,
+          0.06377919516371314
+        ]
+      },
+      "mock_pruner__camera0": {
+        "path": "/pruning_robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base/mock_pruner__camera0",
+        "provenance_transform_verified": true,
+        "relative_to_mock_pruner_base": {
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.0017977,
+              -0.0715747,
+              0.0711646,
+              1.0
+            ]
+          ],
+          "rotation_matrix": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation_m": [
+            -0.0017977,
+            -0.0715747,
+            0.0711646
+          ]
+        },
+        "type": "Xform",
+        "world_matrix": [
+          [
+            -0.9999998399284102,
+            0.0005658029756025293,
+            3.185496615236136e-06,
+            0.0
+          ],
+          [
+            1.402530144328797e-06,
+            -0.0031511868207468787,
+            0.9999950349975019,
+            0.0
+          ],
+          [
+            0.000565810204484737,
+            0.9999948749311741,
+            0.003151185522775218,
+            0.0
+          ],
+          [
+            0.8191705666117468,
+            0.3491633264894407,
+            -0.007570902337035737,
+            1.0
+          ]
+        ],
+        "world_translation_m": [
+          0.8191705666117468,
+          0.3491633264894407,
+          -0.007570902337035737
+        ]
+      },
+      "mock_pruner__tof0": {
+        "path": "/pruning_robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base/mock_pruner__tof0",
+        "provenance_transform_verified": true,
+        "relative_to_mock_pruner_base": {
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.04685226669,
+              0.0,
+              0.14444246761,
+              1.0
+            ]
+          ],
+          "rotation_matrix": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation_m": [
+            0.04685226669,
+            0.0,
+            0.14444246761
+          ]
+        },
+        "type": "Xform",
+        "world_matrix": [
+          [
+            -0.9999998399284102,
+            0.0005658029756025293,
+            3.185496615236136e-06,
+            0.0
+          ],
+          [
+            1.402530144328797e-06,
+            -0.0031511868207468787,
+            0.9999950349975019,
+            0.0
+          ],
+          [
+            0.000565810204484737,
+            0.9999948749311741,
+            0.003151185522775218,
+            0.0
+          ],
+          [
+            0.7705621694601552,
+            0.4222427995899031,
+            0.06423450942425665,
+            1.0
+          ]
+        ],
+        "world_translation_m": [
+          0.7705621694601552,
+          0.4222427995899031,
+          0.06423450942425665
+        ]
+      },
+      "mock_pruner__tof1": {
+        "path": "/pruning_robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base/mock_pruner__tof1",
+        "provenance_transform_verified": true,
+        "relative_to_mock_pruner_base": {
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.04685226669,
+              0.0,
+              0.14444246761,
+              1.0
+            ]
+          ],
+          "rotation_matrix": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation_m": [
+            -0.04685226669,
+            0.0,
+            0.14444246761
+          ]
+        },
+        "type": "Xform",
+        "world_matrix": [
+          [
+            -0.9999998399284102,
+            0.0005658029756025293,
+            3.185496615236136e-06,
+            0.0
+          ],
+          [
+            1.402530144328797e-06,
+            -0.0031511868207468787,
+            0.9999950349975019,
+            0.0
+          ],
+          [
+            0.000565810204484737,
+            0.9999948749311741,
+            0.003151185522775218,
+            0.0
+          ],
+          [
+            0.8642666878407216,
+            0.42218978128608925,
+            0.06423421092878275,
+            1.0
+          ]
+        ],
+        "world_translation_m": [
+          0.8642666878407216,
+          0.42218978128608925,
+          0.06423421092878275
+        ]
+      },
+      "mock_pruner__tool0": {
+        "path": "/pruning_robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base/mock_pruner__tool0",
+        "provenance_transform_verified": true,
+        "relative_to_mock_pruner_base": {
+          "matrix": [
+            [
+              1.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.1601525,
+              1.0
+            ]
+          ],
+          "rotation_matrix": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "translation_m": [
+            0.0,
+            0.0,
+            0.1601525
+          ]
+        },
+        "type": "Xform",
+        "world_matrix": [
+          [
+            -0.9999998399284102,
+            0.0005658029756025293,
+            3.185496615236136e-06,
+            0.0
+          ],
+          [
+            1.402530144328797e-06,
+            -0.0031511868207468787,
+            0.9999950349975019,
+            0.0
+          ],
+          [
+            0.000565810204484737,
+            0.9999948749311741,
+            0.003151185522775218,
+            0.0
+          ],
+          [
+            0.8174233175470775,
+            0.43792624231299887,
+            0.0642838654031494,
+            1.0
+          ]
+        ],
+        "world_translation_m": [
+          0.8174233175470775,
+          0.43792624231299887,
+          0.0642838654031494
+        ]
+      },
+      "ur5e__base_link": {
+        "path": "/pruning_robot/Geometry/world/ur5e__base_link",
+        "type": "Xform",
+        "world_matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "world_translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "linear_slider_prim_paths": [],
+    "meters_per_unit": 1.0,
+    "ok": true,
+    "up_axis": "Z",
+    "used_layers": [
+      "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/Physics/physics.usda",
+      "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/Physics/physx.usda",
+      "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/base.usda",
+      "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/geometries.usd",
+      "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/instances.usda",
+      "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/materials.usda",
+      "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/payloads/robot.usda",
+      "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda",
+      "anon:0x1e233e10:ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs-session.usda"
+    ]
+  },
+  "status": "complete",
+  "updated_at": "2026-09-03T11:30:02.913840+00:00"
+}

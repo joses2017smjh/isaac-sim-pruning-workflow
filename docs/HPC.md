@@ -39,24 +39,74 @@ submitted as a step of the current one.
 The SIF is Ubuntu 22.04 (~293 MB). Isaac lives in the **venv**, bind-mounted.
 There is no separate 20 GB NVIDIA Isaac image to pin for Gate 0.
 
-## Batched env smoke (one RTX slot, after Gate 0)
+## Pinned robot and live-ToF implementation (runtime smoke pending)
+
+The current robot description was generated from pinned BDS revision `dfede4c`
+and the selected UR5e calibration. Its generation evidence records the source,
+calibration, generated-URDF, selected-mesh hashes, and the reviewed
+base-to-camera0/tof0/tof1/tool0 transforms:
+[`urdf_generation_ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.json`](evidence/urdf_generation_ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.json).
+
+Import job `21136450` **passed** its application gate on `cn-gpu7`: evidence has
+`status: complete`, `ok: true`, `imported: true`, a hashed output inventory,
+metres/Z-up, six active UR revolute joints, no slider, and provenance-verified
+camera0/ToF/tool transforms. The robot config now selects that exact nested
+content-addressed root and records `reimport_required: false`. See the
+[`job evidence`](evidence/urdf_import_21136450.json) and the consolidated
+[`SLURM ledger`](../SLURM_JOBS.md). The corresponding
+`logs/prune-urdf-import-21136450.out` is intentionally local/gitignored.
+
+The environment now constructs and registers two v60
+`MultiMeshRayCasterCamera` sensors. Each produces an 8x8
+`distance_to_camera` table at the reviewed 15 Hz cadence; the implementation
+tracks the rigid `mock_pruner__base` and applies the two verified site offsets
+because this v60 beta overwrites an authored non-rigid site's resolved offset.
+Range validity is gated to 0.03--3.4 m. CPU tests cover the configuration and
+the deterministic, non-colliding smoke wall. This is implemented code, not yet
+a successful Isaac environment result. Flow and metric-student buffers remain
+explicit placeholders.
+
+## Batched env smoke (next RTX gate)
 
 Do not split trainer import, env construct, and obs-width into three jobs.
 
 ```bash
 source /nfs/hpc/share/$USER/Humanoid_Lite/bhl-robustness-ladder/slurm/_env.sh
+export PRUNING_ROOT=/nfs/hpc/share/$USER/isaac-sim-pruning-workflow
+export PRUNING_ASSET_ID=ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be
+export PRUNING_USD="$PRUNING_ROOT/artifacts/usd/$PRUNING_ASSET_ID/${PRUNING_ASSET_ID}_abs/${PRUNING_ASSET_ID}_abs.usda"
+export PRUNING_USD_EVIDENCE="$PRUNING_ROOT/docs/evidence/urdf_import_21136450.json"
 slurm_clean sbatch hpc/slurm/env_smoke.sbatch
 ```
 
 The job must write `docs/evidence/smoke_<jobid>.json` with `"ok": true`,
 distinct A/B/C last-dims, C==D width with `not allclose` when ToF ≠ metric,
-one `env.step(0)`, and a finite PhysX contact tensor. Asserts, not log greps.
-v60 may have `rsl_rl` and not `skrl`; record both and do not pip-install in the job.
+one successful absolute-pose hold step, a finite PhysX contact tensor, both live
+8x8 sensor frames and poses, a verified non-colliding smoke target, and a
+nonzero range change after a controlled 5 mm motion along the optical axis.
+Flow and metric-student are still placeholders, so the smoke validates the
+dual-ToF path and A--D interface plumbing rather than claiming all four variants
+are live. Asserts, not log greps. Record both RL imports and do not pip-install
+in the job.
+
+Job `21146271` **failed** the application gate at `phase: construct` on
+`cn-s-1`. Its JSON has `ok: false`, no observation result, and no traceback;
+the old cleanup order swallowed the caught diagnostic. Retry `21153271`
+persisted the exact failure before cleanup: this manually built `DirectRLEnv`
+passed an unresolved `{ENV_REGEX_NS}/Robot` token to the v60 spawn function,
+which requires an absolute path. Robot, contact, ToF, tree, and smoke-target
+expressions now use the supported `/World/envs/env_.*/...` form. Retry
+`21153411` is pending on `QOSGrpGRES`. None of these attempts is a ToF, contact,
+or A--D runtime pass until a job-specific JSON is green. See
+[`smoke_21146271.json`](evidence/smoke_21146271.json),
+[`smoke_21153271.json`](evidence/smoke_21153271.json), and the
+[`SLURM ledger`](../SLURM_JOBS.md).
 
 Job `21079145` reached an A40 (`cn-r-1`) and then died: Apptainer killed
 `squashfuse_ll` after Kit left a background process, so
-`docs/evidence/smoke_21079145.json` was never written. That is **not** a pass.
-The inner script now flushes JSON at each phase; requeue the same sbatch.
+`docs/evidence/smoke_21079145.json` was never written. That is **not** a pass;
+it remains historical alongside the more informative but still failed
+`21146271` attempt.
 
 ## Gate 0: 1 m cube + 2 m plane (v60, headless RTX)
 
@@ -105,11 +155,12 @@ PYTHONPATH=source/isaaclab_pruning python tools/score_camera_offset.py
 PYTHONPATH=source/isaaclab_pruning python tools/fit_curobo_spheres.py
 ```
 
-## 30 cm camera-rect and scripted baselines (v60 RTX)
+## 30 cm camera-rect and scripted baselines (after a passing env smoke)
 
 ```bash
 source /nfs/hpc/share/$USER/Humanoid_Lite/bhl-robustness-ladder/slurm/_env.sh
 slurm_clean sbatch hpc/slurm/camera_rect.sbatch
+# Reuse the exact promoted PRUNING_* exports from the env-smoke block above.
 slurm_clean sbatch hpc/slurm/baselines.sbatch
 ```
 
@@ -119,12 +170,18 @@ ROADMAP rows from a script that never ran on a GPU.
 
 ## URDF import
 
-Job `21077217` (2026-08-28, `cn-r-2` A40, 34 s) converted the rewritten BDS
-flatten. Root layer `artifacts/usd/ur5e_pruner_abs/ur5e_pruner_abs.usda` with
-payloads (~3.9 MB). Contains `ur5e__shoulder_*` through `wrist_3` plus
-`mock_pruner__{base,camera0,tof0,tof1,tool0}`. **No linear slider.** Importer
-warned that PhysX joint drives had no stiffness/damping; `ArticulationCfg`
-supplies those from `ur5e_pruner.yaml`.
+Job `21136450` (2026-09-03, `cn-gpu7`, Quadro RTX 8000) is the promoted import.
+It accepted Isaac Lab 3's nested `_abs` root layout, inventoried and hashed the
+output, and passed composed-stage validation for metres, Z-up, six UR joints,
+absence of a slider, and all reviewed fixed transforms. `ArticulationCfg`
+supplies stiffness/damping from `ur5e_pruner.yaml`, as the importer still warns
+that those gains are absent from its generated PhysX drives.
+
+Job `21125352` remains preserved failure evidence: it rejected the converter's
+nested root before stage validation because the old wrapper expected a flat
+root path. Job `21077217` remains historical proof that the stale BDS snapshot
+could load, not evidence for current transforms. Neither supersedes the green
+[`21136450` evidence](evidence/urdf_import_21136450.json).
 
 ## Cache policy
 

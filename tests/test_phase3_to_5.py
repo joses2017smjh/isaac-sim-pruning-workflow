@@ -89,6 +89,22 @@ def test_scripted_tof_moves_toward_a_centered_return() -> None:
     assert not ur5e_pruner_oracle_status(urdf_usd_path=None).configured
 
 
+def test_scripted_tof_respects_base_to_tool_standoff() -> None:
+    size = 2
+    focal = (0.5 * np.sqrt(size**2 + size**2)) / np.tan(np.deg2rad(65.0) / 2.0)
+    ray_z = 1.0 / np.sqrt(1.0 + 2.0 * (0.5 / focal) ** 2)
+    tool_z = 0.1601525
+    sensor_z = 0.14444246761
+    desired_standoff = 0.08
+    sensor_range = (tool_z + desired_standoff - sensor_z) / ray_z
+    ranges = torch.full((1, size, size), sensor_range)
+    valid = torch.ones_like(ranges, dtype=torch.bool)
+
+    action = scripted_tof_action(ranges, ranges, valid, valid)
+
+    assert abs(float(action[0, 2])) < 1e-6
+
+
 def test_observation_variants_and_five_seed_protocol() -> None:
     protocol = load_training_protocol()
     assert protocol.seeds == (0, 1, 2, 3, 4)
@@ -127,13 +143,16 @@ def test_observation_variants_and_five_seed_protocol() -> None:
     }
     assert 128 not in matched
     assert observation_width(ObservationVariant.METRIC) == observation_width(ObservationVariant.FUSED)
-    assert len(
-        {
-            observation_width(ObservationVariant.FLOW),
-            observation_width(ObservationVariant.TOF),
-            observation_width(ObservationVariant.METRIC),
-        }
-    ) == 3
+    assert (
+        len(
+            {
+                observation_width(ObservationVariant.FLOW),
+                observation_width(ObservationVariant.TOF),
+                observation_width(ObservationVariant.METRIC),
+            }
+        )
+        == 3
+    )
     native = observation_width(ObservationVariant.METRIC, metric_hw=(256, 256))
     assert native != observation_width(ObservationVariant.METRIC)
     metric = torch.full((1, 8, 8), 2.0)

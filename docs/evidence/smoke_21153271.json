@@ -1,0 +1,26 @@
+{
+  "ok": false,
+  "job_id": "21153271",
+  "node": "cn-s-1",
+  "bhl_stack": "v60",
+  "skrl": null,
+  "rsl_rl": "imported",
+  "asset_id": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+  "usd": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda",
+  "usd_evidence": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/docs/evidence/urdf_import_21136450.json",
+  "phase": "construct",
+  "lab3_compat": [
+    "AdditiveUniformNoiseCfg -> UniformNoiseCfg",
+    "AdditiveGaussianNoiseCfg -> GaussianNoiseCfg",
+    "SimulationCfg.physx -> .physics (PhysxCfg)",
+    "isaaclab.utils.math: unwrap ProxyArray on 32 scripted fns"
+  ],
+  "observation_space": {
+    "A_flow": 150,
+    "B_tof": 278,
+    "C_metric": 86,
+    "D_fused": 86
+  },
+  "error": "ValueError(\"Prim path '{ENV_REGEX_NS}/Robot' is not global. It must start with '/'.\")",
+  "traceback": "Traceback (most recent call last):\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/hpc/inner/smoke_env.py\", line 122, in <module>\n    env = Env(cfg=cfgs[\"B_tof\"])\n          ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py\", line 77, in __init__\n    super().__init__(cfg, render_mode, **kwargs)\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/envs/direct_rl_env.py\", line 120, in __init__\n    self._init_sim(render_mode, **kwargs)\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/envs/direct_rl_env.py\", line 157, in _init_sim\n    self._setup_scene()\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py\", line 107, in _setup_scene\n    self.robot = Articulation(self.cfg.robot_cfg)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/assets/articulation/articulation.py\", line 30, in __new__\n    return super().__new__(cls, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/utils/backend_utils.py\", line 134, in __new__\n    return impl(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab_physx/assets/articulation/articulation.py\", line 126, in __init__\n    super().__init__(cfg)\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/assets/articulation/base_articulation.py\", line 98, in __init__\n    super().__init__(cfg)\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/assets/asset_base.py\", line 92, in __init__\n    self.cfg.spawn.func(\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/utils/string.py\", line 221, in __call__\n    return self._resolve()(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/sim/utils/prims.py\", line 669, in wrapper\n    raise ValueError(f\"Prim path '{prim_path}' is not global. It must start with '/'.\")\nValueError: Prim path '{ENV_REGEX_NS}/Robot' is not global. It must start with '/'.\n"
+}

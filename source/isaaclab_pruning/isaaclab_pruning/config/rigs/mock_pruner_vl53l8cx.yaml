@@ -1,7 +1,11 @@
 name: mock_pruner_vl53l8cx
-description: Fixed hardware-matched mock-pruner sensor rig
-mount_link: mock_pruner__tool0
+description: Reviewed mock-pruner source frames; live Isaac sensors are not wired yet
+source_offset_frame: mock_pruner__base
+control_eef_link: mock_pruner__tool0
+control_eef_translation_in_source_frame_m: [0.0, 0.0, 0.1601525]
+mount_link: mock_pruner__base
 offset_convention: ros
+source_revision: dfede4c0f251358ebed7a1f90ff887847c2fbeb0
 
 sensors:
   - name: tof0
@@ -27,12 +31,22 @@ sensors:
 wrist_camera:
   enabled: false
   offset: [0.0, -0.06, 0.10]
+  offset_frame: mock_pruner__tool0
   selected: close_lateral
   evidence: docs/evidence/camera_offset_raycast.json
   visible_fraction: 0.8518
+  physical_source_frame:
+    link: mock_pruner__camera0
+    parent: mock_pruner__base
+    offset_m: [-0.0017977, -0.0715747, 0.0711646]
+    rpy_rad: [0.0, 0.0, 0.0]
+    camera_model: unknown
+    optical_frame_calibrated: false
   reason: >
     Ray-cast on lpy_envy_00000 (1259/1478 cuts unoccluded in 0.3-0.5 m).
-    RGB stays off until a renderer job validates this offset.
+    This simulation candidate is not the physical camera frame. RGB stays off
+    until the camera model, optical transform, calibration, and renderer view
+    are validated.
 
 noise:
   min_sigma_m: 0.003
