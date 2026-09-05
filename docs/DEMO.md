@@ -1,7 +1,7 @@
 # Show the pruning demo
 
 Run the four commands in the [README](../README.md), then open
-`demo-output/pruning_demo.html` in a browser. Keep the generated HTML, GIF,
+`pruning/demo-output/pruning_demo.html` in a browser. Keep the generated HTML, GIF,
 and JSON together when sharing the folder. No web server is required.
 
 ## Capture sequence
@@ -55,13 +55,13 @@ camera screenshot.
 Regenerate those summaries from the repository root:
 
 ```bash
-python tools/render_demos.py
+.venv/bin/python tools/render_demos.py
 ```
 
 A live-ToF success animation requires a passing report:
 
 ```bash
-python tools/render_demos.py --smoke-evidence docs/evidence/smoke_<jobid>.json
+.venv/bin/python tools/render_demos.py --smoke-evidence docs/evidence/smoke_<jobid>.json
 ```
 
 The renderer rejects failed or incomplete evidence. See [the job ledger](../SLURM_JOBS.md).

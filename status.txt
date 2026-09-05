@@ -1,4 +1,4 @@
-isaac-sim-pruning-workflow — status at 2026-09-05 10:03 PDT
+isaac-sim-pruning-workflow — status at 2026-09-05 14:52 PDT
 Branch: develop
 Owner / Git author: Jose Sanchez
 GitHub: https://github.com/joses2017smjh/isaac-sim-pruning-workflow
@@ -27,9 +27,13 @@ LOCAL VERIFICATION
 
   Fresh Python 3.10 venv: dependencies installed from package extras.
   PyTorch CPU 2.14.0, NumPy 2.2.6, Pillow 12.3.0, Matplotlib 3.10.9.
-  133 tests passed, 1 simulator-marked test deselected.
+  Fresh remote clone: 130 passed, 3 missing-USD skips, 1 simulator deselected.
+  Local workspace with generated robot USD: 133 passed, 1 deselected.
   Ruff 0.14.10 lint and format checks pass across pruning source/tests/tools.
   CI installs dev+demo extras, tests, generates the demo, uploads artifacts.
+  Published demo commit: f398b67feb1bdec58bb8c2aae8c9e48fb4aebb8f.
+  GitHub maps its author to joses2017smjh (Jose Sanchez).
+  CI run 33980080780 passed: 130 passed, 3 skipped, 1 deselected; demo reproduced.
 
 FUNCTIONAL FIXES
 
@@ -54,6 +58,8 @@ CLUSTER EVIDENCE
            Controlled 5 mm motion was not reached.
 
 No workflow job is queued. Baseline and PPO jobs remain unsubmitted.
+The unrelated user queue has six running tasks and thirteen pending tasks;
+the pending Humanoid_Lite arrays report MaxGRESRunMinsPerUser. Left untouched.
 All user jobs and exact accounting: SLURM_JOBS.md.
 
 REMAINING RESEARCH WORK

@@ -37,6 +37,11 @@ an Isaac research integration; it does not contain a completed learned policy.
 ## Reproduction gaps fixed in this update
 
 The demo now has a CLI, GIF, poster, offline sensor replay, and measured JSON.
+The published clone reproduces all three episodes and passes 130 tests;
+three robot-USD tests skip because generated assets are external, and one
+simulator test is deselected. With local USD assets, all 133 CPU tests pass.
+[GitHub Actions](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/actions/runs/33980080780)
+independently passed lint, formatting, tests, and demo generation.
 CPU CI installs its missing Pillow/Matplotlib extras and runs the demo. Ruff is
 pinned to the pre-commit version. The unused-variable lint failure and formatter
 drift are fixed. Broken hooks that referenced absent license templates were

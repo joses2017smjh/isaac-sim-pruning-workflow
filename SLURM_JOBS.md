@@ -1,6 +1,6 @@
 # SLURM job ledger
 
-Last reconciled: **2026-09-05 10:03 PDT** (`America/Los_Angeles`).
+Last reconciled: **2026-09-05 14:52 PDT** (`America/Los_Angeles`).
 
 This ledger covers jobs produced by this repository's `prune-*` submission
 scripts and the two upstream v60 probes explicitly cited by the repository
@@ -16,13 +16,25 @@ records its submission/start on 2026-08-24, which is the date used here.
 ## Current queue
 
 The full user queue at the timestamp above is below. No workflow job remains
-queued. Both listed allocations were left untouched; no job was
+queued. All listed allocations were left untouched; no job was
 cancelled, held, reprioritized, or otherwise modified.
 
 | Job | Partition | Name | State | Node or pending reason | This workflow |
 |---|---|---|---|---|---|
 | `21185770` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
-| `21185936` | `gpu` | `lh-ft` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
+| `21186402_0` | `gpu` | `v2-train` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
+| `21186402_1` | `gpu` | `v2-train` | `RUNNING` | `cn-gpu7` | Unrelated; untouched |
+| `21186402_2` | `gpu` | `v2-train` | `RUNNING` | `cn-gpu7` | Unrelated; untouched |
+| `21186402_3` | `ampere` | `v2-train` | `RUNNING` | `cn-r-4` | Unrelated; untouched |
+| `21186403_0` | `dgxh` | `grip-train` | `RUNNING` | `dgxh-4` | Unrelated; untouched |
+| `21186402_[4-8]` | `gpu,dgxh,ampere` | `v2-train` | `PENDING` | `MaxGRESRunMinsPerUser` | Unrelated; untouched |
+| `21186403_[1-8]` | `gpu,dgxh,ampere` | `grip-train` | `PENDING` | `MaxGRESRunMinsPerUser` | Unrelated; untouched |
+
+The two training arrays belong to `Humanoid_Lite/bhl-robustness-ladder`,
+confirmed from their Slurm command and working directory. The earlier `lh-ft`
+job `21185936` completed with exit `0:0` at 10:50:07 PDT after 1h10m32s;
+its application outputs were not audited here. There are six running tasks
+and thirteen pending tasks across the current user queue.
 
 ## Repository and referenced stack jobs
 

@@ -4,7 +4,7 @@ Simulate robotic pruning with dual-ToF feedback, tool control, and collision che
 
 ![A measured approach, sensor blackout, and blocked cut](docs/demo/pruning_demo.gif)
 
-18-second CPU simulation: approach a spur, lose sensor lock, then reject nearby
+18-second CPU simulation replay: approach a spur, lose sensor lock, then reject nearby
 wood. The tool follows commands exactly; the final insertion uses a bounded
 stroke and known geometry. No arm dynamics or physical cutting are simulated.
 [Open the offline replay](docs/DEMO.md) to scrub sensor frames and inspect
@@ -64,7 +64,11 @@ PPO training are unfinished. [Implementation gates](docs/ROADMAP.md).
 | [RTX depth check](docs/evidence/isaac_smoke_21077170.json) | Cube 1.5000 m; plane 2.0000 m; 100% finite | Isaac Sim 6.0, A40 |
 | [Robot import](docs/evidence/urdf_import_21136450.json) | Six active UR joints; reviewed fixed transforms verified | Composed USD stage |
 | [Isaac tool hold](docs/evidence/smoke_21186027.json) | 20.12 mm drift against a <5 mm limit | Both ToF grids finite; motion gate failed |
-| CPU test suite | 133 passed; 1 simulator test deselected | Fresh Python 3.10 environment |
+| CPU test suite | 130 passed; 3 asset tests skipped; 1 simulator test deselected | Fresh clone on Python 3.10; CI on Python 3.11 |
+
+The three skipped tests require generated robot USD files that are not bundled.
+All 133 CPU tests pass when those assets are present. [CI run](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/actions/runs/33980080780)
+also reproduced all three demo outcomes.
 
 These are component checks and three deterministic scenarios, not a pruning
 success-rate benchmark. The demo's final stroke can lose ToF overlap and uses
