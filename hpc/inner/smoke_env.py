@@ -88,6 +88,7 @@ try:
     from isaaclab_pruning.policies.observations import ObservationVariant, observation_width
     from isaaclab_pruning.sim.lab3_compat import apply as apply_lab3
     from isaaclab_pruning.sim.lab3_compat import as_torch
+    from isaaclab_pruning.sim.pose_conventions import pose_xyzw_to_wxyz, quaternion_wxyz_to_xyzw
     from isaaclab_pruning.sim.pruning_env import make_pruning_env_cls
     from isaaclab_pruning.sim.pruning_env_cfg import PruningEnvCfg
     from isaaclab_pruning.sim.tof_smoke_geometry import TOF_SMOKE_TARGET, enable_tof_smoke_target
@@ -183,21 +184,41 @@ try:
     )
     root_w = as_torch(env.robot.data.root_pose_w)
     tool_pos_b, tool_quat_b = subtract_frame_transforms(
-        root_w[:, :3], root_w[:, 3:7], tool_w_initial[:, :3], tool_w_initial[:, 3:7]
+        root_w[:, :3], root_w[:, 3:7], tool_w_initial[:, :3], quaternion_wxyz_to_xyzw(tool_w_initial[:, 3:7])
     )
     body_pos_b, _ = subtract_frame_transforms(root_w[:, :3], root_w[:, 3:7], body_w[:, :3], body_w[:, 3:7])
-    hold = torch.cat((tool_pos_b, tool_quat_b), dim=-1).contiguous()
+    hold = pose_xyzw_to_wxyz(torch.cat((tool_pos_b, tool_quat_b), dim=-1)).contiguous()
     old_body_command_error_m = torch.linalg.vector_norm(hold[:, :3] - body_pos_b, dim=-1)
     assert bool((old_body_command_error_m > 0.15).all().item())
 
     # Let at least two 15 Hz frames arrive while holding the true control tool.
+    report["phase"] = "hold_and_live_tof_warmup"
+    _flush_report()
     warmup_steps = max(6, int(env.cfg.tof0_cfg.update_period / env.step_dt) + 2)
+    report["hold_trace"] = []
     for _ in range(warmup_steps):
         next_obs, rewards, terminated, truncated, extras = env.step(hold)
+        report["hold_trace"].append(
+            {
+                "tool_pose_wxyz": env._control_tool_pose_w().detach().cpu().tolist(),
+                "joint_pos": as_torch(env.robot.data.joint_pos).detach().cpu().tolist(),
+                "terminated": terminated.detach().cpu().tolist(),
+                "truncated": truncated.detach().cpu().tolist(),
+            }
+        )
     tool_w_held = env._control_tool_pose_w().clone()
     hold_translation_drift_m = torch.linalg.vector_norm(tool_w_held[:, :3] - tool_w_initial[:, :3], dim=-1)
     quat_dot = torch.sum(tool_w_held[:, 3:7] * tool_w_initial[:, 3:7], dim=-1).abs().clamp(max=1.0)
     hold_rotation_drift_rad = 2.0 * torch.acos(quat_dot)
+    report["hold_diagnostic"] = {
+        "initial_tool_pose_wxyz": tool_w_initial.detach().cpu().tolist(),
+        "command_pose_b_wxyz": hold.detach().cpu().tolist(),
+        "translation_drift_m": hold_translation_drift_m.detach().cpu().tolist(),
+        "rotation_drift_rad": hold_rotation_drift_rad.detach().cpu().tolist(),
+        "tof_state": env.tof_state(),
+        "contact": env.contact_state(),
+    }
+    _flush_report()
     assert bool((hold_translation_drift_m < 5.0e-3).all().item())
     assert bool((hold_rotation_drift_rad < 2.0e-2).all().item())
 
@@ -214,6 +235,8 @@ try:
 
     # Move the tool 5 mm along its local +Z (the ToF optical direction), then
     # require both physical motion and a changed ray-cast range table.
+    report["phase"] = "tool_motion_and_tof_response"
+    _flush_report()
     local_step = torch.zeros((env.num_envs, 3), device=env.device)
     local_step[:, 2] = 0.005
     move = hold.clone()
@@ -228,7 +251,7 @@ try:
         root_w_after[:, :3],
         root_w_after[:, 3:7],
         tool_w_moved[:, :3],
-        tool_w_moved[:, 3:7],
+        quaternion_wxyz_to_xyzw(tool_w_moved[:, 3:7]),
     )
     final_move_error = torch.linalg.vector_norm(move[:, :3] - moved_pos_b, dim=-1)
     assert bool((final_move_error < initial_move_error).all().item())
@@ -265,6 +288,8 @@ try:
     report["tool_frame"] = {
         "physics_body": env.spec.physics_eef_body,
         "control_tool": env.spec.control_tool_frame,
+        "lab_quaternion_order": "xyzw",
+        "core_and_action_quaternion_order": "wxyz",
         "body_to_tool_distance_m": tool_separation_m.detach().cpu().tolist(),
         "old_body_command_error_m": old_body_command_error_m.detach().cpu().tolist(),
         "hold_translation_drift_m": hold_translation_drift_m.detach().cpu().tolist(),

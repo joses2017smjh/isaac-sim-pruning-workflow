@@ -117,9 +117,7 @@ def _validate_runtime_usd_evidence(usd_path: Path, evidence_path: Path, asset_id
     if evidence.get("ok") is not True or evidence.get("status") != "complete" or evidence.get("imported") is not True:
         raise RuntimeError("Runtime USD evidence is not a successful completed import.")
     if evidence.get("asset_id") != asset_id:
-        raise RuntimeError(
-            f"Runtime asset ID mismatch: selected={asset_id!r}, evidence={evidence.get('asset_id')!r}."
-        )
+        raise RuntimeError(f"Runtime asset ID mismatch: selected={asset_id!r}, evidence={evidence.get('asset_id')!r}.")
     root_layer = _resolve_recorded_path(evidence.get("output", {}).get("root_layer"), root, "output.root_layer")
     if root_layer != usd_path.resolve():
         raise RuntimeError(f"Runtime USD path mismatch: selected={usd_path.resolve()}, evidence={root_layer}.")

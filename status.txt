@@ -1,346 +1,72 @@
-status.txt — isaac-sim-pruning-workflow
-Written: 2026-09-03
-Branch: develop @ d68356d (base before this audit)
-Repo: https://github.com/joses2017smjh/isaac-sim-pruning-workflow
-Owner: Jose Sanchez (sanchej7), OSU EECS / HPC
-
-This file is a snapshot of the plan, stretch goals, holdbacks, and remaining
-work. A checked ROADMAP box means code plus cluster evidence, not "the phase
-is finished." Do not invent TensorRT, PPO, or sim2sim numbers.
-
-
-------------------------------------------------------------------------------
-WHAT THIS PROJECT IS
-------------------------------------------------------------------------------
-
-Dormant-spur pruning in Isaac Sim on the OSU HPC, using Jose's measured Isaac
-stack (not NVIDIA 5.x tutorials).
-
-One env, one reward, four observations, five seeds (20 run IDs):
-
-  A  flow 8×8
-  B  dual VL53L8CX (two live 8×8 ray-cast feeds; cluster smoke pending)
-  C  metric student (8×8 causal table; 256×256 is a second table)
-  D  inverse-variance fuse(ToF0 + ToF1 + C) — same width as C, different content
-
-Robot: UR5e + mock-pruner from lukestroh/branch_detection_system (not ag-robot).
-v1 does not spawn the hardware linear slider. IK is absolute 7-D EE pose.
-DA2-ft proposes a target once per episode, never inside the PPO loop.
-Trees are finite UsdGeom.Cylinder (Blender's primitive), not capsules.
-
-Pinned stack that actually renders here:
-
-  SIF     Humanoid_Lite/container/bhl.sif
-          sha256 d427d9c3…9bcac29
-  venv    Humanoid_Lite/venv-isaac60
-  Isaac   Sim 6.0.0.1 + Lab 3.0.0b2, Python 3.12
-  launch  BHL_STACK=v60 + bhl_exec from bhl-robustness-ladder/slurm/_env.sh
-
-Isaac Sim 5.1 RTX segfaults in omni.usd.create_hydra_engine on this cluster.
-V100 / dgx2-* have no RT cores. Do not run Isaac RTX there.
-
-
-------------------------------------------------------------------------------
-THE PLAN (PHASES)
-------------------------------------------------------------------------------
-
-Phase 0 — contracts and compute          DONE
-  Isaac Lab harness 5701a77, source pins, OpenCV T_wc + Blender Euler,
-  cube/plane depth contract, Gate 0 on RTX.
-
-Phase 1 — trees and orchard              DONE (CPU + Gate 0 trees)
-  L-Py cylinders, V-trellis USDA, millimetre Blender pose, 200 tree USDA,
-  bark_brown_02 as UsdPreviewSurface.
-
-Phase 2 — robot and sensors              FRESH ASSET PROMOTED; SMOKE PENDING
-  Pinned BDS Xacro + selected UR5e calibration generated a content-addressed
-  URDF. Job 21136450 imported and composed-stage validated the fresh no-slider
-  USD, including camera0/ToF/tool transforms. Two live 8×8 15 Hz ray sensors are
-  wired in code. Their end-to-end Isaac environment gate is still pending.
-  Wrist RGB remains enabled: false.
-
-Phase 3 — task and baselines             BLOCKED ON ENV SMOKE + ISAAC BASELINE
-  Reward, curriculum, scripted ToF, CuRobo spheres fitted.
-  Missing: PhysX contact JSON, scripted + CuRobo baselines run in Isaac.
-
-Phase 4 — policies and ladder            LIVE ToF CODE; NO TRAINING
-  A/B/C/D builders/widths, 5 seeds, ladder axes, skrl PPO cfg.
-  ToF is live; flow and metric-student remain explicit placeholders. Missing:
-  passing geometry-response smoke, baselines, then 20 PPO runs and sensitivity.
-  tools/train.py refuses PPO until both baselines have Isaac logs.
-
-Phase 5 — evaluation                     HELPERS DONE; NO ISAAC/PYBULLET NUMBERS
-  Metrics, 30 cm helper, ranking-inversion test (unit).
-  Missing: held-out rollouts, PyBullet sim2sim, 30 cm box in Isaac.
-  ROS 2 hardware-in-the-loop is a stretch goal.
-
-
-------------------------------------------------------------------------------
-WHAT IS CLOSED (EVIDENCE ON DISK)
-------------------------------------------------------------------------------
-
-  docs/evidence/isaac_smoke_21077170.json
-      Gate 0. Job 21077170, A40 cn-r-4, cube 1.5000 m, plane 2.0000 m, RGB std 38.
-
-  docs/evidence/urdf_import_21077217.json
-      A stale BDS generated flatten can import to USD, no slider. This is load
-      evidence, not proof of the pinned BDS transforms. It lacks source,
-      transform, generated-URDF, and mesh hashes.
-
-  docs/evidence/urdf_generation_ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.json
-      Pinned BDS revision, chosen UR5e calibration, generated URDF and mesh
-      hashes, and reviewed base→camera0/tof0/tof1/tool0 transforms.
-
-  docs/evidence/urdf_import_21125352.json
-      Honest application failure despite Slurm COMPLETED: Isaac Lab 3 wrote a
-      nested root that the first output contract rejected. Output quarantined.
-
-  docs/evidence/urdf_import_21136450.json
-      PASS on cn-gpu7: status complete, ok/imported true, 11 hashed outputs,
-      composed Z-up metre stage, six active UR revolute joints, no slider, and
-      reviewed camera0/ToF/tool transforms. This is the promoted runtime asset.
-
-  docs/evidence/smoke_21146271.json
-      FAIL on cn-s-1: reached construct with correct A-D widths, but no live
-      sensor/contact result. It exposed that Kit cleanup preceded exception
-      flushing; the retry now persists pass/failure JSON before cleanup.
-
-  docs/evidence/smoke_21153271.json
-      FAIL on cn-s-1 with the preserved traceback: v60 rejected the unresolved
-      `{ENV_REGEX_NS}/Robot` token passed directly by the manual DirectRLEnv
-      setup. All directly constructed prim expressions are now globally rooted.
-
-  docs/evidence/cutter_boxes_fitted.json
-      Mouth/failure AABB from pybullet-tree-sim STLs (BSD-3-Clause).
-
-  docs/evidence/blender_trunk_mm_lpy_envy_00000.json
-      Envy 00000 Blender shot 1, tilt −17.143°. Median trunk error 0.00055 mm
-      (limit 2 mm). cylinders_world used as centroids only, not as a sidecar.
-
-  docs/evidence/trees_converted_manifest.json
-      100 Envy + 100 UFO ASCII USDA in artifacts/trees/ (gitignored).
-      Envy 00000: 1798 cylinders. UFO 00000: 2960. Held-out 00042/00065 converted
-      as assets; train still excludes them. UFO eval policy: untouched.
-
-  docs/evidence/camera_offset_raycast.json
-      Winner: close_lateral  [0.0, -0.06, 0.10] m EEF.
-      1259 / 1478 cuts visible in 0.3–0.5 m. No renderer. This is a simulation
-      candidate, not the BDS physical camera0 frame or a camera calibration.
-
-  docs/evidence/curobo_spheres.json
-      Link bounding spheres from licensed collision STLs. Configuration only.
-      Not a CuRobo runtime success rate.
-
-Isaac-free pytest: 111 passed (2026-09-03, depth-env). A Python file is not
-Isaac evidence.
-
-
-------------------------------------------------------------------------------
-WHAT IS LEFT (IN ORDER)
-------------------------------------------------------------------------------
-
-Do these in this order. Do not skip to PPO.
-
-1) Finish the live environment smoke (Phase 3 contact + Phase 4 ToF response)
-     source /nfs/hpc/share/$USER/Humanoid_Lite/bhl-robustness-ladder/slurm/_env.sh
-     cd /nfs/hpc/share/$USER/isaac-sim-pruning-workflow
-     slurm_clean sbatch hpc/slurm/env_smoke.sbatch
-
-   Retry 21153411 is pending on QOSGrpGRES. Pass file:
-   docs/evidence/smoke_21153411.json with "ok": true,
-   A≠B≠C last-dims, C==D width and not allclose(C,D), one step, finite PhysX
-   contact, sensor prim/link transforms, and geometry-responsive ranges.
-   Jobs 21079145, 21146271, and 21153271 are NOT passes (see holdbacks).
-
-2) Scripted ToF baseline in Isaac (Phase 3), only after step 1 passes
-     slurm_clean sbatch hpc/slurm/baselines.sbatch
-   Pass: docs/evidence/baselines_<jobid>.json, scripted_tof true, contact finite.
-   CuRobo oracle is configured on disk; the wheel may still be missing on v60.
-   Record that. Do not invent ~60%.
-
-3) If env smoke needs a fourth Lab 3 shim: stop patching. Subclass Lab 3
-   DirectRLEnv instead (timebox already written in lab3_compat.py).
-
-4) Identify the physical wrist-camera model/revision and optical transform.
-   The BDS Xacro has a hard-coded camera0 position and the CAD archive has a
-   RealSense-named mount; the empty YAML argument does not mean no mount.
-   close_lateral is a separate EEF-frame simulation candidate.
-
-5) Renderer-validate the chosen simulation camera and run the 30 cm rect
-     slurm_clean sbatch hpc/slurm/camera_rect.sbatch
-   Pass: docs/evidence/camera_rect_<jobid>.json, median depth within 5 mm of
-   0.30 m. Until this exists, wrist_camera.enabled stays false.
-
-6) Only after live env smoke and baselines are green: train A–D × seeds 0..4 on
-   ray-cast ToF. Do not put DA2-ft in the PPO loop.
-
-7) Per-axis ladder sensitivity on the trained policies.
-
-8) Held-out Envy 00042 / 00065 rollouts in Isaac. UFO stays untouched until
-   that architecture-transfer experiment is explicitly started.
-
-9) PyBullet sim2sim ranking numbers (needs a PyBullet install + the
-   pybullet-tree-sim env; depth-env does not have pybullet today).
-
-10) Stretch: ROS 2 hardware-in-the-loop demo.
-
-
-------------------------------------------------------------------------------
-STRETCH GOALS
-------------------------------------------------------------------------------
-
-  - ROS 2 HITL on the real mock-pruner (ROADMAP Phase 5, marked stretch).
-  - Wrist RGB on, after a renderer job confirms close_lateral.
-  - Native 256×256 metric-student table (performance ceiling, not the causal
-    8×8 comparison vs ToF).
-  - CuRobo motion-planning oracle actually solving on the imported USD
-    (spheres are fitted; the planner has not been run).
-  - UFO architecture-transfer eval (policy: untouched until then).
-  - Full 20-run PPO table + per-axis ladder plots.
-  - 30 cm box compared to Blender (Isaac render, not just the helper).
-  - Do not expand scope to DA2-ft-in-loop, slider spawning, or ag-robot URDF.
-
-
-------------------------------------------------------------------------------
-HOLDBACKS NOW
-------------------------------------------------------------------------------
-
-Cluster / queue
-  - Do not cancel Jose's jobs. Queue state is intentionally not frozen in this
-    file; check squeue read-only before submission and never scancel unrelated
-    work.
-  - RTX jobs often sit PENDING on a GRES/QOS limit. Waiting is correct.
-    Do not drain someone else's GPU to make pruning go.
-  - From an OOD or interactive allocation, bare `sbatch` becomes a step of
-    the current job. Wrap it:
-
-      slurm_clean sbatch hpc/slurm/env_smoke.sbatch
-
-    slurm_clean is a shell function in
-    Humanoid_Lite/bhl-robustness-ladder/slurm/_env.sh
-    It runs `env -u SLURM_JOB_ID -u SLURM_JOBID -u SLURM_NODELIST ... sbatch ...`
-    so the new job is independent. It does not cancel, clean, or drain the
-    queue. The truncated line `slurm_clean sbatch hpc/slu` was just
-    `hpc/slurm/camera_rect.sbatch` cut off in chat.
-
-Isaac / Kit
-  - v51 (Sim 5.1) RTX is dead here. Use v60.
-  - Job 21079145 (prune-env-smoke) reached A40 cn-r-1, then Apptainer killed
-    squashfuse_ll after Kit left a background process.
-    docs/evidence/smoke_21079145.json was never written. Not a pass.
-    Job 21146271 reached construct but cleanup swallowed the caught traceback.
-    Job 21153271 preserved it: v60 rejected an unresolved Lab-2 environment
-    token. Globally rooted paths are in place; retry 21153411 is queued.
-  - Bare UsdGeom with no UsdPreviewSurface looks black. Depth can still be
-    right. Always bind a material and aim a light.
-  - Lab 3 is warp-first. DirectRLEnv is Lab 2. Three shims in lab3_compat.py
-    (noise alias, physx→physics, ProxyArray unwrap). A fourth shim means
-    subclass Lab 3 instead.
-  - v60 may have rsl_rl and not skrl. Record both. Do not pip-fight the beta
-    Lab inside a job.
-
-Robot / sensors
-  - The BDS YAML camera_offset argument is empty, but its Xacro ignores that
-    argument and hard-codes camera0 at [-0.0017977, -0.0715747, 0.0711646] m
-    from mock_pruner__base. The CAD archive includes a RealSense-named mount.
-    Exact model, optical rotation, and calibration remain unknown.
-  - close_lateral is a geometric simulation pick from mock_pruner__tool0, not
-    the physical camera0 transform. RGB stays off until calibration/renderer
-    validation.
-  - Legacy job 21077217 has stale transforms. The promoted job-21136450 asset is
-    content-addressed and transform-validated; do not fall back to the legacy
-    USD or use PRUNING_ALLOW_STALE_USD for baseline/training evidence.
-  - ToF is live. Flow and metric-student buffers are still placeholders.
-    Width/non-allclose assertions alone can pass without scene response, so the
-    smoke also requires two complete 8×8 grids and measured range deltas.
-  - BDS ToF offsets are from mock_pruner__base, while control uses
-    mock_pruner__tool0. Do not add the raw offsets as if they were tool-frame.
-  - Slider exists on the real machine and is held fixed in v1. Imported USD
-    has no slider. Do not add it to ArticulationCfg.joint_names_expr.
-  - CuRobo "configured" means USD + sphere JSON exist. It does not mean the
-    planner ran or that a success rate is known.
-
-Data / eval
-  - Per-frame Blender ann cylinders_world is centroids only. Rejected as a
-    cylinder sidecar. Pose check used it as centroids, with L-Py metadata
-    for radius/length/class.
-  - UFO has never been rendered in spur-depth. Do not quote UFO as an eval
-    set until that experiment is designed.
-  - PyBullet is not installed in miniforge3/envs/depth-env. Ranking-inversion
-    is a unit test on synthetic scores, not a sim2sim table.
-
-Interpreter trap (the numpy traceback)
-  - /usr/local/apps/python/3.14/bin/python3 has no numpy.
-  - Use:
-      /nfs/stak/users/sanchej7/miniforge3/envs/depth-env/bin/python
-    with PYTHONPATH=source/isaaclab_pruning
-  - Isaac jobs must use v60 via bhl_exec, not depth-env.
-
-Honesty
-  - tools/train.py will not start PPO without --scripted-tof-complete and
-    --curobo-oracle-complete, and those flags are only legitimate after Isaac
-    job logs. Do not pass them to get a plot.
-
-
-------------------------------------------------------------------------------
-HOLDBACKS THAT WILL SHOW UP NEXT
-------------------------------------------------------------------------------
-
-  - GRES limit: pruning smokes may queue behind unrelated work. Expected. Check
-    current state read-only; do not scancel jobs to make room.
-  - Env smoke may segfault or hang Kit again (same squashfuse class as
-    21079145). If JSON exists with "ok": false and a traceback, that is
-    progress; fix the construct path. If JSON is missing, Kit died before
-    flush — treat as infrastructure, not a physics result.
-  - AppLauncher vs SimulationApp: cube Gate 0 used SimulationApp and passed;
-    env smoke uses AppLauncher (needed for DirectRLEnv). That difference is
-    a likely failure mode.
-  - If observation_space comes back 128 or A=B=C, that is the BHL
-    "cameras mounted, never read" trap. Constants with different widths are a
-    second trap: require ranges to change with geometry. Fail either case.
-  - Scripted ToF returns EEF-frame deltas and the env IK is absolute 7-D, but
-    its reviewed default sensor offsets are base-frame values. Transform live
-    sensor points into tool0 first. Then verify the absolute compose via EEF
-    motion in JSON, not just "step returned."
-  - CuRobo import will probably be None on v60. Baseline job should still
-    pass on scripted ToF + contact, and record curobo_oracle false until
-    the wheel exists.
-  - Training 20 PPO runs is days of RTX. Do not start them to "complete the
-    phase" while baselines are missing.
-  - Held-out trees in artifacts/ are not rollouts. Spawning 00042 in Isaac
-    without a policy/baseline log is not an eval result.
-  - Installing pybullet into depth-env or v60 without a pin will drift the
-    stack. If sim2sim is needed, isolate it.
-  - Wrist RGB at 8×8 is 192 numbers vs depth 64. If RGB "wins," separate
-    colour from width before claiming a perception result.
-
-
-------------------------------------------------------------------------------
-HOW TO SUBMIT AFTER THE SOURCE/LIVE-SENSOR GATES
-------------------------------------------------------------------------------
-
-  # required from OOD / interactive (this session is often on dgx2-5)
-  source /nfs/hpc/share/$USER/Humanoid_Lite/bhl-robustness-ladder/slurm/_env.sh
-  cd /nfs/hpc/share/$USER/isaac-sim-pruning-workflow
-
-  slurm_clean sbatch hpc/slurm/env_smoke.sbatch
-  slurm_clean sbatch hpc/slurm/camera_rect.sbatch
-  slurm_clean sbatch hpc/slurm/baselines.sbatch
-
-The smoke and baseline scripts also require explicit promoted asset ID, USD,
-and import-evidence environment variables. See docs/HPC.md. Do not resubmit the
-baseline until the environment-smoke JSON is green.
-
-Never: scancel, scontrol hold, or drain partitions to free a GPU for this
-repo. Pending is an acceptable state.
-
-
-------------------------------------------------------------------------------
-BOTTOM LINE
-------------------------------------------------------------------------------
-
-Phases 0–1 are closed with evidence. Phase 2 now has a promoted fresh USD and a
-live dual-ToF implementation; retry 21153411 must still prove its end-to-end
-geometry response in Isaac. Baselines stay blocked on that JSON. PPO, ladder
-plots, held-out tables, PyBullet, and ROS 2 remain blocked until later gates
-produce honest evidence.
+isaac-sim-pruning-workflow — status at 2026-09-05 10:03 PDT
+Branch: develop
+Owner / Git author: Jose Sanchez
+GitHub: https://github.com/joses2017smjh/isaac-sim-pruning-workflow
+Author email: 119717035+joses2017smjh@users.noreply.github.com
+
+RUNNABLE DEMO
+
+  python tools/run_pruning_demo.py --output-dir demo-output
+
+The README contains a verified four-command CPU install. The command generates
+an 18-second GIF, PNG poster, strict JSON measurements, and offline HTML sensor
+replay. The three seed-7 scenarios use actual finite-cylinder ray casts,
+configured sensor noise, the scripted ToF servo, and geometric cut/stop checks.
+
+  Clear approach:  geometry accepted, 42 frames, 0.645 degree angle error.
+  Sensor blackout: stopped, 20 frames; final four frames have zero returns
+                   and identical tool poses.
+  Nearby wood:     rejected, 35 frames, failure-volume intersection.
+
+This is ideal tool motion, not arm dynamics or physical cutting. The final
+insertion is a bounded open-loop stroke using known geometry. Metric estimates
+in the fusion comparison are synthetic. No policy success rate is claimed.
+Capture and explanation: docs/DEMO.md.
+
+LOCAL VERIFICATION
+
+  Fresh Python 3.10 venv: dependencies installed from package extras.
+  PyTorch CPU 2.14.0, NumPy 2.2.6, Pillow 12.3.0, Matplotlib 3.10.9.
+  133 tests passed, 1 simulator-marked test deselected.
+  Ruff 0.14.10 lint and format checks pass across pruning source/tests/tools.
+  CI installs dev+demo extras, tests, generates the demo, uploads artifacts.
+
+FUNCTIONAL FIXES
+
+  Scripted lateral feedback now moves toward target error.
+  Roll correction rotates about approach Z and resolves PCA axis sign.
+  Invalid depth samples cannot poison finite inverse-variance fusion.
+  Isaac scene names resolve only after PhysX articulation initialization.
+  Contact reporting is activated; full arm coverage is still unverified.
+  IK uses the link-origin Jacobian with an explicit Torch view.
+  Lab 3 xyzw and pruning-core wxyz poses convert at explicit boundaries.
+  Failure reports preserve measured hold drift, sensor state, and joint traces.
+
+CLUSTER EVIDENCE
+
+  Gate 0: 21077170 passed (cube 1.5000 m, plane 2.0000 m, finite 100%).
+  Fresh robot import: 21136450 passed (six UR joints, reviewed transforms).
+  21153625 failed: raw Warp Jacobian had no clone(). This call is replaced.
+  21185961 failed: after live stepping, tool hold exceeded 5 mm drift.
+  21186027 failed: measured 20.12 mm drift, rotation 0.00309 rad.
+           Both ToF grids: frame 2, 64/64 finite ranges.
+           Contact shape (1,1,3): finite but full-arm coverage unverified.
+           Controlled 5 mm motion was not reached.
+
+No workflow job is queued. Baseline and PPO jobs remain unsubmitted.
+All user jobs and exact accounting: SLURM_JOBS.md.
+
+REMAINING RESEARCH WORK
+
+  Diagnose live tool drift and verify all arm contact bodies.
+  Replace Isaac's fixed smoke target with live oracle/curriculum targets and
+  nearby-wood tensors. The CPU demo already integrates procedural geometry.
+  Implement live flow, learned metric-depth inference, and episode-start DA2.
+  Identify/calibrate the physical wrist camera; RGB remains disabled.
+  Execute CuRobo planning; current baseline runner only reports readiness.
+  Implement PPO runner, then run baseline-gated A-D x five seeds.
+  Evaluate held-out Envy/UFO rollouts, sim2sim, and hardware transfer.
+
+The optional bark texture and generated USD assets are not in the clone.
+Root licensing remains unresolved for inherited code; see NOTICE.md.
+Detailed gates: docs/ROADMAP.md. Reviewer audit: docs/REVIEWER_NOTES.md.

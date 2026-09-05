@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pruning / measured replay</title>
+<style>
+body{background:#0b1220;color:#e9f1fc;font:16px system-ui;margin:32px auto;padding:0 20px;max-width:1100px}
+h1{font-size:32px}p,dd{color:#a9b9cd;line-height:1.6}img,canvas{width:100%;border-radius:12px}
+table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:14px;border-bottom:1px solid #304359}
+select{background:#172b40;color:white;padding:12px;border:1px solid #52708b;border-radius:7px}
+input{width:65%;vertical-align:middle}dt{margin-top:12px}a{color:#70baff}.controls{margin:20px 0}
+</style>
+<h1>Pruning / perception to motion</h1>
+<p>Analytic CPU simulation. Ideal tool motion. Measured ray returns and geometry checks.</p>
+<img src="pruning_demo.gif" alt="Measured clear approach, sensor blackout, and nearby wood scenarios">
+<h2>Inspect each sensor frame</h2>
+<p>Select an episode and scrub its recorded trajectory. The map shows tool X/Z and target distance.</p>
+<div class="controls">
+  <select id="episode" aria-label="Episode"></select>
+  <input id="frame" type="range" min="0" value="0" aria-label="Replay frame">
+</div>
+<canvas id="replay" width="1100" height="350" aria-label="Tool trajectory and two ToF grids"></canvas>
+<p id="state"></p>
+<h2>Results</h2>
+<table><thead><tr><th>Scenario</th><th>Outcome</th><th>Frames</th><th>Final target distance</th></tr></thead>
+<tbody>ROWS</tbody></table>
+<p>These three deterministic scenarios are integration checks, not an estimated real-world success rate.
+The tool pose, ranges, masks, and checks are in <a href="pruning_demo.json">the JSON replay</a>.</p>
+<details><summary>Execution scope and limitations</summary><dl>SCOPE</dl></details>
+<script type="application/json" id="data">PAYLOAD</script>
+<script>
+const data = JSON.parse(document.querySelector('#data').textContent);
+const select = document.querySelector('#episode'), slider = document.querySelector('#frame');
+const canvas = document.querySelector('#replay'), ctx = canvas.getContext('2d');
+data.episodes.forEach((e, i) => {
+  const option = document.createElement('option');
+  option.value = i;
+  option.textContent = e.title;
+  select.append(option);
+});
+function draw() {
+  const episode = data.episodes[+select.value];
+  slider.max = episode.frames.length - 1;
+  const index = Math.min(+slider.value, +slider.max), frame = episode.frames[index];
+  ctx.fillStyle = '#111e30';
+  ctx.fillRect(0, 0, 1100, 350);
+  ctx.font = '16px sans-serif';
+  ctx.fillStyle = '#e9f1fc';
+  ctx.fillText('Tool trajectory / X-Z projection', 25, 28);
+  ctx.strokeStyle = '#70baff';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  episode.frames.slice(0, index + 1).forEach((point, j) => {
+    const x = 60 + 1100 * point.pose_w[2], y = 185 - 700 * point.pose_w[0];
+    if (j) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+  });
+  ctx.stroke();
+  const target = episode.scene.find(cylinder => cylinder.record_id === 'target').centroid;
+  const tx = 60 + 1100 * target[2], ty = 185 - 700 * target[0];
+  ctx.fillStyle = '#68e0b1';
+  ctx.beginPath();
+  ctx.arc(tx, ty, 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillText('target', tx + 12, ty - 12);
+  frame.tof_m.forEach((sensor, s) => {
+    const ox = 630 + s * 225;
+    ctx.fillStyle = '#e9f1fc';
+    ctx.fillText('ToF ' + s, ox, 35);
+    sensor.forEach((row, r) => row.forEach((value, c) => {
+      ctx.fillStyle = value === null ? '#26354a' : `hsl(${150 + 80 * Math.min(value / .4, 1)},60%,55%)`;
+      ctx.fillRect(ox + 23 * c, 58 + 23 * r, 20, 20);
+    }));
+  });
+  document.querySelector('#state').textContent = `${frame.phase} | ${frame.time_s.toFixed(2)} s | ` +
+    `${frame.valid_returns}/128 valid | ${(frame.target_distance_m * 1000).toFixed(1)} mm to target`;
+}
+select.onchange = () => { slider.value = 0; draw(); };
+slider.oninput = draw;
+draw();
+</script>
+</html>

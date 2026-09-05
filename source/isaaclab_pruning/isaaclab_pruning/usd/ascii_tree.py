@@ -97,7 +97,6 @@ def write_cylinder_tree_usda(
 
     for organ_class in class_order:
         class_prim = _prim_name(organ_class)
-        class_path = f"{root_path}/{class_prim}"
         lines.extend(
             [
                 f'    def Xform "{class_prim}" (',

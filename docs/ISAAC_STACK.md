@@ -109,8 +109,15 @@ traceback because the old cleanup ordering swallowed the caught diagnostic.
 Retry `21153271` wrote the exact error first: the manually constructed
 `DirectRLEnv` passed `{ENV_REGEX_NS}/Robot` directly into a v60 spawn function,
 which requires a globally rooted path. All directly constructed robot/sensor/
-target expressions now use `/World/envs/env_.*/...`; retry `21153411` is
-pending on `QOSGrpGRES`. Job-specific JSON, not queue state, decides the gate.
-The failures did confirm `rsl_rl` imports and `skrl` does not. Baselines and PPO
-remain blocked until a smoke report is green. See the
+target expressions now use `/World/envs/env_.*/...`. Job `21153411` registered
+all four PhysX backends, then proved `SceneEntityCfg.resolve()` still ran before
+physics created the articulation `_root_view`. Resolution is now post-super and
+the USD spawner enables the contact-report API required by v60. Job `21153625`
+failed on the raw Warp Jacobian. The runtime now reads the link-origin Jacobian
+and converts Lab `xyzw` poses at the core `wxyz` boundary. Subsequent jobs
+`21185961` and `21186027` step successfully but fail the hold-drift gate:
+the latter measured 20.12 mm against a 5 mm limit. Both live ToF grids are
+finite; controlled-motion response and full-arm contact coverage remain open.
+The failures confirm `rsl_rl` imports and `skrl` does not. No workflow job is
+currently queued. Baselines and PPO remain blocked. See the
 [`SLURM job ledger`](../SLURM_JOBS.md).

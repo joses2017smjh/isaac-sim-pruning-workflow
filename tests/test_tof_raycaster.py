@@ -24,10 +24,7 @@ def test_8x8_intrinsics_preserve_the_65_degree_diagonal_fov() -> None:
     assert intrinsics.diagonal_fov_deg == 65.0
     assert intrinsics.horizontal_fov_deg == pytest.approx(intrinsics.vertical_fov_deg)
     reconstructed = math.degrees(
-        2.0
-        * math.atan(
-            math.hypot(intrinsics.width, intrinsics.height) / (2.0 * intrinsics.focal_length_px)
-        )
+        2.0 * math.atan(math.hypot(intrinsics.width, intrinsics.height) / (2.0 * intrinsics.focal_length_px))
     )
     assert reconstructed == pytest.approx(65.0)
     assert intrinsics.matrix_row_major == pytest.approx(

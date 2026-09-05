@@ -6,19 +6,13 @@ from pathlib import Path
 from tools.generate_robot_urdf import _canonicalize_package_paths
 
 ROOT = Path(__file__).resolve().parents[1]
-ASSET_ID = (
-    "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_"
-    "calib_3941312424972580002_urdf6b02ce9330be"
-)
+ASSET_ID = "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be"
 EVIDENCE = ROOT / "docs" / "evidence" / f"urdf_generation_{ASSET_ID}.json"
 
 
 def test_package_paths_are_canonicalized_without_touching_other_paths(tmp_path: Path) -> None:
     package = tmp_path / "share" / "demo_description"
-    source = (
-        f'<mesh filename="file://{package}/meshes/body.stl"/>'
-        '<mesh filename="/opt/reviewed/other.stl"/>'
-    )
+    source = f'<mesh filename="file://{package}/meshes/body.stl"/><mesh filename="/opt/reviewed/other.stl"/>'
 
     canonical = _canonicalize_package_paths(source, {"demo_description": package})
 

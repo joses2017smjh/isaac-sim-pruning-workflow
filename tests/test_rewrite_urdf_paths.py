@@ -39,8 +39,7 @@ def test_rewrite_luke_install_file_uri(tmp_path: Path) -> None:
     mesh.parent.mkdir(parents=True)
     mesh.write_bytes(b"solid")
     urdf = (
-        '<mesh filename="file:///home/luke/branch_detection_ws/install/'
-        'demo_pkg/share/demo_pkg/meshes/MockPruner.STL"/>'
+        '<mesh filename="file:///home/luke/branch_detection_ws/install/demo_pkg/share/demo_pkg/meshes/MockPruner.STL"/>'
     )
     missing: list[str] = []
     rewritten = rewrite_urdf(urdf, {"demo_pkg": tmp_path / "pkg"}, missing)

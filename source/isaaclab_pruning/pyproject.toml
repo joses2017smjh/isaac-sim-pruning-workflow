@@ -19,10 +19,11 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
-    "ruff>=0.14",
+    "ruff==0.14.10",
     "torch",
 ]
 demo = [
+    "torch>=2.2",
     "matplotlib>=3.7",
     "pillow>=10.0",
 ]
@@ -35,4 +36,4 @@ where = ["."]
 include = ["isaaclab_pruning*"]
 
 [tool.setuptools.package-data]
-isaaclab_pruning = ["config/**/*.yaml"]
+isaaclab_pruning = ["config/**/*.yaml", "demo/*.html"]

@@ -134,9 +134,7 @@ def control_tool_pose_to_physics_body_pose(
         (tool_quaternion_in_body[..., :1], -tool_quaternion_in_body[..., 1:]),
         dim=-1,
     )
-    body_quaternion = normalize_quaternion_wxyz(
-        quaternion_multiply_wxyz(tool_quaternion, inverse_tool_quaternion)
-    )
+    body_quaternion = normalize_quaternion_wxyz(quaternion_multiply_wxyz(tool_quaternion, inverse_tool_quaternion))
     body_position = tool_pose[..., :3] - rotate_vector_wxyz(body_quaternion, translation)
     return _join_pose(body_position, body_quaternion)
 
@@ -199,10 +197,7 @@ def shift_spatial_jacobian_to_point(
     if not isinstance(body_jacobian, torch.Tensor):
         raise TypeError("body_jacobian must be a torch.Tensor.")
     if body_jacobian.ndim < 2 or body_jacobian.shape[-2] != 6:
-        raise ValueError(
-            "body_jacobian must have shape (..., 6, num_dofs); "
-            f"got {tuple(body_jacobian.shape)}."
-        )
+        raise ValueError(f"body_jacobian must have shape (..., 6, num_dofs); got {tuple(body_jacobian.shape)}.")
     if not body_jacobian.is_floating_point():
         raise TypeError("body_jacobian must have a floating-point dtype.")
     offset = _as_vector_like(

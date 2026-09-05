@@ -95,11 +95,26 @@ the old cleanup order swallowed the caught diagnostic. Retry `21153271`
 persisted the exact failure before cleanup: this manually built `DirectRLEnv`
 passed an unresolved `{ENV_REGEX_NS}/Robot` token to the v60 spawn function,
 which requires an absolute path. Robot, contact, ToF, tree, and smoke-target
-expressions now use the supported `/World/envs/env_.*/...` form. Retry
-`21153411` is pending on `QOSGrpGRES`. None of these attempts is a ToF, contact,
-or A--D runtime pass until a job-specific JSON is green. See
+expressions now use the supported `/World/envs/env_.*/...` form. Job `21153411`
+then registered the robot, contact, and both ray-caster backends before exposing
+the next v60 lifecycle mismatch: `SceneEntityCfg.resolve()` dereferenced the
+articulation before `DirectRLEnv` started physics and created `_root_view`.
+Entity resolution is now deferred until after `super().__init__`, matching the
+v60 lifecycle, and the robot spawner explicitly enables contact-report APIs.
+Job `21153625` then failed on a raw Warp Jacobian without `.clone()`.
+The runtime now uses the link-origin Jacobian and explicitly converts between
+Lab 3 `xyzw` and core `wxyz` poses. Jobs `21185961` and `21186027` reached live
+stepping but failed the 5 mm hold-drift limit. The diagnostic retry measured
+**20.12 mm** translation drift and **0.00309 rad** rotation drift. Both ToF
+grids reached frame 2 with 64/64 finite returns. Its contact tensor was finite
+but covered only one body; full-arm coverage has not been established.
+The controlled 5 mm motion test was not reached. No workflow job remains queued,
+and baselines/PPO remain blocked pending the hold and contact investigation. See
 [`smoke_21146271.json`](evidence/smoke_21146271.json),
-[`smoke_21153271.json`](evidence/smoke_21153271.json), and the
+[`smoke_21153271.json`](evidence/smoke_21153271.json),
+[`smoke_21153411.json`](evidence/smoke_21153411.json),
+[`smoke_21153625.json`](evidence/smoke_21153625.json),
+[`smoke_21186027.json`](evidence/smoke_21186027.json), and the
 [`SLURM ledger`](../SLURM_JOBS.md).
 
 Job `21079145` reached an A40 (`cn-r-1`) and then died: Apptainer killed

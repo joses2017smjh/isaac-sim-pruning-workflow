@@ -37,9 +37,7 @@ def test_source_manifest_pins_reviewed_revisions() -> None:
         "BSD-3-Clause"
     )
     assert sources["universal_robots_ros2_description"]["branch"] == "humble"
-    assert sources["universal_robots_ros2_description"]["revision"] == (
-        "18e6f603b3ebc2ec479fecb62d6be544b15755e9"
-    )
+    assert sources["universal_robots_ros2_description"]["revision"] == ("18e6f603b3ebc2ec479fecb62d6be544b15755e9")
     assert "Rolling revision 89bbe795" in sources["universal_robots_ros2_description"]["note"]
     assert sources["ag_robot"]["revision"] == "60b3bee2323ff04d404516c6630db3626cc51fe0"
     assert sources["pybullet_tree_sim"]["license"] == "BSD-3-Clause"

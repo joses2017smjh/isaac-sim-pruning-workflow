@@ -112,6 +112,7 @@ try:
     from isaaclab_pruning.robot import imported_usd_path
     from isaaclab_pruning.sim.lab3_compat import apply as apply_lab3
     from isaaclab_pruning.sim.lab3_compat import as_torch
+    from isaaclab_pruning.sim.pose_conventions import pose_xyzw_to_wxyz, quaternion_wxyz_to_xyzw
     from isaaclab_pruning.sim.pruning_env import make_pruning_env_cls
     from isaaclab_pruning.sim.pruning_env_cfg import PruningEnvCfg
 
@@ -145,9 +146,9 @@ try:
         tool_w = env._control_tool_pose_w()
         root_w = as_torch(env.robot.data.root_pose_w)
         tool_pos_b, tool_quat_b = subtract_frame_transforms(
-            root_w[:, :3], root_w[:, 3:7], tool_w[:, :3], tool_w[:, 3:7]
+            root_w[:, :3], root_w[:, 3:7], tool_w[:, :3], quaternion_wxyz_to_xyzw(tool_w[:, 3:7])
         )
-        return torch.cat((tool_pos_b, tool_quat_b), dim=-1)
+        return pose_xyzw_to_wxyz(torch.cat((tool_pos_b, tool_quat_b), dim=-1))
 
     # Hold the actual control tool long enough to consume at least one complete
     # 15 Hz sensor interval.  Reset buffers start invalid on purpose.

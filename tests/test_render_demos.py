@@ -125,9 +125,7 @@ def test_reviewed_import_success_contract_and_gif(tmp_path: Path) -> None:
         ("hash", "root-layer SHA-256 is not the reviewed hash"),
     ],
 )
-def test_import_success_renderer_rejects_tampering_without_overwrite(
-    tmp_path: Path, tamper: str, message: str
-) -> None:
+def test_import_success_renderer_rejects_tampering_without_overwrite(tmp_path: Path, tamper: str, message: str) -> None:
     report = json.loads(IMPORT_SUCCESS.read_text(encoding="utf-8"))
     if tamper == "asset":
         report["asset_id"] = "different-asset"

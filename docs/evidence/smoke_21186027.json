@@ -1,0 +1,414 @@
+{
+  "ok": false,
+  "job_id": "21186027",
+  "node": "cn-gpu7",
+  "bhl_stack": "v60",
+  "skrl": null,
+  "rsl_rl": "imported",
+  "asset_id": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+  "usd": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda",
+  "usd_evidence": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/docs/evidence/urdf_import_21136450.json",
+  "phase": "hold_and_live_tof_warmup",
+  "lab3_compat": [
+    "AdditiveUniformNoiseCfg -> UniformNoiseCfg",
+    "AdditiveGaussianNoiseCfg -> GaussianNoiseCfg",
+    "SimulationCfg.physx -> .physics (PhysxCfg)",
+    "isaaclab.utils.math: unwrap ProxyArray on 32 scripted fns"
+  ],
+  "observation_space": {
+    "A_flow": 150,
+    "B_tof": 278,
+    "C_metric": 86,
+    "D_fused": 86
+  },
+  "tof_smoke_target": {
+    "prim_path": "/World/envs/env_0/ToFSmokeTarget",
+    "prim_expr": "/World/envs/env_.*/ToFSmokeTarget",
+    "position_w_m": [
+      0.81741087,
+      0.95,
+      0.06425
+    ],
+    "size_m": [
+      0.8,
+      0.02,
+      0.7
+    ],
+    "shape": "CuboidCfg",
+    "collision_enabled": false,
+    "rigid_body_enabled": false,
+    "enabled": true,
+    "sensor_mesh_prim_paths": {
+      "tof0": [
+        "/World/envs/env_.*/ToFSmokeTarget"
+      ],
+      "tof1": [
+        "/World/envs/env_.*/ToFSmokeTarget"
+      ]
+    },
+    "stage_prim_valid": true,
+    "stage_prim_type": "Xform",
+    "geometry_prim_path": "/World/envs/env_0/ToFSmokeTarget/geometry/mesh",
+    "geometry_prim_type": "Cube",
+    "actual_position_w_m": [
+      0.8174108862876892,
+      0.949999988079071,
+      0.06424999982118607
+    ],
+    "actual_orientation_xyzw": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "actual_size_m": [
+      0.8,
+      0.02,
+      0.7000000000000001
+    ],
+    "collision_api_applied": false,
+    "rigid_body_api_applied": false
+  },
+  "obs_last_dim": {
+    "A_flow": 150,
+    "B_tof": 278,
+    "C_metric": 86,
+    "D_fused": 86
+  },
+  "hold_trace": [
+    {
+      "tool_pose_wxyz": [
+        [
+          0.8170868754386902,
+          0.4379368722438812,
+          0.0844251736998558,
+          -0.0008121432620100677,
+          -0.0011313857976347208,
+          0.7059977054595947,
+          0.7082128524780273
+        ]
+      ],
+      "joint_pos": [
+        [
+          3.1849867809796706e-05,
+          -0.025059744715690613,
+          0.000866014277562499,
+          0.014837102964520454,
+          -0.0032110230531543493,
+          0.008914352394640446
+        ]
+      ],
+      "terminated": [
+        false
+      ],
+      "truncated": [
+        false
+      ]
+    },
+    {
+      "tool_pose_wxyz": [
+        [
+          0.8171138763427734,
+          0.43794387578964233,
+          0.0844164788722992,
+          -0.000755101500544697,
+          -0.0010695160599425435,
+          0.7059988975524902,
+          0.7082117795944214
+        ]
+      ],
+      "joint_pos": [
+        [
+          3.708275471581146e-05,
+          -0.02634613774716854,
+          0.003564350539818406,
+          0.013645238243043423,
+          -0.0030345723498612642,
+          0.00869995541870594
+        ]
+      ],
+      "terminated": [
+        false
+      ],
+      "truncated": [
+        false
+      ]
+    },
+    {
+      "tool_pose_wxyz": [
+        [
+          0.8171282410621643,
+          0.43794354796409607,
+          0.08441105484962463,
+          -0.0008067191811278462,
+          -0.0010063351364806294,
+          0.7059987783432007,
+          0.7082118391990662
+        ]
+      ],
+      "joint_pos": [
+        [
+          3.73622533516027e-05,
+          -0.02623562701046467,
+          0.003348582424223423,
+          0.013659690506756306,
+          -0.003018095623701811,
+          0.008953098207712173
+        ]
+      ],
+      "terminated": [
+        false
+      ],
+      "truncated": [
+        false
+      ]
+    },
+    {
+      "tool_pose_wxyz": [
+        [
+          0.8171391487121582,
+          0.4379444718360901,
+          0.08440709859132767,
+          -0.0008420647354796529,
+          -0.0009584726067259908,
+          0.7059987187385559,
+          0.7082119584083557
+        ]
+      ],
+      "joint_pos": [
+        [
+          3.8374280848074704e-05,
+          -0.02615697681903839,
+          0.0031951353885233402,
+          0.01367915328592062,
+          -0.0029992186464369297,
+          0.009126188233494759
+        ]
+      ],
+      "terminated": [
+        false
+      ],
+      "truncated": [
+        false
+      ]
+    },
+    {
+      "tool_pose_wxyz": [
+        [
+          0.8171462416648865,
+          0.43794435262680054,
+          0.08440470695495605,
+          -0.0008631349192000926,
+          -0.0009284616098739207,
+          0.7059987783432007,
+          0.7082119584083557
+        ]
+      ],
+      "joint_pos": [
+        [
+          3.8352489355020225e-05,
+          -0.026115944609045982,
+          0.0031164742540568113,
+          0.013686059974133968,
+          -0.002986482111737132,
+          0.009229250252246857
+        ]
+      ],
+      "terminated": [
+        false
+      ],
+      "truncated": [
+        false
+      ]
+    },
+    {
+      "tool_pose_wxyz": [
+        [
+          0.8171490430831909,
+          0.43794435262680054,
+          0.08440367132425308,
+          -0.0008727015228942037,
+          -0.0009167493553832173,
+          0.7059987187385559,
+          0.7082119584083557
+        ]
+      ],
+      "joint_pos": [
+        [
+          3.8535232306458056e-05,
+          -0.026086749508976936,
+          0.0030585320200771093,
+          0.01369721069931984,
+          -0.002983520971611142,
+          0.009277213364839554
+        ]
+      ],
+      "terminated": [
+        false
+      ],
+      "truncated": [
+        false
+      ]
+    }
+  ],
+  "hold_diagnostic": {
+    "initial_tool_pose_wxyz": [
+      [
+        0.8174232244491577,
+        0.43792617321014404,
+        0.06428369879722595,
+        0.00019919875194318593,
+        0.0002006292634177953,
+        0.7059919238090515,
+        0.7082198262214661
+      ]
+    ],
+    "command_pose_b_wxyz": [
+      [
+        0.8174232244491577,
+        0.43792617321014404,
+        0.06428369879722595,
+        0.00019919872283935547,
+        0.00020062929252162576,
+        0.7059919238090515,
+        0.7082198262214661
+      ]
+    ],
+    "translation_drift_m": [
+      0.020121848210692406
+    ],
+    "rotation_drift_rad": [
+      0.003088162047788501
+    ],
+    "tof_state": {
+      "source": "live_multi_mesh_ray_caster",
+      "noise_enabled": false,
+      "range_limits_m": [
+        0.03,
+        3.4
+      ],
+      "sensors": {
+        "tof0": {
+          "class": "MultiMeshRayCasterCamera",
+          "tracking_prim_expr": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base",
+          "logical_site_prim_expr": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base/mock_pruner__tof0",
+          "mesh_prim_paths": [
+            "/World/envs/env_.*/ToFSmokeTarget"
+          ],
+          "update_period_s": 0.06666666666666667,
+          "frame": [
+            2
+          ],
+          "consumed_frame": [
+            2
+          ],
+          "position_w_m": [
+            [
+              0.7703270316123962,
+              0.4221152663230896,
+              0.08435000479221344
+            ]
+          ],
+          "quaternion_w_ros_xyzw": [
+            [
+              -0.0009584532235749066,
+              0.7059986591339111,
+              0.7082118988037109,
+              -0.0008420838858000934
+            ]
+          ],
+          "raw": {
+            "shape": [
+              1,
+              8,
+              8
+            ],
+            "finite_fraction": 1.0,
+            "valid_fraction": 1.0,
+            "min_m": 0.5193625688552856,
+            "median_m": 0.545806348323822,
+            "max_m": 0.5942469239234924
+          },
+          "observation": {
+            "shape": [
+              1,
+              8,
+              8
+            ],
+            "finite_fraction": 1.0,
+            "valid_fraction": 1.0,
+            "min_m": 0.5193625688552856,
+            "median_m": 0.545806348323822,
+            "max_m": 0.5942469239234924
+          }
+        },
+        "tof1": {
+          "class": "MultiMeshRayCasterCamera",
+          "tracking_prim_expr": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base",
+          "logical_site_prim_expr": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base/mock_pruner__tof1",
+          "mesh_prim_paths": [
+            "/World/envs/env_.*/ToFSmokeTarget"
+          ],
+          "update_period_s": 0.06666666666666667,
+          "frame": [
+            2
+          ],
+          "consumed_frame": [
+            2
+          ],
+          "position_w_m": [
+            [
+              0.8640312552452087,
+              0.4223538637161255,
+              0.08436580002307892
+            ]
+          ],
+          "quaternion_w_ros_xyzw": [
+            [
+              -0.0009584532235749066,
+              0.7059986591339111,
+              0.7082118988037109,
+              -0.0008420838858000934
+            ]
+          ],
+          "raw": {
+            "shape": [
+              1,
+              8,
+              8
+            ],
+            "finite_fraction": 1.0,
+            "valid_fraction": 1.0,
+            "min_m": 0.5191233158111572,
+            "median_m": 0.5455548763275146,
+            "max_m": 0.5939731597900391
+          },
+          "observation": {
+            "shape": [
+              1,
+              8,
+              8
+            ],
+            "finite_fraction": 1.0,
+            "valid_fraction": 1.0,
+            "min_m": 0.5191233158111572,
+            "median_m": 0.5455548763275146,
+            "max_m": 0.5939731597900391
+          }
+        }
+      }
+    },
+    "contact": {
+      "shape": [
+        1,
+        1,
+        3
+      ],
+      "max_abs": 0.0,
+      "finite": true,
+      "n_bodies_in_contact": 0
+    }
+  },
+  "error": "AssertionError()",
+  "traceback": "Traceback (most recent call last):\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/hpc/inner/smoke_env.py\", line 222, in <module>\n    assert bool((hold_translation_drift_m < 5.0e-3).all().item())\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

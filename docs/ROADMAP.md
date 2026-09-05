@@ -96,8 +96,13 @@ RealSense-named mount, but model/optical calibration remain unknown.
       Job `21146271` failed opaquely at `phase: construct` because its evidence
       flush preceded cleanup/exception capture. Job `21153271` then preserved
       the exact unresolved `{ENV_REGEX_NS}/Robot` error; directly constructed
-      assets now use globally rooted v60 paths. Retry `21153411` is pending on
-      `QOSGrpGRES` (see `SLURM_JOBS.md`).
+      assets now use globally rooted v60 paths. Job `21153411` next proved
+      entity resolution preceded PhysX articulation-view creation. Resolution
+      is now post-super and contact reporting is explicitly activated. Job
+      `21153625` exposed the raw Warp Jacobian; that and quaternion ordering
+      are corrected. Jobs `21185961`/`21186027` now step, but the diagnostic
+      measured 20.12 mm hold drift. The contact tensor covers one body, so
+      full-arm coverage still needs verification (see `SLURM_JOBS.md`).
 - [x] Configure the CuRobo UR5e oracle on the imported USD
       (`docs/evidence/curobo_spheres.json`: link bounding spheres from
       pybullet-tree-sim collision STLs). Runtime still needs an Isaac job.
@@ -122,16 +127,34 @@ Hard gate: do not report a learned policy without scripted and oracle baselines.
       PhysX contact + sensor prim/transform evidence + geometry-response delta
       (`hpc/slurm/env_smoke.sbatch` → `docs/evidence/smoke_<jobid>.json`).
       Attempt `21146271` is an opaque construct failure and `21153271` is the
-      diagnosed global-path failure. Retry `21153411` is pending and is not a
-      pass until its JSON is complete and green.
+      diagnosed global-path failure. Job `21153411` diagnosed the pre-physics
+      entity-resolution failure. Job `21186027` measured two complete live
+      ToF grids but failed the hold-drift threshold before controlled motion.
+      No runtime pass is claimed and no workflow job remains queued.
 - [ ] Port DirectRLEnv through Lab 3.x if that smoke needs more than the three
       existing surface shims — subclass Lab 3 rather than add a fourth.
 - [ ] Train variants A–D × 5 seeds on ray-cast ToF, only after the live env
       smoke and both baseline gates pass.
 - [ ] Per-axis ladder sensitivity.
 
-DA2-ft runs once to propose a target, not at every PPO step. Protocol field
-`da2_in_ppo_loop: false` is asserted.
+The protocol places DA2-ft once at episode start, outside PPO. That inference
+integration and the trainer remain unfinished; `da2_in_ppo_loop: false` is a
+tested configuration contract, not evidence of a running model.
+
+## Portable demo — completed 2026-09-05
+
+- [x] Procedural scene, exact finite-cylinder ToF ray casts, configured noise,
+      scripted servo, bounded insertion, and geometric cut/stop decisions.
+- [x] Measured clear-approach, blackout, and nearby-wood scenarios with strict
+      JSON replay, 18-second GIF, poster, and offline sensor-frame scrubber.
+- [x] Correct lateral feedback direction, roll axis, invalid-depth fusion,
+      and test these through the complete CPU loop.
+- [x] Verify installation and all 133 CPU tests in an isolated environment;
+      add demo generation to GitHub Actions.
+
+This uses ideal tool motion and an explicitly synthetic metric estimate.
+It closes the portable demonstration path, not the remaining Isaac/PPO gates.
+See [capture instructions](DEMO.md) and [reviewer gaps](REVIEWER_NOTES.md).
 
 ## Phase 5 — evaluation
 

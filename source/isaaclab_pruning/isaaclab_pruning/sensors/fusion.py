@@ -28,13 +28,16 @@ def fuse_depths(
         if valid.shape != depths.shape:
             raise ValueError("valid must match depths.")
         bad = bad | ~valid.to(dtype=torch.bool)
-    variance = torch.where(bad, torch.full_like(variance, float("inf")), variance)
-    precision = torch.where(torch.isfinite(variance), 1.0 / variance, torch.zeros_like(variance))
+    # Mask before arithmetic: zero precision times NaN/Inf is still NaN.
+    variance = torch.where(bad, torch.ones_like(variance), variance)
+    precision = torch.where(bad, torch.zeros_like(variance), variance.reciprocal())
     precision_sum = precision.sum(dim=0)
+    safe_depths = torch.where(bad, torch.zeros_like(depths), depths)
+    denominator = torch.where(precision_sum > 0, precision_sum, torch.ones_like(precision_sum))
     fused = torch.where(
         precision_sum > 0,
-        (precision * depths).sum(dim=0) / precision_sum,
+        (precision * safe_depths).sum(dim=0) / denominator,
         torch.full_like(precision_sum, float("nan")),
     )
-    fused_variance = torch.where(precision_sum > 0, 1.0 / precision_sum, torch.full_like(precision_sum, float("inf")))
+    fused_variance = torch.where(precision_sum > 0, 1.0 / denominator, torch.full_like(precision_sum, float("inf")))
     return fused, fused_variance

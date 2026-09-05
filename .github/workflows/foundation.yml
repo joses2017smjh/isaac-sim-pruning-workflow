@@ -15,11 +15,18 @@ jobs:
       - name: Install foundation extras
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e "source/isaaclab_pruning[dev]"
           python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e "source/isaaclab_pruning[dev,demo]"
       - name: Lint
         run: |
           ruff check source/isaaclab_pruning tests tools
           ruff format --check source/isaaclab_pruning tests tools
       - name: Test without Isaac Sim
         run: python -m pytest -q -m "not isaacsim_ci"
+      - name: Reproduce pruning demo
+        run: python tools/run_pruning_demo.py --output-dir demo-output
+      - name: Upload demo and measured replay
+        uses: actions/upload-artifact@v4
+        with:
+          name: pruning-demo
+          path: demo-output/

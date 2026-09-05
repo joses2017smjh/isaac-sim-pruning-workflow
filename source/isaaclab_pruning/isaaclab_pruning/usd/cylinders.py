@@ -120,9 +120,7 @@ def write_cylinder_tree_usd(
             tex = usd_shade.Shader.Define(stage, f"{material_path}/diffuseTex")
             tex.CreateIdAttr("UsdUVTexture")
             tex.CreateInput("file", sdf.ValueTypeNames.Asset).Set(str(texture.resolve()))
-            shader.CreateInput("diffuseColor", sdf.ValueTypeNames.Color3f).ConnectToSource(
-                tex.ConnectableAPI(), "rgb"
-            )
+            shader.CreateInput("diffuseColor", sdf.ValueTypeNames.Color3f).ConnectToSource(tex.ConnectableAPI(), "rgb")
         usd_shade.MaterialBindingAPI.Apply(root.GetPrim()).Bind(bark_material)
 
     class_groups: dict[str, Any] = {}

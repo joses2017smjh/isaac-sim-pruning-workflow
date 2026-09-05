@@ -49,6 +49,9 @@ def make_ur5e_pruner_articulation_cfg(usd_path: str | Path | None = None):
         prim_path=ROBOT_PRIM_EXPR,
         spawn=UsdFileCfg(
             usd_path=str(path.resolve()),
+            # Required by the v60 PhysX ContactSensor: without this the
+            # spawned rigid bodies do not receive PhysxContactReportAPI.
+            activate_contact_sensors=True,
             articulation_props=ArticulationRootPropertiesCfg(
                 enabled_self_collisions=False,
                 solver_position_iteration_count=8,

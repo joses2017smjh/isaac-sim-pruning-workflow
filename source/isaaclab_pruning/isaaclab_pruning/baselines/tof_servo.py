@@ -109,8 +109,8 @@ def scripted_tof_action(
     centroid, axis, counts = fit_branch_axis(points)
 
     # Pan/pitch: drive the estimated centroid onto the cutter forward axis (z).
-    lateral = centroid[:, 0].clamp(-cfg.max_delta_m, cfg.max_delta_m)
-    vertical = centroid[:, 1].clamp(-cfg.max_delta_m, cfg.max_delta_m)
+    lateral = (centroid[:, 0] * cfg.pan).clamp(-cfg.max_delta_m, cfg.max_delta_m)
+    vertical = (centroid[:, 1] * cfg.pitch).clamp(-cfg.max_delta_m, cfg.max_delta_m)
     # Move the mouth forward along EEF +z until a short standoff remains.
     standoff = 0.08
     approach = (centroid[:, 2] - standoff).clamp(-cfg.max_delta_m, cfg.max_delta_m) * cfg.approach
@@ -119,15 +119,18 @@ def scripted_tof_action(
     # A branch along y is already perpendicular to x.
     branch_xy = axis[:, 0:2]
     branch_xy = branch_xy / torch.clamp(torch.linalg.vector_norm(branch_xy, dim=-1, keepdim=True), min=1e-6)
-    roll = torch.atan2(branch_xy[:, 0], branch_xy[:, 1]).clamp(-cfg.max_delta_rad, cfg.max_delta_rad) * cfg.roll
+    # PCA defines an undirected line. Choose one hemisphere so an SVD sign
+    # flip cannot request a half-turn. Rotate about approach +z, not cutter x.
+    branch_xy = torch.where(branch_xy[:, 1:2] < 0, -branch_xy, branch_xy)
+    roll = (-torch.atan2(branch_xy[:, 0], branch_xy[:, 1]) * cfg.roll).clamp(-cfg.max_delta_rad, cfg.max_delta_rad)
 
     no_lock = counts < 3
     zeros = torch.zeros_like(lateral)
-    dx = torch.where(no_lock, zeros, -lateral * cfg.pan)
-    dy = torch.where(no_lock, zeros, -vertical * cfg.pitch)
+    dx = torch.where(no_lock, zeros, lateral)
+    dy = torch.where(no_lock, zeros, vertical)
     dz = torch.where(no_lock, zeros, approach)
     half = 0.5 * torch.where(no_lock, zeros, roll)
-    quat = torch.stack((torch.cos(half), torch.sin(half), zeros, zeros), dim=-1)
+    quat = torch.stack((torch.cos(half), zeros, zeros, torch.sin(half)), dim=-1)
     return torch.cat((torch.stack((dx, dy, dz), dim=-1), quat), dim=-1)
 
 

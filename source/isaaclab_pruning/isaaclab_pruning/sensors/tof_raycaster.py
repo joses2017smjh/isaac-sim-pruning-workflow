@@ -148,9 +148,7 @@ def make_vl53l8cx_raycaster_cfg(
         from isaaclab.sensors import MultiMeshRayCasterCameraCfg
         from isaaclab.sensors.ray_caster import patterns
     except ImportError as error:  # pragma: no cover - exercised only outside the v60 runtime
-        raise RuntimeError(
-            "VL53L8CX ray-caster configs require the pinned Isaac Lab 3 v60 runtime."
-        ) from error
+        raise RuntimeError("VL53L8CX ray-caster configs require the pinned Isaac Lab 3 v60 runtime.") from error
 
     pattern_cfg = patterns.PinholeCameraPatternCfg.from_intrinsic_matrix(
         intrinsic_matrix=list(VL53L8CX_INTRINSICS.matrix_row_major),

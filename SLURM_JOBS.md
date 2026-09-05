@@ -1,6 +1,6 @@
 # SLURM job ledger
 
-Last reconciled: **2026-09-03 23:40 PDT** (`America/Los_Angeles`).
+Last reconciled: **2026-09-05 10:03 PDT** (`America/Los_Angeles`).
 
 This ledger covers jobs produced by this repository's `prune-*` submission
 scripts and the two upstream v60 probes explicitly cited by the repository
@@ -15,25 +15,14 @@ records its submission/start on 2026-08-24, which is the date used here.
 
 ## Current queue
 
-The full user queue at the timestamp above is below. Only `21153411` belongs to
-this repository. Every other allocation was left untouched; no job was
+The full user queue at the timestamp above is below. No workflow job remains
+queued. Both listed allocations were left untouched; no job was
 cancelled, held, reprioritized, or otherwise modified.
 
 | Job | Partition | Name | State | Node or pending reason | This workflow |
 |---|---|---|---|---|---|
-| `21146058_1` | `ampere` | `plank-rerun` | `RUNNING` | `cn-s-5` | Unrelated; untouched |
-| `21153275_2` | `ampere` | `lh-regen` | `RUNNING` | `cn-s-1` | Unrelated; untouched |
-| `21146058_4` | `dgxh` | `plank-rerun` | `RUNNING` | `dgxh-3` | Unrelated; untouched |
-| `21146058_0` | `gpu` | `plank-rerun` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
-| `21146058_2` | `gpu` | `plank-rerun` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
-| `21146058_3` | `gpu` | `plank-rerun` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
-| `21146058_5` | `gpu` | `plank-rerun` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
-| `21153164` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
-| `21153275_[3-4%3]` | `gpu,ampere` | `lh-regen` | `PENDING` | `QOSGrpCpuLimit` | Unrelated; untouched |
-| `21153411` | `gpu,dgxh,ampere` | `prune-env-smoke` | `PENDING` | `QOSGrpGRES` | Submitted here; global-path retry |
-| `21153326` | `gpu,dgxh,ampere` | `cloth-probe` | `PENDING` | `QOSGrpGRES` | Unrelated; untouched |
-| `21153325` | `gpu,dgxh,ampere` | `grip-video` | `PENDING` | `QOSGrpGRES` | Unrelated; untouched |
-| `21153268` | `gpu,dgxh,ampere` | `lh-bcres` | `PENDING` | `QOSGrpGRES` | Unrelated; untouched |
+| `21185770` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
+| `21185936` | `gpu` | `lh-ft` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
 
 ## Repository and referenced stack jobs
 
@@ -49,7 +38,10 @@ cancelled, held, reprioritized, or otherwise modified.
 | `21136450` (`prune-urdf-import`) | Fresh retry with Isaac Lab 3's nested `_abs` layout modeled and an independent wrapper postflight; `gpu`, `cn-gpu7`, 37s; started 2026-09-03 04:29 | `COMPLETED (0:0)` | **PASS.** Evidence is complete/green, inventories and hashes all 11 outputs, opens the composed stage, finds exactly six active UR revolute joints and no slider, and verifies the reviewed camera0/ToF/tool transforms. The root layer SHA-256 is `6ffa65568f85…da82`; this asset is promoted. | `logs/prune-urdf-import-21136450.out` (local) | [successful import evidence](docs/evidence/urdf_import_21136450.json) |
 | `21146271` (`prune-env-smoke`) | First live dual-ToF geometry smoke; `ampere`, `cn-s-1` A40, 28s; started 2026-09-03 15:57 | `FAILED (1:0)` | **FAIL / diagnostic incomplete.** Reached environment construction and recorded correct A-D widths, but Kit cleanup occurred before the caught exception was flushed. No sensor/contact/runtime pass is claimed. The retry writes all results before cleanup. | `logs/prune-env-smoke-21146271.out` (local) | [job evidence](docs/evidence/smoke_21146271.json) (`ok: false`, phase `construct`) |
 | `21153271` (`prune-env-smoke`) | Diagnostic retry after making pass/failure evidence durable; `ampere`, `cn-s-1` A40, 29s; started 2026-09-03 23:33 | `FAILED (1:0)` | **FAIL, diagnosed.** v60 rejected `{ENV_REGEX_NS}/Robot` because this manual `DirectRLEnv._setup_scene` path bypasses `InteractiveScene` token expansion. The tracked traceback identifies the exact call chain. Robot, contact, ToF, tree, and smoke-target paths are now globally rooted. | `logs/prune-env-smoke-21153271.out` (local) | [job evidence](docs/evidence/smoke_21153271.json) (`ok: false`, phase `construct`, traceback present) |
-| `21153411` (`prune-env-smoke`) | Retry with globally rooted `/World/envs/env_.*/...` paths across every directly constructed asset/sensor target | `PENDING` on `QOSGrpGRES` at 2026-09-03 23:40 PDT | **Pending; no result yet.** This is the only active workflow allocation. A green report must still prove two complete 8×8 frames, motion response, contact, and A-D plumbing. | Expected `logs/prune-env-smoke-21153411.out` (local) | Expected `docs/evidence/smoke_21153411.json` |
+| `21153411` (`prune-env-smoke`) | Retry with globally rooted `/World/envs/env_.*/...` paths; `ampere`, `cn-s-1` A40, 10s; started 2026-09-03 23:46 | `FAILED (1:0)` | **FAIL, diagnosed.** Robot, contact, and both ray-caster backends registered. Then `SceneEntityCfg.resolve()` read joint names before `DirectRLEnv` started physics and created the articulation `_root_view`. Resolution is now post-super; the robot spawner also enables v60 contact-report APIs. | `logs/prune-env-smoke-21153411.out` (local) | [job evidence](docs/evidence/smoke_21153411.json) (`ok: false`, phase `construct`, traceback present) |
+| `21153625` (`prune-env-smoke`) | Post-physics entity resolution and contact activation; `ampere`, `cn-s-1`, 17s; started 2026-09-03 23:54 | `FAILED (1:0)` | **FAIL, diagnosed.** Reset and observation assembly returned widths 150/278/86/86. First step received a raw Warp array where `.clone()` required Torch. Replaced the raw PhysX accessor with the v60 link-origin Jacobian. | `logs/prune-env-smoke-21153625.out` (local) | [job evidence](docs/evidence/smoke_21153625.json) |
+| `21185961` (`prune-env-smoke`) | Link-origin Jacobian and explicit xyzw/wxyz boundaries; `gpu`, `cn-gpu6`, 29s; started 2026-09-05 09:43 | `FAILED (1:0)` | **FAIL at hold gate.** Live stepping works, but translation drift exceeded 5 mm. Evidence did not yet include the drift value; diagnostic retry follows. | `logs/prune-env-smoke-21185961.out` (local) | [job evidence](docs/evidence/smoke_21185961.json) |
+| `21186027` (`prune-env-smoke`) | Instrumented hold, joint, ToF, and contact trace; `gpu`, `cn-gpu7`, 17s; started 2026-09-05 09:53 | `FAILED (1:0)` | **FAIL, measured.** Hold translation drift 20.12 mm (limit 5 mm), rotation 0.00309 rad. Both 8×8 ToF grids reached frame 2 with 64/64 finite returns. Contact tensor is finite but only `(1,1,3)`; full-arm coverage is unverified. No reset termination occurred. Controlled motion was not reached. | `logs/prune-env-smoke-21186027.out` (local) | [diagnostic evidence](docs/evidence/smoke_21186027.json) |
 
 ## Job 21125352 output disposition
 
@@ -78,12 +70,13 @@ Asset ID:
 
 Orders are released on application evidence, not merely Slurm state. The
 baseline remains unsubmitted because the environment smokes have not passed and
-the globally rooted-path retry is pending.
+the measured hold/contact issues require investigation. No blind retry, baseline,
+or training allocation is queued.
 
 | Order | Intended job | Status and dependency | Required pass evidence |
 |---|---|---|---|
 | 1 | Fresh pinned import via [`hpc/slurm/import_urdf.sbatch`](hpc/slurm/import_urdf.sbatch) | **Complete: job `21136450` passed and is promoted.** The importer models the nested `_abs` root, the failed output remains quarantined, and the wrapper independently rejects non-green JSON evidence. | [Passing evidence](docs/evidence/urdf_import_21136450.json): `status: complete`, `ok/imported: true`, output hashes, and successful stage validation |
-| 2 | Batched A-D/contact/live-ToF smoke via [`hpc/slurm/env_smoke.sbatch`](hpc/slurm/env_smoke.sbatch) | **Retry `21153411` pending.** Job `21146271` exposed the pre-cleanup evidence-order bug; `21153271` then diagnosed the unresolved environment token, now replaced everywhere by globally rooted paths. Both ToF tables must respond to a controlled tool move; width/content checks alone are insufficient. | `docs/evidence/smoke_21153411.json` with `ok: true`, one successful step, finite PhysX contact, sensor prim/parent transforms, and nonzero geometry-response deltas |
+| 2 | Batched A-D/contact/live-ToF smoke via [`hpc/slurm/env_smoke.sbatch`](hpc/slurm/env_smoke.sbatch) | **Blocked by measured hold drift and incomplete contact coverage.** Both sensor grids now return live data. Job `21186027` provides the joint/tool trace needed to diagnose the 20.12 mm drift. | A new job-specific report with `ok: true`, stable hold, complete contact coverage, sensor transforms, and nonzero controlled geometry-response deltas |
 | 3 | Scripted/CuRobo baseline smoke via [`hpc/slurm/baselines.sbatch`](hpc/slurm/baselines.sbatch) | **Blocked on order 2.** Do not report a scripted-ToF or CuRobo success rate before the live environment gate passes. | `docs/evidence/baselines_<jobid>.json` with `ok: true`, scripted-ToF success and finite contact; record CuRobo availability honestly |
 | 4 | 30 cm camera rectangle via [`hpc/slurm/camera_rect.sbatch`](hpc/slurm/camera_rect.sbatch) | **Blocked on physical camera model/optical-transform selection and renderer configuration.** The CPU `close_lateral` result is only a simulation candidate. | `docs/evidence/camera_rect_<jobid>.json` with `ok: true` and median depth within 5 mm of 0.30 m |
 

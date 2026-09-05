@@ -47,9 +47,7 @@ def score_blender_trunk(
     if world.ndim != 2 or world.shape[1] != 3:
         raise ValueError("blender_centroids must have shape (N, 3).")
     if len(records) != world.shape[0]:
-        raise ValueError(
-            f"Cylinder count {len(records)} does not match Blender centroids {world.shape[0]}."
-        )
+        raise ValueError(f"Cylinder count {len(records)} does not match Blender centroids {world.shape[0]}.")
     tilted = transform_cylinders(records, _local_transform(tilt_x_deg, (0.0, 0.0, 0.0)))
     translation = world[0] - tilted[0].centroid
     errors = np.array(

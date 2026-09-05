@@ -40,12 +40,8 @@ DEFAULT_RIG = (
     / "mock_pruner_vl53l8cx.yaml"
 )
 XACRO_VERSION = "2.1.1"
-CALIBRATION_RELATIVE_PATH = (
-    "branch_detection_system_description/config/robot_calibration.yaml"
-)
-ROOT_XACRO_RELATIVE_PATH = (
-    "branch_detection_system_description/urdf/robot/robot.urdf.xacro"
-)
+CALIBRATION_RELATIVE_PATH = "branch_detection_system_description/config/robot_calibration.yaml"
+ROOT_XACRO_RELATIVE_PATH = "branch_detection_system_description/urdf/robot/robot.urdf.xacro"
 
 JOINT_TO_CALIBRATION_SECTION = {
     "ur5e__shoulder_pan_joint": "shoulder",
@@ -110,8 +106,7 @@ def _source_inputs(manifest_path: Path) -> dict[str, dict[str, str]]:
         actual = _git_revision(checkout)
         if actual != expected:
             raise RuntimeError(
-                f"{name} is at {actual}; manifest requires {expected}. "
-                f"Run tools/fetch_sources.py --source {name}."
+                f"{name} is at {actual}; manifest requires {expected}. Run tools/fetch_sources.py --source {name}."
             )
         if _git_is_dirty(checkout):
             raise RuntimeError(f"{name} has local changes; refusing an unreviewed source expansion.")
@@ -152,9 +147,7 @@ def _patch_xacro_package_lookup(package_map: dict[str, Path]):
 def _canonicalize_package_paths(text: str, package_map: dict[str, Path]) -> str:
     """Replace resolved local package roots with portable package URIs."""
     canonical = text
-    for package, root in sorted(
-        package_map.items(), key=lambda item: len(str(item[1])), reverse=True
-    ):
+    for package, root in sorted(package_map.items(), key=lambda item: len(str(item[1])), reverse=True):
         root_text = str(root.resolve())
         canonical = canonical.replace(f"file://{root_text}/", f"package://{package}/")
         canonical = canonical.replace(f"{root_text}/", f"package://{package}/")
@@ -195,15 +188,11 @@ def _validate_urdf(
         raise RuntimeError("Generated URDF contains duplicate joint names.")
 
     forbidden = ("amiga__", "cart__", "linear_slider__")
-    forbidden_names = sorted(
-        name for name in (*link_names, *joint_names) if name.startswith(forbidden)
-    )
+    forbidden_names = sorted(name for name in (*link_names, *joint_names) if name.startswith(forbidden))
     if forbidden_names:
         raise RuntimeError(f"Arm-only URDF unexpectedly contains: {forbidden_names}")
 
-    active = sorted(
-        node.attrib["name"] for node in joints if node.attrib.get("type") != "fixed"
-    )
+    active = sorted(node.attrib["name"] for node in joints if node.attrib.get("type") != "fixed")
     if active != sorted(JOINT_TO_CALIBRATION_SECTION):
         raise RuntimeError(f"Expected exactly the six UR5e joints; generated {active}.")
 
@@ -223,18 +212,12 @@ def _validate_urdf(
     generated_hashes = sorted({(node.text or "").strip() for node in hash_nodes})
     expected_hash = str(kinematics["hash"])
     if generated_hashes != [expected_hash]:
-        raise RuntimeError(
-            f"Generated kinematics hash {generated_hashes} does not match {expected_hash}."
-        )
+        raise RuntimeError(f"Generated kinematics hash {generated_hashes} does not match {expected_hash}.")
 
     expected_frames = {
         "camera0": rig["wrist_camera"]["physical_source_frame"]["offset_m"],
-        "tof0": next(sensor for sensor in rig["sensors"] if sensor["name"] == "tof0")[
-            "mount_offset_m"
-        ],
-        "tof1": next(sensor for sensor in rig["sensors"] if sensor["name"] == "tof1")[
-            "mount_offset_m"
-        ],
+        "tof0": next(sensor for sensor in rig["sensors"] if sensor["name"] == "tof0")["mount_offset_m"],
+        "tof1": next(sensor for sensor in rig["sensors"] if sensor["name"] == "tof1")["mount_offset_m"],
         "tool0": rig["control_eef_translation_in_source_frame_m"],
     }
     frame_evidence: dict[str, Any] = {}
@@ -250,15 +233,12 @@ def _validate_urdf(
         }
 
     absolute_root = ET.fromstring(absolute)
-    mesh_paths = sorted(
-        {Path(node.attrib["filename"]).resolve() for node in absolute_root.findall(".//mesh")}
-    )
+    mesh_paths = sorted({Path(node.attrib["filename"]).resolve() for node in absolute_root.findall(".//mesh")})
     missing_meshes = [str(path) for path in mesh_paths if not path.is_file()]
     if missing_meshes:
         raise RuntimeError(f"Generated URDF has missing meshes: {missing_meshes}")
     meshes = [
-        {"path": _repo_relative(path), "sha256": _sha256(path), "bytes": path.stat().st_size}
-        for path in mesh_paths
+        {"path": _repo_relative(path), "sha256": _sha256(path), "bytes": path.stat().st_size} for path in mesh_paths
     ]
 
     fixed_joint_table = []
@@ -278,9 +258,7 @@ def _validate_urdf(
             }
         )
     fixed_joint_table.sort(key=lambda item: item["name"])
-    fixed_joint_bytes = json.dumps(
-        fixed_joint_table, sort_keys=True, separators=(",", ":")
-    ).encode()
+    fixed_joint_bytes = json.dumps(fixed_joint_table, sort_keys=True, separators=(",", ":")).encode()
 
     return {
         "robot_name": root.attrib.get("name"),
@@ -330,12 +308,8 @@ def main(argv: list[str] | None = None) -> int:
     sources = _source_inputs(args.manifest)
     package_map = load_package_map(args.package_map)
     bds_root = package_map["branch_detection_system_description"]
-    calibration_path = bds_root / Path(CALIBRATION_RELATIVE_PATH).relative_to(
-        "branch_detection_system_description"
-    )
-    root_xacro = bds_root / Path(ROOT_XACRO_RELATIVE_PATH).relative_to(
-        "branch_detection_system_description"
-    )
+    calibration_path = bds_root / Path(CALIBRATION_RELATIVE_PATH).relative_to("branch_detection_system_description")
+    root_xacro = bds_root / Path(ROOT_XACRO_RELATIVE_PATH).relative_to("branch_detection_system_description")
     calibration = _load_yaml(calibration_path)
     rig = _load_yaml(args.rig)
     expected_calibration_hash = str(calibration["kinematics"]["hash"])
@@ -378,10 +352,7 @@ def main(argv: list[str] | None = None) -> int:
     asset_dir = REPOSITORY_ROOT / "artifacts" / "urdf" / asset_id
     canonical_output = args.canonical_output or asset_dir / f"{asset_id}.urdf"
     absolute_output = args.absolute_output or asset_dir / f"{asset_id}_abs.urdf"
-    evidence_output = (
-        args.evidence_output
-        or REPOSITORY_ROOT / "docs" / "evidence" / f"urdf_generation_{asset_id}.json"
-    )
+    evidence_output = args.evidence_output or REPOSITORY_ROOT / "docs" / "evidence" / f"urdf_generation_{asset_id}.json"
 
     _write_text(canonical_output, canonical)
     _write_text(absolute_output, absolute)

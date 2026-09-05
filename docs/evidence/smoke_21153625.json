@@ -1,0 +1,80 @@
+{
+  "ok": false,
+  "job_id": "21153625",
+  "node": "cn-s-1",
+  "bhl_stack": "v60",
+  "skrl": null,
+  "rsl_rl": "imported",
+  "asset_id": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+  "usd": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda",
+  "usd_evidence": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/docs/evidence/urdf_import_21136450.json",
+  "phase": "reset",
+  "lab3_compat": [
+    "AdditiveUniformNoiseCfg -> UniformNoiseCfg",
+    "AdditiveGaussianNoiseCfg -> GaussianNoiseCfg",
+    "SimulationCfg.physx -> .physics (PhysxCfg)",
+    "isaaclab.utils.math: unwrap ProxyArray on 32 scripted fns"
+  ],
+  "observation_space": {
+    "A_flow": 150,
+    "B_tof": 278,
+    "C_metric": 86,
+    "D_fused": 86
+  },
+  "tof_smoke_target": {
+    "prim_path": "/World/envs/env_0/ToFSmokeTarget",
+    "prim_expr": "/World/envs/env_.*/ToFSmokeTarget",
+    "position_w_m": [
+      0.81741087,
+      0.95,
+      0.06425
+    ],
+    "size_m": [
+      0.8,
+      0.02,
+      0.7
+    ],
+    "shape": "CuboidCfg",
+    "collision_enabled": false,
+    "rigid_body_enabled": false,
+    "enabled": true,
+    "sensor_mesh_prim_paths": {
+      "tof0": [
+        "/World/envs/env_.*/ToFSmokeTarget"
+      ],
+      "tof1": [
+        "/World/envs/env_.*/ToFSmokeTarget"
+      ]
+    },
+    "stage_prim_valid": true,
+    "stage_prim_type": "Xform",
+    "geometry_prim_path": "/World/envs/env_0/ToFSmokeTarget/geometry/mesh",
+    "geometry_prim_type": "Cube",
+    "actual_position_w_m": [
+      0.8174108862876892,
+      0.949999988079071,
+      0.06424999982118607
+    ],
+    "actual_orientation_xyzw": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "actual_size_m": [
+      0.8,
+      0.02,
+      0.7000000000000001
+    ],
+    "collision_api_applied": false,
+    "rigid_body_api_applied": false
+  },
+  "obs_last_dim": {
+    "A_flow": 150,
+    "B_tof": 278,
+    "C_metric": 86,
+    "D_fused": 86
+  },
+  "error": "AttributeError(\"'array' object has no attribute 'clone'\")",
+  "traceback": "Traceback (most recent call last):\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/hpc/inner/smoke_env.py\", line 196, in <module>\n    next_obs, rewards, terminated, truncated, extras = env.step(hold)\n                                                       ^^^^^^^^^^^^^^\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/envs/direct_rl_env.py\", line 449, in step\n    self._apply_action()\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py\", line 169, in _apply_action\n    jacobians = jacobians.clone()\n                ^^^^^^^^^^^^^^^\nAttributeError: 'array' object has no attribute 'clone'\n"
+}

@@ -36,9 +36,7 @@ OUT = ROOT / "docs" / "demo"
 EVIDENCE = ROOT / "docs" / "evidence"
 IMPORT_FAILURE_EVIDENCE = EVIDENCE / "urdf_import_21125352.json"
 IMPORT_SUCCESS_EVIDENCE = EVIDENCE / "urdf_import_21136450.json"
-IMPORT_SUCCESS_ASSET_ID = (
-    "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be"
-)
+IMPORT_SUCCESS_ASSET_ID = "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be"
 IMPORT_SUCCESS_URDF_SHA256 = "a5c04da197c7de2588f1716bb7b25fee47b500ee98856bdc4d640fea90218f44"
 IMPORT_SUCCESS_ROOT_SHA256 = "6ffa65568f8585f7ea5938c4f49263a8b12fd7dc03e18e6872d75761efa2da82"
 
@@ -88,9 +86,7 @@ def _read_evidence(path: Path) -> dict[str, Any]:
 def _save_gif_atomic(anim: animation.Animation, output_path: Path, *, dpi: int = 100) -> Path:
     """Save an animation without exposing a partial or failed output."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary_name = tempfile.mkstemp(
-        prefix=f".{output_path.stem}.", suffix=".gif", dir=output_path.parent
-    )
+    descriptor, temporary_name = tempfile.mkstemp(prefix=f".{output_path.stem}.", suffix=".gif", dir=output_path.parent)
     os.close(descriptor)
     temporary_path = Path(temporary_name)
     try:
@@ -436,12 +432,8 @@ def _validate_live_tof_success(evidence_path: Path) -> dict[str, Any]:  # noqa: 
         "before": normalized_before,
         "after": normalized_after,
         "delta": normalized_delta,
-        "before_frames": {
-            name: int(min(before_state["sensors"][name]["frame"])) for name in ("tof0", "tof1")
-        },
-        "after_frames": {
-            name: int(min(after_state["sensors"][name]["frame"])) for name in ("tof0", "tof1")
-        },
+        "before_frames": {name: int(min(before_state["sensors"][name]["frame"])) for name in ("tof0", "tof1")},
+        "after_frames": {name: int(min(after_state["sensors"][name]["frame"])) for name in ("tof0", "tof1")},
         "move_command_mm": float(move_initial.mean() * 1_000.0),
         "move_final_error_mm": float(move_final.mean() * 1_000.0),
         "hold_drift_mm": float(hold_drift.max() * 1_000.0),
@@ -651,10 +643,7 @@ def write_import_gate_failure(
         fontsize=8.5,
         transform=ax.transAxes,
     )
-    dots = [
-        ax.scatter(0.73 + index * 0.075, 0.91, s=75, color="#455a64", transform=ax.transAxes)
-        for index in range(3)
-    ]
+    dots = [ax.scatter(0.73 + index * 0.075, 0.91, s=75, color="#455a64", transform=ax.transAxes) for index in range(3)]
     states = [
         (
             "1  CONVERTER WROTE A NESTED ROOT",
@@ -742,10 +731,7 @@ def write_import_gate_success(
         fontsize=8.2,
         transform=ax.transAxes,
     )
-    dots = [
-        ax.scatter(0.74 + index * 0.055, 0.91, s=70, color="#455a64", transform=ax.transAxes)
-        for index in range(4)
-    ]
+    dots = [ax.scatter(0.74 + index * 0.055, 0.91, s=70, color="#455a64", transform=ax.transAxes) for index in range(4)]
     states = [
         (
             "1  NESTED ROOT CONTRACT RESOLVED",
@@ -760,8 +746,7 @@ def write_import_gate_success(
         (
             "3  HARDWARE FRAME PROVENANCE VERIFIED",
             "#66bb6a",
-            "camera0  ·  tof0  ·  tof1  ·  tool0\n\n"
-            "All four relative transforms match the reviewed source assembly.",
+            "camera0  ·  tof0  ·  tof1  ·  tool0\n\nAll four relative transforms match the reviewed source assembly.",
         ),
         (
             "4  APPLICATION GATE ACCEPTED IT",
@@ -799,11 +784,7 @@ def write_live_tof_success(
     fact = _validate_live_tof_success(evidence_path)
 
     finite_ranges = np.concatenate(
-        [
-            values[np.isfinite(values)]
-            for state in (fact["before"], fact["after"])
-            for values in state.values()
-        ]
+        [values[np.isfinite(values)] for state in (fact["before"], fact["after"]) for values in state.values()]
     )
     range_min = float(finite_ranges.min())
     range_max = float(finite_ranges.max())

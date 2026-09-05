@@ -45,9 +45,9 @@ the pinned revisions. Their notices must travel with any files later vendored
 from them. The local cutter failure proxy remains a derived experiment
 contract; its presence does not establish that it is current mock-pruner CAD.
 
-The packed `bark_brown_02_diff.jpg` is a 512² downsample of the spur-depth
-orchard albedo used as the Blender baseline (`bark_brown_02`). It is a
-material sample for UsdPreviewSurface, not a relicense of blender_virtual_orchard.
+The optional `bark_brown_02_diff.jpg` orchard albedo is not distributed in this
+repository or Python package. USD writers use a brown material when the local
+texture is absent. Generated demo scenes use procedural geometry and colors.
 
 For permission or licensing clarification, contact Jose Sanchez
 <sanchej7@oregonstate.edu> and the relevant upstream owner.

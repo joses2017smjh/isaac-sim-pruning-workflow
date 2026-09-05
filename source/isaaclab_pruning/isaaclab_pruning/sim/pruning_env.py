@@ -60,6 +60,11 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
         TOF_SITE_PRIM_EXPRS,
         VL53L8CX_DATA_TYPE,
     )
+    from isaaclab_pruning.sim.pose_conventions import (
+        pose_wxyz_to_xyzw,
+        pose_xyzw_to_wxyz,
+        quaternion_wxyz_to_xyzw,
+    )
     from isaaclab_pruning.sim.tof_smoke_geometry import TOF_SMOKE_TARGET
     from isaaclab_pruning.task.loop import episode_start_target
     from isaaclab_pruning.task.reward import dense_pruning_reward
@@ -75,6 +80,11 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
             self.variant = ObservationVariant(cfg.observation_variant)
             self._cut_cache = None
             super().__init__(cfg, render_mode, **kwargs)
+            # Isaac Lab 3 creates PhysX articulation views during the
+            # DirectRLEnv simulation reset, after _setup_scene returns.
+            # Resolving joint/body names earlier dereferences an uninitialized
+            # Articulation._root_view (job 21153411).
+            self.robot_entity_cfg.resolve(self.scene)
             self.ik_controller.reset()
 
         def _setup_scene(self):
@@ -121,7 +131,6 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
                 joint_names=[joint.name for joint in self.spec.arm_joints],
                 body_names=[self.spec.physics_eef_body],
             )
-            self.robot_entity_cfg.resolve(self.scene)
             self._ensure_target()
             self._initialize_observation_buffers()
             self.ik_controller = DifferentialIKController(
@@ -141,10 +150,16 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
             self._cut_cache = None
 
         def _apply_action(self) -> None:
-            self.ik_controller.set_command(self.actions)
+            # Public absolute-tool commands follow the robot spec's wxyz;
+            # the pinned Lab 3 differential-IK controller consumes xyzw.
+            self.ik_controller.set_command(pose_wxyz_to_xyzw(self.actions))
             eef_idx = self.robot_entity_cfg.body_ids[0]
             jacobi_idx = eef_idx - 1 if self.robot.is_fixed_base else eef_idx
-            jacobians = as_torch(self.robot.root_physx_view.get_jacobians())[
+            # Lab 3's backend-neutral articulation data exposes a ProxyArray;
+            # use its Torch view instead of PhysX's raw Warp array.  The link
+            # Jacobian is also referenced at body_pose_w's link origin, which
+            # is the point shifted below to the reviewed control-tool frame.
+            jacobians = as_torch(self.robot.data.body_link_jacobian_w)[
                 :, jacobi_idx, :, self.robot_entity_cfg.joint_ids
             ]
             physics_body_pose_w = as_torch(self.robot.data.body_pose_w)[:, eef_idx]
@@ -157,7 +172,7 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
                 physics_body_pose_w[:, 0:3],
                 physics_body_pose_w[:, 3:7],
             )
-            physics_body_pose_b = torch.cat((physics_body_pos_b, physics_body_quat_b), dim=-1)
+            physics_body_pose_b = pose_xyzw_to_wxyz(torch.cat((physics_body_pos_b, physics_body_quat_b), dim=-1))
             # PhysX exposes the geometric Jacobian in world coordinates while
             # DifferentialIKController consumes it with a root-frame pose.
             # Rotate both spatial blocks before shifting the reference point.
@@ -171,13 +186,13 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
                 self.spec.control_tool_quaternion_wxyz_in_physics_body,
             )
             tool_offset_b = point_offset_in_jacobian_frame(
-                physics_body_quat_b,
+                physics_body_pose_b[:, 3:7],
                 self.spec.control_tool_translation_in_physics_body_m,
             )
             control_tool_jacobians = shift_spatial_jacobian_to_point(jacobians, tool_offset_b)
             joint_pos_des = self.ik_controller.compute(
                 control_tool_pose_b[:, 0:3],
-                control_tool_pose_b[:, 3:7],
+                quaternion_wxyz_to_xyzw(control_tool_pose_b[:, 3:7]),
                 control_tool_jacobians,
                 as_torch(self.robot.data.joint_pos)[:, self.robot_entity_cfg.joint_ids],
             )
@@ -346,9 +361,10 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
             return getattr(self, name)
 
         def _control_tool_pose_w(self) -> torch.Tensor:
+            """Return the control-tool world pose as xyz + wxyz for core geometry."""
             physics_body_pose_w = as_torch(self.robot.data.body_pose_w)[:, self.robot_entity_cfg.body_ids[0], 0:7]
             return compose_physics_body_to_control_tool_pose(
-                physics_body_pose_w,
+                pose_xyzw_to_wxyz(physics_body_pose_w),
                 self.spec.control_tool_translation_in_physics_body_m,
                 self.spec.control_tool_quaternion_wxyz_in_physics_body,
             )
