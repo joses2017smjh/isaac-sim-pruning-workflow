@@ -112,6 +112,22 @@ try:
         cfgs[variant.value] = cfg
         spaces[variant.value] = int(cfg.observation_space)
     enable_tof_smoke_target(cfgs["B_tof"])
+    # At floor-level zero pose the pruner mesh penetrates the ground. Job
+    # 21201622 measured +180 N on mock_pruner__base and a 20 mm constrained
+    # displacement, not a control-frame offset. Mount this smoke on a bench
+    # and move only its dedicated noncolliding wall by the same amount.
+    smoke_base_height_m = 0.70
+    cfgs["B_tof"].robot_cfg.init_state.pos = (0.0, 0.0, smoke_base_height_m)
+    smoke_wall_position = tuple(
+        value + (smoke_base_height_m if index == 2 else 0.0)
+        for index, value in enumerate(TOF_SMOKE_TARGET.position_w_m)
+    )
+    cfgs["B_tof"].tof_smoke_target_position_w_m = smoke_wall_position
+    report["smoke_fixture"] = {
+        "robot_base_height_m": smoke_base_height_m,
+        "wall_position_w_m": smoke_wall_position,
+        "reason": "Keep the zero-pose mock pruner clear of ground contact; hold gate remains 5 mm.",
+    }
     report["observation_space"] = spaces
     assert spaces["A_flow"] != spaces["B_tof"] != spaces["C_metric"]
     assert spaces["A_flow"] != spaces["C_metric"]
@@ -132,7 +148,7 @@ try:
     assert (
         max(
             abs(actual - expected)
-            for actual, expected in zip(smoke_target["actual_position_w_m"], TOF_SMOKE_TARGET.position_w_m, strict=True)
+            for actual, expected in zip(smoke_target["actual_position_w_m"], smoke_wall_position, strict=True)
         )
         < 1.0e-6
     )
@@ -151,6 +167,9 @@ try:
     report["phase"] = "reset"
     _flush_report()
     obs, _ = env.reset(seed=0)
+    report["initial_control_state"] = env.control_state()
+    report["initial_contact_state"] = env.contact_state()
+    _flush_report()
     policy = obs["policy"]
     assert policy.shape[-1] == spaces["B_tof"], (policy.shape, spaces["B_tof"])
 
@@ -204,6 +223,8 @@ try:
                 "joint_pos": as_torch(env.robot.data.joint_pos).detach().cpu().tolist(),
                 "terminated": terminated.detach().cpu().tolist(),
                 "truncated": truncated.detach().cpu().tolist(),
+                "control": env.control_state(),
+                "contact": env.contact_state(),
             }
         )
     tool_w_held = env._control_tool_pose_w().clone()
@@ -217,8 +238,11 @@ try:
         "rotation_drift_rad": hold_rotation_drift_rad.detach().cpu().tolist(),
         "tof_state": env.tof_state(),
         "contact": env.contact_state(),
+        "control": env.control_state(),
     }
     _flush_report()
+    assert report["hold_diagnostic"]["contact"]["coverage"]["complete"], report["hold_diagnostic"]["contact"]
+    assert report["hold_diagnostic"]["contact"]["shape"][1] == len(env.robot.body_names)
     assert bool((hold_translation_drift_m < 5.0e-3).all().item())
     assert bool((hold_rotation_drift_rad < 2.0e-2).all().item())
 
@@ -307,7 +331,7 @@ try:
     report["contact"] = contact
     names = list(getattr(env.robot.data, "joint_names", []) or getattr(env.robot, "joint_names", []))
     report["joint_names"] = [str(name) for name in names]
-    report["n_arm_joints"] = len(env.robot_entity_cfg.joint_ids)
+    report["n_arm_joints"] = int(as_torch(env.robot.data.joint_pos)[:, env.robot_entity_cfg.joint_ids].shape[-1])
     report["slider_in_joint_names"] = any("linear_slider" in str(name) for name in names)
     assert report["n_arm_joints"] == 6
     assert not report["slider_in_joint_names"]

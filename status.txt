@@ -1,10 +1,32 @@
-isaac-sim-pruning-workflow — status at 2026-09-05 14:52 PDT
+isaac-sim-pruning-workflow — status at 2026-09-08 08:42 PDT
 Branch: develop
 Owner / Git author: Jose Sanchez
 GitHub: https://github.com/joses2017smjh/isaac-sim-pruning-workflow
 Author email: 119717035+joses2017smjh@users.noreply.github.com
 
-RUNNABLE DEMO
+REAL ISAAC SIM DEMO — COMPLETE
+
+  Job 21208215: COMPLETED (0:0), cn-gpu6, 2m44s.
+  140 RTX frames / 14 seconds: UR5e + mock pruner approaches a procedural
+  tree fixture, inspects at standoff, then retreats under physical joint drives.
+  Recorded channels: overview, close-up and wrist RGB, simulator depth,
+  two live 8x8 ToF grids, measured joint/tool state, and 20 contact bodies.
+  The video dashboard adds offline Farneback flow and brown-pixel detection.
+
+  Maximum measured tool displacement: 247.37 mm.
+  Closest target distance: 96.07 mm.
+  Retreat return error: 1.65 mm.
+  All ten capture checks pass, including live/changing ToF and render updates
+  that do not advance physics. The original robot works; no substitute used.
+
+The controller uses known geometry and a live ToF stop gate. CV overlays do
+not control this motion. Depth is simulator ground truth, not learned inference.
+The wrist camera has a fixed simulation-defined mount, not hardware calibration.
+Outcome: approach_inspect_retreat_no_cut. No wood was severed and no PPO policy
+was run. Reproduction, media and failure comparison: docs/ISAAC_RENDER.md.
+Raw capture: artifacts/isaac_render/job_21208215/ (local, gitignored).
+
+PORTABLE CPU DEMO
 
   python tools/run_pruning_demo.py --output-dir demo-output
 
@@ -25,13 +47,18 @@ Capture and explanation: docs/DEMO.md.
 
 LOCAL VERIFICATION
 
-  Fresh Python 3.10 venv: dependencies installed from package extras.
+  Previous CPU quickstart validation used a fresh Python 3.10 venv with
   PyTorch CPU 2.14.0, NumPy 2.2.6, Pillow 12.3.0, Matplotlib 3.10.9.
-  Fresh remote clone: 130 passed, 3 missing-USD skips, 1 simulator deselected.
-  Local workspace with generated robot USD: 133 passed, 1 deselected.
-  Ruff 0.14.10 lint and format checks pass across pruning source/tests/tools.
-  CI installs dev+demo extras, tests, generates the demo, uploads artifacts.
-  Published demo commit: f398b67feb1bdec58bb8c2aae8c9e48fb4aebb8f.
+  The successful Isaac capture uses the separate pinned Python 3.12 / v60
+  stack recorded in docs/ENVIRONMENT.lock.json and its job preflight.
+  Previous published CPU demo: fresh clone 130 passed, 3 missing-USD skips,
+  1 simulator deselected; workspace 133 passed, 1 deselected.
+  Current render/control work: local CPU run 184 passed, 1 deselected,
+  including smoke-report slice and stopped-command tracking regressions.
+  Ruff 0.14.10 is used for lint and format checks.
+  CI now installs dev+demo+render extras and generates the portable CPU demo;
+  it does not run Isaac Sim on the GitHub-hosted runner.
+  Previous published CPU demo commit: f398b67feb1bdec58bb8c2aae8c9e48fb4aebb8f.
   GitHub maps its author to joses2017smjh (Jose Sanchez).
   CI run 33980080780 passed: 130 passed, 3 skipped, 1 deselected; demo reproduced.
 
@@ -41,10 +68,14 @@ FUNCTIONAL FIXES
   Roll correction rotates about approach Z and resolves PCA axis sign.
   Invalid depth samples cannot poison finite inverse-variance fusion.
   Isaac scene names resolve only after PhysX articulation initialization.
-  Contact reporting is activated; full arm coverage is still unverified.
+  Contact reporting covers all 20 nested rigid bodies, with exact-name checks.
   IK uses the link-origin Jacobian with an explicit Torch view.
   Lab 3 xyzw and pruning-core wxyz poses convert at explicit boundaries.
-  Failure reports preserve measured hold drift, sensor state, and joint traces.
+  Bounded SVD damped IK handles near-singular poses; gravity compensation is
+  applied without changing the 800/40 arm drive gains or disabling gravity.
+  Diagnostics accept Lab 3's slice(None) joint selection and preserve failures.
+  Render capture avoids blocking Replicator stepping and extra physics updates.
+  Pinned stack/hash preflight and independent postflight validate real frames.
 
 CLUSTER EVIDENCE
 
@@ -54,21 +85,37 @@ CLUSTER EVIDENCE
   21185961 failed: after live stepping, tool hold exceeded 5 mm drift.
   21186027 failed: measured 20.12 mm drift, rotation 0.00309 rad.
            Both ToF grids: frame 2, 64/64 finite ranges.
-           Contact shape (1,1,3): finite but full-arm coverage unverified.
+           Contact shape (1,1,3): full-arm coverage was not yet present.
            Controlled 5 mm motion was not reached.
+  21201586 cancelled: slice diagnostic failure, then renderer warmup hang.
+  21201622 recorded 140 frames but stopped in failure. Full contact reporting
+           revealed about 180 N of floor force on mock_pruner__base during hold.
+           This failed clip is preserved; scheduler completion was not task success.
+  21208115.2 interrupted after 61 frames. Physical checks passed numerically,
+           but final len(slice) serialization left smoke ok:false. Fixed next run.
+  21208215 passed both smoke and recording. Base elevated to 0.70 m to clear
+           ground contact; the hold threshold stays 5 mm. Hold drift measured
+           0.0 at recorded precision; a 5 mm command ended 0.3597 mm from target.
+           ToF median changes 3.961 / 3.800 mm across 64 shared pixels each.
+           All 20 contact bodies verified; A-D widths 150/278/86/86.
 
 No workflow job is queued. Baseline and PPO jobs remain unsubmitted.
-The unrelated user queue has six running tasks and thirteen pending tasks;
-the pending Humanoid_Lite arrays report MaxGRESRunMinsPerUser. Left untouched.
+The user queue has four running allocations and no pending tasks. Three training
+tasks and interactive allocation 21213644 were left untouched. Earlier render
+steps ran in allocation 21208115. No additional render retry is needed.
 All user jobs and exact accounting: SLURM_JOBS.md.
 
 REMAINING RESEARCH WORK
 
-  Diagnose live tool drift and verify all arm contact bodies.
   Replace Isaac's fixed smoke target with live oracle/curriculum targets and
-  nearby-wood tensors. The CPU demo already integrates procedural geometry.
-  Implement live flow, learned metric-depth inference, and episode-start DA2.
-  Identify/calibrate the physical wrist camera; RGB remains disabled.
+  nearby-wood tensors in the training environment. The inspection renderer
+  already uses procedural geometry; it is not that training implementation.
+  Load a selected Blender/L-Py dataset tree into the robot recording. The
+  current fixture is authored as USD cylinders, not imported from .ply files.
+  Connect CV to live control, learned metric-depth inference and episode-start
+  DA2. Current flow and color-mask overlays run on recorded RGB after capture.
+  Identify/calibrate the physical wrist camera; simulation RGB now works.
+  Add actual pruner actuation and validated cutting/contact mechanics.
   Execute CuRobo planning; current baseline runner only reports readiness.
   Implement PPO runner, then run baseline-gated A-D x five seeds.
   Evaluate held-out Envy/UFO rollouts, sim2sim, and hardware transfer.

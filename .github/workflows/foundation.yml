@@ -16,7 +16,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-          python -m pip install -e "source/isaaclab_pruning[dev,demo]"
+          python -m pip install -e "source/isaaclab_pruning[dev,demo,render]"
       - name: Lint
         run: |
           ruff check source/isaaclab_pruning tests tools

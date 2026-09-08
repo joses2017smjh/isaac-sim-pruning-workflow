@@ -40,9 +40,10 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
     from isaaclab.envs import DirectRLEnv
     from isaaclab.managers import SceneEntityCfg
     from isaaclab.sensors import ContactSensor, MultiMeshRayCasterCamera
+    from isaaclab.sim.schemas import activate_contact_sensors
     from isaaclab.sim.spawners.from_files import GroundPlaneCfg, UsdFileCfg, spawn_from_usd, spawn_ground_plane
     from isaaclab.sim.spawners.shapes import CuboidCfg
-    from isaaclab.sim.utils import resolve_prim_pose, resolve_prim_scale
+    from isaaclab.sim.utils import find_first_matching_prim, resolve_prim_pose, resolve_prim_scale
 
     from isaaclab_pruning.geometry.cut_point import CutPoint
     from isaaclab_pruning.geometry.cutter import cutter_boxes_from_spec
@@ -59,6 +60,14 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
     from isaaclab_pruning.sensors.tof_raycaster import (
         TOF_SITE_PRIM_EXPRS,
         VL53L8CX_DATA_TYPE,
+    )
+    from isaaclab_pruning.sim.control_diagnostics import (
+        bounded_damped_joint_delta,
+        collect_nested_rigid_prims,
+        contact_coverage,
+        jacobian_body_index,
+        jacobian_joint_columns,
+        relative_pose_wxyz,
     )
     from isaaclab_pruning.sim.pose_conventions import (
         pose_wxyz_to_xyzw,
@@ -89,6 +98,11 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
 
         def _setup_scene(self):
             spawn_ground_plane(prim_path="/World/ground", cfg=GroundPlaneCfg())
+            self._spawn_task_geometry()
+            self._setup_robot_and_sensors()
+
+        def _spawn_task_geometry(self):
+            """Spawn tree geometry; render demonstrations may supply a bounded scene."""
             tree_usd = repository_root() / "artifacts/trees/lpy_envy_00000.usda"
             if tree_usd.is_file():
                 spawn_from_usd(
@@ -96,6 +110,8 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
                     cfg=UsdFileCfg(usd_path=str(tree_usd.resolve())),
                     translation=(0.0, 1.0, 0.0),
                 )
+
+        def _setup_robot_and_sensors(self):
             self._tof_smoke_target_prim = None
             if self.cfg.tof_smoke_target_enabled:
                 if int(self.cfg.scene.num_envs) != 1:
@@ -115,7 +131,28 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
                     translation=tuple(self.cfg.tof_smoke_target_position_w_m),
                 )
             self.robot = Articulation(self.cfg.robot_cfg)
-            self.contact = ContactSensor(self.cfg.contact_cfg)
+            # The unmerged URDF nests rigid links. Generic contact activation
+            # stops at the first rigid ancestor, and ContactSensor reconstructs
+            # a common-parent + leaf-name view. Neither assumption covers this
+            # hierarchy: activate every link and bind one exact-path sensor each.
+            robot_prim = find_first_matching_prim(self.cfg.robot_cfg.prim_path)
+            if robot_prim is None:
+                raise RuntimeError("Robot prim missing before contact registration.")
+            rigid_prims = collect_nested_rigid_prims(robot_prim, lambda prim: prim.HasAPI(UsdPhysics.RigidBodyAPI))
+            if not rigid_prims:
+                raise RuntimeError("No rigid articulation links found for contact reporting.")
+            self.contact_sensors = {}
+            self._contact_expected_names = [str(prim.GetName()) for prim in rigid_prims]
+            source_prefix = str(robot_prim.GetPath())
+            for index, prim in enumerate(rigid_prims):
+                path = str(prim.GetPath())
+                activate_contact_sensors(path, stage=prim.GetStage())
+                cfg = self.cfg.contact_cfg.copy()
+                cfg.prim_path = self.cfg.robot_cfg.prim_path + path[len(source_prefix) :]
+                self.contact_sensors[f"arm_contact_{index}"] = ContactSensor(cfg)
+            # Keep the old convenience attribute, but all collision/evidence
+            # paths below aggregate every registered body, never only this one.
+            self.contact = next(iter(self.contact_sensors.values()))
             self.tof_sensors = {
                 "tof0": MultiMeshRayCasterCamera(self.cfg.tof0_cfg),
                 "tof1": MultiMeshRayCasterCamera(self.cfg.tof1_cfg),
@@ -124,7 +161,7 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
             if self.device == "cpu":
                 self.scene.filter_collisions(global_prim_paths=["/World/ground"])
             self.scene.articulations["robot"] = self.robot
-            self.scene.sensors["arm_contact"] = self.contact
+            self.scene.sensors.update(self.contact_sensors)
             self.scene.sensors.update(self.tof_sensors)
             self.robot_entity_cfg = SceneEntityCfg(
                 name="robot",
@@ -144,6 +181,7 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
                 device=self.device,
             )
             self.actions = torch.zeros((self.num_envs, self.spec.action_dim), device=self.device)
+            self._last_control_step = None
 
         def _pre_physics_step(self, actions: torch.Tensor) -> None:
             self.actions[:] = actions
@@ -154,17 +192,27 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
             # the pinned Lab 3 differential-IK controller consumes xyzw.
             self.ik_controller.set_command(pose_wxyz_to_xyzw(self.actions))
             eef_idx = self.robot_entity_cfg.body_ids[0]
-            jacobi_idx = eef_idx - 1 if self.robot.is_fixed_base else eef_idx
+            all_jacobians = as_torch(self.robot.data.body_link_jacobian_w)
+            jacobi_idx = jacobian_body_index(
+                body_index=eef_idx,
+                body_count=len(self.robot.body_names),
+                jacobian_body_count=all_jacobians.shape[1],
+                fixed_base=self.robot.is_fixed_base,
+            )
             # Lab 3's backend-neutral articulation data exposes a ProxyArray;
             # use its Torch view instead of PhysX's raw Warp array.  The link
             # Jacobian is also referenced at body_pose_w's link origin, which
             # is the point shifted below to the reviewed control-tool frame.
-            jacobians = as_torch(self.robot.data.body_link_jacobian_w)[
-                :, jacobi_idx, :, self.robot_entity_cfg.joint_ids
-            ]
+            joint_columns = jacobian_joint_columns(
+                self.robot_entity_cfg.joint_ids,
+                joint_count=self.robot.num_joints,
+                base_dofs=int(self.robot.num_base_dofs),
+            )
+            jacobians = all_jacobians[:, jacobi_idx, :, joint_columns]
+            world_jacobians = jacobians.clone()
             physics_body_pose_w = as_torch(self.robot.data.body_pose_w)[:, eef_idx]
             root_pose_w = as_torch(self.robot.data.root_pose_w)
-            from isaaclab.utils.math import matrix_from_quat, quat_inv, subtract_frame_transforms
+            from isaaclab.utils.math import compute_pose_error, matrix_from_quat, quat_inv, subtract_frame_transforms
 
             physics_body_pos_b, physics_body_quat_b = subtract_frame_transforms(
                 root_pose_w[:, 0:3],
@@ -190,16 +238,56 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
                 self.spec.control_tool_translation_in_physics_body_m,
             )
             control_tool_jacobians = shift_spatial_jacobian_to_point(jacobians, tool_offset_b)
-            joint_pos_des = self.ik_controller.compute(
+            position_error, rotation_error = compute_pose_error(
                 control_tool_pose_b[:, 0:3],
                 quaternion_wxyz_to_xyzw(control_tool_pose_b[:, 3:7]),
-                control_tool_jacobians,
-                as_torch(self.robot.data.joint_pos)[:, self.robot_entity_cfg.joint_ids],
+                self.ik_controller.ee_pos_des,
+                self.ik_controller.ee_quat_des,
+                rot_error_type="axis_angle",
             )
+            joint_delta, ik_diagnostic = bounded_damped_joint_delta(
+                control_tool_jacobians,
+                torch.cat((position_error, rotation_error), dim=-1),
+                damping=float(self.cfg.ik_damping),
+                max_joint_delta_rad=float(self.cfg.ik_max_joint_delta_rad),
+            )
+            joint_pos_des = as_torch(self.robot.data.joint_pos)[:, self.robot_entity_cfg.joint_ids] + joint_delta
             self.robot.set_joint_position_target(joint_pos_des, joint_ids=self.robot_entity_cfg.joint_ids)
+            # Keep gravity enabled. The pinned Lab dynamics contract exposes
+            # +g(q), which balances gravity in M*qdd + C + g = tau. PD-only
+            # drives otherwise require a persistent tracking error to hold load.
+            gravity_compensation = as_torch(self.robot.data.gravity_compensation_forces)[:, joint_columns]
+            if not bool(torch.isfinite(gravity_compensation).all()):
+                raise RuntimeError("Non-finite gravity compensation from articulation dynamics")
+            self.robot.set_joint_effort_target(gravity_compensation, joint_ids=self.robot_entity_cfg.joint_ids)
+            self._last_control_step = {
+                "body_index": int(eef_idx),
+                "jacobian_body_index": int(jacobi_idx),
+                "jacobian_joint_columns": joint_columns,
+                "jacobian_shape": list(all_jacobians.shape),
+                "root_pose_w_xyzw": root_pose_w.clone(),
+                "physics_body_pose_w_xyzw": physics_body_pose_w.clone(),
+                "ik_measured_tool_pose_b_wxyz": control_tool_pose_b.clone(),
+                "gate_measured_tool_pose_w_wxyz": self._control_tool_pose_w().clone(),
+                "action_pose_b_wxyz": self.actions.clone(),
+                "controller_target_pose_b_xyzw": torch.cat(
+                    (self.ik_controller.ee_pos_des, self.ik_controller.ee_quat_des), dim=-1
+                ).clone(),
+                "joint_pos_measured": as_torch(self.robot.data.joint_pos)[:, self.robot_entity_cfg.joint_ids].clone(),
+                "joint_pos_desired": joint_pos_des.clone(),
+                "body_jacobian_w": world_jacobians,
+                "tool_jacobian_b": control_tool_jacobians.clone(),
+                "ik_damping": float(self.cfg.ik_damping),
+                "ik_max_joint_delta_rad": float(self.cfg.ik_max_joint_delta_rad),
+                "ik_diagnostic": {key: value.clone() for key, value in ik_diagnostic.items()},
+                "gravity_compensation_effort_nm": gravity_compensation.clone(),
+            }
+
+        def _contact_forces_w(self) -> torch.Tensor:
+            return torch.cat([as_torch(sensor.data.net_forces_w) for sensor in self.contact_sensors.values()], dim=1)
 
         def _arm_collision(self) -> torch.Tensor:
-            forces = as_torch(self.contact.data.net_forces_w)
+            forces = self._contact_forces_w()
             if forces is None:
                 raise RuntimeError("ContactSensor.net_forces_w is None; PhysX contact state was not read.")
             return torch.linalg.vector_norm(forces, dim=-1).amax(dim=-1) > float(
@@ -368,6 +456,64 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
                 self.spec.control_tool_translation_in_physics_body_m,
                 self.spec.control_tool_quaternion_wxyz_in_physics_body,
             )
+
+        def _control_tool_pose_b(self) -> torch.Tensor:
+            """Measured tool pose relative to the actual root, in action convention."""
+            return relative_pose_wxyz(
+                pose_xyzw_to_wxyz(as_torch(self.robot.data.root_pose_w)), self._control_tool_pose_w()
+            )
+
+        def control_state(self) -> dict:
+            """Batch the evidence needed to separate controller bias from physics.
+
+            The last-step tensors are captured together inside _apply_action;
+            current poses are separately labelled after the latest physics step.
+            Calling this method transfers evidence to CPU; normal stepping does not.
+            """
+
+            def serialize(value):
+                if isinstance(value, dict):
+                    return {key: serialize(item) for key, item in value.items()}
+                return value.detach().cpu().tolist() if isinstance(value, torch.Tensor) else value
+
+            current_tool = self._control_tool_pose_w()
+            root = as_torch(self.robot.data.root_pose_w)
+            state = {
+                "lab_quaternion_order": "xyzw",
+                "core_quaternion_order": "wxyz",
+                "is_fixed_base": bool(self.robot.is_fixed_base),
+                "num_base_dofs": int(self.robot.num_base_dofs),
+                "body_names": list(self.robot.body_names),
+                "joint_names": list(self.robot.joint_names),
+                "eef_body_name": str(self.robot.body_names[self.robot_entity_cfg.body_ids[0]]),
+                "root_pose_w_xyzw": serialize(root),
+                "current_tool_pose_w_wxyz": serialize(current_tool),
+                "current_tool_pose_b_wxyz": serialize(self._control_tool_pose_b()),
+                "last_control_step": None,
+            }
+            for name in ("joint_pos", "joint_vel", "joint_pos_target", "joint_stiffness", "joint_damping"):
+                value = getattr(self.robot.data, name, None)
+                state[name] = None if value is None else serialize(as_torch(value))
+            if self._last_control_step is not None:
+                last = self._last_control_step
+                gate_b = relative_pose_wxyz(
+                    pose_xyzw_to_wxyz(last["root_pose_w_xyzw"]), last["gate_measured_tool_pose_w_wxyz"]
+                )
+                state["last_control_step"] = {key: serialize(value) for key, value in last.items()}
+                state["last_control_step"].update(
+                    gate_tool_pose_b_wxyz=serialize(gate_b),
+                    two_path_position_difference_m=serialize(
+                        torch.linalg.vector_norm(gate_b[:, :3] - last["ik_measured_tool_pose_b_wxyz"][:, :3], dim=-1)
+                    ),
+                    controller_position_error_m=serialize(
+                        torch.linalg.vector_norm(
+                            last["controller_target_pose_b_xyzw"][:, :3] - last["ik_measured_tool_pose_b_wxyz"][:, :3],
+                            dim=-1,
+                        )
+                    ),
+                    jacobian_singular_values=serialize(torch.linalg.svdvals(last["tool_jacobian_b"])),
+                )
+            return state
 
         def _proprio(self) -> torch.Tensor:
             joints = self.robot_entity_cfg.joint_ids
@@ -538,15 +684,22 @@ def make_pruning_env_cls():  # noqa: C901 - class is built lazily behind the Isa
             return state
 
         def contact_state(self) -> dict:
-            forces = as_torch(self.contact.data.net_forces_w)
+            forces = self._contact_forces_w()
             if forces is None:
                 raise RuntimeError("PhysX contact forces were not available.")
             tensor = forces.detach()
+            names = [str(name) for sensor in self.contact_sensors.values() for name in sensor.body_names]
             return {
                 "shape": list(tensor.shape),
                 "max_abs": float(tensor.abs().max().item()),
                 "finite": bool(torch.isfinite(tensor).all().item()),
                 "n_bodies_in_contact": int((torch.linalg.vector_norm(tensor, dim=-1) > 1.0).sum().item()),
+                "forces_w_n": tensor.cpu().tolist(),
+                "coverage": contact_coverage(self._contact_expected_names, names),
+                "sensors": {
+                    name: {"prim_path": sensor.cfg.prim_path, "body_names": list(sensor.body_names)}
+                    for name, sensor in self.contact_sensors.items()
+                },
             }
 
     return PruningEnv

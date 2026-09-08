@@ -35,9 +35,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     require_isaaclab()
     raise SystemExit(
-        "Gate 0 and URDF import passed. Next gate is hpc/slurm/env_smoke.sbatch "
-        "(one v60 slot: trainer import, A–D obs asserts, step, PhysX). PPO stays "
-        "blocked until both baselines have Isaac job logs. See docs/ISAAC_STACK.md."
+        "PPO runner is not implemented. The short environment smoke and scripted "
+        "inspection passed, but live perception and both executed baselines remain "
+        "required before policy training. Flags alone are not baseline evidence. "
+        "See docs/ROADMAP.md and docs/ISAAC_STACK.md."
     )
 
 

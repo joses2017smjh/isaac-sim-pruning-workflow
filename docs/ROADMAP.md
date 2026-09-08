@@ -4,6 +4,11 @@ This turns the research plan into falsifiable gates. A checked item means code
 and evidence exist in this repository; it does not mean the entire phase is
 complete.
 
+Latest demonstrated milestone: job `21208215` completed a **14-second Isaac
+inspection** and a separate short motion/ToF smoke. The original UR5e works;
+the clip does not cut wood or run a learned vision policy. See the
+[recording and evidence](ISAAC_RENDER.md).
+
 ## Phase 0 — contracts and compute
 
 - [x] Preserve the now-unavailable upstream Isaac Lab harness at `5701a77` in
@@ -36,6 +41,9 @@ median < 2 mm).
       1798 cylinders on Envy `00000`, 2960 on UFO `00000`, held-out Envy included as assets).
 - [x] Bind `bark_brown_02` as UsdPreviewSurface (tree USDA `Looks/bark_brown_02` and
       orchard Looks; hydra still needs a light, same as Gate 0).
+- [x] Render a procedural finite-cylinder tree fixture and backdrop beside the
+      original UR5e in Isaac (`21208215`). This demonstration scene is authored
+      in USD; it is not a Blender PLY import or a held-out orchard evaluation.
 
 Why cylinders, not capsules: the Blender generator uses finite cylinders.
 Capsules change each end by a radius and cannot pass a millimetre depth check.
@@ -62,23 +70,30 @@ Capsules change each end by a radius and cannot pass a millimetre depth check.
 - [x] Select and document wrist-camera extrinsics
       (`docs/evidence/camera_offset_raycast.json`: `close_lateral` `[0, -0.06, 0.10]` m,
       1259/1478 cuts visible). This is a simulation candidate, not the physical
-      BDS camera0 frame. Wrist RGB stays `enabled: false`.
+      BDS camera0 frame. The inspection renderer uses a separate fixed exterior
+      mount and toe-in; this ray-cast candidate is not its camera calibration.
 - [x] Generate URDF from pinned BDS Xacro/config and selected UR5e calibration;
       record source/calibration/generated-file/mesh hashes and fixed transforms
       (`docs/evidence/urdf_generation_ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be.json`).
 - [x] Import that fresh URDF and promote the exact content-addressed root
       (`docs/evidence/urdf_import_21136450.json`: `status: complete`, `ok: true`,
       six UR joints, no slider, provenance-verified fixed transforms).
-- [ ] GPU-validate the implemented pair of live 8x8
+- [x] GPU-validate the implemented pair of live 8x8
       `MultiMeshRayCasterCamera` sensors. They track `mock_pruner__base` with
-      the reviewed `mock_pruner__tof0/tof1` offsets; require both range tables
-      to respond to controlled EEF motion before accepting the runtime gate.
-- [ ] Identify the physical camera model and calibrated optical transform; then
-      renderer-check the selected simulation view.
+      the reviewed `mock_pruner__tof0/tof1` offsets. The short
+      [smoke `21208215`](evidence/smoke_21208215.json) records median range changes
+      of 3.961 / 3.800 mm over 64 shared finite pixels per sensor after a
+      controlled 5 mm tool command. Noise was disabled.
+- [x] Render overview, close-up and wrist RGB plus simulator depth on the pinned
+      stack. [Job `21208215`](evidence/render_21208215.json) records 140 frames
+      and a fixed simulation-defined wrist-camera transform.
+- [ ] Identify the physical camera model and calibrated optical transform.
+- [ ] Validate the camera with the separate 30 cm rectangle depth gate.
 
-Hard gate: the BDS Xacro has a camera0 translation and its CAD archive has a
-RealSense-named mount, but model/optical calibration remain unknown.
-`close_lateral` is only the ray-cast simulation winner. Wrist RGB stays off.
+Hardware gate: the BDS Xacro has a camera0 translation and its CAD archive has a
+RealSense-named mount, but model/optical calibration remain unknown. This does
+not block a simulation-defined camera. The inspection RGB now works; camera
+feeds into the training policy remain unfinished.
 
 ## Phase 3 — task and baselines
 
@@ -89,25 +104,34 @@ RealSense-named mount, but model/optical calibration remain unknown.
 - [x] Add radius/neighbourhood curriculum (thick branch → thin spur).
 - [x] Add scripted ToF pan/pitch/roll/approach (original reimplementation).
 - [x] Transform reviewed base-frame ToF points to `mock_pruner__tool0` in the
-      scripted baseline and regression-test the 8 cm standoff. Runtime link-pose
-      validation remains open until the live-sensor smoke passes.
+      scripted baseline and regression-test the 8 cm standoff. The short smoke
+      now validates the control-tool pose and live sensor motion response;
+      it does not measure the scripted baseline's task success rate.
 - [x] Add CuRobo UR5e placeholder spheres and a not-yet-configured status.
-- [ ] Validate contact/collision state from the wired PhysX `ContactSensor`.
-      Job `21146271` failed opaquely at `phase: construct` because its evidence
-      flush preceded cleanup/exception capture. Job `21153271` then preserved
-      the exact unresolved `{ENV_REGEX_NS}/Robot` error; directly constructed
-      assets now use globally rooted v60 paths. Job `21153411` next proved
-      entity resolution preceded PhysX articulation-view creation. Resolution
-      is now post-super and contact reporting is explicitly activated. Job
-      `21153625` exposed the raw Warp Jacobian; that and quaternion ordering
-      are corrected. Jobs `21185961`/`21186027` now step, but the diagnostic
-      measured 20.12 mm hold drift. The contact tensor covers one body, so
-      full-arm coverage still needs verification (see `SLURM_JOBS.md`).
+- [x] Instrument all 20 rigid bodies with PhysX contact reporting and verify
+      exact-name coverage in [smoke `21208215`](evidence/smoke_21208215.json).
+      The previous one-body tensor missed approximately 180 N of floor force
+      at `mock_pruner__base`, exposed by [job `21201622`](evidence/smoke_21201622.json).
+      The passing fixture elevates the base by 0.70 m; it does not declare the
+      original floor-level fixture fixed. Historical failures remain in the
+      [job ledger](../SLURM_JOBS.md).
+- [x] Pass the unchanged 5 mm hold gate in the raised fixture. Six hold steps
+      recorded zero drift at output precision; a 5 mm command ended 0.360 mm
+      from its target. Control uses bounded SVD damped least squares and
+      measured gravity compensation.
+- [ ] Validate long-duration holding, contact response and collision avoidance
+      across poses and environments. Instrumentation and a no-contact
+      inspection episode do not establish those properties.
+- [ ] Integrate reset-time tree-oracle/curriculum selection and nearby-wood
+      tensors into the training environment; its target remains a smoke fixture.
+- [ ] Implement blade actuation and validated cutting/wood-severing mechanics.
 - [x] Configure the CuRobo UR5e oracle on the imported USD
       (`docs/evidence/curobo_spheres.json`: link bounding spheres from
       pybullet-tree-sim collision STLs). Runtime still needs an Isaac job.
 - [ ] Run both baselines on live sensor observations in Isaac
-      (`hpc/slurm/baselines.sbatch`), after a green environment smoke.
+      (`hpc/slurm/baselines.sbatch`). The short environment gate is now green,
+      but the inspection trajectory is not this baseline evaluation and the
+      current CuRobo path reports readiness without executing a plan.
 
 Hard gate: do not report a learned policy without scripted and oracle baselines.
 `tools/train.py` refuses to start if those flags are unset.
@@ -121,18 +145,20 @@ Hard gate: do not report a learned policy without scripted and oracle baselines.
 - [x] Injected cut-point error for the perception-sensitivity sweep.
 - [x] Variant A/B/C observation widths must differ; C/D match at 8×8
       (`observation_width()`, `PruningEnvCfg.__post_init__`).
-- [ ] Close all live observation feeds: dual ToF is implemented but awaits a
-      passing GPU smoke; flow and metric-student remain placeholders.
-- [ ] One v60 job: trainer import + env construct A–D + obs asserts + step +
-      PhysX contact + sensor prim/transform evidence + geometry-response delta
-      (`hpc/slurm/env_smoke.sbatch` → `docs/evidence/smoke_<jobid>.json`).
-      Attempt `21146271` is an opaque construct failure and `21153271` is the
-      diagnosed global-path failure. Job `21153411` diagnosed the pre-physics
-      entity-resolution failure. Job `21186027` measured two complete live
-      ToF grids but failed the hold-drift threshold before controlled motion.
-      No runtime pass is claimed and no workflow job remains queued.
-- [ ] Port DirectRLEnv through Lab 3.x if that smoke needs more than the three
-      existing surface shims — subclass Lab 3 rather than add a fourth.
+- [x] Pass a one-environment v60 smoke in job `21208215`: import `rsl_rl`, build
+      A-D configs, construct the B environment, assert A-D observation widths
+      150/278/86/86, step, verify 20 contact bodies and sensor transforms, and
+      measure a controlled geometry-response delta. This is not four trained
+      policies or batched throughput evidence; `skrl` was unavailable in that run.
+- [ ] Close all live policy observation feeds. Dual ToF has passing GPU
+      evidence; flow is still zero and metric-student depth is constant in the
+      training environment. The video's Farneback flow and color segmentation
+      run offline on recorded RGB; RTX depth is simulator ground truth.
+- [ ] Validate the actual PPO trainer/dependency integration. The successful
+      environment smoke does not make `tools/train.py` a training runner.
+- [ ] Evaluate a native Lab 3 port before adding further compatibility shims.
+      The current pinned-stack smoke passes with the existing surface shims;
+      it is not evidence of compatibility with arbitrary future Lab releases.
 - [ ] Train variants A–D × 5 seeds on ray-cast ToF, only after the live env
       smoke and both baseline gates pass.
 - [ ] Per-axis ladder sensitivity.
@@ -149,12 +175,33 @@ tested configuration contract, not evidence of a running model.
       JSON replay, 18-second GIF, poster, and offline sensor-frame scrubber.
 - [x] Correct lateral feedback direction, roll axis, invalid-depth fusion,
       and test these through the complete CPU loop.
-- [x] Verify installation and all 133 CPU tests in an isolated environment;
-      add demo generation to GitHub Actions.
+- [x] Verify installation and demo generation in an isolated environment and
+      GitHub Actions. The September 5 checkpoint passed 133 local CPU tests;
+      this is a historical count, not the current suite size.
 
 This uses ideal tool motion and an explicitly synthetic metric estimate.
 It closes the portable demonstration path, not the remaining Isaac/PPO gates.
 See [capture instructions](DEMO.md) and [reviewer gaps](REVIEWER_NOTES.md).
+
+## Isaac inspection demo — completed 2026-09-07
+
+- [x] Render the original UR5e/mock-pruner under physical joint drives in a
+      procedural USD tree scene, without a trained policy or robot substitution.
+- [x] Capture 140 frames at 10 fps with RTX RGB/depth, two changing live ToF
+      grids, measured joint/tool state, and contact coverage.
+- [x] Observe approach and retreat: maximum tool displacement 247.37 mm,
+      closest target distance 96.07 mm, return error 1.65 mm.
+- [x] Publish the recording with offline CV overlays and a labelled display-only
+      median filter; retain raw inputs, measurements, source/stack fingerprints,
+      and the earlier failed rendering.
+- [x] Validate capture completeness and demonstrate that extra RTX render
+      updates do not advance physics.
+
+Outcome: `approach_inspect_retreat_no_cut`. The known-geometry trajectory uses
+a live ToF stop gate; it is not driven by the CV overlays. ToF noise is disabled,
+and the stop gate is a diagnostic guard, not a validated hardware safety system.
+This milestone closes the requested robot/environment/sensor visualization,
+not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.md).
 
 ## Phase 5 — evaluation
 

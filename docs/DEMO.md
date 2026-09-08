@@ -1,4 +1,12 @@
-# Show the pruning demo
+# Show the pruning demos
+
+Start with the [actual Isaac robot recording](ISAAC_RENDER.md): **14 seconds**
+of approach, inspection, and retreat with RTX cameras and live ToF. Pause at
+7 seconds to explain its sensor dashboard. That recording requires a GPU stack
+and generated robot USD; the four-command quickstart below is the separate
+portable CPU demo.
+
+## Portable CPU replay
 
 Run the four commands in the [README](../README.md), then open
 `pruning/demo-output/pruning_demo.html` in a browser. Keep the generated HTML, GIF,

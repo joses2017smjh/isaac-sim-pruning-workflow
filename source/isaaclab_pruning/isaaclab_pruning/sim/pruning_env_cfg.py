@@ -40,6 +40,10 @@ class PruningEnvCfg(DirectRLEnvCfg):
     state_space = 0
     num_envs = 1
     seed = 0
+    # SVD DLS plus a per-physics-update joint trust region. Keep the reviewed
+    # actuator gains and UR effort limits; gravity is balanced by +g(q).
+    ik_damping: float = 0.05
+    ik_max_joint_delta_rad: float = 0.05
     observation_variant: str = "B_tof"
     n_joints: int = ARM_JOINT_COUNT
     flow_hw: tuple[int, int] = WIDTH_MATCHED_HW
@@ -60,6 +64,8 @@ class PruningEnvCfg(DirectRLEnvCfg):
     # Runtime construction and scene registration live in PruningEnv._setup_scene.
     tof0_cfg = make_vl53l8cx_raycaster_cfg("tof0")
     tof1_cfg = make_vl53l8cx_raycaster_cfg("tof1")
+    # Template: _setup_scene copies this config for every exact rigid-body path.
+    # A common-parent wildcard does not bind the nested, unmerged URDF correctly.
     contact_cfg: ContactSensorCfg = ContactSensorCfg(
         prim_path=f"{ROBOT_PRIM_EXPR}/.*",
         history_length=3,

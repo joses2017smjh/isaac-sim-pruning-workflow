@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "stack": "v60",
+  "python_minor": "3.12",
+  "packages": {"isaacsim": "6.0.0.1", "isaaclab": "3.0.0b2"},
+  "container": {
+    "path": "/nfs/hpc/share/sanchej7/Humanoid_Lite/container/bhl.sif",
+    "sha256": "d427d9c32d23134493be3fe9721a790d71f3134f6cad847725537009f9bcac29"
+  },
+  "venv": "/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60",
+  "validated_evidence": "docs/evidence/isaac_smoke_21077170.json",
+  "driver_policy": "Record the actual driver per run. Driver changes require successful render evidence, not a silent claim of equivalence.",
+  "validated_driver": "595.71.05",
+  "render_partitions": ["gpu", "ampere"],
+  "render_constraint": "a40|rtx8000|l40s",
+  "notes": "Pins the existing working stack, not a portable installation or a hardware-calibration claim. GPU assets remain external."
+}

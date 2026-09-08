@@ -1,6 +1,6 @@
 # SLURM job ledger
 
-Last reconciled: **2026-09-05 14:52 PDT** (`America/Los_Angeles`).
+Last reconciled: **2026-09-08 08:42 PDT** (`America/Los_Angeles`).
 
 This ledger covers jobs produced by this repository's `prune-*` submission
 scripts and the two upstream v60 probes explicitly cited by the repository
@@ -15,26 +15,22 @@ records its submission/start on 2026-08-24, which is the date used here.
 
 ## Current queue
 
-The full user queue at the timestamp above is below. No workflow job remains
-queued. All listed allocations were left untouched; no job was
-cancelled, held, reprioritized, or otherwise modified.
+The full user queue at the timestamp above is below: four running allocations
+and no pending tasks. The detached workflow render has completed; no new
+workflow job is queued. The training allocations were left untouched. The
+earlier interactive render steps are recorded below. The current interactive
+allocation is unrelated and was left untouched.
 
 | Job | Partition | Name | State | Node or pending reason | This workflow |
 |---|---|---|---|---|---|
-| `21185770` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
-| `21186402_0` | `gpu` | `v2-train` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
-| `21186402_1` | `gpu` | `v2-train` | `RUNNING` | `cn-gpu7` | Unrelated; untouched |
-| `21186402_2` | `gpu` | `v2-train` | `RUNNING` | `cn-gpu7` | Unrelated; untouched |
-| `21186402_3` | `ampere` | `v2-train` | `RUNNING` | `cn-r-4` | Unrelated; untouched |
-| `21186403_0` | `dgxh` | `grip-train` | `RUNNING` | `dgxh-4` | Unrelated; untouched |
-| `21186402_[4-8]` | `gpu,dgxh,ampere` | `v2-train` | `PENDING` | `MaxGRESRunMinsPerUser` | Unrelated; untouched |
-| `21186403_[1-8]` | `gpu,dgxh,ampere` | `grip-train` | `PENDING` | `MaxGRESRunMinsPerUser` | Unrelated; untouched |
+| `21199345_2` | `gpu` | `grip-train` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
+| `21199345_4` | `gpu` | `grip-train` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
+| `21199345_5` | `dgxh` | `grip-train` | `RUNNING` | `dgxh-4` | Unrelated; untouched |
+| `21213644` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
 
-The two training arrays belong to `Humanoid_Lite/bhl-robustness-ladder`,
-confirmed from their Slurm command and working directory. The earlier `lh-ft`
-job `21185936` completed with exit `0:0` at 10:50:07 PDT after 1h10m32s;
-its application outputs were not audited here. There are six running tasks
-and thirteen pending tasks across the current user queue.
+Training-job application outputs were not audited as part of this pruning
+render task. Prior queue snapshots must not be interpreted as current scheduler
+state; the September 7 snapshot had six running allocations and no pending tasks.
 
 ## Repository and referenced stack jobs
 
@@ -54,6 +50,26 @@ and thirteen pending tasks across the current user queue.
 | `21153625` (`prune-env-smoke`) | Post-physics entity resolution and contact activation; `ampere`, `cn-s-1`, 17s; started 2026-09-03 23:54 | `FAILED (1:0)` | **FAIL, diagnosed.** Reset and observation assembly returned widths 150/278/86/86. First step received a raw Warp array where `.clone()` required Torch. Replaced the raw PhysX accessor with the v60 link-origin Jacobian. | `logs/prune-env-smoke-21153625.out` (local) | [job evidence](docs/evidence/smoke_21153625.json) |
 | `21185961` (`prune-env-smoke`) | Link-origin Jacobian and explicit xyzw/wxyz boundaries; `gpu`, `cn-gpu6`, 29s; started 2026-09-05 09:43 | `FAILED (1:0)` | **FAIL at hold gate.** Live stepping works, but translation drift exceeded 5 mm. Evidence did not yet include the drift value; diagnostic retry follows. | `logs/prune-env-smoke-21185961.out` (local) | [job evidence](docs/evidence/smoke_21185961.json) |
 | `21186027` (`prune-env-smoke`) | Instrumented hold, joint, ToF, and contact trace; `gpu`, `cn-gpu7`, 17s; started 2026-09-05 09:53 | `FAILED (1:0)` | **FAIL, measured.** Hold translation drift 20.12 mm (limit 5 mm), rotation 0.00309 rad. Both 8×8 ToF grids reached frame 2 with 64/64 finite returns. Contact tensor is finite but only `(1,1,3)`; full-arm coverage is unverified. No reset termination occurred. Controlled motion was not reached. | `logs/prune-env-smoke-21186027.out` (local) | [diagnostic evidence](docs/evidence/smoke_21186027.json) |
+| `21201586` (`prune-render`) | First full-workflow render; `gpu`, `cn-gpu7`, 3m59s; started 2026-09-06 19:56 | `CANCELLED by 19646 (0:0)` | **FAIL / cancelled deliberately.** Smoke diagnostics rejected Lab 3's `slice(None)` joint selection. The subsequent renderer hung during Replicator warmup, so this attempt was cancelled before a video existed. The retry supports slice selections and uses native simulation render updates. | `logs/prune-render-21201586.out` (local) | [failed smoke evidence](docs/evidence/smoke_21201586.json) |
+| `21201622` (`prune-render`) | Native render-update retry; `gpu`, `cn-gpu7`, 1m57s; started 2026-09-06 20:02 | `COMPLETED (0:0)` | **Recording PASS; task STOPPED FAILURE.** Recorded 140 real RTX frames. The robot did not complete the intended approach. Full 20-body contact reporting exposed approximately 180 N of floor force on `mock_pruner__base` during the hold smoke. The failed clip and report remain available. | `logs/prune-render-21201622.out` (local) | [render evidence](docs/evidence/render_21201622.json), [smoke evidence](docs/evidence/smoke_21201622.json), [failed demo](docs/ISAAC_RENDER.md) |
+| `21208115.0` / `.1` | Render launch attempts inside existing `ood-advanced` allocation on `cn-gpu7`; started 2026-09-07 21:27 / 21:28 | `FAILED (2:0)` / `FAILED (1:0)`; both 0s | **Launch failures.** First attempt could not resolve `bash`; the second inherited Slurm's empty export environment and lacked `USER`. Correct launch uses absolute `/bin/bash` and `srun --export=ALL`. Neither produced simulator evidence. | Local interactive output | No application report |
+| `21208115.2` | Corrected interactive launch, raised fixture, bounded IK; `cn-gpu7`, 2m23s; started 2026-09-07 21:28 | `CANCELLED by 19646 (0:9)` | **Incomplete recording, 61 frames.** Hold and motion measurements passed numerically, but final smoke serialization still called `len()` on a slice, so its saved `ok` remained false. The render was interrupted; accounting does not establish an OOM diagnosis. Both issues are superseded by the detached job below. | `artifacts/isaac_render/alloc_21208115_step2/` (local) | [failed smoke report with passing measurements](docs/evidence/smoke_21208115_step2.json) |
+| `21208215` (`prune-render`) | Detached corrected render; `gpu`, `cn-gpu6`, 2m44s; started 2026-09-07 21:34 | `COMPLETED (0:0)` | **Smoke and recording PASS.** 140 frames / 14 s; outcome `approach_inspect_retreat_no_cut`. Maximum measured tool displacement 247.37 mm, closest target distance 96.07 mm, retreat return error 1.65 mm. All ten recording checks passed, including two changing live ToF grids and no physics advancement from extra render updates. This is an inspection demonstration, not pruning or policy success. | `logs/prune-render-21208215.out` (local) | [render evidence](docs/evidence/render_21208215.json), [passing smoke](docs/evidence/smoke_21208215.json), [pinned preflight](docs/evidence/render_preflight_21208215.json), [capture guide](docs/ISAAC_RENDER.md) |
+
+### Hold/contact diagnosis and passing fixture
+
+The earlier 20.12 mm drift was not cleared by relaxing the 5 mm threshold.
+Reporting all 20 nested rigid bodies revealed approximately 180 N of upward
+floor contact at the mock pruner. The previously reported single body missed
+that contact. Job `21208215` places the robot base 0.70 m above the floor and
+retains the 5 mm gate, gravity, and 800/40 arm drive gains. The controller now
+uses bounded SVD damped least squares and measured gravity compensation.
+
+The passing smoke records zero translation and rotation drift at its recorded
+precision, a 0.3597 mm final error after a 5 mm motion command, all 20 expected
+contact bodies, and median range changes of 3.961 / 3.800 mm across 64 shared
+finite pixels on each ToF grid. A-D observation widths are 150/278/86/86;
+those widths do not establish live learned-depth or flow policy inputs.
 
 ## Job 21125352 output disposition
 
@@ -81,16 +97,18 @@ Asset ID:
 ## Next jobs and dependencies
 
 Orders are released on application evidence, not merely Slurm state. The
-baseline remains unsubmitted because the environment smokes have not passed and
-the measured hold/contact issues require investigation. No blind retry, baseline,
-or training allocation is queued.
+corrected smoke and requested inspection rendering have passed. No additional
+render retry is needed. The baseline and training remain unsubmitted: the
+inspection clip is not a scripted-ToF success-rate evaluation, CuRobo planning
+run, or PPO rollout.
 
 | Order | Intended job | Status and dependency | Required pass evidence |
 |---|---|---|---|
 | 1 | Fresh pinned import via [`hpc/slurm/import_urdf.sbatch`](hpc/slurm/import_urdf.sbatch) | **Complete: job `21136450` passed and is promoted.** The importer models the nested `_abs` root, the failed output remains quarantined, and the wrapper independently rejects non-green JSON evidence. | [Passing evidence](docs/evidence/urdf_import_21136450.json): `status: complete`, `ok/imported: true`, output hashes, and successful stage validation |
-| 2 | Batched A-D/contact/live-ToF smoke via [`hpc/slurm/env_smoke.sbatch`](hpc/slurm/env_smoke.sbatch) | **Blocked by measured hold drift and incomplete contact coverage.** Both sensor grids now return live data. Job `21186027` provides the joint/tool trace needed to diagnose the 20.12 mm drift. | A new job-specific report with `ok: true`, stable hold, complete contact coverage, sensor transforms, and nonzero controlled geometry-response deltas |
-| 3 | Scripted/CuRobo baseline smoke via [`hpc/slurm/baselines.sbatch`](hpc/slurm/baselines.sbatch) | **Blocked on order 2.** Do not report a scripted-ToF or CuRobo success rate before the live environment gate passes. | `docs/evidence/baselines_<jobid>.json` with `ok: true`, scripted-ToF success and finite contact; record CuRobo availability honestly |
-| 4 | 30 cm camera rectangle via [`hpc/slurm/camera_rect.sbatch`](hpc/slurm/camera_rect.sbatch) | **Blocked on physical camera model/optical-transform selection and renderer configuration.** The CPU `close_lateral` result is only a simulation candidate. | `docs/evidence/camera_rect_<jobid>.json` with `ok: true` and median depth within 5 mm of 0.30 m |
+| 2 | A-D/contact/live-ToF smoke via [`hpc/slurm/env_smoke.sbatch`](hpc/slurm/env_smoke.sbatch) | **Complete in render job `21208215`.** The raised fixture passes unchanged hold/motion gates and verifies all contact bodies. This is a one-environment smoke, not batched throughput evidence. | [Passing smoke](docs/evidence/smoke_21208215.json), including live sensor transforms and geometry-response deltas |
+| 3 | Scripted/CuRobo baseline smoke via [`hpc/slurm/baselines.sbatch`](hpc/slurm/baselines.sbatch) | **Not submitted.** The previous environment blocker is cleared for the raised fixture. Baseline execution still needs a matching collision-free fixture and actual planner implementation; the current CuRobo path reports readiness only. | `docs/evidence/baselines_<jobid>.json` with `ok: true`, scripted-ToF success and finite contact; record CuRobo availability honestly |
+| 4 | 30 cm camera rectangle via [`hpc/slurm/camera_rect.sbatch`](hpc/slurm/camera_rect.sbatch) | **Not submitted.** A simulation-defined wrist camera now renders. Its fixed exterior mount/toe-in is not a calibrated physical camera; the 30 cm geometric depth check remains separate. | `docs/evidence/camera_rect_<jobid>.json` with `ok: true` and median depth within 5 mm of 0.30 m |
+| 5 | Robot/environment/sensor inspection render via [`hpc/slurm/render_pruning_workflow.sbatch`](hpc/slurm/render_pruning_workflow.sbatch) | **Complete: `21208215`.** Pinned stack, 140 frames, independent capture validation, and measured approach/retreat. No replacement robot was needed. | [Render report](docs/evidence/render_21208215.json) and [preflight](docs/evidence/render_preflight_21208215.json) |
 
 PPO A-D × five seeds remains downstream of successful orders 1–3 and is not
 queued. There is no training submission script in `hpc/slurm/` to list as a

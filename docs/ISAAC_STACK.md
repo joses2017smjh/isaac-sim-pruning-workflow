@@ -5,6 +5,12 @@ This is Jose's measured path from
 not a NVIDIA tutorial and not Isaac Sim 5.x. Pruning jobs use the same venv,
 SIF, and `bhl_exec` launcher. Do not reinvent it.
 
+Pruning now has its own complete robot render: job `21208215` recorded 140
+frames and passed the short environment smoke on 2026-09-07. Watch the
+[Isaac inspection demo](ISAAC_RENDER.md); inspect the
+[smoke](evidence/smoke_21208215.json) and [render](evidence/render_21208215.json)
+reports. The robot is the original UR5e with the reviewed mock pruner.
+
 ## 1. The original blocker
 
 Isaac Sim **5.1**'s RTX renderer segfaults here inside
@@ -21,9 +27,9 @@ A mesh ray-cast has no colour. Depth yes, RGB never.
 The pruning environment now instantiates two 8x8
 `MultiMeshRayCasterCamera` sensors and consumes their 15 Hz
 `distance_to_camera` output. That implementation targets the pinned v60 API;
-it is not evidence of v51 compatibility, and it still needs a passing v60
-environment smoke. RGB, rendered depth, and anything that needs materials must
-use v60.
+it is not evidence of v51 compatibility. The v60 environment smoke passed in
+job `21208215`, including a changed range table after controlled motion. RGB,
+rendered depth, and anything that needs materials must use v60.
 
 ## 3. The actual fix — Isaac Sim 6.0
 
@@ -40,8 +46,10 @@ Pruning's cube/plane smoke does that.
 
 Job `21036909` died on `ModuleNotFoundError: No module named 'rsl_rl'`. v60
 was built with Isaac Sim and Isaac Lab and **no RL library**. Installing the
-trainer is a separate step. Pruning uses skrl; do not assume it is in
-`venv-isaac60` until an import check on that interpreter says so.
+trainer is a separate step. The pruning training entry point expects skrl;
+do not assume it is in `venv-isaac60`. Job `21208215` imported `rsl_rl`, but
+`skrl` was absent. A successful robot render is not evidence of a working PPO
+training run.
 
 ## 5. Isaac Lab 3.x is warp-first
 
@@ -83,16 +91,24 @@ depth is still fixed at 1.20 m, but ToF no longer comes from the old 0.40/0.42 m
 constants: its buffers start invalid and are refreshed from two registered
 `MultiMeshRayCasterCamera` instances. The smoke therefore must record both
 sensor frames/poses and prove their raw 8x8 tables change after controlled EEF
-motion against the opt-in, non-colliding cuboid target. Until that job is green,
-this is a live-ToF implementation claim, not a live-ToF runtime result.
+motion against the opt-in, non-colliding cuboid target. Job `21208215` passed:
+64/64 shared finite pixels per sensor changed by median **3.961 / 3.800 mm**
+after a commanded 5 mm motion. Observation widths were **150 / 278 / 86 / 86**
+for A/B/C/D. Those widths validate the interface, not live flow or learned depth.
 
 RGB at 8×8 is 192 numbers per camera against depth's 64. If RGB ever wins a
 comparison, colour vs width is a separate question. BDS has a hard-coded
 camera0 translation and a RealSense-named CAD mount, but the exact model and
 calibrated optical transform are unresolved. `close_lateral`
 (`[0.0, -0.06, 0.10]` m from the control EEF) is a separate simulation
-candidate. Wrist RGB stays off until source calibration and renderer checks are
-complete. See [`ROBOT_SENSOR_SOURCES.md`](ROBOT_SENSOR_SOURCES.md).
+candidate. The inspection renderer now uses an explicitly simulation-defined
+exterior wrist mount at `[0.0, -0.09, -0.025]` m in the control-tool frame, with
+a fixed toe-in initialized toward the known fixture. It records RTX RGB and
+ground-truth metric depth without claiming hardware calibration. These recorded
+images do not replace the policy observation placeholders. The dashboard
+computes Farneback flow and a brown-pixel candidate overlay offline. See
+[`ROBOT_SENSOR_SOURCES.md`](ROBOT_SENSOR_SOURCES.md) and
+[`ISAAC_RENDER.md`](ISAAC_RENDER.md).
 
 ## Batched env smoke (one RTX slot)
 
@@ -117,7 +133,36 @@ failed on the raw Warp Jacobian. The runtime now reads the link-origin Jacobian
 and converts Lab `xyzw` poses at the core `wxyz` boundary. Subsequent jobs
 `21185961` and `21186027` step successfully but fail the hold-drift gate:
 the latter measured 20.12 mm against a 5 mm limit. Both live ToF grids are
-finite; controlled-motion response and full-arm contact coverage remain open.
-The failures confirm `rsl_rl` imports and `skrl` does not. No workflow job is
-currently queued. Baselines and PPO remain blocked. See the
-[`SLURM job ledger`](../SLURM_JOBS.md).
+finite; those historical attempts never reached the controlled-motion test.
+
+Job `21201622` exposed the missing contact instrumentation: the unmerged URDF
+nests rigid links, so generic contact activation stopped at an ancestor.
+Exact-path sensors now cover all **20** rigid bodies. They measured about
+**180 N** on `mock_pruner__base` in the floor-level fixture while the independent
+tool-pose paths agreed. The successful `21208215` smoke mounted the base 0.70 m
+above the floor, with its wall raised by the same amount. It retained the
+**5 mm** hold limit and measured zero drift at recorded precision over six
+60 Hz steps; the subsequent 5 mm motion ended with **0.360 mm** error.
+
+The fixed-base Jacobian remains indexed by `body_index - 1`, with explicit
+handling of Lab's all-joint `slice(None)`. The controller now uses SVD damped
+least squares (`0.05` damping), uniformly bounds joint corrections to `0.05`
+rad per update, and applies dynamics gravity compensation `+g(q)`. Gravity and
+the 800/40 arm drive gains remain enabled. The original floor-level failure
+has not been relabelled as a pass.
+
+In the same detached allocation, the renderer captured **14.0 physics seconds**
+of approach, inspection, and retreat. All capture checks passed; render-only
+updates advanced no physics steps. The tool moved **247.37 mm** and returned
+within **1.653 mm** of the first captured position. Both ToF grids updated;
+**40.01% / 42.31%** of their individual rays were valid across the sequence.
+All measured contact forces stayed zero, so this is not a collision-response
+test. It does not actuate a cut, sever wood, run a learned policy, or supply
+offline CV results to the controller.
+
+No further GPU job is needed for this video. Baselines, learned observations,
+and PPO still need separate implementation/runtime evidence. The portable
+[CPU demo](DEMO.md) remains a different analytic workflow. Use the pinned lock,
+capture wrapper, and media commands in [ISAAC_RENDER.md](ISAAC_RENDER.md) to
+reproduce the actual Isaac output; the [SLURM ledger](../SLURM_JOBS.md) records
+both successful and failed attempts.

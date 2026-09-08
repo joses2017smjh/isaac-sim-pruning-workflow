@@ -1,5 +1,13 @@
 # HPC bring-up
 
+Current result: job `21208215` passed the short environment smoke and recorded
+140 RTX frames on `cn-gpu6` on 2026-09-07. The original UR5e and mock pruner
+approach a procedural tree, inspect at standoff, and retreat while both ToF
+grids update. See the [video and reproduction guide](ISAAC_RENDER.md),
+[smoke evidence](evidence/smoke_21208215.json), and
+[render evidence](evidence/render_21208215.json). This is not a trained policy
+or a cutting demonstration. No additional GPU job is needed to obtain this video.
+
 Inventory queried from Slurm on 2026-08-27, with the Isaac stack fact from
 Jose's BHL work (job `21036831`, 2026-08-26, `cn-r-1` A40, driver 595.71.05):
 
@@ -39,7 +47,7 @@ submitted as a step of the current one.
 The SIF is Ubuntu 22.04 (~293 MB). Isaac lives in the **venv**, bind-mounted.
 There is no separate 20 GB NVIDIA Isaac image to pin for Gate 0.
 
-## Pinned robot and live-ToF implementation (runtime smoke pending)
+## Pinned robot and live-ToF implementation (runtime smoke passed)
 
 The current robot description was generated from pinned BDS revision `dfede4c`
 and the selected UR5e calibration. Its generation evidence records the source,
@@ -62,11 +70,13 @@ The environment now constructs and registers two v60
 tracks the rigid `mock_pruner__base` and applies the two verified site offsets
 because this v60 beta overwrites an authored non-rigid site's resolved offset.
 Range validity is gated to 0.03--3.4 m. CPU tests cover the configuration and
-the deterministic, non-colliding smoke wall. This is implemented code, not yet
-a successful Isaac environment result. Flow and metric-student buffers remain
-explicit placeholders.
+the deterministic, non-colliding smoke wall. Job `21208215` passed the runtime
+check: both grids returned 64/64 finite wall ranges and changed after a commanded
+5 mm optical-axis motion. Flow and metric-student policy buffers remain explicit
+placeholders; the video's optical flow and brown-pixel candidate overlay are
+computed offline from recorded wrist RGB, not supplied to the controller.
 
-## Batched env smoke (next RTX gate)
+## Batched env smoke (passed on the bench-mounted fixture)
 
 Do not split trainer import, env construct, and obs-width into three jobs.
 
@@ -81,13 +91,31 @@ slurm_clean sbatch hpc/slurm/env_smoke.sbatch
 
 The job must write `docs/evidence/smoke_<jobid>.json` with `"ok": true`,
 distinct A/B/C last-dims, C==D width with `not allclose` when ToF ≠ metric,
-one successful absolute-pose hold step, a finite PhysX contact tensor, both live
+an absolute-pose hold, complete named PhysX contact coverage, both live
 8x8 sensor frames and poses, a verified non-colliding smoke target, and a
 nonzero range change after a controlled 5 mm motion along the optical axis.
 Flow and metric-student are still placeholders, so the smoke validates the
 dual-ToF path and A--D interface plumbing rather than claiming all four variants
 are live. Asserts, not log greps. Record both RL imports and do not pip-install
 in the job.
+
+Job `21208215` passed with the same **5 mm** translation-drift limit. The fixture
+now mounts the robot 0.70 m above the floor and raises its non-colliding test
+wall by the same amount. Six 60 Hz hold steps measured zero drift at the recorded
+precision; this is a short smoke, not a long-duration stability benchmark. The
+subsequent 5 mm command finished with **0.360 mm** position error. Median range
+changes were **3.961 mm** and **3.800 mm**, with 64 shared valid pixels per ToF.
+All **20** rigid articulation bodies have named contact coverage.
+
+The controller uses SVD damped least squares (`damping=0.05`), a 0.05 rad
+per-update joint correction bound, and measured dynamics gravity compensation
+`+g(q)`. The arm's 800/40 drive gains and gravity remain enabled. The robot and
+reviewed sensor offsets are unchanged. [`smoke_21208215.json`](evidence/smoke_21208215.json)
+records these settings, the two independent tool-pose paths, and the sensor
+response. `rsl_rl` imports; `skrl` remains absent. Baseline and PPO execution
+still need their own evidence; this smoke does not establish either result.
+
+### Historical failures and their resolution
 
 Job `21146271` **failed** the application gate at `phase: construct` on
 `cn-s-1`. Its JSON has `ok: false`, no observation result, and no traceback;
@@ -107,9 +135,12 @@ Lab 3 `xyzw` and core `wxyz` poses. Jobs `21185961` and `21186027` reached live
 stepping but failed the 5 mm hold-drift limit. The diagnostic retry measured
 **20.12 mm** translation drift and **0.00309 rad** rotation drift. Both ToF
 grids reached frame 2 with 64/64 finite returns. Its contact tensor was finite
-but covered only one body; full-arm coverage has not been established.
-The controlled 5 mm motion test was not reached. No workflow job remains queued,
-and baselines/PPO remain blocked pending the hold and contact investigation. See
+but covered only one body, and the controlled 5 mm motion test was not reached.
+Job `21201622` then instrumented every nested rigid link and measured about
+**180 N** of floor contact on `mock_pruner__base`; the independent tool-pose
+paths agreed. Raising the fixture removed this contact in `21208215`, which
+passed the unchanged hold limit and the motion-response test. The floor-level
+failure remains a failure, not a retroactive pass. See
 [`smoke_21146271.json`](evidence/smoke_21146271.json),
 [`smoke_21153271.json`](evidence/smoke_21153271.json),
 [`smoke_21153411.json`](evidence/smoke_21153411.json),
@@ -123,6 +154,38 @@ Job `21079145` reached an A40 (`cn-r-1`) and then died: Apptainer killed
 it remains historical alongside the more informative but still failed
 `21146271` attempt.
 
+## Record the actual robot workflow
+
+The detached wrapper combines a pinned-stack preflight, the short environment
+smoke, RTX capture, and an independent output validator in one allocation:
+
+```bash
+source /nfs/hpc/share/$USER/Humanoid_Lite/bhl-robustness-ladder/slurm/_env.sh
+slurm_clean sbatch hpc/slurm/render_pruning_workflow.sbatch
+```
+
+It selects the promoted robot asset from the repository config, requests one
+A40/RTX 8000/L40S, and writes a fresh
+`artifacts/isaac_render/job_<jobid>/` directory. It refuses to overwrite an
+existing capture. The environment lock is [`ENVIRONMENT.lock.json`](ENVIRONMENT.lock.json).
+Use a detached job for capture; the earlier interactive step was cancelled
+after 61 frames and did not produce a complete recording.
+
+Job `21208215` recorded **14.0 seconds** of measured physics at 10 video fps.
+The tool moved **247.37 mm**; target distance went from **342.98 mm** to
+**96.07 mm**, then returned to **343.84 mm**. Final return error was
+**1.653 mm**. Contact coverage was complete and measured contact forces were
+zero throughout this inspection; collision response was not exercised. The
+two ToF grids had **40.01% / 42.31%** valid rays across the recording, rather
+than the smoke wall's 100% coverage. Noise was disabled.
+
+The RGB cameras and metric depth are RTX outputs. The wrist mount is defined
+in simulation, with a fixed target-informed toe-in; it is not calibrated
+hardware. The scripted controller uses known geometry and a measured ToF stop
+gate, not the offline CV overlay. The portable [CPU demo](DEMO.md) is a separate
+analytic demonstration and does not render Isaac Sim. See
+[ISAAC_RENDER.md](ISAAC_RENDER.md) for the media composer, artifacts, and limits.
+
 ## Gate 0: 1 m cube + 2 m plane (v60, headless RTX)
 
 ```bash
@@ -133,7 +196,7 @@ slurm_clean sbatch hpc/slurm/isaac_headless_smoke.sbatch
 
 Pass condition (all must be in the job log / `logs/isaac_smoke.json`):
 
-1. The job lands on an RTX-capable node (`a40`, `rtx8000`, `l40s`, `h100`, or `h200`).
+1. The job lands on an RTX-capable node (`a40`, `rtx8000`, or `l40s`).
 2. Vulkan/EGL / Kit start without the 5.1 hydra-engine segfault.
 3. 1 m cube, camera at `y = -2`, `distance_to_image_plane` median within 50 mm of 1.5 m.
 4. Fronto-parallel plane at `z = -2`, median within 50 mm of 2.0 m and 5–95 spread under 50 mm.

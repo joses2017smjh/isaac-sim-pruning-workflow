@@ -1,0 +1,488 @@
+{
+  "ok": false,
+  "job_id": "21201586",
+  "node": "cn-gpu7",
+  "bhl_stack": "v60",
+  "skrl": null,
+  "rsl_rl": "imported",
+  "asset_id": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+  "usd": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda",
+  "usd_evidence": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/docs/evidence/urdf_import_21136450.json",
+  "phase": "hold_and_live_tof_warmup",
+  "lab3_compat": [
+    "AdditiveUniformNoiseCfg -> UniformNoiseCfg",
+    "AdditiveGaussianNoiseCfg -> GaussianNoiseCfg",
+    "SimulationCfg.physx -> .physics (PhysxCfg)",
+    "isaaclab.utils.math: unwrap ProxyArray on 32 scripted fns"
+  ],
+  "observation_space": {
+    "A_flow": 150,
+    "B_tof": 278,
+    "C_metric": 86,
+    "D_fused": 86
+  },
+  "tof_smoke_target": {
+    "prim_path": "/World/envs/env_0/ToFSmokeTarget",
+    "prim_expr": "/World/envs/env_.*/ToFSmokeTarget",
+    "position_w_m": [
+      0.81741087,
+      0.95,
+      0.06425
+    ],
+    "size_m": [
+      0.8,
+      0.02,
+      0.7
+    ],
+    "shape": "CuboidCfg",
+    "collision_enabled": false,
+    "rigid_body_enabled": false,
+    "enabled": true,
+    "sensor_mesh_prim_paths": {
+      "tof0": [
+        "/World/envs/env_.*/ToFSmokeTarget"
+      ],
+      "tof1": [
+        "/World/envs/env_.*/ToFSmokeTarget"
+      ]
+    },
+    "stage_prim_valid": true,
+    "stage_prim_type": "Xform",
+    "geometry_prim_path": "/World/envs/env_0/ToFSmokeTarget/geometry/mesh",
+    "geometry_prim_type": "Cube",
+    "actual_position_w_m": [
+      0.8174108862876892,
+      0.949999988079071,
+      0.06424999982118607
+    ],
+    "actual_orientation_xyzw": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "actual_size_m": [
+      0.8,
+      0.02,
+      0.7000000000000001
+    ],
+    "collision_api_applied": false,
+    "rigid_body_api_applied": false
+  },
+  "initial_control_state": {
+    "lab_quaternion_order": "xyzw",
+    "core_quaternion_order": "wxyz",
+    "is_fixed_base": true,
+    "num_base_dofs": 0,
+    "body_names": [
+      "ur5e__base_link",
+      "ur5e__base_link_inertia",
+      "ur5e__shoulder_link",
+      "ur5e__upper_arm_link",
+      "ur5e__forearm_link",
+      "ur5e__wrist_1_link",
+      "ur5e__wrist_2_link",
+      "ur5e__wrist_3_link",
+      "ur5e__flange",
+      "ur5e__tool0",
+      "rotation_correction_plate__base",
+      "rotation_correction_plate__body",
+      "rotation_correction_plate__tool0",
+      "dovetail_male_mount__base",
+      "dovetail_male_mount__body",
+      "dovetail_male_mount__tool0",
+      "dovetail_female_mount__base",
+      "dovetail_female_mount__body",
+      "dovetail_female_mount__tool0",
+      "mock_pruner__base"
+    ],
+    "joint_names": [
+      "ur5e__shoulder_pan_joint",
+      "ur5e__shoulder_lift_joint",
+      "ur5e__elbow_joint",
+      "ur5e__wrist_1_joint",
+      "ur5e__wrist_2_joint",
+      "ur5e__wrist_3_joint"
+    ],
+    "eef_body_name": "mock_pruner__base",
+    "root_pose_w_xyzw": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "current_tool_pose_w_wxyz": [
+      [
+        0.8174232244491577,
+        0.43792617321014404,
+        0.06428369879722595,
+        0.00019919875194318593,
+        0.0002006292634177953,
+        0.7059919238090515,
+        0.7082198262214661
+      ]
+    ],
+    "current_tool_pose_b_wxyz": [
+      [
+        0.8174232244491577,
+        0.43792617321014404,
+        0.06428369879722595,
+        0.00019919875194318593,
+        0.0002006292634177953,
+        0.7059919238090515,
+        0.7082198262214661
+      ]
+    ],
+    "last_control_step": null,
+    "joint_pos": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "joint_vel": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "joint_pos_target": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "joint_stiffness": [
+      [
+        800.0,
+        800.0,
+        800.0,
+        800.0,
+        800.0,
+        800.0
+      ]
+    ],
+    "joint_damping": [
+      [
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0
+      ]
+    ]
+  },
+  "initial_contact_state": {
+    "shape": [
+      1,
+      20,
+      3
+    ],
+    "max_abs": 0.0,
+    "finite": true,
+    "n_bodies_in_contact": 0,
+    "forces_w_n": [
+      [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    ],
+    "coverage": {
+      "expected_body_names": [
+        "dovetail_female_mount__base",
+        "dovetail_female_mount__body",
+        "dovetail_female_mount__tool0",
+        "dovetail_male_mount__base",
+        "dovetail_male_mount__body",
+        "dovetail_male_mount__tool0",
+        "mock_pruner__base",
+        "rotation_correction_plate__base",
+        "rotation_correction_plate__body",
+        "rotation_correction_plate__tool0",
+        "ur5e__base_link",
+        "ur5e__base_link_inertia",
+        "ur5e__flange",
+        "ur5e__forearm_link",
+        "ur5e__shoulder_link",
+        "ur5e__tool0",
+        "ur5e__upper_arm_link",
+        "ur5e__wrist_1_link",
+        "ur5e__wrist_2_link",
+        "ur5e__wrist_3_link"
+      ],
+      "actual_body_names": [
+        "ur5e__base_link",
+        "ur5e__base_link_inertia",
+        "ur5e__shoulder_link",
+        "ur5e__upper_arm_link",
+        "ur5e__forearm_link",
+        "ur5e__wrist_1_link",
+        "ur5e__wrist_2_link",
+        "ur5e__wrist_3_link",
+        "ur5e__flange",
+        "ur5e__tool0",
+        "rotation_correction_plate__base",
+        "rotation_correction_plate__body",
+        "rotation_correction_plate__tool0",
+        "dovetail_male_mount__base",
+        "dovetail_male_mount__body",
+        "dovetail_male_mount__tool0",
+        "dovetail_female_mount__base",
+        "dovetail_female_mount__body",
+        "dovetail_female_mount__tool0",
+        "mock_pruner__base"
+      ],
+      "missing_body_names": [],
+      "unexpected_body_names": [],
+      "duplicate_body_names": [],
+      "complete": true
+    },
+    "sensors": {
+      "arm_contact_0": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link",
+        "body_names": [
+          "ur5e__base_link"
+        ]
+      },
+      "arm_contact_1": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia",
+        "body_names": [
+          "ur5e__base_link_inertia"
+        ]
+      },
+      "arm_contact_2": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link",
+        "body_names": [
+          "ur5e__shoulder_link"
+        ]
+      },
+      "arm_contact_3": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link",
+        "body_names": [
+          "ur5e__upper_arm_link"
+        ]
+      },
+      "arm_contact_4": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link",
+        "body_names": [
+          "ur5e__forearm_link"
+        ]
+      },
+      "arm_contact_5": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link",
+        "body_names": [
+          "ur5e__wrist_1_link"
+        ]
+      },
+      "arm_contact_6": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link",
+        "body_names": [
+          "ur5e__wrist_2_link"
+        ]
+      },
+      "arm_contact_7": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link",
+        "body_names": [
+          "ur5e__wrist_3_link"
+        ]
+      },
+      "arm_contact_8": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange",
+        "body_names": [
+          "ur5e__flange"
+        ]
+      },
+      "arm_contact_9": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0",
+        "body_names": [
+          "ur5e__tool0"
+        ]
+      },
+      "arm_contact_10": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base",
+        "body_names": [
+          "rotation_correction_plate__base"
+        ]
+      },
+      "arm_contact_11": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body",
+        "body_names": [
+          "rotation_correction_plate__body"
+        ]
+      },
+      "arm_contact_12": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0",
+        "body_names": [
+          "rotation_correction_plate__tool0"
+        ]
+      },
+      "arm_contact_13": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base",
+        "body_names": [
+          "dovetail_male_mount__base"
+        ]
+      },
+      "arm_contact_14": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body",
+        "body_names": [
+          "dovetail_male_mount__body"
+        ]
+      },
+      "arm_contact_15": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0",
+        "body_names": [
+          "dovetail_male_mount__tool0"
+        ]
+      },
+      "arm_contact_16": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base",
+        "body_names": [
+          "dovetail_female_mount__base"
+        ]
+      },
+      "arm_contact_17": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body",
+        "body_names": [
+          "dovetail_female_mount__body"
+        ]
+      },
+      "arm_contact_18": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0",
+        "body_names": [
+          "dovetail_female_mount__tool0"
+        ]
+      },
+      "arm_contact_19": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base",
+        "body_names": [
+          "mock_pruner__base"
+        ]
+      }
+    }
+  },
+  "obs_last_dim": {
+    "A_flow": 150,
+    "B_tof": 278,
+    "C_metric": 86,
+    "D_fused": 86
+  },
+  "hold_trace": [],
+  "error": "TypeError(\"'slice' object is not iterable\")",
+  "traceback": "Traceback (most recent call last):\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/hpc/inner/smoke_env.py\", line 203, in <module>\n    next_obs, rewards, terminated, truncated, extras = env.step(hold)\n                                                       ^^^^^^^^^^^^^^\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaaclab/source/isaaclab/isaaclab/envs/direct_rl_env.py\", line 449, in step\n    self._apply_action()\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py\", line 204, in _apply_action\n    joint_columns = [index + int(self.robot.num_base_dofs) for index in self.robot_entity_cfg.joint_ids]\n                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: 'slice' object is not iterable\n"
+}

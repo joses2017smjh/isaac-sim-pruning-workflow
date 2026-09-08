@@ -1,86 +1,97 @@
 # Robotic pruning
 
-Simulate robotic pruning with dual-ToF feedback, tool control, and collision checks.
+Simulate a UR5e inspecting branches with wrist vision and dual-ToF sensing in Isaac Sim.
 
-![A measured approach, sensor blackout, and blocked cut](docs/demo/pruning_demo.gif)
+[![Isaac Sim: robot approach, wrist RGB, depth, ToF and measured motion](docs/demo/isaac_workflow.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-inspection-2026-09-07/isaac_workflow.mp4)
 
-18-second CPU simulation replay: approach a spur, lose sensor lock, then reject nearby
-wood. The tool follows commands exactly; the final insertion uses a bounded
-stroke and known geometry. No arm dynamics or physical cutting are simulated.
-[Open the offline replay](docs/DEMO.md) to scrub sensor frames and inspect
-[every measured pose and check](docs/demo/pruning_demo.json).
+[Watch the 14-second video](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-inspection-2026-09-07/isaac_workflow.mp4)
+· [Full-size dashboard](docs/demo/isaac_workflow.png)
+· [Failed run and reproduction](docs/ISAAC_RENDER.md)
+
+Actual Isaac/PhysX motion: observe → approach → align → inspect → retreat.
+The dashboard shows RTX wrist RGB and depth, two live 8×8 ToF grids, joint/tool
+state, and offline optical flow and color segmentation. Motion uses known
+geometry with a ToF stop gate—not a vision policy. **No wood is cut.**
+The GIF samples the full recording; the MP4 keeps all 140 frames at 10 fps.
+Show one 14-second loop, then pause at 7 seconds to explain the sensor panels.
+The tree is a procedural USD fixture, not a Blender `.ply` import.
 
 ## Quickstart
 
-Requires Git and Python 3.10+ with `venv`, on Linux or macOS. Four commands;
-no GPU, Isaac installation, downloaded tree dataset, or robot meshes required.
+The portable CPU demo runs without Isaac, a GPU, robot assets, or a tree dataset.
+It reproduces approach, sensor-blackout, and blocked-cut geometry scenarios;
+it does **not** produce the Isaac robot video above. Requires Git and Python
+3.10+ with `venv` on Linux or macOS. Four commands:
 
 ```bash
 git clone https://github.com/joses2017smjh/isaac-sim-pruning-workflow.git pruning
 python3 -m venv pruning/.venv
-pruning/.venv/bin/python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu -e 'pruning/source/isaaclab_pruning[demo,dev]'
+pruning/.venv/bin/python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu -e 'pruning/source/isaaclab_pruning[demo,dev,render]'
 pruning/.venv/bin/python pruning/tools/run_pruning_demo.py --output-dir pruning/demo-output
 ```
 
-Open `pruning/demo-output/pruning_demo.html` in your browser. It loads locally.
-The command also writes the GIF, a PNG poster, and a JSON replay. Record one
-18-second GIF loop, then spend 10 seconds scrubbing the failure episodes.
-[Capture instructions](docs/DEMO.md) include the exact sequence.
+Open `pruning/demo-output/pruning_demo.html` locally. It includes an 18-second
+GIF and a sensor-frame scrubber. [CPU capture instructions](docs/DEMO.md).
+From `pruning/`, test with `.venv/bin/python -m pytest -q -m 'not isaacsim_ci'`.
 
-Tests: from `pruning/`, run `.venv/bin/python -m pytest -q -m 'not isaacsim_ci'`.
-The separate [Isaac/HPC path](docs/HPC.md) requires the pinned GPU stack and
-generated assets. CI runs the CPU tests and publishes the demo as an artifact.
+To render the robot, follow the [Isaac recording guide](docs/ISAAC_RENDER.md).
+That path requires the pinned GPU/container stack and externally generated
+robot USD. CI tests the CPU path, not the GPU installation.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    G[Procedural cylinders] --> R[Finite-cylinder ray casts]
-    R --> S[Two 8x8 ToF grids: noise and dropout]
-    S --> C[Scripted servo and bounded insertion]
-    C --> P[Tool pose]
-    P --> R
-    G --> V[Mouth, clearance, and angle checks]
-    P --> V
-    V --> E[JSON replay, GIF, HTML]
+    G[Robot USD + procedural tree] --> P[Isaac / PhysX]
+    P --> T[Dual 8x8 ToF]
+    T --> S[Range stop gate]
+    K[Known-geometry trajectory] --> S
+    S --> I[Bounded differential IK + joint drives]
+    I --> P
+    P --> R[RTX RGB + depth]
+    P --> J[Joint / tool / contact state]
+    R --> C[Offline flow + color segmentation]
+    R --> D[Recorded dashboard + JSON]
+    C --> D
+    T --> D
+    J --> D
 ```
 
-The [CPU demo](source/isaaclab_pruning/isaaclab_pruning/demo) reuses the
-sensor, controller, and geometry modules. The
-[Isaac environment](source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py)
-adds UR5e articulation, differential IK, live ray-casters, and PhysX contact.
-It remains behind runtime checks; flow, learned depth, CuRobo execution, and
-PPO training are unfinished. [Implementation gates](docs/ROADMAP.md).
+[Environment](source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py)
+→ [capture](hpc/inner/render_pruning_workflow.py)
+→ [video compositor](tools/compose_isaac_workflow.py).
+The [CPU demo](source/isaaclab_pruning/isaaclab_pruning/demo) instead uses
+analytic finite-cylinder ray casts and ideal tool motion.
 
 ## Results
 
 | Check | Measured result | Scope |
 |---|---|---|
-| Clear approach, seed 7 | Cut geometry accepted after 42 frames; angle error 0.65° | CPU, ideal tool motion |
-| Sensor blackout, seed 7 | Stopped after 20 frames; 0/128 returns on the final four frames | CPU failure case |
-| Nearby wood, seed 7 | Cut rejected after 35 frames | CPU failure-zone check |
-| Nominal range fusion | 6.08 → 5.49 mm RMSE on 651 shared valid samples | ToF versus fusion with synthetic metric estimates |
-| Blackout range fusion | 8.15 → 9.57 mm RMSE across each output's available samples | Coverage differs; filling misses adds noisier estimates |
-| [RTX depth check](docs/evidence/isaac_smoke_21077170.json) | Cube 1.5000 m; plane 2.0000 m; 100% finite | Isaac Sim 6.0, A40 |
-| [Robot import](docs/evidence/urdf_import_21136450.json) | Six active UR joints; reviewed fixed transforms verified | Composed USD stage |
-| [Isaac tool hold](docs/evidence/smoke_21186027.json) | 20.12 mm drift against a <5 mm limit | Both ToF grids finite; motion gate failed |
-| CPU test suite | 130 passed; 3 asset tests skipped; 1 simulator test deselected | Fresh clone on Python 3.10; CI on Python 3.11 |
+| [Isaac inspection](docs/evidence/render_21208215.json) | 247.37 mm displacement; 96.07 mm closest standoff; 1.65 mm return error | One scripted 14-second episode; no cut |
+| Dual-ToF coverage | 40.01% / 42.31% valid rays; median-range spans 384.84 / 321.47 mm | Moving tree view, noise disabled; misses stay missing |
+| [Tool control smoke](docs/evidence/smoke_21208215.json) | 0 mm hold drift at recorded precision; 0.360 mm final error for a 5 mm command | Six-step hold, elevated mount; 20 contact bodies instrumented |
+| [Earlier control failure](docs/evidence/smoke_21201622.json) | 20.12 mm hold drift; mock pruner pressed against floor at roughly 180 N | Original floor-level fixture; failed the unchanged 5 mm limit |
+| [Earlier rendered approach](docs/evidence/render_21201622.json) | 140 frames captured, but approach failed | Rendering passed; task did not |
+| CPU clear approach, seed 7 | Geometry accepted after 42 frames; 0.65° angle error | Ideal tool motion, not physical cutting |
+| CPU sensor blackout / nearby wood | Stopped at 20 frames / rejected at 35 frames | Failure scenarios |
+| CPU range fusion | Nominal RMSE 6.08 → 5.49 mm; blackout 8.15 → 9.57 mm | Synthetic metric estimates; blackout coverage differs |
+| CPU test suite | 184 passed; 1 simulator test deselected | Local Python 3.12 with generated robot assets |
 
-The three skipped tests require generated robot USD files that are not bundled.
-All 133 CPU tests pass when those assets are present. [CI run](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/actions/runs/33980080780)
-also reproduced all three demo outcomes.
+Evidence preserves failed runs, source hashes, runtime versions, and sensor
+misses. The successful inspection reports no contact; coverage alone does not
+prove collision avoidance. Raw RTX images retain rendering noise; the published
+RGB display uses a labelled 3×3 median filter, with CV and metrics computed on
+the unmodified capture. [HPC ledger](SLURM_JOBS.md).
 
-These are component checks and three deterministic scenarios, not a pruning
-success-rate benchmark. The demo's final stroke can lose ToF overlap and uses
-known geometry for its cut decision. No learned-policy, held-out orchard, or
-hardware result is reported. [Full HPC outcomes](SLURM_JOBS.md).
+Still unfinished: live learned perception, CuRobo execution, PPO training,
+physical camera calibration, blade actuation, and wood severing.
+[Implementation gates](docs/ROADMAP.md) · [Reviewer gaps](docs/REVIEWER_NOTES.md).
 
 ## Stack
 
 - Python, PyTorch, NumPy, PyYAML
-- Pillow and Matplotlib fonts for demo rendering
 - Isaac Sim 6.0.0.1, Isaac Lab 3.0.0b2, USD, Warp, PhysX
+- OpenCV, Pillow, Matplotlib, ffmpeg
 - Slurm, Apptainer, pytest, Ruff, GitHub Actions
 
-Jose Sanchez · Oregon State University.
-[Provenance and licensing](NOTICE.md) · [Reviewer gaps](docs/REVIEWER_NOTES.md)
+Jose Sanchez · Oregon State University · [Provenance and licensing](NOTICE.md)
