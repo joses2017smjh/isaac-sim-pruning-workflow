@@ -61,6 +61,13 @@ LOCAL VERIFICATION
   Previous published CPU demo commit: f398b67feb1bdec58bb8c2aae8c9e48fb4aebb8f.
   GitHub maps its author to joses2017smjh (Jose Sanchez).
   CI run 33980080780 passed: 130 passed, 3 skipped, 1 deselected; demo reproduced.
+  Published Isaac capture/control commit: c02b233549a10f64ea38b8d472d26e1ce0ff851c.
+  GitHub verified its author as Jose Sanchez / joses2017smjh.
+  Release: isaac-inspection-2026-09-07 (inspection and failed-run MP4s + JSON).
+  CI run 34246603238 passed: 179 passed, 5 skipped, 1 deselected; CPU demo
+  reproduced. Three skips lack generated USD; two checked only system ffmpeg.
+  Encoder tests now also detect the installed bundled ffmpeg, closing those
+  avoidable skips in subsequent runs.
 
 FUNCTIONAL FIXES
 

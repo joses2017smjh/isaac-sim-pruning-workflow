@@ -75,8 +75,9 @@ The GIF samples the full timeline; the full-resolution MP4 keeps all frames.
 [Render evidence](evidence/render_21201622.json) and
 [runtime/source fingerprints](evidence/render_preflight_21201622.json) are tracked.
 Full local capture: `artifacts/isaac_render/job_21201622/`.
-Full video: `artifacts/isaac_render/job_21201622/media/isaac_workflow_stopped_failure.mp4`.
-Large MP4s and raw sensor arrays stay outside Git.
+Full video: `artifacts/isaac_render/job_21201622/media/isaac_workflow_stopped_failure.mp4`,
+also available as a [release download](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-inspection-2026-09-07/isaac_workflow_stopped_failure.mp4).
+MP4s are release assets; large recordings and raw sensor arrays stay outside Git.
 
 The recorder later corrected stopped-frame tracking-error telemetry to compare
 against the command actually held, not the continuing scheduled trajectory.

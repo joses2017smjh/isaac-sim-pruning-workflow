@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import shutil
 
 import numpy as np
 import pytest
@@ -126,7 +125,7 @@ def test_display_denoise_does_not_change_raw_rgb_or_cv_measurements():
     assert before[1] == after[1]
 
 
-@pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="ffmpeg executable optional for unit suite")
+@pytest.mark.skipif(composer._ffmpeg_executable() is None, reason="No system or bundled ffmpeg encoder")
 def test_media_outputs_include_strict_measured_evidence(tmp_path):
     source, _ = _capture(tmp_path)
     outputs = composer.compose_capture(source, tmp_path / "output", display_denoise=True)
@@ -146,7 +145,7 @@ def test_media_outputs_include_strict_measured_evidence(tmp_path):
     assert evidence["gif_preview"]["source_frame_indices"] == [0, 1, 2]
 
 
-@pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="ffmpeg executable optional for unit suite")
+@pytest.mark.skipif(composer._ffmpeg_executable() is None, reason="No system or bundled ffmpeg encoder")
 def test_gif_failure_preserves_video_poster_and_evidence(tmp_path, monkeypatch):
     source, _ = _capture(tmp_path)
 
