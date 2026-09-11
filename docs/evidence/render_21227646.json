@@ -1,0 +1,319 @@
+{
+  "ok": false,
+  "rendering_ok": false,
+  "stage": "settle_physical_joint_drives",
+  "job_id": "21227646",
+  "node": "cn-r-6",
+  "task_outcome": "runtime_failure",
+  "frame_count": 0,
+  "provenance": {
+    "robot": "UR5e + reviewed BDS mock-pruner, six actuated UR joints",
+    "asset_id": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+    "usd": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda",
+    "usd_evidence": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/docs/evidence/urdf_import_21136450.json",
+    "runtime": "Isaac Sim 6.0.0.1 / Isaac Lab 3.0.0b2",
+    "controller": "Causal pyramidal-LK RGB-D visual servo, bounded Cartesian IK; seed pixel supplied once",
+    "robot_state": "measured PhysX articulation state, not teleported joint replay",
+    "overview_rgb": "RTX rgb annotator",
+    "wrist_rgb": "RTX rgb annotator; exterior tool-mounted camera with fixed simulation-defined toe-in; not hardware calibration",
+    "close_rgb": "RTX rgb annotator; static external close-up camera",
+    "depth": "RTX distance_to_image_plane; simulator ground truth, not learned depth",
+    "tof": "two live MultiMeshRayCasterCamera 8x8 15Hz at reviewed sensor offsets; noise disabled",
+    "environment": "Original Blender orchard USD meshes, UVs and image maps; see scene provenance",
+    "cutting": "Visual jaw surrogate and gated rigid-piece detachment; no wood fracture or actuated blade CAD",
+    "contact": "PhysX measured forces; coverage recorded explicitly",
+    "recognition": "Branch identity, axis and radius supplied by selected mesh metadata; not learned recognition"
+  },
+  "artifact_inventory": {
+    "overview": "frames/overview_*.png",
+    "close": "frames/close_*.png",
+    "wrist": "frames/wrist_*.png",
+    "metric_depth": "frames/depth_*.npy",
+    "telemetry": "frames.json",
+    "stage": "scene.usda"
+  },
+  "lab3_compat": [
+    "AdditiveUniformNoiseCfg -> UniformNoiseCfg",
+    "AdditiveGaussianNoiseCfg -> GaussianNoiseCfg",
+    "SimulationCfg.physx -> .physics (PhysxCfg)",
+    "isaaclab.utils.math: unwrap ProxyArray on 32 scripted fns"
+  ],
+  "render_settings": {
+    "enable_translucency": null,
+    "enable_reflections": false,
+    "enable_global_illumination": false,
+    "antialiasing_mode": null,
+    "enable_dlssg": false,
+    "enable_dl_denoiser": true,
+    "dlss_mode": 2,
+    "enable_direct_lighting": true,
+    "samples_per_pixel": 4,
+    "enable_shadows": true,
+    "enable_ambient_occlusion": null,
+    "dome_light_upper_lower_strategy": null,
+    "max_bounces": null,
+    "split_glass": null,
+    "split_clearcoat": null,
+    "split_rough_reflection": null,
+    "ambient_light_intensity": 0.5,
+    "ambient_occlusion_denoiser_mode": null,
+    "view_tile_limit": null,
+    "carb_settings": null,
+    "rendering_mode": "quality"
+  },
+  "render_updates_per_frame": 4,
+  "initial_joint_position_rad": {
+    "ur5e__shoulder_pan_joint": 0.0,
+    "ur5e__shoulder_lift_joint": -0.65,
+    "ur5e__elbow_joint": 1.2,
+    "ur5e__wrist_1_joint": -0.55,
+    "ur5e__wrist_2_joint": -0.7,
+    "ur5e__wrist_3_joint": 0.0
+  },
+  "capture_quality": {
+    "requested": {
+      "/rtx/rendermode": "PathTracing",
+      "/rtx/pathtracing/spp": 32,
+      "/rtx/pathtracing/totalSpp": 64,
+      "/rtx/pathtracing/maxSamplesPerLaunch": 44236800,
+      "/rtx/pathtracing/maxBounces": 4,
+      "/rtx/pathtracing/adaptiveSampling/enabled": false,
+      "/rtx/pathtracing/cached/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/enabled": true,
+      "/rtx/pathtracing/optixDenoiser/blendFactor": 0.0,
+      "/rtx/pathtracing/optixDenoiser/temporalMode/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/AOV": false,
+      "/rtx-transient/dldenoiser/enabled": false,
+      "/rtx-transient/dlssg/enabled": false,
+      "/rtx/post/aa/op": 0,
+      "/rtx/post/motionblur/enabled": false,
+      "/omni/replicator/captureMotionBlur": false,
+      "/rtx/resetPtAccumOnAnimTimeChange": true
+    },
+    "actual": {
+      "/rtx/rendermode": "PathTracing",
+      "/rtx/pathtracing/spp": 32,
+      "/rtx/pathtracing/totalSpp": 64,
+      "/rtx/pathtracing/maxSamplesPerLaunch": 44236800,
+      "/rtx/pathtracing/maxBounces": 4,
+      "/rtx/pathtracing/adaptiveSampling/enabled": false,
+      "/rtx/pathtracing/cached/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/enabled": true,
+      "/rtx/pathtracing/optixDenoiser/blendFactor": 0.0,
+      "/rtx/pathtracing/optixDenoiser/temporalMode/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/AOV": false,
+      "/rtx-transient/dldenoiser/enabled": false,
+      "/rtx-transient/dlssg/enabled": false,
+      "/rtx/post/aa/op": 0,
+      "/rtx/post/motionblur/enabled": false,
+      "/omni/replicator/captureMotionBlur": false,
+      "/rtx/resetPtAccumOnAnimTimeChange": true
+    },
+    "settings_match": true,
+    "mismatches": {},
+    "evidence_scope": "Carb setting readback only; not measured sample count or visual quality",
+    "profile": "offline_pathtracing_optix",
+    "overview_resolution": [
+      1280,
+      720
+    ],
+    "wrist_resolution": [
+      480,
+      320
+    ],
+    "close_resolution": [
+      640,
+      480
+    ],
+    "kit_updates_per_capture": 4,
+    "physics_stepping_during_capture": false
+  },
+  "approach_delta_root_m": [
+    -0.1418973591378021,
+    0.19073298900156022,
+    0.053810782462234474
+  ],
+  "commanded_standoff_position_w_m": [
+    0.31491240000221254,
+    0.5576175781968117,
+    0.8056383800803375
+  ],
+  "initial_tool_pose_wxyz": [
+    [
+      0.45680975914001465,
+      0.36688458919525146,
+      0.751827597618103,
+      -0.29063254594802856,
+      -0.19260847568511963,
+      0.6443665623664856,
+      0.6806073784828186
+    ]
+  ],
+  "startup_contact_force_n": 0.0,
+  "blender_scene": {
+    "export_dir": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/blender_scene/orchard_v1",
+    "manifest_sha256": "1ff5f61049e3c41366d7f8812d1ff563ce4f084b10d9b9cb6d20ca261ef08b7e",
+    "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+    "usd_sha256": {
+      "environment.usdc": "f8007fe5670f64c60fe1e2e904e3dda8217a4eca69407ddd959893083b2801cd",
+      "tree0.usdc": "0009894fd16426c548571ef1fc94f3920b2984e5e4f040782515b63be7ec0df0"
+    },
+    "translation_w_m": [
+      2.187474452808431,
+      0.9090809780242918,
+      -0.05068637010467536
+    ],
+    "yaw_degrees": 180.0,
+    "robot_base_height_m": 0.7,
+    "tree_path": "/World/envs/env_0/Tree",
+    "orchard_path": "/World/Orchard",
+    "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+    "selected_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/SelectedSpur/Mesh",
+    "target": {
+      "id": "tree0_SPUR_component_7524",
+      "position_w_m": [
+        0.25123947,
+        0.63413405,
+        0.81517712
+      ],
+      "axis_w": [
+        -0.15258134467572268,
+        -0.23857226370504683,
+        0.9590631930418339
+      ],
+      "radius_m": 0.006806430995896149,
+      "source_vertex_ids": [
+        7524,
+        7525,
+        7526,
+        7527,
+        7528,
+        7529,
+        7530,
+        7531,
+        7532,
+        7533,
+        7534,
+        7535,
+        7536,
+        7537,
+        7538,
+        7539,
+        7540,
+        7541,
+        7542,
+        7543,
+        7544,
+        7545,
+        7546,
+        7547,
+        7548,
+        7549,
+        7550,
+        7551,
+        7552,
+        7553,
+        7554,
+        7555,
+        7556,
+        7557,
+        7558,
+        7559,
+        7560,
+        7561,
+        7562,
+        7563,
+        7564,
+        7565,
+        7566,
+        7567,
+        7568,
+        7569,
+        7570,
+        7571,
+        7572,
+        7573,
+        7574,
+        7575,
+        7576,
+        7577,
+        7578,
+        7579,
+        7580,
+        7581,
+        7582,
+        7583
+      ],
+      "semantic": "spur",
+      "identity_source": "known_scene_component_not_learned_classifier"
+    },
+    "partition": {
+      "selected_faces": 60,
+      "remaining_faces": 31374,
+      "selected_vertices": 60,
+      "remaining_vertices": 30986,
+      "primvars_preserved": [
+        "Col",
+        "sharp_face",
+        "st"
+      ],
+      "normal_interpolation": "faceVarying",
+      "source_faces_removed": true,
+      "actual_center_w_m": [
+        0.2512394540321231,
+        0.6341340924184588,
+        0.8151771040546563
+      ],
+      "target_center_error_m": 4.804740077717847e-08
+    },
+    "collision_mesh_paths": [
+      "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "/World/envs/env_0/Tree/tree0_SPUR/SelectedSpur/Mesh",
+      "/World/envs/env_0/Tree/tree0_BRANCH/Shape_IndexedFaceSet_001",
+      "/World/envs/env_0/Tree/tree0_TRUNK/Shape_IndexedFaceSet_002",
+      "/World/Orchard/post0/Cylinder",
+      "/World/Orchard/post1/Cylinder_001",
+      "/World/Orchard/wire0_0/Cylinder_002",
+      "/World/Orchard/wire0_1/Cylinder_003",
+      "/World/Orchard/wire0_2/Cylinder_004",
+      "/World/Orchard/wire0_3/Cylinder_005",
+      "/World/Orchard/wire0_4/Cylinder_006",
+      "/World/Orchard/wire0_5/Cylinder_007",
+      "/World/Orchard/wire0_6/Cylinder_008",
+      "/World/Orchard/post2/Cylinder_009",
+      "/World/Orchard/post3/Cylinder_010",
+      "/World/Orchard/wire1_0/Cylinder_011",
+      "/World/Orchard/wire1_1/Cylinder_012",
+      "/World/Orchard/wire1_2/Cylinder_013",
+      "/World/Orchard/wire1_3/Cylinder_014",
+      "/World/Orchard/wire1_4/Cylinder_015",
+      "/World/Orchard/wire1_5/Cylinder_016",
+      "/World/Orchard/wire1_6/Cylinder_017"
+    ],
+    "detachment_requested": false,
+    "limitations": [
+      "Jaw meshes are a visual surrogate at tool-local +Z 0.070 m, not actuated pruner CAD.",
+      "Detachment switches an existing 5 g rigid piece from kinematic to dynamic; no wood fracture is modeled.",
+      "Target identity and initialization use known Blender mesh topology, not a learned classifier.",
+      "Original terrain relief is visual only; the caller's flat plane remains the ground collider.",
+      "The original Blender procedural sky is not reproduced by this USD export."
+    ],
+    "presentation_overrides": {
+      "ground_uv_scale": [
+        500,
+        500
+      ],
+      "ground_texture_repeat_m": [
+        1,
+        1
+      ],
+      "exported_sun_intensity": 0.25,
+      "capture_sun_intensity": 2000.0,
+      "source_export_unchanged": true,
+      "reason": "Meter-scale ground detail and visible RTX sunlight; not Blender lighting parity"
+    },
+    "sky_fill": "Constant blue-white dome at intensity 450; not original procedural sky"
+  },
+  "error": "Exception('The Numpy frontend cannot be used with GPU pipelines')",
+  "traceback": "Traceback (most recent call last):\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/hpc/inner/render_pruning_workflow.py\", line 517, in main\n    report[\"initial_piece_pose_wxyz\"] = env.blender_scene.initialize_physics_tracking()\n                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/source/isaaclab_pruning/isaaclab_pruning/sim/blender_demo_scene.py\", line 209, in initialize_physics_tracking\n    self._physics_view = tensors.create_simulation_view(\"numpy\")\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/lib/python3.12/site-packages/isaacsim/extscache/omni.physics.tensors-110.1.11+110.1.1.lx64.r.cp312.u7f4/omni/physics/tensors/api.py\", line 53, in create_simulation_view\n    raise Exception(\"The Numpy frontend cannot be used with GPU pipelines\")\nException: The Numpy frontend cannot be used with GPU pipelines\n"
+}

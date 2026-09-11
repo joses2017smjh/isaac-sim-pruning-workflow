@@ -1,8 +1,9 @@
 """Record the real UR5e articulation, RTX cameras, and dual live ToF on v60.
 
-Run through the repository's GPU wrapper, never on a login node. The sequence
-is a scripted, physically stepped approach/inspection/retreat, not a learned
-policy, a cutting simulation, or a claim that the task's training gates pass.
+Run through the repository's GPU wrapper, never on a login node. Default mode
+records scripted inspection. PRUNING_RENDER_MODE=blender_vision instead uses
+the exported orchard, causal RGB-D tracking and a discrete simulated detachment.
+Neither mode is a learned policy or a claim that the task's training gates pass.
 Rendered metric depth is simulator ground truth. The camera mounting is a
 simulation-defined wrist camera; the two ToF offsets retain reviewed CAD poses.
 """
@@ -78,6 +79,35 @@ def optical_rotation_from_forward(direction):
     return np.column_stack((right, down, forward))
 
 
+def seed_visibility(depth, pixel_xy, expected_optical_z_m, *, tolerance_m=0.02):
+    """Validate the known selection ONCE; never supply oracle positions to servoing."""
+    import numpy as np
+
+    array = np.asarray(depth)
+    pixel = np.asarray(pixel_xy, dtype=float)
+    result = {
+        "visible": False,
+        "expected_optical_z_m": float(expected_optical_z_m),
+        "measured_optical_z_m": None,
+        "tolerance_m": float(tolerance_m),
+    }
+    if array.ndim != 2 or pixel.shape != (2,) or not np.isfinite(pixel).all():
+        return {**result, "reason": "invalid_seed_projection"}
+    x, y = np.rint(pixel).astype(int)
+    if not (0 <= x < array.shape[1] and 0 <= y < array.shape[0]):
+        return {**result, "reason": "seed_outside_image"}
+    z = float(array[y, x])
+    if not np.isfinite(z) or z <= 0 or not np.isfinite(expected_optical_z_m) or expected_optical_z_m <= 0:
+        return {**result, "reason": "invalid_seed_depth"}
+    result["measured_optical_z_m"] = z
+    visible = abs(z - expected_optical_z_m) <= tolerance_m
+    return {
+        **result,
+        "visible": bool(visible),
+        "reason": None if visible else "selected_branch_occluded_or_wrong_surface",
+    }
+
+
 def episode_command(frame: int, count: int) -> tuple[str, tuple[float, float, float]]:
     """Smooth root-frame translation relative to the measured settled tool."""
     if count < 30 or not 0 <= frame < count:
@@ -116,6 +146,19 @@ def _json_safe(value):
 
 
 def main() -> int:  # noqa: C901 - the simulator is imported only after AppLauncher.
+    from isaaclab_pruning.sim.render_quality import CaptureQuality, apply_capture_quality, settings_readback
+
+    quality = None
+    blender_mode = os.environ.get("PRUNING_RENDER_MODE") == "blender_vision"
+    wrist_mount = (0.0, -0.14, -0.025) if blender_mode else WRIST_POSITION_IN_TOOL_M
+    if os.environ.get("PRUNING_RENDER_QUALITY") == "pathtraced":
+        quality = CaptureQuality(
+            overview_width=int(os.environ.get("PRUNING_OVERVIEW_WIDTH", "1280")),
+            total_samples=int(os.environ.get("PRUNING_RENDER_SAMPLES", "64")),
+        )
+    overview_resolution = quality.overview_resolution if quality else (960, 640)
+    close_resolution = (640, 480)
+    wrist_resolution = (480, 320)
     output = Path(os.environ["PRUNING_RENDER_DIR"])
     output.mkdir(parents=True, exist_ok=True)
     if (output / "frames.json").exists() or (output / "frames").exists():
@@ -167,6 +210,13 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             "stage": "scene.usda",
         },
     }
+    if blender_mode:
+        report["provenance"].update(
+            controller="Causal pyramidal-LK RGB-D visual servo, bounded Cartesian IK; seed pixel supplied once",
+            environment="Original Blender orchard USD meshes, UVs and image maps; see scene provenance",
+            cutting="Visual jaw surrogate and gated rigid-piece detachment; no wood fracture or actuated blade CAD",
+            recognition="Branch identity, axis and radius supplied by selected mesh metadata; not learned recognition",
+        )
 
     def flush():
         (output / "report.json").write_text(json.dumps(_json_safe(report), indent=2, allow_nan=False) + "\n")
@@ -180,7 +230,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
     try:
         from isaaclab.app import AppLauncher
 
-        launcher = AppLauncher(headless=True, enable_cameras=True)
+        launcher = AppLauncher(headless=True, enable_cameras=True, kit_args=quality.startup_kit_args if quality else "")
         simulation_app = launcher.app
         root = Path(os.environ["PRUNING_ROOT"])
         sys.path.insert(0, str(root / "source" / "isaaclab_pruning"))
@@ -188,6 +238,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         import torch
         from PIL import Image
 
+        import carb
         import omni.replicator.core as rep
         import omni.timeline
         from pxr import Gf, Sdf, UsdGeom, UsdLux, UsdPhysics, UsdShade
@@ -243,6 +294,60 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             def _spawn_task_geometry(self):
                 stage = self.sim.stage
                 UsdGeom.SetStageUpAxis(stage, "Z")
+                if blender_mode:
+                    from isaaclab.sensors import MultiMeshRayCasterCfg
+
+                    from isaaclab_pruning.sim.blender_demo_scene import spawn_blender_demo_scene
+
+                    self.blender_scene = spawn_blender_demo_scene(
+                        stage,
+                        Path(
+                            os.environ.get(
+                                "PRUNING_BLENDER_SCENE_DIR", str(root / "artifacts/blender_scene/orchard_v1")
+                            )
+                        ),
+                        target_position_w=target_position,
+                        base_height=base_height,
+                        yaw_degrees=150.0,
+                        component_first_vertex=8235,
+                    )
+                    selected = self.blender_scene.selected_mesh_prim_path
+                    targets = [path for path in self.blender_scene.evidence["collision_mesh_paths"] if path != selected]
+                    targets.append(
+                        MultiMeshRayCasterCfg.RaycastTargetCfg(
+                            prim_expr=str(self.blender_scene.body.GetPath()),
+                            merge_prim_meshes=True,
+                            track_mesh_transforms=True,
+                        )
+                    )
+                    self.cfg.tof0_cfg.mesh_prim_paths = targets
+                    self.cfg.tof1_cfg.mesh_prim_paths = targets
+                    # Keep the original collision plane but hide its grid, which
+                    # otherwise protrudes through the exported terrain relief.
+                    UsdGeom.Imageable(stage.GetPrimAtPath("/World/ground")).MakeInvisible()
+                    ground_mapping = UsdShade.Shader(
+                        stage.GetPrimAtPath("/World/Orchard/_materials/mat_ground_color/Mapping")
+                    )
+                    ground_mapping.GetInput("scale").Set(Gf.Vec2f(500, 500))
+                    sun = UsdLux.DistantLight(stage.GetPrimAtPath("/World/Orchard/sun/sun_data"))
+                    sun.GetIntensityAttr().Set(2000.0)
+                    self.blender_scene.evidence["presentation_overrides"] = {
+                        "ground_uv_scale": [500, 500],
+                        "ground_texture_repeat_m": [1, 1],
+                        "exported_sun_intensity": 0.25,
+                        "capture_sun_intensity": 2000.0,
+                        "source_export_unchanged": True,
+                        "reason": "Meter-scale ground detail and visible RTX sunlight; not Blender lighting parity",
+                    }
+                    metal = material(stage, "/World/Looks/Pedestal", (0.11, 0.16, 0.21))
+                    cylinder(stage, "/World/Pedestal", (0, 0, 0), (0, 0, base_height), 0.14, metal)
+                    dome = UsdLux.DomeLight.Define(stage, "/World/Dome")
+                    dome.CreateIntensityAttr(450.0)
+                    dome.CreateColorAttr(Gf.Vec3f(0.82, 0.90, 1.0))
+                    self.blender_scene.evidence["sky_fill"] = (
+                        "Constant blue-white dome at intensity 450; not original procedural sky"
+                    )
+                    return
                 tree_path = "/World/envs/env_0/Tree"
                 UsdGeom.Xform.Define(stage, tree_path)
                 bark = material(stage, "/World/Looks/Bark", (0.25, 0.12, 0.055))
@@ -296,14 +401,15 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 UsdGeom.Xformable(key).AddRotateXYZOp().Set(Gf.Vec3f(-40, 10, -35))
 
             def _ensure_target(self):
+                scene = getattr(self, "blender_scene", None)
                 self.target = episode_start_target(
                     CutPoint(
-                        record_id="render_fixture_vertical_spur",
+                        record_id=scene.target_id if scene else "render_fixture_vertical_spur",
                         part_name="target_spur",
                         position_w=target_position,
-                        axis_w=np.array([0.0, 0.0, 1.0]),
-                        radius_m=0.020,
-                        length_m=0.36,
+                        axis_w=scene.target_axis_w if scene else np.array([0.0, 0.0, 1.0]),
+                        radius_m=scene.target_radius_m if scene else 0.020,
+                        length_m=0.05 if scene else 0.36,
                         neighbor_count=1,
                     ),
                     batch=self.num_envs,
@@ -330,7 +436,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         # updates below allow temporal denoising to settle without physics.
         cfg.sim.render = RenderCfg(
             rendering_mode="quality",
-            antialiasing_mode="DLSS",
+            antialiasing_mode=None if quality else "DLSS",
             dlss_mode=2,
             enable_dl_denoiser=True,
             enable_dlssg=False,
@@ -376,6 +482,8 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         for _ in range(120):
             env.step(torch.zeros((1, 7), device=env.device))
         env.settling = False
+        if quality:
+            report["capture_quality"] = apply_capture_quality(carb.settings.get_settings(), quality)
         initial_tool = env._control_tool_pose_w().clone()
         root_pose = as_torch(env.robot.data.root_pose_w)
         tool_pos_b, tool_quat_b = subtract_frame_transforms(
@@ -395,6 +503,32 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         report["approach_delta_root_m"] = approach_delta_b.tolist()
         report["commanded_standoff_position_w_m"] = standoff_position_w.tolist()
         report["initial_tool_pose_wxyz"] = initial_tool.detach().cpu().tolist()
+        demo = None
+        if blender_mode:
+            from isaaclab_pruning.sim.vision_demo_controller import VisionPruningDemo
+
+            initial_contact_n = max(
+                float(np.linalg.norm(as_torch(sensor.data.net_forces_w).detach().cpu().numpy(), axis=-1).max())
+                for sensor in env.contact_sensors.values()
+            )
+            report["startup_contact_force_n"] = initial_contact_n
+            report["blender_scene"] = env.blender_scene.evidence
+            if initial_contact_n > 5.0:
+                raise RuntimeError(f"Orchard layout rejected: startup robot contact {initial_contact_n:.3f} N > 5 N")
+            report["initial_piece_pose_wxyz"] = env.blender_scene.initialize_physics_tracking()
+            proxy_closing_w = np.cross(tool_rotation_w[:, 2], np.asarray(env.blender_scene.target_axis_w))
+            proxy_closing_w /= np.linalg.norm(proxy_closing_w)
+            proxy_closing_tool = tool_rotation_w.T @ proxy_closing_w
+            env.blender_scene.set_proxy_closing_axis_tool(proxy_closing_tool)
+            demo = VisionPruningDemo(
+                env.blender_scene.target_id,
+                env.blender_scene.target_axis_w,
+                env.blender_scene.target_radius_m,
+                initial_tool[0].detach().cpu().numpy(),
+                closing_axis_tool=proxy_closing_tool,
+            )
+            report["blender_scene"] = env.blender_scene.evidence
+            env.blender_scene.update_tool_proxy(initial_tool[0].detach().cpu().numpy(), 0.0)
         report["target_position_m"] = target_position.tolist()
         report["bench_base_height_m"] = base_height
         report["contact_coverage"] = env.contact_state()
@@ -414,12 +548,16 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             rgb.attach(product)
             return transform, product, rgb
 
-        overview_tf, overview_product, overview_rgb = camera("/World/OverviewCamera", (960, 640))
-        close_tf, close_product, close_rgb = camera("/World/CloseCamera", (640, 480))
-        wrist_tf, wrist_product, wrist_rgb = camera("/World/WristCamera", (480, 320))
+        overview_tf, overview_product, overview_rgb = camera("/World/OverviewCamera", overview_resolution)
+        close_tf, close_product, close_rgb = camera("/World/CloseCamera", close_resolution)
+        wrist_tf, wrist_product, wrist_rgb = camera("/World/WristCamera", wrist_resolution)
         overview_tf.Set(
             Gf.Matrix4d()
-            .SetLookAt(Gf.Vec3d(1.75, -1.65, 1.75), Gf.Vec3d(0.36, 0.47, 0.66), Gf.Vec3d(0, 0, 1))
+            .SetLookAt(
+                Gf.Vec3d(*((3.0, -3.0, 2.3) if blender_mode else (1.75, -1.65, 1.75))),
+                Gf.Vec3d(*((0.9, 0.7, 1.3) if blender_mode else (0.36, 0.47, 0.66))),
+                Gf.Vec3d(0, 0, 1),
+            )
             .GetInverse()
         )
         close_focus = (target_position + initial_tool[0, :3].detach().cpu().numpy()) * 0.5
@@ -431,15 +569,19 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         depth_ann = rep.AnnotatorRegistry.get_annotator("distance_to_image_plane")
         depth_ann.attach(wrist_product)
         target_position_tool = tool_rotation_w.T @ (target_position - initial_tool[0, :3].detach().cpu().numpy())
-        wrist_rotation_tool = optical_rotation_from_forward(target_position_tool - np.asarray(WRIST_POSITION_IN_TOOL_M))
+        if blender_mode:
+            # Aim the fixed exterior camera at the midpoint of the approach
+            # depth so both initial and near-mouth views remain in its FOV.
+            target_position_tool[2] = 0.20
+        wrist_rotation_tool = optical_rotation_from_forward(target_position_tool - np.asarray(wrist_mount))
         report["camera"] = {
             "wrist_resolution": [480, 320],
-            "overview_resolution": [960, 640],
+            "overview_resolution": list(overview_resolution),
             "close_resolution": [640, 480],
             "focal_length_mm": 20.0,
             "horizontal_aperture_mm": 30.0,
             "wrist_intrinsics": [[320.0, 0.0, 240.0], [0.0, 320.0, 160.0], [0.0, 0.0, 1.0]],
-            "wrist_position_in_tool_m": list(WRIST_POSITION_IN_TOOL_M),
+            "wrist_position_in_tool_m": list(wrist_mount),
             "wrist_rotation_in_tool_ros": wrist_rotation_tool.tolist(),
             "wrist_mount": (
                 "simulation-defined exterior mount; fixed optical toe-in initialized using the known fixture target"
@@ -453,7 +595,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         def update_wrist():
             measured = env._control_tool_pose_w()
             rotation = matrix_from_quat(quaternion_wxyz_to_xyzw(measured[:, 3:7]))[0].detach().cpu().numpy()
-            position = measured[0, :3].detach().cpu().numpy() + rotation @ np.asarray(WRIST_POSITION_IN_TOOL_M)
+            position = measured[0, :3].detach().cpu().numpy() + rotation @ np.asarray(wrist_mount)
             camera_rotation = rotation @ wrist_rotation_tool
             usd_rotation = camera_rotation @ np.diag([1.0, -1.0, -1.0])
             transform = np.eye(4)
@@ -477,10 +619,21 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             env.sim.render()
             simulation_app.update()
 
+        def capture_frozen_pose():
+            if quality:
+                # Flush Fabric once. Repeated pre-render flushes can reset PT
+                # accumulation even though the physical pose did not change.
+                env.sim.render(skip_app_pumping=True)
+                for _ in range(quality.updates_per_capture):
+                    simulation_app.update()
+            else:
+                for _ in range(RENDER_UPDATES_PER_FRAME):
+                    render_tick()
+
         warmup_ready = False
         for tick in range(30):
             print(f"RTX_WARMUP_BEGIN {tick + 1}/30", flush=True)
-            render_tick()
+            capture_frozen_pose() if quality else render_tick()
             shapes = {}
             for name, annotator in (("overview", overview_rgb), ("close", close_rgb), ("wrist", wrist_rgb)):
                 data = np.asarray(annotator.get_data())
@@ -490,7 +643,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             depth_data = np.asarray(depth_ann.get_data())
             shapes["depth"] = list(depth_data.shape)
             warmup_ready = (
-                shapes["overview"][:2] == [640, 960]
+                shapes["overview"][:2] == list(reversed(overview_resolution))
                 and shapes["close"][:2] == [480, 640]
                 and shapes["wrist"][:2] == [320, 480]
                 and list(depth_data.squeeze().shape) == [320, 480]
@@ -503,8 +656,44 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 break
         if not warmup_ready:
             raise RuntimeError("RTX annotators remained empty after 30 bounded Lab render ticks.")
+        if quality:
+            report["capture_quality_after_warmup"] = settings_readback(
+                carb.settings.get_settings(), quality.carb_settings()
+            )
         preview_depth = np.asarray(depth_ann.get_data(), dtype=np.float32).squeeze()
         np.save(output / "preview_depth.npy", preview_depth)
+        camera_matrix = np.asarray(report["camera"]["wrist_intrinsics"])
+
+        def optical_transform(position, rotation):
+            transform = np.eye(4)
+            transform[:3, :3], transform[:3, 3] = rotation, position
+            return transform
+
+        if demo:
+            position, rotation = update_wrist()
+            optical_target = rotation.T @ (target_position - position)
+            projected = camera_matrix @ optical_target
+            seed_pixel = projected[:2] / projected[2]
+            preview_rgb = np.asarray(wrist_rgb.get_data())[..., :3].copy()
+            visibility = seed_visibility(preview_depth, seed_pixel, optical_target[2])
+            if not visibility["visible"]:
+                demo.stop("initial_target_not_visible")
+            report["vision_initialization"] = {
+                "pixel_xy": seed_pixel.tolist(),
+                "source": "Known selected component projected once; no per-frame oracle update or automatic reseeding",
+                "visibility": visibility,
+                "tracker": demo.initialize(preview_rgb, preview_depth, seed_pixel)
+                if visibility["visible"]
+                else {"state": "initialization_rejected", "reason": visibility["reason"]},
+            }
+            report["initial_live_vision"] = demo.observe(
+                preview_rgb,
+                preview_depth,
+                camera_matrix,
+                optical_transform(position, rotation),
+                0.0,
+                initial_tool[0].detach().cpu().numpy(),
+            )
         report["artifact_inventory"]["preview"] = [
             "preview_overview.png",
             "preview_close.png",
@@ -533,7 +722,21 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             offset[0] += scheduled_offset[0] + 0.09 * progress
             action = hold.clone()
             action[:, :3] += action.new_tensor(offset)
-            if stopped_reason is None:
+            vision_decision = None
+            if demo:
+                command, phase, vision_decision = demo.command(
+                    env._control_tool_pose_w()[0].detach().cpu().numpy(),
+                    index / fps,
+                )
+                command_w = hold.new_tensor(command).reshape(1, 7)
+                command_p, command_q = subtract_frame_transforms(
+                    root_pose[:, :3],
+                    root_pose[:, 3:7],
+                    command_w[:, :3],
+                    quaternion_wxyz_to_xyzw(command_w[:, 3:7]),
+                )
+                action = pose_xyzw_to_wxyz(torch.cat((command_p, command_q), dim=-1)).contiguous()
+            if stopped_reason is None and (demo is None or index == 0):
                 guard_reason, missing_sensor_frames = sensor_guard(
                     np.concatenate((env.tof0.detach().cpu().numpy(), env.tof1.detach().cpu().numpy())),
                     np.concatenate((env.tof0_valid.detach().cpu().numpy(), env.tof1_valid.detach().cpu().numpy())),
@@ -544,8 +747,21 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                     report["sensor_stop_frame"] = index
             if stopped_reason is not None:
                 phase, action = "stopped_failure", last_safe_command
+                if demo:
+                    demo.stop(stopped_reason)
+                    measured_w = env._control_tool_pose_w()
+                    held_p, held_q = subtract_frame_transforms(
+                        root_pose[:, :3],
+                        root_pose[:, 3:7],
+                        measured_w[:, :3],
+                        quaternion_wxyz_to_xyzw(measured_w[:, 3:7]),
+                    )
+                    action = pose_xyzw_to_wxyz(torch.cat((held_p, held_q), dim=-1)).contiguous()
+                    vision_decision = {"state": "hold", "reason": stopped_reason}
             for _ in range(steps_per_frame):
                 env.step(action)
+            if demo:
+                demo.command_applied(phase, vision_decision)
             tool = env._control_tool_pose_w().detach().cpu().numpy()[0]
             joints = as_torch(env.robot.data.joint_pos).detach().cpu().numpy()[0]
             if not np.isfinite(tool).all() or not np.isfinite(joints).all():
@@ -565,10 +781,13 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             else:
                 last_safe_command = action.clone()
             camera_position, camera_rotation = update_wrist()
+            proxy_closure = 0.0
+            if demo:
+                proxy_closure = demo.cut_step.closure_progress if demo.cut_step else 0.0
+                env.blender_scene.update_tool_proxy(tool, proxy_closure)
             capture_step_before = int(env.sim.get_physics_step_count())
             capture_time_before = float(timeline.get_current_time())
-            for _ in range(RENDER_UPDATES_PER_FRAME):
-                render_tick()
+            capture_frozen_pose()
             capture_step_after = int(env.sim.get_physics_step_count())
             capture_time_after = float(timeline.get_current_time())
             overview = np.asarray(overview_rgb.get_data())[..., :3]
@@ -576,7 +795,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             wrist = np.asarray(wrist_rgb.get_data())[..., :3]
             depth = np.asarray(depth_ann.get_data(), dtype=np.float32).squeeze()
             if (
-                overview.shape != (640, 960, 3)
+                overview.shape != (*reversed(overview_resolution), 3)
                 or close.shape != (480, 640, 3)
                 or wrist.shape != (320, 480, 3)
                 or depth.shape != (320, 480)
@@ -603,6 +822,35 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             contact_force_n = max(
                 float(np.linalg.norm(np.asarray(values), axis=-1).max()) for values in forces.values()
             )
+            live_vision = None
+            detach_requested = False
+            if demo:
+                # Validate the freshly captured range sample before authorizing
+                # closure/detachment, not on the next command frame. For live
+                # mode the pre-step guard runs only on the initial sample.
+                fresh_guard_reason, missing_sensor_frames = sensor_guard(
+                    np.concatenate((env.tof0.detach().cpu().numpy(), env.tof1.detach().cpu().numpy())),
+                    np.concatenate((env.tof0_valid.detach().cpu().numpy(), env.tof1_valid.detach().cpu().numpy())),
+                    missing_sensor_frames,
+                )
+                if fresh_guard_reason and stopped_reason is None:
+                    stopped_reason = fresh_guard_reason
+                    report["sensor_stop_frame"] = index
+                if stopped_reason:
+                    demo.stop(stopped_reason)
+                live_vision = demo.observe(
+                    wrist.copy(),
+                    depth.copy(),
+                    camera_matrix,
+                    optical_transform(camera_position, camera_rotation),
+                    (index + 1) / fps,
+                    tool,
+                    hazard_contact=contact_force_n > 5.0,
+                )
+                if demo.cut_step.detach_event:
+                    detach_requested = env.blender_scene.detach()
+                if demo.cut_step.phase == "stopped" and stopped_reason is None:
+                    stopped_reason = demo.cut_step.stopped_reason
             record = {
                 "index": index,
                 "time_s": (index + 1) * steps_per_frame * env.step_dt,
@@ -641,6 +889,15 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 "wrist_rgb_std": float(wrist.std()),
                 "depth_finite_fraction": float((np.isfinite(depth) & (depth > 0)).mean()),
             }
+            if demo:
+                record.update(
+                    live_vision=live_vision,
+                    visual_servo_decision=vision_decision,
+                    controller_source_frame_index=index - 1,
+                    visual_jaw_closure_progress=proxy_closure,
+                    detachment_requested_after_capture=detach_requested,
+                    selected_piece_pose_wxyz=env.blender_scene.measured_piece_pose_wxyz(),
+                )
             records.append(record)
             if index in (0, frame_count // 2, frame_count - 1) and hasattr(env, "control_state"):
                 report.setdefault("control_snapshots", {})[str(index)] = env.control_state()
@@ -705,8 +962,31 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 "retreat_observed": retreat,
             },
         )
+        if demo:
+            report["final_live_vision"] = demo.evidence()
+            report["metrics"]["retreat_return_error_m"] = float(
+                np.linalg.norm(positions[-1] - initial_tool[0, :3].detach().cpu().numpy())
+            )
+            report["metrics"]["return_reference"] = "Measured initial home before the first vision command"
+            piece_positions = np.asarray([record["selected_piece_pose_wxyz"][:3] for record in records])
+            initial_piece = np.asarray(report["initial_piece_pose_wxyz"][:3])
+            drop_m = float(initial_piece[2] - piece_positions[:, 2].min())
+            report["metrics"]["selected_piece_maximum_drop_m"] = drop_m
+            report["metrics"]["selected_piece_drop_observed"] = bool(env.blender_scene.detached and drop_m > 0.02)
+            report["task_outcome"] = (
+                "vision_guided_simulated_detachment_and_retreat"
+                if env.blender_scene.detached and drop_m > 0.02 and retreat and stopped_reason is None
+                else "simulated_detachment_requested"
+                if env.blender_scene.detached
+                else "vision_stopped_failure"
+                if stopped_reason
+                else "vision_approach_incomplete"
+            )
+            report["vision_command_count"] = demo.vision_command_count
         if hasattr(env, "control_state"):
             report["final_control_state"] = env.control_state()
+        if quality:
+            report["capture_quality_at_end"] = settings_readback(carb.settings.get_settings(), quality.carb_settings())
         stage.GetRootLayer().Export(str(output / "scene.usda"))
         flush()
         (output / "manifest.json").write_text(json.dumps(_json_safe(report), indent=2, allow_nan=False) + "\n")

@@ -1,0 +1,2821 @@
+{
+  "ok": false,
+  "rendering_ok": true,
+  "stage": "complete",
+  "job_id": "21222710",
+  "node": "cn-r-6",
+  "task_outcome": "vision_stopped_failure",
+  "frame_count": 60,
+  "provenance": {
+    "robot": "UR5e + reviewed BDS mock-pruner, six actuated UR joints",
+    "asset_id": "ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be",
+    "usd": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/usd/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.usda",
+    "usd_evidence": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/docs/evidence/urdf_import_21136450.json",
+    "runtime": "Isaac Sim 6.0.0.1 / Isaac Lab 3.0.0b2",
+    "controller": "Causal pyramidal-LK RGB-D visual servo, bounded Cartesian IK; seed pixel supplied once",
+    "robot_state": "measured PhysX articulation state, not teleported joint replay",
+    "overview_rgb": "RTX rgb annotator",
+    "wrist_rgb": "RTX rgb annotator; exterior tool-mounted camera with fixed simulation-defined toe-in; not hardware calibration",
+    "close_rgb": "RTX rgb annotator; static external close-up camera",
+    "depth": "RTX distance_to_image_plane; simulator ground truth, not learned depth",
+    "tof": "two live MultiMeshRayCasterCamera 8x8 15Hz at reviewed sensor offsets; noise disabled",
+    "environment": "Original Blender orchard USD meshes, UVs and image maps; see scene provenance",
+    "cutting": "Visual jaw surrogate and gated rigid-piece detachment; no wood fracture or actuated blade CAD",
+    "contact": "PhysX measured forces; coverage recorded explicitly",
+    "recognition": "Branch identity, axis and radius supplied by selected mesh metadata; not learned recognition"
+  },
+  "artifact_inventory": {
+    "overview": "frames/overview_*.png",
+    "close": "frames/close_*.png",
+    "wrist": "frames/wrist_*.png",
+    "metric_depth": "frames/depth_*.npy",
+    "telemetry": "frames.json",
+    "stage": "scene.usda",
+    "preview": [
+      "preview_overview.png",
+      "preview_close.png",
+      "preview_wrist.png",
+      "preview_depth.npy"
+    ]
+  },
+  "lab3_compat": [
+    "AdditiveUniformNoiseCfg -> UniformNoiseCfg",
+    "AdditiveGaussianNoiseCfg -> GaussianNoiseCfg",
+    "SimulationCfg.physx -> .physics (PhysxCfg)",
+    "isaaclab.utils.math: unwrap ProxyArray on 32 scripted fns"
+  ],
+  "render_settings": {
+    "enable_translucency": null,
+    "enable_reflections": false,
+    "enable_global_illumination": false,
+    "antialiasing_mode": null,
+    "enable_dlssg": false,
+    "enable_dl_denoiser": true,
+    "dlss_mode": 2,
+    "enable_direct_lighting": true,
+    "samples_per_pixel": 4,
+    "enable_shadows": true,
+    "enable_ambient_occlusion": null,
+    "dome_light_upper_lower_strategy": null,
+    "max_bounces": null,
+    "split_glass": null,
+    "split_clearcoat": null,
+    "split_rough_reflection": null,
+    "ambient_light_intensity": 0.5,
+    "ambient_occlusion_denoiser_mode": null,
+    "view_tile_limit": null,
+    "carb_settings": null,
+    "rendering_mode": "quality"
+  },
+  "render_updates_per_frame": 4,
+  "initial_joint_position_rad": {
+    "ur5e__shoulder_pan_joint": 0.0,
+    "ur5e__shoulder_lift_joint": -0.65,
+    "ur5e__elbow_joint": 1.2,
+    "ur5e__wrist_1_joint": -0.55,
+    "ur5e__wrist_2_joint": -0.7,
+    "ur5e__wrist_3_joint": 0.0
+  },
+  "capture_quality": {
+    "requested": {
+      "/rtx/rendermode": "PathTracing",
+      "/rtx/pathtracing/spp": 32,
+      "/rtx/pathtracing/totalSpp": 64,
+      "/rtx/pathtracing/maxSamplesPerLaunch": 44236800,
+      "/rtx/pathtracing/maxBounces": 4,
+      "/rtx/pathtracing/adaptiveSampling/enabled": false,
+      "/rtx/pathtracing/cached/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/enabled": true,
+      "/rtx/pathtracing/optixDenoiser/blendFactor": 0.0,
+      "/rtx/pathtracing/optixDenoiser/temporalMode/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/AOV": false,
+      "/rtx-transient/dldenoiser/enabled": false,
+      "/rtx-transient/dlssg/enabled": false,
+      "/rtx/post/aa/op": 0,
+      "/rtx/post/motionblur/enabled": false,
+      "/omni/replicator/captureMotionBlur": false,
+      "/rtx/resetPtAccumOnAnimTimeChange": true
+    },
+    "actual": {
+      "/rtx/rendermode": "PathTracing",
+      "/rtx/pathtracing/spp": 32,
+      "/rtx/pathtracing/totalSpp": 64,
+      "/rtx/pathtracing/maxSamplesPerLaunch": 44236800,
+      "/rtx/pathtracing/maxBounces": 4,
+      "/rtx/pathtracing/adaptiveSampling/enabled": false,
+      "/rtx/pathtracing/cached/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/enabled": true,
+      "/rtx/pathtracing/optixDenoiser/blendFactor": 0.0,
+      "/rtx/pathtracing/optixDenoiser/temporalMode/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/AOV": false,
+      "/rtx-transient/dldenoiser/enabled": false,
+      "/rtx-transient/dlssg/enabled": false,
+      "/rtx/post/aa/op": 0,
+      "/rtx/post/motionblur/enabled": false,
+      "/omni/replicator/captureMotionBlur": false,
+      "/rtx/resetPtAccumOnAnimTimeChange": true
+    },
+    "settings_match": true,
+    "mismatches": {},
+    "evidence_scope": "Carb setting readback only; not measured sample count or visual quality",
+    "profile": "offline_pathtracing_optix",
+    "overview_resolution": [
+      1280,
+      720
+    ],
+    "wrist_resolution": [
+      480,
+      320
+    ],
+    "close_resolution": [
+      640,
+      480
+    ],
+    "kit_updates_per_capture": 4,
+    "physics_stepping_during_capture": false
+  },
+  "approach_delta_root_m": [
+    -0.35797876047101496,
+    0.1134012374165535,
+    -0.3831729519070435
+  ],
+  "commanded_standoff_position_w_m": [
+    0.24169600082430365,
+    0.5548082026722908,
+    0.8753130805789184
+  ],
+  "initial_tool_pose_wxyz": [
+    [
+      0.5996747612953186,
+      0.4414069652557373,
+      1.258486032485962,
+      0.38439086079597473,
+      -0.710540771484375,
+      0.5438856482505798,
+      0.22707681357860565
+    ]
+  ],
+  "blender_scene": {
+    "export_dir": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/blender_scene/orchard_v1",
+    "manifest_sha256": "1ff5f61049e3c41366d7f8812d1ff563ce4f084b10d9b9cb6d20ca261ef08b7e",
+    "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+    "usd_sha256": {
+      "environment.usdc": "f8007fe5670f64c60fe1e2e904e3dda8217a4eca69407ddd959893083b2801cd",
+      "tree0.usdc": "0009894fd16426c548571ef1fc94f3920b2984e5e4f040782515b63be7ec0df0"
+    },
+    "translation_w_m": [
+      -1.684995512808431,
+      0.359187121975708,
+      -0.05068637010467536
+    ],
+    "yaw_degrees": 0.0,
+    "robot_base_height_m": 0.7,
+    "tree_path": "/World/envs/env_0/Tree",
+    "orchard_path": "/World/Orchard",
+    "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+    "selected_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/SelectedSpur/Mesh",
+    "target": {
+      "id": "tree0_SPUR_component_7524",
+      "position_w_m": [
+        0.25123947,
+        0.63413405,
+        0.81517712
+      ],
+      "axis_w": [
+        0.15258134467572265,
+        0.23857226370504686,
+        0.9590631930418339
+      ],
+      "radius_m": 0.006806430995896149,
+      "source_vertex_ids": [
+        7524,
+        7525,
+        7526,
+        7527,
+        7528,
+        7529,
+        7530,
+        7531,
+        7532,
+        7533,
+        7534,
+        7535,
+        7536,
+        7537,
+        7538,
+        7539,
+        7540,
+        7541,
+        7542,
+        7543,
+        7544,
+        7545,
+        7546,
+        7547,
+        7548,
+        7549,
+        7550,
+        7551,
+        7552,
+        7553,
+        7554,
+        7555,
+        7556,
+        7557,
+        7558,
+        7559,
+        7560,
+        7561,
+        7562,
+        7563,
+        7564,
+        7565,
+        7566,
+        7567,
+        7568,
+        7569,
+        7570,
+        7571,
+        7572,
+        7573,
+        7574,
+        7575,
+        7576,
+        7577,
+        7578,
+        7579,
+        7580,
+        7581,
+        7582,
+        7583
+      ],
+      "semantic": "spur",
+      "identity_source": "known_scene_component_not_learned_classifier"
+    },
+    "partition": {
+      "selected_faces": 60,
+      "remaining_faces": 31374,
+      "selected_vertices": 60,
+      "remaining_vertices": 30986,
+      "primvars_preserved": [
+        "Col",
+        "sharp_face",
+        "st"
+      ],
+      "normal_interpolation": "faceVarying",
+      "source_faces_removed": true,
+      "actual_center_w_m": [
+        0.2512394859678774,
+        0.6341340075815413,
+        0.8151771040546563
+      ],
+      "target_center_error_m": 4.804740092476527e-08
+    },
+    "collision_mesh_paths": [
+      "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "/World/envs/env_0/Tree/tree0_SPUR/SelectedSpur/Mesh",
+      "/World/envs/env_0/Tree/tree0_BRANCH/Shape_IndexedFaceSet_001",
+      "/World/envs/env_0/Tree/tree0_TRUNK/Shape_IndexedFaceSet_002",
+      "/World/Orchard/post0/Cylinder",
+      "/World/Orchard/post1/Cylinder_001",
+      "/World/Orchard/wire0_0/Cylinder_002",
+      "/World/Orchard/wire0_1/Cylinder_003",
+      "/World/Orchard/wire0_2/Cylinder_004",
+      "/World/Orchard/wire0_3/Cylinder_005",
+      "/World/Orchard/wire0_4/Cylinder_006",
+      "/World/Orchard/wire0_5/Cylinder_007",
+      "/World/Orchard/wire0_6/Cylinder_008",
+      "/World/Orchard/post2/Cylinder_009",
+      "/World/Orchard/post3/Cylinder_010",
+      "/World/Orchard/wire1_0/Cylinder_011",
+      "/World/Orchard/wire1_1/Cylinder_012",
+      "/World/Orchard/wire1_2/Cylinder_013",
+      "/World/Orchard/wire1_3/Cylinder_014",
+      "/World/Orchard/wire1_4/Cylinder_015",
+      "/World/Orchard/wire1_5/Cylinder_016",
+      "/World/Orchard/wire1_6/Cylinder_017"
+    ],
+    "detachment_requested": false,
+    "limitations": [
+      "Jaw meshes are a visual surrogate at tool-local +Z 0.070 m, not actuated pruner CAD.",
+      "Detachment switches an existing 5 g rigid piece from kinematic to dynamic; no wood fracture is modeled.",
+      "Target identity and initialization use known Blender mesh topology, not a learned classifier.",
+      "Original terrain relief is visual only; the caller's flat plane remains the ground collider.",
+      "The original Blender procedural sky is not reproduced by this USD export."
+    ],
+    "sky_fill": "Constant blue-white dome at intensity 450; not original procedural sky"
+  },
+  "target_position_m": [
+    0.25123947,
+    0.63413405,
+    0.81517712
+  ],
+  "bench_base_height_m": 0.7,
+  "contact_coverage": {
+    "shape": [
+      1,
+      20,
+      3
+    ],
+    "max_abs": 81624.2890625,
+    "finite": true,
+    "n_bodies_in_contact": 2,
+    "forces_w_n": [
+      [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          -11960.9326171875,
+          77472.1875,
+          23885.236328125
+        ],
+        [
+          81624.2890625,
+          -25824.822265625,
+          -7818.1552734375
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    ],
+    "coverage": {
+      "expected_body_names": [
+        "dovetail_female_mount__base",
+        "dovetail_female_mount__body",
+        "dovetail_female_mount__tool0",
+        "dovetail_male_mount__base",
+        "dovetail_male_mount__body",
+        "dovetail_male_mount__tool0",
+        "mock_pruner__base",
+        "rotation_correction_plate__base",
+        "rotation_correction_plate__body",
+        "rotation_correction_plate__tool0",
+        "ur5e__base_link",
+        "ur5e__base_link_inertia",
+        "ur5e__flange",
+        "ur5e__forearm_link",
+        "ur5e__shoulder_link",
+        "ur5e__tool0",
+        "ur5e__upper_arm_link",
+        "ur5e__wrist_1_link",
+        "ur5e__wrist_2_link",
+        "ur5e__wrist_3_link"
+      ],
+      "actual_body_names": [
+        "ur5e__base_link",
+        "ur5e__base_link_inertia",
+        "ur5e__shoulder_link",
+        "ur5e__upper_arm_link",
+        "ur5e__forearm_link",
+        "ur5e__wrist_1_link",
+        "ur5e__wrist_2_link",
+        "ur5e__wrist_3_link",
+        "ur5e__flange",
+        "ur5e__tool0",
+        "rotation_correction_plate__base",
+        "rotation_correction_plate__body",
+        "rotation_correction_plate__tool0",
+        "dovetail_male_mount__base",
+        "dovetail_male_mount__body",
+        "dovetail_male_mount__tool0",
+        "dovetail_female_mount__base",
+        "dovetail_female_mount__body",
+        "dovetail_female_mount__tool0",
+        "mock_pruner__base"
+      ],
+      "missing_body_names": [],
+      "unexpected_body_names": [],
+      "duplicate_body_names": [],
+      "complete": true
+    },
+    "sensors": {
+      "arm_contact_0": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link",
+        "body_names": [
+          "ur5e__base_link"
+        ]
+      },
+      "arm_contact_1": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia",
+        "body_names": [
+          "ur5e__base_link_inertia"
+        ]
+      },
+      "arm_contact_2": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link",
+        "body_names": [
+          "ur5e__shoulder_link"
+        ]
+      },
+      "arm_contact_3": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link",
+        "body_names": [
+          "ur5e__upper_arm_link"
+        ]
+      },
+      "arm_contact_4": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link",
+        "body_names": [
+          "ur5e__forearm_link"
+        ]
+      },
+      "arm_contact_5": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link",
+        "body_names": [
+          "ur5e__wrist_1_link"
+        ]
+      },
+      "arm_contact_6": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link",
+        "body_names": [
+          "ur5e__wrist_2_link"
+        ]
+      },
+      "arm_contact_7": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link",
+        "body_names": [
+          "ur5e__wrist_3_link"
+        ]
+      },
+      "arm_contact_8": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange",
+        "body_names": [
+          "ur5e__flange"
+        ]
+      },
+      "arm_contact_9": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0",
+        "body_names": [
+          "ur5e__tool0"
+        ]
+      },
+      "arm_contact_10": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base",
+        "body_names": [
+          "rotation_correction_plate__base"
+        ]
+      },
+      "arm_contact_11": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body",
+        "body_names": [
+          "rotation_correction_plate__body"
+        ]
+      },
+      "arm_contact_12": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0",
+        "body_names": [
+          "rotation_correction_plate__tool0"
+        ]
+      },
+      "arm_contact_13": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base",
+        "body_names": [
+          "dovetail_male_mount__base"
+        ]
+      },
+      "arm_contact_14": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body",
+        "body_names": [
+          "dovetail_male_mount__body"
+        ]
+      },
+      "arm_contact_15": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0",
+        "body_names": [
+          "dovetail_male_mount__tool0"
+        ]
+      },
+      "arm_contact_16": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base",
+        "body_names": [
+          "dovetail_female_mount__base"
+        ]
+      },
+      "arm_contact_17": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body",
+        "body_names": [
+          "dovetail_female_mount__body"
+        ]
+      },
+      "arm_contact_18": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0",
+        "body_names": [
+          "dovetail_female_mount__tool0"
+        ]
+      },
+      "arm_contact_19": {
+        "prim_path": "/World/envs/env_.*/Robot/Geometry/world/ur5e__base_link/ur5e__base_link_inertia/ur5e__shoulder_link/ur5e__upper_arm_link/ur5e__forearm_link/ur5e__wrist_1_link/ur5e__wrist_2_link/ur5e__wrist_3_link/ur5e__flange/ur5e__tool0/rotation_correction_plate__base/rotation_correction_plate__body/rotation_correction_plate__tool0/dovetail_male_mount__base/dovetail_male_mount__body/dovetail_male_mount__tool0/dovetail_female_mount__base/dovetail_female_mount__body/dovetail_female_mount__tool0/mock_pruner__base",
+        "body_names": [
+          "mock_pruner__base"
+        ]
+      }
+    }
+  },
+  "initial_control_state": {
+    "lab_quaternion_order": "xyzw",
+    "core_quaternion_order": "wxyz",
+    "is_fixed_base": true,
+    "num_base_dofs": 0,
+    "body_names": [
+      "ur5e__base_link",
+      "ur5e__base_link_inertia",
+      "ur5e__shoulder_link",
+      "ur5e__upper_arm_link",
+      "ur5e__forearm_link",
+      "ur5e__wrist_1_link",
+      "ur5e__wrist_2_link",
+      "ur5e__wrist_3_link",
+      "ur5e__flange",
+      "ur5e__tool0",
+      "rotation_correction_plate__base",
+      "rotation_correction_plate__body",
+      "rotation_correction_plate__tool0",
+      "dovetail_male_mount__base",
+      "dovetail_male_mount__body",
+      "dovetail_male_mount__tool0",
+      "dovetail_female_mount__base",
+      "dovetail_female_mount__body",
+      "dovetail_female_mount__tool0",
+      "mock_pruner__base"
+    ],
+    "joint_names": [
+      "ur5e__shoulder_pan_joint",
+      "ur5e__shoulder_lift_joint",
+      "ur5e__elbow_joint",
+      "ur5e__wrist_1_joint",
+      "ur5e__wrist_2_joint",
+      "ur5e__wrist_3_joint"
+    ],
+    "eef_body_name": "mock_pruner__base",
+    "root_pose_w_xyzw": [
+      [
+        0.0,
+        0.0,
+        0.699999988079071,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "current_tool_pose_w_wxyz": [
+      [
+        0.5996747612953186,
+        0.4414069652557373,
+        1.258486032485962,
+        0.38439086079597473,
+        -0.710540771484375,
+        0.5438856482505798,
+        0.22707681357860565
+      ]
+    ],
+    "current_tool_pose_b_wxyz": [
+      [
+        0.5996747612953186,
+        0.4414069652557373,
+        0.5584860444068909,
+        0.38439086079597473,
+        -0.710540771484375,
+        0.5438856482505798,
+        0.22707681357860565
+      ]
+    ],
+    "last_control_step": null,
+    "joint_pos": [
+      [
+        0.11712702363729477,
+        -0.41317081451416016,
+        -0.8837321400642395,
+        -0.5754691958427429,
+        -0.6869003176689148,
+        -0.0014854103792458773
+      ]
+    ],
+    "joint_vel": [
+      [
+        0.8324465155601501,
+        -0.662355363368988,
+        1.3578141927719116,
+        -0.34783849120140076,
+        -2.5381624698638916,
+        0.5316140651702881
+      ]
+    ],
+    "joint_pos_target": [
+      [
+        0.0,
+        -0.6499999761581421,
+        1.2000000476837158,
+        -0.550000011920929,
+        -0.699999988079071,
+        0.0
+      ]
+    ],
+    "joint_stiffness": [
+      [
+        800.0,
+        800.0,
+        800.0,
+        800.0,
+        800.0,
+        800.0
+      ]
+    ],
+    "joint_damping": [
+      [
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0
+      ]
+    ]
+  },
+  "camera": {
+    "wrist_resolution": [
+      480,
+      320
+    ],
+    "overview_resolution": [
+      1280,
+      720
+    ],
+    "close_resolution": [
+      640,
+      480
+    ],
+    "focal_length_mm": 20.0,
+    "horizontal_aperture_mm": 30.0,
+    "wrist_intrinsics": [
+      [
+        320.0,
+        0.0,
+        240.0
+      ],
+      [
+        0.0,
+        320.0,
+        160.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "wrist_position_in_tool_m": [
+      0.0,
+      -0.075,
+      -0.14
+    ],
+    "wrist_rotation_in_tool_ros": [
+      [
+        0.9800412860114398,
+        -0.13775221641198424,
+        0.1433297058764472
+      ],
+      [
+        0.0,
+        0.7209959237466285,
+        0.6929393032154734
+      ],
+      [
+        -0.19879405854562907,
+        -0.6791091258511636,
+        0.7066057723176519
+      ]
+    ],
+    "wrist_mount": "simulation-defined exterior mount; fixed optical toe-in initialized using the known fixture target",
+    "wrist_optical_convention": "+Z forward, +X right, +Y down (ROS); fixed rotation relative to tool recorded above",
+    "hardware_camera_calibrated": false
+  },
+  "warmup_ticks": 8,
+  "warmup_shapes": {
+    "overview": [
+      720,
+      1280,
+      4
+    ],
+    "close": [
+      480,
+      640,
+      4
+    ],
+    "wrist": [
+      320,
+      480,
+      4
+    ],
+    "depth": [
+      320,
+      480
+    ]
+  },
+  "capture_quality_after_warmup": {
+    "requested": {
+      "/rtx/rendermode": "PathTracing",
+      "/rtx/pathtracing/spp": 32,
+      "/rtx/pathtracing/totalSpp": 64,
+      "/rtx/pathtracing/maxSamplesPerLaunch": 44236800,
+      "/rtx/pathtracing/maxBounces": 4,
+      "/rtx/pathtracing/adaptiveSampling/enabled": false,
+      "/rtx/pathtracing/cached/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/enabled": true,
+      "/rtx/pathtracing/optixDenoiser/blendFactor": 0.0,
+      "/rtx/pathtracing/optixDenoiser/temporalMode/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/AOV": false,
+      "/rtx-transient/dldenoiser/enabled": false,
+      "/rtx-transient/dlssg/enabled": false,
+      "/rtx/post/aa/op": 0,
+      "/rtx/post/motionblur/enabled": false,
+      "/omni/replicator/captureMotionBlur": false,
+      "/rtx/resetPtAccumOnAnimTimeChange": true
+    },
+    "actual": {
+      "/rtx/rendermode": "PathTracing",
+      "/rtx/pathtracing/spp": 32,
+      "/rtx/pathtracing/totalSpp": 64,
+      "/rtx/pathtracing/maxSamplesPerLaunch": 44236800,
+      "/rtx/pathtracing/maxBounces": 4,
+      "/rtx/pathtracing/adaptiveSampling/enabled": false,
+      "/rtx/pathtracing/cached/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/enabled": true,
+      "/rtx/pathtracing/optixDenoiser/blendFactor": 0.0,
+      "/rtx/pathtracing/optixDenoiser/temporalMode/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/AOV": false,
+      "/rtx-transient/dldenoiser/enabled": false,
+      "/rtx-transient/dlssg/enabled": false,
+      "/rtx/post/aa/op": 1,
+      "/rtx/post/motionblur/enabled": false,
+      "/omni/replicator/captureMotionBlur": false,
+      "/rtx/resetPtAccumOnAnimTimeChange": true
+    },
+    "settings_match": false,
+    "mismatches": {
+      "/rtx/post/aa/op": {
+        "requested": 0,
+        "actual": 1
+      }
+    },
+    "evidence_scope": "Carb setting readback only; not measured sample count or visual quality"
+  },
+  "vision_initialization": {
+    "pixel_xy": [
+      240.00000097899266,
+      159.99999577998088
+    ],
+    "source": "Known selected component projected once; no per-frame oracle update or automatic reseeding",
+    "tracker": {
+      "state": "initialized",
+      "reason": "awaiting_rgb_depth_measurement",
+      "target_position_world_m": null,
+      "pixel_xy": [
+        240.0,
+        160.0
+      ],
+      "feature_pixels_xy": [
+        [
+          253.0,
+          136.0
+        ],
+        [
+          254.0,
+          145.0
+        ],
+        [
+          253.0,
+          142.0
+        ],
+        [
+          239.0,
+          137.0
+        ],
+        [
+          250.0,
+          149.0
+        ],
+        [
+          242.0,
+          178.0
+        ],
+        [
+          239.0,
+          142.0
+        ],
+        [
+          244.0,
+          145.0
+        ],
+        [
+          254.0,
+          182.0
+        ],
+        [
+          251.0,
+          181.0
+        ],
+        [
+          237.0,
+          175.0
+        ],
+        [
+          234.0,
+          174.0
+        ]
+      ],
+      "feature_count": 12,
+      "initial_feature_count": 12,
+      "confidence": 0.0,
+      "frame_index": 0,
+      "requires_reinitialize": false,
+      "method": "seeded_forward_backward_lk_optical_z"
+    }
+  },
+  "initial_live_vision": {
+    "measurement": {
+      "state": "tracking_lost",
+      "reason": "optical_flow_failed",
+      "target_position_world_m": null,
+      "pixel_xy": [
+        240.0,
+        160.0
+      ],
+      "feature_pixels_xy": [
+        [
+          253.0,
+          136.0
+        ],
+        [
+          254.0,
+          145.0
+        ],
+        [
+          253.0,
+          142.0
+        ],
+        [
+          239.0,
+          137.0
+        ],
+        [
+          250.0,
+          149.0
+        ],
+        [
+          242.0,
+          178.0
+        ],
+        [
+          239.0,
+          142.0
+        ],
+        [
+          244.0,
+          145.0
+        ],
+        [
+          254.0,
+          182.0
+        ],
+        [
+          251.0,
+          181.0
+        ],
+        [
+          237.0,
+          175.0
+        ],
+        [
+          234.0,
+          174.0
+        ]
+      ],
+      "feature_count": 12,
+      "initial_feature_count": 12,
+      "confidence": 0.0,
+      "frame_index": 1,
+      "requires_reinitialize": true,
+      "method": "seeded_forward_backward_lk_optical_z",
+      "flow_reason": "too_few_roundtrip_inliers",
+      "roundtrip_inlier_count": 2
+    },
+    "measurement_time_s": 0.0,
+    "cut": {
+      "phase": "stopped",
+      "closure_progress": 0.0,
+      "stable_count": 0,
+      "detach_event": false,
+      "detached": false,
+      "closure_started_s": null,
+      "detached_at_s": null,
+      "stopped_reason": "vision_invalid",
+      "certificate": {
+        "safe_to_approach": false,
+        "ready_to_close": false,
+        "reasons": [
+          "vision_invalid",
+          "invalid_geometry"
+        ],
+        "mouth_distance_m": null,
+        "perpendicularity_error_deg": null,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "model": "simulated_detachment_not_fracture"
+    },
+    "observations": 1,
+    "vision_command_count": 0,
+    "mouth_offset_tool_m": [
+      0.0,
+      0.0,
+      0.07
+    ],
+    "target_identity_axis_radius_source": "Selected Blender branch metadata; not learned recognition",
+    "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+    "cut_model": "Visual jaw surrogate and discrete detachment; not material fracture"
+  },
+  "capture_dt_s": 0.1,
+  "control_snapshots": {
+    "0": {
+      "lab_quaternion_order": "xyzw",
+      "core_quaternion_order": "wxyz",
+      "is_fixed_base": true,
+      "num_base_dofs": 0,
+      "body_names": [
+        "ur5e__base_link",
+        "ur5e__base_link_inertia",
+        "ur5e__shoulder_link",
+        "ur5e__upper_arm_link",
+        "ur5e__forearm_link",
+        "ur5e__wrist_1_link",
+        "ur5e__wrist_2_link",
+        "ur5e__wrist_3_link",
+        "ur5e__flange",
+        "ur5e__tool0",
+        "rotation_correction_plate__base",
+        "rotation_correction_plate__body",
+        "rotation_correction_plate__tool0",
+        "dovetail_male_mount__base",
+        "dovetail_male_mount__body",
+        "dovetail_male_mount__tool0",
+        "dovetail_female_mount__base",
+        "dovetail_female_mount__body",
+        "dovetail_female_mount__tool0",
+        "mock_pruner__base"
+      ],
+      "joint_names": [
+        "ur5e__shoulder_pan_joint",
+        "ur5e__shoulder_lift_joint",
+        "ur5e__elbow_joint",
+        "ur5e__wrist_1_joint",
+        "ur5e__wrist_2_joint",
+        "ur5e__wrist_3_joint"
+      ],
+      "eef_body_name": "mock_pruner__base",
+      "root_pose_w_xyzw": [
+        [
+          0.0,
+          0.0,
+          0.699999988079071,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "current_tool_pose_w_wxyz": [
+        [
+          0.5880654454231262,
+          0.4425966739654541,
+          1.2739379405975342,
+          0.4123230576515198,
+          -0.7198309898376465,
+          0.5238621234893799,
+          0.19339491426944733
+        ]
+      ],
+      "current_tool_pose_b_wxyz": [
+        [
+          0.5880654454231262,
+          0.4425966739654541,
+          0.5739379525184631,
+          0.4123230576515198,
+          -0.7198309898376465,
+          0.5238621234893799,
+          0.19339491426944733
+        ]
+      ],
+      "last_control_step": {
+        "body_index": 19,
+        "jacobian_body_index": 18,
+        "jacobian_joint_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "jacobian_shape": [
+          1,
+          19,
+          6,
+          6
+        ],
+        "root_pose_w_xyzw": [
+          [
+            0.0,
+            0.0,
+            0.699999988079071,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "physics_body_pose_w_xyzw": [
+          [
+            0.562397301197052,
+            0.3139675557613373,
+            1.3641357421875,
+            -0.7192856073379517,
+            0.5292714834213257,
+            0.19773909449577332,
+            0.40422648191452026
+          ]
+        ],
+        "ik_measured_tool_pose_b_wxyz": [
+          [
+            0.5853678584098816,
+            0.4406200051307678,
+            0.5688449144363403,
+            0.40422651171684265,
+            -0.7192856669425964,
+            0.5292716026306152,
+            0.1977391093969345
+          ]
+        ],
+        "gate_measured_tool_pose_w_wxyz": [
+          [
+            0.5853678584098816,
+            0.4406200051307678,
+            1.2688449621200562,
+            0.40422651171684265,
+            -0.7192856669425964,
+            0.5292715430259705,
+            0.1977391093969345
+          ]
+        ],
+        "action_pose_b_wxyz": [
+          [
+            0.5996747612953186,
+            0.4414069652557373,
+            0.5584860444068909,
+            0.38439086079597473,
+            -0.710540771484375,
+            0.5438857078552246,
+            0.22707681357860565
+          ]
+        ],
+        "controller_target_pose_b_xyzw": [
+          [
+            0.5996747612953186,
+            0.4414069652557373,
+            0.5584860444068909,
+            -0.710540771484375,
+            0.5438857078552246,
+            0.22707681357860565,
+            0.38439086079597473
+          ]
+        ],
+        "joint_pos_measured": [
+          [
+            0.12329044938087463,
+            -0.3983228802680969,
+            -0.9711313247680664,
+            -0.583107054233551,
+            -0.7019769549369812,
+            0.0020644005853682756
+          ]
+        ],
+        "joint_pos_desired": [
+          [
+            0.1191835030913353,
+            -0.4046939015388489,
+            -0.9211313128471375,
+            -0.5753430128097534,
+            -0.6918848156929016,
+            0.0006429363274946809
+          ]
+        ],
+        "body_jacobian_w": [
+          [
+            [
+              -0.3139674961566925,
+              0.49768367409706116,
+              0.33339574933052063,
+              -0.0483965165913105,
+              -0.05196898430585861,
+              -8.115205218928168e-08
+            ],
+            [
+              0.5623972415924072,
+              0.06213892623782158,
+              0.042785342782735825,
+              -0.005479344632476568,
+              0.08609320223331451,
+              4.50772255078391e-08
+            ],
+            [
+              2.342357952045404e-08,
+              -0.5968153476715088,
+              -0.20550549030303955,
+              -0.1270434558391571,
+              0.10171471536159515,
+              4.033832823324701e-08
+            ],
+            [
+              -8.687788977113087e-08,
+              -0.12298426032066345,
+              -0.12562693655490875,
+              -0.1255134642124176,
+              0.9207725524902344,
+              0.14342962205410004
+            ],
+            [
+              -8.891912983699513e-08,
+              0.992408275604248,
+              0.9920737147331238,
+              0.9920790195465088,
+              0.11564670503139496,
+              0.790823757648468
+            ],
+            [
+              0.9999996423721313,
+              0.0007706154137849808,
+              0.0027382406406104565,
+              0.005025618709623814,
+              0.37256374955177307,
+              -0.5950004458427429
+            ]
+          ]
+        ],
+        "tool_jacobian_b": [
+          [
+            [
+              -0.44061988592147827,
+              0.40301865339279175,
+              0.23851341009140015,
+              -0.14356906712055206,
+              -0.11017516255378723,
+              -7.370147159235785e-08
+            ],
+            [
+              0.5853677988052368,
+              0.05043735355138779,
+              0.030877145007252693,
+              -0.017324186861515045,
+              0.18239238858222961,
+              6.929161600055522e-08
+            ],
+            [
+              1.4462806063875178e-08,
+              -0.6351878046989441,
+              -0.24420495331287384,
+              -0.16572867333889008,
+              0.21567633748054504,
+              7.386594091940424e-08
+            ],
+            [
+              -8.687788977113087e-08,
+              -0.12298426032066345,
+              -0.12562693655490875,
+              -0.1255134642124176,
+              0.9207725524902344,
+              0.14342962205410004
+            ],
+            [
+              -8.891912983699513e-08,
+              0.992408275604248,
+              0.9920737147331238,
+              0.9920790195465088,
+              0.11564670503139496,
+              0.790823757648468
+            ],
+            [
+              0.9999996423721313,
+              0.0007706154137849808,
+              0.0027382406406104565,
+              0.005025618709623814,
+              0.37256374955177307,
+              -0.5950004458427429
+            ]
+          ]
+        ],
+        "ik_damping": 0.05,
+        "ik_max_joint_delta_rad": 0.05,
+        "ik_diagnostic": {
+          "singular_values": [
+            [
+              2.0279643535614014,
+              1.3916406631469727,
+              0.9625695943832397,
+              0.5619047284126282,
+              0.22355706989765167,
+              0.14648596942424774
+            ]
+          ],
+          "raw_joint_delta_rad": [
+            [
+              -0.0062998998910188675,
+              -0.009772887453436852,
+              0.07669810205698013,
+              0.011909734457731247,
+              0.015480934642255306,
+              -0.0021804720163345337
+            ]
+          ],
+          "bounded_joint_delta_rad": [
+            [
+              -0.0041069467552006245,
+              -0.006371010560542345,
+              0.05000000447034836,
+              0.007764035370200872,
+              0.010092124342918396,
+              -0.0014214642578735948
+            ]
+          ],
+          "joint_delta_scale": [
+            0.6519066691398621
+          ]
+        },
+        "gravity_compensation_effort_nm": [
+          [
+            4.1711768972163554e-06,
+            -92.12734985351562,
+            -21.895198822021484,
+            -11.761785507202148,
+            7.273836135864258,
+            1.9501471797411796e-06
+          ]
+        ],
+        "gate_tool_pose_b_wxyz": [
+          [
+            0.5853678584098816,
+            0.4406200051307678,
+            0.5688449740409851,
+            0.40422651171684265,
+            -0.7192856669425964,
+            0.5292715430259705,
+            0.1977391093969345
+          ]
+        ],
+        "two_path_position_difference_m": [
+          5.960464477539063e-08
+        ],
+        "controller_position_error_m": [
+          0.017680862918496132
+        ],
+        "jacobian_singular_values": [
+          [
+            2.0279643535614014,
+            1.3916406631469727,
+            0.9625695943832397,
+            0.5619047284126282,
+            0.22355706989765167,
+            0.14648596942424774
+          ]
+        ]
+      },
+      "joint_pos": [
+        [
+          0.12398585677146912,
+          -0.3989027440547943,
+          -0.9687573909759521,
+          -0.6069386005401611,
+          -0.6958131790161133,
+          0.004259742330759764
+        ]
+      ],
+      "joint_vel": [
+        [
+          -0.42253127694129944,
+          0.5090733766555786,
+          0.7110001444816589,
+          -3.1416568756103516,
+          2.850918769836426,
+          -0.7041234970092773
+        ]
+      ],
+      "joint_pos_target": [
+        [
+          0.1191835030913353,
+          -0.4046939015388489,
+          -0.9211313128471375,
+          -0.5753430128097534,
+          -0.6918848156929016,
+          0.0006429363274946809
+        ]
+      ],
+      "joint_stiffness": [
+        [
+          800.0,
+          800.0,
+          800.0,
+          800.0,
+          800.0,
+          800.0
+        ]
+      ],
+      "joint_damping": [
+        [
+          40.0,
+          40.0,
+          40.0,
+          40.0,
+          40.0,
+          40.0
+        ]
+      ]
+    },
+    "30": {
+      "lab_quaternion_order": "xyzw",
+      "core_quaternion_order": "wxyz",
+      "is_fixed_base": true,
+      "num_base_dofs": 0,
+      "body_names": [
+        "ur5e__base_link",
+        "ur5e__base_link_inertia",
+        "ur5e__shoulder_link",
+        "ur5e__upper_arm_link",
+        "ur5e__forearm_link",
+        "ur5e__wrist_1_link",
+        "ur5e__wrist_2_link",
+        "ur5e__wrist_3_link",
+        "ur5e__flange",
+        "ur5e__tool0",
+        "rotation_correction_plate__base",
+        "rotation_correction_plate__body",
+        "rotation_correction_plate__tool0",
+        "dovetail_male_mount__base",
+        "dovetail_male_mount__body",
+        "dovetail_male_mount__tool0",
+        "dovetail_female_mount__base",
+        "dovetail_female_mount__body",
+        "dovetail_female_mount__tool0",
+        "mock_pruner__base"
+      ],
+      "joint_names": [
+        "ur5e__shoulder_pan_joint",
+        "ur5e__shoulder_lift_joint",
+        "ur5e__elbow_joint",
+        "ur5e__wrist_1_joint",
+        "ur5e__wrist_2_joint",
+        "ur5e__wrist_3_joint"
+      ],
+      "eef_body_name": "mock_pruner__base",
+      "root_pose_w_xyzw": [
+        [
+          0.0,
+          0.0,
+          0.699999988079071,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "current_tool_pose_w_wxyz": [
+        [
+          0.5765079855918884,
+          0.4589916169643402,
+          1.2619315385818481,
+          0.4172964096069336,
+          -0.729203999042511,
+          0.5069634318351746,
+          0.19264841079711914
+        ]
+      ],
+      "current_tool_pose_b_wxyz": [
+        [
+          0.5765079855918884,
+          0.4589916169643402,
+          0.5619315505027771,
+          0.4172964096069336,
+          -0.729203999042511,
+          0.5069634318351746,
+          0.19264841079711914
+        ]
+      ],
+      "last_control_step": {
+        "body_index": 19,
+        "jacobian_body_index": 18,
+        "jacobian_joint_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "jacobian_shape": [
+          1,
+          19,
+          6,
+          6
+        ],
+        "root_pose_w_xyzw": [
+          [
+            0.0,
+            0.0,
+            0.699999988079071,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "physics_body_pose_w_xyzw": [
+          [
+            0.5533459186553955,
+            0.3305929899215698,
+            1.353934407234192,
+            -0.7291257381439209,
+            0.5077434182167053,
+            0.19323457777500153,
+            0.416212260723114
+          ]
+        ],
+        "ik_measured_tool_pose_b_wxyz": [
+          [
+            0.5759071707725525,
+            0.45922255516052246,
+            0.5612292885780334,
+            0.416212260723114,
+            -0.7291257381439209,
+            0.5077434182167053,
+            0.19323457777500153
+          ]
+        ],
+        "gate_measured_tool_pose_w_wxyz": [
+          [
+            0.5759071707725525,
+            0.45922255516052246,
+            1.2612292766571045,
+            0.416212260723114,
+            -0.7291257381439209,
+            0.5077434182167053,
+            0.19323457777500153
+          ]
+        ],
+        "action_pose_b_wxyz": [
+          [
+            0.5996747612953186,
+            0.4414069652557373,
+            0.5584860444068909,
+            0.38439086079597473,
+            -0.710540771484375,
+            0.5438857078552246,
+            0.22707681357860565
+          ]
+        ],
+        "controller_target_pose_b_xyzw": [
+          [
+            0.5996747612953186,
+            0.4414069652557373,
+            0.5584860444068909,
+            -0.710540771484375,
+            0.5438857078552246,
+            0.22707681357860565,
+            0.38439086079597473
+          ]
+        ],
+        "joint_pos_measured": [
+          [
+            0.15181724727153778,
+            -0.3533494770526886,
+            -1.03754460811615,
+            -0.6016661524772644,
+            -0.6935532093048096,
+            -0.0003838117700070143
+          ]
+        ],
+        "joint_pos_desired": [
+          [
+            0.13813525438308716,
+            -0.37239259481430054,
+            -0.987544596195221,
+            -0.587138295173645,
+            -0.6900681853294373,
+            -0.0002750683925114572
+          ]
+        ],
+        "body_jacobian_w": [
+          [
+            [
+              -0.33059293031692505,
+              0.4856242537498474,
+              0.3395102918148041,
+              -0.04233419522643089,
+              -0.05853814631700516,
+              1.0807698913595232e-07
+            ],
+            [
+              0.5533458590507507,
+              0.07476627081632614,
+              0.05341385304927826,
+              -0.005916696973145008,
+              0.08299334347248077,
+              -1.680966654760141e-08
+            ],
+            [
+              4.9584471639718686e-08,
+              -0.5970542430877686,
+              -0.19870483875274658,
+              -0.12851089239120483,
+              0.100717693567276,
+              2.804519283472473e-09
+            ],
+            [
+              5.901601696223224e-08,
+              -0.15124064683914185,
+              -0.15378253161907196,
+              -0.15371766686439514,
+              0.901686429977417,
+              0.14087353646755219
+            ],
+            [
+              -5.392828938965977e-08,
+              0.9884966015815735,
+              0.988100528717041,
+              0.9881011247634888,
+              0.139188751578331,
+              0.8031690716743469
+            ],
+            [
+              0.9999998211860657,
+              0.0007705831667408347,
+              0.0028559837955981493,
+              0.005145231261849403,
+              0.4093751013278961,
+              -0.5788556337356567
+            ]
+          ]
+        ],
+        "tool_jacobian_b": [
+          [
+            [
+              -0.4592224657535553,
+              0.39388641715049744,
+              0.2475409358739853,
+              -0.13459806144237518,
+              -0.12409939616918564,
+              1.6768163391134294e-07
+            ],
+            [
+              0.5759071111679077,
+              0.06076287105679512,
+              0.039221856743097305,
+              -0.020051030442118645,
+              0.17582030594348907,
+              -1.8672311696832367e-08
+            ],
+            [
+              5.8392366497628245e-08,
+              -0.6388099789619446,
+              -0.2407785952091217,
+              -0.1705763190984726,
+              0.21356095373630524,
+              1.3980390178858215e-08
+            ],
+            [
+              5.901601696223224e-08,
+              -0.15124064683914185,
+              -0.15378253161907196,
+              -0.15371766686439514,
+              0.901686429977417,
+              0.14087353646755219
+            ],
+            [
+              -5.392828938965977e-08,
+              0.9884966015815735,
+              0.988100528717041,
+              0.9881011247634888,
+              0.139188751578331,
+              0.8031690716743469
+            ],
+            [
+              0.9999998211860657,
+              0.0007705831667408347,
+              0.0028559837955981493,
+              0.005145231261849403,
+              0.4093751013278961,
+              -0.5788556337356567
+            ]
+          ]
+        ],
+        "ik_damping": 0.05,
+        "ik_max_joint_delta_rad": 0.05,
+        "ik_diagnostic": {
+          "singular_values": [
+            [
+              2.031068801879883,
+              1.4021183252334595,
+              0.9490281939506531,
+              0.5518257021903992,
+              0.22239525616168976,
+              0.154897540807724
+            ]
+          ],
+          "raw_joint_delta_rad": [
+            [
+              -0.035660140216350555,
+              -0.04963309317827225,
+              0.13031774759292603,
+              0.03786471486091614,
+              0.009083273820579052,
+              0.0002834238111972809
+            ]
+          ],
+          "bounded_joint_delta_rad": [
+            [
+              -0.013681996613740921,
+              -0.019043106585741043,
+              0.05000000074505806,
+              0.014527843333780766,
+              0.0034850486554205418,
+              0.00010874337021959946
+            ]
+          ],
+          "joint_delta_scale": [
+            0.38367760181427
+          ]
+        },
+        "gravity_compensation_effort_nm": [
+          [
+            7.43710552342236e-06,
+            -92.38072204589844,
+            -20.8876895904541,
+            -11.821789741516113,
+            7.20255184173584,
+            7.932096650620224e-07
+          ]
+        ],
+        "gate_tool_pose_b_wxyz": [
+          [
+            0.5759071707725525,
+            0.45922255516052246,
+            0.5612292885780334,
+            0.416212260723114,
+            -0.7291257381439209,
+            0.5077434182167053,
+            0.19323457777500153
+          ]
+        ],
+        "two_path_position_difference_m": [
+          0.0
+        ],
+        "controller_position_error_m": [
+          0.029829833656549454
+        ],
+        "jacobian_singular_values": [
+          [
+            2.031068801879883,
+            1.4021183252334595,
+            0.9490281939506531,
+            0.5518257021903992,
+            0.22239525616168976,
+            0.154897540807724
+          ]
+        ]
+      },
+      "joint_pos": [
+        [
+          0.1509495973587036,
+          -0.35372620820999146,
+          -1.0367543697357178,
+          -0.603954553604126,
+          -0.6923294067382812,
+          -0.0015682369703426957
+        ]
+      ],
+      "joint_vel": [
+        [
+          0.09566223621368408,
+          0.1404186636209488,
+          -1.0283429622650146,
+          0.31439197063446045,
+          -0.8670921921730042,
+          0.3509068191051483
+        ]
+      ],
+      "joint_pos_target": [
+        [
+          0.13813525438308716,
+          -0.37239259481430054,
+          -0.987544596195221,
+          -0.587138295173645,
+          -0.6900681853294373,
+          -0.0002750683925114572
+        ]
+      ],
+      "joint_stiffness": [
+        [
+          800.0,
+          800.0,
+          800.0,
+          800.0,
+          800.0,
+          800.0
+        ]
+      ],
+      "joint_damping": [
+        [
+          40.0,
+          40.0,
+          40.0,
+          40.0,
+          40.0,
+          40.0
+        ]
+      ]
+    },
+    "59": {
+      "lab_quaternion_order": "xyzw",
+      "core_quaternion_order": "wxyz",
+      "is_fixed_base": true,
+      "num_base_dofs": 0,
+      "body_names": [
+        "ur5e__base_link",
+        "ur5e__base_link_inertia",
+        "ur5e__shoulder_link",
+        "ur5e__upper_arm_link",
+        "ur5e__forearm_link",
+        "ur5e__wrist_1_link",
+        "ur5e__wrist_2_link",
+        "ur5e__wrist_3_link",
+        "ur5e__flange",
+        "ur5e__tool0",
+        "rotation_correction_plate__base",
+        "rotation_correction_plate__body",
+        "rotation_correction_plate__tool0",
+        "dovetail_male_mount__base",
+        "dovetail_male_mount__body",
+        "dovetail_male_mount__tool0",
+        "dovetail_female_mount__base",
+        "dovetail_female_mount__body",
+        "dovetail_female_mount__tool0",
+        "mock_pruner__base"
+      ],
+      "joint_names": [
+        "ur5e__shoulder_pan_joint",
+        "ur5e__shoulder_lift_joint",
+        "ur5e__elbow_joint",
+        "ur5e__wrist_1_joint",
+        "ur5e__wrist_2_joint",
+        "ur5e__wrist_3_joint"
+      ],
+      "eef_body_name": "mock_pruner__base",
+      "root_pose_w_xyzw": [
+        [
+          0.0,
+          0.0,
+          0.699999988079071,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "current_tool_pose_w_wxyz": [
+        [
+          0.5572161674499512,
+          0.46553418040275574,
+          1.2678210735321045,
+          0.43365418910980225,
+          -0.7307131886482239,
+          0.4902547299861908,
+          0.19404256343841553
+        ]
+      ],
+      "current_tool_pose_b_wxyz": [
+        [
+          0.5572161674499512,
+          0.46553418040275574,
+          0.5678210854530334,
+          0.43365421891212463,
+          -0.7307132482528687,
+          0.4902547597885132,
+          0.19404257833957672
+        ]
+      ],
+      "last_control_step": {
+        "body_index": 19,
+        "jacobian_body_index": 18,
+        "jacobian_joint_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "jacobian_shape": [
+          1,
+          19,
+          6,
+          6
+        ],
+        "root_pose_w_xyzw": [
+          [
+            0.0,
+            0.0,
+            0.699999988079071,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "physics_body_pose_w_xyzw": [
+          [
+            0.5300441980361938,
+            0.3306187391281128,
+            1.3567596673965454,
+            -0.7300915122032166,
+            0.49191898107528687,
+            0.19367776811122894,
+            0.4329792261123657
+          ]
+        ],
+        "ik_measured_tool_pose_b_wxyz": [
+          [
+            0.5529742240905762,
+            0.46238842606544495,
+            0.5686700940132141,
+            0.43297919631004333,
+            -0.7300915122032166,
+            0.4919189512729645,
+            0.19367775321006775
+          ]
+        ],
+        "gate_measured_tool_pose_w_wxyz": [
+          [
+            0.5529742240905762,
+            0.46238842606544495,
+            1.2686700820922852,
+            0.43297919631004333,
+            -0.7300915122032166,
+            0.4919189512729645,
+            0.19367775321006775
+          ]
+        ],
+        "action_pose_b_wxyz": [
+          [
+            0.5996747612953186,
+            0.4414069652557373,
+            0.5584860444068909,
+            0.38439086079597473,
+            -0.710540771484375,
+            0.5438857078552246,
+            0.22707681357860565
+          ]
+        ],
+        "controller_target_pose_b_xyzw": [
+          [
+            0.5996747612953186,
+            0.4414069652557373,
+            0.5584860444068909,
+            -0.710540771484375,
+            0.5438857078552246,
+            0.22707681357860565,
+            0.38439086079597473
+          ]
+        ],
+        "joint_pos_measured": [
+          [
+            0.1535404622554779,
+            -0.3342333436012268,
+            -1.121265172958374,
+            -0.5661331415176392,
+            -0.6638454794883728,
+            -0.006958693265914917
+          ]
+        ],
+        "joint_pos_desired": [
+          [
+            0.14334572851657867,
+            -0.34970036149024963,
+            -1.0712652206420898,
+            -0.5613759160041809,
+            -0.6687763333320618,
+            -0.006633307784795761
+          ]
+        ],
+        "body_jacobian_w": [
+          [
+            [
+              -0.33061864972114563,
+              0.4882875084877014,
+              0.3497616946697235,
+              -0.03567839413881302,
+              -0.06218026205897331,
+              -1.2257192594233857e-08
+            ],
+            [
+              0.5300441384315491,
+              0.07601772993803024,
+              0.05554788559675217,
+              -0.004943073261529207,
+              0.07898008823394775,
+              -5.695803828587032e-09
+            ],
+            [
+              -8.064673373553433e-09,
+              -0.5744485855102539,
+              -0.17335616052150726,
+              -0.12825621664524078,
+              0.1017567366361618,
+              -1.164994856139856e-08
+            ],
+            [
+              -1.0307854836355546e-07,
+              -0.15294404327869415,
+              -0.15544544160366058,
+              -0.15552665293216705,
+              0.8893186450004578,
+              0.14317649602890015
+            ],
+            [
+              -4.79287649568505e-08,
+              0.9882345199584961,
+              0.9878401756286621,
+              0.9878178238868713,
+              0.13877420127391815,
+              0.8227760195732117
+            ],
+            [
+              0.9999997019767761,
+              0.0007706254837103188,
+              0.0029048218857496977,
+              0.005193383898586035,
+              0.43572214245796204,
+              -0.5500361323356628
+            ]
+          ]
+        ],
+        "tool_jacobian_b": [
+          [
+            [
+              -0.4623883366584778,
+              0.401132732629776,
+              0.26236045360565186,
+              -0.12337924540042877,
+              -0.13181981444358826,
+              4.734745218115677e-08
+            ],
+            [
+              0.5529741644859314,
+              0.06256261467933655,
+              0.04192136228084564,
+              -0.018524276092648506,
+              0.16731098294258118,
+              -1.9705135301251175e-09
+            ],
+            [
+              -2.054829550957038e-08,
+              -0.6172622442245483,
+              -0.21649040281772614,
+              -0.17140063643455505,
+              0.21575990319252014,
+              8.839148080141968e-09
+            ],
+            [
+              -1.0307854836355546e-07,
+              -0.15294404327869415,
+              -0.15544544160366058,
+              -0.15552665293216705,
+              0.8893186450004578,
+              0.14317649602890015
+            ],
+            [
+              -4.79287649568505e-08,
+              0.9882345199584961,
+              0.9878401756286621,
+              0.9878178238868713,
+              0.13877420127391815,
+              0.8227760195732117
+            ],
+            [
+              0.9999997019767761,
+              0.0007706254837103188,
+              0.0029048218857496977,
+              0.005193383898586035,
+              0.43572214245796204,
+              -0.5500361323356628
+            ]
+          ]
+        ],
+        "ik_damping": 0.05,
+        "ik_max_joint_delta_rad": 0.05,
+        "ik_diagnostic": {
+          "singular_values": [
+            [
+              2.0325231552124023,
+              1.3984571695327759,
+              0.9317502379417419,
+              0.5416374802589417,
+              0.21098655462265015,
+              0.16390658915042877
+            ]
+          ],
+          "raw_joint_delta_rad": [
+            [
+              -0.03952678665518761,
+              -0.05996829271316528,
+              0.19385874271392822,
+              0.018444668501615524,
+              -0.01911788433790207,
+              0.0012615770101547241
+            ]
+          ],
+          "bounded_joint_delta_rad": [
+            [
+              -0.010194739326834679,
+              -0.015467007644474506,
+              0.05000000074505806,
+              0.004757244605571032,
+              -0.004930879920721054,
+              0.00032538562663830817
+            ]
+          ],
+          "joint_delta_scale": [
+            0.2579197585582733
+          ]
+        },
+        "gravity_compensation_effort_nm": [
+          [
+            -5.784964400845638e-07,
+            -89.57911682128906,
+            -17.59423828125,
+            -11.768279075622559,
+            7.276911735534668,
+            -4.7613460196771484e-07
+          ]
+        ],
+        "gate_tool_pose_b_wxyz": [
+          [
+            0.5529742240905762,
+            0.46238842606544495,
+            0.5686700940132141,
+            0.4329792261123657,
+            -0.7300915718078613,
+            0.49191898107528687,
+            0.19367776811122894
+          ]
+        ],
+        "two_path_position_difference_m": [
+          0.0
+        ],
+        "controller_position_error_m": [
+          0.052200354635715485
+        ],
+        "jacobian_singular_values": [
+          [
+            2.0325231552124023,
+            1.3984571695327759,
+            0.9317502379417419,
+            0.5416374802589417,
+            0.21098655462265015,
+            0.16390658915042877
+          ]
+        ]
+      },
+      "joint_pos": [
+        [
+          0.15725009143352509,
+          -0.3319323658943176,
+          -1.1097053289413452,
+          -0.5833062529563904,
+          -0.6630685329437256,
+          -0.005321464966982603
+        ]
+      ],
+      "joint_vel": [
+        [
+          -1.592063069343567,
+          0.07167121022939682,
+          -0.9908809065818787,
+          3.0989253520965576,
+          2.2656924724578857,
+          -2.860133647918701
+        ]
+      ],
+      "joint_pos_target": [
+        [
+          0.14334572851657867,
+          -0.34970036149024963,
+          -1.0712652206420898,
+          -0.5613759160041809,
+          -0.6687763333320618,
+          -0.006633307784795761
+        ]
+      ],
+      "joint_stiffness": [
+        [
+          800.0,
+          800.0,
+          800.0,
+          800.0,
+          800.0,
+          800.0
+        ]
+      ],
+      "joint_damping": [
+        [
+          40.0,
+          40.0,
+          40.0,
+          40.0,
+          40.0,
+          40.0
+        ]
+      ]
+    }
+  },
+  "checks": {
+    "frames_complete": true,
+    "overview_nonblank": true,
+    "close_nonblank": true,
+    "wrist_nonblank": true,
+    "metric_depth_finite": true,
+    "robot_physically_moved": true,
+    "overview_changed": true,
+    "capture_did_not_advance_physics": true,
+    "both_tof_live": false,
+    "both_tof_changed": true
+  },
+  "stopped_reason": "vision_invalid",
+  "tof_variation": {
+    "tof0": {
+      "valid_samples": 15,
+      "valid_fraction": 0.00390625,
+      "median_range_span_m": 0.04413840174674988
+    },
+    "tof1": {
+      "valid_samples": 76,
+      "valid_fraction": 0.019791666666666666,
+      "median_range_span_m": 0.04829391837120056
+    }
+  },
+  "metrics": {
+    "max_tool_displacement_m": 0.05179827333169238,
+    "initial_target_distance_m": 0.6004996208602154,
+    "minimum_target_distance_m": 0.5700517774354076,
+    "final_target_distance_m": 0.5717816052303193,
+    "retreat_return_error_m": 0.03892586820770496,
+    "maximum_overview_mean_absolute_change_8bit": 0.2394184023141861,
+    "approach_observed": true,
+    "retreat_observed": false
+  },
+  "final_live_vision": {
+    "measurement": {
+      "state": "tracking_lost",
+      "reason": "explicit_initialization_required",
+      "target_position_world_m": null,
+      "pixel_xy": [
+        240.0,
+        160.0
+      ],
+      "feature_pixels_xy": [
+        [
+          253.0,
+          136.0
+        ],
+        [
+          254.0,
+          145.0
+        ],
+        [
+          253.0,
+          142.0
+        ],
+        [
+          239.0,
+          137.0
+        ],
+        [
+          250.0,
+          149.0
+        ],
+        [
+          242.0,
+          178.0
+        ],
+        [
+          239.0,
+          142.0
+        ],
+        [
+          244.0,
+          145.0
+        ],
+        [
+          254.0,
+          182.0
+        ],
+        [
+          251.0,
+          181.0
+        ],
+        [
+          237.0,
+          175.0
+        ],
+        [
+          234.0,
+          174.0
+        ]
+      ],
+      "feature_count": 12,
+      "initial_feature_count": 12,
+      "confidence": 0.0,
+      "frame_index": 61,
+      "requires_reinitialize": true,
+      "method": "seeded_forward_backward_lk_optical_z"
+    },
+    "measurement_time_s": 6.0,
+    "cut": {
+      "phase": "stopped",
+      "closure_progress": 0.0,
+      "stable_count": 0,
+      "detach_event": false,
+      "detached": false,
+      "closure_started_s": null,
+      "detached_at_s": null,
+      "stopped_reason": "vision_invalid",
+      "certificate": {
+        "safe_to_approach": false,
+        "ready_to_close": false,
+        "reasons": [
+          "vision_invalid",
+          "hazard_contact",
+          "invalid_geometry"
+        ],
+        "mouth_distance_m": null,
+        "perpendicularity_error_deg": null,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "model": "simulated_detachment_not_fracture"
+    },
+    "observations": 61,
+    "vision_command_count": 0,
+    "mouth_offset_tool_m": [
+      0.0,
+      0.0,
+      0.07
+    ],
+    "target_identity_axis_radius_source": "Selected Blender branch metadata; not learned recognition",
+    "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+    "cut_model": "Visual jaw surrogate and discrete detachment; not material fracture"
+  },
+  "vision_command_count": 0,
+  "final_control_state": {
+    "lab_quaternion_order": "xyzw",
+    "core_quaternion_order": "wxyz",
+    "is_fixed_base": true,
+    "num_base_dofs": 0,
+    "body_names": [
+      "ur5e__base_link",
+      "ur5e__base_link_inertia",
+      "ur5e__shoulder_link",
+      "ur5e__upper_arm_link",
+      "ur5e__forearm_link",
+      "ur5e__wrist_1_link",
+      "ur5e__wrist_2_link",
+      "ur5e__wrist_3_link",
+      "ur5e__flange",
+      "ur5e__tool0",
+      "rotation_correction_plate__base",
+      "rotation_correction_plate__body",
+      "rotation_correction_plate__tool0",
+      "dovetail_male_mount__base",
+      "dovetail_male_mount__body",
+      "dovetail_male_mount__tool0",
+      "dovetail_female_mount__base",
+      "dovetail_female_mount__body",
+      "dovetail_female_mount__tool0",
+      "mock_pruner__base"
+    ],
+    "joint_names": [
+      "ur5e__shoulder_pan_joint",
+      "ur5e__shoulder_lift_joint",
+      "ur5e__elbow_joint",
+      "ur5e__wrist_1_joint",
+      "ur5e__wrist_2_joint",
+      "ur5e__wrist_3_joint"
+    ],
+    "eef_body_name": "mock_pruner__base",
+    "root_pose_w_xyzw": [
+      [
+        0.0,
+        0.0,
+        0.699999988079071,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "current_tool_pose_w_wxyz": [
+      [
+        0.5572161674499512,
+        0.46553418040275574,
+        1.2678210735321045,
+        0.43365418910980225,
+        -0.7307131886482239,
+        0.4902547299861908,
+        0.19404256343841553
+      ]
+    ],
+    "current_tool_pose_b_wxyz": [
+      [
+        0.5572161674499512,
+        0.46553418040275574,
+        0.5678210854530334,
+        0.43365421891212463,
+        -0.7307132482528687,
+        0.4902547597885132,
+        0.19404257833957672
+      ]
+    ],
+    "last_control_step": {
+      "body_index": 19,
+      "jacobian_body_index": 18,
+      "jacobian_joint_columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "jacobian_shape": [
+        1,
+        19,
+        6,
+        6
+      ],
+      "root_pose_w_xyzw": [
+        [
+          0.0,
+          0.0,
+          0.699999988079071,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "physics_body_pose_w_xyzw": [
+        [
+          0.5300441980361938,
+          0.3306187391281128,
+          1.3567596673965454,
+          -0.7300915122032166,
+          0.49191898107528687,
+          0.19367776811122894,
+          0.4329792261123657
+        ]
+      ],
+      "ik_measured_tool_pose_b_wxyz": [
+        [
+          0.5529742240905762,
+          0.46238842606544495,
+          0.5686700940132141,
+          0.43297919631004333,
+          -0.7300915122032166,
+          0.4919189512729645,
+          0.19367775321006775
+        ]
+      ],
+      "gate_measured_tool_pose_w_wxyz": [
+        [
+          0.5529742240905762,
+          0.46238842606544495,
+          1.2686700820922852,
+          0.43297919631004333,
+          -0.7300915122032166,
+          0.4919189512729645,
+          0.19367775321006775
+        ]
+      ],
+      "action_pose_b_wxyz": [
+        [
+          0.5996747612953186,
+          0.4414069652557373,
+          0.5584860444068909,
+          0.38439086079597473,
+          -0.710540771484375,
+          0.5438857078552246,
+          0.22707681357860565
+        ]
+      ],
+      "controller_target_pose_b_xyzw": [
+        [
+          0.5996747612953186,
+          0.4414069652557373,
+          0.5584860444068909,
+          -0.710540771484375,
+          0.5438857078552246,
+          0.22707681357860565,
+          0.38439086079597473
+        ]
+      ],
+      "joint_pos_measured": [
+        [
+          0.1535404622554779,
+          -0.3342333436012268,
+          -1.121265172958374,
+          -0.5661331415176392,
+          -0.6638454794883728,
+          -0.006958693265914917
+        ]
+      ],
+      "joint_pos_desired": [
+        [
+          0.14334572851657867,
+          -0.34970036149024963,
+          -1.0712652206420898,
+          -0.5613759160041809,
+          -0.6687763333320618,
+          -0.006633307784795761
+        ]
+      ],
+      "body_jacobian_w": [
+        [
+          [
+            -0.33061864972114563,
+            0.4882875084877014,
+            0.3497616946697235,
+            -0.03567839413881302,
+            -0.06218026205897331,
+            -1.2257192594233857e-08
+          ],
+          [
+            0.5300441384315491,
+            0.07601772993803024,
+            0.05554788559675217,
+            -0.004943073261529207,
+            0.07898008823394775,
+            -5.695803828587032e-09
+          ],
+          [
+            -8.064673373553433e-09,
+            -0.5744485855102539,
+            -0.17335616052150726,
+            -0.12825621664524078,
+            0.1017567366361618,
+            -1.164994856139856e-08
+          ],
+          [
+            -1.0307854836355546e-07,
+            -0.15294404327869415,
+            -0.15544544160366058,
+            -0.15552665293216705,
+            0.8893186450004578,
+            0.14317649602890015
+          ],
+          [
+            -4.79287649568505e-08,
+            0.9882345199584961,
+            0.9878401756286621,
+            0.9878178238868713,
+            0.13877420127391815,
+            0.8227760195732117
+          ],
+          [
+            0.9999997019767761,
+            0.0007706254837103188,
+            0.0029048218857496977,
+            0.005193383898586035,
+            0.43572214245796204,
+            -0.5500361323356628
+          ]
+        ]
+      ],
+      "tool_jacobian_b": [
+        [
+          [
+            -0.4623883366584778,
+            0.401132732629776,
+            0.26236045360565186,
+            -0.12337924540042877,
+            -0.13181981444358826,
+            4.734745218115677e-08
+          ],
+          [
+            0.5529741644859314,
+            0.06256261467933655,
+            0.04192136228084564,
+            -0.018524276092648506,
+            0.16731098294258118,
+            -1.9705135301251175e-09
+          ],
+          [
+            -2.054829550957038e-08,
+            -0.6172622442245483,
+            -0.21649040281772614,
+            -0.17140063643455505,
+            0.21575990319252014,
+            8.839148080141968e-09
+          ],
+          [
+            -1.0307854836355546e-07,
+            -0.15294404327869415,
+            -0.15544544160366058,
+            -0.15552665293216705,
+            0.8893186450004578,
+            0.14317649602890015
+          ],
+          [
+            -4.79287649568505e-08,
+            0.9882345199584961,
+            0.9878401756286621,
+            0.9878178238868713,
+            0.13877420127391815,
+            0.8227760195732117
+          ],
+          [
+            0.9999997019767761,
+            0.0007706254837103188,
+            0.0029048218857496977,
+            0.005193383898586035,
+            0.43572214245796204,
+            -0.5500361323356628
+          ]
+        ]
+      ],
+      "ik_damping": 0.05,
+      "ik_max_joint_delta_rad": 0.05,
+      "ik_diagnostic": {
+        "singular_values": [
+          [
+            2.0325231552124023,
+            1.3984571695327759,
+            0.9317502379417419,
+            0.5416374802589417,
+            0.21098655462265015,
+            0.16390658915042877
+          ]
+        ],
+        "raw_joint_delta_rad": [
+          [
+            -0.03952678665518761,
+            -0.05996829271316528,
+            0.19385874271392822,
+            0.018444668501615524,
+            -0.01911788433790207,
+            0.0012615770101547241
+          ]
+        ],
+        "bounded_joint_delta_rad": [
+          [
+            -0.010194739326834679,
+            -0.015467007644474506,
+            0.05000000074505806,
+            0.004757244605571032,
+            -0.004930879920721054,
+            0.00032538562663830817
+          ]
+        ],
+        "joint_delta_scale": [
+          0.2579197585582733
+        ]
+      },
+      "gravity_compensation_effort_nm": [
+        [
+          -5.784964400845638e-07,
+          -89.57911682128906,
+          -17.59423828125,
+          -11.768279075622559,
+          7.276911735534668,
+          -4.7613460196771484e-07
+        ]
+      ],
+      "gate_tool_pose_b_wxyz": [
+        [
+          0.5529742240905762,
+          0.46238842606544495,
+          0.5686700940132141,
+          0.4329792261123657,
+          -0.7300915718078613,
+          0.49191898107528687,
+          0.19367776811122894
+        ]
+      ],
+      "two_path_position_difference_m": [
+        0.0
+      ],
+      "controller_position_error_m": [
+        0.052200354635715485
+      ],
+      "jacobian_singular_values": [
+        [
+          2.0325231552124023,
+          1.3984571695327759,
+          0.9317502379417419,
+          0.5416374802589417,
+          0.21098655462265015,
+          0.16390658915042877
+        ]
+      ]
+    },
+    "joint_pos": [
+      [
+        0.15725009143352509,
+        -0.3319323658943176,
+        -1.1097053289413452,
+        -0.5833062529563904,
+        -0.6630685329437256,
+        -0.005321464966982603
+      ]
+    ],
+    "joint_vel": [
+      [
+        -1.592063069343567,
+        0.07167121022939682,
+        -0.9908809065818787,
+        3.0989253520965576,
+        2.2656924724578857,
+        -2.860133647918701
+      ]
+    ],
+    "joint_pos_target": [
+      [
+        0.14334572851657867,
+        -0.34970036149024963,
+        -1.0712652206420898,
+        -0.5613759160041809,
+        -0.6687763333320618,
+        -0.006633307784795761
+      ]
+    ],
+    "joint_stiffness": [
+      [
+        800.0,
+        800.0,
+        800.0,
+        800.0,
+        800.0,
+        800.0
+      ]
+    ],
+    "joint_damping": [
+      [
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0
+      ]
+    ]
+  },
+  "capture_quality_at_end": {
+    "requested": {
+      "/rtx/rendermode": "PathTracing",
+      "/rtx/pathtracing/spp": 32,
+      "/rtx/pathtracing/totalSpp": 64,
+      "/rtx/pathtracing/maxSamplesPerLaunch": 44236800,
+      "/rtx/pathtracing/maxBounces": 4,
+      "/rtx/pathtracing/adaptiveSampling/enabled": false,
+      "/rtx/pathtracing/cached/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/enabled": true,
+      "/rtx/pathtracing/optixDenoiser/blendFactor": 0.0,
+      "/rtx/pathtracing/optixDenoiser/temporalMode/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/AOV": false,
+      "/rtx-transient/dldenoiser/enabled": false,
+      "/rtx-transient/dlssg/enabled": false,
+      "/rtx/post/aa/op": 0,
+      "/rtx/post/motionblur/enabled": false,
+      "/omni/replicator/captureMotionBlur": false,
+      "/rtx/resetPtAccumOnAnimTimeChange": true
+    },
+    "actual": {
+      "/rtx/rendermode": "PathTracing",
+      "/rtx/pathtracing/spp": 32,
+      "/rtx/pathtracing/totalSpp": 64,
+      "/rtx/pathtracing/maxSamplesPerLaunch": 44236800,
+      "/rtx/pathtracing/maxBounces": 4,
+      "/rtx/pathtracing/adaptiveSampling/enabled": false,
+      "/rtx/pathtracing/cached/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/enabled": true,
+      "/rtx/pathtracing/optixDenoiser/blendFactor": 0.0,
+      "/rtx/pathtracing/optixDenoiser/temporalMode/enabled": false,
+      "/rtx/pathtracing/optixDenoiser/AOV": false,
+      "/rtx-transient/dldenoiser/enabled": false,
+      "/rtx-transient/dlssg/enabled": false,
+      "/rtx/post/aa/op": 1,
+      "/rtx/post/motionblur/enabled": false,
+      "/omni/replicator/captureMotionBlur": false,
+      "/rtx/resetPtAccumOnAnimTimeChange": true
+    },
+    "settings_match": false,
+    "mismatches": {
+      "/rtx/post/aa/op": {
+        "requested": 0,
+        "actual": 1
+      }
+    },
+    "evidence_scope": "Carb setting readback only; not measured sample count or visual quality"
+  }
+}

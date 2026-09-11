@@ -1,10 +1,55 @@
-isaac-sim-pruning-workflow — status at 2026-09-08 08:42 PDT
+isaac-sim-pruning-workflow — checkpoint at 2026-09-11 05:06 PDT
 Branch: develop
 Owner / Git author: Jose Sanchez
 GitHub: https://github.com/joses2017smjh/isaac-sim-pruning-workflow
 Author email: 119717035+joses2017smjh@users.noreply.github.com
 
-REAL ISAAC SIM DEMO — COMPLETE
+BLENDER / LIVE-VISION INTEGRATION — GPU VALIDATION IN PROGRESS
+
+  The existing Computer_Vision/orchard_template.blend now exports to USD with
+  original tree/scene meshes, UVs and six bark/soil image maps. No .ply import
+  is involved and the source .blend is unchanged. Posts/wires retain solid
+  source materials. Ground relief is visual over a flat plane collider;
+  Preview Surface conversion, UV and lighting overrides do not reproduce Cycles.
+  Export assets/manifest: artifacts/blender_scene/orchard_v1/ (local).
+
+  Job 21222688: 30 frames / 3-second path-traced procedural quality probe.
+  OptiX color denoising produces smoother raw images; no compositor filter.
+  Closest standoff 96.49 mm; return error 16.08 mm. No cut. Different duration,
+  GPU and resolution prevent a controlled comparison with the old inspection.
+  GIF: docs/demo/isaac_quality_probe_unfiltered.gif.
+
+  Job 21222710: 60 frames / 6-second original Blender-scene failure.
+  rendering_ok:true, ok:false, task_outcome:vision_stopped_failure.
+  Robot contact and a tool-occluded seed at 37.24 mm optical depth prevented
+  approach. Twelve initialized features fell to two passing the first LK
+  update, below the unchanged minimum four. CPU replay reproduces this failure.
+  Zero vision-driven approach commands, zero closure, no detachment or observed
+  retreat; both_tof_live failed. Motion during contact does not prove servoing.
+  GIF: docs/demo/isaac_textured_scene_failed_vision.gif.
+
+  Later job 21224517 failed the startup contact gate before recording.
+  Job 21227646 then failed because NumPy was applied to GPU tensors; the
+  selected-piece pose reader now uses Torch. The new layout selects existing
+  connected component 8235 at 150-degree yaw, with an exterior camera mount,
+  seed-depth visibility checks and presentation overrides. These revisions
+  have CPU coverage but still require a passing GPU recording. Follow-up job
+  21247873 was submitted for a 60-frame A40 capture at this checkpoint; its
+  outcome is not yet known. See SLURM_JOBS.md for queue state and accounting.
+
+  The classical forward/backward LK tracker consumes consecutive live RGB
+  frames and measured RTX optical-Z depth. Each saved observation supplies
+  the next bounded command; controller_source_frame_index records that boundary.
+  The initial pixel and branch identity/axis/radius come from scene metadata.
+  Tracking loss holds motion; there is no automatic reseed or oracle fallback.
+  Farneback overlays remain an offline diagnostic. No learned recognition or
+  learned depth is implemented. The event-gated cut proxy is a visual jaw and
+  discrete rigid-piece release, not actuated CAD blades or wood fracture.
+
+  No successful Blender/live-vision approach or cutting result is claimed.
+  Full evidence and reproduction: docs/ISAAC_RENDER.md.
+
+PUBLISHED REAL ISAAC INSPECTION — COMPLETE
 
   Job 21208215: COMPLETED (0:0), cn-gpu6, 2m44s.
   140 RTX frames / 14 seconds: UR5e + mock pruner approaches a procedural
@@ -53,9 +98,10 @@ LOCAL VERIFICATION
   stack recorded in docs/ENVIRONMENT.lock.json and its job preflight.
   Previous published CPU demo: fresh clone 130 passed, 3 missing-USD skips,
   1 simulator deselected; workspace 133 passed, 1 deselected.
-  Current render/control work: local CPU run 184 passed, 1 deselected,
-  including smoke-report slice and stopped-command tracking regressions.
-  Ruff 0.14.10 is used for lint and format checks.
+  Current integration checkpoint: local CPU run 364 passed, 1 simulator test
+  deselected, with generated assets. Coverage includes tracking/depth failures,
+  causal commands, cut gates, Blender mesh/material contracts and render guards.
+  Ruff 0.14.10 lint and format checks pass across 105 files.
   CI now installs dev+demo+render extras and generates the portable CPU demo;
   it does not run Isaac Sim on the GitHub-hosted runner.
   Previous published CPU demo commit: f398b67feb1bdec58bb8c2aae8c9e48fb4aebb8f.
@@ -106,21 +152,20 @@ CLUSTER EVIDENCE
            ToF median changes 3.961 / 3.800 mm across 64 shared pixels each.
            All 20 contact bodies verified; A-D widths 150/278/86/86.
 
-No workflow job is queued. Baseline and PPO jobs remain unsubmitted.
-The user queue has four running allocations and no pending tasks. Three training
-tasks and interactive allocation 21213644 were left untouched. Earlier render
-steps ran in allocation 21208115. No additional render retry is needed.
-All user jobs and exact accounting: SLURM_JOBS.md.
+Baseline and PPO workflow jobs remain unsubmitted. The integration is still
+being validated; use SLURM_JOBS.md for current queue state and exact accounting.
 
 REMAINING RESEARCH WORK
 
   Replace Isaac's fixed smoke target with live oracle/curriculum targets and
   nearby-wood tensors in the training environment. The inspection renderer
   already uses procedural geometry; it is not that training implementation.
-  Load a selected Blender/L-Py dataset tree into the robot recording. The
-  current fixture is authored as USD cylinders, not imported from .ply files.
-  Connect CV to live control, learned metric-depth inference and episode-start
-  DA2. Current flow and color-mask overlays run on recorded RGB after capture.
+  Validate collision-free placement, visible target seeding, live vision-driven
+  approach, gated rigid-piece release and retreat in the loaded Blender scene.
+  Current CPU tests and failed GPU recordings do not establish that outcome.
+  Add learned recognition, metric-depth inference and episode-start DA2.
+  Classical RGB-D tracking is wired into experimental live control; published
+  inspection flow and color-mask overlays remain offline.
   Identify/calibrate the physical wrist camera; simulation RGB now works.
   Add actual pruner actuation and validated cutting/contact mechanics.
   Execute CuRobo planning; current baseline runner only reports readiness.

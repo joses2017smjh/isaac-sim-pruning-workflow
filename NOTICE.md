@@ -47,7 +47,12 @@ contract; its presence does not establish that it is current mock-pruner CAD.
 
 The optional `bark_brown_02_diff.jpg` orchard albedo is not distributed in this
 repository or Python package. USD writers use a brown material when the local
-texture is absent. Generated demo scenes use procedural geometry and colors.
+texture is absent. The portable CPU demo uses procedural geometry and colors.
+The experimental Isaac Blender capture references the user's local
+`Computer_Vision/orchard_template.blend` and bark/soil texture files. The `.blend`,
+exported mesh assets, and texture images are not distributed in this repository.
+Rendered demo images do not imply permission to redistribute those source assets;
+confirm their ownership and licenses before packaging them for another machine.
 
 For permission or licensing clarification, contact Jose Sanchez
 <sanchej7@oregonstate.edu> and the relevant upstream owner.

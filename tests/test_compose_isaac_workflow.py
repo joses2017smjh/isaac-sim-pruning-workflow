@@ -173,3 +173,106 @@ def test_noisy_gif_adapts_sampling_without_hiding_capture_endpoints(tmp_path):
     assert result["sample_positions"][-1] == len(frames) - 1
     assert result["width_px"] <= 864
     assert result["duration_s"] == pytest.approx(14, abs=0.15)
+
+
+def _live_evidence(*, stopped=False):
+    return {
+        "measurement": {
+            "state": "tracking",
+            "confidence": 0.81,
+            "pixel_xy": [32.0, 24.0],
+            "feature_pixels_xy": [[12.0, 12.0], [-100.0, 2.0], [200.0, 20.0]],
+            "target_position_world_m": [0.1, 0.2, 0.3],
+        },
+        "measurement_time_s": 0.2,
+        "cut": {
+            "phase": "stopped" if stopped else "closing",
+            "closure_progress": 0.5,
+            "detach_event": False,
+            "detached": False,
+            "stopped_reason": "hazard_contact" if stopped else None,
+            "certificate": {"mouth_distance_m": 0.006, "reasons": [], "ready_to_close": not stopped},
+        },
+        "vision_command_count": 7,
+    }
+
+
+@pytest.mark.parametrize("stopped,color", [(False, composer.ACCENT), (True, (255, 112, 112))])
+def test_live_tracking_overlay_draws_recorded_pixels_and_stop_color(stopped, color):
+    raw = Image.new("RGB", (64, 48), (20, 30, 40))
+    overlay = composer.live_tracking_overlay(raw, _live_evidence(stopped=stopped))
+    assert overlay.getpixel((32, 24)) == color
+    assert overlay.getpixel((12, 10)) == color
+    assert overlay.getpixel((60, 46)) == (20, 30, 40)
+    assert raw.getpixel((32, 24)) == (20, 30, 40)
+
+
+def test_live_tracking_does_not_invent_missing_target():
+    raw = Image.new("RGB", (64, 48), (20, 30, 40))
+    overlay = composer.live_tracking_overlay(raw, {"measurement": None, "cut": None})
+    assert np.array_equal(np.asarray(raw), np.asarray(overlay))
+    lines = composer._live_state_lines({"live_vision": {"measurement": None, "cut": None}})
+    assert "awaiting image" in lines[0]
+    assert "Gate: not reported" in lines
+    assert "source frame: none" in lines[-1]
+
+
+def test_live_dashboard_labels_causal_vision_and_keeps_offline_flow_separate(tmp_path, monkeypatch):
+    _, records = _capture(tmp_path)
+    record = {
+        **records[1],
+        "live_vision": _live_evidence(stopped=True),
+        "controller_source_frame_index": 0,
+        "visual_servo_decision": {"state": "hold", "reason": "hazard_contact"},
+    }
+    drawn_text = []
+    original_text = composer._text
+
+    def record_text(draw, xy, value, *args, **kwargs):
+        drawn_text.append(str(value))
+        return original_text(draw, xy, value, *args, **kwargs)
+
+    def reject_brown_candidate(*args):
+        pytest.fail("Live display must not substitute the offline brown-pixel heuristic")
+
+    monkeypatch.setattr(composer, "_text", record_text)
+    monkeypatch.setattr(composer, "brown_candidate", reject_brown_candidate)
+    rgb = Image.new("RGB", (64, 48), (20, 30, 40))
+    depth = np.full((48, 64), 0.7)
+    canvas = composer.compose_frame(record, rgb, rgb, depth, None, 3, task_outcome="vision_stopped_failure")
+    assert canvas.size == composer.SIZE
+    assert any("LIVE RGB-D TRACKING" in line for line in drawn_text)
+    assert any("OFFLINE DIAGNOSTIC" in line for line in drawn_text)
+    assert any("VISION STOPPED / FAILURE" in line for line in drawn_text)
+    assert any("Gate: hazard contact" in line for line in drawn_text)
+    assert any("scene-selected branch" in line for line in drawn_text)
+    assert not any("CV computed offline" in line or "brown-pixel" in line for line in drawn_text)
+    measured = composer._frame_metrics(record, depth, None, rgb)
+    assert measured["live_vision"] == record["live_vision"]
+    assert measured["controller_source_frame_index"] == 0
+    assert measured["visual_servo_decision"] == record["visual_servo_decision"]
+    assert "brown_candidate_centroid_px" not in measured
+
+
+@pytest.mark.skipif(composer._ffmpeg_executable() is None, reason="No system or bundled ffmpeg encoder")
+def test_live_media_preserves_failure_report_and_controller_evidence(tmp_path):
+    source, records = _capture(tmp_path)
+    for record in records:
+        record["live_vision"] = _live_evidence(stopped=True)
+        record["controller_source_frame_index"] = record["index"] - 1 if record["index"] else None
+        record["visual_servo_decision"] = {"state": "hold", "reason": "hazard_contact"}
+    report = {"ok": True, "task_outcome": "vision_stopped_failure", "checks": {"detached": False}}
+    (source / "frames.json").write_text(json.dumps({"frames": records}), encoding="utf-8")
+    (source / "report.json").write_text(json.dumps(report), encoding="utf-8")
+    outputs = composer.compose_capture(source, tmp_path / "live_media")
+    evidence = json.loads(outputs["json"].read_text(encoding="utf-8"))
+    assert evidence["source_report"] == report
+    assert evidence["task_outcome"] == "vision_stopped_failure"
+    assert evidence["live_vision_frames"] == 3
+    assert "online RGB-D tracker" in evidence["channels"]["vision"]
+    assert "Offline" in evidence["channels"]["offline_optical_flow"]
+    assert "brown_candidate" not in evidence["channels"]
+    assert evidence["frames"][1]["controller_source_frame_index"] == 0
+    assert evidence["frames"][1]["live_vision"] == records[1]["live_vision"]
+    assert any("not actuated CAD blades or wood fracture" in line for line in evidence["limitations"])
+    assert json.loads((source / "report.json").read_text(encoding="utf-8")) == report

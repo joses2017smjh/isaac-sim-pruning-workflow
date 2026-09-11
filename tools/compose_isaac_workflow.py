@@ -191,6 +191,69 @@ def candidate_overlay(wrist, mask, centroid):
     return output
 
 
+def live_tracking_overlay(wrist, live_vision):
+    """Draw only the tracker pixels recorded by the online controller.
+
+    A selected/tracked pixel is not independent semantic recognition. Failure
+    leaves any last measured feature locations red; it never invents a target.
+    """
+    output = wrist.convert("RGB").copy()
+    measurement = live_vision.get("measurement") or {}
+    cut = live_vision.get("cut") or {}
+    tracking = measurement.get("state") == "tracking" and cut.get("phase") != "stopped"
+    color = ACCENT if tracking else (255, 112, 112)
+    draw = ImageDraw.Draw(output)
+
+    def visible_pixel(value):
+        pixel = _vector(value, size=2)
+        if pixel is None or not (0 <= pixel[0] < output.width and 0 <= pixel[1] < output.height):
+            return None
+        return tuple(float(value) for value in pixel)
+
+    for feature in measurement.get("feature_pixels_xy") or []:
+        pixel = visible_pixel(feature)
+        if pixel is not None:
+            x, y = pixel
+            draw.ellipse((x - 2, y - 2, x + 2, y + 2), outline=color, width=1)
+    pixel = visible_pixel(measurement.get("pixel_xy"))
+    if pixel is not None:
+        x, y = pixel
+        draw.ellipse((x - 8, y - 8, x + 8, y + 8), outline=color, width=2)
+        draw.line((x - 12, y, x + 12, y), fill=color, width=2)
+        draw.line((x, y - 12, x, y + 12), fill=color, width=2)
+    return output
+
+
+def _live_state_lines(record):
+    """Summarize evidence without turning a phase label into success."""
+    live = record["live_vision"]
+    measurement, cut = live.get("measurement") or {}, live.get("cut") or {}
+    certificate = cut.get("certificate") or {}
+    state = str(measurement.get("state", "awaiting image"))
+    confidence = measurement.get("confidence")
+    confidence_label = f"{confidence:.2f}" if isinstance(confidence, (int, float)) else "not reported"
+    lines = [f"Tracker: {state} | confidence {confidence_label}"]
+    tool = _vector(record.get("tool_position_m"))
+    if tool is not None:
+        lines.append("Tool xyz [m]: " + ", ".join(f"{value:+.3f}" for value in tool))
+    distance = certificate.get("mouth_distance_m")
+    distance_label = f"{distance * 1000:.1f} mm" if isinstance(distance, (int, float)) else "not reported"
+    lines.append(f"Mouth-to-tracked target: {distance_label}")
+    closure = cut.get("closure_progress")
+    closure_label = f"{closure * 100:.0f}%" if isinstance(closure, (int, float)) else "not reported"
+    detached = "yes" if cut.get("detached") is True else "no"
+    lines.append(f"Surrogate closure: {closure_label} | detached: {detached}")
+    reasons = certificate.get("reasons") or []
+    gate = cut.get("stopped_reason") or ", ".join(reasons)
+    if not gate:
+        gate = "ready" if certificate.get("ready_to_close") is True else "not reported"
+    lines.append("Gate: " + str(gate).replace("_", " "))
+    source_frame = record.get("controller_source_frame_index")
+    source_label = str(source_frame) if source_frame is not None else "none"
+    lines.append(f"Vision commands: {live.get('vision_command_count', 0)} | source frame: {source_label}")
+    return lines
+
+
 def _paste_fit(canvas, image, box, *, nearest=False):
     x, y, width, height = box
     scale = min(width / image.width, height / image.height)
@@ -202,6 +265,17 @@ def _paste_fit(canvas, image, box, *, nearest=False):
 
 def _text(draw, xy, value, size=18, fill=INK):
     draw.text(xy, str(value), font=_font(size), fill=fill)
+
+
+def _fit_text(draw, xy, value, width, size=16, fill=MUTED):
+    """Keep long failure reasons within their own panel."""
+    text = str(value)
+    font = _font(size)
+    if draw.textlength(text, font=font) > width:
+        while text and draw.textlength(text + "…", font=font) > width:
+            text = text[:-1]
+        text += "…"
+    _text(draw, xy, text, size, fill)
 
 
 def _tof_panel(canvas, record, side, x):
@@ -229,10 +303,14 @@ def compose_frame(record, overview, wrist, depth, flow, frame_count, *, task_out
     _text(draw, (24, 16), "ROBOTIC PRUNING / ISAAC SIM", 29)
     _text(draw, (24, 55), "Recorded robot + scene + synchronized camera and range measurements", 18, MUTED)
     outcome = str(task_outcome or "not reported").replace("_", " ").upper()
-    if task_outcome == "approach_inspect_retreat_no_cut":
-        outcome = "INSPECTION COMPLETE / NO CUT"
+    outcome = {
+        "approach_inspect_retreat_no_cut": "INSPECTION COMPLETE / NO CUT",
+        "vision_guided_simulated_detachment": "VISION / SIMULATED DETACHMENT",
+        "vision_stopped_failure": "VISION STOPPED / FAILURE",
+        "vision_inspection_only": "VISION INSPECTION / NO DETACHMENT",
+    }.get(task_outcome, outcome)
     outcome_color = (255, 162, 133) if "FAIL" in outcome else MUTED
-    _text(draw, (850, 24), f"OUTCOME: {outcome}", 17, outcome_color)
+    _fit_text(draw, (850, 24), f"OUTCOME: {outcome}", 566, 17, outcome_color)
     _text(draw, (1040, 55), f"t = {record['time_s']:.2f} s", 20, ACCENT)
     _text(draw, (1200, 60), f"frame {record['index'] + 1}/{frame_count}", 15, MUTED)
     display_note = " | RGB display: 3 x 3 median" if display_denoise else ""
@@ -240,15 +318,22 @@ def compose_frame(record, overview, wrist, depth, flow, frame_count, *, task_out
     _paste_fit(canvas, display_rgb(overview, display_denoise), (24, 114, 928, 522))
     phase = str(record.get("phase", "not recorded")).replace("_", " ")
     _text(draw, (24, 642), f"PHASE: {phase.upper()}", 20, ACCENT)
-    mask, centroid = brown_candidate(wrist)
-    _text(draw, (976, 90), "WRIST RGB | brown-pixel CV candidate", 17, MUTED)
+    live = record.get("live_vision")
+    live_mode = isinstance(live, dict)
+    wrist_title = "LIVE RGB-D TRACKING | recorded features" if live_mode else "WRIST RGB | brown-pixel CV candidate"
+    _text(draw, (976, 90), wrist_title, 17, MUTED)
     wrist_display = display_rgb(wrist, display_denoise)
-    _paste_fit(canvas, candidate_overlay(wrist_display, mask, centroid), (976, 114, 440, 248))
+    if live_mode:
+        wrist_overlay = live_tracking_overlay(wrist_display, live)
+    else:
+        mask, centroid = brown_candidate(wrist)
+        wrist_overlay = candidate_overlay(wrist_display, mask, centroid)
+    _paste_fit(canvas, wrist_overlay, (976, 114, 440, 248))
     _text(draw, (976, 373), "DEPTH | renderer ground truth, not learned", 16, MUTED)
     _paste_fit(canvas, range_image(depth), (976, 398, 440, 244))
     for x, side in ((24, "left"), (266, "right")):
         _tof_panel(canvas, record, side, x)
-    _text(draw, (512, 673), "MEASURED STATE", 19)
+    _text(draw, (512, 673), "LIVE TRACKER / CUT GATE" if live_mode else "MEASURED STATE", 19)
     tool = _vector(record.get("tool_position_m"))
     target = _vector(record.get("target_position_m"))
     lines = []
@@ -263,13 +348,18 @@ def compose_frame(record, overview, wrist, depth, flow, frame_count, *, task_out
             lines.append(f"Recorded contact norm: {np.linalg.norm(values):.3f} N")
     if flow is not None:
         lines.append(f"RGB flow mean: {np.linalg.norm(flow, axis=-1).mean():.2f} px/frame")
-    lines.append(f"Brown-pixel candidate: {mask.mean() * 100:.1f}% RGB area")
+    if live_mode:
+        lines = _live_state_lines(record)
+    else:
+        lines.append(f"Brown-pixel candidate: {mask.mean() * 100:.1f}% RGB area")
     for index, line in enumerate(lines):
-        _text(draw, (512, 706 + index * 28), line, 16, MUTED)
-    _text(draw, (976, 673), "COMPUTER VISION | Farneback optical flow", 16, MUTED)
+        _fit_text(draw, (512, 706 + index * 28), line, 440)
+    _text(draw, (976, 673), "OFFLINE DIAGNOSTIC | Farneback flow", 16, MUTED)
     _paste_fit(canvas, flow_image(flow, wrist_display), (976, 700, 440, 149))
     label = (
-        "Vectors x4; pixels per captured frame" if flow is not None else "Flow unavailable: first frame or no OpenCV"
+        "Vectors x4; not an input to the controller"
+        if flow is not None
+        else "Flow unavailable: first frame or no OpenCV"
     )
     _text(draw, (976, 852), label, 14, MUTED)
     draw.line((24, 883, 1416, 883), fill=(53, 72, 91))
@@ -277,7 +367,11 @@ def compose_frame(record, overview, wrist, depth, flow, frame_count, *, task_out
     _text(
         draw,
         (24, 923),
-        "Scripted motion + live ToF stop gate. CV computed offline on raw RGB. No physical wood severing.",
+        (
+            "Live RGB-D servo commands; scene-selected branch identity/axis/radius. Surrogate jaw; not wood fracture."
+            if live_mode
+            else "Scripted motion + live ToF stop gate. CV computed offline on raw RGB. No physical wood severing."
+        ),
         16,
         MUTED,
     )
@@ -297,9 +391,14 @@ def _frame_metrics(record, depth, flow, wrist):
     )
     measured["depth_finite_positive_fraction"] = float(np.mean(np.isfinite(depth) & (depth > 0)))
     measured["flow_mean_px_per_frame"] = float(np.linalg.norm(flow, axis=-1).mean()) if flow is not None else None
-    mask, centroid = brown_candidate(wrist)
-    measured["brown_candidate_fraction"] = float(mask.mean())
-    measured["brown_candidate_centroid_px"] = centroid
+    if isinstance(record.get("live_vision"), dict):
+        measured["live_vision"] = record["live_vision"]
+        measured["controller_source_frame_index"] = record.get("controller_source_frame_index")
+        measured["visual_servo_decision"] = record.get("visual_servo_decision")
+    else:
+        mask, centroid = brown_candidate(wrist)
+        measured["brown_candidate_fraction"] = float(mask.mean())
+        measured["brown_candidate_centroid_px"] = centroid
     return measured
 
 
@@ -463,14 +562,63 @@ def compose_capture(source, output_dir, *, name="isaac_workflow", fps=None, max_
                 raise RuntimeError(f"ffmpeg failed: {errors.read().decode(errors='replace')}")
         duration_s = len(records) / fps
         sampled[len(sampled) // 2].save(stage / f"{name}.png")
+        live_count = sum(isinstance(record.get("live_vision"), dict) for record in records)
+        flow_description = (
+            "Offline OpenCV Farneback diagnostic from consecutive recorded wrist RGB; not a controller input"
+            if cv2 is not None
+            else "unavailable: install opencv-python-headless"
+        )
+        channels = {
+            "overview": "Recorded Isaac RTX RGB camera",
+            "wrist_rgb": "Recorded Isaac RTX wrist camera",
+            "depth": "Recorded renderer distance_to_image_plane ground truth; not learned depth",
+            "tof": "Recorded dual 8 x 8 ray-cast range observations; missing pixels are not filled",
+            "vision": (
+                "Recorded online RGB-D tracker evidence and previous-frame visual servo decisions; "
+                "the compositor does not run the controller"
+                if live_count
+                else flow_description
+            ),
+            "offline_optical_flow": flow_description,
+        }
+        limitations = [
+            "The compositor does not determine task success; inspect source_report and numerical evidence.",
+            "Optical flow is pixels per captured frame, not 3-D velocity or a learned depth estimate.",
+            "Range color limits are fixed at 0.03 to 3.40 m; black pixels may also be beyond display range.",
+        ]
+        if live_count:
+            channels["simulated_cut"] = "Recorded gate, visual jaw closure and discrete detachment state"
+            limitations.extend(
+                [
+                    "Initial target pixel and branch identity/axis/radius come from scene metadata; "
+                    "this is not learned branch recognition.",
+                    "Live RGB-D tracking uses renderer ground-truth depth, not an estimated depth model.",
+                    "Cutting uses a jaw surrogate and discrete detachment, not actuated CAD blades or wood fracture.",
+                    "controller_source_frame_index identifies the observation used for the recorded command; "
+                    "live_vision contains the newer captured observation.",
+                ]
+            )
+        if live_count < len(records):
+            channels["brown_candidate"] = (
+                "Offline RGB color threshold and largest connected component when OpenCV is available; "
+                "only shown on frames without live tracker evidence"
+            )
+            limitations.extend(
+                [
+                    "Scripted motion and cut phase labels do not establish wood severing "
+                    "or trained policy performance.",
+                    "Brown-pixel segmentation can select the wrong object; it does not identify the target.",
+                ]
+            )
         evidence = {
-            "schema_version": 2,
+            "schema_version": 3,
             "source_directory": str(source.resolve()),
             "source_frames_sha256": digest.hexdigest(),
             "source_metadata_sha256": hashlib.sha256((source / "frames.json").read_bytes()).hexdigest(),
             "source_report": source_report,
             "task_outcome": source_report.get("task_outcome"),
             "recorded_frames": len(records),
+            "live_vision_frames": live_count,
             "distinct_overview_images": len(overview_hashes),
             "distinct_wrist_images": len(wrist_hashes),
             "simulation_elapsed_s": elapsed,
@@ -482,23 +630,8 @@ def compose_capture(source, output_dir, *, name="isaac_workflow", fps=None, max_
             },
             "gif_preview": {"status": "pending", "max_bytes": int(max_gif_mb * 1_000_000)},
             "phases": list(dict.fromkeys(record.get("phase", "unknown") for record in records)),
-            "channels": {
-                "overview": "Recorded Isaac RTX RGB camera",
-                "wrist_rgb": "Recorded Isaac RTX wrist camera",
-                "depth": "Recorded renderer distance_to_image_plane ground truth; not learned depth",
-                "tof": "Recorded dual 8 x 8 ray-cast range observations; missing pixels are not filled",
-                "vision": "OpenCV Farneback optical flow from consecutive recorded wrist RGB"
-                if cv2 is not None
-                else "unavailable: install opencv-python-headless",
-                "brown_candidate": "RGB color threshold and largest connected component when OpenCV is available",
-            },
-            "limitations": [
-                "The compositor does not determine task success; inspect source_report and numerical evidence.",
-                "Scripted motion and cut phase labels do not establish wood severing or trained policy performance.",
-                "Optical flow is pixels per captured frame, not 3-D velocity or a learned depth estimate.",
-                "Brown-pixel segmentation can select the wrong object; it does not identify the target.",
-                "Range color limits are fixed at 0.03 to 3.40 m; black pixels may also be beyond display range.",
-            ],
+            "channels": channels,
+            "limitations": limitations,
             "frames": frame_metrics,
         }
         (stage / f"{name}.json").write_text(json.dumps(evidence, indent=2, allow_nan=False) + "\n", encoding="utf-8")

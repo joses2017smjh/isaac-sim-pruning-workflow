@@ -1,6 +1,6 @@
 # SLURM job ledger
 
-Last reconciled: **2026-09-08 08:42 PDT** (`America/Los_Angeles`).
+Last reconciled: **2026-09-11 05:11 PDT** (`America/Los_Angeles`).
 
 This ledger covers jobs produced by this repository's `prune-*` submission
 scripts and the two upstream v60 probes explicitly cited by the repository
@@ -15,22 +15,35 @@ records its submission/start on 2026-08-24, which is the date used here.
 
 ## Current queue
 
-The full user queue at the timestamp above is below: four running allocations
-and no pending tasks. The detached workflow render has completed; no new
-workflow job is queued. The training allocations were left untouched. The
-earlier interactive render steps are recorded below. The current interactive
-allocation is unrelated and was left untouched.
+The full user queue at the timestamp above has one running unrelated allocation
+and one pending workflow test. Earlier snapshots below are historical, not the
+current queue. No unrelated allocation was modified.
 
 | Job | Partition | Name | State | Node or pending reason | This workflow |
 |---|---|---|---|---|---|
-| `21199345_2` | `gpu` | `grip-train` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
-| `21199345_4` | `gpu` | `grip-train` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
-| `21199345_5` | `dgxh` | `grip-train` | `RUNNING` | `dgxh-4` | Unrelated; untouched |
-| `21213644` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
+| `21247857` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
+| `21247873` | `ampere` | `prune-render` | `PENDING` | `QOSGrpGRES` — group GPU resource quota | Corrected 60-frame Blender/tracking probe |
 
 Training-job application outputs were not audited as part of this pruning
 render task. Prior queue snapshots must not be interpreted as current scheduler
 state; the September 7 snapshot had six running allocations and no pending tasks.
+
+## Blender and render-quality integration — September 9
+
+| Job | Allocation / accounting | Application evidence |
+|---|---|---|
+| `21222688` | A40 `cn-r-6`, 2m47s; `COMPLETED (0:0)` | [Quality probe](docs/evidence/render_21222688.json): 30 frames, 1280×720 overview; raw RTX images visibly cleaner with PathTracing/OptiX. Still the procedural fixture and scripted inspection. `/rtx/post/aa/op` readback changed from requested 0 to 1; other capture settings matched. Configured 64 samples is not a measured sample count. |
+| `21222710` | A40 `cn-r-6`, 5m35s; `FAILED (1:0)` | [First Blender scene](docs/evidence/render_21222710.json): 60 frames, original tree/posts/wires imported. Trellis intersects arm; wrist seed sees housing at 37.24 mm. Zero vision commands, zero detachments; `vision_stopped_failure`. Rendered images exist, but the both-ToF-live check failed. Failed clip preserved. |
+| `21224517` | A40 `cn-r-6`, 58s; `FAILED (1:0)` | [90° layout retry](docs/evidence/render_21224517.json): startup contact gate rejected 34,443.24 N before recording. No render or task pass. |
+| `21227646` | A40 `cn-r-6`, 57s; `FAILED (1:0)` | [Pose-reader failure](docs/evidence/render_21227646.json): startup contact gate passed, but NumPy physics tensors are unsupported with the GPU pipeline. No camera frames. Corrected to the Torch frontend with explicit CPU transfer for JSON. |
+| `21247873` | One A40 requested, 10-minute limit | New source spur `8235`, orchard yaw 150°, exterior camera, same-frame ToF cut veto, seed visibility check and Torch piece-pose reader. Outcome pending. |
+
+The CPU geometry screen found that rotating the original orchard 180° clears
+the starting arm posture, but a post still intersects the later approach.
+The next test selects original source spur `8235` with orchard yaw 150°.
+Colliders and the 5 N startup contact gate remain enabled. A sampled layout
+screen is not continuous-path or cutting clearance. These runs do not establish learned perception, physical
+blade actuation, or wood fracture. [Recording details](docs/ISAAC_RENDER.md).
 
 ## Repository and referenced stack jobs
 
