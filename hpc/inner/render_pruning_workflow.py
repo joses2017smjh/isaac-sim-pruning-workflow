@@ -38,6 +38,14 @@ def sensor_guard(ranges, valid, consecutive_missing, *, minimum_clearance_m=0.06
     return None, missing
 
 
+def manual_capture_interval(current_step, frame_count, physics_steps_per_frame):
+    """Put the automatic-render boundary beyond this bounded capture sequence."""
+    values = (current_step, frame_count, physics_steps_per_frame)
+    if any(type(value) is not int for value in values) or current_step < 0 or min(values[1:]) <= 0:
+        raise ValueError("Expected nonnegative current step and positive integer capture sizes")
+    return current_step + frame_count * physics_steps_per_frame + 1
+
+
 def command_tracking_error_m(tool_position_w, command_position_b, root_position_w, root_rotation_w):
     """Measure against the issued command, including a latched stop command.
 
@@ -706,6 +714,18 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         if abs(steps_per_frame * env.step_dt - 1.0 / fps) > 1.0e-8:
             raise ValueError("Capture cadence must be an integer multiple of environment dt.")
         report["capture_dt_s"] = steps_per_frame * env.step_dt
+        if quality:
+            # DirectRLEnv checks cfg.sim.render_interval at every physics step.
+            # RTX annotators here are explicitly rendered at capture cadence;
+            # the intervening render calls do not provide controller inputs.
+            # Apply after initialization so camera timing/setup is unchanged.
+            report["previous_automatic_render_interval"] = env.cfg.sim.render_interval
+            env.cfg.sim.render_interval = manual_capture_interval(
+                int(env._sim_step_counter),
+                frame_count,
+                steps_per_frame * env.cfg.decimation,
+            )
+            report["automatic_render_interval_during_capture"] = env.cfg.sim.render_interval
         capture_timeline_start = float(timeline.get_current_time())
         capture_physics_step_start = int(env.sim.get_physics_step_count())
         stopped_reason = None
@@ -758,8 +778,10 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                     )
                     action = pose_xyzw_to_wxyz(torch.cat((held_p, held_q), dim=-1)).contiguous()
                     vision_decision = {"state": "hold", "reason": stopped_reason}
+            render_generation_before_physics = env.sim.render_generation
             for _ in range(steps_per_frame):
                 env.step(action)
+            automatic_render_calls = env.sim.render_generation - render_generation_before_physics
             if demo:
                 demo.command_applied(phase, vision_decision)
             tool = env._control_tool_pose_w().detach().cpu().numpy()[0]
@@ -858,6 +880,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 "timeline_elapsed_s": float(timeline.get_current_time()) - capture_timeline_start,
                 "physics_step_count": int(env.sim.get_physics_step_count()),
                 "capture_physics_steps_advanced": capture_step_after - capture_step_before,
+                "automatic_render_calls_during_physics": automatic_render_calls,
                 "capture_timeline_advanced_s": capture_time_after - capture_time_before,
                 "physics_elapsed_s": (int(env.sim.get_physics_step_count()) - capture_physics_step_start)
                 * env.physics_dt,
@@ -983,6 +1006,11 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 else "vision_approach_incomplete"
             )
             report["vision_command_count"] = demo.vision_command_count
+        if quality:
+            report["checks"]["no_unused_intermediate_renders"] = all(
+                record["automatic_render_calls_during_physics"] == 0 for record in records
+            )
+            report["ok"] = all(report["checks"].values())
         if hasattr(env, "control_state"):
             report["final_control_state"] = env.control_state()
         if quality:

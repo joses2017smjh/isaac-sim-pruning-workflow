@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "ok": false,
+  "source_job_id": "21247873",
+  "source_task_outcome": "vision_approach_incomplete",
+  "checks": {
+    "capture_complete_and_nonblank": true,
+    "ordered_contiguous_frame_indexes": true,
+    "strictly_increasing_capture_times": true,
+    "causal_previous_frame_commands": true,
+    "one_matching_detach_event_and_request": false,
+    "detach_has_completed_certified_closure": false,
+    "detached_state_consistent_with_event": false,
+    "selected_piece_pose_evidence_complete": true,
+    "piece_stationary_before_release": false,
+    "piece_dropped_after_release": false,
+    "robot_position_evidence_complete": true,
+    "post_detach_retreat_toward_home": false,
+    "returned_home_and_final_phase_complete": false,
+    "vision_commands_applied_and_counted": true,
+    "captured_contact_within_limit": true,
+    "no_recorded_stops": true,
+    "capture_did_not_advance_physics": true
+  },
+  "failed_checks": [
+    "one_matching_detach_event_and_request",
+    "detach_has_completed_certified_closure",
+    "detached_state_consistent_with_event",
+    "piece_stationary_before_release",
+    "piece_dropped_after_release",
+    "post_detach_retreat_toward_home",
+    "returned_home_and_final_phase_complete"
+  ],
+  "thresholds": {
+    "minimum_post_detach_drop_m": 0.02,
+    "maximum_pre_detach_piece_motion_m": 0.002,
+    "minimum_home_directed_retreat_m": 0.02,
+    "maximum_final_home_error_m": 0.003,
+    "maximum_captured_contact_force_n": 5.0
+  },
+  "metrics": {
+    "recorded_frames": 60,
+    "detach_event_frame_indexes": [],
+    "detachment_request_frame_indexes": [],
+    "applied_vision_command_frames": 60,
+    "reported_vision_command_count": 60.0,
+    "maximum_captured_contact_force_n": 0.0,
+    "recorded_stops": [],
+    "maximum_pre_detach_piece_motion_m": null,
+    "maximum_post_detach_drop_m": null,
+    "final_home_error_m": 0.23235035020743913,
+    "post_detach_home_distance_reduction_m": null,
+    "post_detach_home_direction_displacement_m": null,
+    "post_detach_retreat_frames": 0
+  },
+  "evidence_scope": "Independent grading of recorded JSON at capture rate; camera completeness/nonblankness is taken from the renderer report, not remeasured from images. PhysX piece poses and robot positions are recorded measurements. This does not certify continuous/subframe contact safety, individual ToF sensor availability, material fracture, learned recognition, or an actuated blade."
+}

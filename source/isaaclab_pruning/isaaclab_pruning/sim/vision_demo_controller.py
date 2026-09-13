@@ -45,7 +45,10 @@ class VisionPruningDemo:
         self.mouth_offset = (0.0, 0.0, 0.070)
         self.closing_axis_tool = tuple(closing_axis_tool)
         tool_mouth_geometry(self.home, self.mouth_offset, self.closing_axis_tool)
-        self.tracker = VisualServoTracker(VisualServoConfig(depth_radius_px=1))
+        # Retain more initial same-depth texture corners on the thin Blender
+        # spur. All subsequent inlier, appearance, depth and stop gates remain
+        # unchanged; this does not replenish features or reinitialize a loss.
+        self.tracker = VisualServoTracker(VisualServoConfig(depth_radius_px=1, feature_quality_level=0.005))
         self.cutter = SimulatedCutController(
             CutConfig(
                 selected_target_id=self.target_id,

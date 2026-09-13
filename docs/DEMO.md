@@ -1,8 +1,10 @@
 # Show the pruning demos
 
-Start with the [actual Isaac robot recording](ISAAC_RENDER.md): **14 seconds**
-of approach, inspection, and retreat with RTX cameras and live ToF. Pause at
-7 seconds to explain its sensor dashboard. That recording requires a GPU stack
+Start with the [actual Blender-orchard Isaac recording](ISAAC_RENDER.md):
+**six seconds** of online RGB-D approach with the original UR5e, textured
+tree, RTX cameras and live dual ToF. Pause at three seconds for its dashboard.
+It ends before closure or release; the older **14-second** procedural inspection
+shows a scripted approach and retreat. These recordings require a GPU stack
 and generated robot USD; the four-command quickstart below is the separate
 portable CPU demo.
 

@@ -1,12 +1,27 @@
 # HPC bring-up
 
-Current result: job `21208215` passed the short environment smoke and recorded
+Current result: job `21247873` completed on A40 `cn-s-2` in 5m40s with
+60 frames of online RGB-D approach in the original textured Blender orchard.
+It applied 60 vision commands and moved 230.08 mm; closure, release and retreat
+were not reached in the six-second capture. All ten recording checks passed.
+The [actual GIF and evidence](ISAAC_RENDER.md) distinguish this approach result
+from the full sequence. Retry `21300015` was cancelled after 10m53s on `cn-gpu7`
+following tracking loss at frame index 54 (5.5 seconds): three round-trip
+inliers remained, below the unchanged minimum four. The controller latched
+`vision_invalid`; no closure or detachment occurred. Its 71 partial frames and
+incomplete report remain preserved. CPU diagnosis is underway; no further GPU
+retry is submitted at this checkpoint. Earlier `21298152` was cancelled for
+capture throughput; `21300015` skipped unused intermediate RTX renders without
+changing physics steps or manual camera quality. Cut/drop/home-return validation
+remains pending. See the [current job ledger](../SLURM_JOBS.md).
+
+Earlier job `21208215` passed the short environment smoke and recorded
 140 RTX frames on `cn-gpu6` on 2026-09-07. The original UR5e and mock pruner
 approach a procedural tree, inspect at standoff, and retreat while both ToF
 grids update. See the [video and reproduction guide](ISAAC_RENDER.md),
 [smoke evidence](evidence/smoke_21208215.json), and
 [render evidence](evidence/render_21208215.json). This is not a trained policy
-or a cutting demonstration. No additional GPU job is needed to obtain this video.
+or a cutting demonstration. Its inspection video remains available.
 
 Inventory queried from Slurm on 2026-08-27, with the Isaac stack fact from
 Jose's BHL work (job `21036831`, 2026-08-26, `cn-r-1` A40, driver 595.71.05):
@@ -73,8 +88,9 @@ Range validity is gated to 0.03--3.4 m. CPU tests cover the configuration and
 the deterministic, non-colliding smoke wall. Job `21208215` passed the runtime
 check: both grids returned 64/64 finite wall ranges and changed after a commanded
 5 mm optical-axis motion. Flow and metric-student policy buffers remain explicit
-placeholders; the video's optical flow and brown-pixel candidate overlay are
-computed offline from recorded wrist RGB, not supplied to the controller.
+placeholders. Farneback flow and brown-pixel overlays are offline diagnostics.
+The separate Blender demonstration now supplies online seeded LK tracking and
+RTX-depth backprojection to the motion controller; it is not a trained policy.
 
 ## Batched env smoke (passed on the bench-mounted fixture)
 

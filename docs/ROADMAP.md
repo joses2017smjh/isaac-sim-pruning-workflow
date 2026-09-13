@@ -4,9 +4,15 @@ This turns the research plan into falsifiable gates. A checked item means code
 and evidence exist in this repository; it does not mean the entire phase is
 complete.
 
-Latest demonstrated milestone: job `21208215` completed a **14-second Isaac
-inspection** and a separate short motion/ToF smoke. The original UR5e works;
-the clip does not cut wood or run a learned vision policy. See the
+Latest demonstrated milestone: job `21247873` captured a **six-second live
+RGB-D visual approach in the original Blender orchard**. Its 60 applied
+vision commands moved the tool 230.08 mm; the run ended 35.01 mm from the
+tracked target at the mouth, before closure. All ten recording checks passed,
+but the outcome is `vision_approach_incomplete`. The original six-joint UR5e,
+mock-pruner asset, and reviewed ToF offsets remain unchanged. Full-duration
+retry `21300015` lost tracking at 5.5 seconds and was cancelled after 10m53s
+on `cn-gpu7`, with partial evidence preserved. CPU diagnosis is underway;
+no further retry is submitted at this checkpoint. Cutting remains unvalidated. See the
 [recording and evidence](ISAAC_RENDER.md).
 
 ## Phase 0 — contracts and compute
@@ -44,6 +50,11 @@ median < 2 mm).
 - [x] Render a procedural finite-cylinder tree fixture and backdrop beside the
       original UR5e in Isaac (`21208215`). This demonstration scene is authored
       in USD; it is not a Blender PLY import or a held-out orchard evaluation.
+- [x] Export the original `orchard_template.blend` meshes, UVs, six bark/soil
+      maps, posts, wires, and Sun through USD; render them beside the original
+      robot in job `21247873`. This is not a PLY import. Source/export hashes
+      and presentation overrides are recorded; procedural sky, displacement,
+      and ground-collision parity with Blender are not established.
 
 Why cylinders, not capsules: the Blender generator uses finite cylinders.
 Capsules change each end by a radius and cannot pass a millimetre depth check.
@@ -152,8 +163,10 @@ Hard gate: do not report a learned policy without scripted and oracle baselines.
       policies or batched throughput evidence; `skrl` was unavailable in that run.
 - [ ] Close all live policy observation feeds. Dual ToF has passing GPU
       evidence; flow is still zero and metric-student depth is constant in the
-      training environment. The video's Farneback flow and color segmentation
-      run offline on recorded RGB; RTX depth is simulator ground truth.
+      training environment. The separate Blender demo now uses live classical
+      RGB-D tracking for control, but does not close these training feeds.
+      Farneback flow remains an offline diagnostic; RTX depth is simulator
+      ground truth, not a learned metric-student prediction.
 - [ ] Validate the actual PPO trainer/dependency integration. The successful
       environment smoke does not make `tools/train.py` a training runner.
 - [ ] Evaluate a native Lab 3 port before adding further compatibility shims.
@@ -202,6 +215,45 @@ a live ToF stop gate; it is not driven by the CV overlays. ToF noise is disabled
 and the stop gate is a diagnostic guard, not a validated hardware safety system.
 This milestone closes the requested robot/environment/sensor visualization,
 not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.md).
+
+## Blender/live-vision demo — approach recorded, cut validation pending
+
+- [x] Load the original textured orchard and select an existing spur component
+      without editing the source `.blend` or substituting the robot.
+- [x] Capture overview, close-up, wrist RGB, optical-Z depth, dual live ToF,
+      measured PhysX robot state, and contact data with path tracing and OptiX
+      denoising. No compositor median filter is applied to this recording.
+- [x] Seed a branch pixel once and issue bounded Cartesian commands from fresh
+      pyramidal-LK RGB-D measurements. Job `21247873` applied 60 vision commands;
+      final tracking retained four features at confidence 0.9894.
+- [x] Separate proposed from physically applied commands, hold on invalid
+      tracking, and test fresh ToF/contact guards before detachment. The
+      earlier contact and occlusion failures remain preserved, not relabelled.
+- [x] Implement a visual jaw surrogate and discrete rigid-piece release with
+      fresh-vision, geometry, stability, and hazard gates; cover the logic with
+      CPU tests. This is not actuated blade CAD or simulated material fracture.
+- [x] Record all 60 requested frames with ten capture checks passing. The
+      six-second recording shows a 230.08 mm maximum tool displacement and
+      final 35.01 mm mouth-to-tracked-target distance. Both ToF streams changed;
+      valid-ray fractions were 33.54% / 33.28%, with noise disabled.
+- [ ] Complete and validate an uninterrupted vision approach, surrogate closure,
+      measured selected-piece drop, and retreat. Job `21247873` ended before
+      closure, with no detachment or retreat. Full-duration job `21298152` was
+      cancelled after 6m05s because RTX 8000 capture throughput could not meet
+      its 25-minute budget; partial files remain preserved. Retry `21300015`
+      lost tracking at index 54 (5.5 seconds): only three round-trip inliers
+      remained, below the unchanged minimum four. It latched `vision_invalid`,
+      without closure or release, and was cancelled after 10m53s. The 71-frame
+      partial capture and incomplete report are preserved. CPU diagnosis
+      precedes the next retry; the full sequence remains unvalidated.
+- [ ] Evaluate more branch placements and failure cases before reporting a
+      task-success rate or collision-avoidance claim.
+
+The recorded outcome is `vision_approach_incomplete`. Known mesh metadata
+provides branch identity, axis, and radius; classical image tracking supplies
+position updates. This demonstration does not implement learned recognition,
+learned depth, PPO training, CuRobo execution, calibrated physical cameras,
+blade mechanics, or wood fracture. Those remain separate gates above.
 
 ## Phase 5 — evaluation
 

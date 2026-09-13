@@ -1,34 +1,34 @@
 # Robotic pruning
 
-Simulate a UR5e inspecting branches with wrist vision and dual-ToF sensing in Isaac Sim.
+Simulate vision-guided UR5e approach in a textured Blender orchard with dual-ToF sensing.
 
-[![Isaac Sim: robot approach, wrist RGB, depth, ToF and measured motion](docs/demo/isaac_workflow.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-inspection-2026-09-07/isaac_workflow.mp4)
+[![Isaac Sim: Blender orchard, live RGB-D approach, dual ToF and measured motion](docs/demo/isaac_blender_live_approach.gif)](docs/demo/isaac_blender_live_approach.png)
 
-[Watch the 14-second video](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-inspection-2026-09-07/isaac_workflow.mp4)
-· [Full-size dashboard](docs/demo/isaac_workflow.png)
-· [Failed run and reproduction](docs/ISAAC_RENDER.md)
+[Full-size dashboard](docs/demo/isaac_blender_live_approach.png)
+· [Recorded evidence](docs/evidence/render_21247873.json)
+· [Failures and reproduction](docs/ISAAC_RENDER.md)
 
-Actual Isaac/PhysX motion: observe → approach → align → inspect → retreat.
-The dashboard shows RTX wrist RGB and depth, two live 8×8 ToF grids, joint/tool
-state, and offline optical flow and color segmentation. Motion uses known
-geometry with a ToF stop gate—not a vision policy. **No wood is cut.**
-The GIF samples the full recording; the MP4 keeps all 140 frames at 10 fps.
-Show one 14-second loop, then pause at 7 seconds to explain the sensor panels.
-The tree in this published inspection is a procedural USD fixture.
+Actual Isaac/PhysX motion in the original textured orchard: **60 applied
+vision commands, 230.08 mm tool displacement, six seconds recorded**. The
+original UR5e and mock pruner use wrist RGB-D tracking and a live ToF guard.
+The dashboard shows tracked image features, simulator depth, two 8×8 ToF
+grids, measured tool state, and the cut gate. Farneback flow is a separate
+offline diagnostic, not a controller input.
 
-New integration checkpoints:
+The run ends with the tool mouth **35.01 mm from the tracked target**.
+Its outcome is `vision_approach_incomplete`: no closure, detachment, or retreat.
+Show one six-second loop, then pause at three seconds to explain the sensors.
+The [capture guide](docs/ISAAC_RENDER.md) records all cameras and telemetry;
+the MP4 preserves all 60 frames at 10 fps.
 
-| Recording | What it demonstrates |
-|---|---|
-| [3-second path-traced quality probe](docs/demo/isaac_quality_probe_unfiltered.gif) | Smoother RTX rendering of the procedural scene; OptiX denoising, no compositor filter; no cut |
-| [6-second original Blender scene: stopped failure](docs/demo/isaac_textured_scene_failed_vision.gif) | Original meshes, bark/soil image maps, posts and wires load; contact and tool occlusion prevent vision-driven approach |
+Earlier recordings: [14-second procedural inspection and retreat](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-inspection-2026-09-07/isaac_workflow.mp4)
+· [Occluded-target failure](docs/demo/isaac_textured_scene_failed_vision.gif)
+· [Path-traced quality probe](docs/demo/isaac_quality_probe_unfiltered.gif).
 
 The Blender path exports the existing `.blend` scene to USD with UVs and image
-textures; it does not import `.ply` files. Its classical LK tracker uses live
-RGB and measured RTX depth to supply the next bounded control command. The first
-recording issued zero vision-driven approach commands and never closed or
-detached a branch. Revised placement and target component `8235` at 150° yaw
-still await a passing GPU recording. [Evidence, limitations and reproduction](docs/ISAAC_RENDER.md).
+textures; it does not import `.ply` files. Branch identity, axis, radius, and
+the initial target pixel come from scene metadata. Tracking supplies subsequent
+position updates; this is classical vision, not learned recognition or depth.
 
 ## Quickstart
 
@@ -54,21 +54,22 @@ robot USD. CI tests the CPU path, not the GPU installation.
 
 ## Architecture
 
-Published inspection:
+Recorded Blender/live-vision path:
 
 ```mermaid
 flowchart LR
-    G[Robot USD + procedural tree] --> P[Isaac / PhysX]
+    G[Robot USD + Blender orchard USD] --> P[Isaac / PhysX]
+    P --> R[RTX wrist RGB + optical-Z depth]
+    R --> V[Seeded LK tracking + 3D backprojection]
+    V --> S[Fresh-vision + ToF/contact gates]
     P --> T[Dual 8x8 ToF]
-    T --> S[Range stop gate]
-    K[Known-geometry trajectory] --> S
+    T --> S
+    P --> J[Joint / tool / contact state]
+    J --> S
     S --> I[Bounded differential IK + joint drives]
     I --> P
-    P --> R[RTX RGB + depth]
-    P --> J[Joint / tool / contact state]
-    R --> C[Offline flow + color segmentation]
     R --> D[Recorded dashboard + JSON]
-    C --> D
+    V --> D
     T --> D
     J --> D
 ```
@@ -79,7 +80,7 @@ flowchart LR
 The [CPU demo](source/isaaclab_pruning/isaaclab_pruning/demo) instead uses
 analytic finite-cylinder ray casts and ideal tool motion.
 
-Experimental Blender mode connects consecutive RTX RGB/depth observations to a
+The Blender mode connects consecutive RTX RGB/depth observations to a
 [seeded LK tracker](source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py)
 and [causal controller](source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py).
 Only the initial pixel and branch identity/axis/radius come from scene metadata;
@@ -91,8 +92,10 @@ actuated CAD blades, cutting forces, or wood fracture.
 
 | Check | Measured result | Scope |
 |---|---|---|
+| [Blender/live RGB-D approach](docs/evidence/render_21247873.json) | 60 applied vision commands; 230.08 mm displacement; final tracked-mouth distance 35.01 mm | 60 frames / 6 seconds; all ten capture checks pass; no closure, detachment, or retreat |
+| Blender dual-ToF coverage | 33.54% / 33.28% valid rays; both streams changed | Noise disabled; misses stay missing |
 | [Isaac inspection](docs/evidence/render_21208215.json) | 247.37 mm displacement; 96.07 mm closest standoff; 1.65 mm return error | One scripted 14-second episode; no cut |
-| Dual-ToF coverage | 40.01% / 42.31% valid rays; median-range spans 384.84 / 321.47 mm | Moving tree view, noise disabled; misses stay missing |
+| Inspection dual-ToF coverage | 40.01% / 42.31% valid rays; median-range spans 384.84 / 321.47 mm | Moving procedural tree view; noise disabled |
 | [Tool control smoke](docs/evidence/smoke_21208215.json) | 0 mm hold drift at recorded precision; 0.360 mm final error for a 5 mm command | Six-step hold, elevated mount; 20 contact bodies instrumented |
 | [Earlier control failure](docs/evidence/smoke_21201622.json) | 20.12 mm hold drift; mock pruner pressed against floor at roughly 180 N | Original floor-level fixture; failed the unchanged 5 mm limit |
 | [Earlier rendered approach](docs/evidence/render_21201622.json) | 140 frames captured, but approach failed | Rendering passed; task did not |
@@ -101,25 +104,35 @@ actuated CAD blades, cutting forces, or wood fracture.
 | CPU clear approach, seed 7 | Geometry accepted after 42 frames; 0.65° angle error | Ideal tool motion, not physical cutting |
 | CPU sensor blackout / nearby wood | Stopped at 20 frames / rejected at 35 frames | Failure scenarios |
 | CPU range fusion | Nominal RMSE 6.08 → 5.49 mm; blackout 8.15 → 9.57 mm | Synthetic metric estimates; blackout coverage differs |
-| CPU test suite | 364 passed; 1 simulator test deselected | Local Python 3.12 with generated assets; GPU integration is a separate gate |
+| CPU test suite | 436 passed; 1 simulator test deselected | Local Python 3.12 with generated assets; includes independent full-sequence grading; GPU integration is a separate gate |
+| GitHub CI, commit `a149a42` | 356 passed; 8 skipped; 1 deselected | Clean runner without the external GPU/runtime assets |
 
 Evidence preserves failed runs, source hashes, runtime versions, and sensor
-misses. The successful inspection reports no contact; coverage alone does not
-prove collision avoidance. Raw RTX images retain rendering noise; the published
-RGB display uses a labelled 3×3 median filter, with CV and metrics computed on
-the unmodified capture. [HPC ledger](SLURM_JOBS.md).
+misses. Contact instrumentation and one no-contact episode do not prove
+collision avoidance. The Blender recording uses RTX path tracing and OptiX
+denoising, without a compositor median filter. The older procedural recording
+uses a labelled display-only filter. [HPC ledger](SLURM_JOBS.md).
 
 The Blender ground retains visual relief over a flat ground collider. Material
 conversion and recorded lighting/UV overrides do not reproduce Cycles exactly.
-Still unfinished: a passing Blender/live-vision approach and gated release,
-learned recognition/depth, CuRobo execution, PPO training, physical camera
-calibration, blade actuation, and wood severing.
+Full-duration retry `21300015` lost tracking at 5.5 seconds: three image features
+passed the round-trip check, below the unchanged minimum four. The controller
+latched a stop, without closure or release. The job was cancelled after 10m53s;
+71 partial frames and its incomplete report remain preserved. Earlier retry
+`21298152` was cancelled for capture throughput. CPU diagnosis is underway;
+no further GPU retry has been submitted at this checkpoint.
+
+Remaining demo gate: complete approach, gated surrogate release, measured piece
+drop, and retreat. Separate research work: learned recognition/depth, CuRobo
+execution, PPO training, physical camera calibration, actuated blade CAD, and
+wood-fracture mechanics. The current jaw is a visual surrogate, not a cutting tool.
 [Implementation gates](docs/ROADMAP.md) · [Reviewer gaps](docs/REVIEWER_NOTES.md).
 
 ## Stack
 
 - Python, PyTorch, NumPy, PyYAML
 - Isaac Sim 6.0.0.1, Isaac Lab 3.0.0b2, USD, Warp, PhysX
+- Blender 4.2.19 LTS, UsdPreviewSurface
 - OpenCV, Pillow, Matplotlib, ffmpeg
 - Slurm, Apptainer, pytest, Ruff, GitHub Actions
 

@@ -63,6 +63,18 @@ def test_exterior_wrist_mount_is_fixed_and_looks_toward_initial_fixture():
     assert 0 < pixels[0] < 480 and 0 < pixels[1] < 320
 
 
+def test_manual_render_boundary_excludes_every_physical_capture_step():
+    interval = _runner().manual_capture_interval(240, 200, 12)
+    assert interval == 2641
+    assert not any(step % interval == 0 for step in range(241, 2641))
+
+
+@pytest.mark.parametrize("values", [(0, 0, 12), (-1, 200, 12), (0, 200, 0), (0, 2.5, 12)])
+def test_manual_render_boundary_requires_bounded_integer_counts(values):
+    with pytest.raises(ValueError):
+        _runner().manual_capture_interval(*values)
+
+
 @pytest.mark.parametrize("direction", [[0, 0, 0], [0, np.inf, 1], [0, 1, 0], [1, 0]])
 def test_camera_mount_rejects_degenerate_directions(direction):
     with pytest.raises(ValueError):

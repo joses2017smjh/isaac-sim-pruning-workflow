@@ -21,6 +21,7 @@ class VisualServoConfig:
     roi_half_size_px: tuple[int, int] = (14, 24)
     max_features: int = 80
     min_features: int = 4
+    feature_quality_level: float = 0.02
     max_roundtrip_error_px: float = 1.0
     max_lk_error: float = 40.0
     max_flow_residual_px: float = 3.0
@@ -35,6 +36,13 @@ class VisualServoConfig:
     max_world_jump_m: float = 0.06
 
     def __post_init__(self):
+        if (
+            isinstance(self.feature_quality_level, (bool, np.bool_))
+            or not isinstance(self.feature_quality_level, (int, float, np.integer, np.floating))
+            or not np.isfinite(self.feature_quality_level)
+            or not 0 < self.feature_quality_level <= 1
+        ):
+            raise ValueError("feature_quality_level must be finite and in (0, 1], not bool")
         if self.min_features < 3 or self.max_features < self.min_features:
             raise ValueError("Require 3 <= min_features <= max_features")
         if len(self.roi_half_size_px) != 2 or min(self.roi_half_size_px) < 3:
@@ -194,6 +202,12 @@ class VisualServoTracker:
             "feature_pixels_xy": [] if self._points is None else self._points.reshape(-1, 2).astype(float).tolist(),
             "feature_count": 0 if self._points is None else len(self._points),
             "initial_feature_count": self._initial_count,
+            "initial_feature_config": {
+                "quality_level": float(self.config.feature_quality_level),
+                "min_distance_px": 3,
+                "block_size_px": 3,
+                "roi_half_size_px": list(self.config.roi_half_size_px),
+            },
             "confidence": 0.0,
             "frame_index": self._frame_index,
             "requires_reinitialize": self._lost,
@@ -262,7 +276,12 @@ class VisualServoTracker:
             )
             mask[~same_surface] = 0
         self._points = cv2.goodFeaturesToTrack(
-            gray, maxCorners=self.config.max_features, qualityLevel=0.02, minDistance=3, mask=mask, blockSize=3
+            gray,
+            maxCorners=self.config.max_features,
+            qualityLevel=self.config.feature_quality_level,
+            minDistance=3,
+            mask=mask,
+            blockSize=3,
         )
         self._initial_count = 0 if self._points is None else len(self._points)
         if self._initial_count < self.config.min_features:

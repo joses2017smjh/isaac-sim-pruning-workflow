@@ -1,6 +1,6 @@
 # SLURM job ledger
 
-Last reconciled: **2026-09-11 05:11 PDT** (`America/Los_Angeles`).
+Last reconciled: **2026-09-13 11:59 PDT** (`America/Los_Angeles`).
 
 This ledger covers jobs produced by this repository's `prune-*` submission
 scripts and the two upstream v60 probes explicitly cited by the repository
@@ -16,19 +16,23 @@ records its submission/start on 2026-08-24, which is the date used here.
 ## Current queue
 
 The full user queue at the timestamp above has one running unrelated allocation
-and one pending workflow test. Earlier snapshots below are historical, not the
+and no active workflow job. Earlier snapshots below are historical, not the
 current queue. No unrelated allocation was modified.
 
 | Job | Partition | Name | State | Node or pending reason | This workflow |
 |---|---|---|---|---|---|
-| `21247857` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu6` | Unrelated; untouched |
-| `21247873` | `ampere` | `prune-render` | `PENDING` | `QOSGrpGRES` — group GPU resource quota | Corrected 60-frame Blender/tracking probe |
+| `21297989` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
+
+All eight `prune-*` allocations overlapping September 7–13 were reconciled
+against accounting; none were omitted. The previously listed unrelated
+`21247857` ended `TIMEOUT (0:0)` after 6h00m13s on `cn-gpu6` at September 11,
+11:03:18 PDT. Its application outputs were not inspected.
 
 Training-job application outputs were not audited as part of this pruning
 render task. Prior queue snapshots must not be interpreted as current scheduler
 state; the September 7 snapshot had six running allocations and no pending tasks.
 
-## Blender and render-quality integration — September 9
+## Blender and render-quality integration — September 9–13
 
 | Job | Allocation / accounting | Application evidence |
 |---|---|---|
@@ -36,11 +40,14 @@ state; the September 7 snapshot had six running allocations and no pending tasks
 | `21222710` | A40 `cn-r-6`, 5m35s; `FAILED (1:0)` | [First Blender scene](docs/evidence/render_21222710.json): 60 frames, original tree/posts/wires imported. Trellis intersects arm; wrist seed sees housing at 37.24 mm. Zero vision commands, zero detachments; `vision_stopped_failure`. Rendered images exist, but the both-ToF-live check failed. Failed clip preserved. |
 | `21224517` | A40 `cn-r-6`, 58s; `FAILED (1:0)` | [90° layout retry](docs/evidence/render_21224517.json): startup contact gate rejected 34,443.24 N before recording. No render or task pass. |
 | `21227646` | A40 `cn-r-6`, 57s; `FAILED (1:0)` | [Pose-reader failure](docs/evidence/render_21227646.json): startup contact gate passed, but NumPy physics tensors are unsupported with the GPU pipeline. No camera frames. Corrected to the Torch frontend with explicit CPU transfer for JSON. |
-| `21247873` | One A40 requested, 10-minute limit | New source spur `8235`, orchard yaw 150°, exterior camera, same-frame ToF cut veto, seed visibility check and Torch piece-pose reader. Outcome pending. |
+| `21247873` | A40 `cn-s-2`, 5m40s; `COMPLETED (0:0)` | [Live approach](docs/evidence/render_21247873.json): 60 frames / 6 seconds, all ten capture checks pass. 60 physically applied vision commands, 230.08 mm displacement, final tracked-mouth distance 35.01 mm. No recorded stop or contact, but no closure, detachment, or retreat: `vision_approach_incomplete`. [Actual GIF](docs/demo/isaac_blender_live_approach.gif). |
+| `21298152` | RTX 8000 `cn-gpu7`, 6m05s; `CANCELLED by 19646` | Deliberately cancelled after measured throughput projected beyond the 25-minute allocation. 35 camera frames and a 31-record checkpoint remain locally. No final capture/task pass. |
+| `21300015` | RTX 8000 `cn-gpu7`, 10m53s; `CANCELLED by 19646` | **Task stopped; recording partial.** At frame index 54 (5.5 simulated seconds), three LK roundtrip inliers remained, below the unchanged four-feature gate. 55 vision commands were applied, then motion held; no closure or detachment. Cancelled after the latched stop to avoid further held-frame rendering. 76 wrist PNGs and a 71-record checkpoint remain local. [Partial report](docs/evidence/render_partial_21300015.json) remains `stage: record`, `ok: false`, `task_outcome: not_started`; frame telemetry establishes the stop, not that unfinished label. |
 
 The CPU geometry screen found that rotating the original orchard 180° clears
 the starting arm posture, but a post still intersects the later approach.
-The next test selects original source spur `8235` with orchard yaw 150°.
+Job `21247873` selected original source spur `8235` with orchard yaw 150° and
+recorded a live vision-driven approach. The longer test uses that same layout.
 Colliders and the 5 N startup contact gate remain enabled. A sampled layout
 screen is not continuous-path or cutting clearance. These runs do not establish learned perception, physical
 blade actuation, or wood fracture. [Recording details](docs/ISAAC_RENDER.md).
@@ -110,8 +117,10 @@ Asset ID:
 ## Next jobs and dependencies
 
 Orders are released on application evidence, not merely Slurm state. The
-corrected smoke and requested inspection rendering have passed. No additional
-render retry is needed. The baseline and training remain unsubmitted: the
+corrected smoke, inspection rendering, and six-second live vision approach
+have passed their respective recording gates. Job `21300015` exposed loss of
+one of only four seeded tracking features before closure. CPU replay is testing
+initial feature coverage before another full-duration submission. The baseline and training remain unsubmitted: the
 inspection clip is not a scripted-ToF success-rate evaluation, CuRobo planning
 run, or PPO rollout.
 
@@ -122,6 +131,8 @@ run, or PPO rollout.
 | 3 | Scripted/CuRobo baseline smoke via [`hpc/slurm/baselines.sbatch`](hpc/slurm/baselines.sbatch) | **Not submitted.** The previous environment blocker is cleared for the raised fixture. Baseline execution still needs a matching collision-free fixture and actual planner implementation; the current CuRobo path reports readiness only. | `docs/evidence/baselines_<jobid>.json` with `ok: true`, scripted-ToF success and finite contact; record CuRobo availability honestly |
 | 4 | 30 cm camera rectangle via [`hpc/slurm/camera_rect.sbatch`](hpc/slurm/camera_rect.sbatch) | **Not submitted.** A simulation-defined wrist camera now renders. Its fixed exterior mount/toe-in is not a calibrated physical camera; the 30 cm geometric depth check remains separate. | `docs/evidence/camera_rect_<jobid>.json` with `ok: true` and median depth within 5 mm of 0.30 m |
 | 5 | Robot/environment/sensor inspection render via [`hpc/slurm/render_pruning_workflow.sbatch`](hpc/slurm/render_pruning_workflow.sbatch) | **Complete: `21208215`.** Pinned stack, 140 frames, independent capture validation, and measured approach/retreat. No replacement robot was needed. | [Render report](docs/evidence/render_21208215.json) and [preflight](docs/evidence/render_preflight_21208215.json) |
+| 6 | Original Blender orchard with online RGB-D approach | **Approach demonstrated: `21247873`.** Original textures/meshes, seed visibility gate, causal visual tracking, 60 applied commands, live ToF and measured motion. | [Render report](docs/evidence/render_21247873.json), [preflight](docs/evidence/render_preflight_21247873.json), [GIF](docs/demo/isaac_blender_live_approach.gif) |
+| 7 | Full vision → surrogate release → piece fall → home return | **Incomplete.** `21300015` stopped on tracking loss and was cancelled; diagnose initial feature coverage with CPU replay before retrying. | Independent [`validate_vision_sequence.py`](tools/validate_vision_sequence.py): one gated release, post-event measured fall, home-directed retreat, final home error ≤3 mm, no recorded stop, captured contact ≤5 N |
 
 PPO A-D × five seeds remains downstream of successful orders 1–3 and is not
 queued. There is no training submission script in `hpc/slurm/` to list as a

@@ -14,6 +14,19 @@ POSE = np.array([1.0, 2.0, 3.0, 1.0, 0.0, 0.0, 0.0])
 MOUTH = np.array([1.0, 2.0, 3.07])
 
 
+def test_demo_uses_more_initial_corners_without_relaxing_tracking_gates():
+    controller = VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE)
+    config = controller.tracker.config
+    assert config.feature_quality_level == 0.005
+    assert config.roi_half_size_px == (14, 24)
+    assert config.min_features == 4
+    assert config.max_roundtrip_error_px == 1.0
+    assert config.max_flow_residual_px == 3.0
+    assert config.min_patch_correlation == 0.35
+    assert config.max_depth_spread_m == 0.025
+    assert config.depth_radius_px == 1
+
+
 def tracking(target):
     return {"state": "tracking", "target_position_world_m": list(target), "confidence": 1.0}
 

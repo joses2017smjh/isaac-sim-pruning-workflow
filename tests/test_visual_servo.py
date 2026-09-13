@@ -29,6 +29,47 @@ K = np.array([[160.0, 0, 120], [0, 160.0, 80], [0, 0, 1]])
 WORLD_FROM_OPTICAL = np.eye(4)
 
 
+@pytest.mark.parametrize(
+    "quality", [0, -0.1, 1.001, np.nan, np.inf, -np.inf, True, False, np.bool_(True), None, "0.005"]
+)
+def test_feature_quality_level_rejects_invalid_or_boolean_values(quality):
+    with pytest.raises(ValueError, match="feature_quality_level"):
+        VisualServoConfig(feature_quality_level=quality)
+
+
+@pytest.mark.parametrize("quality", [0.005, 0.02, 1.0])
+def test_initializer_passes_configured_corner_quality_and_records_provenance(monkeypatch, quality):
+    original = cv2.goodFeaturesToTrack
+    calls = []
+
+    def measured_call(*args, **kwargs):
+        calls.append(kwargs.copy())
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(cv2, "goodFeaturesToTrack", measured_call)
+    tracker = VisualServoTracker(VisualServoConfig(feature_quality_level=quality))
+    image, depth = _scene()
+    initialized = tracker.initialize(image, [120, 80], depth)
+    assert len(calls) == 1
+    assert calls[0]["qualityLevel"] == quality
+    assert calls[0]["minDistance"] == 3
+    assert calls[0]["blockSize"] == 3
+    assert calls[0]["mask"].shape == depth.shape
+    assert initialized["initial_feature_config"] == {
+        "quality_level": quality,
+        "min_distance_px": 3,
+        "block_size_px": 3,
+        "roi_half_size_px": [14, 24],
+    }
+    assert tracker.config.min_features == 4
+    assert tracker.config.max_roundtrip_error_px == 1.0
+    json.dumps(initialized, allow_nan=False)
+
+
+def test_default_initializer_quality_remains_unchanged():
+    assert VisualServoConfig().feature_quality_level == 0.02
+
+
 def _tracker():
     image, depth = _scene()
     tracker = VisualServoTracker()

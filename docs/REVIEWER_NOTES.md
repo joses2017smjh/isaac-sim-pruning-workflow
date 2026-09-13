@@ -1,10 +1,12 @@
 # Reviewer audit and remaining work
 
 Reviewed source, tests, configuration, package metadata, CI, and tracked
-evidence through the September 7 Isaac capture. The repository now contains
-a [14-second Isaac robot inspection](ISAAC_RENDER.md) and a runnable CPU
-pruning demo. It does not contain a completed autonomous pruning system or
-learned policy.
+evidence through the September 13 review. The repository now contains a
+[six-second Blender-orchard visual approach](ISAAC_RENDER.md), the earlier
+14-second Isaac robot inspection, and a runnable CPU pruning demo. Job
+`21247873` applied 60 live RGB-D vision commands and moved the tool 230.08 mm.
+It ended before closure: `vision_approach_incomplete`, not a completed pruning
+task. There is no learned policy or completed autonomous pruning system.
 
 ## What a reviewer will notice
 
@@ -17,9 +19,11 @@ learned policy.
 - **The training task is incomplete.** It still uses a fixed smoke target.
   Live tree-oracle selection, reset-time target assignment, and nearby-wood
   tensors are not integrated. The CPU demo executes these geometry checks on
-  its procedural scene. The Isaac inspection renderer uses a separate procedural
-  finite-cylinder USD fixture and known target; it does not render a Blender
-  PLY tree or evaluate the converted Envy/UFO orchard assets.
+  its procedural scene. The original Isaac inspection used a procedural
+  finite-cylinder fixture; the newer renderer imports the original orchard
+  `.blend` meshes, UVs, bark/soil maps, posts, and wires through USD. Neither
+  path loads PLY files or evaluates held-out Envy/UFO orchard assets. The
+  Blender demo selects one known spur from mesh metadata, not a learned detector.
 - **Short motion/ToF smoke passes; broader validation is missing.** Job
   `21208215` passes the unchanged 5 mm hold gate on a raised fixture, records
   0.360 mm final error after a 5 mm command, and instruments all 20 rigid bodies.
@@ -28,14 +32,26 @@ learned policy.
   hold failure and approximately 180 N floor contact remain in the evidence.
 - **Live policy perception feeds are incomplete.** Flow is zero and metric
   depth is constant in the training environment. The recording has real RTX
-  wrist RGB and simulator depth, but its Farneback flow and brown-pixel
-  segmentation are computed offline and do not control the robot. The physical
-  camera model and optical calibration remain unknown; the rendered camera's
-  mount is simulation-defined. CPU-demo metric estimates are synthetic.
-- **No physical cut is demonstrated.** The original six-joint UR5e and mock
-  pruner approach, inspect and retreat. The video does not actuate a blade,
-  sever wood, or validate cutting/contact mechanics. Its ToF stop gate is a
-  diagnostic guard, not a hardware safety controller; noise is disabled.
+  wrist RGB and simulator depth. In job `21247873`, seeded pyramidal Lucas–Kanade
+  tracking and live RTX optical-Z depth drive bounded approach commands.
+  Branch identity, axis, and radius still come from mesh metadata; the depth is
+  simulator ground truth, not a trained estimator. Farneback flow remains a
+  separately labelled offline diagnostic. The physical camera model and optical
+  calibration remain unknown; the rendered mount is simulation-defined.
+  CPU-demo metric estimates are synthetic.
+- **No physical cut is demonstrated.** The original six-joint UR5e, reviewed
+  mock pruner, and dual-ToF offsets remain unchanged. The Blender integration
+  adds a visual jaw surrogate and gated rigid-piece detachment, not actuated
+  blade CAD or wood-fracture mechanics. Job `21247873` recorded no closure or
+  detachment; its final tracked-mouth distance was 35.01 mm. Full-duration job
+  `21298152` was cancelled after 6m05s for capture throughput, with partial
+  files preserved. Retry `21300015` lost tracking at 5.5 seconds when only three
+  features passed the round-trip check, below the unchanged minimum four.
+  It latched `vision_invalid`, with no closure or release, and was cancelled
+  after 10m53s. Its 71-frame partial recording and incomplete report are
+  preserved. CPU diagnosis is underway; no further GPU retry is submitted at
+  this checkpoint. The full sequence remains unvalidated. The
+  ToF stop gate is diagnostic, not a hardware safety controller; noise is disabled.
 - **CuRobo and training are scaffolds.** The baseline runner reports CuRobo
   readiness without executing a plan. `tools/train.py` always exits. There are
   no PPO checkpoints, held-out rollouts, sim2sim measurements, or hardware demo.
@@ -56,12 +72,21 @@ Job `21208215` recorded all 140 frames and completed approach/retreat; the
 earlier `21201622` also recorded 140 frames but failed the task. Both outcomes
 are preserved rather than equating scheduler completion with success.
 
-The published MP4 contains the complete 14-second recording. Its GIF samples
+The older published MP4 contains the complete 14-second recording. Its GIF samples
 the whole timeline to stay below 1.9 MB. A labelled 3×3 median filter affects
 RGB display only; CV and measurements use raw inputs. Raw camera arrays and
 large capture directories stay outside Git. The recording guide explains
 exactly which assets and cluster installation are required; the CPU quickstart
 does not claim to reproduce Isaac on a clean CPU-only machine.
+
+The newer [Blender approach](demo/isaac_blender_live_approach.gif) contains all
+60 recorded frames in its six-second MP4. Path tracing and OptiX denoising run
+inside RTX; no display-only median filter was applied to this capture. All ten
+[recording checks](evidence/render_21247873.json) passed, including changing
+ToF streams and frozen physics during image accumulation. Recording completeness
+does not imply successful cutting: the cut gate never authorized closure,
+closure stayed at zero, and no piece dropped or retreat occurred. The earlier contact and
+occluded-tracker failures remain in the job ledger.
 
 The portable demo has a CLI, GIF, poster, offline sensor replay, and measured
 JSON for all three episodes. At the September 5 published checkpoint, the
@@ -77,6 +102,11 @@ Ruff is pinned to the pre-commit version. Broken hooks that referenced absent
 license templates were removed without changing inherited notices. The missing
 bark texture is documented as optional rather than described as packed.
 
+At commit `a149a42`, GitHub CI passed with **356 tests passed, eight skipped,
+and one deselected**; the local environment with its external assets passed
+**364 tests, with one deselected**. These are checkpoint-specific counts, not
+GPU task-success rates.
+
 Functional fixes cover lateral servo direction, rotation about the approach
 axis, invalid-depth fusion, v60 articulation initialization, contact reporting,
 link-origin Jacobians, and explicit Lab `xyzw`/core `wxyz` pose boundaries.
@@ -91,13 +121,13 @@ scoped to the [recorded job evidence](../SLURM_JOBS.md).
 
 Description:
 
-> UR5e branch inspection in Isaac Sim with live dual-ToF sensing, recorded wrist vision, offline CV overlays, and a reproducible CPU pruning demo.
+> UR5e visual approach in a Blender orchard, simulated in Isaac with live RGB-D tracking, dual-ToF sensing, and a reproducible CPU pruning demo.
 
 Topics:
 
 `robotics`, `agricultural-robotics`, `isaac-sim`, `isaac-lab`, `ur5e`,
-`time-of-flight`, `computer-vision`, `optical-flow`, `sensor-fusion`,
-`simulation`, `python`, `pytorch`
+`blender`, `time-of-flight`, `computer-vision`, `visual-servoing`, `optical-flow`,
+`rgb-d`, `sensor-fusion`, `simulation`, `python`, `pytorch`
 
 ## README decisions
 
@@ -106,6 +136,6 @@ appears immediately after the one-line description, without an extra heading.
 The first demo is now the actual Isaac robot recording; the four-command
 quickstart explicitly runs the separate CPU demo. The old image inventory,
 stack debugging narrative, and scheduler commands sit behind links. Results
-separate the one inspection episode, short control smoke, CPU scenarios and
-known failures. No section claims learned perception, cutting, or a task
-success rate from those recordings.
+separate the incomplete live-vision approach, completed inspection episode,
+short control smoke, CPU scenarios, and known failures. No section claims
+learned perception, validated cutting, or a task-success rate from those recordings.

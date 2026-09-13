@@ -1,10 +1,40 @@
-isaac-sim-pruning-workflow — checkpoint at 2026-09-11 05:06 PDT
+isaac-sim-pruning-workflow — checkpoint at 2026-09-13 PDT
 Branch: develop
 Owner / Git author: Jose Sanchez
 GitHub: https://github.com/joses2017smjh/isaac-sim-pruning-workflow
 Author email: 119717035+joses2017smjh@users.noreply.github.com
 
-BLENDER / LIVE-VISION INTEGRATION — GPU VALIDATION IN PROGRESS
+BLENDER / LIVE-VISION APPROACH — RECORDED; CUT VALIDATION PENDING
+
+  Job 21247873: COMPLETED (0:0), A40 cn-s-2, 5m40s.
+  60 RTX frames / 6 seconds: original UR5e + reviewed mock pruner in the
+  textured Blender orchard, under physical joint drives and causal live RGB-D
+  control. The original robot and reviewed dual-ToF offsets are unchanged.
+  Applied vision commands: 60. Maximum tool displacement: 230.08 mm.
+  Final mouth-to-tracked-target distance: 35.01 mm. Four tracking features
+  remain, confidence 0.9894. Both ToF streams change; 33.54% / 33.28% of
+  individual rays are valid, with sensor noise disabled.
+  All ten recording checks pass. Task outcome: vision_approach_incomplete.
+  No closure, detachment, observed piece drop, or retreat. No wood is cut.
+  GIF/poster/evidence: docs/demo/isaac_blender_live_approach.{gif,png,json}.
+  Report: docs/evidence/render_21247873.json.
+  Full local media: artifacts/isaac_render/job_21247873/media/.
+  Dashboard MP4: 1440x960, 60 frames at 10 fps, six seconds.
+  Direct close-camera MP4: 640x480, six seconds.
+  Capture uses path tracing and OptiX denoising; no compositor median filter.
+
+  Full-duration job 21298152 was cancelled after 6m05s on an RTX 8000 because
+  its capture throughput would not fit the 25-minute allocation. Partial
+  frames/logs are preserved, not a completed demo or task result.
+  Replacement 21300015: CANCELLED after 10m53s on cn-gpu7. It disabled
+  intermediate RTX rendering while preserving manual camera capture, physics,
+  and image-quality settings. At frame index 54 (5.5 s), only three features
+  passed the LK round-trip check, below the unchanged minimum four. The
+  controller latched vision_invalid and held, with no closure or detachment.
+  Preserved telemetry covers 71 frames / 7.1 seconds; report.json remains an
+  incomplete recording checkpoint, not a fabricated terminal task report.
+  CPU tracking diagnosis is underway; no further GPU retry submitted yet.
+  See SLURM_JOBS.md for current queue state and exact accounting.
 
   The existing Computer_Vision/orchard_template.blend now exports to USD with
   original tree/scene meshes, UVs and six bark/soil image maps. No .ply import
@@ -33,9 +63,9 @@ BLENDER / LIVE-VISION INTEGRATION — GPU VALIDATION IN PROGRESS
   selected-piece pose reader now uses Torch. The new layout selects existing
   connected component 8235 at 150-degree yaw, with an exterior camera mount,
   seed-depth visibility checks and presentation overrides. These revisions
-  have CPU coverage but still require a passing GPU recording. Follow-up job
-  21247873 was submitted for a 60-frame A40 capture at this checkpoint; its
-  outcome is not yet known. See SLURM_JOBS.md for queue state and accounting.
+  passed the 60-frame approach recording in 21247873. This establishes visible
+  target seeding and live vision-driven motion in one layout, not a completed
+  cut or collision-avoidance validation across scenes.
 
   The classical forward/backward LK tracker consumes consecutive live RGB
   frames and measured RTX optical-Z depth. Each saved observation supplies
@@ -46,7 +76,7 @@ BLENDER / LIVE-VISION INTEGRATION — GPU VALIDATION IN PROGRESS
   learned depth is implemented. The event-gated cut proxy is a visual jaw and
   discrete rigid-piece release, not actuated CAD blades or wood fracture.
 
-  No successful Blender/live-vision approach or cutting result is claimed.
+  Live vision-driven approach is recorded; a completed cut/release is not.
   Full evidence and reproduction: docs/ISAAC_RENDER.md.
 
 PUBLISHED REAL ISAAC INSPECTION — COMPLETE
@@ -92,18 +122,28 @@ Capture and explanation: docs/DEMO.md.
 
 LOCAL VERIFICATION
 
+  September 13 local run: 436 passed, 1 simulator-only test deselected.
+  Ruff 0.14.10 check and format pass across 107 files, including the renderer.
+  The independent full-sequence grader has 67 tests and rejects the short
+  approach as incomplete. It checks one certified detachment, measured fall
+  after that event, home-directed retreat and <=3 mm final home error, without
+  trusting a renderer success label. It grades captured telemetry, not fracture
+  or continuous contact safety.
+
   Previous CPU quickstart validation used a fresh Python 3.10 venv with
   PyTorch CPU 2.14.0, NumPy 2.2.6, Pillow 12.3.0, Matplotlib 3.10.9.
   The successful Isaac capture uses the separate pinned Python 3.12 / v60
   stack recorded in docs/ENVIRONMENT.lock.json and its job preflight.
   Previous published CPU demo: fresh clone 130 passed, 3 missing-USD skips,
   1 simulator deselected; workspace 133 passed, 1 deselected.
-  Current integration checkpoint: local CPU run 364 passed, 1 simulator test
+  At published commit a149a42: local CPU run 364 passed, 1 simulator test
   deselected, with generated assets. Coverage includes tracking/depth failures,
   causal commands, cut gates, Blender mesh/material contracts and render guards.
   Ruff 0.14.10 lint and format checks pass across 105 files.
   CI now installs dev+demo+render extras and generates the portable CPU demo;
   it does not run Isaac Sim on the GitHub-hosted runner.
+  CI at a149a42 passed: 356 passed, 8 skipped, 1 deselected. These are
+  checkpoint-specific CPU results, not GPU integration or task-success rates.
   Previous published CPU demo commit: f398b67feb1bdec58bb8c2aae8c9e48fb4aebb8f.
   GitHub maps its author to joses2017smjh (Jose Sanchez).
   CI run 33980080780 passed: 130 passed, 3 skipped, 1 deselected; demo reproduced.
@@ -151,6 +191,11 @@ CLUSTER EVIDENCE
            0.0 at recorded precision; a 5 mm command ended 0.3597 mm from target.
            ToF median changes 3.961 / 3.800 mm across 64 shared pixels each.
            All 20 contact bodies verified; A-D widths 150/278/86/86.
+  21247873 passed ten capture checks in the textured Blender orchard; 60
+           physically applied live vision commands, incomplete before closure.
+  21298152 cancelled for capture throughput; partial files preserved.
+  21300015 cancelled after 10m53s following a latched vision-invalid stop;
+           partial frames/report preserved, no closure or release.
 
 Baseline and PPO workflow jobs remain unsubmitted. The integration is still
 being validated; use SLURM_JOBS.md for current queue state and exact accounting.
@@ -158,16 +203,18 @@ being validated; use SLURM_JOBS.md for current queue state and exact accounting.
 REMAINING RESEARCH WORK
 
   Replace Isaac's fixed smoke target with live oracle/curriculum targets and
-  nearby-wood tensors in the training environment. The inspection renderer
-  already uses procedural geometry; it is not that training implementation.
-  Validate collision-free placement, visible target seeding, live vision-driven
-  approach, gated rigid-piece release and retreat in the loaded Blender scene.
-  Current CPU tests and failed GPU recordings do not establish that outcome.
+  nearby-wood tensors in the training environment. The separate demo renderer
+  now supports procedural and original Blender scenes; it is not that training
+  implementation. Complete approach, gated rigid-piece release, measured drop,
+  and retreat in the loaded Blender scene. The six-second approach proves live
+  vision-driven motion in one layout, not that complete workflow. Broader
+  placement, target-selection and collision-response validation remains.
   Add learned recognition, metric-depth inference and episode-start DA2.
-  Classical RGB-D tracking is wired into experimental live control; published
-  inspection flow and color-mask overlays remain offline.
+  Classical RGB-D tracking now has 60 applied live commands in a GPU recording;
+  the older inspection flow and color-mask overlays remain offline.
   Identify/calibrate the physical wrist camera; simulation RGB now works.
-  Add actual pruner actuation and validated cutting/contact mechanics.
+  Obtain articulated blade CAD and add actual pruner actuation plus validated
+  cutting/contact mechanics. Discrete rigid-piece release is not wood fracture.
   Execute CuRobo planning; current baseline runner only reports readiness.
   Implement PPO runner, then run baseline-gated A-D x five seeds.
   Evaluate held-out Envy/UFO rollouts, sim2sim, and hardware transfer.

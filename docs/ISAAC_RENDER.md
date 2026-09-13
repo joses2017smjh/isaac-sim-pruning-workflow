@@ -1,10 +1,53 @@
 # Real Isaac robot recording
 
 This path renders the imported UR5e and mock pruner with PhysX motion, RTX
-cameras, two ToF sensors, and contact data. The published inspection uses a
-procedural fixture. A separate Blender-scene/live-vision integration has now
-rendered, but its first recorded task failed. Neither path requires a trained
+cameras, two ToF sensors, and contact data. The original textured Blender
+orchard now has a recorded online vision-driven approach. Full-duration
+surrogate release and return are under test; the earlier inspection uses a
+procedural fixture. Neither path requires a trained
 policy or uses the analytic CPU demo's generated camera images.
+
+## Recorded Blender/live-vision approach
+
+![Original Blender orchard with online visual servoing and live sensors](demo/isaac_blender_live_approach.gif)
+
+Job `21247873` completed on A40 `cn-s-2` in **5m40s**, recording **60 frames /
+6 seconds**. All ten capture checks passed. The controller physically applied
+**60 vision-driven commands**, moving the tool **230.08 mm**. The tracked target
+remained visible; final tool-mouth residual was **35.01 mm**. Both ToF streams
+changed, with **33.54% / 33.28%** valid individual rays. Missing rays remain missing.
+There was no captured contact or recorded stop. These are capture-rate
+observations, not continuous collision-safety evidence.
+
+Outcome: `vision_approach_incomplete`. Closure stayed at zero; there was no
+detachment event, piece drop, or retreat before the six-second limit.
+Show one six-second loop and pause at three seconds for the wrist RGB/depth,
+tracked features, dual-ToF grids, tool state, and cut-gate display. Farneback
+flow remains an offline diagnostic, separate from the online seeded LK tracker.
+
+[Poster](demo/isaac_blender_live_approach.png) ·
+[render evidence](evidence/render_21247873.json) ·
+[stack/source fingerprints](evidence/render_preflight_21247873.json) ·
+[media provenance](demo/isaac_blender_live_approach.json).
+Local full-resolution MP4:
+`artifacts/isaac_render/job_21247873/media/isaac_blender_live_approach.mp4`.
+The companion `_close.mp4` contains the actual 640×480 close camera.
+No compositor display filter was applied; RTX uses path tracing and OptiX.
+
+The first 200-frame extension, `21298152`, was deliberately cancelled after
+6m05s because its measured RTX 8000 capture rate projected beyond the allocation.
+Partial files remain local. Replacement `21300015` skipped unused automatic
+RTX renders between manual captures, preserving physics steps, sensor updates,
+and path-tracing settings. It lost tracking at frame index 54 (5.5 seconds):
+only three features passed the round-trip check, below the unchanged minimum
+four. The controller latched `vision_invalid`, with no closure or detachment.
+The job was cancelled after 10m53s on `cn-gpu7`; its 71 saved telemetry frames
+and incomplete `report.json` are preserved, not promoted to a terminal result.
+CPU diagnosis is underway; no further GPU retry is submitted at this checkpoint.
+A completed video alone will not establish a completed task:
+[`validate_vision_sequence.py`](../tools/validate_vision_sequence.py) independently
+requires one gated release, subsequent measured fall, home-directed retreat,
+final home error ≤3 mm, and no recorded stop or excessive captured contact.
 
 ## Where the scene and tree come from
 
@@ -15,7 +58,7 @@ Neither recording path loads Blender `.ply` files.
   authors finite-cylinder trees, target spur, pedestal, and ground directly as
   USD geometry. They have simple materials, not the orchard's bark/soil maps,
   posts, wires, or Blender lighting. Cleaner rendering does not add those assets.
-- **Experimental Blender integration (`21222710`):**
+- **Blender integration (`21247873`, earlier failure `21222710`):**
   [`export_blender_orchard.py`](../tools/export_blender_orchard.py) reads the
   existing `Computer_Vision/orchard_template.blend` with Blender 4.2.19 LTS and
   exports `environment.usdc`, `tree0.usdc`, UVs, and six bark/soil image maps.
@@ -41,9 +84,9 @@ The [conversion manifest](evidence/trees_converted_manifest.json) records
 That conversion reconstructs finite cylinders from metadata; it is not a PLY
 mesh import and does not establish identical Blender appearance or materials.
 
-The original meshes now load. Collision-free robot placement, an unobstructed
-target view, successful live approach, and gated detachment still require a
-passing recording. A component selected from topology is not automatically a
+The original meshes now load, and `21247873` records an unobstructed target and
+live approach with no captured contact. Gated detachment and full retreat still
+require a passing sequence. A component selected from topology is not automatically a
 safe cut site and is not learned branch recognition.
 
 ## Why the published video was grainy
@@ -112,12 +155,13 @@ The source report, raw cameras, and arrays remain under that job directory.
 Its dashboard shows recorded live-tracker failures and cut gates; the separate
 Farneback panel is still explicitly an offline diagnostic.
 
-The next revision changes scene placement and the exterior camera mount,
+The corrected revision changes scene placement and the exterior camera mount,
 checks seed depth against the selected surface, hides the flat collider's
 visual plane, adjusts the exported ground map to meter-scale repeats, and
 changes the exported Sun intensity. Those presentation overrides are recorded
 separately from the original export and do not establish Blender lighting parity.
-They are not validated by either recording above and are not a released success.
+They are recorded by the subsequent approach run `21247873`; neither their
+appearance nor that short approach establishes a completed cutting sequence.
 
 The 90° layout retry `21224517` was rejected before recording by the 5 N
 startup contact gate (34,443.24 N measured). The 180° retry `21227646` cleared
@@ -126,10 +170,11 @@ the GPU pipeline. The implementation now uses Torch and copies measured poses
 to CPU explicitly. Both failure reports are preserved in
 [the job ledger](../SLURM_JOBS.md).
 
-The next run selects source spur `8235` at orchard yaw 150°. The new code
+Run `21247873` selects source spur `8235` at orchard yaw 150°. The code
 distinguishes proposed and physically applied vision commands, checks fresh
 ToF before each possible detachment, and computes return error against the
-measured pre-command home pose. Its GPU outcome must still be checked.
+measured pre-command home pose. The short approach passed its recording gate;
+the full sequence is tested separately.
 
 ## Completed inspection recording
 
@@ -238,6 +283,20 @@ The wrapper checks the raw images, depth arrays, frame count, and report after
 Kit exits. `rendering_ok` distinguishes image production from the broader
 `ok` gate. Neither alone establishes successful pruning; always read
 `task_outcome`, `checks`, and `metrics` too.
+
+For Blender mode, independently grade the full sequence after the job ends:
+
+```bash
+/nfs/hpc/share/$USER/Humanoid_Lite/venv-isaac60/bin/python tools/validate_vision_sequence.py \
+  --input-dir artifacts/isaac_render/job_<jobid> \
+  --output artifacts/isaac_render/job_<jobid>/sequence_grade.json
+```
+
+This refuses to overwrite an existing grade. Exit 1 means the captured sequence
+does not satisfy all gates; exit 2 means malformed input. It checks temporal
+ordering and measured home return instead of trusting a renderer success label.
+It grades saved telemetry and trusts nonblank-image checks from the renderer;
+inspect the actual camera images as well. Neither gate measures wood fracture.
 
 Compose the video after the capture finishes:
 
