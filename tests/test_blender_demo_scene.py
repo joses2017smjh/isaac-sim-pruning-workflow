@@ -29,6 +29,30 @@ def test_piece_pose_reads_physics_xyzw_not_usd_and_validates_shape():
 from isaaclab_pruning.sim.blender_demo_scene import partition_faces, select_component
 
 
+@pytest.mark.parametrize("axis", [[1, 0, 0], [-0.856, 0.517, 0], [0.856, -0.517, 0], [0, 1, 0]])
+def test_gap_aligned_camera_is_outside_tool_and_between_proxy_jaws(axis):
+    from isaaclab_pruning.sim.blender_demo_scene import gap_aligned_camera_mount
+
+    mount = np.asarray(gap_aligned_camera_mount(axis))
+    assert np.linalg.norm(mount[:2]) == pytest.approx(0.14)
+    assert mount[2] == -0.025
+    assert mount[1] <= 0
+    # Every point on a ray to the centered mouth stays at closing-axis zero,
+    # inside even the fully closed 13.6 mm gap, rather than crossing a jaw.
+    direction = np.asarray(axis) / np.linalg.norm(axis)
+    for fraction in np.linspace(0, 1, 20):
+        point = mount + fraction * (np.array([0, 0, 0.07]) - mount)
+        assert abs(np.dot(point, direction)) < 1e-8
+
+
+@pytest.mark.parametrize("axis", [[0, 0, 0], [1, 0, 0.1], [float("nan"), 0, 0], [1, 2]])
+def test_gap_aligned_camera_rejects_invalid_axes(axis):
+    from isaaclab_pruning.sim.blender_demo_scene import gap_aligned_camera_mount
+
+    with pytest.raises(ValueError, match="Closing axis"):
+        gap_aligned_camera_mount(axis)
+
+
 def candidate_manifest(radius=0.0068):
     return {
         "branch_geometry_candidates": {

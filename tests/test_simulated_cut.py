@@ -58,6 +58,33 @@ def test_success_requires_stable_live_frames_and_full_closure():
     assert cut.update(observation(1.0, vision_valid=False)).phase == "retreat"
 
 
+@pytest.mark.parametrize("start,duration,end", [(7.2, 0.6, 7.8), (0.1, 0.2, 0.3), (12.3, 0.6, 12.9)])
+def test_closure_deadline_roundoff_does_not_delay_release(start, duration, end):
+    cut = controller(stable_frames=2, closure_duration_s=duration)
+    cut.update(observation(start - 0.1))
+    assert cut.update(observation(start)).phase == "closing"
+    almost = cut.update(observation(end - 1e-6))
+    assert not almost.detach_event
+    assert almost.closure_progress < 1
+    complete = cut.update(observation(end))
+    assert complete.detach_event
+    assert complete.closure_progress == 1
+    assert complete.detached_at_s == end
+
+
+@pytest.mark.parametrize(
+    "change", [{"vision_valid": False}, {"hazard_contact": True}, {"mouth_position_w": (1.1, 2, 3)}]
+)
+def test_deadline_roundoff_correction_never_bypasses_current_gate(change):
+    cut = controller(stable_frames=2, closure_duration_s=0.6)
+    cut.update(observation(7.1))
+    cut.update(observation(7.2))
+    stopped = cut.update(observation(7.8, **change))
+    assert stopped.phase == "stopped"
+    assert not stopped.detach_event
+    assert not stopped.detached
+
+
 @pytest.mark.parametrize(
     ("changes", "reason"),
     [

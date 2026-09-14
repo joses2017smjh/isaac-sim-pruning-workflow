@@ -1,6 +1,6 @@
 # SLURM job ledger
 
-Last reconciled: **2026-09-13 22:36 PDT** (`America/Los_Angeles`).
+Last reconciled: **2026-09-14 11:59 PDT** (`America/Los_Angeles`).
 
 This ledger covers jobs produced by this repository's `prune-*` submission
 scripts and the two upstream v60 probes explicitly cited by the repository
@@ -15,20 +15,17 @@ records its submission/start on 2026-08-24, which is the date used here.
 
 ## Current queue
 
-The full user queue has six running unrelated allocations, unrelated pending
+The full user queue has four running unrelated allocations, unrelated pending
 array tasks, and the running two-tree test below. Earlier snapshots are historical, not the
 current queue. No unrelated allocation was modified.
 
 | Job | Partition | Name | State | Node or pending reason | This workflow |
 |---|---|---|---|---|---|
-| `21316823` | `ampere` | `prune-render` | `RUNNING` | `cn-r-5` A40 | Two original Blender trees; 200 frames; full sequence unvalidated |
-| `21316427` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu7` | Unrelated; untouched |
-| `21302172_2` | `ampere` | `marl-train` | `RUNNING` | `cn-r-4` | Unrelated; untouched |
-| `21302171_2`, `21302172_3` | `gpu` | `marl-train` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
-| `21302171_3` | `gpu` | `marl-train` | `RUNNING` | `cn-gpu7` | Unrelated; untouched |
-| `21302173_4` | `gpu` | `maze-ppo` | `RUNNING` | `cn-gpu7` | Unrelated; untouched |
-| `21302171_4`, `21302172_4` | `gpu,dgxh,ampere` | `marl-train` | `PENDING` | `JobArrayTaskLimit` | Unrelated; untouched |
-| `21302174_[3-4%1]` | `gpu,dgxh,ampere` | `maze-ppo` | `PENDING` | `Dependency` | Unrelated; untouched |
+| `21328323` | `ampere` | `prune-render` | `RUNNING` | `cn-s-1` A40 | Two trees, fixed gap-aligned camera, deadline fix and bounded feature maintenance; sequence unvalidated |
+| `21323490` | `gpu` | `ood-advanced` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
+| `21317024_5`, `21317025_6` | `gpu` | `maze-ppo` | `RUNNING` | `cn-gpu5` | Unrelated; untouched |
+| `21317023_5` | `gpu` | `maze-ppo` | `RUNNING` | `cn-gpu7` | Unrelated; untouched |
+| `21317025_5`, `21317024_6`, `21317023_6` | `gpu,dgxh,ampere` | `maze-ppo` | `PENDING` | `JobArrayTaskLimit` | Unrelated; untouched |
 
 All eight `prune-*` allocations through the 11:59 PDT snapshot were reconciled
 against accounting; none were omitted. The previously listed unrelated
@@ -41,12 +38,22 @@ state; the September 7 snapshot had six running allocations and no pending tasks
 
 ## Blender and render-quality integration — September 9–13
 
-New job `21316823` runs the original **two-tree** export on A40 `cn-r-5`
-with a 25-minute limit. Both trees have collisions and ToF coverage; the wider
-overview already shows both trees. Denser initial feature selection preserves
-all tracking/cut thresholds. Task outcome remains pending. The original
+The original **two-tree** export has completed rendering. Both trees have
+collisions and ToF coverage; the wider overview shows both trees. The latest
+task retry is `21328323`; prior tracking/closure failures below remain failures. The original
 `.blend` is unchanged; [export provenance](docs/evidence/blender_two_tree_export.json)
 records distinct `tree0.usdc` and `tree1.usdc` hashes and their shared origin.
+
+| Job | Accounting | Recording versus task result |
+|---|---|---|
+| `21316823` | A40 `cn-r-5`, 14m00s; `COMPLETED (0:0)` | 200 frames / 20 seconds; all eleven recording checks pass. 63 vision commands, 243.72 mm movement; tracking lost at 6.3 seconds near the jaws. No closure/release/retreat. [Report](docs/evidence/render_21316823.json), [rejected sequence grade](docs/evidence/vision_sequence_21316823.json), [GIF](docs/demo/isaac_two_trees_tracking_failure.gif). |
+| `21317169` | A40 `cn-r-5`, 8m58s; `CANCELLED by 19646` | Gap-aligned camera reached four stable alignment frames and closure. At 7.8 s, floating-point division left closure at 0.9999999999999994; vision failed on the next frame. No release. Cancelled after the latched stop; 111 telemetry records and 114 wrist images preserved. [Partial report](docs/evidence/render_partial_21317169.json), [timer evidence](docs/evidence/closure_deadline_21317169.json). |
+| `21317409` | A40 `cn-r-2`, 13m50s; `COMPLETED (0:0)` | Deadline corrected; 200 frames captured, but tracking confidence fell to 0.14165 at 7.7 s (limit 0.15), with four of 28 original points remaining. 68 applied commands, 262.93 mm movement, closure only 2/3; no release or retreat. [Report](docs/evidence/render_21317409.json), [rejected grade](docs/evidence/vision_sequence_21317409.json). |
+| `21328323` | A40 `cn-s-1`, 25-minute limit; `RUNNING` | Adds same-depth local corners only after a valid measurement; provisional points must pass normal tracking on the next frame and cannot inflate current confidence. Four-inlier, 1 px roundtrip, confidence, contact, depth and cut gates remain unchanged. Full sequence awaits validation. |
+
+[CPU replay](docs/evidence/tracker_maintenance_replay_21317409.json) reproduces
+the previous loss at frame 76 without maintenance, and tracks all 200 saved
+frames with maintenance. Post-stop images do not prove counterfactual motion.
 
 | Job | Allocation / accounting | Application evidence |
 |---|---|---|
@@ -134,8 +141,9 @@ Orders are released on application evidence, not merely Slurm state. The
 corrected smoke, inspection rendering, and six-second live vision approach
 have passed their respective recording gates. Job `21300015` exposed loss of
 one of only four seeded tracking features before closure. CPU replay is testing
-initial feature coverage; two-tree retry `21316823` is running with denser
-initial features and unchanged tracking/cut gates. The baseline and training remain unsubmitted: the
+initial feature coverage. Subsequent camera and closure-timing fixes reached
+closure but still lost tracking. Retry `21328323` tests bounded feature maintenance
+with unchanged tracking/cut gates. The baseline and training remain unsubmitted: the
 inspection clip is not a scripted-ToF success-rate evaluation, CuRobo planning
 run, or PPO rollout.
 
@@ -147,7 +155,7 @@ run, or PPO rollout.
 | 4 | 30 cm camera rectangle via [`hpc/slurm/camera_rect.sbatch`](hpc/slurm/camera_rect.sbatch) | **Not submitted.** A simulation-defined wrist camera now renders. Its fixed exterior mount/toe-in is not a calibrated physical camera; the 30 cm geometric depth check remains separate. | `docs/evidence/camera_rect_<jobid>.json` with `ok: true` and median depth within 5 mm of 0.30 m |
 | 5 | Robot/environment/sensor inspection render via [`hpc/slurm/render_pruning_workflow.sbatch`](hpc/slurm/render_pruning_workflow.sbatch) | **Complete: `21208215`.** Pinned stack, 140 frames, independent capture validation, and measured approach/retreat. No replacement robot was needed. | [Render report](docs/evidence/render_21208215.json) and [preflight](docs/evidence/render_preflight_21208215.json) |
 | 6 | Original Blender orchard with online RGB-D approach | **Approach demonstrated: `21247873`.** Original textures/meshes, seed visibility gate, causal visual tracking, 60 applied commands, live ToF and measured motion. | [Render report](docs/evidence/render_21247873.json), [preflight](docs/evidence/render_preflight_21247873.json), [GIF](docs/demo/isaac_blender_live_approach.gif) |
-| 7 | Full vision → surrogate release → piece fall → home return | **Incomplete; retry running.** `21300015` stopped on tracking loss. CPU replay supported denser initial features; `21316823` tests them with two original trees. | Independent [`validate_vision_sequence.py`](tools/validate_vision_sequence.py): one gated release, post-event measured fall, home-directed retreat, final home error ≤3 mm, no recorded stop, captured contact ≤5 N |
+| 7 | Full vision → surrogate release → piece fall → home return | **Incomplete; retry `21328323` running.** Two-tree images are verified; the entire task must pass independent grading. | Independent [`validate_vision_sequence.py`](tools/validate_vision_sequence.py): one gated release, post-event measured fall, home-directed retreat, final home error ≤3 mm, no recorded stop, captured contact ≤5 N |
 
 PPO A-D × five seeds remains downstream of successful orders 1–3 and is not
 queued. There is no training submission script in `hpc/slurm/` to list as a

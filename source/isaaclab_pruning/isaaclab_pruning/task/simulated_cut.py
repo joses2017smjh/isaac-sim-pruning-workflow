@@ -302,7 +302,15 @@ class SimulatedCutController:
             else:
                 elapsed = observation.time_s - self.closure_started_s
                 self.closure_progress = min(1.0, elapsed / self.config.closure_duration_s)
-                if self.closure_progress >= 1.0:
+                # Compare the deadline, not a quotient that can remain just
+                # below one (7.8 - 7.2)/0.6 == 0.9999999999999994. Allow only
+                # timestamp representation roundoff, not an earlier frame.
+                deadline = self.closure_started_s + self.config.closure_duration_s
+                roundoff = 2 * max(math.ulp(observation.time_s), math.ulp(deadline))
+                if observation.time_s >= deadline or math.isclose(
+                    observation.time_s, deadline, rel_tol=0.0, abs_tol=roundoff
+                ):
+                    self.closure_progress = 1.0
                     self.detached_at_s = observation.time_s
                     self.phase = "retreat"
                     self._previous = observation

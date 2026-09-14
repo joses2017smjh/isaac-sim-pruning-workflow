@@ -21,6 +21,26 @@ ORCHARD_PATH = "/World/Orchard"
 PROXY_PATH = "/World/PruningJawProxy"
 
 
+def gap_aligned_camera_mount(closing_axis_tool, radial_distance_m=0.14, z_offset_m=-0.025):
+    """Fixed virtual camera outside the tool, looking between rather than across jaws.
+
+    This uses the already-selected proxy attachment orientation once. It does
+    not move with image targets or claim physical-camera calibration.
+    """
+    axis = np.asarray(closing_axis_tool, dtype=float)
+    if axis.shape != (3,) or not np.isfinite(axis).all() or abs(axis[2]) > 1e-6 or np.linalg.norm(axis) < 1e-8:
+        raise ValueError("Closing axis must be finite, nonzero and in the tool XY plane")
+    if not math.isfinite(radial_distance_m) or radial_distance_m <= 0 or not math.isfinite(z_offset_m):
+        raise ValueError("Camera offsets must be finite and radial distance positive")
+    lateral = np.cross([0, 0, 1], axis)
+    lateral /= np.linalg.norm(lateral)
+    if lateral[1] > 0 or (abs(lateral[1]) < 1e-8 and lateral[0] > 0):
+        lateral *= -1
+    offset = lateral * radial_distance_m
+    offset[2] = z_offset_m
+    return tuple(float(value) for value in offset)
+
+
 @dataclass(frozen=True)
 class FacePartition:
     point_indices: tuple[int, ...]

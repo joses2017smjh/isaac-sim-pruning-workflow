@@ -1,10 +1,12 @@
 # Reviewer audit and remaining work
 
 Latest implementation: both distinct source Blender trees export and load with
-materials, colliders and ToF mesh coverage. Local suite: 460 passed, one
-simulator-only test deselected. Two-tree GPU job `21316823` is running; the
-public six-second approach below remains earlier **one-tree** evidence, not
-proof of the new scene or a completed cut. Failure clips remain available.
+materials, colliders and ToF mesh coverage. Local suite: 479 passed, one
+simulator-only test deselected. Two-tree GPU job `21316823` rendered all 200
+frames but stopped before closure; `21317409` stopped during closure.
+Retry `21328323` tests bounded feature maintenance. The public six-second
+approach remains earlier **one-tree** evidence, not a completed cut.
+Two-tree failure clips and independent rejected grades remain available.
 
 Reviewed source, tests, configuration, package metadata, CI, and tracked
 evidence through the September 13 review. The repository now contains a

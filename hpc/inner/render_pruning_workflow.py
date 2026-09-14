@@ -514,6 +514,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         report["initial_tool_pose_wxyz"] = initial_tool.detach().cpu().tolist()
         demo = None
         if blender_mode:
+            from isaaclab_pruning.sim.blender_demo_scene import gap_aligned_camera_mount
             from isaaclab_pruning.sim.vision_demo_controller import VisionPruningDemo
 
             initial_contact_n = max(
@@ -528,6 +529,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             proxy_closing_w = np.cross(tool_rotation_w[:, 2], np.asarray(env.blender_scene.target_axis_w))
             proxy_closing_w /= np.linalg.norm(proxy_closing_w)
             proxy_closing_tool = tool_rotation_w.T @ proxy_closing_w
+            wrist_mount = gap_aligned_camera_mount(proxy_closing_tool)
             env.blender_scene.set_proxy_closing_axis_tool(proxy_closing_tool)
             demo = VisionPruningDemo(
                 env.blender_scene.target_id,
@@ -537,6 +539,14 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 closing_axis_tool=proxy_closing_tool,
             )
             report["blender_scene"] = env.blender_scene.evidence
+            report["camera_mount_selection"] = {
+                "method": "fixed offset perpendicular to proxy closing axis; looks along jaw opening",
+                "closing_axis_tool": proxy_closing_tool.tolist(),
+                "position_tool_m": list(wrist_mount),
+                "radial_distance_m": 0.14,
+                "hardware_calibration": False,
+                "dynamic_reaiming": False,
+            }
             env.blender_scene.update_tool_proxy(initial_tool[0].detach().cpu().numpy(), 0.0)
         report["target_position_m"] = target_position.tolist()
         report["bench_base_height_m"] = base_height

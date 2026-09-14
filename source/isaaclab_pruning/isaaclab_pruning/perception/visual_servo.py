@@ -22,6 +22,7 @@ class VisualServoConfig:
     max_features: int = 80
     min_features: int = 4
     feature_quality_level: float = 0.02
+    replenish_features: bool = False
     max_roundtrip_error_px: float = 1.0
     max_lk_error: float = 40.0
     max_flow_residual_px: float = 3.0
@@ -36,6 +37,8 @@ class VisualServoConfig:
     max_world_jump_m: float = 0.06
 
     def __post_init__(self):
+        if not isinstance(self.replenish_features, bool):
+            raise ValueError("replenish_features must be bool")
         if (
             isinstance(self.feature_quality_level, (bool, np.bool_))
             or not isinstance(self.feature_quality_level, (int, float, np.integer, np.floating))
@@ -212,6 +215,7 @@ class VisualServoTracker:
             "frame_index": self._frame_index,
             "requires_reinitialize": self._lost,
             "method": "seeded_forward_backward_lk_optical_z",
+            "feature_maintenance_enabled": self.config.replenish_features,
             **details,
         }
 
@@ -341,6 +345,42 @@ class VisualServoTracker:
         correlation = np.mean((previous - previous.mean()) * (current - current.mean())) / (old_std * new_std)
         return float(np.clip(correlation, -1.0, 1.0))
 
+    def _replenish_for_next_frame(self, depth, depth_m):
+        """Add local same-depth corners AFTER a valid measurement, never re-seed.
+
+        Current motion/confidence cannot use these new points. They must pass
+        the normal forward/backward, coherence and appearance gates next frame.
+        Existing matched anchors always comprise at least half the next set.
+        """
+        import cv2
+
+        capacity = min(self._initial_count, self.config.max_features) - len(self._points)
+        capacity = min(capacity, len(self._points))
+        if capacity <= 0:
+            return []
+        gray = self._previous_gray
+        height, width = gray.shape
+        x, y = np.rint(self._pixel).astype(int)
+        half_x, half_y = self.config.roi_half_size_px
+        mask = np.zeros_like(gray)
+        mask[max(0, y - half_y) : min(height, y + half_y + 1), max(0, x - half_x) : min(width, x + half_x + 1)] = 255
+        values = np.asarray(depth).reshape(gray.shape)
+        mask[~np.isfinite(values) | (np.abs(values - depth_m) > self.config.max_depth_spread_m)] = 0
+        for point in self._points.reshape(-1, 2):
+            cv2.circle(mask, tuple(np.rint(point).astype(int)), 3, 0, -1)
+        candidates = cv2.goodFeaturesToTrack(
+            gray,
+            maxCorners=capacity,
+            qualityLevel=self.config.feature_quality_level,
+            minDistance=3,
+            mask=mask,
+            blockSize=3,
+        )
+        if candidates is None:
+            return []
+        self._points = np.concatenate((self._points, candidates))
+        return candidates.reshape(-1, 2).astype(float).tolist()
+
     def update(self, rgb, depth, camera_matrix, world_from_optical):
         """Measure the tracked target; non-tracking results require a hold/stop."""
         self._frame_index += 1
@@ -378,4 +418,9 @@ class VisualServoTracker:
         if confidence < self.config.min_confidence:
             return self._lose("low_confidence", measured_confidence=confidence, **details)
         self._last_world = world
-        return self._result("tracking", target_position_world_m=world.tolist(), confidence=confidence, **details)
+        result = self._result("tracking", target_position_world_m=world.tolist(), confidence=confidence, **details)
+        if self.config.replenish_features:
+            # Snapshot the current validated points before adding candidates:
+            # telemetry must not count unvalidated corners as tracking evidence.
+            result["pending_feature_pixels_for_next_frame"] = self._replenish_for_next_frame(depth, depth_m)
+        return result

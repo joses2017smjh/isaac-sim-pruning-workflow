@@ -11,10 +11,25 @@ policy or uses the analytic CPU demo's generated camera images.
 
 The clip below is the earlier **one-tree** capture. Current code loads both
 distinct source trees from a [new verified export](evidence/blender_two_tree_export.json).
-Job `21316823` is running on A40 `cn-r-5` as of September 13, 22:36 PDT.
+Job `21316823` completed on A40 `cn-r-5` in 14 minutes with 200 frames.
 Both trees retain bark maps, original relative placement, collision meshes,
 and ToF ray-cast coverage. The overview camera is wider to include both trees;
-close and wrist camera settings are unchanged. No two-tree task pass is claimed yet.
+close and wrist camera settings were unchanged. It applied 63 vision commands,
+moving 243.72 mm, then stopped on tracking loss at frame 62 / 6.3 seconds.
+Captured contact was zero, closure stayed zero, and no piece dropped or retreat
+occurred. All eleven recording checks pass; the independent sequence grade fails.
+
+[![Two-tree tracking failure](demo/isaac_two_trees_tracking_failure.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_tracking_failure.mp4)
+
+[Render report](evidence/render_21316823.json) ·
+[sequence grade](evidence/vision_sequence_21316823.json) ·
+[source fingerprints](evidence/render_preflight_21316823.json).
+The release includes compressed original frame telemetry for independent grading.
+
+Camera-layout retry `21317169` is running. Its camera stays 140 mm radially
+outside the tool, but is fixed perpendicular to the proxy closing axis to look
+along the jaw opening. The unchanged image/depth gates still determine whether
+motion continues. This is a virtual mount, not physical camera calibration.
 
 ![Original Blender orchard with online visual servoing and live sensors](demo/isaac_blender_live_approach.gif)
 
@@ -36,7 +51,8 @@ flow remains an offline diagnostic, separate from the online seeded LK tracker.
 [render evidence](evidence/render_21247873.json) ·
 [stack/source fingerprints](evidence/render_preflight_21247873.json) ·
 [media provenance](demo/isaac_blender_live_approach.json).
-Local full-resolution MP4:
+The [released full-resolution MP4](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_blender_live_approach.mp4)
+also remains local:
 `artifacts/isaac_render/job_21247873/media/isaac_blender_live_approach.mp4`.
 The companion `_close.mp4` contains the actual 640×480 close camera.
 No compositor display filter was applied; RTX uses path tracing and OptiX.
@@ -52,7 +68,8 @@ The job was cancelled after 10m53s on `cn-gpu7`; its 71 saved telemetry frames
 and incomplete `report.json` are preserved, not promoted to a terminal result.
 CPU replay reproduced that loss and supported denser initial feature selection:
 quality level 0.005 instead of 0.02, with the same four-inlier, 1 px round-trip,
-appearance, depth, and cut gates. This is now under GPU test in `21316823`.
+appearance, depth, and cut gates. Run `21316823` retained more features initially
+but lost tracking near the jaws; `21317169` tests the fixed camera-layout change.
 Replay after a recorded stop cannot prove counterfactual motion or cutting.
 
 [Partial/cancelled tracking-stop GIF](demo/isaac_blender_tracking_stop.gif) ·

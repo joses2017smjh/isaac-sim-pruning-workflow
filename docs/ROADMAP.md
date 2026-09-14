@@ -6,9 +6,11 @@ complete.
 
 September 13 two-tree update: the exporter and scene loader now preserve both
 original `tree0` and `tree1` meshes, materials and relative transforms. Both
-participate in collisions and ToF ray casting. Local tests: **460 passed**,
-one simulator-only test deselected. A40 job `21316823` is running; rendering
-and full cut/drop/home-return evidence remain to be checked before promotion.
+participate in collisions and ToF ray casting. Local tests: **479 passed**,
+one simulator-only test deselected. Two-tree rendering passed in `21316823`,
+but tracking/closure failures remain. Retry `21328323` tests bounded feature
+maintenance after camera and deadline fixes. Full cut/drop/home-return evidence
+remains to be checked before promotion.
 
 Latest demonstrated milestone: job `21247873` captured a **six-second live
 RGB-D visual approach in the original Blender orchard**. Its 60 applied

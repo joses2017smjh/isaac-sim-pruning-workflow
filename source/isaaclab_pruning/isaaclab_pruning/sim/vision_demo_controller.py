@@ -47,8 +47,11 @@ class VisionPruningDemo:
         tool_mouth_geometry(self.home, self.mouth_offset, self.closing_axis_tool)
         # Retain more initial same-depth texture corners on the thin Blender
         # spur. All subsequent inlier, appearance, depth and stop gates remain
-        # unchanged; this does not replenish features or reinitialize a loss.
-        self.tracker = VisualServoTracker(VisualServoConfig(depth_radius_px=1, feature_quality_level=0.005))
+        # unchanged. Maintain local corners only after valid measurements;
+        # new corners are validated next frame and never reinitialize a loss.
+        self.tracker = VisualServoTracker(
+            VisualServoConfig(depth_radius_px=1, feature_quality_level=0.005, replenish_features=True)
+        )
         self.cutter = SimulatedCutController(
             CutConfig(
                 selected_target_id=self.target_id,

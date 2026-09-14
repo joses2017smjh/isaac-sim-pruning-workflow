@@ -1,0 +1,1059 @@
+{
+  "source_job_id": "21317169",
+  "scope": "Observed timer boundary and following tracked-vision veto; partial/cancelled recording, no detachment or complete task",
+  "source_sha256": {
+    "report.json": "6a8a9db4c174cf08275435a6fb5250857ba179f4c262155a464f83c2cfae8d25",
+    "frames.json": "554d5da72183215b1a4d5c4852432526fffced5764450506f22e0759b875ad43",
+    "preflight.json": "b39aaead54494110f81fd0d9e759fade283ee116e28c4bc7566fddc5c85e115d"
+  },
+  "configured_closure_duration_s": 0.6,
+  "samples": [
+    {
+      "index": 69,
+      "time_s": 7.0,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.2519771467261852,
+          0.6304798216473381,
+          0.8100329803909674
+        ],
+        "pixel_xy": [
+          320.23394775390625,
+          237.84140014648438
+        ],
+        "feature_pixels_xy": [
+          [
+            318.735107421875,
+            264.4496765136719
+          ],
+          [
+            319.5383605957031,
+            258.00830078125
+          ],
+          [
+            353.7806701660156,
+            260.00189208984375
+          ],
+          [
+            332.3348083496094,
+            259.38665771484375
+          ],
+          [
+            342.888671875,
+            252.63348388671875
+          ],
+          [
+            318.9029846191406,
+            244.50497436523438
+          ],
+          [
+            323.08465576171875,
+            250.7393341064453
+          ],
+          [
+            339.5205078125,
+            239.81121826171875
+          ],
+          [
+            325.6628112792969,
+            224.40074157714844
+          ],
+          [
+            349.9603271484375,
+            233.93182373046875
+          ]
+        ],
+        "feature_count": 10,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.3290481170018514,
+        "frame_index": 71,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "roundtrip_inlier_count": 10,
+        "median_roundtrip_error_px": 0.004048098344355822,
+        "patch_correlation": 0.9871443510055542,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0007948189973831232,
+        "depth_reason": null,
+        "depth_m": 0.16174663603305817,
+        "world_jump_m": 4.940225736970939e-05
+      },
+      "cut": {
+        "phase": "align",
+        "closure_progress": 0.0,
+        "stable_count": 2,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": null,
+        "detached_at_s": null,
+        "stopped_reason": null,
+        "certificate": {
+          "safe_to_approach": true,
+          "ready_to_close": true,
+          "reasons": [],
+          "mouth_distance_m": 0.0048833102241827514,
+          "perpendicularity_error_deg": 0.3430188959321537,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.0,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 70,
+      "time_s": 7.1,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.25198628559560177,
+          0.6304763095904825,
+          0.8100083442601015
+        ],
+        "pixel_xy": [
+          320.237548828125,
+          237.88311767578125
+        ],
+        "feature_pixels_xy": [
+          [
+            318.71044921875,
+            264.49688720703125
+          ],
+          [
+            319.52752685546875,
+            258.048095703125
+          ],
+          [
+            353.78546142578125,
+            260.045166015625
+          ],
+          [
+            332.3359069824219,
+            259.4189758300781
+          ],
+          [
+            342.92236328125,
+            252.6736602783203
+          ],
+          [
+            319.0132141113281,
+            244.60501098632812
+          ],
+          [
+            323.0662536621094,
+            250.7835235595703
+          ],
+          [
+            339.5826416015625,
+            239.8771514892578
+          ],
+          [
+            325.6651916503906,
+            224.4271697998047
+          ],
+          [
+            349.96905517578125,
+            233.96768188476562
+          ]
+        ],
+        "feature_count": 10,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.3314539591471354,
+        "frame_index": 72,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "roundtrip_inlier_count": 10,
+        "median_roundtrip_error_px": 0.0018216818571090698,
+        "patch_correlation": 0.9943618774414062,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0007872641086578425,
+        "depth_reason": null,
+        "depth_m": 0.16170504689216614,
+        "world_jump_m": 2.6510232394514004e-05
+      },
+      "cut": {
+        "phase": "align",
+        "closure_progress": 0.0,
+        "stable_count": 3,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": null,
+        "detached_at_s": null,
+        "stopped_reason": null,
+        "certificate": {
+          "safe_to_approach": true,
+          "ready_to_close": true,
+          "reasons": [],
+          "mouth_distance_m": 0.004859806689613891,
+          "perpendicularity_error_deg": 0.34412090905530407,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.0,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 71,
+      "time_s": 7.2,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.25199376763687753,
+          0.6304733487463481,
+          0.8100116284944845
+        ],
+        "pixel_xy": [
+          320.23443603515625,
+          237.90969848632812
+        ],
+        "feature_pixels_xy": [
+          [
+            318.7134704589844,
+            264.5483703613281
+          ],
+          [
+            319.5331115722656,
+            258.1058349609375
+          ],
+          [
+            353.7759094238281,
+            260.05023193359375
+          ],
+          [
+            332.2686462402344,
+            259.50482177734375
+          ],
+          [
+            342.8443908691406,
+            252.6927032470703
+          ],
+          [
+            318.9678649902344,
+            244.61512756347656
+          ],
+          [
+            323.0892028808594,
+            250.80987548828125
+          ],
+          [
+            339.59405517578125,
+            239.9192352294922
+          ],
+          [
+            325.6592712402344,
+            224.44461059570312
+          ],
+          [
+            349.9687194824219,
+            233.99447631835938
+          ]
+        ],
+        "feature_count": 10,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.33260426918665564,
+        "frame_index": 73,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "roundtrip_inlier_count": 10,
+        "median_roundtrip_error_px": 0.0009518705774098635,
+        "patch_correlation": 0.997812807559967,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0007854700088500977,
+        "depth_reason": null,
+        "depth_m": 0.16169895231723785,
+        "world_jump_m": 8.69101461988797e-06
+      },
+      "cut": {
+        "phase": "closing",
+        "closure_progress": 0.0,
+        "stable_count": 4,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": 7.2,
+        "detached_at_s": null,
+        "stopped_reason": null,
+        "certificate": {
+          "safe_to_approach": true,
+          "ready_to_close": true,
+          "reasons": [],
+          "mouth_distance_m": 0.00485652819947966,
+          "perpendicularity_error_deg": 0.3446708913605802,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.0,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 72,
+      "time_s": 7.3,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.2519851069001263,
+          0.6304729971886152,
+          0.8100027599298925
+        ],
+        "pixel_xy": [
+          320.24273681640625,
+          237.88748168945312
+        ],
+        "feature_pixels_xy": [
+          [
+            318.7112121582031,
+            264.5196838378906
+          ],
+          [
+            319.5275573730469,
+            258.080078125
+          ],
+          [
+            353.802001953125,
+            260.06695556640625
+          ],
+          [
+            332.3471984863281,
+            259.41790771484375
+          ],
+          [
+            342.9041442871094,
+            252.67404174804688
+          ],
+          [
+            319.0856628417969,
+            244.6906280517578
+          ],
+          [
+            323.06884765625,
+            250.8109588623047
+          ],
+          [
+            339.57427978515625,
+            239.884033203125
+          ],
+          [
+            325.67816162109375,
+            224.44097900390625
+          ],
+          [
+            349.9455261230469,
+            233.95770263671875
+          ]
+        ],
+        "feature_count": 10,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.3328463832537333,
+        "frame_index": 74,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "roundtrip_inlier_count": 10,
+        "median_roundtrip_error_px": 0.0004976949421688914,
+        "patch_correlation": 0.9985391497612,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0007853597402572576,
+        "depth_reason": null,
+        "depth_m": 0.16169816255569458,
+        "world_jump_m": 1.2400943183339849e-05
+      },
+      "cut": {
+        "phase": "closing",
+        "closure_progress": 0.16666666666666607,
+        "stable_count": 4,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": 7.2,
+        "detached_at_s": null,
+        "stopped_reason": null,
+        "certificate": {
+          "safe_to_approach": true,
+          "ready_to_close": true,
+          "reasons": [],
+          "mouth_distance_m": 0.0048544177370433,
+          "perpendicularity_error_deg": 0.3446660932895675,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.0,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 73,
+      "time_s": 7.3999999999999995,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.2519870791164093,
+          0.6304876486866184,
+          0.8099945818479561
+        ],
+        "pixel_xy": [
+          320.2147216796875,
+          237.86923217773438
+        ],
+        "feature_pixels_xy": [
+          [
+            318.7078552246094,
+            264.16351318359375
+          ],
+          [
+            319.4632568359375,
+            258.1514892578125
+          ],
+          [
+            353.8504943847656,
+            260.0487060546875
+          ],
+          [
+            332.4012451171875,
+            259.3600769042969
+          ],
+          [
+            342.8761291503906,
+            252.5970916748047
+          ],
+          [
+            322.9773254394531,
+            250.72752380371094
+          ],
+          [
+            339.4516906738281,
+            239.87850952148438
+          ],
+          [
+            325.70587158203125,
+            224.46221923828125
+          ],
+          [
+            349.34429931640625,
+            234.04443359375
+          ]
+        ],
+        "feature_count": 9,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.29871450662612914,
+        "frame_index": 75,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "roundtrip_inlier_count": 9,
+        "median_roundtrip_error_px": 0.0036317200865596533,
+        "patch_correlation": 0.9957150220870972,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0007853597402572576,
+        "depth_reason": null,
+        "depth_m": 0.16169816255569458,
+        "world_jump_m": 1.6894882508144966e-05
+      },
+      "cut": {
+        "phase": "closing",
+        "closure_progress": 0.33333333333333365,
+        "stable_count": 4,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": 7.2,
+        "detached_at_s": null,
+        "stopped_reason": null,
+        "certificate": {
+          "safe_to_approach": true,
+          "ready_to_close": true,
+          "reasons": [],
+          "mouth_distance_m": 0.004865757676934865,
+          "perpendicularity_error_deg": 0.3446660932895675,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.16666666666666607,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 74,
+      "time_s": 7.5,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.25197400648219104,
+          0.6304919452993137,
+          0.8099786899133314
+        ],
+        "pixel_xy": [
+          320.2183532714844,
+          237.82778930664062
+        ],
+        "feature_pixels_xy": [
+          [
+            319.3749084472656,
+            258.83074951171875
+          ],
+          [
+            353.8746032714844,
+            259.96246337890625
+          ],
+          [
+            332.4807434082031,
+            259.3186340332031
+          ],
+          [
+            342.8913269042969,
+            252.4733123779297
+          ],
+          [
+            322.8599853515625,
+            250.80340576171875
+          ],
+          [
+            339.2910461425781,
+            239.77713012695312
+          ],
+          [
+            325.7095031738281,
+            224.4492645263672
+          ]
+        ],
+        "feature_count": 7,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.2323704441388448,
+        "frame_index": 76,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "roundtrip_inlier_count": 7,
+        "median_roundtrip_error_px": 0.010639436542987823,
+        "patch_correlation": 0.9958733320236206,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0007853597402572576,
+        "depth_reason": null,
+        "depth_m": 0.16169816255569458,
+        "world_jump_m": 2.102161345313374e-05
+      },
+      "cut": {
+        "phase": "closing",
+        "closure_progress": 0.4999999999999997,
+        "stable_count": 4,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": 7.2,
+        "detached_at_s": null,
+        "stopped_reason": null,
+        "certificate": {
+          "safe_to_approach": true,
+          "ready_to_close": true,
+          "reasons": [],
+          "mouth_distance_m": 0.004866950039564458,
+          "perpendicularity_error_deg": 0.3446660932895675,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.33333333333333365,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 75,
+      "time_s": 7.6,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.25196173775937136,
+          0.6304972641912914,
+          0.8099628859945144
+        ],
+        "pixel_xy": [
+          320.2194519042969,
+          237.78683471679688
+        ],
+        "feature_pixels_xy": [
+          [
+            319.3511962890625,
+            260.79632568359375
+          ],
+          [
+            353.8543395996094,
+            259.9269104003906
+          ],
+          [
+            332.54254150390625,
+            259.27227783203125
+          ],
+          [
+            342.9137878417969,
+            252.3215789794922
+          ],
+          [
+            339.1204528808594,
+            239.63951110839844
+          ],
+          [
+            325.8114013671875,
+            224.48997497558594
+          ]
+        ],
+        "feature_count": 6,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.1991295576095581,
+        "frame_index": 77,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "roundtrip_inlier_count": 6,
+        "median_roundtrip_error_px": 0.014759552665054798,
+        "patch_correlation": 0.9956477880477905,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0007853597402572576,
+        "depth_reason": null,
+        "depth_m": 0.16169816255569458,
+        "world_jump_m": 2.0702077709059754e-05
+      },
+      "cut": {
+        "phase": "closing",
+        "closure_progress": 0.6666666666666659,
+        "stable_count": 4,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": 7.2,
+        "detached_at_s": null,
+        "stopped_reason": null,
+        "certificate": {
+          "safe_to_approach": true,
+          "ready_to_close": true,
+          "reasons": [],
+          "mouth_distance_m": 0.0048691283362486005,
+          "perpendicularity_error_deg": 0.3446660932895675,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.4999999999999997,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 76,
+      "time_s": 7.7,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.2519199703926929,
+          0.6304937587236327,
+          0.809924023051168
+        ],
+        "pixel_xy": [
+          320.2619934082031,
+          237.68202209472656
+        ],
+        "feature_pixels_xy": [
+          [
+            353.8968811035156,
+            259.94293212890625
+          ],
+          [
+            332.6849365234375,
+            259.1296081542969
+          ],
+          [
+            342.91668701171875,
+            252.1660919189453
+          ],
+          [
+            338.817138671875,
+            239.53469848632812
+          ],
+          [
+            325.8771667480469,
+            224.5090789794922
+          ]
+        ],
+        "feature_count": 5,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.16586587826410928,
+        "frame_index": 78,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "roundtrip_inlier_count": 5,
+        "median_roundtrip_error_px": 0.020817037671804428,
+        "patch_correlation": 0.9951952695846558,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0007853597402572576,
+        "depth_reason": null,
+        "depth_m": 0.16169816255569458,
+        "world_jump_m": 5.715881024220941e-05
+      },
+      "cut": {
+        "phase": "closing",
+        "closure_progress": 0.8333333333333334,
+        "stable_count": 4,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": 7.2,
+        "detached_at_s": null,
+        "stopped_reason": null,
+        "certificate": {
+          "safe_to_approach": true,
+          "ready_to_close": true,
+          "reasons": [],
+          "mouth_distance_m": 0.0048606051348035985,
+          "perpendicularity_error_deg": 0.3446660932895675,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.6666666666666659,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 77,
+      "time_s": 7.8,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.25191217491925383,
+          0.6305389532057475,
+          0.8098850775860049
+        ],
+        "pixel_xy": [
+          320.1876220703125,
+          237.5890350341797
+        ],
+        "feature_pixels_xy": [
+          [
+            353.822509765625,
+            259.7575378417969
+          ],
+          [
+            332.7513427734375,
+            259.106201171875
+          ],
+          [
+            342.8410339355469,
+            251.96482849121094
+          ],
+          [
+            338.71783447265625,
+            239.44171142578125
+          ],
+          [
+            325.8940124511719,
+            224.43934631347656
+          ]
+        ],
+        "feature_count": 5,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.1643996238708496,
+        "frame_index": 79,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "roundtrip_inlier_count": 5,
+        "median_roundtrip_error_px": 0.07856667041778564,
+        "patch_correlation": 0.9863977432250977,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0007853597402572576,
+        "depth_reason": null,
+        "depth_m": 0.16169816255569458,
+        "world_jump_m": 6.016693341471931e-05
+      },
+      "cut": {
+        "phase": "closing",
+        "closure_progress": 0.9999999999999994,
+        "stable_count": 4,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": 7.2,
+        "detached_at_s": null,
+        "stopped_reason": null,
+        "certificate": {
+          "safe_to_approach": true,
+          "ready_to_close": true,
+          "reasons": [],
+          "mouth_distance_m": 0.004894434050366988,
+          "perpendicularity_error_deg": 0.3446660932895675,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.8333333333333334,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 78,
+      "time_s": 7.8999999999999995,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking_lost",
+        "reason": "optical_flow_failed",
+        "target_position_world_m": null,
+        "pixel_xy": [
+          320.1876220703125,
+          237.5890350341797
+        ],
+        "feature_pixels_xy": [
+          [
+            353.822509765625,
+            259.7575378417969
+          ],
+          [
+            332.7513427734375,
+            259.106201171875
+          ],
+          [
+            342.8410339355469,
+            251.96482849121094
+          ],
+          [
+            338.71783447265625,
+            239.44171142578125
+          ],
+          [
+            325.8940124511719,
+            224.43934631347656
+          ]
+        ],
+        "feature_count": 5,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.0,
+        "frame_index": 80,
+        "requires_reinitialize": true,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "flow_reason": "too_few_roundtrip_inliers",
+        "roundtrip_inlier_count": 2
+      },
+      "cut": {
+        "phase": "stopped",
+        "closure_progress": 0.9999999999999994,
+        "stable_count": 0,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": 7.2,
+        "detached_at_s": null,
+        "stopped_reason": "vision_invalid",
+        "certificate": {
+          "safe_to_approach": false,
+          "ready_to_close": false,
+          "reasons": [
+            "vision_invalid",
+            "invalid_geometry"
+          ],
+          "mouth_distance_m": null,
+          "perpendicularity_error_deg": null,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.9999999999999994,
+      "detachment_requested_after_capture": false
+    },
+    {
+      "index": 79,
+      "time_s": 8.0,
+      "contact_force_n": 0.0,
+      "sensor_stop_reason": null,
+      "measurement": {
+        "state": "tracking_lost",
+        "reason": "explicit_initialization_required",
+        "target_position_world_m": null,
+        "pixel_xy": [
+          320.1876220703125,
+          237.5890350341797
+        ],
+        "feature_pixels_xy": [
+          [
+            353.822509765625,
+            259.7575378417969
+          ],
+          [
+            332.7513427734375,
+            259.106201171875
+          ],
+          [
+            342.8410339355469,
+            251.96482849121094
+          ],
+          [
+            338.71783447265625,
+            239.44171142578125
+          ],
+          [
+            325.8940124511719,
+            224.43934631347656
+          ]
+        ],
+        "feature_count": 5,
+        "initial_feature_count": 30,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.0,
+        "frame_index": 81,
+        "requires_reinitialize": true,
+        "method": "seeded_forward_backward_lk_optical_z"
+      },
+      "cut": {
+        "phase": "stopped",
+        "closure_progress": 0.9999999999999994,
+        "stable_count": 0,
+        "detach_event": false,
+        "detached": false,
+        "closure_started_s": 7.2,
+        "detached_at_s": null,
+        "stopped_reason": "vision_invalid",
+        "certificate": {
+          "safe_to_approach": false,
+          "ready_to_close": false,
+          "reasons": [
+            "vision_invalid",
+            "invalid_geometry"
+          ],
+          "mouth_distance_m": null,
+          "perpendicularity_error_deg": null,
+          "vision_age_s": 0.0,
+          "model": "simulated_detachment_not_fracture"
+        },
+        "model": "simulated_detachment_not_fracture"
+      },
+      "visual_jaw_closure_progress": 0.9999999999999994,
+      "detachment_requested_after_capture": false
+    }
+  ]
+}

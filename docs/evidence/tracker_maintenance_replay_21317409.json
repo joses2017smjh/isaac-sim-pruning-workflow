@@ -1,0 +1,232 @@
+{
+  "source_job_id": "21317409",
+  "source_task_outcome": "vision_stopped_failure",
+  "recorded_frames": 200,
+  "source_sha256": {
+    "report.json": "2ae6cac8779a0e4def85c24857b6d100c2549b8531ff223cd6664a6fafc34092",
+    "frames.json": "a92b11fb0fed61e7f5df682ebafdceedf73200e8618bbe0c1c7ad771a7986d32",
+    "preflight.json": "69b370e15a393c4ad09a65ad8c88dbb07d89c48690da159f7c3b87e0afb270ad"
+  },
+  "tracker_sha256": "e8a12030f2a28f41c57c89cd65fdb16a4117de2a02288b441e36b410529ad296",
+  "scope": "Offline saved-image replay only; post-stop frames do not prove continued motion, release or retreat.",
+  "results": [
+    {
+      "maintenance": false,
+      "processed_frames": 77,
+      "processed_image_digest": "c0f8185ec03556b091e588093a16713367a739931f944c7680fc0aa9c31fd3bd",
+      "new_candidates": 0,
+      "final_measurement": {
+        "state": "tracking_lost",
+        "reason": "low_confidence",
+        "target_position_world_m": null,
+        "pixel_xy": [
+          320.07757568359375,
+          237.74771118164062
+        ],
+        "feature_pixels_xy": [
+          [
+            354.5123291015625,
+            260.1513671875
+          ],
+          [
+            332.9716796875,
+            259.2197265625
+          ],
+          [
+            343.3187255859375,
+            252.24713134765625
+          ],
+          [
+            325.48760986328125,
+            223.77587890625
+          ]
+        ],
+        "feature_count": 4,
+        "initial_feature_count": 28,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.0,
+        "frame_index": 78,
+        "requires_reinitialize": true,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "feature_maintenance_enabled": false,
+        "measured_confidence": 0.14165344408580235,
+        "roundtrip_inlier_count": 4,
+        "median_roundtrip_error_px": 0.019864173606038094,
+        "patch_correlation": 0.9915741086006165,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0010180354118347335,
+        "depth_reason": null,
+        "depth_m": 0.16185851395130157,
+        "world_jump_m": 4.096144086377764e-05
+      }
+    },
+    {
+      "maintenance": true,
+      "processed_frames": 200,
+      "processed_image_digest": "b641e60f0aefb8cd9bc31ab65d425a2e1c91ddf5ee2c811406d23a2e83d38134",
+      "new_candidates": 49,
+      "final_measurement": {
+        "state": "tracking",
+        "reason": null,
+        "target_position_world_m": [
+          0.25335106511307337,
+          0.6306483695557273,
+          0.8099843314234804
+        ],
+        "pixel_xy": [
+          319.45330810546875,
+          239.90306091308594
+        ],
+        "feature_pixels_xy": [
+          [
+            354.4881896972656,
+            260.11151123046875
+          ],
+          [
+            332.85107421875,
+            259.2691955566406
+          ],
+          [
+            343.25408935546875,
+            252.2488250732422
+          ],
+          [
+            325.5099182128906,
+            223.78773498535156
+          ],
+          [
+            325.3086853027344,
+            231.88003540039062
+          ],
+          [
+            304.7369689941406,
+            310.1267395019531
+          ],
+          [
+            336.2252502441406,
+            254.68011474609375
+          ],
+          [
+            307.5398864746094,
+            227.7478485107422
+          ],
+          [
+            315.84429931640625,
+            231.09906005859375
+          ],
+          [
+            312.0560302734375,
+            233.93252563476562
+          ],
+          [
+            318.3944091796875,
+            216.40968322753906
+          ],
+          [
+            326.78070068359375,
+            228.5090789794922
+          ],
+          [
+            326.55810546875,
+            236.70375061035156
+          ],
+          [
+            331.73992919921875,
+            263.21856689453125
+          ],
+          [
+            312.78857421875,
+            217.75270080566406
+          ],
+          [
+            321.6081237792969,
+            254.27650451660156
+          ],
+          [
+            322.9458923339844,
+            256.92718505859375
+          ],
+          [
+            324.5083923339844,
+            250.20050048828125
+          ],
+          [
+            324.1854248046875,
+            229.01219177246094
+          ],
+          [
+            328.9930114746094,
+            215.98388671875
+          ],
+          [
+            316.0689697265625,
+            264.0688781738281
+          ],
+          [
+            321.0050354003906,
+            261.9944152832031
+          ],
+          [
+            310.1778564453125,
+            243.28665161132812
+          ],
+          [
+            314.9706726074219,
+            249.9884033203125
+          ],
+          [
+            305.9608459472656,
+            219.93414306640625
+          ],
+          [
+            309.95904541015625,
+            220.96437072753906
+          ],
+          [
+            320.0113220214844,
+            235.99099731445312
+          ],
+          [
+            317.88177490234375,
+            247.8789520263672
+          ]
+        ],
+        "feature_count": 28,
+        "initial_feature_count": 28,
+        "initial_feature_config": {
+          "quality_level": 0.005,
+          "min_distance_px": 3,
+          "block_size_px": 3,
+          "roi_half_size_px": [
+            14,
+            24
+          ]
+        },
+        "confidence": 0.9982481598854065,
+        "frame_index": 201,
+        "requires_reinitialize": false,
+        "method": "seeded_forward_backward_lk_optical_z",
+        "feature_maintenance_enabled": true,
+        "roundtrip_inlier_count": 28,
+        "median_roundtrip_error_px": 0.0007238567341119051,
+        "patch_correlation": 0.9982481598854065,
+        "depth_valid_fraction": 1.0,
+        "depth_window_size_px": 9,
+        "depth_spread_m": 0.0010835111141204723,
+        "depth_reason": null,
+        "depth_m": 0.16114115715026855,
+        "world_jump_m": 7.324669152826614e-06,
+        "pending_feature_pixels_for_next_frame": []
+      }
+    }
+  ]
+}

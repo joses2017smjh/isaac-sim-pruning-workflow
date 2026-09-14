@@ -1,10 +1,13 @@
 # HPC bring-up
 
-**Two-tree update — September 13, 22:36 PDT:** job `21316823` is running on
-A40 `cn-r-5`. Its fresh export contains both distinct original Blender trees,
+**Two-tree update — September 14, 11:59 PDT:** job `21316823` completed on
+A40 `cn-r-5` with 200 frames, but tracking stopped before closure. Its export contains both distinct original Blender trees,
 with shared scene placement and both included in collision/ToF queries.
-Initial feature selection is denser; the four-feature stop gate is unchanged.
-The full cut/drop/return result remains unverified. [Ledger](../SLURM_JOBS.md).
+Camera retry `21317169` reached closure but exposed deadline roundoff.
+Corrected `21317409` still stopped during closure as feature confidence fell.
+Retry `21328323` is running on A40 `cn-s-1` with bounded, next-frame-validated
+feature maintenance. The full cut/drop/return result remains unverified.
+[Ledger](../SLURM_JOBS.md) records the failures independently of rendering success.
 
 Current result: job `21247873` completed on A40 `cn-s-2` in 5m40s with
 60 frames of online RGB-D approach in the original textured Blender orchard.

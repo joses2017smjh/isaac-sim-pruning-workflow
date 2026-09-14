@@ -70,6 +70,52 @@ def test_default_initializer_quality_remains_unchanged():
     assert VisualServoConfig().feature_quality_level == 0.02
 
 
+def test_maintenance_adds_only_same_depth_candidates_after_validated_measurement(monkeypatch):
+    image, depth = _scene()
+    tracker = VisualServoTracker(VisualServoConfig(replenish_features=True))
+    tracker.initialize(image, [120, 80], depth)
+    tracker._points = tracker._points[: tracker.config.min_features].copy()
+    # Keep confidence valid to isolate maintenance from the independent gate.
+    tracker._initial_count = tracker.config.min_features * 2
+    result = tracker.update(image, depth, K, WORLD_FROM_OPTICAL)
+    assert result["state"] == "tracking"
+    assert result["feature_count"] == tracker.config.min_features
+    pending = result["pending_feature_pixels_for_next_frame"]
+    assert 0 < len(pending) <= result["feature_count"]
+    assert len(tracker._points) == result["feature_count"] + len(pending)
+    assert all(106 <= x < 134 and 54 <= y < 106 for x, y in pending)
+    for x, y in pending:
+        assert abs(depth[round(y), round(x)] - result["depth_m"]) < tracker.config.max_depth_spread_m
+    # Merely adding corners cannot rescue failed validation on the next image.
+    monkeypatch.setattr(tracker, "_track_points", lambda gray: (None, None, {"flow_reason": "test_loss"}))
+    lost = tracker.update(image, depth, K, WORLD_FROM_OPTICAL)
+    assert lost["state"] == "tracking_lost"
+    assert lost["target_position_world_m"] is None
+    assert "pending_feature_pixels_for_next_frame" not in lost
+    assert tracker.update(image, depth, K, WORLD_FROM_OPTICAL)["reason"] == "explicit_initialization_required"
+
+
+@pytest.mark.parametrize("failure", ["depth", "confidence", "appearance"])
+def test_invalid_measurements_cannot_add_maintenance_features(monkeypatch, failure):
+    image, depth = _scene()
+    tracker = VisualServoTracker(VisualServoConfig(replenish_features=True))
+    tracker.initialize(image, [120, 80], depth)
+    if failure == "depth":
+        depth[:] = np.nan
+    elif failure == "confidence":
+        tracker._initial_count = 10000
+    else:
+        image[:] = 0
+    monkeypatch.setattr(tracker, "_replenish_for_next_frame", lambda *args: pytest.fail("invalid maintenance"))
+    assert tracker.update(image, depth, K, WORLD_FROM_OPTICAL)["state"] != "tracking"
+
+
+def test_feature_maintenance_is_opt_in_and_requires_boolean():
+    assert VisualServoConfig().replenish_features is False
+    with pytest.raises(ValueError, match="replenish_features"):
+        VisualServoConfig(replenish_features="yes")
+
+
 def _tracker():
     image, depth = _scene()
     tracker = VisualServoTracker()

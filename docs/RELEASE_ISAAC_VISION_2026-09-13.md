@@ -22,5 +22,18 @@ sequence completion. Initial target identity, axis and radius come from scene
 metadata. Depth is simulator ground truth. The jaw is a visual proxy and the
 cut model is discrete rigid-piece release, not actuated CAD or wood fracture.
 
-The next GPU run uses both distinct original Blender trees. Its outcome is
-tracked separately in `SLURM_JOBS.md`; these assets are not two-tree evidence.
+Additional two-tree evidence:
+
+- `isaac_two_trees_tracking_failure.mp4`: 20 seconds / 200 frames from job
+  `21316823`. Both original trees are visible and participate in collisions
+  and ToF ray casting. 63 applied vision commands moved the tool 243.72 mm,
+  then tracking stopped at 6.3 seconds. No closure, detachment, or retreat.
+  The recording passes its eleven checks; the independent task grade fails.
+- `frames_21316823.json.gz`: original captured telemetry, compressed without
+  modification. With `render_21316823.json` renamed to `report.json` and the
+  decompressed telemetry named `frames.json`, run
+  `python tools/validate_vision_sequence.py --input-dir PATH` to reproduce
+  the rejected sequence grade.
+
+Job `21317169` tests a fixed virtual camera aligned along the jaw opening.
+The current outcome is tracked in `SLURM_JOBS.md`; no completed cut is claimed.

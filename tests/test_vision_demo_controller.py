@@ -18,6 +18,7 @@ def test_demo_uses_more_initial_corners_without_relaxing_tracking_gates():
     controller = VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE)
     config = controller.tracker.config
     assert config.feature_quality_level == 0.005
+    assert config.replenish_features is True
     assert config.roi_half_size_px == (14, 24)
     assert config.min_features == 4
     assert config.max_roundtrip_error_px == 1.0
