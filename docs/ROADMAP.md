@@ -4,6 +4,12 @@ This turns the research plan into falsifiable gates. A checked item means code
 and evidence exist in this repository; it does not mean the entire phase is
 complete.
 
+September 13 two-tree update: the exporter and scene loader now preserve both
+original `tree0` and `tree1` meshes, materials and relative transforms. Both
+participate in collisions and ToF ray casting. Local tests: **460 passed**,
+one simulator-only test deselected. A40 job `21316823` is running; rendering
+and full cut/drop/home-return evidence remain to be checked before promotion.
+
 Latest demonstrated milestone: job `21247873` captured a **six-second live
 RGB-D visual approach in the original Blender orchard**. Its 60 applied
 vision commands moved the tool 230.08 mm; the run ended 35.01 mm from the
@@ -11,8 +17,9 @@ tracked target at the mouth, before closure. All ten recording checks passed,
 but the outcome is `vision_approach_incomplete`. The original six-joint UR5e,
 mock-pruner asset, and reviewed ToF offsets remain unchanged. Full-duration
 retry `21300015` lost tracking at 5.5 seconds and was cancelled after 10m53s
-on `cn-gpu7`, with partial evidence preserved. CPU diagnosis is underway;
-no further retry is submitted at this checkpoint. Cutting remains unvalidated. See the
+on `cn-gpu7`, with partial evidence preserved. CPU replay informed the denser
+initial feature selection now under test in two-tree job `21316823`.
+Cutting remains unvalidated. See the
 [recording and evidence](ISAAC_RENDER.md).
 
 ## Phase 0 — contracts and compute
@@ -244,8 +251,9 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       lost tracking at index 54 (5.5 seconds): only three round-trip inliers
       remained, below the unchanged minimum four. It latched `vision_invalid`,
       without closure or release, and was cancelled after 10m53s. The 71-frame
-      partial capture and incomplete report are preserved. CPU diagnosis
-      precedes the next retry; the full sequence remains unvalidated.
+      partial capture and incomplete report are preserved. CPU replay informed
+      the denser initial features now under test in two-tree run `21316823`;
+      the full sequence remains unvalidated.
 - [ ] Evaluate more branch placements and failure cases before reporting a
       task-success rate or collision-avoidance claim.
 

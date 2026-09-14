@@ -8,6 +8,10 @@ Simulate vision-guided UR5e approach in a textured Blender orchard with dual-ToF
 · [Recorded evidence](docs/evidence/render_21247873.json)
 · [Failures and reproduction](docs/ISAAC_RENDER.md)
 
+This six-second clip is the earlier one-tree approach. The current renderer
+loads both distinct original Blender trees, with both in collision and ToF
+queries. Two-tree job `21316823` is running; its task outcome is not yet verified.
+
 Actual Isaac/PhysX motion in the original textured orchard: **60 applied
 vision commands, 230.08 mm tool displacement, six seconds recorded**. The
 original UR5e and mock pruner use wrist RGB-D tracking and a live ToF guard.
@@ -104,8 +108,8 @@ actuated CAD blades, cutting forces, or wood fracture.
 | CPU clear approach, seed 7 | Geometry accepted after 42 frames; 0.65° angle error | Ideal tool motion, not physical cutting |
 | CPU sensor blackout / nearby wood | Stopped at 20 frames / rejected at 35 frames | Failure scenarios |
 | CPU range fusion | Nominal RMSE 6.08 → 5.49 mm; blackout 8.15 → 9.57 mm | Synthetic metric estimates; blackout coverage differs |
-| CPU test suite | 436 passed; 1 simulator test deselected | Local Python 3.12 with generated assets; includes independent full-sequence grading; GPU integration is a separate gate |
-| GitHub CI, commit `a149a42` | 356 passed; 8 skipped; 1 deselected | Clean runner without the external GPU/runtime assets |
+| CPU test suite | 460 passed; 1 simulator test deselected | Local Python 3.12 with generated assets; includes two-tree export and independent sequence grading; GPU integration is a separate gate |
+| GitHub CI, commit `a121afe` | 444 passed; 8 skipped; 1 deselected | Clean runner without the external GPU/runtime assets; previous checkpoint |
 
 Evidence preserves failed runs, source hashes, runtime versions, and sensor
 misses. Contact instrumentation and one no-contact episode do not prove
@@ -119,8 +123,13 @@ Full-duration retry `21300015` lost tracking at 5.5 seconds: three image feature
 passed the round-trip check, below the unchanged minimum four. The controller
 latched a stop, without closure or release. The job was cancelled after 10m53s;
 71 partial frames and its incomplete report remain preserved. Earlier retry
-`21298152` was cancelled for capture throughput. CPU diagnosis is underway;
-no further GPU retry has been submitted at this checkpoint.
+`21298152` was cancelled for capture throughput. CPU replay reproduced the
+tracking failure; corrected two-tree GPU job `21316823` is now running.
+
+The two-tree export preserves original `tree0` and `tree1` meshes and relative
+placement; it does not duplicate a tree. Job `21316823` tests it on an A40 with
+denser initial feature selection. The four-inlier tracking minimum and cut
+thresholds remain unchanged. [Preserved partial tracking-stop GIF](docs/demo/isaac_blender_tracking_stop.gif).
 
 Remaining demo gate: complete approach, gated surrogate release, measured piece
 drop, and retreat. Separate research work: learned recognition/depth, CuRobo

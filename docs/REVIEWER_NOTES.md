@@ -1,5 +1,11 @@
 # Reviewer audit and remaining work
 
+Latest implementation: both distinct source Blender trees export and load with
+materials, colliders and ToF mesh coverage. Local suite: 460 passed, one
+simulator-only test deselected. Two-tree GPU job `21316823` is running; the
+public six-second approach below remains earlier **one-tree** evidence, not
+proof of the new scene or a completed cut. Failure clips remain available.
+
 Reviewed source, tests, configuration, package metadata, CI, and tracked
 evidence through the September 13 review. The repository now contains a
 [six-second Blender-orchard visual approach](ISAAC_RENDER.md), the earlier
@@ -49,8 +55,8 @@ task. There is no learned policy or completed autonomous pruning system.
   features passed the round-trip check, below the unchanged minimum four.
   It latched `vision_invalid`, with no closure or release, and was cancelled
   after 10m53s. Its 71-frame partial recording and incomplete report are
-  preserved. CPU diagnosis is underway; no further GPU retry is submitted at
-  this checkpoint. The full sequence remains unvalidated. The
+  preserved. CPU replay informed the denser initial features now under test in
+  two-tree run `21316823`. The full sequence remains unvalidated. The
   ToF stop gate is diagnostic, not a hardware safety controller; noise is disabled.
 - **CuRobo and training are scaffolds.** The baseline runner reports CuRobo
   readiness without executing a plan. `tools/train.py` always exits. There are

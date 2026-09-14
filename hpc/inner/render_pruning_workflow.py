@@ -311,13 +311,14 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                         stage,
                         Path(
                             os.environ.get(
-                                "PRUNING_BLENDER_SCENE_DIR", str(root / "artifacts/blender_scene/orchard_v1")
+                                "PRUNING_BLENDER_SCENE_DIR", str(root / "artifacts/blender_scene/orchard_two_trees_v1")
                             )
                         ),
                         target_position_w=target_position,
                         base_height=base_height,
                         yaw_degrees=150.0,
                         component_first_vertex=8235,
+                        tree_count=2,
                     )
                     selected = self.blender_scene.selected_mesh_prim_path
                     targets = [path for path in self.blender_scene.evidence["collision_mesh_paths"] if path != selected]
@@ -562,8 +563,8 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         overview_tf.Set(
             Gf.Matrix4d()
             .SetLookAt(
-                Gf.Vec3d(*((3.0, -3.0, 2.3) if blender_mode else (1.75, -1.65, 1.75))),
-                Gf.Vec3d(*((0.9, 0.7, 1.3) if blender_mode else (0.36, 0.47, 0.66))),
+                Gf.Vec3d(*((4.8, -4.2, 3.2) if blender_mode else (1.75, -1.65, 1.75))),
+                Gf.Vec3d(*((0.5, 1.1, 1.65) if blender_mode else (0.36, 0.47, 0.66))),
                 Gf.Vec3d(0, 0, 1),
             )
             .GetInverse()

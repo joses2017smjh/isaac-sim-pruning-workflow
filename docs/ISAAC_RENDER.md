@@ -9,6 +9,13 @@ policy or uses the analytic CPU demo's generated camera images.
 
 ## Recorded Blender/live-vision approach
 
+The clip below is the earlier **one-tree** capture. Current code loads both
+distinct source trees from a [new verified export](evidence/blender_two_tree_export.json).
+Job `21316823` is running on A40 `cn-r-5` as of September 13, 22:36 PDT.
+Both trees retain bark maps, original relative placement, collision meshes,
+and ToF ray-cast coverage. The overview camera is wider to include both trees;
+close and wrist camera settings are unchanged. No two-tree task pass is claimed yet.
+
 ![Original Blender orchard with online visual servoing and live sensors](demo/isaac_blender_live_approach.gif)
 
 Job `21247873` completed on A40 `cn-s-2` in **5m40s**, recording **60 frames /
@@ -43,7 +50,16 @@ only three features passed the round-trip check, below the unchanged minimum
 four. The controller latched `vision_invalid`, with no closure or detachment.
 The job was cancelled after 10m53s on `cn-gpu7`; its 71 saved telemetry frames
 and incomplete `report.json` are preserved, not promoted to a terminal result.
-CPU diagnosis is underway; no further GPU retry is submitted at this checkpoint.
+CPU replay reproduced that loss and supported denser initial feature selection:
+quality level 0.005 instead of 0.02, with the same four-inlier, 1 px round-trip,
+appearance, depth, and cut gates. This is now under GPU test in `21316823`.
+Replay after a recorded stop cannot prove counterfactual motion or cutting.
+
+[Partial/cancelled tracking-stop GIF](demo/isaac_blender_tracking_stop.gif) ·
+[partial report](evidence/render_partial_21300015.json) ·
+[independent rejected sequence grade](evidence/vision_sequence_21300015.json).
+The clip uses 71 saved telemetry frames (7.1 seconds), labels cancellation,
+and preserves the unfinished report's `not_started` field without rewriting it.
 A completed video alone will not establish a completed task:
 [`validate_vision_sequence.py`](../tools/validate_vision_sequence.py) independently
 requires one gated release, subsequent measured fall, home-directed retreat,
@@ -61,7 +77,9 @@ Neither recording path loads Blender `.ply` files.
 - **Blender integration (`21247873`, earlier failure `21222710`):**
   [`export_blender_orchard.py`](../tools/export_blender_orchard.py) reads the
   existing `Computer_Vision/orchard_template.blend` with Blender 4.2.19 LTS and
-  exports `environment.usdc`, `tree0.usdc`, UVs, and six bark/soil image maps.
+  exports `environment.usdc`, tree USDs, UVs, and six bark/soil image maps.
+  Earlier jobs used `tree0` only. `--tree-count 2` now exports both original
+  `tree0` and `tree1`, rebased by the same origin; neither is a synthetic copy.
   [`blender_demo_scene.py`](../source/isaaclab_pruning/isaaclab_pruning/sim/blender_demo_scene.py)
   references those assets into Isaac, adds collision geometry, and selects an
   existing spur component. The source `.blend` is not modified. Its recorded
@@ -260,11 +278,11 @@ with Blender 4.2 (the recorded export used 4.2.19):
 ```bash
 blender --background --factory-startup --disable-autoexec --python tools/export_blender_orchard.py -- \
   --template /path/to/orchard_template.blend --texture-root /path/to/textures \
-  --output-dir artifacts/blender_scene/orchard_v1
+  --output-dir artifacts/blender_scene/orchard_two_trees_v1 --tree-count 2
 ```
 
 This refuses to overwrite an existing export. The template must contain the
-documented `tree0_SPUR`, `tree0_BRANCH`, `tree0_TRUNK`, ground, posts and wires;
+documented `tree0` and `tree1` SPUR/BRANCH/TRUNK meshes, ground, posts and wires;
 an arbitrary Blender scene is not a drop-in replacement. Then submit:
 
 ```bash

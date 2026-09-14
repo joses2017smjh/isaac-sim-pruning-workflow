@@ -74,6 +74,20 @@ def connected_vertices(vertex_count: int, edges) -> list[list[int]]:
     return sorted(components.values(), key=lambda indices: indices[0])
 
 
+def source_tree_groups(objects, tree_count):
+    """Select distinct original trees, never synthesize a missing second tree."""
+    if isinstance(tree_count, bool) or not isinstance(tree_count, int) or tree_count not in (1, 2):
+        raise ValueError("tree_count must be 1 or 2")
+    groups = [
+        [obj for obj in objects if obj.type == "MESH" and obj.name.startswith(f"tree{index}_")]
+        for index in range(tree_count)
+    ]
+    for index, group in enumerate(groups):
+        if {obj.name for obj in group} != {f"tree{index}_{part}" for part in ("TRUNK", "BRANCH", "SPUR")}:
+            raise ValueError(f"Expected original tree{index}_TRUNK, tree{index}_BRANCH and tree{index}_SPUR meshes")
+    return groups
+
+
 def branch_candidates(obj, origin, limit: int = 10) -> dict:
     """Measured connected-component geometry, not a perception result or cut label."""
     import numpy as np
@@ -122,10 +136,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--texture-root", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--inspect-only", action="store_true")
+    parser.add_argument(
+        "--tree-count",
+        type=int,
+        choices=(1, 2),
+        default=1,
+        help="Export original tree0 only, or both original tree0 and tree1 at their shared scene origin.",
+    )
     args = parser.parse_args(argv)
     # Check before even writing the inventory: provenance belongs to its export.
     if not args.inspect_only:
-        for filename in ("environment.usdc", "tree0.usdc", "manifest.json"):
+        for filename in ("environment.usdc", "tree0.usdc", "tree1.usdc", "manifest.json"):
             if (args.output_dir / filename).exists():
                 raise FileExistsError(args.output_dir / filename)
     import bpy
@@ -219,10 +240,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.inspect_only:
         return 0
 
-    tree = [obj for obj in bpy.context.scene.objects if obj.type == "MESH" and obj.name.startswith("tree0_")]
+    tree_groups = source_tree_groups(bpy.context.scene.objects, args.tree_count)
+    tree = [obj for group in tree_groups for obj in group]
     environment = [obj for obj in bpy.context.scene.objects if export_role(obj.name, obj.type)]
     trunk = bpy.data.objects.get("tree0_TRUNK")
-    if trunk is None or len(tree) != 3:
+    if trunk is None:
         raise ValueError("Expected original tree0_TRUNK, tree0_BRANCH and tree0_SPUR meshes")
     origin = trunk.matrix_world.translation.copy()
     candidates = {obj.name: branch_candidates(obj, origin) for obj in tree if not obj.name.endswith("TRUNK")}
@@ -302,7 +324,8 @@ def main(argv: list[str] | None = None) -> int:
             ],
         }
 
-    exports = [export(environment, "environment.usdc", "/BlenderOrchard"), export(tree, "tree0.usdc", "/BlenderTree")]
+    exports = [export(environment, "environment.usdc", "/BlenderOrchard")]
+    exports.extend(export(group, f"tree{index}.usdc", "/BlenderTree") for index, group in enumerate(tree_groups))
     manifest = {
         "schema_version": 1,
         "source_template": str(args.template.resolve()),
@@ -311,6 +334,10 @@ def main(argv: list[str] | None = None) -> int:
         "blender_version": bpy.app.version_string,
         "units": "meters",
         "up_axis": "Z",
+        "tree_count": args.tree_count,
+        "tree_layout": (
+            "Original distinct source meshes, all rebased by tree0_TRUNK origin; relative placement unchanged"
+        ),
         "source_origin_m": list(origin),
         "export_translation_m": list(-origin),
         "source_scene_units": {

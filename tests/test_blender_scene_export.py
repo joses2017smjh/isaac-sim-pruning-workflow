@@ -53,6 +53,26 @@ def test_connected_components_keep_original_vertex_ids():
     assert exporter().connected_vertices(6, [(1, 2), (3, 4), (2, 0)]) == [[0, 1, 2], [3, 4], [5]]
 
 
+def test_two_tree_selection_uses_distinct_original_meshes():
+    objects = [
+        SimpleNamespace(name=f"tree{i}_{part}", type="MESH") for i in range(2) for part in ("TRUNK", "BRANCH", "SPUR")
+    ]
+    objects.append(SimpleNamespace(name="tree1_camera", type="CAMERA"))
+    groups = exporter().source_tree_groups(objects, 2)
+    assert [[obj.name for obj in group] for group in groups] == [
+        [f"tree{i}_{part}" for part in ("TRUNK", "BRANCH", "SPUR")] for i in range(2)
+    ]
+    assert len(exporter().source_tree_groups(objects, 1)) == 1
+    with pytest.raises(ValueError, match="tree1_TRUNK"):
+        exporter().source_tree_groups(objects[:3], 2)
+
+
+@pytest.mark.parametrize("count", [0, 3, True, 1.0, "2", None])
+def test_invalid_export_tree_count_is_rejected(count):
+    with pytest.raises(ValueError, match="tree_count"):
+        exporter().source_tree_groups([], count)
+
+
 def test_bad_mesh_edge_is_rejected():
     with pytest.raises(ValueError):
         exporter().connected_vertices(3, [(0, 3)])

@@ -1,5 +1,11 @@
 # HPC bring-up
 
+**Two-tree update — September 13, 22:36 PDT:** job `21316823` is running on
+A40 `cn-r-5`. Its fresh export contains both distinct original Blender trees,
+with shared scene placement and both included in collision/ToF queries.
+Initial feature selection is denser; the four-feature stop gate is unchanged.
+The full cut/drop/return result remains unverified. [Ledger](../SLURM_JOBS.md).
+
 Current result: job `21247873` completed on A40 `cn-s-2` in 5m40s with
 60 frames of online RGB-D approach in the original textured Blender orchard.
 It applied 60 vision commands and moved 230.08 mm; closure, release and retreat
@@ -9,8 +15,8 @@ from the full sequence. Retry `21300015` was cancelled after 10m53s on `cn-gpu7`
 following tracking loss at frame index 54 (5.5 seconds): three round-trip
 inliers remained, below the unchanged minimum four. The controller latched
 `vision_invalid`; no closure or detachment occurred. Its 71 partial frames and
-incomplete report remain preserved. CPU diagnosis is underway; no further GPU
-retry is submitted at this checkpoint. Earlier `21298152` was cancelled for
+incomplete report remain preserved. CPU replay informed the denser initial
+feature selection now under test in `21316823`. Earlier `21298152` was cancelled for
 capture throughput; `21300015` skipped unused intermediate RTX renders without
 changing physics steps or manual camera quality. Cut/drop/home-return validation
 remains pending. See the [current job ledger](../SLURM_JOBS.md).

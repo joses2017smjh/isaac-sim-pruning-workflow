@@ -170,3 +170,30 @@ def test_actual_export_target_materials_and_collision_contract(yaw_degrees):
     assert scene.detach() is True
     assert scene.detach() is False
     assert UsdPhysics.RigidBodyAPI(scene.body).GetKinematicEnabledAttr().Get() is False
+
+
+def test_two_original_tree_export_has_separate_materials_and_colliders():
+    pytest.importorskip("pxr.Usd")
+    from pxr import Usd, UsdGeom, UsdPhysics, UsdShade
+
+    from isaaclab_pruning.sim.blender_demo_scene import spawn_blender_demo_scene
+
+    export_dir = Path(__file__).resolve().parents[1] / "artifacts/blender_scene/orchard_two_trees_v1"
+    if not (export_dir / "manifest.json").is_file():
+        pytest.skip("Optional original two-tree export is not installed")
+    stage = Usd.Stage.CreateInMemory()
+    scene = spawn_blender_demo_scene(stage, export_dir, yaw_degrees=150, component_first_vertex=8235, tree_count=2)
+    assert scene.evidence["tree_count"] == 2
+    assert len(scene.evidence["tree_paths"]) == 2
+    assert scene.evidence["usd_sha256"]["tree0.usdc"] != scene.evidence["usd_sha256"]["tree1.usdc"]
+    assert len(scene.evidence["collision_mesh_paths"]) == 25
+    second = stage.GetPrimAtPath(scene.evidence["tree_paths"][1])
+    meshes = [prim for prim in Usd.PrimRange(second) if prim.IsA(UsdGeom.Mesh)]
+    assert len(meshes) == 3
+    for prim in meshes:
+        assert prim.HasAPI(UsdPhysics.CollisionAPI)
+        assert not prim.HasAPI(UsdPhysics.RigidBodyAPI)
+        assert str(prim.GetPath()) in scene.evidence["collision_mesh_paths"]
+        assert UsdShade.MaterialBindingAPI(prim).ComputeBoundMaterial()[0]
+        assert UsdGeom.PrimvarsAPI(prim).GetPrimvar("st").HasValue()
+    assert scene.evidence["partition"]["target_center_error_m"] < 1e-6

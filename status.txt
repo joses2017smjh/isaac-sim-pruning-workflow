@@ -1,4 +1,13 @@
 isaac-sim-pruning-workflow — checkpoint at 2026-09-13 PDT
+
+22:36 PDT UPDATE: two original Blender trees now export/load at their source
+relative placement, with both in collision and ToF queries. No duplicated
+tree asset. Export: artifacts/blender_scene/orchard_two_trees_v1/.
+GPU job 21316823 RUNNING on A40 cn-r-5: 200 frames, 25-minute budget.
+Denser initial image features preserve the four-inlier tracking/cut gates.
+Full two-tree cut/drop/home-return outcome remains unverified.
+460 local tests pass, 1 simulator-only test deselected; Ruff passes.
+Earlier success and failure evidence remains one-tree footage.
 Branch: develop
 Owner / Git author: Jose Sanchez
 GitHub: https://github.com/joses2017smjh/isaac-sim-pruning-workflow
@@ -33,7 +42,7 @@ BLENDER / LIVE-VISION APPROACH — RECORDED; CUT VALIDATION PENDING
   controller latched vision_invalid and held, with no closure or detachment.
   Preserved telemetry covers 71 frames / 7.1 seconds; report.json remains an
   incomplete recording checkpoint, not a fabricated terminal task report.
-  CPU tracking diagnosis is underway; no further GPU retry submitted yet.
+  CPU replay informed denser initial features now under test in job 21316823.
   See SLURM_JOBS.md for current queue state and exact accounting.
 
   The existing Computer_Vision/orchard_template.blend now exports to USD with

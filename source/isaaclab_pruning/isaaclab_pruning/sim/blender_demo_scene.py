@@ -16,6 +16,7 @@ from pathlib import Path
 import numpy as np
 
 TREE_PATH = "/World/envs/env_0/Tree"
+SECOND_TREE_PATH = "/World/envs/env_0/Tree1"
 ORCHARD_PATH = "/World/Orchard"
 PROXY_PATH = "/World/PruningJawProxy"
 
@@ -281,6 +282,7 @@ def spawn_blender_demo_scene(
     base_height=0.70,
     yaw_degrees=0,
     component_first_vertex=7524,
+    tree_count=1,
 ):
     """Import the original orchard and move one real spur into the robot workspace.
 
@@ -289,6 +291,8 @@ def spawn_blender_demo_scene(
     """
     from pxr import Gf, Usd, UsdGeom, UsdPhysics
 
+    if isinstance(tree_count, bool) or not isinstance(tree_count, int) or tree_count not in (1, 2):
+        raise ValueError("tree_count must be 1 or 2")
     export_dir = Path(export_dir).resolve()
     manifest = json.loads((export_dir / "manifest.json").read_text())
     listed = manifest["branch_geometry_candidates"]["tree0_SPUR"]["candidates"]
@@ -308,13 +312,19 @@ def spawn_blender_demo_scene(
     if manifest.get("units") != "meters" or manifest.get("up_axis") != "Z":
         raise ValueError("Export must explicitly use meters and Z-up")
     files = {item["path"]: item["sha256"] for item in manifest["artifacts"]}
-    for name in ("environment.usdc", "tree0.usdc"):
+    tree_sources = [(TREE_PATH, "tree0.usdc")]
+    if tree_count == 2:
+        if manifest.get("tree_count") != 2:
+            raise ValueError("Two-tree mode requires a verified two-tree export, not a duplicated tree0")
+        tree_sources.append((SECOND_TREE_PATH, "tree1.usdc"))
+    sources = [*tree_sources, (ORCHARD_PATH, "environment.usdc")]
+    for _, name in sources:
         if _hash(export_dir / name) != files[name]:
             raise ValueError(f"Export provenance mismatch: {name}")
     angle = math.radians(yaw_degrees)
     rotation = np.array([[math.cos(angle), -math.sin(angle), 0], [math.sin(angle), math.cos(angle), 0], [0, 0, 1]])
     translation = target - rotation @ np.asarray(candidate["center_m"])
-    for path, filename in ((TREE_PATH, "tree0.usdc"), (ORCHARD_PATH, "environment.usdc")):
+    for path, filename in sources:
         if stage.GetPrimAtPath(path):
             raise ValueError(f"Refusing to replace existing scene prim {path}")
         prim = UsdGeom.Xform.Define(stage, path)
@@ -337,7 +347,7 @@ def spawn_blender_demo_scene(
     partition_evidence["target_center_error_m"] = center_error
     selected_path = str(piece.GetPath())
     collision_paths = []
-    for path in (TREE_PATH, ORCHARD_PATH):
+    for path, _ in sources:
         for prim in Usd.PrimRange(stage.GetPrimAtPath(path)):
             if not prim.IsA(UsdGeom.Mesh) or str(prim.GetPath()).startswith(f"{ORCHARD_PATH}/ground/"):
                 continue
@@ -370,11 +380,14 @@ def spawn_blender_demo_scene(
         "export_dir": str(export_dir),
         "manifest_sha256": _hash(export_dir / "manifest.json"),
         "source_blend_sha256": manifest["source_sha256"],
-        "usd_sha256": {key: files[key] for key in ("environment.usdc", "tree0.usdc")},
+        "usd_sha256": {filename: files[filename] for _, filename in sources},
         "translation_w_m": translation.tolist(),
         "yaw_degrees": float(yaw_degrees),
         "robot_base_height_m": float(base_height),
         "tree_path": TREE_PATH,
+        "tree_count": tree_count,
+        "tree_paths": [path for path, _ in tree_sources],
+        "tree_layout": "Distinct original source trees; shared rigid transform preserves relative placement",
         "orchard_path": ORCHARD_PATH,
         "source_mesh_path": source_mesh_path,
         "selected_mesh_path": selected_path,
