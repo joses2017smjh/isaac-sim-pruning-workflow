@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "scope": "Public aggregate summary, not raw sensor telemetry. Full new captures and provenance remain local pending permission to publish internal cluster paths.",
+  "scene": "Two distinct original Blender trees, original UR5e and mock pruner; one selected spur target",
+  "success": {
+    "job_id": "21328323",
+    "scheduler_state": "COMPLETED",
+    "elapsed_s": 953,
+    "gpu": "A40",
+    "frames": 200,
+    "duration_s": 20,
+    "capture_checks_passed": 11,
+    "sequence_checks_passed": 17,
+    "sequence_checks_total": 17,
+    "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+    "applied_vision_commands": 68,
+    "maximum_tool_displacement_m": 0.26294336755154185,
+    "detach_event_frame_index": 77,
+    "detach_event_time_s": 7.8,
+    "release_mouth_residual_m": 0.004990526676115525,
+    "release_alignment_error_deg": 0.3371971841733101,
+    "maximum_pre_detach_piece_motion_m": 0.0,
+    "maximum_post_detach_drop_m": 0.8094920702278614,
+    "final_home_error_m": 7.504033036240442e-7,
+    "post_detach_home_distance_reduction_m": 0.26517957111330964,
+    "maximum_captured_contact_force_n": 0.0,
+    "recorded_stops": 0,
+    "source_sha256": {
+      "report.json": "e3d6d2a02920328659b5e30234f75c1a6f98a038044355637c74314c38213b6a",
+      "frames.json": "30650dbec064a0a01e56bd1d9f2a8a0477f47b4d3c38a5061a692390941033d6",
+      "preflight.json": "bc3256498671f6621ea154591c1c29b07bb77ca09989e352005cc75766fcf5bf",
+      "sequence_grade.json": "e3d97e6a4ecbfa0ca24f0c0d7e7e1b9d5d98d0249ed64bc4ce4d8ec2b002ae8e"
+    }
+  },
+  "failures": [
+    {
+      "job_id": "21316823",
+      "frames": 200,
+      "stop_time_s": 6.3,
+      "reason": "incoherent_motion",
+      "applied_vision_commands": 63,
+      "maximum_tool_displacement_mm": 243.72,
+      "release_events": 0,
+      "sequence_passed": false
+    },
+    {
+      "job_id": "21317169",
+      "frames": 111,
+      "scheduler_state": "CANCELLED",
+      "reason": "Closure quotient at 7.8 seconds was 0.9999999999999994; tracking failed next frame",
+      "release_events": 0,
+      "sequence_passed": false
+    },
+    {
+      "job_id": "21317409",
+      "frames": 200,
+      "stop_time_s": 7.7,
+      "reason": "low_confidence",
+      "confidence_at_stop": 0.14165344408580235,
+      "minimum_confidence": 0.15,
+      "applied_vision_commands": 68,
+      "maximum_tool_displacement_mm": 262.93,
+      "release_events": 0,
+      "sequence_passed": false
+    }
+  ],
+  "tracker_replay": {
+    "source_job_id": "21317409",
+    "maintenance_off_frames_processed": 77,
+    "maintenance_on_frames_processed": 200,
+    "scope": "Saved-image replay; post-stop images do not prove counterfactual continued motion"
+  },
+  "limitations": [
+    "One known target in a two-tree scene, not pruning both trees or a success-rate evaluation",
+    "Visual jaw surrogate and discrete PhysX piece release, not actuated CAD blades or wood fracture",
+    "Scene metadata supplies initial pixel, identity, axis and radius; depth is simulator ground truth",
+    "Capture-rate contact checks do not certify continuous collision avoidance",
+    "Tracking loss after completed release is allowed during home-directed retreat",
+    "Virtual camera mount and artistic lighting are not hardware or radiometric calibration"
+  ]
+}

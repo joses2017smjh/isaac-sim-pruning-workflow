@@ -353,6 +353,14 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                     dome = UsdLux.DomeLight.Define(stage, "/World/Dome")
                     dome.CreateIntensityAttr(450.0)
                     dome.CreateColorAttr(Gf.Vec3f(0.82, 0.90, 1.0))
+                    from isaaclab_pruning.sim.daylight import apply_daylight
+
+                    self.blender_scene.evidence["daylight"] = apply_daylight(
+                        sun, dome, os.environ.get("PRUNING_DAYLIGHT", "source")
+                    )
+                    self.blender_scene.evidence["presentation_overrides"]["capture_sun_intensity"] = float(
+                        sun.GetIntensityAttr().Get()
+                    )
                     self.blender_scene.evidence["sky_fill"] = (
                         "Constant blue-white dome at intensity 450; not original procedural sky"
                     )

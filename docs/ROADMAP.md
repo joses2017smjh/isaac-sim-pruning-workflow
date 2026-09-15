@@ -4,25 +4,17 @@ This turns the research plan into falsifiable gates. A checked item means code
 and evidence exist in this repository; it does not mean the entire phase is
 complete.
 
-September 13 two-tree update: the exporter and scene loader now preserve both
-original `tree0` and `tree1` meshes, materials and relative transforms. Both
-participate in collisions and ToF ray casting. Local tests: **479 passed**,
-one simulator-only test deselected. Two-tree rendering passed in `21316823`,
-but tracking/closure failures remain. Retry `21328323` tests bounded feature
-maintenance after camera and deadline fixes. Full cut/drop/home-return evidence
-remains to be checked before promotion.
+September 14: the two-tree sequence in `21328323` passes all 17 independent
+checks: live approach, gated surrogate release, 809.49 mm measured drop and
+<0.001 mm final home error. Both original source trees participate in collisions
+and ToF queries; only one known spur is selected. Local tests: **489 passed**,
+one simulator-only test deselected, including ten daylight tests.
 
-Latest demonstrated milestone: job `21247873` captured a **six-second live
-RGB-D visual approach in the original Blender orchard**. Its 60 applied
-vision commands moved the tool 230.08 mm; the run ended 35.01 mm from the
-tracked target at the mouth, before closure. All ten recording checks passed,
-but the outcome is `vision_approach_incomplete`. The original six-joint UR5e,
-mock-pruner asset, and reviewed ToF offsets remain unchanged. Full-duration
-retry `21300015` lost tracking at 5.5 seconds and was cancelled after 10m53s
-on `cn-gpu7`, with partial evidence preserved. CPU replay informed the denser
-initial feature selection now under test in two-tree job `21316823`.
-Cutting remains unvalidated. See the
-[recording and evidence](ISAAC_RENDER.md).
+Morning/evening three-second lighting probes `21329420` / `21329421` are
+queued; their images and task behavior remain unvalidated.
+[Recording](ISAAC_RENDER.md) · [aggregate results](evidence/two_tree_summary_2026-09-14.json).
+The [browser replay studio](ROBOT_STUDIO_PLAN.md) is a proposal awaiting approval,
+not a completed web app.
 
 ## Phase 0 — contracts and compute
 
@@ -225,7 +217,7 @@ and the stop gate is a diagnostic guard, not a validated hardware safety system.
 This milestone closes the requested robot/environment/sensor visualization,
 not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.md).
 
-## Blender/live-vision demo — approach recorded, cut validation pending
+## Blender/live-vision demo — one two-tree sequence validated
 
 - [x] Load the original textured orchard and select an existing spur component
       without editing the source `.blend` or substituting the robot.
@@ -245,21 +237,17 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       six-second recording shows a 230.08 mm maximum tool displacement and
       final 35.01 mm mouth-to-tracked-target distance. Both ToF streams changed;
       valid-ray fractions were 33.54% / 33.28%, with noise disabled.
-- [ ] Complete and validate an uninterrupted vision approach, surrogate closure,
-      measured selected-piece drop, and retreat. Job `21247873` ended before
-      closure, with no detachment or retreat. Full-duration job `21298152` was
-      cancelled after 6m05s because RTX 8000 capture throughput could not meet
-      its 25-minute budget; partial files remain preserved. Retry `21300015`
-      lost tracking at index 54 (5.5 seconds): only three round-trip inliers
-      remained, below the unchanged minimum four. It latched `vision_invalid`,
-      without closure or release, and was cancelled after 10m53s. The 71-frame
-      partial capture and incomplete report are preserved. CPU replay informed
-      the denser initial features now under test in two-tree run `21316823`;
-      the full sequence remains unvalidated.
+- [x] Independently validate approach, surrogate release, measured fall and
+      home return in `21328323`: all 17 sequence checks pass for one target.
+- [x] Keep both distinct original Blender trees in collision and ToF queries.
+- [x] Add ten tests for morning/noon/evening world-space sunlight presets.
+- [ ] Validate queued morning/evening lighting probes; these short captures
+      do not establish full-sequence task success under changed illumination.
+- [ ] Approve and build the replay-first browser studio one milestone at a time.
 - [ ] Evaluate more branch placements and failure cases before reporting a
       task-success rate or collision-avoidance claim.
 
-The recorded outcome is `vision_approach_incomplete`. Known mesh metadata
+The latest recorded outcome is `vision_guided_simulated_detachment_and_retreat`. Known mesh metadata
 provides branch identity, axis, and radius; classical image tracking supplies
 position updates. This demonstration does not implement learned recognition,
 learned depth, PPO training, CuRobo execution, calibrated physical cameras,

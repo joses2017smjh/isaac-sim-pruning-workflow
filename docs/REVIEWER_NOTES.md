@@ -1,20 +1,19 @@
 # Reviewer audit and remaining work
 
-Latest implementation: both distinct source Blender trees export and load with
-materials, colliders and ToF mesh coverage. Local suite: 479 passed, one
-simulator-only test deselected. Two-tree GPU job `21316823` rendered all 200
-frames but stopped before closure; `21317409` stopped during closure.
-Retry `21328323` tests bounded feature maintenance. The public six-second
-approach remains earlier **one-tree** evidence, not a completed cut.
-Two-tree failure clips and independent rejected grades remain available.
+Latest milestone: two-tree job `21328323` passes all 17 independent sequence
+checks: 68 applied vision commands, one surrogate release, 809.49 mm measured
+piece drop and <0.001 mm final home error. Both original trees remain in the
+scene, but only one known spur is selected. Earlier tracking and closure
+failures remain visible beside the successful recording.
 
-Reviewed source, tests, configuration, package metadata, CI, and tracked
-evidence through the September 13 review. The repository now contains a
-[six-second Blender-orchard visual approach](ISAAC_RENDER.md), the earlier
-14-second Isaac robot inspection, and a runnable CPU pruning demo. Job
-`21247873` applied 60 live RGB-D vision commands and moved the tool 230.08 mm.
-It ended before closure: `vision_approach_incomplete`, not a completed pruning
-task. There is no learned policy or completed autonomous pruning system.
+Local CPU suite: **489 passed, one simulator-only test deselected**. Ruff passes
+on the pruning source/tests/tools and renderer (110 files formatted). Running
+Ruff across the entire inherited repository still reports 146 lint errors and
+14 files needing formatting; the maintained CI scope is narrower.
+
+The source, tests, configuration and asset interfaces were rechecked September 14.
+Morning/evening lighting probes are queued. The [browser replay studio](ROBOT_STUDIO_PLAN.md)
+is a proposal awaiting approval, not a shipped interface.
 
 ## What a reviewer will notice
 
@@ -47,19 +46,18 @@ task. There is no learned policy or completed autonomous pruning system.
   separately labelled offline diagnostic. The physical camera model and optical
   calibration remain unknown; the rendered mount is simulation-defined.
   CPU-demo metric estimates are synthetic.
-- **No physical cut is demonstrated.** The original six-joint UR5e, reviewed
-  mock pruner, and dual-ToF offsets remain unchanged. The Blender integration
-  adds a visual jaw surrogate and gated rigid-piece detachment, not actuated
-  blade CAD or wood-fracture mechanics. Job `21247873` recorded no closure or
-  detachment; its final tracked-mouth distance was 35.01 mm. Full-duration job
-  `21298152` was cancelled after 6m05s for capture throughput, with partial
-  files preserved. Retry `21300015` lost tracking at 5.5 seconds when only three
-  features passed the round-trip check, below the unchanged minimum four.
-  It latched `vision_invalid`, with no closure or release, and was cancelled
-  after 10m53s. Its 71-frame partial recording and incomplete report are
-  preserved. CPU replay informed the denser initial features now under test in
-  two-tree run `21316823`. The full sequence remains unvalidated. The
-  ToF stop gate is diagnostic, not a hardware safety controller; noise is disabled.
+- **No physical cut is demonstrated.** The full sequence now releases an existing
+  rigid piece and measures its fall. This is a visual jaw surrogate plus a
+  discrete PhysX state change, not actuated blade CAD or wood fracture. The
+  fixed virtual camera is not physically calibrated. ToF noise is disabled;
+  the stop gate is diagnostic, not a hardware safety controller. Post-release
+  tracking loss is allowed during home-directed return.
+- **Broader evaluation is missing.** One known target and one source-lighting
+  success do not establish multi-tree pruning, daylight robustness or a
+  task-success rate. The earlier failures remain in the evidence.
+- **Browser prerequisites are missing.** There is no cleared browser asset
+  bundle, validated MJCF parity model, trained actor or browser performance
+  measurement. The replay-first proposal is awaiting approval.
 - **CuRobo and training are scaffolds.** The baseline runner reports CuRobo
   readiness without executing a plan. `tools/train.py` always exits. There are
   no PPO checkpoints, held-out rollouts, sim2sim measurements, or hardware demo.
@@ -129,21 +127,20 @@ scoped to the [recorded job evidence](../SLURM_JOBS.md).
 
 Description:
 
-> UR5e visual approach in a Blender orchard, simulated in Isaac with live RGB-D tracking, dual-ToF sensing, and a reproducible CPU pruning demo.
+> UR5e pruning experiments in Isaac Sim: two Blender trees, live RGB-D tracking, dual-ToF sensing, and recorded surrogate-release success and failures.
 
 Topics:
 
 `robotics`, `agricultural-robotics`, `isaac-sim`, `isaac-lab`, `ur5e`,
 `blender`, `time-of-flight`, `computer-vision`, `visual-servoing`, `optical-flow`,
-`rgb-d`, `sensor-fusion`, `simulation`, `python`, `pytorch`
+`rgb-d`, `sensor-fusion`, `simulation`, `python`, `pytorch`, `slurm`
 
 ## README decisions
 
-All six requested sections carry information for this repository. The demo
-appears immediately after the one-line description, without an extra heading.
-The first demo is now the actual Isaac robot recording; the four-command
-quickstart explicitly runs the separate CPU demo. The old image inventory,
-stack debugging narrative, and scheduler commands sit behind links. Results
-separate the incomplete live-vision approach, completed inspection episode,
-short control smoke, CPU scenarios, and known failures. No section claims
-learned perception, validated cutting, or a task-success rate from those recordings.
+The root README is a recruiter-scannable case study with technical proof under
+it. The GIF is immediately after the one-line description. Problem, Solution,
+and Result sit above Quickstart so a hiring manager can read the claim in under
+a minute. Architecture, the evidence table, and remaining-work caveats stay in
+the same file. The four-command quickstart still runs the CPU demo, not Isaac.
+No section claims learned perception, physical cutting, or a measured
+task-success rate.

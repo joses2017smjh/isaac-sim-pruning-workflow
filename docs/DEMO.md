@@ -1,12 +1,14 @@
 # Show the pruning demos
 
-Start with the [actual Blender-orchard Isaac recording](ISAAC_RENDER.md):
-**six seconds** of online RGB-D approach with the original UR5e, textured
-tree, RTX cameras and live dual ToF. Pause at three seconds for its dashboard.
-It ends before closure or release; the older **14-second** procedural inspection
-shows a scripted approach and retreat. These recordings require a GPU stack
-and generated robot USD; the four-command quickstart below is the separate
-portable CPU demo.
+Start with the [actual two-tree Isaac recording](ISAAC_RENDER.md): **20 seconds**
+of live RGB-D approach, gated surrogate release, measured branch fall and home
+return. Pause the wrist-camera video at **7.8 seconds** to show release.
+Then show the two-tree closure failure, which stops at 7.7 seconds without
+releasing a piece. The dashboard preserves sensor misses and failed tracking.
+
+Both are recorded GPU runs, not browser physics. The proposed
+[replay studio](ROBOT_STUDIO_PLAN.md) awaits scope approval. The CPU quickstart
+below is a separate portable geometry/sensor demo.
 
 ## Portable CPU replay
 

@@ -1,28 +1,20 @@
 # HPC bring-up
 
-**Two-tree update — September 14, 11:59 PDT:** job `21316823` completed on
-A40 `cn-r-5` with 200 frames, but tracking stopped before closure. Its export contains both distinct original Blender trees,
-with shared scene placement and both included in collision/ToF queries.
-Camera retry `21317169` reached closure but exposed deadline roundoff.
-Corrected `21317409` still stopped during closure as feature confidence fell.
-Retry `21328323` is running on A40 `cn-s-1` with bounded, next-frame-validated
-feature maintenance. The full cut/drop/return result remains unverified.
-[Ledger](../SLURM_JOBS.md) records the failures independently of rendering success.
+**September 14:** two-tree job `21328323` completed in **15m53s** on an A40.
+It passes eleven capture checks and all 17 independent sequence checks:
+68 applied vision commands, one release at 7.8 s, 809.49 mm measured drop,
+and <0.001 mm final home error. [Video and reproduction](ISAAC_RENDER.md).
 
-Current result: job `21247873` completed on A40 `cn-s-2` in 5m40s with
-60 frames of online RGB-D approach in the original textured Blender orchard.
-It applied 60 vision commands and moved 230.08 mm; closure, release and retreat
-were not reached in the six-second capture. All ten recording checks passed.
-The [actual GIF and evidence](ISAAC_RENDER.md) distinguish this approach result
-from the full sequence. Retry `21300015` was cancelled after 10m53s on `cn-gpu7`
-following tracking loss at frame index 54 (5.5 seconds): three round-trip
-inliers remained, below the unchanged minimum four. The controller latched
-`vision_invalid`; no closure or detachment occurred. Its 71 partial frames and
-incomplete report remain preserved. CPU replay informed the denser initial
-feature selection now under test in `21316823`. Earlier `21298152` was cancelled for
-capture throughput; `21300015` skipped unused intermediate RTX renders without
-changing physics steps or manual camera quality. Cut/drop/home-return validation
-remains pending. See the [current job ledger](../SLURM_JOBS.md).
+Earlier two-tree runs `21316823`, `21317169` and `21317409` remain recorded
+tracking/closure failures. Fixed camera geometry, deadline-roundoff handling
+and bounded feature maintenance cleared this one-target demonstration gate.
+This does not establish wood fracture, calibrated sensors or learned perception.
+
+Morning/evening probes `21329420` / `21329421` are queued, each for 30 frames
+with a ten-minute allocation limit. They change only artistic light settings
+in the same two-tree scene. Both initially wait on `QOSMaxGRESPerUser`; no
+unrelated allocation was modified. The [ledger](../SLURM_JOBS.md) is the
+timestamped queue/accounting authority. PPO and CuRobo remain unsubmitted.
 
 Earlier job `21208215` passed the short environment smoke and recorded
 140 RTX frames on `cn-gpu6` on 2026-09-07. The original UR5e and mock pruner

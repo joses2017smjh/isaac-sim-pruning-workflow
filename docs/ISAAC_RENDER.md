@@ -1,86 +1,109 @@
 # Real Isaac robot recording
 
-This path renders the imported UR5e and mock pruner with PhysX motion, RTX
-cameras, two ToF sensors, and contact data. The original textured Blender
-orchard now has a recorded online vision-driven approach. Full-duration
-surrogate release and return are under test; the earlier inspection uses a
-procedural fixture. Neither path requires a trained
-policy or uses the analytic CPU demo's generated camera images.
+The original UR5e and mock pruner now complete a recorded vision-guided
+surrogate release and home return in the textured **two-tree** Blender orchard.
+Both source trees retain their original relative placement, materials,
+collision meshes and ToF ray-cast coverage. No replacement robot was needed.
 
-## Recorded Blender/live-vision approach
+## Completed two-tree sequence
 
-The clip below is the earlier **one-tree** capture. Current code loads both
-distinct source trees from a [new verified export](evidence/blender_two_tree_export.json).
-Job `21316823` completed on A40 `cn-r-5` in 14 minutes with 200 frames.
-Both trees retain bark maps, original relative placement, collision meshes,
-and ToF ray-cast coverage. The overview camera is wider to include both trees;
-close and wrist camera settings were unchanged. It applied 63 vision commands,
-moving 243.72 mm, then stopped on tracking loss at frame 62 / 6.3 seconds.
-Captured contact was zero, closure stayed zero, and no piece dropped or retreat
-occurred. All eleven recording checks pass; the independent sequence grade fails.
+[![Recorded two-tree sequence](demo/isaac_two_trees_vision_sequence.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4)
 
-[![Two-tree tracking failure](demo/isaac_two_trees_tracking_failure.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_tracking_failure.mp4)
+Job `21328323`: A40, **15m53s**, 200 frames / 20 seconds. All eleven recording
+checks and all **17 independent sequence checks** pass. The controller applies
+68 vision commands and moves 262.94 mm. The gate authorizes one release at
+**7.8 s**, with 4.99 mm mouth residual and 0.337° alignment error. The existing
+piece remains stationary before release, falls **809.49 mm** afterward, and the
+robot returns within **0.001 mm** of its measured initial home. Captured contact
+is zero; this is not continuous collision-safety evidence.
 
-[Render report](evidence/render_21316823.json) ·
-[sequence grade](evidence/vision_sequence_21316823.json) ·
-[source fingerprints](evidence/render_preflight_21316823.json).
-The release includes compressed original frame telemetry for independent grading.
+[Full dashboard MP4](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4)
+· [Actual wrist-camera MP4](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence_wrist.mp4)
+· [Public aggregate evidence and hashes](evidence/two_tree_summary_2026-09-14.json).
 
-Camera-layout retry `21317169` is running. Its camera stays 140 mm radially
-outside the tool, but is fixed perpendicular to the proxy closing axis to look
-along the jaw opening. The unchanged image/depth gates still determine whether
-motion continues. This is a virtual mount, not physical camera calibration.
+Show one **20-second loop**, then pause the wrist video at **7.8 seconds**.
+The dashboard's post-release tracking loss is retained: after the piece falls,
+the controller returns home without following it. Only pre-release control
+requires the target to stay tracked. This demonstrates one known spur, not
+pruning both trees or a measured task-success rate.
 
-![Original Blender orchard with online visual servoing and live sensors](demo/isaac_blender_live_approach.gif)
+Full new raw captures and path-bearing provenance remain local pending permission
+to publish them. The aggregate summary contains no internal filesystem paths.
+Reproduce the local independent grade with:
 
-Job `21247873` completed on A40 `cn-s-2` in **5m40s**, recording **60 frames /
-6 seconds**. All ten capture checks passed. The controller physically applied
-**60 vision-driven commands**, moving the tool **230.08 mm**. The tracked target
-remained visible; final tool-mouth residual was **35.01 mm**. Both ToF streams
-changed, with **33.54% / 33.28%** valid individual rays. Missing rays remain missing.
-There was no captured contact or recorded stop. These are capture-rate
-observations, not continuous collision-safety evidence.
+```bash
+python tools/validate_isaac_render.py artifacts/isaac_render/job_21328323
+python tools/validate_vision_sequence.py --input-dir artifacts/isaac_render/job_21328323
+```
 
-Outcome: `vision_approach_incomplete`. Closure stayed at zero; there was no
-detachment event, piece drop, or retreat before the six-second limit.
-Show one six-second loop and pause at three seconds for the wrist RGB/depth,
-tracked features, dual-ToF grids, tool state, and cut-gate display. Farneback
-flow remains an offline diagnostic, separate from the online seeded LK tracker.
+The first validator rechecks actual images. The second requires one certified
+release, subsequent measured fall, home-directed retreat, final home error ≤3 mm,
+no recorded stop, and captured contact ≤5 N. Neither claims physical blade
+actuation or wood fracture.
 
-[Poster](demo/isaac_blender_live_approach.png) ·
-[render evidence](evidence/render_21247873.json) ·
-[stack/source fingerprints](evidence/render_preflight_21247873.json) ·
-[media provenance](demo/isaac_blender_live_approach.json).
-The [released full-resolution MP4](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_blender_live_approach.mp4)
-also remains local:
-`artifacts/isaac_render/job_21247873/media/isaac_blender_live_approach.mp4`.
-The companion `_close.mp4` contains the actual 640×480 close camera.
-No compositor display filter was applied; RTX uses path tracing and OptiX.
+## Failures and fixes
 
-The first 200-frame extension, `21298152`, was deliberately cancelled after
-6m05s because its measured RTX 8000 capture rate projected beyond the allocation.
-Partial files remain local. Replacement `21300015` skipped unused automatic
-RTX renders between manual captures, preserving physics steps, sensor updates,
-and path-tracing settings. It lost tracking at frame index 54 (5.5 seconds):
-only three features passed the round-trip check, below the unchanged minimum
-four. The controller latched `vision_invalid`, with no closure or detachment.
-The job was cancelled after 10m53s on `cn-gpu7`; its 71 saved telemetry frames
-and incomplete `report.json` are preserved, not promoted to a terminal result.
-CPU replay reproduced that loss and supported denser initial feature selection:
-quality level 0.005 instead of 0.02, with the same four-inlier, 1 px round-trip,
-appearance, depth, and cut gates. Run `21316823` retained more features initially
-but lost tracking near the jaws; `21317169` tests the fixed camera-layout change.
-Replay after a recorded stop cannot prove counterfactual motion or cutting.
+[![Two-tree closure failure](demo/isaac_two_trees_closure_failure.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_closure_failure.mp4)
 
-[Partial/cancelled tracking-stop GIF](demo/isaac_blender_tracking_stop.gif) ·
-[partial report](evidence/render_partial_21300015.json) ·
-[independent rejected sequence grade](evidence/vision_sequence_21300015.json).
-The clip uses 71 saved telemetry frames (7.1 seconds), labels cancellation,
-and preserves the unfinished report's `not_started` field without rewriting it.
-A completed video alone will not establish a completed task:
-[`validate_vision_sequence.py`](../tools/validate_vision_sequence.py) independently
-requires one gated release, subsequent measured fall, home-directed retreat,
-final home error ≤3 mm, and no recorded stop or excessive captured contact.
+- `21316823`: 200 frames; tracking stops at 6.3 s after 63 applied commands.
+  Jaws occlude image features; no closure, release or retreat.
+  [Tracking-failure video](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_tracking_failure.mp4).
+- `21317169`: a fixed gap-aligned virtual camera reaches closure. At 7.8 s,
+  floating-point division leaves progress at 0.9999999999999994; the next frame
+  loses tracking. Cancelled with 111 telemetry frames preserved. The timer now
+  compares absolute deadlines with only timestamp-roundoff tolerance.
+- `21317409`: corrected deadline, but confidence falls to 0.14165 below 0.15
+  at 7.7 s. Closure stops at 2/3; no release or return. All 200 frames remain
+  preserved. CPU replay reproduces the loss after 77 processed frames.
+- `21328323`: bounded feature maintenance adds same-depth local corners only
+  after a valid observation. New corners cannot inflate that frame's confidence;
+  they must pass normal tracking gates next frame. Saved-image replay processes
+  all 200 frames; the separate fresh GPU run passes the full task grade.
+
+The four-inlier, 1 px round-trip, confidence, depth, appearance, geometry and
+contact limits are unchanged. The camera remains fixed, 140 mm radially outside
+the tool, looking along the jaw opening. It is not a calibrated physical mount.
+
+Earlier one-tree evidence remains available:
+[six-second approach](demo/isaac_blender_live_approach.gif),
+[partial cancelled tracking stop](demo/isaac_blender_tracking_stop.gif), and
+[original contact/occlusion failure](demo/isaac_textured_scene_failed_vision.gif).
+Job `21247873` applied 60 commands but ended before closure. Jobs `21298152`
+and `21300015` were cancelled for throughput and latched tracking loss,
+respectively; their unfinished reports were not relabelled as complete.
+
+## Daylight variants
+
+`PRUNING_DAYLIGHT=source|morning|noon|evening` selects a deterministic preset.
+Default `source` preserves the successful run's lighting. New presets change
+the composed USD Sun direction, intensity and color; they never modify the
+original Blender file or exported USD. Dome fill remains fixed.
+
+| Preset | World azimuth / elevation | Sun intensity | Purpose |
+|---|---|---|---|
+| Morning | 60° / 18° | 1600 | Low warm sunlight |
+| Noon | 160° / 65° | 2400 | High sunlight |
+| Evening | 270° / 12° | 1300 | Low orange sunlight |
+
+Azimuth is counterclockwise from +X; elevation is above XY. These are artistic
+settings, not geographic time-of-day, weather, radiometric or sensor calibration.
+Ten tests verify deterministic settings, rejection of invalid names, and
+world-space light direction despite the orchard's rotated parent.
+
+Morning `21329420` and evening `21329421` are queued as **30-frame / three-second
+lighting probes**, ten-minute allocation limits. Queue state lives in the
+[ledger](../SLURM_JOBS.md). They are not full release evaluations.
+
+```bash
+export PRUNING_RENDER_MODE=blender_vision PRUNING_RENDER_QUALITY=pathtraced
+export PRUNING_DAYLIGHT=morning PRUNING_RENDER_FRAMES=30 PRUNING_RUN_ENV_SMOKE=0
+slurm_clean sbatch --partition=ampere --constraint=a40 --time=00:10:00 hpc/slurm/render_pruning_workflow.sbatch
+```
+
+Use the stack setup below first. A new light direction changes RGB and may
+affect tracking; do not reuse the source-lighting success claim for a new run.
+The [browser-studio proposal](ROBOT_STUDIO_PLAN.md) separates replay relighting
+from newly simulated sensor data.
 
 ## Where the scene and tree come from
 
@@ -101,7 +124,7 @@ Neither recording path loads Blender `.ply` files.
   references those assets into Isaac, adds collision geometry, and selects an
   existing spur component. The source `.blend` is not modified. Its recorded
   SHA-256 begins `88352362755f4280`; the full export manifest and hashes are at
-  `artifacts/blender_scene/orchard_v1/manifest.json`.
+  `artifacts/blender_scene/orchard_two_trees_v1/manifest.json` (earlier one-tree runs used `orchard_v1`).
 
 The exported posts and wires use the source's solid Principled materials, not
 image textures. Preview Surface conversion does not reproduce arbitrary Cycles
@@ -120,8 +143,7 @@ That conversion reconstructs finite cylinders from metadata; it is not a PLY
 mesh import and does not establish identical Blender appearance or materials.
 
 The original meshes now load, and `21247873` records an unobstructed target and
-live approach with no captured contact. Gated detachment and full retreat still
-require a passing sequence. A component selected from topology is not automatically a
+live approach with no captured contact. Job `21328323` now passes the independent gated-release and home-return sequence. A component selected from topology is not automatically a
 safe cut site and is not learned branch recognition.
 
 ## Why the published video was grainy

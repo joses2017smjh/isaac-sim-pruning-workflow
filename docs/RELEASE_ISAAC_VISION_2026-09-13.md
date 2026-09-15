@@ -1,39 +1,43 @@
-# Isaac Sim: live vision approach and preserved tracking failure
+# Isaac Sim: two-tree release sequence and recorded failures
 
-Real RTX cameras, PhysX-driven UR5e motion, simulator depth, and two live 8×8
-ToF grids. These clips use the original textured Blender orchard's first tree.
-They do not demonstrate a completed pruning task.
+Start with `isaac_two_trees_vision_sequence.mp4`: **20 seconds / 200 frames**,
+both original Blender trees, UR5e, live RGB-D tracking, dual ToF and PhysX motion.
 
-- `isaac_blender_live_approach.mp4`: 6 seconds, 60 applied vision commands,
-  230.08 mm tool displacement. All ten recording checks pass. The run ends
-  35.01 mm from the tracked target at the mouth, before closure or retreat.
-- `isaac_blender_live_approach_close.mp4`: the same run's actual close camera.
-- `isaac_blender_tracking_stop.mp4`: 7.1-second partial/cancelled run.
-  At 5.5 seconds, only three features meet the required four-inlier gate.
-  Motion stops; no closure or detachment occurs. The original report remains
-  incomplete and is not relabelled as a terminal result.
+Job `21328323` passes all eleven capture checks and all **17 independent task
+checks**: 68 applied vision commands, one gated release at **7.8 seconds**,
+**809.49 mm** measured piece fall, and **<0.001 mm** final home error.
+`isaac_two_trees_vision_sequence_wrist.mp4` shows the actual mounted-camera view.
+Pause at 7.8 seconds, then watch the branch fall and the arm return.
 
-Path tracing and OptiX denoising run inside RTX. No compositor median filter
-was applied. Dashboard Farneback flow is an offline diagnostic; the recorded
-seeded LK tracker supplied live position feedback to the controller.
+This is one known spur in a two-tree scene. The jaw is a visual proxy, release
+is a discrete rigid-body event, and depth is simulator ground truth. No physical
+blade actuation, wood fracture, trained recognition or multi-tree success rate
+is claimed. Tracking loss after completed release is retained in the dashboard;
+home-directed retreat no longer needs to follow the falling target.
 
-JSON assets preserve capture provenance and separate recording validity from
-sequence completion. Initial target identity, axis and radius come from scene
-metadata. Depth is simulator ground truth. The jaw is a visual proxy and the
-cut model is discrete rigid-piece release, not actuated CAD or wood fracture.
+Failure comparisons:
 
-Additional two-tree evidence:
+- `isaac_two_trees_closure_failure.mp4`: job `21317409`, 200 frames.
+  Confidence falls to 0.14165 below the 0.15 limit at 7.7 s. Closure stops at
+  2/3; no release or return. Fixed timing alone did not complete the task.
+- `isaac_two_trees_tracking_failure.mp4`: job `21316823`, 200 frames.
+  Tracking stops at 6.3 s after 63 applied commands. No closure or release.
+- `isaac_blender_live_approach.mp4` and `_close.mp4`: earlier one-tree,
+  six-second approach, 60 commands, no closure or return.
+- `isaac_blender_tracking_stop.mp4`: earlier one-tree cancelled partial run,
+  7.1 seconds preserved; tracking stops at 5.5 seconds.
 
-- `isaac_two_trees_tracking_failure.mp4`: 20 seconds / 200 frames from job
-  `21316823`. Both original trees are visible and participate in collisions
-  and ToF ray casting. 63 applied vision commands moved the tool 243.72 mm,
-  then tracking stopped at 6.3 seconds. No closure, detachment, or retreat.
-  The recording passes its eleven checks; the independent task grade fails.
-- `frames_21316823.json.gz`: original captured telemetry, compressed without
-  modification. With `render_21316823.json` renamed to `report.json` and the
-  decompressed telemetry named `frames.json`, run
-  `python tools/validate_vision_sequence.py --input-dir PATH` to reproduce
-  the rejected sequence grade.
+Path tracing and OptiX denoising run in RTX. No compositor median filter is
+applied. Farneback flow is an offline diagnostic, not a controller input.
+The source Blender file and original exported assets remain unchanged.
 
-Job `21317169` tests a fixed virtual camera aligned along the jaw opening.
-The current outcome is tracked in `SLURM_JOBS.md`; no completed cut is claimed.
+The public aggregate result is `docs/evidence/two_tree_summary_2026-09-14.json`
+in the repository. New full raw telemetry and path-bearing provenance remain
+local pending permission to publish. Previously released JSON assets, including
+`frames_21316823.json.gz`, are unchanged; they document older runs, not the
+successful run's raw input. Do not treat any recording's scheduler completion
+as a task pass without its independent sequence grade.
+
+Morning/evening sunlight comparison captures are queued, not included yet.
+Browser trajectory replay is proposed, not implemented. See the repository
+job ledger and `docs/ROBOT_STUDIO_PLAN.md` for current scope and dependencies.
