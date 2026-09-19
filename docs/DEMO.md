@@ -6,9 +6,10 @@ return. Pause the wrist-camera video at **7.8 seconds** to show release.
 Then show the two-tree closure failure, which stops at 7.7 seconds without
 releasing a piece. The dashboard preserves sensor misses and failed tracking.
 
-Both are recorded GPU runs, not browser physics. The proposed
-[replay studio](ROBOT_STUDIO_PLAN.md) awaits scope approval. The CPU quickstart
-below is a separate portable geometry/sensor demo.
+Both are recorded GPU runs, not browser physics. The
+[replay-studio proposal](ROBOT_STUDIO_PLAN.md) documents the intended interface;
+local uncommitted implementation is separate from this experiment checkpoint.
+The CPU quickstart below is a separate portable geometry/sensor demo.
 
 ## Portable CPU replay
 

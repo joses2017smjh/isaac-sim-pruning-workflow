@@ -70,6 +70,47 @@ def test_default_initializer_quality_remains_unchanged():
     assert VisualServoConfig().feature_quality_level == 0.02
 
 
+@pytest.mark.parametrize("mode", ["auto", "CLAHE", "", True, None])
+def test_photometric_mode_rejects_invalid_values(mode):
+    with pytest.raises(ValueError, match="photometric_normalization"):
+        VisualServoConfig(photometric_normalization=mode)
+
+
+def test_raw_default_has_identical_measurements_to_explicit_raw():
+    default = VisualServoTracker()
+    explicit = VisualServoTracker(VisualServoConfig(photometric_normalization="raw"))
+    image, depth = _scene()
+    assert default.initialize(image, [120, 80], depth) == explicit.initialize(image, [120, 80], depth)
+    image, depth = _scene(2, 1)
+    assert default.update(image, depth, K, WORLD_FROM_OPTICAL) == explicit.update(image, depth, K, WORLD_FROM_OPTICAL)
+
+
+@pytest.mark.parametrize("mode", ["raw", "clahe"])
+def test_photometric_modes_preserve_inputs_translation_and_fail_closed_gates(mode):
+    tracker = VisualServoTracker(VisualServoConfig(photometric_normalization=mode))
+    image, depth = _scene()
+    original_image, original_depth = image.copy(), depth.copy()
+    initialized = tracker.initialize(image, [120, 80], depth)
+    assert initialized["state"] == "initialized"
+    np.testing.assert_array_equal(image, original_image)
+    np.testing.assert_array_equal(depth, original_depth)
+    assert initialized["photometric_normalization"]["mode"] == mode
+    assert initialized["photometric_normalization"]["clahe_clip_limit"] == (2.0 if mode == "clahe" else None)
+    image, depth = _scene(2, 1)
+    measured = tracker.update(image, depth, K, WORLD_FROM_OPTICAL)
+    assert measured["state"] == "tracking"
+    np.testing.assert_allclose(measured["pixel_xy"], [122, 81], atol=0.2)
+    dropped = tracker.update(image, np.full_like(depth, np.nan), K, WORLD_FROM_OPTICAL)
+    assert dropped["state"] == "invalid_depth"
+    assert dropped["target_position_world_m"] is None
+    assert tracker.update(image, depth, K, WORLD_FROM_OPTICAL)["state"] == "tracking"
+    lost = tracker.update(np.zeros_like(image), depth, K, WORLD_FROM_OPTICAL)
+    assert lost["state"] == "tracking_lost"
+    assert lost["target_position_world_m"] is None
+    assert tracker.update(image, depth, K, WORLD_FROM_OPTICAL)["reason"] == "explicit_initialization_required"
+    json.dumps(lost, allow_nan=False)
+
+
 def test_maintenance_adds_only_same_depth_candidates_after_validated_measurement(monkeypatch):
     image, depth = _scene()
     tracker = VisualServoTracker(VisualServoConfig(replenish_features=True))

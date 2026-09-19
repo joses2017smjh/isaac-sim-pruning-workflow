@@ -104,7 +104,7 @@ new corners must pass the next frame's tracking gates.
 | Earlier control smoke | 0.360 mm final error for a 5 mm command | Six-step hold; earlier floor-contact fixture drifted 20.12 mm and failed |
 | CPU clear / blackout / blocked geometry | Accepted at 42 frames / stopped at 20 / rejected at 35 | Ideal tool motion |
 | CPU range fusion | Nominal RMSE 6.08 → 5.49 mm; blackout 8.15 → 9.57 mm | Synthetic metric estimates; blackout coverage differs |
-| Local CPU suite | 489 passed; 1 simulator test deselected | GPU integration is separate |
+| Local CPU suite, September 19 | 514 passed; 9 skipped; 1 simulator test deselected | USD support absent in this CPU interpreter; GPU integration is separate |
 | GitHub CI, checkpoint `68e37c5` | 451 passed; 9 skipped; 1 deselected | Clean runner without external runtime assets |
 
 [Aggregate evidence](docs/evidence/two_tree_summary_2026-09-14.json)
@@ -117,11 +117,18 @@ collider; material/lighting conversion is not Blender Cycles parity.
 [Morning/evening presets](docs/ISAAC_RENDER.md#daylight-variants) change the
 simulated sun, not the source scene.
 
-Remaining: daylight capture validation, broader targets and failure trials,
+A six-run [lighting/tracker pilot](docs/RESEARCH_EXPERIMENTS_2026-09-19.md)
+compares the current tracker with opt-in CLAHE contrast normalization. It uses
+full sequences, frozen source/asset hashes, independent grades and one GPU at a
+time. Short morning/evening probes already contain 30 valid frames each; they
+do not complete pruning. See the [current queue](SLURM_JOBS.md).
+
+Remaining: full daylight task validation, broader targets and failure trials,
 learned perception, executed CuRobo/PPO baselines, physical camera calibration,
 actuated blades and cutting mechanics.
 The [browser-studio proposal](docs/ROBOT_STUDIO_PLAN.md) starts with recorded
-trajectory replay; there is no trained policy to run in the browser yet.
+trajectory replay. A local uncommitted prototype is preserved separately from
+this experiment work; there is no trained policy to run in the browser yet.
 [Implementation gates](docs/ROADMAP.md) · [Reviewer gaps](docs/REVIEWER_NOTES.md).
 
 ## Stack

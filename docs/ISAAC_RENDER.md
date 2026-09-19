@@ -90,9 +90,11 @@ settings, not geographic time-of-day, weather, radiometric or sensor calibration
 Ten tests verify deterministic settings, rejection of invalid names, and
 world-space light direction despite the orchard's rotated parent.
 
-Morning `21329420` and evening `21329421` are queued as **30-frame / three-second
-lighting probes**, ten-minute allocation limits. Queue state lives in the
-[ledger](../SLURM_JOBS.md). They are not full release evaluations.
+Morning `21329420` and evening `21329421` are completed **30-frame / three-second
+lighting probes** rechecked September 19. Each passes capture validation, but
+neither contains release or return. The [six-run pilot](RESEARCH_EXPERIMENTS_2026-09-19.md)
+adds full sequences and paired raw/CLAHE tracking. Actual submission status lives
+in the [ledger](../SLURM_JOBS.md).
 
 ```bash
 export PRUNING_RENDER_MODE=blender_vision PRUNING_RENDER_QUALITY=pathtraced

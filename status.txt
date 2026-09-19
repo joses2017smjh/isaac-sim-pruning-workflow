@@ -1,73 +1,58 @@
-isaac-sim-pruning-workflow — checkpoint at 2026-09-14 PDT
+isaac-sim-pruning-workflow — experiment checkpoint, 2026-09-19 PDT
 
-COMPLETED DEMO
-  Job 21328323: COMPLETED (0:0), A40, 15m53s.
-  Original UR5e + mock pruner + both distinct original Blender trees.
-  200 frames / 20 seconds, 11/11 capture checks, 17/17 independent task checks.
-  68 applied vision commands; 262.94 mm tool displacement.
-  One gated surrogate release at 7.8 s, mouth residual 4.99 mm.
-  Measured post-release drop 809.49 mm; final home error <0.001 mm.
-  No recorded stop or captured contact. These are capture-rate observations,
-  not continuous collision-safety certification.
-  One known target, not pruning both trees or a measured success rate.
-  No physical blade actuation or wood-fracture model.
+SCOPE
+  Prepare and queue a finite outdoor-vision robustness pilot, then stop.
+  Do not cancel/delete/alter existing HPC jobs. No training jobs submitted.
+  Existing untracked studio, exporter, test and daylight-media work is preserved.
 
-MEDIA AND EVIDENCE
-  docs/demo/isaac_two_trees_vision_sequence.{gif,png}
-  docs/demo/isaac_two_trees_closure_failure.{gif,png}
-  Success dashboard/wrist and failure MP4s uploaded to:
-  https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/tag/isaac-vision-2026-09-13
-  Public aggregate: docs/evidence/two_tree_summary_2026-09-14.json.
-  New full raw telemetry and internal-path provenance are local, not published
-  pending permission. Existing public older evidence remains unchanged.
-  Full successful capture: artifacts/isaac_render/job_21328323/.
-  Regrade: python tools/validate_vision_sequence.py --input-dir artifacts/isaac_render/job_21328323
+INDEPENDENT AUDIT
+  Read all tracked project status/direction/limitation Markdown and text files.
+  Older reports are historical evidence, not current implementation authority.
+  Job 21328323 independently regraded: 17/17 checks, release at 7.8 seconds,
+  809.492 mm measured fall, 0.0007504 mm final home error.
+  Morning 21329420 / evening 21329421 completed September 14 (0:0),
+  3m25s / 3m20s on A40. Both pass all 11 capture checks, 30 frames/commands.
+  Neither reaches closure, release or return; they are not successful full tasks.
+  Corrected stale claims: live dual ToF and RTX wrist RGB-D exist; fresh
+  provenance-checked URDF is promoted. Flow/metric-student policy feeds remain
+  placeholders. PPO runner and executed CuRobo planning are still incomplete.
+  A local uncommitted studio prototype exists; this work does not validate it.
 
-PRESERVED TWO-TREE FAILURES
-  21316823: completed 200 frames; tracking stopped at 6.3 s, no release.
-  21317169: cancelled after 8m58s; deadline roundoff prevented release.
-  21317409: completed 200 frames; confidence fell below 0.15 during closure.
-  Fixed gap-aligned camera, deadline comparison and bounded feature maintenance
-  cleared this one episode without weakening tracking or cut thresholds.
-  SLURM_JOBS.md retains earlier import/contact/render failures and accounting.
-
-DAYLIGHT REQUEST
-  PRUNING_DAYLIGHT=source|morning|noon|evening implemented.
-  Source preserves prior lighting. Other artistic presets modify composed
-  sunlight direction/color/intensity, not original source assets.
-  Ten tests verify settings and world-space USD direction.
-  21329420 morning / 21329421 evening: queued 30-frame lighting probes.
-  Initial pending reason: QOSMaxGRESPerUser. Ten-minute limits, A40 requested.
-  These three-second comparisons will not establish a full task result.
-  See SLURM_JOBS.md for timestamped live queue, including unrelated jobs.
-
-BROWSER STUDIO
-  docs/ROBOT_STUDIO_PLAN.md is the requested proposal, awaiting approval.
-  Six joints, fixed base, seven-value Cartesian pose commands, no trained actor.
-  Start with browser asset viewing and trajectory/sensor replay, then deterministic
-  scene controls. Do not implement locomotion-policy controls or claim WASM parity.
-  No browser app has been built yet; the supplied prompt requests a scope/schema
-  approval before implementation.
+EXPERIMENT IMPLEMENTATION
+  Current tracker remains raw by default. Add opt-in fixed CLAHE normalization
+  (clip 2.0, 8x8 tile grid), preserving existing control/tracking/release gates.
+  CPU paired replay: current demo configuration on successful and failed saved
+  captures, exposure transition, RGB blackout and depth dropout. All attempted
+  frames count; pre/post release and recorded-stop intervals are separate.
+  Replay cannot establish counterfactual closed-loop motion or task success.
+  Full GPU matrix: raw/CLAHE x source/morning/evening, 200 frames (20 s) each.
+  A40, 8 CPU, 48 GB, 25-minute limit per task, array concurrency one GPU.
+  Maximum allocation 150 GPU-minutes. No installation or tuning inside jobs.
+  Submission freezes committed code and hashes external USD/textures/launcher;
+  tasks reject input drift, use exclusive output directories, and retain both
+  capture exit and independent sequence grades, including failures.
+  Submission receipt and current verification are recorded in SLURM_JOBS.md
+  and docs/RESEARCH_EXPERIMENTS_2026-09-19.md after queue acceptance.
 
 VERIFICATION
-  Local CPU suite: 489 passed, 1 simulator test deselected.
-  Pruning source/tests/tools and render script pass Ruff 0.14.10.
-  Existing inherited code outside CI still has lint/format issues.
-  Previous public CI 68e37c5: 451 passed, 9 skipped, 1 deselected.
-  CPU quickstart is four commands and produces the separate portable demo.
-  GitHub CI tests that CPU workflow, not an Isaac GPU installation.
+  514 CPU tests passed, 9 skipped (USD support unavailable), 1 GPU deselected.
+  Ruff lint/format pass; shell syntax and submission dry-run pass.
+  25 external asset/launcher files independently checked against pinned hashes.
+  Current-baseline CPU replay finds no CLAHE tracking-continuity improvement;
+  both modes lose tracking at abrupt exposure transition frame 10.
+  See docs/evidence/visual_robustness_replay_2026-09-19.json for all conditions.
 
-REMAINING
-  Validate/publish daylight comparison frames when GPU quota becomes available.
-  Approve and implement replay studio one working milestone at a time.
-  Evaluate broader target/scene/light and failure cases; do not infer robustness.
-  Add learned perception and calibrated physical camera model.
-  Execute CuRobo baseline, implement PPO, evaluate held-out Envy/UFO and sim2sim.
-  Add actuated blade CAD and validated cutting mechanics before physical-cut claims.
-  Licensing for inherited code/assets remains unresolved; do not publish source
-  CAD, source Blender files or add a blanket LICENSE without rights clearance.
-  See docs/ROADMAP.md and docs/REVIEWER_NOTES.md.
+LIMITS AND NEXT ACTION
+  No new GPU improvement claimed before these six jobs complete.
+  One metadata-selected target; RTX depth is ground truth; virtual camera and
+  artistic illumination are not calibrated hardware or ToF sunlight response.
+  Surrogate rigid-piece release is not blade actuation or wood fracture.
+  After completion, inspect every experiment_result.json/sequence_grade.json;
+  retain failed trials, compare coverage with error, broaden targets/views,
+  then decide whether to retain CLAHE or evaluate causal learned tracking.
+  Research sources, hypotheses and follow-up are in
+  docs/RESEARCH_EXPERIMENTS_2026-09-19.md. Broader gates remain in docs/ROADMAP.md.
+  Licensing/source-asset redistribution issues remain documented in NOTICE.md.
 
 Branch: develop
-Git author: Jose Sanchez <119717035+joses2017smjh@users.noreply.github.com>
 GitHub: https://github.com/joses2017smjh/isaac-sim-pruning-workflow

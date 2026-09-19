@@ -10,11 +10,21 @@ tracking/closure failures. Fixed camera geometry, deadline-roundoff handling
 and bounded feature maintenance cleared this one-target demonstration gate.
 This does not establish wood fracture, calibrated sensors or learned perception.
 
-Morning/evening probes `21329420` / `21329421` are queued, each for 30 frames
-with a ten-minute allocation limit. They change only artistic light settings
-in the same two-tree scene. Both initially wait on `QOSMaxGRESPerUser`; no
-unrelated allocation was modified. The [ledger](../SLURM_JOBS.md) is the
-timestamped queue/accounting authority. PPO and CuRobo remain unsubmitted.
+September 19: saved morning/evening probes `21329420` / `21329421` each pass
+30-frame capture validation. Neither reaches release or return. The next
+[six-run pilot](RESEARCH_EXPERIMENTS_2026-09-19.md) compares raw/CLAHE tracking
+in full source/morning/evening sequences: A40, 25 minutes per task, array `%1`,
+maximum 150 GPU-minutes. The [ledger](../SLURM_JOBS.md) records actual submission
+status. Existing jobs are preserved; PPO and CuRobo remain unsubmitted.
+
+From a clean committed checkout, inspect the plan with
+`python tools/queue_vision_robustness.py`. Add `--submit --batch-id UNIQUE_ID`
+only for a new batch. Submission archives committed code, fingerprints external
+assets, strips inherited allocation settings and records the Slurm receipt.
+Each task verifies frozen inputs before launching, preserves capture failures,
+and writes both `sequence_grade.json` and `experiment_result.json` under
+`artifacts/vision_robustness/UNIQUE_ID/run_*`. Do not resubmit a batch after an
+ambiguous scheduler error without checking its saved receipt and live queue.
 
 Earlier job `21208215` passed the short environment smoke and recorded
 140 RTX frames on `cn-gpu6` on 2026-09-07. The original UR5e and mock pruner

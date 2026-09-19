@@ -1,6 +1,7 @@
 # SLURM job ledger
 
-Last reconciled: **2026-09-14 13:51 PDT** (`America/Los_Angeles`).
+Last audit: **2026-09-19 PDT** (`America/Los_Angeles`); submission receipt below.
+The September 14 queue table is retained as historical evidence.
 
 This ledger covers jobs produced by this repository's `prune-*` submission
 scripts and the two upstream v60 probes explicitly cited by the repository
@@ -13,7 +14,23 @@ gitignored, so the tracked evidence is the durable GitHub record.
 The existing HPC prose dates job `21036831` to 2026-08-26; Slurm accounting
 records its submission/start on 2026-08-24, which is the date used here.
 
-## Current queue
+## September 19 experiment checkpoint
+
+Independent revalidation found both daylight probes complete: `21329420`
+(morning, A40 `cn-r-4`, 3m25s) and `21329421` (evening, A40 `cn-s-1`, 3m20s),
+both `COMPLETED (0:0)` on September 14. All 11 capture checks pass for each
+30-frame probe. Neither reaches closure/release/return; both fail the full-task
+grade as expected. Regrading `21328323` still passes all 17 sequence checks.
+
+The [research protocol](docs/RESEARCH_EXPERIMENTS_2026-09-19.md) defines six
+full 20-second raw/CLAHE trials under source/morning/evening illumination.
+The new launcher uses an A40 array with concurrency one, 8 CPUs, 48 GB and
+25 minutes per task (maximum 150 GPU-minutes). It freezes committed source,
+checks external asset hashes, strips inherited allocation options, and retains
+failed independent sequence grades. Existing running, pending and user-held
+jobs are preserved. New submission IDs are recorded here after acceptance.
+
+## Historical queue — September 14, 13:51 PDT
 
 The pruning full-sequence job has completed. Two new daylight probes wait on
 the per-user GPU quota. Ten unrelated allocations are running; none was modified.
@@ -142,8 +159,9 @@ Orders are released on application evidence, not merely Slurm state. Import,
 short control smoke, inspection, and the one-target two-tree surrogate-release
 demo now pass their respective gates. Full raw new captures remain local
 pending publication permission; the public summary includes source hashes.
-Morning/evening image comparisons are pending. The browser studio is a
-[proposal awaiting scope approval](docs/ROBOT_STUDIO_PLAN.md).
+The short morning/evening captures were revalidated September 19; full lighting
+trials are the next experiment. A local uncommitted browser prototype is
+preserved separately from this experiment checkpoint.
 
 Baseline and training remain unsubmitted: this single demonstration is not a
 scripted-ToF success-rate evaluation, executed CuRobo plan or PPO rollout.

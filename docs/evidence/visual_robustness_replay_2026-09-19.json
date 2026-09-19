@@ -1,0 +1,2116 @@
+{
+  "schema_version": 2,
+  "evaluation_type": "offline_paired_saved_rgbd_replay",
+  "scope": "Fixed recorded trajectories; replay cannot establish closed-loop success, release or retreat",
+  "error_scope": "Pre-release measured surface to branch-centroid distance; no post-release accuracy claim",
+  "stress_protocol": {
+    "period_frames": 30,
+    "exposure_transition": "index modulo 30: 0-9 unchanged, 10-19 gain 0.35, 20-29 gain 1.6 plus 20",
+    "depth_dropout": "index modulo 30 in 10-12: all optical-Z samples NaN",
+    "rgb_dropout": "index modulo 30 equals 10: all RGB samples zero",
+    "exposure_space": "display-referred uint8 RGB; not a physical camera, sunlight or sensor noise model",
+    "initial_preview": "unperturbed for all variants; one identical seed, no automatic reseeding"
+  },
+  "runtime": {
+    "python": "3.10.19",
+    "opencv": "4.11.0",
+    "numpy": "2.2.6"
+  },
+  "code_sha256": {
+    "benchmark": "0c9aec2cdb5337377ebf1831697170b1f8a8cf9577ea12ba4f8af4ea23751254",
+    "tracker": "2f98b4b9612537118e8c4452dc850110e7b5f84f0e95a3efc49d4beeb9d451cc"
+  },
+  "full_local_report_sha256": "b695582dbad39a1c7bc30c70cc496a2a9f9927a2e9115b16cdc99f1da0e8cb30",
+  "claim": "No tracking-continuity improvement measured for CLAHE against the current feature-maintenance baseline. Fixed saved trajectories do not establish closed-loop task outcomes.",
+  "timing_limit": "Shared CPU wall-clock timings are diagnostic only, not deployment latency or GPU performance evidence.",
+  "captures": [
+    {
+      "source_job_id": "21328323",
+      "recorded_task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "recorded_frames": 200,
+      "first_capture_after_recorded_release": 78,
+      "first_recorded_stop_report_frame_index": null,
+      "source_metadata_and_all_rgb_depth_sha256": "2a6f644f28a7d13aec54ea05be87012abba93389fb1d71256b0758d768b2629e",
+      "reference_config_policy": "current",
+      "reference_tracker_config": {
+        "roi_half_size_px": [
+          14,
+          24
+        ],
+        "max_features": 80,
+        "min_features": 4,
+        "feature_quality_level": 0.005,
+        "replenish_features": true,
+        "photometric_normalization": "raw",
+        "max_roundtrip_error_px": 1.0,
+        "max_lk_error": 40.0,
+        "max_flow_residual_px": 3.0,
+        "min_patch_std": 3.0,
+        "min_patch_correlation": 0.35,
+        "min_confidence": 0.15,
+        "depth_radius_px": 1,
+        "min_depth_valid_fraction": 0.75,
+        "min_depth_m": 0.02,
+        "max_depth_m": 5.0,
+        "max_depth_spread_m": 0.025,
+        "max_world_jump_m": 0.06
+      },
+      "source_tracker_config": {
+        "roi_half_size_px": [
+          14,
+          24
+        ],
+        "max_features": 80,
+        "min_features": 4,
+        "feature_quality_level": 0.005,
+        "replenish_features": true,
+        "photometric_normalization": "raw",
+        "max_roundtrip_error_px": 1.0,
+        "max_lk_error": 40.0,
+        "max_flow_residual_px": 3.0,
+        "min_patch_std": 3.0,
+        "min_patch_correlation": 0.35,
+        "min_confidence": 0.15,
+        "depth_radius_px": 1,
+        "min_depth_valid_fraction": 0.75,
+        "min_depth_m": 0.02,
+        "max_depth_m": 5.0,
+        "max_depth_spread_m": 0.025,
+        "max_world_jump_m": 0.06
+      },
+      "source_config_provenance": "Recorded feature/maintenance/depth-window settings; other current tracker defaults",
+      "comparison_scope": "Paired modes differ only in photometric_normalization; source config is provenance",
+      "variants": [
+        {
+          "scenario": "baseline",
+          "mode": "raw",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "raw",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 78,
+            "tracking_fraction": 0.39,
+            "state_counts": {
+              "tracking": 78,
+              "tracking_lost": 122
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 121
+            },
+            "first_nontracking_frame_index": 78,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 78,
+            "centroid_error_median_m": 0.0061009330775905115,
+            "centroid_error_p95_m": 0.006414131460612167,
+            "active_update_median_ms": 2.572885947301984,
+            "active_update_p95_ms": 6.017593201249835
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 78,
+              "tracking_frames": 78,
+              "tracking_fraction": 1.0,
+              "state_counts": {
+                "tracking": 78
+              },
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 78,
+              "centroid_error_median_m": 0.0061009330775905115,
+              "centroid_error_p95_m": 0.006414131460612167,
+              "active_update_median_ms": 2.5758894626051188,
+              "active_update_p95_ms": 6.037955754436549
+            },
+            "after_release": {
+              "attempted_frames": 122,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 121
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": 2.52161780372262,
+              "active_update_p95_ms": 2.52161780372262
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 200,
+              "tracking_frames": 78,
+              "tracking_fraction": 0.39,
+              "state_counts": {
+                "tracking": 78,
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 121
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 78,
+              "centroid_error_median_m": 0.0061009330775905115,
+              "centroid_error_p95_m": 0.006414131460612167,
+              "active_update_median_ms": 2.572885947301984,
+              "active_update_p95_ms": 6.017593201249835
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "baseline",
+          "mode": "clahe",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "clahe",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 78,
+            "tracking_fraction": 0.39,
+            "state_counts": {
+              "tracking": 78,
+              "tracking_lost": 122
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 121
+            },
+            "first_nontracking_frame_index": 78,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 78,
+            "centroid_error_median_m": 0.005750942926754732,
+            "centroid_error_p95_m": 0.00615704627749569,
+            "active_update_median_ms": 3.2970388419926167,
+            "active_update_p95_ms": 6.501988205127417
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 78,
+              "tracking_frames": 78,
+              "tracking_fraction": 1.0,
+              "state_counts": {
+                "tracking": 78
+              },
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 78,
+              "centroid_error_median_m": 0.005750942926754732,
+              "centroid_error_p95_m": 0.00615704627749569,
+              "active_update_median_ms": 3.295350936241448,
+              "active_update_p95_ms": 6.511323864106087
+            },
+            "after_release": {
+              "attempted_frames": 122,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 121
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": 3.4333651419728994,
+              "active_update_p95_ms": 3.4333651419728994
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 200,
+              "tracking_frames": 78,
+              "tracking_fraction": 0.39,
+              "state_counts": {
+                "tracking": 78,
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 121
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 78,
+              "centroid_error_median_m": 0.005750942926754732,
+              "centroid_error_p95_m": 0.00615704627749569,
+              "active_update_median_ms": 3.2970388419926167,
+              "active_update_p95_ms": 6.501988205127417
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "exposure_transition",
+          "mode": "raw",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "raw",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 10,
+            "tracking_fraction": 0.05,
+            "state_counts": {
+              "tracking": 10,
+              "tracking_lost": 190
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 189
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 10,
+            "centroid_error_median_m": 0.005930318972264621,
+            "centroid_error_p95_m": 0.006128160890446549,
+            "active_update_median_ms": 2.3532300256192684,
+            "active_update_p95_ms": 3.8980330573394895
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 78,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.1282051282051282,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 68
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 67
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005930318972264621,
+              "centroid_error_p95_m": 0.006128160890446549,
+              "active_update_median_ms": 2.3532300256192684,
+              "active_update_p95_ms": 3.8980330573394895
+            },
+            "after_release": {
+              "attempted_frames": 122,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "explicit_initialization_required": 122
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "explicit_initialization_required",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 200,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.05,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 190
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 189
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005930318972264621,
+              "centroid_error_p95_m": 0.006128160890446549,
+              "active_update_median_ms": 2.3532300256192684,
+              "active_update_p95_ms": 3.8980330573394895
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "exposure_transition",
+          "mode": "clahe",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "clahe",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 10,
+            "tracking_fraction": 0.05,
+            "state_counts": {
+              "tracking": 10,
+              "tracking_lost": 190
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 189
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 10,
+            "centroid_error_median_m": 0.0058581821435590865,
+            "centroid_error_p95_m": 0.006042101146165291,
+            "active_update_median_ms": 3.1928778626024723,
+            "active_update_p95_ms": 4.615404992364347
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 78,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.1282051282051282,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 68
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 67
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.0058581821435590865,
+              "centroid_error_p95_m": 0.006042101146165291,
+              "active_update_median_ms": 3.1928778626024723,
+              "active_update_p95_ms": 4.615404992364347
+            },
+            "after_release": {
+              "attempted_frames": 122,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "explicit_initialization_required": 122
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "explicit_initialization_required",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 200,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.05,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 190
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 189
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.0058581821435590865,
+              "centroid_error_p95_m": 0.006042101146165291,
+              "active_update_median_ms": 3.1928778626024723,
+              "active_update_p95_ms": 4.615404992364347
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "depth_dropout",
+          "mode": "raw",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "raw",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 69,
+            "tracking_fraction": 0.345,
+            "state_counts": {
+              "tracking": 69,
+              "invalid_depth": 9,
+              "tracking_lost": 122
+            },
+            "reason_counts": {
+              "depth_measurement_rejected": 9,
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 121
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "depth_measurement_rejected",
+            "centroid_error_scored_frames": 69,
+            "centroid_error_median_m": 0.006112612031732833,
+            "centroid_error_p95_m": 0.0064057446619952985,
+            "active_update_median_ms": 2.423696918413043,
+            "active_update_p95_ms": 5.4167218040674925
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 78,
+              "tracking_frames": 69,
+              "tracking_fraction": 0.8846153846153846,
+              "state_counts": {
+                "tracking": 69,
+                "invalid_depth": 9
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 9
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 69,
+              "centroid_error_median_m": 0.006112612031732833,
+              "centroid_error_p95_m": 0.0064057446619952985,
+              "active_update_median_ms": 2.4231664137914777,
+              "active_update_p95_ms": 5.420503206551074
+            },
+            "after_release": {
+              "attempted_frames": 122,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 121
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": 2.432300942018628,
+              "active_update_p95_ms": 2.432300942018628
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 200,
+              "tracking_frames": 69,
+              "tracking_fraction": 0.345,
+              "state_counts": {
+                "tracking": 69,
+                "invalid_depth": 9,
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 9,
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 121
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 69,
+              "centroid_error_median_m": 0.006112612031732833,
+              "centroid_error_p95_m": 0.0064057446619952985,
+              "active_update_median_ms": 2.423696918413043,
+              "active_update_p95_ms": 5.4167218040674925
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "depth_dropout",
+          "mode": "clahe",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "clahe",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 69,
+            "tracking_fraction": 0.345,
+            "state_counts": {
+              "tracking": 69,
+              "invalid_depth": 9,
+              "tracking_lost": 122
+            },
+            "reason_counts": {
+              "depth_measurement_rejected": 9,
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 121
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "depth_measurement_rejected",
+            "centroid_error_scored_frames": 69,
+            "centroid_error_median_m": 0.005774856823291045,
+            "centroid_error_p95_m": 0.006184921099756024,
+            "active_update_median_ms": 3.2494631595909595,
+            "active_update_p95_ms": 6.263786600902677
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 78,
+              "tracking_frames": 69,
+              "tracking_fraction": 0.8846153846153846,
+              "state_counts": {
+                "tracking": 69,
+                "invalid_depth": 9
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 9
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 69,
+              "centroid_error_median_m": 0.005774856823291045,
+              "centroid_error_p95_m": 0.006184921099756024,
+              "active_update_median_ms": 3.2453570747748017,
+              "active_update_p95_ms": 6.263901339843869
+            },
+            "after_release": {
+              "attempted_frames": 122,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 121
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": 3.478370141237974,
+              "active_update_p95_ms": 3.478370141237974
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 200,
+              "tracking_frames": 69,
+              "tracking_fraction": 0.345,
+              "state_counts": {
+                "tracking": 69,
+                "invalid_depth": 9,
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 9,
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 121
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 69,
+              "centroid_error_median_m": 0.005774856823291045,
+              "centroid_error_p95_m": 0.006184921099756024,
+              "active_update_median_ms": 3.2494631595909595,
+              "active_update_p95_ms": 6.263786600902677
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "rgb_dropout",
+          "mode": "raw",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "raw",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 10,
+            "tracking_fraction": 0.05,
+            "state_counts": {
+              "tracking": 10,
+              "tracking_lost": 190
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 189
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 10,
+            "centroid_error_median_m": 0.005930318972264621,
+            "centroid_error_p95_m": 0.006128160890446549,
+            "active_update_median_ms": 2.344941021874547,
+            "active_update_p95_ms": 3.7379389395937324
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 78,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.1282051282051282,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 68
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 67
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005930318972264621,
+              "centroid_error_p95_m": 0.006128160890446549,
+              "active_update_median_ms": 2.344941021874547,
+              "active_update_p95_ms": 3.7379389395937324
+            },
+            "after_release": {
+              "attempted_frames": 122,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "explicit_initialization_required": 122
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "explicit_initialization_required",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 200,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.05,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 190
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 189
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005930318972264621,
+              "centroid_error_p95_m": 0.006128160890446549,
+              "active_update_median_ms": 2.344941021874547,
+              "active_update_p95_ms": 3.7379389395937324
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "rgb_dropout",
+          "mode": "clahe",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "clahe",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 10,
+            "tracking_fraction": 0.05,
+            "state_counts": {
+              "tracking": 10,
+              "tracking_lost": 190
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 189
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 10,
+            "centroid_error_median_m": 0.0058581821435590865,
+            "centroid_error_p95_m": 0.006042101146165291,
+            "active_update_median_ms": 3.177728969603777,
+            "active_update_p95_ms": 4.544340074062347
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 78,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.1282051282051282,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 68
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 67
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.0058581821435590865,
+              "centroid_error_p95_m": 0.006042101146165291,
+              "active_update_median_ms": 3.177728969603777,
+              "active_update_p95_ms": 4.544340074062347
+            },
+            "after_release": {
+              "attempted_frames": 122,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 122
+              },
+              "reason_counts": {
+                "explicit_initialization_required": 122
+              },
+              "first_nontracking_frame_index": 78,
+              "first_nontracking_reason": "explicit_initialization_required",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 200,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.05,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 190
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 189
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.0058581821435590865,
+              "centroid_error_p95_m": 0.006042101146165291,
+              "active_update_median_ms": 3.177728969603777,
+              "active_update_p95_ms": 4.544340074062347
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source_job_id": "21317409",
+      "recorded_task_outcome": "vision_stopped_failure",
+      "recorded_frames": 200,
+      "first_capture_after_recorded_release": null,
+      "first_recorded_stop_report_frame_index": 76,
+      "source_metadata_and_all_rgb_depth_sha256": "c6411512735fa300e6019ea3beb2362fdf0ad2c135c876328c3c581a0dc63fef",
+      "reference_config_policy": "current",
+      "reference_tracker_config": {
+        "roi_half_size_px": [
+          14,
+          24
+        ],
+        "max_features": 80,
+        "min_features": 4,
+        "feature_quality_level": 0.005,
+        "replenish_features": true,
+        "photometric_normalization": "raw",
+        "max_roundtrip_error_px": 1.0,
+        "max_lk_error": 40.0,
+        "max_flow_residual_px": 3.0,
+        "min_patch_std": 3.0,
+        "min_patch_correlation": 0.35,
+        "min_confidence": 0.15,
+        "depth_radius_px": 1,
+        "min_depth_valid_fraction": 0.75,
+        "min_depth_m": 0.02,
+        "max_depth_m": 5.0,
+        "max_depth_spread_m": 0.025,
+        "max_world_jump_m": 0.06
+      },
+      "source_tracker_config": {
+        "roi_half_size_px": [
+          14,
+          24
+        ],
+        "max_features": 80,
+        "min_features": 4,
+        "feature_quality_level": 0.005,
+        "replenish_features": false,
+        "photometric_normalization": "raw",
+        "max_roundtrip_error_px": 1.0,
+        "max_lk_error": 40.0,
+        "max_flow_residual_px": 3.0,
+        "min_patch_std": 3.0,
+        "min_patch_correlation": 0.35,
+        "min_confidence": 0.15,
+        "depth_radius_px": 1,
+        "min_depth_valid_fraction": 0.75,
+        "min_depth_m": 0.02,
+        "max_depth_m": 5.0,
+        "max_depth_spread_m": 0.025,
+        "max_world_jump_m": 0.06
+      },
+      "source_config_provenance": "Recorded feature/maintenance/depth-window settings; other current tracker defaults",
+      "comparison_scope": "Paired modes differ only in photometric_normalization; source config is provenance",
+      "variants": [
+        {
+          "scenario": "baseline",
+          "mode": "raw",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "raw",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 200,
+            "tracking_fraction": 1.0,
+            "state_counts": {
+              "tracking": 200
+            },
+            "reason_counts": {},
+            "first_nontracking_frame_index": null,
+            "first_nontracking_reason": null,
+            "centroid_error_scored_frames": 200,
+            "centroid_error_median_m": 0.005987874271309217,
+            "centroid_error_p95_m": 0.0066062700069911325,
+            "active_update_median_ms": 2.458978327922523,
+            "active_update_p95_ms": 7.621470210142427
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 200,
+              "tracking_frames": 200,
+              "tracking_fraction": 1.0,
+              "state_counts": {
+                "tracking": 200
+              },
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 200,
+              "centroid_error_median_m": 0.005987874271309217,
+              "centroid_error_p95_m": 0.0066062700069911325,
+              "active_update_median_ms": 2.458978327922523,
+              "active_update_p95_ms": 7.621470210142427
+            },
+            "after_release": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 77,
+              "tracking_frames": 77,
+              "tracking_fraction": 1.0,
+              "state_counts": {
+                "tracking": 77
+              },
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 77,
+              "centroid_error_median_m": 0.0060886586012708676,
+              "centroid_error_p95_m": 0.006471127916793864,
+              "active_update_median_ms": 2.479077083989978,
+              "active_update_p95_ms": 8.013941952958703
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 123,
+              "tracking_frames": 123,
+              "tracking_fraction": 1.0,
+              "state_counts": {
+                "tracking": 123
+              },
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 123,
+              "centroid_error_median_m": 0.005984979519861296,
+              "centroid_error_p95_m": 0.006606489028238328,
+              "active_update_median_ms": 2.4477720726281404,
+              "active_update_p95_ms": 7.081621419638391
+            }
+          }
+        },
+        {
+          "scenario": "baseline",
+          "mode": "clahe",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "clahe",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 200,
+            "tracking_fraction": 1.0,
+            "state_counts": {
+              "tracking": 200
+            },
+            "reason_counts": {},
+            "first_nontracking_frame_index": null,
+            "first_nontracking_reason": null,
+            "centroid_error_scored_frames": 200,
+            "centroid_error_median_m": 0.005308339734974258,
+            "centroid_error_p95_m": 0.006085112742284767,
+            "active_update_median_ms": 3.290097462013364,
+            "active_update_p95_ms": 7.407702098134903
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 200,
+              "tracking_frames": 200,
+              "tracking_fraction": 1.0,
+              "state_counts": {
+                "tracking": 200
+              },
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 200,
+              "centroid_error_median_m": 0.005308339734974258,
+              "centroid_error_p95_m": 0.006085112742284767,
+              "active_update_median_ms": 3.290097462013364,
+              "active_update_p95_ms": 7.407702098134903
+            },
+            "after_release": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 77,
+              "tracking_frames": 77,
+              "tracking_fraction": 1.0,
+              "state_counts": {
+                "tracking": 77
+              },
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 77,
+              "centroid_error_median_m": 0.005787511055241017,
+              "centroid_error_p95_m": 0.006181137411275136,
+              "active_update_median_ms": 3.350835060700774,
+              "active_update_p95_ms": 6.881021521985538
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 123,
+              "tracking_frames": 123,
+              "tracking_fraction": 1.0,
+              "state_counts": {
+                "tracking": 123
+              },
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 123,
+              "centroid_error_median_m": 0.005306683985363148,
+              "centroid_error_p95_m": 0.005311241153689023,
+              "active_update_median_ms": 3.2366958912461996,
+              "active_update_p95_ms": 7.284219493158152
+            }
+          }
+        },
+        {
+          "scenario": "exposure_transition",
+          "mode": "raw",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "raw",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 10,
+            "tracking_fraction": 0.05,
+            "state_counts": {
+              "tracking": 10,
+              "tracking_lost": 190
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 189
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 10,
+            "centroid_error_median_m": 0.005930758724299113,
+            "centroid_error_p95_m": 0.006127986857182049,
+            "active_update_median_ms": 2.323869150131941,
+            "active_update_p95_ms": 3.768325550481677
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 200,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.05,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 190
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 189
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005930758724299113,
+              "centroid_error_p95_m": 0.006127986857182049,
+              "active_update_median_ms": 2.323869150131941,
+              "active_update_p95_ms": 3.768325550481677
+            },
+            "after_release": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 77,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.12987012987012986,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 67
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 66
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005930758724299113,
+              "centroid_error_p95_m": 0.006127986857182049,
+              "active_update_median_ms": 2.323869150131941,
+              "active_update_p95_ms": 3.768325550481677
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 123,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 123
+              },
+              "reason_counts": {
+                "explicit_initialization_required": 123
+              },
+              "first_nontracking_frame_index": 77,
+              "first_nontracking_reason": "explicit_initialization_required",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "exposure_transition",
+          "mode": "clahe",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "clahe",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 10,
+            "tracking_fraction": 0.05,
+            "state_counts": {
+              "tracking": 10,
+              "tracking_lost": 190
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 189
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 10,
+            "centroid_error_median_m": 0.005934829965149704,
+            "centroid_error_p95_m": 0.00602561402210749,
+            "active_update_median_ms": 3.241435158997774,
+            "active_update_p95_ms": 4.689174937084317
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 200,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.05,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 190
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 189
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005934829965149704,
+              "centroid_error_p95_m": 0.00602561402210749,
+              "active_update_median_ms": 3.241435158997774,
+              "active_update_p95_ms": 4.689174937084317
+            },
+            "after_release": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 77,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.12987012987012986,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 67
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 66
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005934829965149704,
+              "centroid_error_p95_m": 0.00602561402210749,
+              "active_update_median_ms": 3.241435158997774,
+              "active_update_p95_ms": 4.689174937084317
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 123,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 123
+              },
+              "reason_counts": {
+                "explicit_initialization_required": 123
+              },
+              "first_nontracking_frame_index": 77,
+              "first_nontracking_reason": "explicit_initialization_required",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "depth_dropout",
+          "mode": "raw",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "raw",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 179,
+            "tracking_fraction": 0.895,
+            "state_counts": {
+              "tracking": 179,
+              "invalid_depth": 21
+            },
+            "reason_counts": {
+              "depth_measurement_rejected": 21
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "depth_measurement_rejected",
+            "centroid_error_scored_frames": 179,
+            "centroid_error_median_m": 0.005987932403990897,
+            "centroid_error_p95_m": 0.006606063728875829,
+            "active_update_median_ms": 2.304028021171689,
+            "active_update_p95_ms": 5.099584406707432
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 200,
+              "tracking_frames": 179,
+              "tracking_fraction": 0.895,
+              "state_counts": {
+                "tracking": 179,
+                "invalid_depth": 21
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 21
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 179,
+              "centroid_error_median_m": 0.005987932403990897,
+              "centroid_error_p95_m": 0.006606063728875829,
+              "active_update_median_ms": 2.304028021171689,
+              "active_update_p95_ms": 5.099584406707432
+            },
+            "after_release": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 77,
+              "tracking_frames": 68,
+              "tracking_fraction": 0.8831168831168831,
+              "state_counts": {
+                "tracking": 68,
+                "invalid_depth": 9
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 9
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 68,
+              "centroid_error_median_m": 0.006118256662402147,
+              "centroid_error_p95_m": 0.006478859935098349,
+              "active_update_median_ms": 2.3460008669644594,
+              "active_update_p95_ms": 5.67169007845223
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 123,
+              "tracking_frames": 111,
+              "tracking_fraction": 0.9024390243902439,
+              "state_counts": {
+                "tracking": 111,
+                "invalid_depth": 12
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 12
+              },
+              "first_nontracking_frame_index": 100,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 111,
+              "centroid_error_median_m": 0.005984979519861296,
+              "centroid_error_p95_m": 0.0066064135538051825,
+              "active_update_median_ms": 2.2349439095705748,
+              "active_update_p95_ms": 3.6410208093002416
+            }
+          }
+        },
+        {
+          "scenario": "depth_dropout",
+          "mode": "clahe",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "clahe",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 179,
+            "tracking_fraction": 0.895,
+            "state_counts": {
+              "tracking": 179,
+              "invalid_depth": 21
+            },
+            "reason_counts": {
+              "depth_measurement_rejected": 21
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "depth_measurement_rejected",
+            "centroid_error_scored_frames": 179,
+            "centroid_error_median_m": 0.005308477500738983,
+            "centroid_error_p95_m": 0.006085387128059088,
+            "active_update_median_ms": 3.236477030441165,
+            "active_update_p95_ms": 7.679489906877277
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 200,
+              "tracking_frames": 179,
+              "tracking_fraction": 0.895,
+              "state_counts": {
+                "tracking": 179,
+                "invalid_depth": 21
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 21
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 179,
+              "centroid_error_median_m": 0.005308477500738983,
+              "centroid_error_p95_m": 0.006085387128059088,
+              "active_update_median_ms": 3.236477030441165,
+              "active_update_p95_ms": 7.679489906877277
+            },
+            "after_release": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 77,
+              "tracking_frames": 68,
+              "tracking_fraction": 0.8831168831168831,
+              "state_counts": {
+                "tracking": 68,
+                "invalid_depth": 9
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 9
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 68,
+              "centroid_error_median_m": 0.005782097842941194,
+              "centroid_error_p95_m": 0.006189246529494481,
+              "active_update_median_ms": 3.287432948127389,
+              "active_update_p95_ms": 6.214598752558231
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 123,
+              "tracking_frames": 111,
+              "tracking_fraction": 0.9024390243902439,
+              "state_counts": {
+                "tracking": 111,
+                "invalid_depth": 12
+              },
+              "reason_counts": {
+                "depth_measurement_rejected": 12
+              },
+              "first_nontracking_frame_index": 100,
+              "first_nontracking_reason": "depth_measurement_rejected",
+              "centroid_error_scored_frames": 111,
+              "centroid_error_median_m": 0.0053067744191946705,
+              "centroid_error_p95_m": 0.005310906149280608,
+              "active_update_median_ms": 3.181357868015766,
+              "active_update_p95_ms": 8.407493447884912
+            }
+          }
+        },
+        {
+          "scenario": "rgb_dropout",
+          "mode": "raw",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "raw",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 10,
+            "tracking_fraction": 0.05,
+            "state_counts": {
+              "tracking": 10,
+              "tracking_lost": 190
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 189
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 10,
+            "centroid_error_median_m": 0.005930758724299113,
+            "centroid_error_p95_m": 0.006127986857182049,
+            "active_update_median_ms": 2.2993721067905426,
+            "active_update_p95_ms": 3.652440384030342
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 200,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.05,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 190
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 189
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005930758724299113,
+              "centroid_error_p95_m": 0.006127986857182049,
+              "active_update_median_ms": 2.2993721067905426,
+              "active_update_p95_ms": 3.652440384030342
+            },
+            "after_release": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 77,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.12987012987012986,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 67
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 66
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005930758724299113,
+              "centroid_error_p95_m": 0.006127986857182049,
+              "active_update_median_ms": 2.2993721067905426,
+              "active_update_p95_ms": 3.652440384030342
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 123,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 123
+              },
+              "reason_counts": {
+                "explicit_initialization_required": 123
+              },
+              "first_nontracking_frame_index": 77,
+              "first_nontracking_reason": "explicit_initialization_required",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        },
+        {
+          "scenario": "rgb_dropout",
+          "mode": "clahe",
+          "config": {
+            "roi_half_size_px": [
+              14,
+              24
+            ],
+            "max_features": 80,
+            "min_features": 4,
+            "feature_quality_level": 0.005,
+            "replenish_features": true,
+            "photometric_normalization": "clahe",
+            "max_roundtrip_error_px": 1.0,
+            "max_lk_error": 40.0,
+            "max_flow_residual_px": 3.0,
+            "min_patch_std": 3.0,
+            "min_patch_correlation": 0.35,
+            "min_confidence": 0.15,
+            "depth_radius_px": 1,
+            "min_depth_valid_fraction": 0.75,
+            "min_depth_m": 0.02,
+            "max_depth_m": 5.0,
+            "max_depth_spread_m": 0.025,
+            "max_world_jump_m": 0.06
+          },
+          "initialization_state": "initialized",
+          "preview_measurement_state": "tracking",
+          "summary": {
+            "attempted_frames": 200,
+            "tracking_frames": 10,
+            "tracking_fraction": 0.05,
+            "state_counts": {
+              "tracking": 10,
+              "tracking_lost": 190
+            },
+            "reason_counts": {
+              "optical_flow_failed": 1,
+              "explicit_initialization_required": 189
+            },
+            "first_nontracking_frame_index": 10,
+            "first_nontracking_reason": "optical_flow_failed",
+            "centroid_error_scored_frames": 10,
+            "centroid_error_median_m": 0.005934829965149704,
+            "centroid_error_p95_m": 0.00602561402210749,
+            "active_update_median_ms": 3.2127820886671543,
+            "active_update_p95_ms": 4.69446845818311
+          },
+          "by_release_period": {
+            "pre_release": {
+              "attempted_frames": 200,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.05,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 190
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 189
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005934829965149704,
+              "centroid_error_p95_m": 0.00602561402210749,
+              "active_update_median_ms": 3.2127820886671543,
+              "active_update_p95_ms": 4.69446845818311
+            },
+            "after_release": {
+              "attempted_frames": 0,
+              "tracking_frames": 0,
+              "tracking_fraction": null,
+              "state_counts": {},
+              "reason_counts": {},
+              "first_nontracking_frame_index": null,
+              "first_nontracking_reason": null,
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          },
+          "by_recorded_stop": {
+            "through_first_stop_report": {
+              "attempted_frames": 77,
+              "tracking_frames": 10,
+              "tracking_fraction": 0.12987012987012986,
+              "state_counts": {
+                "tracking": 10,
+                "tracking_lost": 67
+              },
+              "reason_counts": {
+                "optical_flow_failed": 1,
+                "explicit_initialization_required": 66
+              },
+              "first_nontracking_frame_index": 10,
+              "first_nontracking_reason": "optical_flow_failed",
+              "centroid_error_scored_frames": 10,
+              "centroid_error_median_m": 0.005934829965149704,
+              "centroid_error_p95_m": 0.00602561402210749,
+              "active_update_median_ms": 3.2127820886671543,
+              "active_update_p95_ms": 4.69446845818311
+            },
+            "after_first_stop_report": {
+              "attempted_frames": 123,
+              "tracking_frames": 0,
+              "tracking_fraction": 0.0,
+              "state_counts": {
+                "tracking_lost": 123
+              },
+              "reason_counts": {
+                "explicit_initialization_required": 123
+              },
+              "first_nontracking_frame_index": 77,
+              "first_nontracking_reason": "explicit_initialization_required",
+              "centroid_error_scored_frames": 0,
+              "centroid_error_median_m": null,
+              "centroid_error_p95_m": null,
+              "active_update_median_ms": null,
+              "active_update_p95_ms": null
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

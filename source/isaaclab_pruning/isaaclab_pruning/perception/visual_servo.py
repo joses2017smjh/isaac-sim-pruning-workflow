@@ -23,6 +23,7 @@ class VisualServoConfig:
     min_features: int = 4
     feature_quality_level: float = 0.02
     replenish_features: bool = False
+    photometric_normalization: str = "raw"
     max_roundtrip_error_px: float = 1.0
     max_lk_error: float = 40.0
     max_flow_residual_px: float = 3.0
@@ -37,6 +38,8 @@ class VisualServoConfig:
     max_world_jump_m: float = 0.06
 
     def __post_init__(self):
+        if self.photometric_normalization not in ("raw", "clahe"):
+            raise ValueError("photometric_normalization must be raw or clahe")
         if not isinstance(self.replenish_features, bool):
             raise ValueError("replenish_features must be bool")
         if (
@@ -195,6 +198,17 @@ class VisualServoTracker:
         self._last_world = None
         self._lost = True
         self._frame_index = 0
+        # Fixed, explicitly experimental preprocessing; depth and all gates are
+        # unchanged. CLAHE can amplify noise and is not an automatic fallback.
+        self._clahe = None
+        if self.config.photometric_normalization == "clahe":
+            import cv2
+
+            self._clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+
+    def _prepare_gray(self, rgb):
+        gray = _gray(rgb)
+        return gray if self._clahe is None else self._clahe.apply(gray)
 
     def _result(self, state, reason=None, **details):
         return {
@@ -216,6 +230,12 @@ class VisualServoTracker:
             "requires_reinitialize": self._lost,
             "method": "seeded_forward_backward_lk_optical_z",
             "feature_maintenance_enabled": self.config.replenish_features,
+            "photometric_normalization": {
+                "mode": self.config.photometric_normalization,
+                "clahe_clip_limit": None if self._clahe is None else 2.0,
+                "clahe_tile_grid_size": None if self._clahe is None else [8, 8],
+                "input": "uint8_RGB_to_gray",
+            },
             **details,
         }
 
@@ -256,7 +276,7 @@ class VisualServoTracker:
         """Select an initial target once; does not itself authorize any motion."""
         import cv2
 
-        gray = _gray(rgb)
+        gray = self._prepare_gray(rgb)
         pixel = np.asarray(pixel_xy, dtype=np.float32)
         if pixel.shape != (2,) or not np.isfinite(pixel).all():
             raise ValueError("pixel_xy must contain two finite coordinates")
@@ -386,7 +406,7 @@ class VisualServoTracker:
         self._frame_index += 1
         if self._lost or self._previous_gray is None:
             return self._result("tracking_lost", "explicit_initialization_required")
-        gray = _gray(rgb)
+        gray = self._prepare_gray(rgb)
         if gray.shape != self._previous_gray.shape:
             return self._lose("image_shape_changed")
         points, flow, details = self._track_points(gray)

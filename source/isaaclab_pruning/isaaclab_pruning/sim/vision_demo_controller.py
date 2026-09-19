@@ -36,6 +36,7 @@ class VisionPruningDemo:
         *,
         max_step_m=0.004,
         closing_axis_tool=(1.0, 0.0, 0.0),
+        photometric_normalization="raw",
     ):
         self.target_id = str(target_id)
         self.axis = np.asarray(branch_axis_w, dtype=float)
@@ -50,7 +51,12 @@ class VisionPruningDemo:
         # unchanged. Maintain local corners only after valid measurements;
         # new corners are validated next frame and never reinitialize a loss.
         self.tracker = VisualServoTracker(
-            VisualServoConfig(depth_radius_px=1, feature_quality_level=0.005, replenish_features=True)
+            VisualServoConfig(
+                depth_radius_px=1,
+                feature_quality_level=0.005,
+                replenish_features=True,
+                photometric_normalization=photometric_normalization,
+            )
         )
         self.cutter = SimulatedCutController(
             CutConfig(
@@ -143,6 +149,7 @@ class VisionPruningDemo:
 
     def evidence(self):
         return {
+            "tracker_config": asdict(self.tracker.config),
             "measurement": self.measurement,
             "measurement_time_s": self.measurement_time,
             "cut": None if self.cut_step is None else asdict(self.cut_step),

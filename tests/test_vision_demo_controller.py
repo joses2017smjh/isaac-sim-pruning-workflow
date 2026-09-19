@@ -33,7 +33,8 @@ def tracking(target):
 
 
 class StubTracker:
-    def __init__(self, responses):
+    def __init__(self, responses, config):
+        self.config = config
         self.responses = deque(responses)
         self.initializations = []
         self.updates = []
@@ -51,7 +52,7 @@ def demo(*responses, **kwargs):
     options = dict(target_id="branch_7", branch_axis_w=(0, 0, 1), branch_radius_m=0.004, home_pose_wxyz=POSE)
     options.update(kwargs)
     controller = VisionPruningDemo(**options)
-    controller.tracker = StubTracker(responses)
+    controller.tracker = StubTracker(responses, controller.tracker.config)
     return controller
 
 

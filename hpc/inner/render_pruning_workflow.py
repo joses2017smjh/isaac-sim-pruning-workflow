@@ -158,6 +158,9 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
 
     quality = None
     blender_mode = os.environ.get("PRUNING_RENDER_MODE") == "blender_vision"
+    photometric_normalization = os.environ.get("PRUNING_PHOTOMETRIC_NORMALIZATION", "raw")
+    if photometric_normalization not in ("raw", "clahe"):
+        raise ValueError("PRUNING_PHOTOMETRIC_NORMALIZATION must be raw or clahe")
     wrist_mount = (0.0, -0.14, -0.025) if blender_mode else WRIST_POSITION_IN_TOOL_M
     if os.environ.get("PRUNING_RENDER_QUALITY") == "pathtraced":
         quality = CaptureQuality(
@@ -186,6 +189,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         "node": os.environ.get("SLURMD_NODENAME") or os.uname().nodename,
         "task_outcome": "not_started",
         "frame_count": 0,
+        "photometric_normalization": photometric_normalization,
         "provenance": {
             "robot": "UR5e + reviewed BDS mock-pruner, six actuated UR joints",
             "asset_id": os.environ.get("PRUNING_ASSET_ID"),
@@ -545,7 +549,9 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 env.blender_scene.target_radius_m,
                 initial_tool[0].detach().cpu().numpy(),
                 closing_axis_tool=proxy_closing_tool,
+                photometric_normalization=photometric_normalization,
             )
+            report["tracker_config"] = demo.evidence()["tracker_config"]
             report["blender_scene"] = env.blender_scene.evidence
             report["camera_mount_selection"] = {
                 "method": "fixed offset perpendicular to proxy closing axis; looks along jaw opening",

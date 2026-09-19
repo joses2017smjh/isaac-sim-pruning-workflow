@@ -1,4 +1,9 @@
-# Pruning Replay Studio — proposal, awaiting approval
+# Pruning Replay Studio — original proposal
+
+September 19 status note: a local uncommitted `studio/` prototype and exporters
+now exist. This experiment checkpoint preserves that work; it does not audit or
+publish it. Statements below about absent implementation describe the original
+proposal, not the current working-directory inventory.
 
 The supplied Robot Studio prompt assumes a trained floating-base robot and a
 MuJoCo evaluation harness. This repository does not have those prerequisites.

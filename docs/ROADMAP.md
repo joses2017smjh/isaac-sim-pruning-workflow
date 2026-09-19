@@ -10,11 +10,14 @@ checks: live approach, gated surrogate release, 809.49 mm measured drop and
 and ToF queries; only one known spur is selected. Local tests: **489 passed**,
 one simulator-only test deselected, including ten daylight tests.
 
-Morning/evening three-second lighting probes `21329420` / `21329421` are
-queued; their images and task behavior remain unvalidated.
+September 19 audit: morning/evening probes `21329420` / `21329421` each
+contain 30 frames and pass capture validation. Their three-second duration
+cannot establish release or return. The next bounded batch is the
+[six-sequence lighting/tracker pilot](RESEARCH_EXPERIMENTS_2026-09-19.md);
+see the [job ledger](../SLURM_JOBS.md) for submission status.
 [Recording](ISAAC_RENDER.md) · [aggregate results](evidence/two_tree_summary_2026-09-14.json).
-The [browser replay studio](ROBOT_STUDIO_PLAN.md) is a proposal awaiting approval,
-not a completed web app.
+A local uncommitted browser-studio prototype now exists; it was preserved and
+not evaluated as part of this experiment checkpoint.
 
 ## Phase 0 — contracts and compute
 
@@ -241,8 +244,10 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       home return in `21328323`: all 17 sequence checks pass for one target.
 - [x] Keep both distinct original Blender trees in collision and ToF queries.
 - [x] Add ten tests for morning/noon/evening world-space sunlight presets.
-- [ ] Validate queued morning/evening lighting probes; these short captures
-      do not establish full-sequence task success under changed illumination.
+- [x] Revalidate the saved morning/evening 30-frame lighting probes; capture
+      completeness passes, while full-sequence release/return remains unestablished.
+- [ ] Evaluate the six full-sequence raw/CLAHE lighting trials and retain failures;
+      queued work is not a task-success result.
 - [ ] Approve and build the replay-first browser studio one milestone at a time.
 - [ ] Evaluate more branch placements and failure cases before reporting a
       task-success rate or collision-avoidance claim.

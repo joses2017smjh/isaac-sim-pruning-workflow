@@ -1,9 +1,20 @@
 # Robot and sensor source audit
 
-Reviewed 2026-08-31. Repositories are recorded at immutable revisions in
-[`third_party/sources.yaml`](../third_party/sources.yaml).
+Original source review: 2026-08-31. Repositories are recorded at immutable
+revisions in [`third_party/sources.yaml`](../third_party/sources.yaml).
 
-## Decision
+**September 19 correction:** the runtime limitations below describe the August
+checkpoint. Fresh URDF import `21136450` is now promoted with
+`reimport_required: false`. `PruningEnv` instantiates live dual 8×8 ToF sensors;
+its flow and metric-student policy feeds remain placeholders. A separate seeded
+RGB-D controller uses live RTX camera data and has one independently graded
+surrogate-release sequence. Physical camera calibration and blade mechanics
+remain unresolved. See [current gates](ROADMAP.md), [runtime evidence](HPC.md),
+and [new experiments](RESEARCH_EXPERIMENTS_2026-09-19.md). The historical
+statements that no ToF sensors are instantiated or that wrist RGB is disabled
+are superseded; they must not be used as current implementation blockers.
+
+## August 31 decision (historical)
 
 The UR5e and mock-pruner files do exist. The best current mechanical source is
 [`lukestroh/branch_detection_system`](https://github.com/lukestroh/branch_detection_system/tree/dfede4c0f251358ebed7a1f90ff887847c2fbeb0),
@@ -168,7 +179,7 @@ hard-codes a single `vl53l8cx_0` frame and contains a validity condition that
 should be checked against real bags before porting. Calibrate two-sensor bias,
 dropout, thin-wood response, and cross-sensor correlation from recorded data.
 
-## What Isaac currently simulates
+## What Isaac simulated on August 31 (superseded above)
 
 The A-D builders and width contracts exist, but the active environment does
 not yet feed them from scene sensors. In

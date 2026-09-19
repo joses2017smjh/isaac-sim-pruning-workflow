@@ -11,9 +11,11 @@ on the pruning source/tests/tools and renderer (110 files formatted). Running
 Ruff across the entire inherited repository still reports 146 lint errors and
 14 files needing formatting; the maintained CI scope is narrower.
 
-The source, tests, configuration and asset interfaces were rechecked September 14.
-Morning/evening lighting probes are queued. The [browser replay studio](ROBOT_STUDIO_PLAN.md)
-is a proposal awaiting approval, not a shipped interface.
+September 19 recheck: the two short daylight captures exist and pass capture
+validation; release/return are absent. A local uncommitted browser prototype
+exists and is preserved separately. The [new experiment protocol](RESEARCH_EXPERIMENTS_2026-09-19.md)
+records fresh CPU checks, research sources and a six-run lighting comparison.
+Historical test counts above refer to their original checkpoint.
 
 ## What a reviewer will notice
 
@@ -57,7 +59,8 @@ is a proposal awaiting approval, not a shipped interface.
   task-success rate. The earlier failures remain in the evidence.
 - **Browser prerequisites are missing.** There is no cleared browser asset
   bundle, validated MJCF parity model, trained actor or browser performance
-  measurement. The replay-first proposal is awaiting approval.
+  measurement established by this audit. Local uncommitted browser work is
+  preserved; this checkpoint evaluates the simulation experiment path.
 - **CuRobo and training are scaffolds.** The baseline runner reports CuRobo
   readiness without executing a plan. `tools/train.py` always exits. There are
   no PPO checkpoints, held-out rollouts, sim2sim measurements, or hardware demo.
