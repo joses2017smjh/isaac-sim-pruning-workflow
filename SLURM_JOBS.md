@@ -1,6 +1,6 @@
 # SLURM job ledger
 
-Last audit: **2026-09-19 PDT** (`America/Los_Angeles`); submission receipt below.
+Last reconciled: **2026-09-19 16:13 PDT** (`America/Los_Angeles`).
 The September 14 queue table is retained as historical evidence.
 
 This ledger covers jobs produced by this repository's `prune-*` submission
@@ -28,7 +28,29 @@ The new launcher uses an A40 array with concurrency one, 8 CPUs, 48 GB and
 25 minutes per task (maximum 150 GPU-minutes). It freezes committed source,
 checks external asset hashes, strips inherited allocation options, and retains
 failed independent sequence grades. Existing running, pending and user-held
-jobs are preserved. New submission IDs are recorded here after acceptance.
+jobs are preserved. Array **`21360571_[0-5%1]`** was accepted at 16:12 PDT;
+`squeue` at 16:13 PDT reports all six tasks **PENDING**, reason `(None)` at that
+snapshot. No existing job was cancelled, held/released or otherwise modified.
+Source revision: `b4b4250fae14df0c1f39c70f60cf21960bae90ba` (387 frozen files,
+25 pinned external files). [Submission summary](docs/evidence/vision_pilot_submission_2026-09-19.json).
+
+| Array task | Lighting | Tracker |
+|---|---|---|
+| `21360571_0` | source | raw baseline |
+| `21360571_1` | source | CLAHE |
+| `21360571_2` | morning | raw baseline |
+| `21360571_3` | morning | CLAHE |
+| `21360571_4` | evening | raw baseline |
+| `21360571_5` | evening | CLAHE |
+
+Local plan, source snapshot, original queue snapshot and sbatch receipt:
+`artifacts/vision_robustness/lighting-20260919/`. Logs use
+`logs/prune-vision-pilot-21360571_<task>.out` within that batch directory.
+Each run writes `run_<index>_<light>_<method>/experiment_result.json` and
+`sequence_grade.json`. A missing report is incomplete, never a pass. Work stops
+at queue acceptance and this documentation/push checkpoint; GPU results remain
+pending. CPU verification: 514 passed, 9 USD-dependent skips, 1 simulator test
+deselected; lint/format and portable demo reproduction pass.
 
 ## Historical queue — September 14, 13:51 PDT
 
@@ -67,7 +89,7 @@ records distinct `tree0.usdc` and `tree1.usdc` hashes and their shared origin.
 | `21317169` | A40 `cn-r-5`, 8m58s; `CANCELLED by 19646` | Gap-aligned camera reached four stable alignment frames and closure. At 7.8 s, floating-point division left closure at 0.9999999999999994; vision failed on the next frame. No release. Cancelled after the latched stop; 111 telemetry records and 114 wrist images preserved. [Partial report](docs/evidence/two_tree_summary_2026-09-14.json), [timer evidence](docs/evidence/two_tree_summary_2026-09-14.json). |
 | `21317409` | A40 `cn-r-2`, 13m50s; `COMPLETED (0:0)` | Deadline corrected; 200 frames captured, but tracking confidence fell to 0.14165 at 7.7 s (limit 0.15), with four of 28 original points remaining. 68 applied commands, 262.93 mm movement, closure only 2/3; no release or retreat. [Report](docs/evidence/two_tree_summary_2026-09-14.json), [rejected grade](docs/evidence/two_tree_summary_2026-09-14.json). |
 | `21328323` | A40 `cn-s-1`, 15m53s; `COMPLETED (0:0)` | **Full surrogate-release sequence passes.** 200 frames / 20 s; 11 capture and 17 independent sequence checks. 68 applied commands, 262.94 mm movement; one gated release at 7.8 s, 809.49 mm measured drop, <0.001 mm final home error. One known spur in the two-tree scene, not physical cutting. [Aggregate results](docs/evidence/two_tree_summary_2026-09-14.json), [GIF](docs/demo/isaac_two_trees_vision_sequence.gif). |
-| `21329420`, `21329421` | A40 requested, ten-minute limits; `PENDING` | Morning/evening artistic sunlight probes; 30 frames / 3 s each. Waiting for per-user GPU quota. No rendered result yet. |
+| `21329420`, `21329421` | A40, 3m25s / 3m20s; `COMPLETED (0:0)` September 14 | Rechecked September 19: morning/evening 30-frame probes pass all 11 capture checks; neither reaches closure, release or return. |
 
 [CPU replay](docs/evidence/two_tree_summary_2026-09-14.json) reproduces
 the previous loss at frame 76 without maintenance, and tracks all 200 saved

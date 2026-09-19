@@ -207,5 +207,16 @@ Ruff lint and format checks pass across pruning source/tests/tools and the
 renderer (117 files). The nine skips require USD support absent from the CPU
 interpreter; GPU integration remains pending. Shell syntax and submission dry
 run pass. External asset inventory verifies 25 files, including six scene
-textures and all imported robot outputs. Submission IDs are added after
-scheduler acceptance; no new GPU outcome is established yet.
+textures and all imported robot outputs. No new GPU outcome is established yet.
+
+
+Array **`21360571_[0-5%1]`** was accepted September 19 at 16:12 PDT; all six
+tasks were pending at the 16:13 PDT check (reason `(None)` at that snapshot).
+[Submission evidence](evidence/vision_pilot_submission_2026-09-19.json) records
+resources, conditions and hashes. Frozen code revision is
+`b4b4250fae14df0c1f39c70f60cf21960bae90ba`; later documentation commits do not
+change queued code. The batch lives at
+`artifacts/vision_robustness/lighting-20260919/`; inspect its per-run grades after
+Slurm executes it. No existing job was modified. The portable CPU demo also
+reproduced its success, sensor-loss and blocked-geometry outcomes. Work stopped
+at queueing and pushing this checkpoint, without waiting for GPU completion.

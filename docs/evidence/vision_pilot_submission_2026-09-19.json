@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-09-19",
+  "array_job_id": "21360571",
+  "array_spec": "0-5%1",
+  "scheduler_state_at_2026_09_19_1613_pdt": "PENDING",
+  "pending_reason_at_snapshot": "None",
+  "code_revision": "b4b4250fae14df0c1f39c70f60cf21960bae90ba",
+  "created_utc": "2026-09-19T23:12:28.354460+00:00",
+  "partition": "ampere",
+  "constraint": "a40",
+  "gpus_per_task": 1,
+  "cpus_per_task": 8,
+  "memory_gb": 48,
+  "time_limit_minutes_per_task": 25,
+  "maximum_gpu_minutes": 150,
+  "max_concurrent_gpus": 1,
+  "frames_per_trial": 200,
+  "simulated_seconds_per_trial": 20,
+  "source_file_count": 387,
+  "pinned_external_file_count": 25,
+  "batch_dir": "artifacts/vision_robustness/lighting-20260919",
+  "plan_sha256": "a5d6c5ab1ef808bda5356d2e52ee0ba898083d9a56b70d58728e2c3430d7b994",
+  "submission_receipt_sha256": "9ae518359294cc1af77e3abdfd0b472fb21286391fbd1d9c3324325a61d05513",
+  "runs": [
+    {
+      "index": 0,
+      "daylight": "source",
+      "photometric_normalization": "raw"
+    },
+    {
+      "index": 1,
+      "daylight": "source",
+      "photometric_normalization": "clahe"
+    },
+    {
+      "index": 2,
+      "daylight": "morning",
+      "photometric_normalization": "raw"
+    },
+    {
+      "index": 3,
+      "daylight": "morning",
+      "photometric_normalization": "clahe"
+    },
+    {
+      "index": 4,
+      "daylight": "evening",
+      "photometric_normalization": "raw"
+    },
+    {
+      "index": 5,
+      "daylight": "evening",
+      "photometric_normalization": "clahe"
+    }
+  ],
+  "existing_jobs": "No existing job was cancelled, held, released, reprioritized or modified.",
+  "outcome": "queued_only; no GPU result observed or claimed",
+  "validation": {
+    "cpu_passed": 514,
+    "cpu_skipped": 9,
+    "simulator_deselected": 1,
+    "ruff": "pass",
+    "shell_syntax": "pass",
+    "portable_cpu_demo": "pass"
+  },
+  "cpu_replay": "visual_robustness_replay_2026-09-19.json"
+}

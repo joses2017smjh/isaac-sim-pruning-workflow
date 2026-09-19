@@ -118,7 +118,8 @@ collider; material/lighting conversion is not Blender Cycles parity.
 simulated sun, not the source scene.
 
 A six-run [lighting/tracker pilot](docs/RESEARCH_EXPERIMENTS_2026-09-19.md)
-compares the current tracker with opt-in CLAHE contrast normalization. It uses
+is queued as array **21360571** to compare the current tracker with opt-in
+CLAHE contrast normalization. It uses
 full sequences, frozen source/asset hashes, independent grades and one GPU at a
 time. Short morning/evening probes already contain 30 valid frames each; they
 do not complete pruning. See the [current queue](SLURM_JOBS.md).

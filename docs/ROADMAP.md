@@ -246,9 +246,9 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
 - [x] Add ten tests for morning/noon/evening world-space sunlight presets.
 - [x] Revalidate the saved morning/evening 30-frame lighting probes; capture
       completeness passes, while full-sequence release/return remains unestablished.
-- [ ] Evaluate the six full-sequence raw/CLAHE lighting trials and retain failures;
+- [ ] Evaluate queued array `21360571`, six raw/CLAHE lighting trials, and retain failures;
       queued work is not a task-success result.
-- [ ] Approve and build the replay-first browser studio one milestone at a time.
+- [ ] Review and validate the existing local uncommitted replay-studio prototype.
 - [ ] Evaluate more branch placements and failure cases before reporting a
       task-success rate or collision-avoidance claim.
 

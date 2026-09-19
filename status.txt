@@ -31,12 +31,17 @@ EXPERIMENT IMPLEMENTATION
   Submission freezes committed code and hashes external USD/textures/launcher;
   tasks reject input drift, use exclusive output directories, and retain both
   capture exit and independent sequence grades, including failures.
-  Submission receipt and current verification are recorded in SLURM_JOBS.md
-  and docs/RESEARCH_EXPERIMENTS_2026-09-19.md after queue acceptance.
+  QUEUED: array 21360571_[0-5%1], accepted 2026-09-19 16:12 PDT.
+  All six tasks PENDING at 16:13 PDT; initial pending reason (None).
+  Frozen code b4b4250fae14df0c1f39c70f60cf21960bae90ba (387 files).
+  Batch: artifacts/vision_robustness/lighting-20260919/.
+  Public receipt: docs/evidence/vision_pilot_submission_2026-09-19.json.
+  No prior job cancelled, held/released, reprioritized or otherwise modified.
+  Stop after pushing current status; do not wait for GPU completion.
 
 VERIFICATION
   514 CPU tests passed, 9 skipped (USD support unavailable), 1 GPU deselected.
-  Ruff lint/format pass; shell syntax and submission dry-run pass.
+  Ruff lint/format, shell syntax, dry-run and portable CPU demo pass.
   25 external asset/launcher files independently checked against pinned hashes.
   Current-baseline CPU replay finds no CLAHE tracking-continuity improvement;
   both modes lose tracking at abrupt exposure transition frame 10.
