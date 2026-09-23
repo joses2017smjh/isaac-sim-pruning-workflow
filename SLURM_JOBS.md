@@ -353,3 +353,5 @@ The eight labelled clips planned on September 20 were composed on CPU into
 L-Py renders are not redistributed). The
 [clip manifest](docs/evidence/eight_clip_manifest_2026-09-20.json) is now marked
 executed with tree IDs, checkpoint hashes, job IDs and pooled metrics.
+A zero-GPU anchoring analysis on the same saved predictions (no job) is in
+[`depth_anchoring_2026-09-23.json`](docs/evidence/depth_anchoring_2026-09-23.json).

@@ -95,7 +95,13 @@ each frame's own offset removed UFO is no worse — the model reads UFO trees as
 further away, not as a different shape. A six-view DINO refiner adds nothing at
 2.2 s. All gates fail, as predicted before submission. Envy cannot be an
 unseen-tree test, since every Envy tree was in the model's training or
-validation split.
+validation split. A zero-GPU follow-up asked whether **one metric range from
+the rig** fixes it: for UFO daylight, yes (0.19 → 0.06 m from a single anchor at
+the target); for Envy, no — the spur's error differs from the tree's — though a
+many-point fit would (ceiling 0.04–0.06 m). Evening and the Isaac working
+distance are not scale problems; no anchor helps them.
+[Anchoring result](docs/EVAL_PROTOCOL_DEPTH_ANCHORING_2026-09-23.md#result--september-23-2026)
+· [evidence](docs/evidence/depth_anchoring_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)
 · [matrix evidence](docs/evidence/family_matrix_depth_2026-09-23.json)
 · [Stage A](docs/evidence/stage_a_depth_2026-09-23.json)

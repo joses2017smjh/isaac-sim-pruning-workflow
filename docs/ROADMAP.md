@@ -290,6 +290,16 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       3 of 8 trees, so target-level numbers rest on 5.
       [Protocol and result](EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026) ·
       [evidence](evidence/family_matrix_depth_2026-09-23.json).
+- [x] Zero-GPU anchoring analysis, registered before running: one metric range
+      at the target fixes UFO daylight (0.19 → 0.06 m) but not Envy (spur error
+      is not the frame error; a many-point affine fit would, ceiling 0.04–0.06 m);
+      nothing fixes evening (ceiling 0.10–0.13 m) or Isaac (ceiling 0.37–0.46 m).
+      P1 refuted, P2 and P4 supported, P3 half refuted, all on the record.
+      [Protocol and result](EVAL_PROTOCOL_DEPTH_ANCHORING_2026-09-23.md) ·
+      [evidence](evidence/depth_anchoring_2026-09-23.json).
+- [ ] Multi-zone anchoring: fit per-frame scale and shift to the two recorded
+      8×8 ToF grids (registration of zones into the wrist image needed) and
+      compare with the affine ceiling.
 - [ ] Renderer and distance controls for Stage A: the original orchard tree in
       Cycles at the matrix rigs, and a close-range rig at the Isaac working
       distance. Neither exists; without them the +0.5 m Isaac error cannot be

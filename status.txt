@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — ENVY/UFO + LIGHTING MATRIX DONE AND PUBLISHED
+CURRENT CHECKPOINT — 2026-09-23 PDT — MATRIX PUBLISHED; ANCHORING ANALYSIS DONE; GENERALIZATION RESEARCH RUNNING
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -82,6 +82,18 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     (result section appended there); README / ROADMAP / SLURM_JOBS updated;
     clips composed. All committed in 5371cd0. NOTHING PUSHED: six commits
     ahead of origin/develop await the user's word.
+  ANCHORING (2026-09-23, zero GPU, pre-registered, P1 REFUTED), commit 65e1b23:
+    docs/EVAL_PROTOCOL_DEPTH_ANCHORING_2026-09-23.md + evidence
+    docs/evidence/depth_anchoring_2026-09-23.json, tool tools/anchor_depth_analysis.py,
+    SQL sql/anchoring/. One metric range at the target: UFO daylight 0.19->0.06 m
+    (works); Envy 0.13->0.18 m at source (WORSE: spur error != frame error,
+    ceiling 0.05 says many-point fit would work); evening ceiling 0.10-0.13 and
+    Isaac ceiling 0.37-0.46: NOT scale problems, need model-input changes.
+  IN FLIGHT: research workflow wf_89122771-6b8 (training pipeline/data, camera
+    FOV, ToF anchoring path, literature -> ranked plan -> critic). Next: register
+    GPU controls (Isaac-FOV/close-range renders, original-tree renderer control,
+    overcast, evening test-time normalization), state budget, ask ONCE, submit.
+    User pre-authorized "queue the experiments"; the budget still gets stated.
   NOT DONE, STATED IN THE PROTOCOL: renderer/distance controls for Stage A;
     'overcast' preset (darkness vs sun angle); controller on Envy/UFO (no path:
     RenderEnv presents the Blender orchard; L-Py USDs have no spur-selection
