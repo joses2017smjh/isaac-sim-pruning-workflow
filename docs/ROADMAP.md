@@ -153,6 +153,15 @@ feeds into the training policy remain unfinished.
       (`hpc/slurm/baselines.sbatch`). The short environment gate is now green,
       but the inspection trajectory is not this baseline evaluation and the
       current CuRobo path reports readiness without executing a plan.
+- [ ] Execute a CuRobo plan to the pre-cut standoff. **Blocked on the pinned
+      stack (time-boxed probe, September 23):** CuRobo is not installed in
+      `venv-isaac60`, and installing it means compiling CUDA extensions against
+      torch 2.11 + CUDA 13.0 into, or alongside, a venv that also serves the
+      separate Humanoid_Lite project, then a GPU allocation to execute.
+      Upstream is compatible in principle (Python >= 3.10, torch >= 2.9 for
+      CUDA 13). Nothing was installed or modified. The PyPI name
+      `nvidia-curobo` is an unrelated placeholder and must not be used.
+      [Probe and path forward](evidence/curobo_feasibility_2026-09-23.json).
 
 Hard gate: do not report a learned policy without scripted and oracle baselines.
 `tools/train.py` refuses to start if those flags are unset.
