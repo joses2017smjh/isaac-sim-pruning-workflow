@@ -52,6 +52,18 @@ retreat; the success dashboard preserves that state instead of hiding it.
 The **20-second success video** includes approach, release at **7.8 seconds**,
 the measured fall and the return. The wrist view shows the same sequence.
 
+**Lighting pilot (array `21360571`, six sequences).** Raw and CLAHE contrast
+normalization, each under source, morning and evening light, on that same spur.
+All six pass 17/17 independent checks. **CLAHE is dropped**: it changed no task
+outcome and no tracking continuity, so it fails the pre-registered comparison and
+is recorded as a rejected diagnostic. The pilot did find a margin: under morning
+light the raw tracker fell to **4 surviving features against its own floor of 4**,
+completing the task with nothing to spare. Six trials on one target are a paired
+pilot, not a success rate.
+[Decision and table](docs/RESEARCH_EXPERIMENTS_2026-09-19.md#decision-on-the-clahe-candidate)
+· [pilot results](docs/evidence/lighting_pilot_results_2026-09-23.json)
+· [job ledger](SLURM_JOBS.md)
+
 ## Quickstart
 
 The CPU demo requires Git and Python 3.10+ with `venv` on Linux or macOS.
@@ -124,12 +136,12 @@ collider; material/lighting conversion is not Blender Cycles parity.
 [Morning/evening presets](docs/ISAAC_RENDER.md#daylight-variants) change the
 simulated sun, not the source scene.
 
-The six-run [lighting/tracker pilot](docs/RESEARCH_EXPERIMENTS_2026-09-19.md)
-completed as array **21360571**. Fresh September 20 grading passes all 17 checks
-in each raw/CLAHE × source/morning/evening sequence. All use the same original
-`tree0` spur and RTX depth; no CLAHE task-completion advantage or population
-robustness is established. Two earlier full daylight runs also pass.
-[Audited results](docs/evidence/repository_audit_2026-09-20.json) · [job ledger](SLURM_JOBS.md).
+The six-run lighting/tracker pilot is summarized under [Result](#result) and
+decided in full in the [protocol](docs/RESEARCH_EXPERIMENTS_2026-09-19.md#decision-on-the-clahe-candidate).
+All six use the same original `tree0` spur and RTX depth, so neither a CLAHE
+advantage nor population robustness is established. Two earlier full daylight
+runs also pass and are listed separately, outside the pre-registered array.
+[Earlier audit](docs/evidence/repository_audit_2026-09-20.json) · [job ledger](SLURM_JOBS.md).
 
 The [September 20 research audit](docs/RESEARCH_AUDIT_2026-09-20.md) verifies
 100 Envy + 100 UFO assets and lists the pending checkpoint-provenance, learned-depth,

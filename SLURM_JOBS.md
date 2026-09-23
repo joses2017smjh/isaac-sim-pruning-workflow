@@ -20,28 +20,57 @@ At the timestamp above, no `prune-*` jobs remain running or pending. No job was
 submitted, cancelled or modified by this audit. All jobs below completed with
 `0:0` and now pass fresh capture validation and all 17 sequence checks.
 
-| Job | Raw allocation ID | Light | Tracker | Elapsed | Release (s) | Commands | Final home error (mm) | Grade |
-|---|---|---|---|---|---|---|---|---|
-| `21360571_0` | `21362298` | source | raw | 00:16:21 | 7.8 | 68 | 0.001140 | 17/17 |
-| `21360571_1` | `21363248` | source | clahe | 00:16:25 | 7.8 | 68 | 0.000248 | 17/17 |
-| `21360571_2` | `21363331` | morning | raw | 00:16:37 | 7.8 | 68 | 0.000426 | 17/17 |
-| `21360571_3` | `21363374` | morning | clahe | 00:16:41 | 7.8 | 68 | 0.001094 | 17/17 |
-| `21360571_4` | `21363432` | evening | raw | 00:16:31 | 7.8 | 68 | 0.000484 | 17/17 |
-| `21360571_5` | `21360571` | evening | clahe | 00:16:36 | 7.7 | 67 | 0.001101 | 17/17 |
-| `21358986` | `21358986` | morning | earlier full run | 00:16:34 | 7.8 | 68 | 0.001195 | 17/17 |
-| `21358987` | `21358987` | evening | earlier full run | 00:16:14 | 7.8 | 68 | 0.001048 | 17/17 |
+All six pre-registered tasks are accounted for; none is incomplete. Grades below
+are recomputed from `report.json` and `frames.json` by the independent grader,
+and each fresh grade agrees with the one stored beside the capture.
+
+| Job | Raw allocation ID | Light | Tracker | Grade | Release (s) | Commands | First tracking-loss reason | Tracking loss (s) | Drop (mm) | Final home error (mm) | Min features | Min confidence |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `21360571_0` | `21362298` | source | raw | 17/17 | 7.8 | 68 | optical_flow_failed | 7.9 | 809.49 | 0.001140 | 18 | 0.581 |
+| `21360571_1` | `21363248` | source | clahe | 17/17 | 7.8 | 68 | optical_flow_failed | 7.9 | 809.49 | 0.000248 | 21 | 0.621 |
+| `21360571_2` | `21363331` | morning | raw | 17/17 | 7.8 | 68 | optical_flow_failed | 7.9 | 809.49 | 0.000426 | **4** | **0.174** |
+| `21360571_3` | `21363374` | morning | clahe | 17/17 | 7.8 | 68 | optical_flow_failed | 7.9 | 809.49 | 0.001094 | 7 | 0.495 |
+| `21360571_4` | `21363432` | evening | raw | 17/17 | 7.8 | 68 | optical_flow_failed | 7.9 | 809.49 | 0.000484 | 13 | 0.499 |
+| `21360571_5` | `21360571` | evening | clahe | 17/17 | 7.7 | 67 | optical_flow_failed | 7.8 | 809.49 | 0.001101 | 15 | 0.403 |
+| `21358986` | `21358986` | morning | earlier full run | 17/17 | 7.8 | 68 | optical_flow_failed | 7.9 | 809.49 | 0.001195 | — | — |
+| `21358987` | `21358987` | evening | earlier full run | 17/17 | 7.8 | 68 | optical_flow_failed | 7.9 | 809.49 | 0.001048 | — | — |
+
+Elapsed times were 00:16:14 to 00:16:41, mean 16.5 minutes, one A40 per task at
+`%1`. The last two rows are **outside the pre-registered array**: they are earlier
+full daylight runs that were missing from the ledger, and they are not folded into
+the paired comparison.
+
+In every run the first tracking loss occurs on the frame *after* release, as the
+detached piece leaves the region of interest during home-directed retreat. That is
+the expected post-release behaviour, not a control failure; no run recorded a stop.
 
 Every run uses original `tree0_SPUR_component_8235`, RTX optical-Z depth and
-200 frames. Measured piece fall is 809.492 mm in each. There is no demonstrated
+200 frames. Measured piece fall is 809.49 mm in each. There is no demonstrated
 CLAHE task-completion advantage and no Envy/UFO or learned-depth result.
 The array's raw allocation IDs explain the differing `job_id` values inside
 its reports; they are not extra experiments. No pilot dependency remains.
 
+The two margin columns are tracker-internal diagnostics over pre-release tracking
+frames, not the protocol's primary metric. They are reported because **morning raw
+sits exactly on the tracker's own `min_features = 4` accept floor**: one fewer
+surviving feature would have rejected the frame. The task still completed.
+
+Regenerate the whole table's source with one command:
+
+```bash
+python tools/summarize_lighting_pilot.py \
+  --batch-dir artifacts/vision_robustness/lighting-20260919 \
+  --output docs/evidence/lighting_pilot_results_2026-09-23.json
+```
+
 Pilot captures: `artifacts/vision_robustness/lighting-20260919/run_*`.
 Earlier full daylight captures: `artifacts/isaac_render/job_21358986` and
 `job_21358987`. These two runs were absent from the previous ledger.
-[Machine evidence](docs/evidence/repository_audit_2026-09-20.json) preserves exact
-scheduler times, hashes, metrics and fresh grades.
+[Pilot results](docs/evidence/lighting_pilot_results_2026-09-23.json) is the
+regenerated machine evidence behind the table above: per-run scheduler rows,
+input hashes, fresh grades, tracking profiles and the paired comparison.
+[Earlier audit](docs/evidence/repository_audit_2026-09-20.json) preserves the
+September 20 scheduler times, hashes, metrics and grades.
 [Research follow-up](docs/RESEARCH_AUDIT_2026-09-20.md) is planned, not submitted.
 
 ## Historical September 19 experiment checkpoint

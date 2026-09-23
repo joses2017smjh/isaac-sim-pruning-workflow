@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-09-23",
+  "scope": "Aggregated grades and scheduler accounting for one frozen, pre-registered lighting batch. Every grade is recomputed here by the independent grader from recorded JSON. This is a paired one-target pilot: it is not a population success rate, not a CLAHE promotion, and not calibrated outdoor or sensor robustness.",
+  "limits": [
+    "One selected spur on one tree; six trials do not estimate a success rate.",
+    "Daylight presets are artistic, not radiometric or astronomical.",
+    "Depth is RTX optical-Z ground truth; branch identity comes from mesh metadata.",
+    "Tracking loss after a completed release is expected during home-directed retreat.",
+    "Feature and confidence margins are tracker-internal diagnostics, not the primary metric.",
+    "Scheduler state COMPLETED (0:0) is accounting, never evidence of task success."
+  ],
+  "batch_dir": "artifacts/vision_robustness/lighting-20260919",
+  "array_job_id": "21360571",
+  "code_revision": "b4b4250fae14df0c1f39c70f60cf21960bae90ba",
+  "plan_created_utc": "2026-09-19T23:12:28.354460+00:00",
+  "plan_sha256": "a5d6c5ab1ef808bda5356d2e52ee0ba898083d9a56b70d58728e2c3430d7b994",
+  "grader": "tools/validate_vision_sequence.py:grade_sequence",
+  "grader_sha256": "7414c505a6b2907ecf12f145313037449d7a81335f53c71a93d55d0d1934391f",
+  "summarizer_sha256": "7364106fb065e78bcbf2b1c111aa64b4e4cc4d3df0a0936865fea69f1a119708",
+  "planned_run_count": 6,
+  "graded_run_count": 6,
+  "incomplete_run_count": 0,
+  "passing_run_count": 6,
+  "runs": [
+    {
+      "index": 0,
+      "run_directory": "run_00_source_raw",
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "array_task": "21360571_0",
+      "scheduler": {
+        "JobID": "21360571_0",
+        "JobIDRaw": "21362298",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:21",
+        "Start": "2026-09-19T22:28:54",
+        "End": "2026-09-19T22:45:15",
+        "NodeList": "cn-r-1",
+        "AllocTRES": "billing=22,cpu=8,gres/gpu=1,mem=48G,node=1"
+      },
+      "status": "graded",
+      "input_sha256": {
+        "report.json": "24ef0102f92d02c3cdb61deca374436f103930c2ec0c9cc1bec2c6ae43071309",
+        "frames.json": "302a4260d1ffbb79e6b9dad4b57fe49dc9281dff261f60702d689ed8d89e431f"
+      },
+      "grade": {
+        "ok": true,
+        "checks_passed": 17,
+        "checks_total": 17,
+        "failed_checks": [],
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 1.1403039973800773e-06,
+          "post_detach_home_distance_reduction_m": 0.2651745718572602,
+          "post_detach_home_direction_displacement_m": 0.26517514758115107,
+          "post_detach_retreat_frames": 68
+        }
+      },
+      "stored_grade_agrees": true,
+      "tracking": {
+        "recorded_frames": 200,
+        "release_frame_index": 77,
+        "tracking_frames": 78,
+        "tracking_fraction": 0.39,
+        "first_nontracking_frame_index": 78,
+        "first_nontracking_reason": "optical_flow_failed",
+        "first_nontracking_is_after_release": true,
+        "tracked_feature_count_min": 18,
+        "tracked_feature_count_median": 30,
+        "tracked_confidence_min": 0.5809724450111389,
+        "wrist_rgb_std_first_frame": 51.95915287569617,
+        "first_frame_time_s": 0.1
+      },
+      "recorded_job_id": "21362298",
+      "configuration_matches": true,
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+    },
+    {
+      "index": 1,
+      "run_directory": "run_01_source_clahe",
+      "daylight": "source",
+      "photometric_normalization": "clahe",
+      "array_task": "21360571_1",
+      "scheduler": {
+        "JobID": "21360571_1",
+        "JobIDRaw": "21363248",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:25",
+        "Start": "2026-09-20T00:18:26",
+        "End": "2026-09-20T00:34:51",
+        "NodeList": "cn-r-2",
+        "AllocTRES": "billing=22,cpu=8,gres/gpu=1,mem=48G,node=1"
+      },
+      "status": "graded",
+      "input_sha256": {
+        "report.json": "6d12c5465a3ee9cb20daa8be9b08a1c4c01c483e9156397152a8569bdb2c39bd",
+        "frames.json": "1e85c1e8f3273dc22807d63b9e963aa45d223b1eacbc8af9f7a0cd7dd60a4efb"
+      },
+      "grade": {
+        "ok": true,
+        "checks_passed": 17,
+        "checks_total": 17,
+        "failed_checks": [],
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 2.4755668231600746e-07,
+          "post_detach_home_distance_reduction_m": 0.2652998887331616,
+          "post_detach_home_direction_displacement_m": 0.265300189511416,
+          "post_detach_retreat_frames": 68
+        }
+      },
+      "stored_grade_agrees": true,
+      "tracking": {
+        "recorded_frames": 200,
+        "release_frame_index": 77,
+        "tracking_frames": 78,
+        "tracking_fraction": 0.39,
+        "first_nontracking_frame_index": 78,
+        "first_nontracking_reason": "optical_flow_failed",
+        "first_nontracking_is_after_release": true,
+        "tracked_feature_count_min": 21,
+        "tracked_feature_count_median": 33,
+        "tracked_confidence_min": 0.6208268837495283,
+        "wrist_rgb_std_first_frame": 51.95838001852745,
+        "first_frame_time_s": 0.1
+      },
+      "recorded_job_id": "21363248",
+      "configuration_matches": true,
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+    },
+    {
+      "index": 2,
+      "run_directory": "run_02_morning_raw",
+      "daylight": "morning",
+      "photometric_normalization": "raw",
+      "array_task": "21360571_2",
+      "scheduler": {
+        "JobID": "21360571_2",
+        "JobIDRaw": "21363331",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:37",
+        "Start": "2026-09-20T00:34:56",
+        "End": "2026-09-20T00:51:33",
+        "NodeList": "cn-r-2",
+        "AllocTRES": "billing=22,cpu=8,gres/gpu=1,mem=48G,node=1"
+      },
+      "status": "graded",
+      "input_sha256": {
+        "report.json": "cce7cf0687253d4eaae62cf95916fc04d28ec75c2c3f3689068cab140ec2c451",
+        "frames.json": "e083392e0ba5196fce085732e82c45c0615bd29d45e63e8f2dab04ea3ef3ec84"
+      },
+      "grade": {
+        "ok": true,
+        "checks_passed": 17,
+        "checks_total": 17,
+        "failed_checks": [],
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 4.256623046721727e-07,
+          "post_detach_home_distance_reduction_m": 0.2654471582691468,
+          "post_detach_home_direction_displacement_m": 0.2654476526621505,
+          "post_detach_retreat_frames": 68
+        }
+      },
+      "stored_grade_agrees": true,
+      "tracking": {
+        "recorded_frames": 200,
+        "release_frame_index": 77,
+        "tracking_frames": 78,
+        "tracking_fraction": 0.39,
+        "first_nontracking_frame_index": 78,
+        "first_nontracking_reason": "optical_flow_failed",
+        "first_nontracking_is_after_release": true,
+        "tracked_feature_count_min": 4,
+        "tracked_feature_count_median": 10,
+        "tracked_confidence_min": 0.17353399991989138,
+        "wrist_rgb_std_first_frame": 60.92562804281353,
+        "first_frame_time_s": 0.1
+      },
+      "recorded_job_id": "21363331",
+      "configuration_matches": true,
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+    },
+    {
+      "index": 3,
+      "run_directory": "run_03_morning_clahe",
+      "daylight": "morning",
+      "photometric_normalization": "clahe",
+      "array_task": "21360571_3",
+      "scheduler": {
+        "JobID": "21360571_3",
+        "JobIDRaw": "21363374",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:41",
+        "Start": "2026-09-20T00:51:35",
+        "End": "2026-09-20T01:08:16",
+        "NodeList": "cn-r-2",
+        "AllocTRES": "billing=22,cpu=8,gres/gpu=1,mem=48G,node=1"
+      },
+      "status": "graded",
+      "input_sha256": {
+        "report.json": "78a38d00960d3d9dbb2baaf5ebf1fbef2213a6ef84dbd5f0afa62d7048f578b1",
+        "frames.json": "e249cd1c7b863dd7be6cd4e928853017b8dac04089d7046464a3db11fb9f2361"
+      },
+      "grade": {
+        "ok": true,
+        "checks_passed": 17,
+        "checks_total": 17,
+        "failed_checks": [],
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 1.0941958278826368e-06,
+          "post_detach_home_distance_reduction_m": 0.26523885732148617,
+          "post_detach_home_direction_displacement_m": 0.2652398092039147,
+          "post_detach_retreat_frames": 68
+        }
+      },
+      "stored_grade_agrees": true,
+      "tracking": {
+        "recorded_frames": 200,
+        "release_frame_index": 77,
+        "tracking_frames": 78,
+        "tracking_fraction": 0.39,
+        "first_nontracking_frame_index": 78,
+        "first_nontracking_reason": "optical_flow_failed",
+        "first_nontracking_is_after_release": true,
+        "tracked_feature_count_min": 7,
+        "tracked_feature_count_median": 13,
+        "tracked_confidence_min": 0.4946519640775827,
+        "wrist_rgb_std_first_frame": 60.92632110459427,
+        "first_frame_time_s": 0.1
+      },
+      "recorded_job_id": "21363374",
+      "configuration_matches": true,
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+    },
+    {
+      "index": 4,
+      "run_directory": "run_04_evening_raw",
+      "daylight": "evening",
+      "photometric_normalization": "raw",
+      "array_task": "21360571_4",
+      "scheduler": {
+        "JobID": "21360571_4",
+        "JobIDRaw": "21363432",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:31",
+        "Start": "2026-09-20T01:08:26",
+        "End": "2026-09-20T01:24:57",
+        "NodeList": "cn-r-2",
+        "AllocTRES": "billing=22,cpu=8,gres/gpu=1,mem=48G,node=1"
+      },
+      "status": "graded",
+      "input_sha256": {
+        "report.json": "324e5fb6d29f88717bafc88b12f8d319b166d36a58d73370996473efb3c669bb",
+        "frames.json": "9d5d57f06743c463b2d7d92b70a12479ca5efeb2def92e9caef5b04ca96b7f5f"
+      },
+      "grade": {
+        "ok": true,
+        "checks_passed": 17,
+        "checks_total": 17,
+        "failed_checks": [],
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 4.842304232499576e-07,
+          "post_detach_home_distance_reduction_m": 0.2651970125702133,
+          "post_detach_home_direction_displacement_m": 0.26519749348855703,
+          "post_detach_retreat_frames": 68
+        }
+      },
+      "stored_grade_agrees": true,
+      "tracking": {
+        "recorded_frames": 200,
+        "release_frame_index": 77,
+        "tracking_frames": 78,
+        "tracking_fraction": 0.39,
+        "first_nontracking_frame_index": 78,
+        "first_nontracking_reason": "optical_flow_failed",
+        "first_nontracking_is_after_release": true,
+        "tracked_feature_count_min": 13,
+        "tracked_feature_count_median": 24,
+        "tracked_confidence_min": 0.49948978920777637,
+        "wrist_rgb_std_first_frame": 54.18173953112875,
+        "first_frame_time_s": 0.1
+      },
+      "recorded_job_id": "21363432",
+      "configuration_matches": true,
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+    },
+    {
+      "index": 5,
+      "run_directory": "run_05_evening_clahe",
+      "daylight": "evening",
+      "photometric_normalization": "clahe",
+      "array_task": "21360571_5",
+      "scheduler": {
+        "JobID": "21360571_5",
+        "JobIDRaw": "21360571",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:36",
+        "Start": "2026-09-20T01:25:06",
+        "End": "2026-09-20T01:41:42",
+        "NodeList": "cn-r-2",
+        "AllocTRES": "billing=22,cpu=8,gres/gpu=1,mem=48G,node=1"
+      },
+      "status": "graded",
+      "input_sha256": {
+        "report.json": "926c2b48e8c9ef74b76d3a64d8ba6db89172f74065c2d3ae467726cb9a99476c",
+        "frames.json": "4f846114d1e86930406871987a31a5a0d3691104e4784cf980fb7a2b32f20dea"
+      },
+      "grade": {
+        "ok": true,
+        "checks_passed": 17,
+        "checks_total": 17,
+        "failed_checks": [],
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            76
+          ],
+          "detachment_request_frame_indexes": [
+            76
+          ],
+          "applied_vision_command_frames": 67,
+          "reported_vision_command_count": 67.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 1.10107381355233e-06,
+          "post_detach_home_distance_reduction_m": 0.2611853660256407,
+          "post_detach_home_direction_displacement_m": 0.2611857450872881,
+          "post_detach_retreat_frames": 67
+        }
+      },
+      "stored_grade_agrees": true,
+      "tracking": {
+        "recorded_frames": 200,
+        "release_frame_index": 76,
+        "tracking_frames": 77,
+        "tracking_fraction": 0.385,
+        "first_nontracking_frame_index": 77,
+        "first_nontracking_reason": "optical_flow_failed",
+        "first_nontracking_is_after_release": true,
+        "tracked_feature_count_min": 15,
+        "tracked_feature_count_median": 33,
+        "tracked_confidence_min": 0.40272845463319257,
+        "wrist_rgb_std_first_frame": 54.181702404503945,
+        "first_frame_time_s": 0.1
+      },
+      "recorded_job_id": "21360571",
+      "configuration_matches": true,
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+    }
+  ],
+  "paired_comparison": [
+    {
+      "daylight": "evening",
+      "complete_pair": true,
+      "raw_ok": true,
+      "clahe_ok": true,
+      "task_completion_delta": "none",
+      "raw_tracking_frames": 78,
+      "clahe_tracking_frames": 77,
+      "raw_feature_count_min": 13,
+      "clahe_feature_count_min": 15,
+      "raw_confidence_min": 0.49948978920777637,
+      "clahe_confidence_min": 0.40272845463319257
+    },
+    {
+      "daylight": "morning",
+      "complete_pair": true,
+      "raw_ok": true,
+      "clahe_ok": true,
+      "task_completion_delta": "none",
+      "raw_tracking_frames": 78,
+      "clahe_tracking_frames": 78,
+      "raw_feature_count_min": 4,
+      "clahe_feature_count_min": 7,
+      "raw_confidence_min": 0.17353399991989138,
+      "clahe_confidence_min": 0.4946519640775827
+    },
+    {
+      "daylight": "source",
+      "complete_pair": true,
+      "raw_ok": true,
+      "clahe_ok": true,
+      "task_completion_delta": "none",
+      "raw_tracking_frames": 78,
+      "clahe_tracking_frames": 78,
+      "raw_feature_count_min": 18,
+      "clahe_feature_count_min": 21,
+      "raw_confidence_min": 0.5809724450111389,
+      "clahe_confidence_min": 0.6208268837495283
+    }
+  ],
+  "scheduler_accounting_rows": 6
+}

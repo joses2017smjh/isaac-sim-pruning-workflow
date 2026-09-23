@@ -1,11 +1,89 @@
-CURRENT EXECUTION UPDATE — 2026-09-20 PDT
-  User authorized implementation/submission after the audit below.
-  Job 21370005 SUBMITTED: 600-frame frozen DA2 vs RTX offline evaluation.
-  CPU model load/inference passed; one-frame target error gate FAILED (MAE 462mm).
-  Learned control GATED on offline and live shadow criteria; no control job submitted.
-  Selected DA2 covers all 100 Envy via train/validation; no untouched Envy test.
-  Source of current state: docs/RESEARCH_EXECUTION_2026-09-20.md and
-  docs/evidence/research_execution_2026-09-20.json.
+CURRENT CHECKPOINT — 2026-09-23 PDT — PHASE 1 COMPLETE
+
+WHERE THIS IS
+  Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
+  Branch develop. Local history now CONTAINS origin/develop 8edb3d7 (merged clean).
+  NOT PUSHED YET. Ask before pushing; never force-push.
+  CPU environment: /nfs/hpc/share/sanchej7/miniforge3/envs/depth-env/bin/python
+  (Python 3.10.19, numpy 2.2.6, opencv 4.11.0.86, ruff 0.16.5). No repo venv exists.
+
+SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
+  Phase 0 audit ...... DONE (plan delivered in chat)
+  Phase 1 lighting ... DONE (this checkpoint)
+  Phase 2 success rate  NEXT. Needs the user's GPU-budget OK before any sbatch.
+  Phase 3 ROS 2 SIL .. not started (CPU-only, can run while Phase 2 queues)
+  Phase 4 studio ..... not started (CPU-only)
+  Phase 5 CuRobo ..... optional, time-boxed
+  Phase 6 docs/claims  not started; needs the user's CLAIM_BANK.md path and
+                       the 2026-09-19 leads file.
+  Agreed gating: run CPU-only work continuously; hard-stop for GPU budget
+  approval, any push, and committing further untracked work.
+
+PHASE 1 RESULT — lighting pilot 21360571 published
+  All six pre-registered tasks accounted for; zero incomplete.
+  Grades RECOMPUTED by the independent grader; all six agree with stored grades.
+  6/6 pass 17/17 checks. Release 7.8 s (7.7 s for task 5), 68 commands (67),
+  809.49 mm fall, home error 0.000248-0.001140 mm.
+  First tracking loss is always the frame AFTER release (detached piece leaving
+  the ROI during retreat), reason optical_flow_failed. No run recorded a stop.
+  CLAHE DECISION: DROPPED, recorded as a rejected diagnostic. It changed no task
+  outcome and no tracking continuity, so it fails the pre-registered primary
+  comparison. The option remains in the config for reproducibility only.
+  MARGIN FINDING (secondary, not the primary metric): morning raw fell to
+  4 surviving features against the tracker's own min_features floor of 4, and
+  confidence 0.1735 against min_confidence 0.15. It completed with no margin.
+  CLAHE raised the feature floor in all three presets (18->21, 4->7, 13->15) and
+  the confidence floor under source and morning, but LOWERED it under evening
+  (0.500->0.403). Not a uniform improvement.
+  => morning light is the discriminating condition and belongs in Phase 2.
+
+PHASE 1 ARTIFACTS
+  tools/summarize_lighting_pilot.py   the one documented regeneration command
+  tests/test_summarize_lighting_pilot.py   7 tests
+  docs/evidence/lighting_pilot_results_2026-09-23.json   regenerated evidence
+  SLURM_JOBS.md   enriched 8-row table incl. loss reason, loss time, drop, margins
+  README.md "Result"   short pilot summary and the drop decision
+  docs/RESEARCH_EXPERIMENTS_2026-09-19.md   "Decision on the CLAHE candidate"
+  docs/ROADMAP.md   new checked gate with the evidence link
+  Regenerate with:
+    python tools/summarize_lighting_pilot.py \
+      --batch-dir artifacts/vision_robustness/lighting-20260919 \
+      --output docs/evidence/lighting_pilot_results_2026-09-23.json
+
+VALIDATION AT THIS CHECKPOINT
+  pytest -q -m "not isaacsim_ci" (tracked scope): 522 passed, 9 skipped,
+    1 deselected. The 9 skips all need pxr (USD), absent from the CPU env.
+  ruff check + ruff format --check on source/tests/tools: clean, 132 files.
+  tools/run_pruning_demo.py: reproduces 42 / 20 / 35 frames, exit 0.
+  KNOWN FAILING, UNTRACKED, DEFERRED TO PHASE 4:
+    tests/test_studio_orchard.py::test_actual_local_glb_matches_manifest_units_
+    original_tree_separation_and_hashes asserts tree separation > 0.1, actual 0.0.
+    Real bug in the untracked glTF exporter: tree1 lands on the origin.
+
+KEY FACTS FOR PHASE 2 (established in the Phase 0 audit)
+  tools/queue_vision_robustness.py freezes with `git archive HEAD`, so it REFUSES
+    to submit while any tracked file is dirty. Commit before submitting.
+  Targets are already switchable: PRUNING_COMPONENT_VERTEX and PRUNING_TARGET_TREE.
+    blender_demo_scene.spawn_blender_demo_scene now takes target_tree_index.
+  Candidate pool: docs/evidence/blender_two_tree_export.json,
+    branch_geometry_candidates[tree0_SPUR] 310 components / 310 eligible / 10 listed,
+    [tree1_SPUR] 399 / 398 / 10 listed. Listing rule sorts by (-|center_x|,
+    first_vertex) then truncates to 10. Unlisted tree1 components are REFUSED.
+  The current n=1 target 8235 is NOT in either listed set, so Phase 2 is
+    independent of the existing success.
+  The scene TRANSLATES so the selected spur centroid lands at a fixed workspace
+    pose (0.251, 0.634, 0.815), checked to 1e-5 m. So trials vary spur radius,
+    length, AXIS ORIENTATION and local occlusion at a canonicalized approach
+    pose. Reachability is moot by construction; say so in the protocol.
+  Offline jaw-fit screen needs no pxr: select_component requires
+    0 < max_radius_m <= 0.012 and runs on the manifest dict.
+  Visibility is checked INSIDE the GPU job, so a rejected target still costs
+    allocation minutes. Count rejections in the denominator.
+  Budget: mean 16.5 min/task on one A40 at %1; ONE RUN DIRECTORY IS 398 MB.
+    Proposed array A = 20 targets x source (330 GPU-min, ~5.5 h, ~8.0 GB);
+    array B = the same 20 x morning (same again). Separate OKs.
+  Share /nfs/hpc/share has 162 GB free. Home is 92% full: keep outputs off home.
+  duckdb is not in pyproject and there is no sql/ dir; both are new in Phase 2.
 
 HISTORICAL AUDIT SNAPSHOT FOLLOWS
 

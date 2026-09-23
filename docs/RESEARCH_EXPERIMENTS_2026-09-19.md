@@ -8,6 +8,10 @@ advantage or Envy/UFO/learned-depth generalization.
 [machine evidence](evidence/repository_audit_2026-09-20.json).
 The protocol and execution record below describe the September 19 checkpoint.
 
+**September 23 decision: CLAHE is dropped.** See
+[Decision on the CLAHE candidate](#decision-on-the-clahe-candidate) below and
+[the regenerated pilot results](evidence/lighting_pilot_results_2026-09-23.json).
+
 This batch tests whether fixed local contrast normalization helps the existing
 seeded RGB-D tracker under lighting changes. It compares the current controller
 with an opt-in CLAHE variant, first on saved captures and then in six complete
@@ -164,6 +168,48 @@ not radiometrically or astronomically calibrated. The task uses a visual jaw
 surrogate and discrete rigid-piece release, not physical blade mechanics or wood
 fracture. This experiment does not validate learned recognition, PPO training,
 executed CuRobo planning, calibrated physical sensors or collision avoidance.
+
+## Decision on the CLAHE candidate
+
+Completed September 23, 2026, against the primary comparison fixed above:
+*does the candidate preserve the source-light behaviour and improve task
+completion or tracking continuity under a changed lighting preset, with all
+unchanged gates still satisfied?*
+
+| Criterion | Raw baseline | CLAHE candidate | Verdict |
+|---|---|---|---|
+| Source-light behaviour preserved | 17/17, 68 commands | 17/17, 68 commands | Preserved |
+| Task completion under changed light | 2/2 sequences pass | 2/2 sequences pass | No improvement |
+| Tracking continuity under changed light | 78 and 78 pre-release frames | 78 and 77 | No improvement |
+| Blackout/dropout controls | No invalid approach or release | No invalid approach or release | No regression |
+
+**CLAHE is dropped as a default and recorded as a rejected diagnostic.** The
+`photometric_normalization` option stays in the tracker configuration so the
+comparison remains reproducible; nothing selects it. Six single-target trials
+cannot establish superiority in either direction, and this is a negative result
+published on the same terms a positive one would have been.
+
+The CPU replay agrees: across all eight paired saved-capture conditions the two
+modes accept identical frame counts, so there is no measured tracking-continuity
+gain. CLAHE's median centroid error is 0.3–0.7 mm lower, which is a measurement
+difference on surviving frames, not a task outcome.
+
+### What did move, and why it is secondary
+
+The lighting presets are not cosmetic. Over pre-release tracking frames the
+minimum surviving feature count was 18 (source), **4 (morning)** and 13 (evening)
+for the raw baseline. The tracker's own `min_features` is 4, tested as
+`count < 4`, so **morning raw sat exactly on its accept floor**: one fewer
+surviving feature would have rejected the frame. Minimum confidence in that run
+was 0.1735 against a `min_confidence` of 0.15.
+
+CLAHE raised the minimum feature count in all three presets (18→21, 4→7, 13→15).
+It raised the minimum confidence under source (0.581→0.621) and morning
+(0.1735→0.495) but **lowered it under evening** (0.500→0.403). The effect is
+therefore not a uniform margin improvement, and margin is not the pre-registered
+metric. It is reported because it shows the pilot was a real stress and that
+source light is not the hard case, which is why morning light belongs in any
+broader target sweep.
 
 ## Follow-up after this batch
 
