@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — PHASE 1 COMPLETE
+CURRENT CHECKPOINT — 2026-09-23 PDT — PHASE 1 DONE, PHASE 2 SUBMITTED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -53,17 +53,16 @@ PHASE 1 ARTIFACTS
       --output docs/evidence/lighting_pilot_results_2026-09-23.json
 
 VALIDATION AT THIS CHECKPOINT
-  pytest -q -m "not isaacsim_ci" (tracked scope): 522 passed, 9 skipped,
+  pytest -q -m "not isaacsim_ci" (tracked scope): 539 passed, 9 skipped,
     1 deselected. The 9 skips all need pxr (USD), absent from the CPU env.
-  ruff check + ruff format --check on source/tests/tools: clean, 132 files.
+  ruff check + ruff format --check on source/tests/tools: clean, 134 files.
   tools/run_pruning_demo.py: reproduces 42 / 20 / 35 frames, exit 0.
   KNOWN FAILING, UNTRACKED, DEFERRED TO PHASE 4:
     tests/test_studio_orchard.py::test_actual_local_glb_matches_manifest_units_
     original_tree_separation_and_hashes asserts tree separation > 0.1, actual 0.0.
     Real bug in the untracked glTF exporter: tree1 lands on the origin.
 
-PHASE 2 — REGISTERED, NOT SUBMITTED (2026-09-23)
-  NO JOB HAS BEEN SUBMITTED. Nothing is queued. Awaiting the user's budget OK.
+PHASE 2 — SUBMITTED, NO RESULT YET (2026-09-23)
   Protocol: docs/EVAL_PROTOCOL_2026-09-23.md (committed BEFORE any submission).
   Target register: docs/evidence/eval_targets_2026-09-23.json
     Population measured from the hash-verified export: tree0 310 components,
