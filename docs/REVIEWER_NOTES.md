@@ -1,5 +1,26 @@
 # Reviewer audit and remaining work
 
+September 23 update. What changed, and what a reviewer should check first:
+
+- **Success rate:** a pre-registered 20-target sweep under source and morning
+  light passed **0 of 40** (Wilson 95% 0–0.088). Every recorded run stopped at a
+  gate. Half the trials never ran because the tree1 targets were outside the
+  renderer's accepted candidates; that error is disclosed in the
+  [protocol](EVAL_PROTOCOL_2026-09-23.md#an-error-in-the-target-register), kept in
+  the denominator, and now caught on CPU before submission. Only tree0 was
+  measured. [Evidence](evidence/eval_2026-09-23.json).
+- **Lighting pilot:** CLAHE dropped on its pre-registered criteria; morning raw
+  sat on the tracker's own 4-feature floor. [Evidence](evidence/lighting_pilot_results_2026-09-23.json).
+- **ROS 2 SIL, not HIL:** 199/199 recorded decision states reproduced on
+  `21328323`; negative controls hold 39/39. [Notes](ROS2_SIL.md).
+- **C++:** ToF deprojection port with gtest parity against the Python original.
+- **CuRobo:** still not executed; blocked on the pinned stack.
+  [Probe](evidence/curobo_feasibility_2026-09-23.json).
+- Tracked CPU suite: 567 passed, 9 skipped, 1 deselected; ruff clean.
+- Unresolved and not published: the older untracked `studio/src` scene viewer,
+  whose asset exporter copies mock-pruner CAD and whose untracked test fails
+  because the glTF rebase collapses tree1 onto the origin.
+
 September 20 reconciliation: six raw/CLAHE pilot sequences and two earlier
 full daylight runs pass fresh 17/17 grading, all on `tree0_SPUR_component_8235`.
 The [new audit](RESEARCH_AUDIT_2026-09-20.md) records 100 Envy + 100 UFO local

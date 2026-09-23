@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — PHASES 1-4 DONE; PHASE 5 BLOCKED (documented)
+CURRENT CHECKPOINT — 2026-09-23 PDT — ALL PHASES DONE OR STOPPED; NOTHING PUSHED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -21,8 +21,18 @@ SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
   Phase 5 CuRobo ..... STOPPED AT TIME BOX. Not in the pinned stack; running it
                        needs a CUDA-extension build and a GPU allocation. Nothing
                        installed. docs/evidence/curobo_feasibility_2026-09-23.json
-  Phase 6 docs/claims  next. Found: Jose_Sanchez_Portfolio.com/career/CLAIM_BANK.md
-                       and career/applications/job-leads-{atlanta,new-york,texas}-2026-09-19.md
+  Phase 6 docs/claims  DONE. Five claims (PRU-SIL, PRU-CPP, PRU-LIGHT, PRU-RATE,
+                       PRU-STUDIO) appended ABOVE the generated marker in
+                       /nfs/hpc/share/sanchej7/Jose_Sanchez_Portfolio.com/career/CLAIM_BANK.md
+                       (additive only; pre-edit copy at
+                       /scratch/sanchej7/tmp/CLAIM_BANK.before-2026-09-23.md).
+                       Their SHA links resolve only after this repo is pushed.
+                       Nothing committed in the portfolio repo. Resume bullets and
+                       outreach openings were delivered in chat, not written to files.
+  USER ACTIONS PENDING: (1) approve a push of develop; (2) GitHub Settings >
+    Pages > Source = GitHub Actions; (3) decide the fate of studio/src; (4) add
+    topics ros2, ros2-humble, isaac-sim, robotics, visual-servoing,
+    software-in-the-loop, duckdb; (5) GPU OK if a tree1 re-registration is wanted.
   Agreed gating: run CPU-only work continuously; hard-stop for GPU budget
   approval, any push, and committing further untracked work.
 

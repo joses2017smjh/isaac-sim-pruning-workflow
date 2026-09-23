@@ -167,12 +167,16 @@ runs also pass and are listed separately, outside the pre-registered array.
 The [September 20 research audit](docs/RESEARCH_AUDIT_2026-09-20.md) verifies
 100 Envy + 100 UFO assets and lists the pending checkpoint-provenance, learned-depth,
 paired-lighting and eight-clip work. None of those new experiments is queued.
-Remaining: broader targets (including original tree1), learned perception,
-executed CuRobo/PPO baselines, physical camera calibration, actuated blades and
-cutting mechanics.
-The [browser-studio proposal](docs/ROBOT_STUDIO_PLAN.md) starts with recorded
-trajectory replay. A local uncommitted prototype is preserved separately from
-this experiment work; there is no trained policy to run in the browser yet.
+Remaining: a controller that completes more than the one known spur (the
+registered sweep passed 0 of 40); a tree1 evaluation under a new registration;
+ROS 2 hardware-in-the-loop, which needs the physical rig; an executed CuRobo
+plan, blocked on the pinned stack ([probe](docs/evidence/curobo_feasibility_2026-09-23.json));
+learned perception; PPO baselines; physical camera calibration; and actuated
+blades and cutting mechanics.
+The [replay studio](https://joses2017smjh.github.io/isaac-sim-pruning-workflow/)
+plays recorded runs only; there is no trained policy to run in the browser.
+[ROS 2 software-in-the-loop](docs/ROS2_SIL.md) replays recorded sensors through
+the same controller.
 [Implementation gates](docs/ROADMAP.md) · [Reviewer gaps](docs/REVIEWER_NOTES.md).
 
 ## Stack
