@@ -83,6 +83,19 @@ before submission. This sweep speaks for tree0 only.
 · [evidence](docs/evidence/eval_2026-09-23.json)
 · [typical stop](docs/demo/eval_failure_hazard_contact.png)
 
+**Learned depth across trees and lighting.** A separate question from the
+controller, whose tracker is not learned. The Envy-trained metric-depth model
+(DA2) run on Isaac frames of the original tree fails every pre-registered gate:
+0 of 234 target frames within 20 mm, a systematic **+0.4 to +0.6 m**
+overestimate. On Blender renders of one Envy and one UFO tree, evening light
+raises its error **6–8×** over source light, and a six-view DINO refiner adds
+nothing. That is one tree per family. An eight-tree matrix is
+[registered](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md) and awaits GPU
+approval; it cannot make Envy an unseen-tree test, because every Envy tree was
+in the model's training or validation split.
+[Stage A](docs/evidence/stage_a_depth_2026-09-23.json)
+· [pilot](docs/evidence/family_pilot_depth_2026-09-23.json)
+
 ## Quickstart
 
 The CPU demo requires Git and Python 3.10+ with `venv` on Linux or macOS.

@@ -39,3 +39,37 @@ def test_mask_and_border_target_are_explicit():
     assert not m.target_metrics(pred, gt, [-1, 0])["valid"]
     with pytest.raises(ValueError):
         m.depth_metrics(pred, gt[:2])
+
+
+def test_masked_target_scores_only_tree_pixels():
+    # A one-pixel-wide spur at column 1 in a 3x3 window; background is far away.
+    gt = np.full((3, 3), 5.0)
+    gt[:, 1] = 2.0
+    pred = np.full((3, 3), 5.0)
+    pred[:, 1] = 2.1
+    mask = np.zeros((3, 3), dtype=bool)
+    mask[:, 1] = True
+    unmasked = m.target_metrics(pred, gt, [1, 1])
+    masked = m.target_metrics(pred, gt, [1, 1], mask=mask)
+    # Unmasked, six of nine pixels are background and the reference is a blend.
+    assert unmasked["gt_pixels"] == 9 and unmasked["mask_gated"] is False
+    # Masked, only the three spur pixels count and the error is the spur's.
+    assert masked["gt_pixels"] == 3 and masked["mask_gated"] is True
+    assert masked["window_tree_pixels"] == 3
+    assert masked["mae_m"] == pytest.approx(0.1)
+    assert masked["reference_m"] == pytest.approx(2.0)
+
+
+def test_masked_target_with_no_tree_pixels_is_invalid_not_background():
+    gt, pred = np.full((3, 3), 5.0), np.full((3, 3), 5.0)
+    empty = np.zeros((3, 3), dtype=bool)
+    got = m.target_metrics(pred, gt, [1, 1], mask=empty)
+    assert got["valid"] is False
+    assert got["reason"] == "no_tree_pixels_in_target_window"
+    assert got["predicted_m"] is None
+
+
+def test_masked_target_rejects_a_mismatched_mask():
+    gt = np.ones((3, 3))
+    with pytest.raises(ValueError, match="Mask shape mismatch"):
+        m.target_metrics(gt, gt, [1, 1], mask=np.ones((2, 2), dtype=bool))

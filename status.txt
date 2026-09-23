@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — ALL PHASES DONE OR STOPPED; PUSHED, CI GREEN, PAGES LIVE
+CURRENT CHECKPOINT — 2026-09-23 PDT — ENVY/UFO + LIGHTING THREAD: RESULTS PUBLISHED, MATRIX REGISTERED, AWAITING GPU OK
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -35,6 +35,38 @@ SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
     cancelled and re-dispatched, it deployed. Replay studio verified live at
     https://joses2017smjh.github.io/isaac-sim-pruning-workflow/ (headless
     Chromium, 390px and 1280px, no errors). CLAIM_BANK entries marked verified.
+ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
+  What this thread is: the LEARNED metric-depth models (DA2, DINO) from the
+    depth project, NOT the controller's LK tracker. Two questions: carry-over
+    Envy -> UFO, and across lighting presets. Offline on rendered frames.
+  DONE: Sept 20 tooling committed byte-for-byte as it ran (3f3559f). Results
+    that were never written up are now regenerable and published:
+    docs/evidence/stage_a_depth_2026-09-23.json  (DA2 on Isaac RTX: 0/234 within
+      20 mm, +0.4-0.6 m overestimate, latency 0.25 s; every gate fails)
+    docs/evidence/family_pilot_depth_2026-09-23.json (evening 6.1x/7.9x worse,
+      N=1 tree per family; DINO adds nothing; DA2 p95 0.29 s, DINO 2.2 s)
+    Regenerate: PYTHONPATH=/nfs/hpc/share/sanchej7/sil-pydeps python \
+      tools/aggregate_family_eval.py --evaluation da2=<eval.json> [--evaluation dino=...] --output <json>
+  FIXED: target metric scored background (3x3 unmasked window on a 1-px spur).
+    depth_generalization.target_metrics now takes mask=; rows carry
+    target_masked beside the unchanged target. 21370047 was still "RUNNING" in
+    docs; corrected to COMPLETED, gates FAILED.
+  REGISTERED, NOT SUBMITTED: docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md.
+    8 trees (Envy 00000/03/08/12 = DA2 VALIDATION trees, not unseen; UFO 00000-03,
+    absent from fine-tuning), 4 Blender lights x 6 views, DA2 + DINO, mask-gated
+    target metric, Sept 20 gates unchanged (expected to fail). Pilot trees
+    reused; 6 to render. 120 GPU-min reserved, ~11 actual, ~0.4 GB, one GPU.
+  TO SUBMIT after the user's OK (tree must be clean; needs the share du):
+    python tools/queue_family_matrix.py --submit --batch-id family-matrix-20260923 \
+      --share-du-file /scratch/sanchej7/tmp/share_du.txt
+    It freezes HEAD, writes plan.json + storage_preflight.json, submits the
+    render array 0-5%1 then the eval job with afterany. Then aggregate
+    <batch>/eval/{da2,dino}/evaluation.json and publish.
+  NOT DONE, STATED IN THE PROTOCOL: renderer/distance controls for Stage A;
+    'overcast' preset (darkness vs sun angle); controller on Envy/UFO (no path:
+    RenderEnv presents the Blender orchard; L-Py USDs have no spur-selection
+    route). These need their own registration.
+
   OPTIONAL, USER'S CALL: commit CLAIM_BANK.md in the portfolio repo (beside the
     user's own uncommitted resume edits); decide the fate of studio/src; add
     repo topics; GPU OK only if a tree1 re-registration is wanted.

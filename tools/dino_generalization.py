@@ -160,8 +160,13 @@ def main():
                 if mask is not None and mask.ndim == 3:
                     mask = mask.any(axis=2)
                 target = target_metrics(pred, gt, f.get("target_pixel_xy"))
+                target_masked = (
+                    target_metrics(pred, gt, f.get("target_pixel_xy"), mask=mask) if mask is not None else None
+                )
                 if f.get("target_visible") is False:
                     target = {"valid": False, "reason": "geometric_target_not_visible"}
+                    if mask is not None:
+                        target_masked = {"valid": False, "reason": "geometric_target_not_visible"}
                 path = args.output / f"prediction_{index:05d}.npy"
                 np.save(path, pred)
                 result["rows"].append(
@@ -170,6 +175,7 @@ def main():
                         "all_valid_gt": depth_metrics(pred, gt),
                         "mask_metrics": depth_metrics(pred, gt, mask) if mask is not None else None,
                         "target": target,
+                        "target_masked": target_masked,
                         "prediction": str(path),
                         "group": list(key),
                         "six_view_dino_seconds": latency,

@@ -326,3 +326,10 @@ New preflights: **21370018** Envy 00000 and **21370019** UFO 00000 submitted; tw
 Execution update: 21370005 COMPLETED (600 frames; learned-control gates FAIL); 21370018/19 Blender preflights COMPLETED; 21370021 DINO interface preflight COMPLETED (afterok:21370005). CPU suite 518 passed, 10 skips. New jobs: 21370026 short live DA2 shadow + family USD imports, 21370027/28 paired Envy/UFO pilots (24 frames each), all submitted without dependencies. Source SUN/Filmic baseline and fixed 8mm minimum spur-segment rule documented in frozen code; initial failures retained.
 
 Preflight/result update: 21370039 COMPLETED (48 DA2 +48 DINO predictions); 21370026 FAILED before rendering (unsupported profile), 21370040 FAILED before rendering (mesh-only validator on cylinder assets), both retained. Corrected 21370047 RUNNING; both Envy/UFO USD imports now pass in Isaac. H.264 video smoke passed and was visually inspected. Initial one-tree-per-family evening degradation is diagnostic only, pending four-tree matrix.
+
+September 23 reconciliation: **21370047 COMPLETED** (0:0, 5 min 29 s, cn-gpu5);
+its live-shadow gates FAILED. Stage A `21370005` and pilot `21370039` results
+are published in [`stage_a_depth_2026-09-23.json`](docs/evidence/stage_a_depth_2026-09-23.json)
+and [`family_pilot_depth_2026-09-23.json`](docs/evidence/family_pilot_depth_2026-09-23.json).
+No new job is submitted by this reconciliation; the eight-tree matrix is
+registered and awaits approval.

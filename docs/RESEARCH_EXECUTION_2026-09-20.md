@@ -36,3 +36,29 @@ New preflights: **21370018** Envy 00000 and **21370019** UFO 00000 submitted; tw
 Execution update: 21370005 COMPLETED (600 frames; learned-control gates FAIL); 21370018/19 Blender preflights COMPLETED; 21370021 DINO interface preflight COMPLETED (afterok:21370005). CPU suite 518 passed, 10 skips. New jobs: 21370026 short live DA2 shadow + family USD imports, 21370027/28 paired Envy/UFO pilots (24 frames each), all submitted without dependencies. Source SUN/Filmic baseline and fixed 8mm minimum spur-segment rule documented in frozen code; initial failures retained.
 
 Preflight/result update: 21370039 COMPLETED (48 DA2 +48 DINO predictions); 21370026 FAILED before rendering (unsupported profile), 21370040 FAILED before rendering (mesh-only validator on cylinder assets), both retained. Corrected 21370047 RUNNING; both Envy/UFO USD imports now pass in Isaac. H.264 video smoke passed and was visually inspected. Initial one-tree-per-family evening degradation is diagnostic only, pending four-tree matrix.
+
+## Results written up — September 23, 2026
+
+The runs above completed on September 20 but were never written up. Their
+numbers are now regenerated from disk by `tools/aggregate_family_eval.py`
+through `sql/family/*.sql`, and every figure below traces to an evidence file.
+
+- **21370047 (live shadow) COMPLETED**, 5 min 29 s: 30 approach-only frames on
+  `tree0_SPUR_component_8235`, RTX depth in control throughout. The shadow
+  DA2 read the target about 2.4× too far (0.75–0.92 m predicted against
+  0.29–0.39 m RTX). **The live-shadow gates FAILED**, the same three as
+  Stage A: target p95, relative error and latency. The earlier "RUNNING" was
+  never updated. The Envy/UFO USD "import passes" means `Usd.Stage.Open` with
+  finite bounds inside the Isaac process; no Envy or UFO tree was rendered,
+  ray-cast or targeted.
+- **Stage A (21370005)**: 0 of 234 target frames within 20 mm, systematic
+  overestimate of +0.41 to +0.62 m, latency p95 0.248 s.
+  [Evidence](evidence/stage_a_depth_2026-09-23.json).
+- **Pilot (21370039)**: evening tree-mask MAE is 6.1× source on Envy 00000 and
+  7.9× on UFO 00000 for DA2; DINO adds nothing over DA2. N = 1 tree per family.
+  The pilot's target-level metrics are not cited: the unmasked 3×3 window scored
+  background, and the visibility annotations carried a half-pixel error.
+  [Evidence](evidence/family_pilot_depth_2026-09-23.json).
+- The eight-tree matrix is registered in
+  [EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md](EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md)
+  and submitted only on explicit approval.

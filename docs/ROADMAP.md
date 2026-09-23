@@ -271,9 +271,29 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       **dropped** as a rejected diagnostic: it changed no task outcome and no
       tracking continuity, failing the pre-registered comparison. Morning raw
       reached the tracker's own `min_features` floor of 4 while still completing.
-- [ ] Complete checkpoint-specific provenance/leakage audit, paired Envy/UFO
-      lighting evaluation and learned-depth offline/shadow gates before control.
-      [September 20 priorities](RESEARCH_AUDIT_2026-09-20.md).
+- [x] Learned-depth offline and live-shadow gates: **both FAIL**. Stage A
+      (`21370005`, Isaac RTX): 0 of 234 target frames within 20 mm, +0.4–0.6 m
+      systematic overestimate. Live shadow (`21370047`): target read ~2.4× too
+      far, RTX depth in control throughout. Learned control stays gated.
+      [Stage A](evidence/stage_a_depth_2026-09-23.json) ·
+      [execution record](RESEARCH_EXECUTION_2026-09-20.md#results-written-up--september-23-2026).
+- [x] Paired Envy/UFO lighting pilot, one tree per family (`21370039`): evening
+      raises DA2 tree-mask error 6.1× (Envy) and 7.9× (UFO); DINO adds nothing.
+      Not a family or population claim at N = 1.
+      [Evidence](evidence/family_pilot_depth_2026-09-23.json).
+- [ ] Eight-tree Envy/UFO × four-light matrix, registered before submission in
+      [EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md](EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md)
+      with the mask-gated target metric and the unchanged September 20 gates.
+      Launcher `tools/queue_family_matrix.py`; 120 GPU-minutes reserved, ~11
+      expected. Awaiting approval.
+- [ ] Renderer and distance controls for Stage A: the original orchard tree in
+      Cycles at the matrix rigs, and a close-range rig at the Isaac working
+      distance. Neither exists; without them the +0.5 m Isaac error cannot be
+      attributed to the renderer.
+- [ ] Vision-guided controller on an Envy or UFO tree in Isaac. No path exists:
+      `RenderEnv` presents the Blender orchard export, and the L-Py cylinder USDs
+      have no spur-selection route into it. Needs target selection over cylinder
+      metadata, a spawn path, and its own registration.
 - [ ] Test an explicitly selected target on original orchard tree1 separately.
 - [x] Ship a replay studio: a static page that plays recorded runs frame by frame
       with camera video, tracker confidence and feature count, both 8x8

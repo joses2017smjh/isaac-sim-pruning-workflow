@@ -65,7 +65,15 @@ def depth_metrics(pred, gt, mask=None):
     )
 
 
-def target_metrics(pred, gt, pixel, radius=1):
+def target_metrics(pred, gt, pixel, radius=1, mask=None):
+    """Depth error in a small window around the target pixel.
+
+    With ``mask`` given, only pixels on the tree are scored. Without it, a
+    (2*radius+1)^2 window on a spur one pixel wide is mostly background, and the
+    reported "target" error is then the error on whatever lies behind the branch.
+    The unmasked form is kept so earlier results remain comparable; the masked
+    form is what a target-level claim should cite.
+    """
     if pixel is None:
         return None
     x, y = np.asarray(pixel, dtype=float)
@@ -77,16 +85,29 @@ def target_metrics(pred, gt, pixel, radius=1):
         max(0, y - radius) : min(gt.shape[0], y + radius + 1), max(0, x - radius) : min(gt.shape[1], x + radius + 1)
     ]
     p, g = pred[sl], gt[sl]
-    m = depth_metrics(p, g)
+    window_mask = None
+    if mask is not None:
+        if np.shape(mask) != gt.shape:
+            raise ValueError("Mask shape mismatch")
+        window_mask = np.asarray(mask, dtype=bool)[sl]
+    m = depth_metrics(p, g, window_mask)
     valid = np.isfinite(g) & (g > 0) & (g < 1e6) & np.isfinite(p) & (p > 0)
-    return dict(
+    if window_mask is not None:
+        valid &= window_mask
+    result = dict(
         m,
         valid=bool(valid.any()),
         pixel_xy=[x, y],
         radius_px=radius,
         predicted_m=float(np.median(p[valid])) if valid.any() else None,
         reference_m=float(np.median(g[valid])) if valid.any() else None,
+        mask_gated=window_mask is not None,
     )
+    if window_mask is not None:
+        result["window_tree_pixels"] = int(window_mask.sum())
+        if not window_mask.any():
+            result["reason"] = "no_tree_pixels_in_target_window"
+    return result
 
 
 def sanity_gates(rows):
@@ -198,11 +219,17 @@ def evaluate(args):
                 "all_valid_gt": depth_metrics(pred, gt),
                 "mask_metrics": depth_metrics(pred, gt, mask) if mask is not None else None,
                 "target": target_metrics(pred, gt, frame.get("target_pixel_xy")),
+                # Scored on tree pixels only. Absent when the plan has no mask.
+                "target_masked": (
+                    target_metrics(pred, gt, frame.get("target_pixel_xy"), mask=mask) if mask is not None else None
+                ),
                 "rgb_sha256": sha256(frame["rgb"]),
                 "gt_sha256": sha256(frame["depth"]),
             }
             if frame.get("target_visible") is False:
                 row["target"] = {"valid": False, "reason": "geometric_target_not_visible"}
+                if mask is not None:
+                    row["target_masked"] = {"valid": False, "reason": "geometric_target_not_visible"}
             if args.save_predictions:
                 path = args.output / f"prediction_{index:05d}.npy"
                 np.save(path, pred, allow_pickle=False)
