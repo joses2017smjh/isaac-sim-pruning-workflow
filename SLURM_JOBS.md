@@ -367,7 +367,11 @@ reserved): DA2 metric on 688 frames including four test-time photometric
 variants derived in the job, the public relative DA2 head on those plus the
 pinned matrix (192) and Stage A (600) frames, then six-view DINO on the far-rig
 training-camera cells. 180 GPU-minutes reserved, about 40 expected, one GPU at a
-time, 2.5 GB preflight estimate. Submitted only through
-`tools/queue_generalization_controls.py --submit` after the user's approval;
-the job IDs, receipts and result are appended here when they exist.
+time, 2.5 GB preflight estimate. **Submitted September 23** after the user's approval of the 180 GPU-minute
+budget and the push: render array **`21403403`** (`0-7%1`) and evaluation
+**`21403404`** (`afterany:21403403`), frozen code revision `fbc446d`, storage
+preflight passed at 1.597 TB projected (share measured at 1.575 TB) against
+the 1.6 TB line. Both PENDING at submission; the user's unrelated `lh-v3`,
+`ood-advanced` and `sf04` jobs were left alone. Receipts are in the batch
+directory. The result is appended here when the grader has run.
 [Protocol](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md).

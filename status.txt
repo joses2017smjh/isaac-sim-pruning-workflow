@@ -1,9 +1,9 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — CONTROLS BATCH REGISTERED, AWAITING GPU APPROVAL
+CURRENT CHECKPOINT — 2026-09-23 PDT — CONTROLS BATCH SUBMITTED (21403403 render array, 21403404 eval)
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
   Branch develop. Local history now CONTAINS origin/develop 8edb3d7 (merged clean).
-  Pushed through e960127. Ask before any further push; never force-push.
+  Pushed through fbc446d. Ask before any further push; never force-push.
   CPU environment: /nfs/hpc/share/sanchej7/miniforge3/envs/depth-env/bin/python
   (Python 3.10.19, numpy 2.2.6, opencv 4.11.0.86, ruff 0.16.5). No repo venv exists.
 
@@ -96,7 +96,9 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     Isaac error at 1.38x of a measured 3.8x; anchoring: relative head + many-
     point fit is the candidate architecture; literature: 6-8x evening is far
     outside published dark-corruption bands (1.3-2.5x).
-  CONTROLS BATCH (2026-09-23, REGISTERED, NOT SUBMITTED):
+  CONTROLS BATCH (2026-09-23, SUBMITTED with user approval: render array
+    21403403 0-7%1, eval 21403404 afterany; batch dir
+    artifacts/generalization/generalization-controls-20260923; code fbc446d):
     docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md, seven predictions
     P1-P7. Definitions tools/generalization_controls.py; renderer
     tools/render_generalization_controls.py (CPU smoke render on the submit node
@@ -105,9 +107,11 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     missing renders stay in the denominator); relative head
     tools/relative_depth_ceiling.py; aggregator tools/aggregate_controls_eval.py
     + sql/controls/; launcher tools/queue_generalization_controls.py (frozen
-    source, plan before sbatch, array 0-7%1, eval afterany). Budget to state:
-    180 GPU-min reserved (~40 expected), 2.5 GB preflight. Submit ONLY after the
-    user's OK. Then: aggregate, judge P1-P7, append result, evidence JSON.
+    source, plan before sbatch, array 0-7%1, eval afterany). Budget approved:
+    180 GPU-min reserved (~40 expected), 2.5 GB preflight passed at 1.597 TB.
+    Next: when 21403404 completes, aggregate (tools/aggregate_controls_eval.py,
+    anchor_depth_analysis on the controls DA2 result), judge P1-P7, append the
+    result to the protocol, write docs/evidence/generalization_controls_2026-09-23.json.
   NOT QUEUED, STATED IN THE PROTOCOL: orchard-tree0 renderer control (Isaac-to-
     Blender mapping unverified); re-fine-tune with lighting jitter (~8 A40-h,
     needs a repo-local trainer); controller on Envy/UFO (no path).
