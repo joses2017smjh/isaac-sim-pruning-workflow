@@ -1,6 +1,6 @@
 # Robotic pruning
 
-Simulate UR5e vision-guided branch release in a textured, two-tree orchard.
+Closed-loop RGB-D control, sensor gating and independent task grading for a simulated UR5e pruning workflow.
 
 [![Two-tree Isaac Sim sequence: approach, surrogate release, measured fall and return](docs/demo/isaac_two_trees_vision_sequence.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4)
 
@@ -29,6 +29,12 @@ Branch identity, axis, and radius come from mesh metadata. Subsequent positions
 come from image tracking and simulator depth, not learned recognition. This is
 a discrete rigid-piece release, **not wood fracture**.
 
+**Engineering contribution:** integrating the robot and orchard assets with
+camera-based control, fresh-observation and geometry checks, recorded telemetry,
+and a separate sequence grader. The [environment](source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py),
+[grader](tools/validate_vision_sequence.py) and [asset provenance](NOTICE.md)
+make the implementation and its upstream dependencies inspectable.
+
 ## Result
 
 Job `21328323` applies **68 vision commands**, releases one selected spur at
@@ -36,14 +42,15 @@ Job `21328323` applies **68 vision commands**, releases one selected spur at
 home. All **17 independent sequence checks** pass. That is one known target,
 not pruning both trees or a measured success rate.
 
-Then show the [closure failure](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_closure_failure.mp4):
+The contrasting [closure failure](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_closure_failure.mp4)
+preserves a stopped attempt:
 tracking confidence falls below 0.15 at 7.7 seconds; motion stops without
 release. [Failure GIF](docs/demo/isaac_two_trees_closure_failure.gif).
 Tracking loss *after* a completed release is allowed during home-directed
 retreat; the success dashboard preserves that state instead of hiding it.
 
-Show one **20-second loop**. Pause the wrist video at **7.8 seconds** for
-release, then resume through the return.
+The **20-second success video** includes approach, release at **7.8 seconds**,
+the measured fall and the return. The wrist view shows the same sequence.
 
 ## Quickstart
 
@@ -52,7 +59,7 @@ It reproduces approach, sensor blackout and blocked-cut geometry. It does
 **not** render the Isaac video above. Four commands:
 
 ```bash
-git clone https://github.com/joses2017smjh/isaac-sim-pruning-workflow.git pruning
+git clone --branch develop https://github.com/joses2017smjh/isaac-sim-pruning-workflow.git pruning
 python3 -m venv pruning/.venv
 pruning/.venv/bin/python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu -e 'pruning/source/isaaclab_pruning[demo,dev,render]'
 pruning/.venv/bin/python pruning/tools/run_pruning_demo.py --output-dir pruning/demo-output
