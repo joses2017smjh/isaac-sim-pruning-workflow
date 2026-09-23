@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — ENVY/UFO + LIGHTING THREAD: RESULTS PUBLISHED, MATRIX REGISTERED, AWAITING GPU OK
+CURRENT CHECKPOINT — 2026-09-23 PDT — ENVY/UFO + LIGHTING MATRIX SUBMITTED (21402687/21402688), AWAITING RESULT
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -56,12 +56,18 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     absent from fine-tuning), 4 Blender lights x 6 views, DA2 + DINO, mask-gated
     target metric, Sept 20 gates unchanged (expected to fail). Pilot trees
     reused; 6 to render. 120 GPU-min reserved, ~11 actual, ~0.4 GB, one GPU.
-  TO SUBMIT after the user's OK (tree must be clean; needs the share du):
-    python tools/queue_family_matrix.py --submit --batch-id family-matrix-20260923 \
-      --share-du-file /scratch/sanchej7/tmp/share_du.txt
-    It freezes HEAD, writes plan.json + storage_preflight.json, submits the
-    render array 0-5%1 then the eval job with afterany. Then aggregate
-    <batch>/eval/{da2,dino}/evaluation.json and publish.
+  SUBMITTED 2026-09-23 (user approved 120 GPU-min and the 1.6 TB line):
+    render array 21402687 (0-5%1) and eval 21402688 (afterany:21402687),
+    frozen at ff4707a, batch artifacts/generalization/family-matrix-20260923/.
+    NO RESULT YET. When 21402688 is terminal, resume with:
+      B=artifacts/generalization/family-matrix-20260923
+      cat $B/eval/render_status.json          # which of the 8 trees actually rendered
+      PYTHONPATH=/nfs/hpc/share/sanchej7/sil-pydeps python tools/aggregate_family_eval.py \
+        --evaluation da2=$B/eval/da2/evaluation.json --evaluation dino=$B/eval/dino/evaluation.json \
+        --output docs/evidence/family_matrix_depth_<date>.json
+    Then judge against the registered readings in EVAL_PROTOCOL_FAMILY_LIGHTING,
+    update README / ROADMAP / SLURM_JOBS, and (optionally) compose the eight
+    clips with tools/compose_generalization.py (CPU).
   NOT DONE, STATED IN THE PROTOCOL: renderer/distance controls for Stage A;
     'overcast' preset (darkness vs sun angle); controller on Envy/UFO (no path:
     RenderEnv presents the Blender orchard; L-Py USDs have no spur-selection

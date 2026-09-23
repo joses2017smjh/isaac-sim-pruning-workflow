@@ -331,5 +331,12 @@ September 23 reconciliation: **21370047 COMPLETED** (0:0, 5 min 29 s, cn-gpu5);
 its live-shadow gates FAILED. Stage A `21370005` and pilot `21370039` results
 are published in [`stage_a_depth_2026-09-23.json`](docs/evidence/stage_a_depth_2026-09-23.json)
 and [`family_pilot_depth_2026-09-23.json`](docs/evidence/family_pilot_depth_2026-09-23.json).
-No new job is submitted by this reconciliation; the eight-tree matrix is
-registered and awaits approval.
+The eight-tree matrix was **submitted September 23** after the user's GPU and
+storage approvals: render array **`21402687`** (`0-5%1`, one Blender Cycles
+tree per task) and evaluation **`21402688`** (`afterany:21402687`). Frozen code
+revision `ff4707a45c5dd87561bbfd6edf1c756d252c7719`, 488 files hashed, batch
+`artifacts/generalization/family-matrix-20260923/`, storage preflight passed at
+1.568 TB projected against the 1.6 TB line. Both PENDING at submission (render
+array reason `None`; five unrelated `lh-v3-search` tasks were running and were
+left alone). **Submission is not evidence.** Until `21402688` finishes there is
+no matrix result; the pilot numbers above stand alone.
