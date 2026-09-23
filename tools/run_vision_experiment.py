@@ -32,7 +32,35 @@ def run_environment(plan, row, batch, output, inherited):
         PRUNING_RUN_ENV_SMOKE="0",
         BENCH_OUT=str(output / "smoke.json"),
     )
+    # A target-sweep plan names its spur explicitly. A lighting plan omits both
+    # keys and keeps the renderer's own defaults, so older frozen plans are
+    # unaffected. The pair is always set together or not at all.
+    if "component_first_vertex" in row:
+        env.update(
+            PRUNING_TARGET_TREE=str(row["target_tree_index"]),
+            PRUNING_COMPONENT_VERTEX=str(row["component_first_vertex"]),
+        )
     return env
+
+
+def run_label(index, row):
+    """Name the output directory after the condition that produced it."""
+    if "component_first_vertex" in row:
+        return f"run_{index:02d}_{row['daylight']}_tree{row['target_tree_index']}_v{row['component_first_vertex']}"
+    return f"run_{index:02d}_{row['daylight']}_{row['photometric_normalization']}"
+
+
+def configuration_matches(report, row, plan):
+    """Confirm the capture really used the frozen condition, including the target."""
+    matches = (
+        report.get("photometric_normalization") == row["photometric_normalization"]
+        and report.get("frame_count") == plan["frames"]
+        and report.get("blender_scene", {}).get("daylight", {}).get("preset") == row["daylight"]
+    )
+    if "component_first_vertex" in row:
+        expected = f"tree{row['target_tree_index']}_SPUR_component_{row['component_first_vertex']}"
+        matches = matches and report.get("blender_scene", {}).get("target", {}).get("id") == expected
+    return matches
 
 
 def verify_snapshot(batch, plan):
@@ -47,7 +75,7 @@ def execute(batch, index):
     if index < 0 or index >= len(plan["runs"]):
         raise ValueError("experiment index is outside the frozen plan")
     row = plan["runs"][index]
-    output = batch / f"run_{index:02d}_{row['daylight']}_{row['photometric_normalization']}"
+    output = batch / run_label(index, row)
     output.mkdir(exist_ok=False)
     result = {"condition": row, "code_revision": plan["code_revision"], "job_id": os.environ.get("SLURM_JOB_ID")}
     try:
@@ -65,11 +93,7 @@ def execute(batch, index):
         result["capture_ok"] = process.returncode == 0
         result["sequence_ok"] = grade["ok"]
         result["task_outcome"] = report.get("task_outcome")
-        result["configuration_matches"] = (
-            report.get("photometric_normalization") == row["photometric_normalization"]
-            and report.get("frame_count") == plan["frames"]
-            and report.get("blender_scene", {}).get("daylight", {}).get("preset") == row["daylight"]
-        )
+        result["configuration_matches"] = configuration_matches(report, row, plan)
         result["ok"] = result["capture_ok"] and result["sequence_ok"] and result["configuration_matches"]
     except Exception:
         result.update(ok=False, traceback=traceback.format_exc())

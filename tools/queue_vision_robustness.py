@@ -16,23 +16,71 @@ from pathlib import Path
 
 from vision_experiment_assets import inventory_assets
 
+MINUTES_PER_TRIAL = 17  # Measured 16.5 on array 21360571; rounded up for the declared budget.
 
-def experiment_plan():
-    return {
+
+def experiment_plan(targets=None, daylight="source", photometric_normalization="raw"):
+    """Build the frozen plan. Without targets this is the original lighting pilot."""
+    base = {
         "schema_version": 1,
-        "scope": "Paired one-target lighting pilot; not a population success-rate estimate.",
         "max_concurrent_gpus": 1,
-        "maximum_gpu_minutes": 150,
         "frames": 200,
         "fps": 10,
         "render_samples": 64,
         "overview_width": 1280,
-        "runs": [
-            {"index": index, "daylight": light, "photometric_normalization": mode}
-            for index, (light, mode) in enumerate(
-                (light, mode) for light in ("source", "morning", "evening") for mode in ("raw", "clahe")
-            )
-        ],
+    }
+    if targets is None:
+        return {
+            **base,
+            "scope": "Paired one-target lighting pilot; not a population success-rate estimate.",
+            "maximum_gpu_minutes": 150,
+            "runs": [
+                {"index": index, "daylight": light, "photometric_normalization": mode}
+                for index, (light, mode) in enumerate(
+                    (light, mode) for light in ("source", "morning", "evening") for mode in ("raw", "clahe")
+                )
+            ],
+        }
+
+    runs = [
+        {
+            "index": index,
+            "daylight": daylight,
+            "photometric_normalization": photometric_normalization,
+            "target_tree_index": int(target["target_tree_index"]),
+            "component_first_vertex": int(target["component_first_vertex"]),
+        }
+        for index, target in enumerate(targets)
+    ]
+    if not runs:
+        raise ValueError("A target sweep requires at least one registered target")
+    seen = {(run["target_tree_index"], run["component_first_vertex"]) for run in runs}
+    if len(seen) != len(runs):
+        raise ValueError("Registered targets must be unique; a repeated spur would bias the rate")
+    return {
+        **base,
+        "scope": (
+            "Pre-registered target sweep for a task success rate over spur geometry, axis "
+            "orientation and local occlusion at a canonicalized approach pose. Not a field "
+            "success rate and not a reachability study."
+        ),
+        "protocol": "docs/EVAL_PROTOCOL_2026-09-23.md",
+        "maximum_gpu_minutes": MINUTES_PER_TRIAL * len(runs),
+        "runs": runs,
+    }
+
+
+def load_targets(path):
+    """Read a pre-registered target register and keep its provenance in the plan."""
+    document = json.loads(Path(path).read_text(encoding="utf-8"))
+    targets = document["targets"]
+    if len(targets) != int(document["target_count"]):
+        raise ValueError("Target register disagrees with its own target_count")
+    return targets, {
+        "targets_file": str(path),
+        "targets_sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest(),
+        "selection_rule": document.get("selection_rule"),
+        "seed": document.get("seed"),
     }
 
 
@@ -79,14 +127,16 @@ def freeze_source(root, destination, revision):
     return hashes
 
 
-def queue_batch(root, batch_id):
+def queue_batch(root, batch_id, targets=None, target_provenance=None, daylight="source", normalization="raw"):
     root = root.resolve()
     if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}", batch_id):
         raise ValueError("batch-id must be a short letters/digits/underscore/dash identifier")
     if _git(root, "diff", "HEAD", "--name-only").strip():
         raise ValueError("Commit tracked changes before freezing experiments; untracked work is preserved")
     revision = _git(root, "rev-parse", "HEAD").decode().strip()
-    plan = experiment_plan()
+    plan = experiment_plan(targets, daylight, normalization)
+    if target_provenance:
+        plan["target_register"] = target_provenance
     plan["code_revision"] = revision
     plan["created_utc"] = datetime.now(timezone.utc).isoformat()
     env = submission_environment(os.environ)
@@ -108,9 +158,14 @@ def queue_batch(root, batch_id):
     plan["external_assets_sha256"] = inventory_assets(batch / "code")
     (batch / "plan.json").write_text(json.dumps(plan, indent=2) + "\n")
     (batch / "queue_before.txt").write_text(queue_before)
+    # The array size follows the frozen plan rather than the sbatch directive, so a
+    # sweep can never launch more or fewer tasks than it registered. Concurrency
+    # stays at one GPU.
     command = [
         "sbatch",
         "--parsable",
+        "--array",
+        f"0-{len(plan['runs']) - 1}%1",
         "--chdir",
         str(batch / "code"),
         "--output",
@@ -131,7 +186,8 @@ def queue_batch(root, batch_id):
     job_id = result.stdout.strip().split(";")[0]
     if not job_id.isdigit():
         raise RuntimeError(f"Unrecognized sbatch receipt; inspect {batch}; do not resubmit blindly")
-    return {"array_job_id": job_id, "batch_dir": str(batch), "code_revision": revision, **experiment_plan()}
+    # Return the plan that was actually frozen and submitted, not a fresh one.
+    return {"array_job_id": job_id, "batch_dir": str(batch), "code_revision": revision, **plan}
 
 
 def main():
@@ -139,8 +195,23 @@ def main():
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--batch-id", default="lighting-20260919")
     parser.add_argument("--submit", action="store_true", help="Submit once; the default only prints the plan")
+    parser.add_argument("--targets-file", type=Path, help="Pre-registered target register; omit for the lighting pilot")
+    parser.add_argument("--daylight", default="source", help="Daylight preset for a target sweep")
+    parser.add_argument("--photometric-normalization", default="raw", help="Tracker preprocessing for a target sweep")
     args = parser.parse_args()
-    result = queue_batch(args.root, args.batch_id) if args.submit else experiment_plan()
+
+    targets, provenance = (None, None)
+    if args.targets_file is not None:
+        targets, provenance = load_targets(args.targets_file)
+
+    if args.submit:
+        result = queue_batch(
+            args.root, args.batch_id, targets, provenance, args.daylight, args.photometric_normalization
+        )
+    else:
+        result = experiment_plan(targets, args.daylight, args.photometric_normalization)
+        if provenance:
+            result["target_register"] = provenance
     print(json.dumps(result, indent=2))
 
 

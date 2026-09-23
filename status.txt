@@ -9,8 +9,9 @@ WHERE THIS IS
 
 SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
   Phase 0 audit ...... DONE (plan delivered in chat)
-  Phase 1 lighting ... DONE (this checkpoint)
-  Phase 2 success rate  NEXT. Needs the user's GPU-budget OK before any sbatch.
+  Phase 1 lighting ... DONE
+  Phase 2 success rate  PROTOCOL REGISTERED AND COMMITTED; NOTHING SUBMITTED.
+                       BLOCKED on the user's GPU-budget OK. See PHASE 2 below.
   Phase 3 ROS 2 SIL .. not started (CPU-only, can run while Phase 2 queues)
   Phase 4 studio ..... not started (CPU-only)
   Phase 5 CuRobo ..... optional, time-boxed
@@ -59,6 +60,39 @@ VALIDATION AT THIS CHECKPOINT
     tests/test_studio_orchard.py::test_actual_local_glb_matches_manifest_units_
     original_tree_separation_and_hashes asserts tree separation > 0.1, actual 0.0.
     Real bug in the untracked glTF exporter: tree1 lands on the origin.
+
+PHASE 2 — REGISTERED, NOT SUBMITTED (2026-09-23)
+  NO JOB HAS BEEN SUBMITTED. Nothing is queued. Awaiting the user's budget OK.
+  Protocol: docs/EVAL_PROTOCOL_2026-09-23.md (committed BEFORE any submission).
+  Target register: docs/evidence/eval_targets_2026-09-23.json
+    Population measured from the hash-verified export: tree0 310 components,
+    tree1 399 — matching the exporter's own recorded component_count.
+    Jaw-fit screen 0 < max_radius_m <= 0.012 admits 185 + 259 = 444 spurs.
+    Sampled 10 per tree, seed '20260923:tree<N>', N = 20. Radius 4.85-10.07 mm,
+    length 47.9-100.6 mm. The n=1 success target 8235 is NOT in the set.
+    265 screened-out components are listed by vertex ID for audit.
+  Regenerate (needs USD, so the pinned Isaac venv):
+    /nfs/hpc/share/sanchej7/Humanoid_Lite/venv-isaac60/bin/python \
+      tools/enumerate_spur_targets.py \
+      --export-dir artifacts/blender_scene/orchard_two_trees_v1 \
+      --per-tree 10 --seed 20260923 \
+      --output docs/evidence/eval_targets_2026-09-23.json
+  Launcher now supports target sweeps and sizes the Slurm array from the frozen
+    plan (--array=0-N-1%1) instead of the sbatch directive, so a sweep cannot
+    launch more or fewer tasks than it registered. Duplicate targets are refused.
+    Omitting --targets-file reproduces the original six-run lighting pilot.
+  TO SUBMIT ARRAY A once the user approves (330-340 GPU-min, ~5.5 h, ~8.0 GB):
+    python tools/queue_vision_robustness.py --submit \
+      --batch-id targets-source-20260923 \
+      --targets-file docs/evidence/eval_targets_2026-09-23.json \
+      --daylight source --photometric-normalization raw
+    Check squeue/sacct immediately before submitting. Record the array in
+    SLURM_JOBS.md right after, then stop and do not wait on the queue.
+  Array B (same 20 targets, --daylight morning) needs its own separate OK.
+  STILL TO BUILD AFTER THE RUNS LAND: the DuckDB aggregation layer in sql/,
+    Wilson 95% interval, failure taxonomy from recorded stop reasons, tracking
+    coverage vs error, docs/evidence/eval_<date>.json, README Result update,
+    and one GIF or still of the most common failure mode.
 
 KEY FACTS FOR PHASE 2 (established in the Phase 0 audit)
   tools/queue_vision_robustness.py freezes with `git archive HEAD`, so it REFUSES
