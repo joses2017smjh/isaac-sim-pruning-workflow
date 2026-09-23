@@ -63,7 +63,7 @@ def test_storage_preflight_refuses_a_full_share_and_an_unfinished_measurement(tm
     full = tmp_path / "full"
     full.mkdir()
     with pytest.raises(RuntimeError, match="did not pass"):
-        launcher.storage_preflight(full, 1_499_000_000_000, None)
+        launcher.storage_preflight(full, 1_599_000_000_000, None)
     assert json.loads((full / "storage_preflight.json").read_text())["ok"] is False
 
     empty = tmp_path / "du.txt"

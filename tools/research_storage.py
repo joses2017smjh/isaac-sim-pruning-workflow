@@ -9,8 +9,17 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
+#: Warning line, in bytes of `du -sx` apparent size on the user's share. This is
+#: the repository's own policy, not a filesystem quota: `lfs quota` reports no
+#: enforced limit on /nfs/hpc/share. Raised from 1.5 TB to 1.6 TB on 2026-09-23
+#: with the user's approval, after the share measured 1.548 TB (Lustre block
+#: count 1.404 TB) and the registered Envy/UFO matrix, about 0.4 GB, was refused.
+#: The hard limit is unchanged.
+WARNING_BYTES = 1_600_000_000_000
+HARD_LIMIT_BYTES = 2_000_000_000_000
 
-def assess(used, additional, reserve=20_000_000_000, warning=1_500_000_000_000, hard=2_000_000_000_000):
+
+def assess(used, additional, reserve=20_000_000_000, warning=WARNING_BYTES, hard=HARD_LIMIT_BYTES):
     if min(used, additional, reserve) < 0:
         raise ValueError("Storage byte counts must be nonnegative")
     projected = used + additional + reserve
