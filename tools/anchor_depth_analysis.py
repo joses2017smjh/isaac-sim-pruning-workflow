@@ -46,6 +46,9 @@ COLUMNS = [
     ("family", "VARCHAR"),
     ("tree_id", "VARCHAR"),
     ("lighting", "VARCHAR"),
+    # The cell. Equal to lighting for the matrix and Stage A; the controls label
+    # every changed axis here so camera cells never pool under their light.
+    ("condition", "VARCHAR"),
     ("view_id", "VARCHAR"),
     ("sequence", "VARCHAR"),
     ("anchor_source", "VARCHAR"),
@@ -190,6 +193,7 @@ def build_rows(model, evaluation):
                 "family": _family(frame),
                 "tree_id": frame.get("tree_id"),
                 "lighting": frame.get("lighting"),
+                "condition": frame.get("condition", frame.get("lighting")),
                 "view_id": frame.get("view_id"),
                 "sequence": frame.get("sequence"),
                 "anchor_source": anchor_source,

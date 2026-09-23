@@ -131,7 +131,8 @@ Ratios are of per-tree tree-mask MAE against the condition's baseline, DA2.
   making the deferred orchard-tree0 replay the next experiment.
 - **P6 (the metric head, not the backbone, is the close-range failure).** The
   relative head's all-GT disparity-affine ceiling on Isaac Stage A is **under
-  0.15 m** (tree-mask ceiling of the metric head there: 0.37–0.46 m), and on
+  0.15 m** (the metric head's all-valid ceiling there, Isaac having no tree
+  mask: 0.37–0.46 m), and on
   the close Cycles cells under 0.10 m; on matrix daylight it is within 0.02 m
   of the metric head's ceiling. *Refuted if* the Isaac ceiling stays above
   0.30 m, which would mean the backbone does not resolve branch structure at

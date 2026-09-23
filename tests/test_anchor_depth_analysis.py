@@ -174,3 +174,44 @@ def test_every_anchoring_query_is_applied_and_hashed(anchoring, tmp_path):
     names = [q["file"] for q in result["queries"]]
     assert names == ["01_cells.sql", "02_per_tree.sql"]
     assert json.dumps(result["cells"], default=str)
+
+
+def test_conditions_under_one_light_are_separate_cells(anchoring, tmp_path):
+    import json
+
+    import numpy as np
+
+    rows = []
+    for condition, offset in (("source", 0.1), ("source/close/isaac_wrist", 0.5)):
+        for view in ("a", "b"):
+            gt = np.full((6, 6), 2.0)
+            pred = gt + offset
+            mask = np.ones_like(gt, dtype=bool)
+            frame = {
+                "tree_id": "t",
+                "family": "ufo",
+                "lighting": "source",
+                "condition": condition,
+                "view_id": view,
+                "target_visible": True,
+                "target_pixel_xy": [3, 3],
+            }
+            for key, array in (("depth", gt), ("prediction", pred)):
+                path = tmp_path / f"{condition.replace('/', '_')}_{view}_{key}.npy"
+                np.save(path, array)
+                frame[key] = str(path)
+            mask_path = tmp_path / f"{condition.replace('/', '_')}_{view}_mask.png"
+            from PIL import Image
+
+            Image.fromarray((mask * 255).astype(np.uint8)).save(mask_path)
+            frame["mask"] = str(mask_path)
+            rows.append({"frame": frame, "prediction": frame.pop("prediction")})
+    evaluation_path = tmp_path / "evaluation.json"
+    evaluation_path.write_text(json.dumps({"ok": True, "rows": rows}))
+    built = anchoring.build_rows("da2", json.loads(evaluation_path.read_text()))
+    cells = {c["condition"]: c for c in anchoring.aggregate(built)["cells"]}
+    assert set(cells) == {"source", "source/close/isaac_wrist"}
+    assert cells["source"]["raw_mae_m"] == pytest.approx(0.1) and cells["source/close/isaac_wrist"][
+        "raw_mae_m"
+    ] == pytest.approx(0.5)
+    assert all(c["lighting"] == "source" for c in cells.values())
