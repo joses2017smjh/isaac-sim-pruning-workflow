@@ -78,9 +78,10 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
       PYTHONPATH=/nfs/hpc/share/sanchej7/sil-pydeps python tools/aggregate_family_eval.py \
         --evaluation da2=$B/eval/da2/evaluation.json --evaluation dino=$B/eval/dino/evaluation.json \
         --output docs/evidence/family_matrix_depth_<date>.json
-    Then judge against the registered readings in EVAL_PROTOCOL_FAMILY_LIGHTING,
-    update README / ROADMAP / SLURM_JOBS, and (optionally) compose the eight
-    clips with tools/compose_generalization.py (CPU).
+    Judged against the registered readings in EVAL_PROTOCOL_FAMILY_LIGHTING
+    (result section appended there); README / ROADMAP / SLURM_JOBS updated;
+    clips composed. All committed in 5371cd0. NOTHING PUSHED: six commits
+    ahead of origin/develop await the user's word.
   NOT DONE, STATED IN THE PROTOCOL: renderer/distance controls for Stage A;
     'overcast' preset (darkness vs sun angle); controller on Envy/UFO (no path:
     RenderEnv presents the Blender orchard; L-Py USDs have no spur-selection
