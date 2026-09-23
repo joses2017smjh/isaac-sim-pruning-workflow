@@ -300,10 +300,25 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
 - [ ] Multi-zone anchoring: fit per-frame scale and shift to the two recorded
       8×8 ToF grids (registration of zones into the wrist image needed) and
       compare with the affine ceiling.
-- [ ] Renderer and distance controls for Stage A: the original orchard tree in
-      Cycles at the matrix rigs, and a close-range rig at the Isaac working
-      distance. Neither exists; without them the +0.5 m Isaac error cannot be
-      attributed to the renderer.
+- [ ] Single-axis generalization controls, registered with seven predictions
+      before submission: evening brightness against shadow structure
+      (`evening_x2.6`, `overcast`, `overcast_div2.6`, four fixed test-time
+      normalizations), the Isaac wrist camera model at matrix distance, close
+      and 39.7°-pitched rigs at 0.16–0.39 m, an eight-distance sweep, and the
+      public relative DA2 head through an all-GT disparity-affine ceiling on the
+      controls, the matrix and Isaac Stage A. Frozen launcher
+      `tools/queue_generalization_controls.py`; 180 GPU-minutes reserved.
+      [Protocol](EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md).
+- [ ] Renderer control for Stage A: the original orchard tree in Cycles at the
+      recorded wrist poses. Deferred until the Isaac-to-Blender world mapping is
+      derived and verified; the close-range controls above decide whether it is
+      needed.
+- [ ] Re-fine-tune with lighting variation: a repository-local training wrapper
+      (the companion trainer has no version control and is treated as
+      read-only), photometric jitter or rendered lighting presets, warm start
+      from the current checkpoint on the 6,270 surviving frames (about
+      8 A40-hours). Whether it is the right lever depends on P1 and P2 of the
+      controls protocol.
 - [ ] Vision-guided controller on an Envy or UFO tree in Isaac. No path exists:
       `RenderEnv` presents the Blender orchard export, and the L-Py cylinder USDs
       have no spur-selection route into it. Needs target selection over cylinder

@@ -114,6 +114,30 @@ class FrozenDINO:
         return predictions, elapsed
 
 
+def group_rows(rows, smoke=False):
+    """Six-view groups keyed by tree and condition, and the groups left to DA2 only.
+
+    A plan that labels conditions groups by condition, so two conditions under
+    the same light never share a group. The checkpoint expects the matrix rig
+    (three heights, training camera); frames flagged outside it are skipped and
+    listed, never silently resized into a rig they were not rendered on.
+    """
+    groups, skipped = {}, []
+    for row in rows:
+        f = row["frame"]
+        key = (f.get("tree_id", "smoke"), f.get("condition", f.get("lighting", "source")))
+        groups.setdefault(key, []).append(row)
+    if smoke:
+        return {("smoke", "repeated_single_view"): [rows[0]] * 6}, skipped
+    for key, members in list(groups.items()):
+        if any(r["frame"].get("dino_rig_compatible") is False for r in members):
+            skipped.append(
+                {"tree_id": key[0], "condition": key[1], "frames": len(members), "reason": "outside_dino_rig"}
+            )
+            del groups[key]
+    return groups, skipped
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--companion", type=Path, required=True)
@@ -136,13 +160,7 @@ def main():
         result["model"] = model.metadata
         source = json.loads(args.da2_result.read_text())
         assert source["ok"]
-        groups = {}
-        for row in source["rows"]:
-            f = row["frame"]
-            key = (f.get("tree_id", "smoke"), f.get("lighting", "source"))
-            groups.setdefault(key, []).append(row)
-        if args.smoke:
-            groups = {("smoke", "repeated_single_view"): [source["rows"][0]] * 6}
+        groups, result["skipped_groups"] = group_rows(source["rows"], smoke=args.smoke)
         for key, rows in groups.items():
             if len(rows) != 6:
                 raise ValueError(f"Expected six paired views: {key} has {len(rows)}")

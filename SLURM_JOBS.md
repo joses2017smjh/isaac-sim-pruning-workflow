@@ -355,3 +355,19 @@ L-Py renders are not redistributed). The
 executed with tree IDs, checkpoint hashes, job IDs and pooled metrics.
 A zero-GPU anchoring analysis on the same saved predictions (no job) is in
 [`depth_anchoring_2026-09-23.json`](docs/evidence/depth_anchoring_2026-09-23.json).
+
+### Generalization controls (registered September 23, not yet submitted)
+
+A second frozen batch, `artifacts/generalization/generalization-controls-20260923/`,
+re-renders the eight matrix trees under ten single-axis conditions (62 frames
+per tree, 38 shared geometry passes) with `hpc/slurm/controls_render_frozen.sbatch`
+(array `0-7%1`, 15 min reserved each) and scores them with
+`hpc/slurm/controls_eval_frozen.sbatch` (`afterany` on the array, 60 min
+reserved): DA2 metric on 688 frames including four test-time photometric
+variants derived in the job, the public relative DA2 head on those plus the
+pinned matrix (192) and Stage A (600) frames, then six-view DINO on the far-rig
+training-camera cells. 180 GPU-minutes reserved, about 40 expected, one GPU at a
+time, 2.5 GB preflight estimate. Submitted only through
+`tools/queue_generalization_controls.py --submit` after the user's approval;
+the job IDs, receipts and result are appended here when they exist.
+[Protocol](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md).

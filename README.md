@@ -102,6 +102,13 @@ many-point fit would (ceiling 0.04–0.06 m). Evening and the Isaac working
 distance are not scale problems; no anchor helps them.
 [Anchoring result](docs/EVAL_PROTOCOL_DEPTH_ANCHORING_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/depth_anchoring_2026-09-23.json)
+The *why* is registered as a single-axis controls batch: evening brightness
+against shadow structure (a ×2.6 evening and a ÷2.6 overcast at matched luma,
+plus four fixed test-time normalizations), the Isaac wrist camera model, close
+and upward-pitched rigs at the Isaac working distance, a distance sweep, and
+the public relative DA2 head scored through an all-GT disparity fit, with seven
+predictions written before submission.
+[Controls protocol](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)
 · [matrix evidence](docs/evidence/family_matrix_depth_2026-09-23.json)
 · [Stage A](docs/evidence/stage_a_depth_2026-09-23.json)

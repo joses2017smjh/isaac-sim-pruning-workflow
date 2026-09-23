@@ -79,6 +79,16 @@ COLUMNS = [
     ("target_masked_coverage", "DOUBLE"),
     ("target_masked_tree_pixels", "INTEGER"),
     ("inference_seconds", "DOUBLE"),
+    # Control axes. NULL (condition = lighting) for the matrix and Stage A rows.
+    ("condition", "VARCHAR"),
+    ("condition_group", "VARCHAR"),
+    ("camera_model", "VARCHAR"),
+    ("pose_set", "VARCHAR"),
+    ("nominal_distance_m", "DOUBLE"),
+    ("pitch_deg", "DOUBLE"),
+    ("target_masked_predicted_m", "DOUBLE"),
+    ("target_masked_reference_m", "DOUBLE"),
+    ("target_masked_signed_m", "DOUBLE"),
 ]
 
 
@@ -169,6 +179,15 @@ def build_rows(model, evaluation, *, recompute=True):
             "full_signed_median_m": None,
             "target_masked_tree_pixels": None,
             "inference_seconds": record.get("inference_seconds", record.get("six_view_total_inference_seconds")),
+            "condition": frame.get("condition", frame.get("lighting")),
+            "condition_group": frame.get("condition_group"),
+            "camera_model": frame.get("camera_model"),
+            "pose_set": frame.get("pose_set"),
+            "nominal_distance_m": frame.get("nominal_distance_m"),
+            "pitch_deg": frame.get("pitch_deg"),
+            "target_masked_predicted_m": None,
+            "target_masked_reference_m": None,
+            "target_masked_signed_m": None,
         }
         row.update(_target_columns("target", record.get("target")))
         masked = record.get("target_masked")
@@ -189,12 +208,24 @@ def build_rows(model, evaluation, *, recompute=True):
         row.update(_target_columns("target_masked", masked))
         if masked and masked.get("valid"):
             row["target_masked_tree_pixels"] = masked.get("window_tree_pixels")
+            predicted, reference = masked.get("predicted_m"), masked.get("reference_m")
+            if predicted is not None and reference is not None:
+                row["target_masked_predicted_m"] = predicted
+                row["target_masked_reference_m"] = reference
+                row["target_masked_signed_m"] = predicted - reference
         rows.append(row)
     return rows
 
 
-def aggregate(rows, sql_dir=SQL_DIR):
-    """Run the committed queries. Every reported number comes from these."""
+FAMILY_VIEWS = ("cells", "lighting_effect", "family_comparison", "gates", "frames")
+
+
+def aggregate(rows, sql_dir=SQL_DIR, views=FAMILY_VIEWS, tables=None):
+    """Run the committed queries. Every reported number comes from these.
+
+    ``tables`` maps extra table names to ``(columns, rows)`` pairs that the SQL
+    layer may join, such as the registered baseline of each control condition.
+    """
     import duckdb
 
     if not rows:
@@ -207,6 +238,12 @@ def aggregate(rows, sql_dir=SQL_DIR):
     connection.executemany(
         f"INSERT INTO eval_input VALUES ({placeholders})", [[row.get(name) for name in names] for row in rows]
     )
+    for table, (columns, table_rows) in (tables or {}).items():
+        connection.execute(f"CREATE TABLE {table} ({', '.join(f'{n} {k}' for n, k in columns)})")
+        if table_rows:
+            connection.executemany(
+                f"INSERT INTO {table} VALUES ({', '.join('?' for _ in columns)})", [list(r) for r in table_rows]
+            )
     applied = []
     for path in sorted(sql_dir.glob("*.sql")):
         connection.execute(path.read_text(encoding="utf-8"))
@@ -217,14 +254,7 @@ def aggregate(rows, sql_dir=SQL_DIR):
         columns = [description[0] for description in cursor.description]
         return [dict(zip(columns, values, strict=True)) for values in cursor.fetchall()]
 
-    return {
-        "queries": applied,
-        "cells": fetch("cells"),
-        "lighting_effect": fetch("lighting_effect"),
-        "family_comparison": fetch("family_comparison"),
-        "gates": fetch("gates"),
-        "frames": fetch("frames"),
-    }
+    return {"queries": applied, **{view: fetch(view) for view in views}}
 
 
 def main(argv=None) -> int:

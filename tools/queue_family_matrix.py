@@ -146,7 +146,12 @@ def matrix_plan(trees=MATRIX_TREES, pilot_manifests=PILOT_MANIFESTS, companion=C
     return plan
 
 
-def storage_preflight(batch: Path, share_used_bytes: int | None, share_du_file: Path | None):
+def storage_preflight(
+    batch: Path,
+    share_used_bytes: int | None,
+    share_du_file: Path | None,
+    estimated_output_bytes: int = ESTIMATED_OUTPUT_BYTES,
+):
     """Refuse the batch when the projection crosses the share warning."""
     if share_used_bytes is None:
         if share_du_file is None or not Path(share_du_file).is_file():
@@ -159,7 +164,8 @@ def storage_preflight(batch: Path, share_used_bytes: int | None, share_du_file: 
         "schema_version": 1,
         "measured_at": datetime.now(timezone.utc).isoformat(),
         "share_used_bytes": int(share_used_bytes),
-        "projection": assess(int(share_used_bytes), ESTIMATED_OUTPUT_BYTES),
+        "estimated_output_bytes": int(estimated_output_bytes),
+        "projection": assess(int(share_used_bytes), int(estimated_output_bytes)),
         "policy": "No heavy home writes; reserve 20 GB; refuse at warning even below hard limit.",
     }
     report["ok"] = bool(report["projection"]["ok"])
