@@ -244,3 +244,18 @@ def test_capture_of_the_wrong_spur_fails_configuration_match(scripts):
     assert run.configuration_matches(report("tree0_SPUR_component_530"), row, plan) is True
     assert run.configuration_matches(report("tree0_SPUR_component_8235"), row, plan) is False
     assert run.configuration_matches(report("tree1_SPUR_component_530"), row, plan) is False
+
+
+def test_dependency_is_optional_and_only_constrains_the_new_job(scripts):
+    queue, _ = scripts
+    assert queue.dependency_option(None) == []
+    assert queue.dependency_option("21360571") == ["--dependency", "afterany:21360571"]
+    # afterany, not afterok: a failed earlier batch must still release this one.
+    assert "afterok" not in " ".join(queue.dependency_option(123))
+
+
+def test_dependency_refuses_anything_that_is_not_a_job_id(scripts):
+    queue, _ = scripts
+    for bad in ("afterok:1", "1;scancel 2", "", "abc", "-1"):
+        with pytest.raises(ValueError, match="numeric Slurm job id"):
+            queue.dependency_option(bad)

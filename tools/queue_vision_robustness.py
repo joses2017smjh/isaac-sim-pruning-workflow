@@ -127,7 +127,24 @@ def freeze_source(root, destination, revision):
     return hashes
 
 
-def queue_batch(root, batch_id, targets=None, target_provenance=None, daylight="source", normalization="raw"):
+def dependency_option(after):
+    """Queue behind an earlier batch so the declared one-GPU-at-a-time limit holds.
+
+    This constrains only the job being submitted. It never edits, holds, releases
+    or requeues the job it waits on. ``afterany`` is deliberate: a failed earlier
+    batch must still release this one, so its failures stay visible instead of
+    leaving a batch stuck pending forever.
+    """
+    if after is None:
+        return []
+    if not re.fullmatch(r"[0-9]+", str(after)):
+        raise ValueError("--after takes a numeric Slurm job id")
+    return ["--dependency", f"afterany:{after}"]
+
+
+def queue_batch(
+    root, batch_id, targets=None, target_provenance=None, daylight="source", normalization="raw", after=None
+):
     root = root.resolve()
     if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}", batch_id):
         raise ValueError("batch-id must be a short letters/digits/underscore/dash identifier")
@@ -166,6 +183,7 @@ def queue_batch(root, batch_id, targets=None, target_provenance=None, daylight="
         "--parsable",
         "--array",
         f"0-{len(plan['runs']) - 1}%1",
+        *dependency_option(after),
         "--chdir",
         str(batch / "code"),
         "--output",
@@ -198,6 +216,7 @@ def main():
     parser.add_argument("--targets-file", type=Path, help="Pre-registered target register; omit for the lighting pilot")
     parser.add_argument("--daylight", default="source", help="Daylight preset for a target sweep")
     parser.add_argument("--photometric-normalization", default="raw", help="Tracker preprocessing for a target sweep")
+    parser.add_argument("--after", help="Queue behind this Slurm job id; that job is never modified")
     args = parser.parse_args()
 
     targets, provenance = (None, None)
@@ -206,7 +225,7 @@ def main():
 
     if args.submit:
         result = queue_batch(
-            args.root, args.batch_id, targets, provenance, args.daylight, args.photometric_normalization
+            args.root, args.batch_id, targets, provenance, args.daylight, args.photometric_normalization, args.after
         )
     else:
         result = experiment_plan(targets, args.daylight, args.photometric_normalization)
