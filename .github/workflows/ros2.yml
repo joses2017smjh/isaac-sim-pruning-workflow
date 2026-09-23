@@ -30,7 +30,8 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          set -eux
+          # ROS setup scripts read unset variables, so -u is off while sourcing them.
+          set -ex
           source /opt/ros/humble/setup.bash
           mkdir -p ws/src
           cp -r ros2/pruning_sil ros2/pruning_sil_cpp ws/src/
@@ -47,7 +48,8 @@ jobs:
           ROS_LOCALHOST_ONLY: "1"
           PYTHONNOUSERSITE: "1"
         run: |
-          set -eux
+          # ROS setup scripts read unset variables, so -u is off while sourcing them.
+          set -ex
           source /opt/ros/humble/setup.bash
           source ws/install/setup.bash
           export PYTHONPATH="$PWD/source/isaaclab_pruning:$PWD/ros2/pruning_sil:$PYTHONPATH"
