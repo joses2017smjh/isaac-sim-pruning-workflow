@@ -37,6 +37,11 @@ SCOPE = (
 #: A run that aborted before recording, with the guard that refused it.
 LAYOUT_REJECTION = "Orchard layout rejected"
 
+#: The renderer refuses a tree1 spur that is not in the export's listed
+#: candidates. A target like that can never be presented, so its trial measures
+#: the target register, not the controller.
+UNPRESENTABLE_TARGET = "Unlisted tree1 components require a new geometry audit"
+
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
@@ -84,6 +89,8 @@ def _classify_missing(batch, index, row):
         text = log.read_text(encoding="utf-8", errors="replace")
         if LAYOUT_REJECTION in text:
             return "rejected_layout_startup_contact", LAYOUT_REJECTION
+        if UNPRESENTABLE_TARGET in text:
+            return "infrastructure", "target_not_presentable_unlisted_tree1_component"
         if "selected_branch_occluded_or_wrong_surface" in text:
             return "rejected_visibility", "selected_branch_occluded_or_wrong_surface"
     del row
@@ -124,7 +131,13 @@ def read_batch(batch: Path, condition: str):
         }
 
         report_path, frames_path = directory / "report.json", directory / "frames.json"
-        if not report_path.is_file() or not frames_path.is_file():
+        experiment_path = directory / "experiment_result.json"
+        experiment = read_json(experiment_path) if experiment_path.is_file() else {}
+        # A capture that failed before recording may still leave a stub report
+        # behind. Grading that stub would file the run under a vague "failed"
+        # bucket; the job log says why it never recorded.
+        aborted = experiment.get("capture_ok") is False and experiment.get("task_outcome") == "runtime_failure"
+        if aborted or not report_path.is_file() or not frames_path.is_file():
             status, reason = _classify_missing(batch, index, row)
             record["status"], record["stop_reason"] = status, reason
             rows.append(record)
@@ -202,6 +215,7 @@ def aggregate(rows, sql_dir=SQL_DIR):
         "success_rate": rate[0] if rate else None,
         "per_condition": fetch("per_condition"),
         "failure_taxonomy": fetch("failure_taxonomy"),
+        "rate_by_exclusion": fetch("rate_by_exclusion"),
         "tracking_coverage": fetch("tracking_coverage"),
         "runs": fetch("runs"),
     }

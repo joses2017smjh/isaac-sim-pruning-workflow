@@ -17,8 +17,27 @@ records its submission/start on 2026-08-24, which is the date used here.
 ## Success-rate sweep submitted — September 23, 2026
 
 Two frozen arrays for the [pre-registered protocol](docs/EVAL_PROTOCOL_2026-09-23.md).
-**No result yet. Submission is not evidence.** Both were pending at the check
-below; neither has produced a capture, and no grade exists.
+**Both completed September 23. Result: 0 of 40 trials passed** (Wilson 95%
+0–0.088). Slurm reports all 40 as FAILED; that is the runner's exit code for a
+non-passing grade, not the evidence. The evidence is
+[`eval_2026-09-23.json`](docs/evidence/eval_2026-09-23.json).
+
+| Outcome, per array | Source `21400715` | Morning `21400716` |
+|---|---|---|
+| Passed 17/17 | 0 | 0 |
+| Stopped on hazard contact | 3 | 3 |
+| Stopped on invalid vision | 3 | 3 |
+| Stopped on ToF minimum clearance | 1 | 1 |
+| Layout refused, startup contact > 5 N | 3 | 3 |
+| Infrastructure: unlisted tree1 target, never presented | 10 | 10 |
+
+The ten infrastructure trials per array are an error in the target register: the
+renderer refuses tree1 spurs outside the export's listed candidates, and the
+register sampled outside them. They aborted in about a minute each and stay in
+the denominator. Details in the
+[protocol result](docs/EVAL_PROTOCOL_2026-09-23.md#an-error-in-the-target-register).
+
+Submission record, kept as written at the time:
 
 | Array | Batch | Light | Tracker | Tasks | Declared GPU-minutes | State at submission |
 |---|---|---|---|---|---|---|

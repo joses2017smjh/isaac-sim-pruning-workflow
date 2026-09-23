@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — PHASES 1, 3, 4 DONE; PHASE 2 SUBMITTED
+CURRENT CHECKPOINT — 2026-09-23 PDT — PHASES 1-4 DONE; PHASE 5 IN PROGRESS
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -10,9 +10,9 @@ WHERE THIS IS
 SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
   Phase 0 audit ...... DONE (plan delivered in chat)
   Phase 1 lighting ... DONE
-  Phase 2 success rate  SUBMITTED 2026-09-23: arrays 21400715 (source) and
-                       21400716 (morning, afterany:21400715). NO RESULT YET.
-                       Aggregation layer still to build. See PHASE 2 below.
+  Phase 2 success rate  DONE. 0/40 (Wilson 95% 0-0.088). 20 of 40 trials were
+                       infrastructure: a target-register error (unlisted tree1
+                       spurs). Only tree0 was measured. See PHASE 2 RESULT.
   Phase 3 ROS 2 SIL .. DONE. 199/199 recorded decision states reproduced.
                        Evidence docs/evidence/ros2_sil_parity_2026-09-23.json.
   Phase 4 studio ..... DONE. Static replay page at studio/replay, 1.3 MB payload,
@@ -65,7 +65,24 @@ VALIDATION AT THIS CHECKPOINT
     original_tree_separation_and_hashes asserts tree separation > 0.1, actual 0.0.
     Real bug in the untracked glTF exporter: tree1 lands on the origin.
 
-PHASE 2 — SUBMITTED, NO RESULT YET (2026-09-23)
+PHASE 2 RESULT (2026-09-23) — evidence docs/evidence/eval_2026-09-23.json
+  Aggregated through sql/*.sql by tools/aggregate_eval.py (DuckDB).
+  Inclusive headline 0/40, Wilson 0.000-0.088. Per light 0/20 each (0-0.161).
+  Excluding infrastructure 0/20 (0-0.161); also excluding layout 0/14 (0-0.215).
+  Taxonomy: infrastructure 20, layout startup contact 6, hazard_contact 6,
+    vision_invalid 6, tof_minimum_clearance 2. Every target ended identically
+    under source and morning light: geometry decided, lighting did not.
+  MY ERROR, DISCLOSED IN THE PROTOCOL: all 10 tree1 targets were outside the
+    export's listed candidates, which the renderer refuses ("Unlisted tree1
+    components require a new geometry audit"). Recorded in Phase 0, not
+    re-applied when sampling widened to 444 spurs. ~1 GPU-minute per task wasted.
+    Kept in the denominator. queue_vision_robustness.unpresentable_targets now
+    refuses such a register on CPU; the registered register was NOT rewritten.
+  Open gate: evaluate tree1 with a NEW registration (listed candidates only, 7
+    pass jaw fit, or after the geometry audit). Needs the user's GPU OK.
+  Still: docs/demo/eval_failure_hazard_contact.png (tied most common stop).
+
+PHASE 2 — SUBMISSION RECORD (2026-09-23)
   Protocol: docs/EVAL_PROTOCOL_2026-09-23.md (committed BEFORE any submission).
   Target register: docs/evidence/eval_targets_2026-09-23.json
     Population measured from the hash-verified export: tree0 310 components,

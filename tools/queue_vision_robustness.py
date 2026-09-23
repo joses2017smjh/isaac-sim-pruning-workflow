@@ -70,12 +70,45 @@ def experiment_plan(targets=None, daylight="source", photometric_normalization="
     }
 
 
-def load_targets(path):
+def unpresentable_targets(targets, manifest):
+    """Targets the renderer would refuse before recording anything.
+
+    blender_demo_scene.spawn_blender_demo_scene only accepts a tree1 spur that is
+    among the export's listed candidates; any other tree1 component raises
+    "Unlisted tree1 components require a new geometry audit" inside the GPU job.
+    Checking here, on CPU, means such a register is refused before it can spend
+    an allocation discovering the same thing.
+    """
+    listed = {
+        int(item["component_first_vertex"])
+        for item in manifest["branch_geometry_candidates"]["tree1_SPUR"]["candidates"]
+    }
+    return [
+        target
+        for target in targets
+        if int(target["target_tree_index"]) == 1 and int(target["component_first_vertex"]) not in listed
+    ]
+
+
+DEFAULT_EXPORT_MANIFEST = (
+    Path(__file__).resolve().parents[1] / "artifacts/blender_scene/orchard_two_trees_v1/manifest.json"
+)
+
+
+def load_targets(path, manifest_path=DEFAULT_EXPORT_MANIFEST):
     """Read a pre-registered target register and keep its provenance in the plan."""
     document = json.loads(Path(path).read_text(encoding="utf-8"))
     targets = document["targets"]
     if len(targets) != int(document["target_count"]):
         raise ValueError("Target register disagrees with its own target_count")
+    if manifest_path is not None and Path(manifest_path).is_file():
+        refused = unpresentable_targets(targets, json.loads(Path(manifest_path).read_text(encoding="utf-8")))
+        if refused:
+            vertexes = ", ".join(str(item["component_first_vertex"]) for item in refused)
+            raise ValueError(
+                f"{len(refused)} registered tree1 targets are not listed export candidates and would be "
+                f"refused by the renderer before recording: {vertexes}"
+            )
     return targets, {
         "targets_file": str(path),
         "targets_sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest(),

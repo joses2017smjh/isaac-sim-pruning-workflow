@@ -277,8 +277,16 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
 - [ ] Decide the fate of the earlier uncommitted browser scene-viewer prototype
       (`studio/src`). It animates a synthetic joint loop rather than a recording,
       and its asset exporter copies mock-pruner CAD, so it is not published.
-- [ ] Evaluate more branch placements and failure cases before reporting a
-      task-success rate or collision-avoidance claim.
+- [x] Measure a task-success rate over pre-registered targets. Result:
+      **0 / 40** (Wilson 95% 0–0.088) over 20 seeded spurs × source and
+      morning light, with a failure taxonomy from recorded stop reasons.
+      [Protocol and result](EVAL_PROTOCOL_2026-09-23.md#result--september-23-2026) ·
+      [evidence](evidence/eval_2026-09-23.json). Only tree0 was actually
+      measured; see the next gate. No collision-avoidance claim is made.
+- [ ] Evaluate tree1 targets. The registered tree1 spurs were outside the
+      renderer's accepted candidates and never ran. Needs a new registration
+      drawn from the listed candidates, or the geometry audit the renderer
+      requires for unlisted components.
 
 The latest recorded outcome is `vision_guided_simulated_detachment_and_retreat`. Known mesh metadata
 provides branch identity, axis, and radius; classical image tracking supplies

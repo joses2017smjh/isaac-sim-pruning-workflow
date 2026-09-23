@@ -68,6 +68,21 @@ pilot, not a success rate.
 · [pilot results](docs/evidence/lighting_pilot_results_2026-09-23.json)
 · [job ledger](SLURM_JOBS.md)
 
+**Success-rate sweep (arrays `21400715` / `21400716`, 40 trials).** Twenty spurs
+drawn with a fixed seed from 444 that pass the jaw-fit screen, each run under
+source and morning light, registered before submission.
+**0 of 40 completed (Wilson 95%: 0–8.8%).** The single success above does not
+generalize. Every run that recorded was stopped by a gate: hazard contact (6),
+invalid vision (6) or time-of-flight clearance (2); six more were refused before
+motion because the canonical pose put the tree into the robot. Each target ended
+the same way under both lights. **Half the trials measured nothing:** the ten
+tree1 targets were outside the renderer's accepted candidates, an error in the
+target register that is disclosed, kept in the denominator, and now caught on CPU
+before submission. This sweep speaks for tree0 only.
+[Protocol and result](docs/EVAL_PROTOCOL_2026-09-23.md#result--september-23-2026)
+· [evidence](docs/evidence/eval_2026-09-23.json)
+· [typical stop](docs/demo/eval_failure_hazard_contact.png)
+
 ## Quickstart
 
 The CPU demo requires Git and Python 3.10+ with `venv` on Linux or macOS.

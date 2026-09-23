@@ -259,3 +259,36 @@ def test_dependency_refuses_anything_that_is_not_a_job_id(scripts):
     for bad in ("afterok:1", "1;scancel 2", "", "abc", "-1"):
         with pytest.raises(ValueError, match="numeric Slurm job id"):
             queue.dependency_option(bad)
+
+
+def _manifest(listed_tree1):
+    return {
+        "branch_geometry_candidates": {
+            "tree1_SPUR": {"candidates": [{"component_first_vertex": v} for v in listed_tree1]}
+        }
+    }
+
+
+def test_unlisted_tree1_targets_are_found_before_any_gpu_time(scripts):
+    queue, _ = scripts
+    targets = [
+        {"target_tree_index": 0, "component_first_vertex": 530},
+        {"target_tree_index": 1, "component_first_vertex": 15004},
+        {"target_tree_index": 1, "component_first_vertex": 1012},
+    ]
+    refused = queue.unpresentable_targets(targets, _manifest([15004, 14944]))
+    # tree0 is never refused by this rule; only unlisted tree1 components are.
+    assert [item["component_first_vertex"] for item in refused] == [1012]
+
+
+def test_register_with_unpresentable_targets_is_refused(tmp_path, scripts):
+    queue, _ = scripts
+    register = tmp_path / "targets.json"
+    register.write_text(
+        json.dumps({"target_count": 1, "targets": [{"target_tree_index": 1, "component_first_vertex": 1012}]}),
+        encoding="utf-8",
+    )
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps(_manifest([15004])), encoding="utf-8")
+    with pytest.raises(ValueError, match="would be refused by the renderer before recording"):
+        queue.load_targets(register, manifest)

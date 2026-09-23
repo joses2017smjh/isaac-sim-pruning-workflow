@@ -203,3 +203,47 @@ def test_missing_capture_is_classified_from_the_job_log(tmp_path, aggregator):
     assert [row["status"] for row in rows] == ["rejected_layout_startup_contact", "incomplete"]
     # Both remain planned attempts and reach the denominator.
     assert len(rows) == 2
+
+
+def test_exclusion_levels_are_reported_beside_the_inclusive_headline(aggregator):
+    rows = [
+        _row(0),
+        _row(1, checks_passed=8, stop_reason="hazard_contact"),
+        _row(2, status="rejected_layout_startup_contact", checks_passed=0, checks_total=0),
+        _row(3, status="infrastructure", checks_passed=0, checks_total=0),
+    ]
+    levels = {row["level"].split(" ")[0]: row for row in aggregator.aggregate(rows)["rate_by_exclusion"]}
+    assert (levels["inclusive"]["successes"], levels["inclusive"]["attempts"]) == (1, 4)
+    assert (levels["presented"]["successes"], levels["presented"]["attempts"]) == (1, 3)
+    assert (levels["recorded"]["successes"], levels["recorded"]["attempts"]) == (1, 2)
+
+
+def test_stub_report_from_an_aborted_capture_is_classified_from_its_log(tmp_path, aggregator):
+    batch = tmp_path / "batch"
+    run = batch / "run_00_source_tree1_v1012"
+    run.mkdir(parents=True)
+    (batch / "logs").mkdir()
+    plan = {
+        "runs": [
+            {
+                "index": 0,
+                "daylight": "source",
+                "photometric_normalization": "raw",
+                "target_tree_index": 1,
+                "component_first_vertex": 1012,
+            }
+        ]
+    }
+    (batch / "plan.json").write_text(json.dumps(plan), encoding="utf-8")
+    # The aborted run still left a report stub; grading it would hide the cause.
+    (run / "report.json").write_text("{}", encoding="utf-8")
+    (run / "frames.json").write_text(json.dumps({"frames": []}), encoding="utf-8")
+    (run / "experiment_result.json").write_text(
+        json.dumps({"capture_ok": False, "task_outcome": "runtime_failure"}), encoding="utf-8"
+    )
+    (batch / "logs/prune-vision-pilot-1_0.out").write_text(
+        "ValueError: Unlisted tree1 components require a new geometry audit", encoding="utf-8"
+    )
+    rows = aggregator.read_batch(batch, "source")
+    assert rows[0]["status"] == "infrastructure"
+    assert rows[0]["stop_reason"] == "target_not_presentable_unlisted_tree1_component"

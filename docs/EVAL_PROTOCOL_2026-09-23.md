@@ -216,3 +216,60 @@ every spur in a real tree. That limitation was stated in the registration under
 measurable form of it. A later protocol that varies base placement or approach
 pose would remove this rejection class and replace it with a reachability
 question, which is a different and larger study.
+
+## Result — September 23, 2026
+
+Arrays `21400715` (source) and `21400716` (morning) ran all 40 registered trials.
+Every number below comes from [`docs/evidence/eval_2026-09-23.json`](evidence/eval_2026-09-23.json),
+produced by `tools/aggregate_eval.py` through the queries in `sql/`.
+
+| Rate | Successes / attempts | Wilson 95% |
+|---|---|---|
+| **Inclusive, both lights (headline)** | **0 / 40** | **0.000 – 0.088** |
+| Inclusive, source light only | 0 / 20 | 0.000 – 0.161 |
+| Inclusive, morning light only | 0 / 20 | 0.000 – 0.161 |
+| Excluding infrastructure | 0 / 20 | 0.000 – 0.161 |
+| Excluding infrastructure and layout rejection | 0 / 14 | 0.000 – 0.215 |
+
+**No registered target was completed.** The one earlier success, `21328323`, does
+not generalize to other spurs at the canonical approach pose.
+
+| Outcome | Trials | Mean vision commands before stop |
+|---|---|---|
+| Infrastructure: target could not be presented (see below) | 20 | 0 |
+| Layout refused, startup contact above 5 N | 6 | 0 |
+| Stopped on hazard contact | 6 | 31.0 |
+| Stopped on invalid vision | 6 | 17.3 |
+| Stopped on time-of-flight minimum clearance | 2 | 28.5 |
+
+Every one of the 20 targets ended the same way under source and morning light.
+In this sweep, spur geometry and the surrounding tree decided the outcome;
+lighting did not. That matches the lighting pilot, where presets moved tracker
+margins but not outcomes.
+
+Every stop is a gate refusing to continue: none approached through contact
+unchecked, and none released without closure. The safety gates behaved as
+designed; the controller did not complete the task.
+
+### An error in the target register
+
+**All ten tree1 targets could never be presented, and that is a mistake in this
+protocol, not a property of the controller.** The renderer only accepts a tree1
+spur that is among the export's ten listed candidates, and refuses any other
+with `Unlisted tree1 components require a new geometry audit`. That constraint
+was recorded during the Phase 0 audit, and then not re-applied when this
+protocol widened sampling from the listed candidates to all 444 screened spurs.
+All 20 tree1 trials aborted in about a minute each, before recording.
+
+They are reported as `infrastructure` and **remain in the inclusive
+denominator**, as registered. The consequence for interpretation is plain: this
+sweep measured **tree0 only**. Nothing here says anything about tree1.
+
+The launcher now refuses such a register on CPU before submission
+(`queue_vision_robustness.unpresentable_targets`), and this exact register is
+rejected by it. The register itself is left unchanged, because rewriting a
+pre-registered target set after seeing results would defeat the registration.
+
+A tree1 evaluation needs a new registration: either sample tree1 from the listed
+candidates only, of which seven pass the jaw-fit screen, or first extend the
+export's candidate list through the geometry audit the renderer asks for.
