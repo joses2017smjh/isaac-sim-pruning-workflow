@@ -1,0 +1,119 @@
+{
+  "updated_at": "2026-09-21T00:32:43.942774+00:00",
+  "batch": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/generalization/phase-20260920",
+  "jobs": [
+    {
+      "job_id": "21370005",
+      "name": "prune-depth-a",
+      "purpose": "600-frame frozen DA2 versus saved Isaac RTX optical-Z",
+      "state": "COMPLETED",
+      "dependencies": [],
+      "code_pins": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/generalization/phase-20260920/source_pins.json",
+      "sanity_gates_passed": false
+    },
+    {
+      "job_id": "21370018",
+      "name": "prune-family",
+      "tree_id": "lpy_envy_00000",
+      "purpose": "two-frame Blender asset/lighting preflight",
+      "state": "COMPLETED",
+      "dependencies": []
+    },
+    {
+      "job_id": "21370019",
+      "name": "prune-family",
+      "tree_id": "lpy_ufo_00000",
+      "purpose": "two-frame Blender asset/lighting preflight",
+      "state": "COMPLETED",
+      "dependencies": []
+    },
+    {
+      "job_id": "21370021",
+      "name": "prune-dino-smoke",
+      "state": "COMPLETED",
+      "dependencies": [
+        "afterok:21370005"
+      ],
+      "purpose": "DINO strict checkpoint loading and six-view forward interface"
+    },
+    {
+      "job_id": "21370026",
+      "name": "prune-shadow",
+      "purpose": "30 live RTX-controlled frames with DA2 diagnostic shadow and independent family USD imports",
+      "state": "FAILED",
+      "dependencies": [],
+      "reason": "Pre-render CaptureQuality rejected 640px overview; corrected retry uses supported1280px/64spp. No frames or robot commands."
+    },
+    {
+      "job_id": "21370027",
+      "name": "prune-family",
+      "purpose": "Envy00000 paired four-light/six-view pilot",
+      "state": "COMPLETED",
+      "dependencies": []
+    },
+    {
+      "job_id": "21370028",
+      "name": "prune-family",
+      "purpose": "UFO00000 paired four-light/six-view pilot",
+      "state": "COMPLETED",
+      "dependencies": []
+    },
+    {
+      "job_id": "21370039",
+      "name": "prune-family-eval",
+      "state": "COMPLETED",
+      "dependencies": [
+        "afterok:21370027:21370028"
+      ],
+      "purpose": "48-frame paired pilot DA2 and DINO comparison"
+    },
+    {
+      "job_id": "21370040",
+      "name": "prune-shadow",
+      "state": "FAILED",
+      "purpose": "Family USD preflight required Mesh; existing assets are analytic Cylinders. Fixed validator recognizes renderable Gprim and finite bounds.",
+      "dependencies": []
+    },
+    {
+      "job_id": "21370047",
+      "name": "prune-shadow",
+      "state": "RUNNING",
+      "purpose": "Corrected short shadow plus cylinder/USD import preflight",
+      "dependencies": []
+    }
+  ],
+  "closed_loop": "GATED: offline and live shadow criteria must pass",
+  "cpu_smoke": {
+    "completed": true,
+    "target_mae_m": 0.4619579248958164,
+    "sanity_pass": false
+  },
+  "preflight": {
+    "tracked_cpu_suite": "518 passed, 10 skipped (Isaac/USD unavailable locally), 24.12s",
+    "lint": "new maintained Python scope passed",
+    "DINO_smoke": {
+      "job_id": "21370021",
+      "ok": true,
+      "six_view_seconds": 0.48027156409807503,
+      "input": "one real image repeated six times; loading/interface check only"
+    },
+    "Blender": {
+      "jobs": [
+        "21370018",
+        "21370019"
+      ],
+      "ok": true,
+      "geometry_rule_amendment": "Before any family inference: spur segment minimum length 25mm ->8mm because UFO metadata segments are about10mm. Tree IDs, radius2-12mm, height ranking unchanged. Initial no-target failures retained."
+    },
+    "video_compositor": {
+      "ok": true,
+      "codec": "H.264 via libopenh264",
+      "resolution": [
+        1536,
+        896
+      ],
+      "frames": 20,
+      "failure_preserved": "System ffmpeg lacks libx264; first compositor smoke exited without valid video; explicit libopenh264 retry passed and was visually reviewed."
+    }
+  }
+}

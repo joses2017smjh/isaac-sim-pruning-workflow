@@ -156,6 +156,7 @@ def _json_safe(value):
 def main() -> int:  # noqa: C901 - the simulator is imported only after AppLauncher.
     from isaaclab_pruning.sim.render_quality import CaptureQuality, apply_capture_quality, settings_readback
 
+    root = Path(os.environ["PRUNING_ROOT"])
     quality = None
     blender_mode = os.environ.get("PRUNING_RENDER_MODE") == "blender_vision"
     photometric_normalization = os.environ.get("PRUNING_PHOTOMETRIC_NORMALIZATION", "raw")
@@ -237,12 +238,53 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         )
 
     flush()
+    shadow = None
+    if os.environ.get("PRUNING_SHADOW_DIR"):
+        sys.path.insert(0, str(root / "tools"))
+        from shadow_depth import ShadowClient
+
+        shadow = ShadowClient(os.environ["PRUNING_SHADOW_DIR"])
+        report["learned_depth_shadow"] = shadow.model
+        report["learned_depth_controls_robot"] = False
     simulation_app = None
     env = None
     try:
         from isaaclab.app import AppLauncher
 
         launcher = AppLauncher(headless=True, enable_cameras=True, kit_args=quality.startup_kit_args if quality else "")
+        simulation_app = launcher.app
+        if os.environ.get("PRUNING_FAMILY_IMPORT_CHECK") == "1":
+            from pxr import Usd, UsdGeom
+
+            asset_checks = []
+            for family in ("envy", "ufo"):
+                path = root / f"artifacts/trees/lpy_{family}_00000.usda"
+                imported = Usd.Stage.Open(str(path))
+                meshes = [p for p in imported.Traverse() if p.IsA(UsdGeom.Gprim)]
+                bound = (
+                    UsdGeom.BBoxCache(Usd.TimeCode.Default(), [UsdGeom.Tokens.default_])
+                    .ComputeWorldBound(imported.GetDefaultPrim())
+                    .ComputeAlignedRange()
+                )
+                entry = {
+                    "family": family,
+                    "path": str(path),
+                    "renderable_primitive_count": len(meshes),
+                    "meters_per_unit": UsdGeom.GetStageMetersPerUnit(imported),
+                    "bounds_min": list(bound.GetMin()),
+                    "bounds_max": list(bound.GetMax()),
+                    "scope": "Independent USD stage opened in Isaac process; not a closed-loop tree trial",
+                }
+                entry["ok"] = (
+                    bool(meshes)
+                    and entry["meters_per_unit"] == 1.0
+                    and all(math.isfinite(v) for v in (*entry["bounds_min"], *entry["bounds_max"]))
+                )
+                asset_checks.append(entry)
+            report["family_import_checks"] = asset_checks
+            flush()
+            if not all(item["ok"] for item in asset_checks):
+                raise RuntimeError("Family USD import preflight failed")
         simulation_app = launcher.app
         root = Path(os.environ["PRUNING_ROOT"])
         sys.path.insert(0, str(root / "source" / "isaaclab_pruning"))
@@ -321,7 +363,8 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                         target_position_w=target_position,
                         base_height=base_height,
                         yaw_degrees=150.0,
-                        component_first_vertex=8235,
+                        component_first_vertex=int(os.environ.get("PRUNING_COMPONENT_VERTEX", "8235")),
+                        target_tree_index=int(os.environ.get("PRUNING_TARGET_TREE", "0")),
                         tree_count=2,
                     )
                     selected = self.blender_scene.selected_mesh_prim_path
@@ -946,6 +989,10 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                     detachment_requested_after_capture=detach_requested,
                     selected_piece_pose_wxyz=env.blender_scene.measured_piece_pose_wxyz(),
                 )
+            if shadow is not None:
+                tracker = (live_vision or {}).get("measurement", {})
+                pixel = tracker.get("pixel_xy") if tracker.get("state") == "tracking" else None
+                record["learned_depth_shadow"] = shadow.observe(index, wrist, depth, pixel)
             records.append(record)
             if index in (0, frame_count // 2, frame_count - 1) and hasattr(env, "control_state"):
                 report.setdefault("control_snapshots", {})[str(index)] = env.control_state()
