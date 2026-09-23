@@ -10,8 +10,9 @@ WHERE THIS IS
 SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
   Phase 0 audit ...... DONE (plan delivered in chat)
   Phase 1 lighting ... DONE
-  Phase 2 success rate  PROTOCOL REGISTERED AND COMMITTED; NOTHING SUBMITTED.
-                       BLOCKED on the user's GPU-budget OK. See PHASE 2 below.
+  Phase 2 success rate  SUBMITTED 2026-09-23: arrays 21400715 (source) and
+                       21400716 (morning, afterany:21400715). NO RESULT YET.
+                       Aggregation layer still to build. See PHASE 2 below.
   Phase 3 ROS 2 SIL .. not started (CPU-only, can run while Phase 2 queues)
   Phase 4 studio ..... not started (CPU-only)
   Phase 5 CuRobo ..... optional, time-boxed
@@ -81,14 +82,18 @@ PHASE 2 — REGISTERED, NOT SUBMITTED (2026-09-23)
     plan (--array=0-N-1%1) instead of the sbatch directive, so a sweep cannot
     launch more or fewer tasks than it registered. Duplicate targets are refused.
     Omitting --targets-file reproduces the original six-run lighting pilot.
-  TO SUBMIT ARRAY A once the user approves (330-340 GPU-min, ~5.5 h, ~8.0 GB):
-    python tools/queue_vision_robustness.py --submit \
-      --batch-id targets-source-20260923 \
-      --targets-file docs/evidence/eval_targets_2026-09-23.json \
-      --daylight source --photometric-normalization raw
-    Check squeue/sacct immediately before submitting. Record the array in
-    SLURM_JOBS.md right after, then stop and do not wait on the queue.
-  Array B (same 20 targets, --daylight morning) needs its own separate OK.
+  SUBMITTED (user approved 660-680 GPU-min for both arrays):
+    21400715 targets-source-20260923   source light, 0-19%1, 340 GPU-min
+    21400716 targets-morning-20260923  morning light, 0-19%1, 340 GPU-min,
+             --dependency=afterany:21400715 so only one GPU runs at a time.
+    Frozen code revision 00818fb034dd3a6fec721825cd2e353f1b545a0d.
+    Both PENDING at submission: A on (QOSMaxGRESPerUser) behind the user's
+    unrelated lh-cl2-bench array, B on (Dependency). NOTHING WAS MODIFIED.
+    SUBMISSION IS NOT EVIDENCE. No capture, no grade, no rate exists yet.
+  WHEN THE ARRAYS FINISH, resume here:
+    Grade with tools/summarize_lighting_pilot.py per batch (it is condition
+    agnostic: it reads plan.json and reports any planned run with no capture as
+    incomplete), then build the DuckDB layer described below.
   STILL TO BUILD AFTER THE RUNS LAND: the DuckDB aggregation layer in sql/,
     Wilson 95% interval, failure taxonomy from recorded stop reasons, tracking
     coverage vs error, docs/evidence/eval_<date>.json, README Result update,

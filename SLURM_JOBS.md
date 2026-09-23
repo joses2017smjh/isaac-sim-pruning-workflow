@@ -14,6 +14,32 @@ gitignored, so the tracked evidence is the durable GitHub record.
 The existing HPC prose dates job `21036831` to 2026-08-26; Slurm accounting
 records its submission/start on 2026-08-24, which is the date used here.
 
+## Success-rate sweep submitted — September 23, 2026
+
+Two frozen arrays for the [pre-registered protocol](docs/EVAL_PROTOCOL_2026-09-23.md).
+**No result yet. Submission is not evidence.** Both were pending at the check
+below; neither has produced a capture, and no grade exists.
+
+| Array | Batch | Light | Tracker | Tasks | Declared GPU-minutes | State at submission |
+|---|---|---|---|---|---|---|
+| `21400715` | `targets-source-20260923` | source | raw | `0-19%1` | 340 | PENDING `(QOSMaxGRESPerUser)` |
+| `21400716` | `targets-morning-20260923` | morning | raw | `0-19%1` | 340 | PENDING `(Dependency)` |
+
+Both sweep the same 20 pre-registered spurs, 10 from each original tree, drawn
+with seed `20260923` from the 444 components that pass the existing jaw-fit
+screen. Frozen code revision `00818fb034dd3a6fec721825cd2e353f1b545a0d`,
+404 source files hashed, target register hashed into each plan.
+
+`21400716` carries `--dependency=afterany:21400715` so only one of the two runs
+a GPU at a time, keeping each plan's declared `max_concurrent_gpus: 1` true.
+`afterany` means a failure in the first array still releases the second, so its
+failures stay visible rather than leaving the batch pending forever. **No
+existing job was modified, cancelled, held or requeued**; nine unrelated
+`lh-cl2-*` jobs were running or queued at submission and were left alone.
+
+Every one of the 20 targets counts in the denominator, including any rejected
+for visibility inside its trial or left incomplete. N does not shrink.
+
 ## September 20 completed-job reconciliation
 
 At the timestamp above, no `prune-*` jobs remain running or pending. No job was
