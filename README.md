@@ -2,6 +2,10 @@
 
 Closed-loop RGB-D control, sensor gating and independent task grading for a simulated UR5e pruning workflow.
 
+**[Open the replay studio](https://joses2017smjh.github.io/isaac-sim-pruning-workflow/)** — scrub three
+recorded runs frame by frame: camera, tracker confidence and features, both 8x8 time-of-flight grids with
+validity, gate states and proposed against applied commands. Every value is read from a capture file.
+
 [![Two-tree Isaac Sim sequence: approach, surrogate release, measured fall and return](docs/demo/isaac_two_trees_vision_sequence.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4)
 
 [Watch the 20-second demo](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4)
@@ -123,7 +127,9 @@ new corners must pass the next frame's tracking gates.
 | Earlier control smoke | 0.360 mm final error for a 5 mm command | Six-step hold; earlier floor-contact fixture drifted 20.12 mm and failed |
 | CPU clear / blackout / blocked geometry | Accepted at 42 frames / stopped at 20 / rejected at 35 | Ideal tool motion |
 | CPU range fusion | Nominal RMSE 6.08 → 5.49 mm; blackout 8.15 → 9.57 mm | Synthetic metric estimates; blackout coverage differs |
-| Local CPU suite, September 20 | Tracked scope: 514 passed; 9 skipped; 1 simulator test deselected | Full working tree adds 31 passes and 1 failure in an existing untracked studio test; [audit](docs/RESEARCH_AUDIT_2026-09-20.md) |
+| Local CPU suite, September 23 | Tracked scope: 547 passed; 9 skipped; 1 simulator test deselected | The 9 skips need USD, absent from the CPU interpreter |
+| ROS 2 SIL parity, `21328323` | 199/199 recorded decision states reproduced; command deltas within 2 mm (median 0.07 mm) | Replay of one capture; software-in-the-loop, no hardware ([notes](docs/ROS2_SIL.md)) |
+| ROS 2 negative controls | RGB blackout and depth dropout each hold 39/39 frames | Neither ever authorizes approach or release |
 | GitHub CI, checkpoint `68e37c5` | 451 passed; 9 skipped; 1 deselected | Clean runner without external runtime assets |
 
 [Aggregate evidence](docs/evidence/two_tree_summary_2026-09-14.json)

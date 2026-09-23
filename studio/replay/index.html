@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pruning replay</title>
+<meta name="description" content="Synchronized replay of recorded UR5e vision-guided pruning runs: camera, tracker, time-of-flight and gate decisions." />
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <div class="masthead">
+    <h1>Pruning replay</h1>
+    <p class="sub">Recorded UR5e vision-guided pruning runs, played back frame by frame.</p>
+  </div>
+  <p class="provenance" id="provenance">Loading recorded runs…</p>
+</header>
+
+<nav id="runs" class="runs" aria-label="Recorded runs"></nav>
+
+<main>
+  <section class="stage" aria-label="Recorded camera video">
+    <div class="videos">
+      <figure>
+        <video id="wrist" muted playsinline preload="metadata"></video>
+        <figcaption>Wrist camera <span class="tag">recorded</span></figcaption>
+      </figure>
+      <figure>
+        <video id="overview" muted playsinline preload="metadata"></video>
+        <figcaption>Overview <span class="tag">recorded</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="transport">
+      <button id="play" class="primary" type="button">Play</button>
+      <input id="scrub" type="range" min="0" max="0" step="1" value="0" aria-label="Frame" />
+      <output id="clock" class="clock">0.0 s</output>
+    </div>
+    <div id="phases" class="phases" aria-hidden="true"></div>
+    <p class="phase-legend" id="phaseLegend"></p>
+  </section>
+
+  <section class="panel" aria-label="Outcome">
+    <h2>Outcome</h2>
+    <div id="verdict" class="verdict"></div>
+    <dl id="facts" class="facts"></dl>
+  </section>
+
+  <section class="panel" aria-label="Tracker">
+    <h2>Tracker</h2>
+    <div class="readouts">
+      <div><span class="k">State</span><strong id="tState">—</strong></div>
+      <div><span class="k">Confidence</span><strong id="tConf">—</strong></div>
+      <div><span class="k">Features</span><strong id="tFeat">—</strong></div>
+      <div><span class="k">Depth valid</span><strong id="tDepth">—</strong></div>
+    </div>
+    <canvas id="chart" height="150" aria-label="Tracking confidence and feature count over time"></canvas>
+    <p class="note">Confidence is a heuristic score, not calibrated uncertainty. The floors drawn are the
+      tracker's own reject thresholds: confidence 0.15 and 4 features.</p>
+  </section>
+
+  <section class="panel" aria-label="Time of flight">
+    <h2>Time of flight <span class="tag">8×8, both sensors</span></h2>
+    <div class="tof">
+      <figure><canvas id="tofL" width="176" height="176"></canvas><figcaption>Left · <span id="tofLv">—</span></figcaption></figure>
+      <figure><canvas id="tofR" width="176" height="176"></canvas><figcaption>Right · <span id="tofRv">—</span></figcaption></figure>
+      <div class="scale"><span>near</span><div class="ramp"></div><span>far</span><div class="invalid"></div><span>invalid</span></div>
+    </div>
+    <p class="note">Invalid zones are drawn hatched and carry no range. A gate must be able to tell
+      “no measurement” from “a measurement at the origin”.</p>
+  </section>
+
+  <section class="panel" aria-label="Gates and command">
+    <h2>Decision</h2>
+    <div class="readouts">
+      <div><span class="k">Gate state</span><strong id="dState">—</strong></div>
+      <div><span class="k">Reason</span><strong id="dReason">—</strong></div>
+      <div><span class="k">Cut phase</span><strong id="dPhase">—</strong></div>
+      <div><span class="k">Contact</span><strong id="dContact">—</strong></div>
+    </div>
+    <div class="cmd">
+      <div><span class="k">Proposed step</span><strong id="cProposed">—</strong></div>
+      <div><span class="k">Applied position</span><strong id="cApplied">—</strong></div>
+      <div><span class="k">Remaining</span><strong id="cRemain">—</strong></div>
+    </div>
+    <p id="stopBanner" class="stop" hidden></p>
+  </section>
+</main>
+
+<footer>
+  <p><strong>Every value on this page is read from a recorded capture file.</strong> There is no browser
+  physics, no interpolation and no policy running here. The videos are the recorded simulator cameras.</p>
+  <p>The release is a visual jaw surrogate and a discrete rigid-piece detachment, not blade actuation or
+  wood fracture. Depth is simulator optical-Z ground truth. Branch identity, axis and radius come from
+  scene metadata, not learned recognition.</p>
+  <p>Orchard meshes, bark textures and mock-pruner CAD are not cleared for redistribution and are not
+  published here. <a id="repo" href="https://github.com/joses2017smjh/isaac-sim-pruning-workflow">Source and evidence</a></p>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -226,6 +226,10 @@ __marimo__/
 # Pruning workflow: fetched sources and generated simulator artifacts
 /third_party/src/
 /artifacts/
+# Browser prototype dependencies. The published replay in studio/replay is
+# static and has none, so nothing here is needed to build the site.
+/studio/node_modules/
+/studio/dist/
 /generated/
 /demo-output/
 /logs/

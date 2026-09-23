@@ -266,7 +266,17 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       lighting evaluation and learned-depth offline/shadow gates before control.
       [September 20 priorities](RESEARCH_AUDIT_2026-09-20.md).
 - [ ] Test an explicitly selected target on original orchard tree1 separately.
-- [ ] Review and validate the existing local uncommitted replay-studio prototype.
+- [x] Ship a replay studio: a static page that plays recorded runs frame by frame
+      with camera video, tracker confidence and feature count, both 8x8
+      time-of-flight grids with validity, gate states and proposed against
+      applied commands. Three runs are published: the `21328323` success, the
+      `21317409` closure failure and a success-rate sweep failure that stopped on
+      hazard contact. Every displayed value is read from a capture file; there is
+      no browser physics and no policy. Published payload is 1.3 MB against a
+      12 MB budget, and CI fails if a restricted asset reaches it.
+- [ ] Decide the fate of the earlier uncommitted browser scene-viewer prototype
+      (`studio/src`). It animates a synthetic joint loop rather than a recording,
+      and its asset exporter copies mock-pruner CAD, so it is not published.
 - [ ] Evaluate more branch placements and failure cases before reporting a
       task-success rate or collision-avoidance claim.
 

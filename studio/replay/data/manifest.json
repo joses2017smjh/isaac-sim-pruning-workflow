@@ -1,0 +1,106 @@
+{
+ "schema_version": 1,
+ "scope": "Recorded simulator replays. Every displayed value comes from a capture file. No browser physics, no interpolation, no policy. The schematic robot is a labelled stand-in: tree meshes, textures and mock-pruner CAD are not cleared for redistribution and are not published.",
+ "runs": [
+  {
+   "run_id": "success",
+   "label": "Full vision-guided sequence",
+   "outcome": "pass",
+   "telemetry": "success/telemetry.json",
+   "telemetry_bytes": 239627,
+   "media": {
+    "wrist": {
+     "path": "success/wrist.mp4",
+     "bytes": 183692
+    },
+    "overview": {
+     "path": "success/overview.mp4",
+     "bytes": 118446
+    }
+   },
+   "frame_count": 200,
+   "grade": {
+    "graded_here": false,
+    "ok": true,
+    "checks_passed": 17,
+    "checks_total": 17,
+    "failed_checks": []
+   },
+   "target_id": "tree0_SPUR_component_8235"
+  },
+  {
+   "run_id": "closure_failure",
+   "label": "Closure failure, tracking confidence lost",
+   "outcome": "fail",
+   "telemetry": "closure_failure/telemetry.json",
+   "telemetry_bytes": 239352,
+   "media": {
+    "wrist": {
+     "path": "closure_failure/wrist.mp4",
+     "bytes": 106075
+    },
+    "overview": {
+     "path": "closure_failure/overview.mp4",
+     "bytes": 75931
+    }
+   },
+   "frame_count": 200,
+   "grade": {
+    "graded_here": true,
+    "ok": false,
+    "checks_passed": 9,
+    "checks_total": 17,
+    "failed_checks": [
+     "one_matching_detach_event_and_request",
+     "detach_has_completed_certified_closure",
+     "detached_state_consistent_with_event",
+     "piece_stationary_before_release",
+     "piece_dropped_after_release",
+     "post_detach_retreat_toward_home",
+     "returned_home_and_final_phase_complete",
+     "no_recorded_stops"
+    ]
+   },
+   "target_id": "tree0_SPUR_component_8235"
+  },
+  {
+   "run_id": "sweep_hazard_stop",
+   "label": "Success-rate sweep, stopped on hazard contact",
+   "outcome": "fail",
+   "telemetry": "sweep_hazard_stop/telemetry.json",
+   "telemetry_bytes": 238805,
+   "media": {
+    "wrist": {
+     "path": "sweep_hazard_stop/wrist.mp4",
+     "bytes": 88651
+    },
+    "overview": {
+     "path": "sweep_hazard_stop/overview.mp4",
+     "bytes": 21509
+    }
+   },
+   "frame_count": 200,
+   "grade": {
+    "graded_here": false,
+    "ok": false,
+    "checks_passed": 8,
+    "checks_total": 17,
+    "failed_checks": [
+     "one_matching_detach_event_and_request",
+     "detach_has_completed_certified_closure",
+     "detached_state_consistent_with_event",
+     "piece_stationary_before_release",
+     "piece_dropped_after_release",
+     "post_detach_retreat_toward_home",
+     "returned_home_and_final_phase_complete",
+     "captured_contact_within_limit",
+     "no_recorded_stops"
+    ]
+   },
+   "target_id": "tree0_SPUR_component_530"
+  }
+ ],
+ "payload_bytes": 1312088,
+ "payload_budget_bytes": 12582912,
+ "within_budget": true
+}

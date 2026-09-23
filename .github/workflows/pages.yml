@@ -1,0 +1,59 @@
+name: Pages
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the published payload stays phone-sized
+        run: |
+          set -eux
+          # The site is static: no build step, no bundler, no node_modules.
+          test -f studio/replay/index.html
+          test -f studio/replay/data/manifest.json
+          python3 - <<'PY'
+          import json, pathlib
+          root = pathlib.Path("studio/replay")
+          total = sum(p.stat().st_size for p in root.rglob("*") if p.is_file())
+          manifest = json.loads((root / "data/manifest.json").read_text())
+          budget = manifest["payload_budget_bytes"]
+          print(f"published payload {total} bytes against budget {budget}")
+          assert total <= budget, f"payload {total} exceeds budget {budget}"
+          assert manifest["runs"], "no recorded runs published"
+          PY
+
+      - name: Refuse to publish a restricted asset
+        run: |
+          set -eux
+          # Tree meshes, bark textures and mock-pruner CAD are not cleared for
+          # redistribution. The replay publishes recorded video and telemetry only.
+          if find studio/replay -iname '*.glb' -o -iname '*.gltf' -o -iname '*.stl' \
+               -o -iname '*.usd*' -o -iname '*.dae' -o -iname '*.urdf' | grep -q .; then
+            echo "A 3D asset reached the published replay"
+            exit 1
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: studio/replay
+      - id: deploy
+        uses: actions/deploy-pages@v4

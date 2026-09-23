@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — PHASES 1 AND 3 DONE, PHASE 2 SUBMITTED
+CURRENT CHECKPOINT — 2026-09-23 PDT — PHASES 1, 3, 4 DONE; PHASE 2 SUBMITTED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -15,7 +15,9 @@ SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
                        Aggregation layer still to build. See PHASE 2 below.
   Phase 3 ROS 2 SIL .. DONE. 199/199 recorded decision states reproduced.
                        Evidence docs/evidence/ros2_sil_parity_2026-09-23.json.
-  Phase 4 studio ..... not started (CPU-only)
+  Phase 4 studio ..... DONE. Static replay page at studio/replay, 1.3 MB payload,
+                       browser-tested at 390px and 1280px. Pages workflow added;
+                       ONE REPO SETTING STILL NEEDED, see PHASE 4 below.
   Phase 5 CuRobo ..... optional, time-boxed
   Phase 6 docs/claims  not started; needs the user's CLAIM_BANK.md path and
                        the 2026-09-19 leads file.
@@ -131,6 +133,35 @@ PHASE 3 RESULT — ROS 2 Humble software-in-the-loop (NOT hardware-in-the-loop)
     has no rosbag2), with a step that fails if any 3D asset reaches the build.
   ROADMAP: the stretch gate is split into SIL done (with evidence) and HIL
     pending hardware.
+
+PHASE 4 RESULT — replay studio
+  studio/replay is a STATIC page: no bundler, no node_modules, no build step.
+  Publishes three recorded runs: 21328323 success (17/17), 21317409 closure
+  failure (9/17, graded here since the capture stored no grade), and
+  targets-source-20260923 run_00 tree0 v530, a real sweep failure that stopped on
+  hazard contact (8/17). Shows synced wrist/overview video, phase strip, tracker
+  confidence and feature count against their reject floors, both 8x8 ToF grids
+  with invalid zones hatched, gate state and reason, and proposed vs applied
+  commands. Every value is read from a capture; unrecorded fields say
+  "not recorded" rather than being filled in.
+  Payload 1.3 MB against a 12 MB budget. Verified in headless Chromium at 390px
+  and 1280px: no console errors, no horizontal overflow, values change on scrub.
+  Regenerate the data with:
+    python tools/export_studio_replay.py --output studio/replay/data \
+      --run "success=artifacts/isaac_render/job_21328323=Full vision-guided sequence=pass" \
+      --run "closure_failure=artifacts/isaac_render/job_21317409=Closure failure, tracking confidence lost=fail" \
+      --run "sweep_hazard_stop=artifacts/vision_robustness/targets-source-20260923/run_00_source_tree0_v530=Success-rate sweep, stopped on hazard contact=fail"
+  *** ONE REPO SETTING NEEDED: GitHub > Settings > Pages > Build and deployment >
+      Source = "GitHub Actions". Then .github/workflows/pages.yml publishes
+      studio/replay on each push to develop. URL will be
+      https://joses2017smjh.github.io/isaac-sim-pruning-workflow/ ***
+  The OLDER untracked prototype in studio/src is NOT published and NOT committed.
+    It is a three.js scene viewer that animates a synthetic 12 s joint loop, not
+    a recording, and tools/export_studio_assets.py copies mock-pruner CAD meshes
+    (its own docstring says the output must stay out of public builds). Its
+    untracked test tests/test_studio_orchard.py still fails on a real exporter
+    bug: the glTF rebase puts tree1 at the origin, so the two trees collapse.
+    ASK THE USER what to do with it; nothing of theirs was modified or deleted.
 
 KEY FACTS FOR PHASE 2 (established in the Phase 0 audit)
   tools/queue_vision_robustness.py freezes with `git archive HEAD`, so it REFUSES

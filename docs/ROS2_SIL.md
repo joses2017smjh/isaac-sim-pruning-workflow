@@ -25,6 +25,12 @@ Replaying capture `21328323` through the node reproduces the recorded run:
 Evidence: [`docs/evidence/ros2_sil_parity_2026-09-23.json`](evidence/ros2_sil_parity_2026-09-23.json),
 which records every frame, not just the summary.
 
+![ROS 2 SIL replay: recorded wrist frames with the node's proposed decision and its agreement with the recording](demo/ros2_sil_replay.gif)
+
+The animation above is the replay running: each frame shows the recorded
+decision state, the state this node proposed, and how closely the command delta
+agreed, against the 2 mm tolerance bar.
+
 The one frame not compared is frame 0, where the capture records
 `controller_source_frame_index = -1`: no image had been observed yet. The node
 publishes an explicit `hold` with reason `no_camera_observation` and **no pose**,
