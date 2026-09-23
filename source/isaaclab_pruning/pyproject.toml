@@ -21,6 +21,9 @@ dev = [
     "pytest>=8.0",
     "ruff==0.14.10",
     "torch",
+    # The success-rate aggregation runs through sql/*.sql, so the test suite
+    # needs DuckDB to exercise the real path rather than a stand-in.
+    "duckdb>=1.0",
 ]
 demo = [
     "torch>=2.2",

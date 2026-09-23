@@ -166,3 +166,53 @@ tests on fixture JSON so the queries are checked without needing the captures.
   still presents one spur at one pose.
 - Twenty trials give a wide interval. The interval is reported precisely so the
   width is visible rather than implied.
+
+---
+
+## Addendum, written during execution — September 23, 2026
+
+**This section was written after the first trials ran, not before.** It is kept
+separate from the registered protocol above so a reader can see exactly what was
+decided in advance and what was learned afterwards. **It changes no threshold, no
+target, no denominator and no counting rule.** N is still 20, and every attempted
+target still counts.
+
+### A rejection category the registration did not name
+
+The registered table anticipated a target being "rejected for visibility inside
+the trial". Execution surfaced a second, different pre-recording rejection that
+the registration did not name:
+
+```
+RuntimeError: Orchard layout rejected: startup robot contact 226.126 N > 5 N
+```
+
+This is an existing guard in `hpc/inner/render_pruning_workflow.py:581`, not new
+code. It fires before any motion. The cause is structural, and follows directly
+from the canonicalized approach pose described above: the whole orchard is
+translated so the selected spur's centroid lands at the fixed workspace pose, so
+for some spurs that translation drives the rest of the tree into the robot. The
+run is refused rather than started in contact.
+
+The category is recorded as `rejected_layout_startup_contact`. Like every other
+rejection, **it counts in the denominator**. Excluding these targets would report
+a rate over "spurs whose surrounding tree happens to miss the robot", which is
+not the population that was registered.
+
+| Outcome | Counts in N | Counts in X | Recorded as |
+|---|---|---|---|
+| Layout refused before motion, startup contact above 5 N | yes | no | `rejected_layout_startup_contact` |
+
+These trials are cheap: they abort in roughly one minute rather than sixteen, so
+the array's real cost is below the registered budget rather than above it.
+
+### What this says about the design, not just the run
+
+The canonicalized approach pose buys a controlled comparison across spur
+geometry, and this is the bill for it. A field evaluation would move the robot to
+the branch; this moves the branch to the robot, and a fixed pose cannot suit
+every spur in a real tree. That limitation was stated in the registration under
+"what this will still not establish"; the startup-contact rejections are the
+measurable form of it. A later protocol that varies base placement or approach
+pose would remove this rejection class and replace it with a reachability
+question, which is a different and larger study.
