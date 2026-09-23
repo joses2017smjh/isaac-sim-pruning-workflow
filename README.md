@@ -87,14 +87,18 @@ before submission. This sweep speaks for tree0 only.
 controller, whose tracker is not learned. The Envy-trained metric-depth model
 (DA2) run on Isaac frames of the original tree fails every pre-registered gate:
 0 of 234 target frames within 20 mm, a systematic **+0.4 to +0.6 m**
-overestimate. On Blender renders of one Envy and one UFO tree, evening light
-raises its error **6–8×** over source light, and a six-view DINO refiner adds
-nothing. That is one tree per family. An eight-tree matrix is
-[registered](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md) and awaits GPU
-approval; it cannot make Envy an unseen-tree test, because every Envy tree was
-in the model's training or validation split.
-[Stage A](docs/evidence/stage_a_depth_2026-09-23.json)
-· [pilot](docs/evidence/family_pilot_depth_2026-09-23.json)
+overestimate. A pre-registered eight-tree matrix on Blender renders (4 Envy,
+4 UFO, four lighting presets) then found: **evening light raises the error
+6–8× in all 8 trees**; **UFO is consistently worse than Envy under every light**
+(+5–9 cm in daylight, +54 cm at evening, no overlap between families), yet with
+each frame's own offset removed UFO is no worse — the model reads UFO trees as
+further away, not as a different shape. A six-view DINO refiner adds nothing at
+2.2 s. All gates fail, as predicted before submission. Envy cannot be an
+unseen-tree test, since every Envy tree was in the model's training or
+validation split.
+[Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)
+· [matrix evidence](docs/evidence/family_matrix_depth_2026-09-23.json)
+· [Stage A](docs/evidence/stage_a_depth_2026-09-23.json)
 
 ## Quickstart
 

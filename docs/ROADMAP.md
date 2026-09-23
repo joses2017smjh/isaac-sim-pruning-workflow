@@ -281,11 +281,15 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       raises DA2 tree-mask error 6.1× (Envy) and 7.9× (UFO); DINO adds nothing.
       Not a family or population claim at N = 1.
       [Evidence](evidence/family_pilot_depth_2026-09-23.json).
-- [ ] Eight-tree Envy/UFO × four-light matrix, registered before submission in
-      [EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md](EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md)
-      with the mask-gated target metric and the unchanged September 20 gates.
-      Launcher `tools/queue_family_matrix.py`; 120 GPU-minutes reserved, ~11
-      expected. Awaiting approval.
+- [x] Eight-tree Envy/UFO × four-light matrix (`21402687` / `21402688`, all 8
+      trees scored, ~8 GPU-min of 120 reserved). Lighting effect **replicated in
+      8 of 8 trees** (evening 6.1–8.4× source). UFO worse than Envy under every
+      light with no overlap between families, as a larger constant offset rather
+      than a worse shape; part of the Envy advantage may be validation-split
+      exposure. All gates fail, as registered. The spur target was invisible for
+      3 of 8 trees, so target-level numbers rest on 5.
+      [Protocol and result](EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026) ·
+      [evidence](evidence/family_matrix_depth_2026-09-23.json).
 - [ ] Renderer and distance controls for Stage A: the original orchard tree in
       Cycles at the matrix rigs, and a close-range rig at the Isaac working
       distance. Neither exists; without them the +0.5 m Isaac error cannot be

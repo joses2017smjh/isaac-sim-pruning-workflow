@@ -1,169 +1,299 @@
 {
   "schema_version": 1,
   "created_on": "2026-09-20",
-  "status": "planned_not_executed",
+  "status": "executed_2026-09-23",
   "scope": "Requested frozen learned-model Envy/UFO by four-light study; not the eight reviewed original-tree0 captures.",
   "selection_policy": "Pre-register targets and held-out checkpoint exposure before final comparison; preserve paired tree/view geometry across lights and retain failures.",
   "clips": [
     {
       "clip": 1,
       "tree_family": "envy",
-      "tree_id": null,
+      "tree_id": [
+        "lpy_envy_00000",
+        "lpy_envy_00003",
+        "lpy_envy_00008",
+        "lpy_envy_00012"
+      ],
       "lighting": "source",
-      "model": null,
-      "checkpoint_sha256": null,
-      "depth_source": null,
-      "job_id": null,
-      "task_outcome": null,
-      "grade": null,
-      "video": null,
-      "status": "planned",
-      "blocking_prerequisites": [
-        "checkpoint-specific provenance and leakage audit",
-        "storage projection",
-        "asset and one-frame inference smoke",
-        "controlled paired lighting render"
-      ]
+      "model": "frozen DA2 + six-view DINO RGB+D",
+      "checkpoint_sha256": {
+        "da2": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+        "dino": "2750c4d8f5db7c0d5d40138f08ee9d4bc39a1b184063d33f3dfe9386438ac8ca"
+      },
+      "depth_source": "Blender Cycles optical-Z ground truth (simulator), 512x288, 16 spp, seed 1729",
+      "job_id": {
+        "render_array": "21402687",
+        "evaluation": "21402688"
+      },
+      "task_outcome": "offline_depth_evaluation_only_no_control",
+      "grade": {
+        "views": 24,
+        "visible_target_views": 18,
+        "da2_mask_mae_m": 0.1333,
+        "dino_mask_mae_m": 0.1344,
+        "da2_latency_p95_s": 0.2937,
+        "dino_six_view_latency_p95_s": 2.2287,
+        "gates": "fail; see family_matrix_depth_2026-09-23.json"
+      },
+      "video": "artifacts/generalization/family-matrix-20260923/clips/envy_source.mp4",
+      "status": "executed",
+      "blocking_prerequisites": [],
+      "video_redistribution": "local only; L-Py tree renders are not redistributed (NOTICE.md)",
+      "evidence": "docs/evidence/family_matrix_depth_2026-09-23.json"
     },
     {
       "clip": 2,
       "tree_family": "envy",
-      "tree_id": null,
+      "tree_id": [
+        "lpy_envy_00000",
+        "lpy_envy_00003",
+        "lpy_envy_00008",
+        "lpy_envy_00012"
+      ],
       "lighting": "morning",
-      "model": null,
-      "checkpoint_sha256": null,
-      "depth_source": null,
-      "job_id": null,
-      "task_outcome": null,
-      "grade": null,
-      "video": null,
-      "status": "planned",
-      "blocking_prerequisites": [
-        "checkpoint-specific provenance and leakage audit",
-        "storage projection",
-        "asset and one-frame inference smoke",
-        "controlled paired lighting render"
-      ]
+      "model": "frozen DA2 + six-view DINO RGB+D",
+      "checkpoint_sha256": {
+        "da2": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+        "dino": "2750c4d8f5db7c0d5d40138f08ee9d4bc39a1b184063d33f3dfe9386438ac8ca"
+      },
+      "depth_source": "Blender Cycles optical-Z ground truth (simulator), 512x288, 16 spp, seed 1729",
+      "job_id": {
+        "render_array": "21402687",
+        "evaluation": "21402688"
+      },
+      "task_outcome": "offline_depth_evaluation_only_no_control",
+      "grade": {
+        "views": 24,
+        "visible_target_views": 18,
+        "da2_mask_mae_m": 0.1784,
+        "dino_mask_mae_m": 0.192,
+        "da2_latency_p95_s": 0.2929,
+        "dino_six_view_latency_p95_s": 2.2237,
+        "gates": "fail; see family_matrix_depth_2026-09-23.json"
+      },
+      "video": "artifacts/generalization/family-matrix-20260923/clips/envy_morning.mp4",
+      "status": "executed",
+      "blocking_prerequisites": [],
+      "video_redistribution": "local only; L-Py tree renders are not redistributed (NOTICE.md)",
+      "evidence": "docs/evidence/family_matrix_depth_2026-09-23.json"
     },
     {
       "clip": 3,
       "tree_family": "envy",
-      "tree_id": null,
+      "tree_id": [
+        "lpy_envy_00000",
+        "lpy_envy_00003",
+        "lpy_envy_00008",
+        "lpy_envy_00012"
+      ],
       "lighting": "noon",
-      "model": null,
-      "checkpoint_sha256": null,
-      "depth_source": null,
-      "job_id": null,
-      "task_outcome": null,
-      "grade": null,
-      "video": null,
-      "status": "planned",
-      "blocking_prerequisites": [
-        "checkpoint-specific provenance and leakage audit",
-        "storage projection",
-        "asset and one-frame inference smoke",
-        "controlled paired lighting render"
-      ]
+      "model": "frozen DA2 + six-view DINO RGB+D",
+      "checkpoint_sha256": {
+        "da2": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+        "dino": "2750c4d8f5db7c0d5d40138f08ee9d4bc39a1b184063d33f3dfe9386438ac8ca"
+      },
+      "depth_source": "Blender Cycles optical-Z ground truth (simulator), 512x288, 16 spp, seed 1729",
+      "job_id": {
+        "render_array": "21402687",
+        "evaluation": "21402688"
+      },
+      "task_outcome": "offline_depth_evaluation_only_no_control",
+      "grade": {
+        "views": 24,
+        "visible_target_views": 18,
+        "da2_mask_mae_m": 0.1499,
+        "dino_mask_mae_m": 0.1555,
+        "da2_latency_p95_s": 0.294,
+        "dino_six_view_latency_p95_s": 2.2267,
+        "gates": "fail; see family_matrix_depth_2026-09-23.json"
+      },
+      "video": "artifacts/generalization/family-matrix-20260923/clips/envy_noon.mp4",
+      "status": "executed",
+      "blocking_prerequisites": [],
+      "video_redistribution": "local only; L-Py tree renders are not redistributed (NOTICE.md)",
+      "evidence": "docs/evidence/family_matrix_depth_2026-09-23.json"
     },
     {
       "clip": 4,
       "tree_family": "envy",
-      "tree_id": null,
+      "tree_id": [
+        "lpy_envy_00000",
+        "lpy_envy_00003",
+        "lpy_envy_00008",
+        "lpy_envy_00012"
+      ],
       "lighting": "evening",
-      "model": null,
-      "checkpoint_sha256": null,
-      "depth_source": null,
-      "job_id": null,
-      "task_outcome": null,
-      "grade": null,
-      "video": null,
-      "status": "planned",
-      "blocking_prerequisites": [
-        "checkpoint-specific provenance and leakage audit",
-        "storage projection",
-        "asset and one-frame inference smoke",
-        "controlled paired lighting render"
-      ]
+      "model": "frozen DA2 + six-view DINO RGB+D",
+      "checkpoint_sha256": {
+        "da2": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+        "dino": "2750c4d8f5db7c0d5d40138f08ee9d4bc39a1b184063d33f3dfe9386438ac8ca"
+      },
+      "depth_source": "Blender Cycles optical-Z ground truth (simulator), 512x288, 16 spp, seed 1729",
+      "job_id": {
+        "render_array": "21402687",
+        "evaluation": "21402688"
+      },
+      "task_outcome": "offline_depth_evaluation_only_no_control",
+      "grade": {
+        "views": 24,
+        "visible_target_views": 18,
+        "da2_mask_mae_m": 0.9049,
+        "dino_mask_mae_m": 0.9217,
+        "da2_latency_p95_s": 0.2937,
+        "dino_six_view_latency_p95_s": 2.2315,
+        "gates": "fail; see family_matrix_depth_2026-09-23.json"
+      },
+      "video": "artifacts/generalization/family-matrix-20260923/clips/envy_evening.mp4",
+      "status": "executed",
+      "blocking_prerequisites": [],
+      "video_redistribution": "local only; L-Py tree renders are not redistributed (NOTICE.md)",
+      "evidence": "docs/evidence/family_matrix_depth_2026-09-23.json"
     },
     {
       "clip": 5,
       "tree_family": "ufo",
-      "tree_id": null,
+      "tree_id": [
+        "lpy_ufo_00000",
+        "lpy_ufo_00001",
+        "lpy_ufo_00002",
+        "lpy_ufo_00003"
+      ],
       "lighting": "source",
-      "model": null,
-      "checkpoint_sha256": null,
-      "depth_source": null,
-      "job_id": null,
-      "task_outcome": null,
-      "grade": null,
-      "video": null,
-      "status": "planned",
-      "blocking_prerequisites": [
-        "checkpoint-specific provenance and leakage audit",
-        "storage projection",
-        "asset and one-frame inference smoke",
-        "controlled paired lighting render"
-      ]
+      "model": "frozen DA2 + six-view DINO RGB+D",
+      "checkpoint_sha256": {
+        "da2": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+        "dino": "2750c4d8f5db7c0d5d40138f08ee9d4bc39a1b184063d33f3dfe9386438ac8ca"
+      },
+      "depth_source": "Blender Cycles optical-Z ground truth (simulator), 512x288, 16 spp, seed 1729",
+      "job_id": {
+        "render_array": "21402687",
+        "evaluation": "21402688"
+      },
+      "task_outcome": "offline_depth_evaluation_only_no_control",
+      "grade": {
+        "views": 24,
+        "visible_target_views": 11,
+        "da2_mask_mae_m": 0.1872,
+        "dino_mask_mae_m": 0.1968,
+        "da2_latency_p95_s": 0.2938,
+        "dino_six_view_latency_p95_s": 2.2357,
+        "gates": "fail; see family_matrix_depth_2026-09-23.json"
+      },
+      "video": "artifacts/generalization/family-matrix-20260923/clips/ufo_source.mp4",
+      "status": "executed",
+      "blocking_prerequisites": [],
+      "video_redistribution": "local only; L-Py tree renders are not redistributed (NOTICE.md)",
+      "evidence": "docs/evidence/family_matrix_depth_2026-09-23.json"
     },
     {
       "clip": 6,
       "tree_family": "ufo",
-      "tree_id": null,
+      "tree_id": [
+        "lpy_ufo_00000",
+        "lpy_ufo_00001",
+        "lpy_ufo_00002",
+        "lpy_ufo_00003"
+      ],
       "lighting": "morning",
-      "model": null,
-      "checkpoint_sha256": null,
-      "depth_source": null,
-      "job_id": null,
-      "task_outcome": null,
-      "grade": null,
-      "video": null,
-      "status": "planned",
-      "blocking_prerequisites": [
-        "checkpoint-specific provenance and leakage audit",
-        "storage projection",
-        "asset and one-frame inference smoke",
-        "controlled paired lighting render"
-      ]
+      "model": "frozen DA2 + six-view DINO RGB+D",
+      "checkpoint_sha256": {
+        "da2": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+        "dino": "2750c4d8f5db7c0d5d40138f08ee9d4bc39a1b184063d33f3dfe9386438ac8ca"
+      },
+      "depth_source": "Blender Cycles optical-Z ground truth (simulator), 512x288, 16 spp, seed 1729",
+      "job_id": {
+        "render_array": "21402687",
+        "evaluation": "21402688"
+      },
+      "task_outcome": "offline_depth_evaluation_only_no_control",
+      "grade": {
+        "views": 24,
+        "visible_target_views": 11,
+        "da2_mask_mae_m": 0.2681,
+        "dino_mask_mae_m": 0.2888,
+        "da2_latency_p95_s": 0.296,
+        "dino_six_view_latency_p95_s": 2.2423,
+        "gates": "fail; see family_matrix_depth_2026-09-23.json"
+      },
+      "video": "artifacts/generalization/family-matrix-20260923/clips/ufo_morning.mp4",
+      "status": "executed",
+      "blocking_prerequisites": [],
+      "video_redistribution": "local only; L-Py tree renders are not redistributed (NOTICE.md)",
+      "evidence": "docs/evidence/family_matrix_depth_2026-09-23.json"
     },
     {
       "clip": 7,
       "tree_family": "ufo",
-      "tree_id": null,
+      "tree_id": [
+        "lpy_ufo_00000",
+        "lpy_ufo_00001",
+        "lpy_ufo_00002",
+        "lpy_ufo_00003"
+      ],
       "lighting": "noon",
-      "model": null,
-      "checkpoint_sha256": null,
-      "depth_source": null,
-      "job_id": null,
-      "task_outcome": null,
-      "grade": null,
-      "video": null,
-      "status": "planned",
-      "blocking_prerequisites": [
-        "checkpoint-specific provenance and leakage audit",
-        "storage projection",
-        "asset and one-frame inference smoke",
-        "controlled paired lighting render"
-      ]
+      "model": "frozen DA2 + six-view DINO RGB+D",
+      "checkpoint_sha256": {
+        "da2": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+        "dino": "2750c4d8f5db7c0d5d40138f08ee9d4bc39a1b184063d33f3dfe9386438ac8ca"
+      },
+      "depth_source": "Blender Cycles optical-Z ground truth (simulator), 512x288, 16 spp, seed 1729",
+      "job_id": {
+        "render_array": "21402687",
+        "evaluation": "21402688"
+      },
+      "task_outcome": "offline_depth_evaluation_only_no_control",
+      "grade": {
+        "views": 24,
+        "visible_target_views": 11,
+        "da2_mask_mae_m": 0.2332,
+        "dino_mask_mae_m": 0.2452,
+        "da2_latency_p95_s": 0.2966,
+        "dino_six_view_latency_p95_s": 2.2496,
+        "gates": "fail; see family_matrix_depth_2026-09-23.json"
+      },
+      "video": "artifacts/generalization/family-matrix-20260923/clips/ufo_noon.mp4",
+      "status": "executed",
+      "blocking_prerequisites": [],
+      "video_redistribution": "local only; L-Py tree renders are not redistributed (NOTICE.md)",
+      "evidence": "docs/evidence/family_matrix_depth_2026-09-23.json"
     },
     {
       "clip": 8,
       "tree_family": "ufo",
-      "tree_id": null,
+      "tree_id": [
+        "lpy_ufo_00000",
+        "lpy_ufo_00001",
+        "lpy_ufo_00002",
+        "lpy_ufo_00003"
+      ],
       "lighting": "evening",
-      "model": null,
-      "checkpoint_sha256": null,
-      "depth_source": null,
-      "job_id": null,
-      "task_outcome": null,
-      "grade": null,
-      "video": null,
-      "status": "planned",
-      "blocking_prerequisites": [
-        "checkpoint-specific provenance and leakage audit",
-        "storage projection",
-        "asset and one-frame inference smoke",
-        "controlled paired lighting render"
-      ]
+      "model": "frozen DA2 + six-view DINO RGB+D",
+      "checkpoint_sha256": {
+        "da2": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+        "dino": "2750c4d8f5db7c0d5d40138f08ee9d4bc39a1b184063d33f3dfe9386438ac8ca"
+      },
+      "depth_source": "Blender Cycles optical-Z ground truth (simulator), 512x288, 16 spp, seed 1729",
+      "job_id": {
+        "render_array": "21402687",
+        "evaluation": "21402688"
+      },
+      "task_outcome": "offline_depth_evaluation_only_no_control",
+      "grade": {
+        "views": 24,
+        "visible_target_views": 11,
+        "da2_mask_mae_m": 1.4515,
+        "dino_mask_mae_m": 1.2935,
+        "da2_latency_p95_s": 0.2958,
+        "dino_six_view_latency_p95_s": 2.2479,
+        "gates": "fail; see family_matrix_depth_2026-09-23.json"
+      },
+      "video": "artifacts/generalization/family-matrix-20260923/clips/ufo_evening.mp4",
+      "status": "executed",
+      "blocking_prerequisites": [],
+      "video_redistribution": "local only; L-Py tree renders are not redistributed (NOTICE.md)",
+      "evidence": "docs/evidence/family_matrix_depth_2026-09-23.json"
     }
-  ]
+  ],
+  "executed_on": "2026-09-23",
+  "execution_note": "Composed by tools/compose_generalization.py from the family-matrix-20260923 evaluation (render array 21402687, evaluation 21402688). The pooled-pixel metrics in clips/summary.json agree with the per-frame SQL aggregation in family_matrix_depth_2026-09-23.json (Envy source 0.1333 vs 0.1335 m; UFO evening 1.4515 vs 1.4506 m). Videos live under the gitignored artifacts/ tree and are not published."
 }

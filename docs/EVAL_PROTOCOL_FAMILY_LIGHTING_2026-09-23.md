@@ -168,3 +168,84 @@ python tools/queue_family_matrix.py
   selection over cylinder metadata (the oracle in `geometry/cut_point.py`
   exists), a spawn path in `RenderEnv`, and its own registration. That is an
   engineering project, and it is not started here.
+
+---
+
+## Result — September 23, 2026
+
+Render array `21402687` (six tasks, 53–62 s each) and evaluation `21402688`
+(2 min 10 s) completed: **all 8 registered trees rendered and scored, 192 frames
+per model.** About 8 GPU-minutes were used of the 120 reserved. Both checkpoint
+hashes match the plan. Every number below is produced by
+`tools/aggregate_family_eval.py` through `sql/family/*.sql`:
+[`docs/evidence/family_matrix_depth_2026-09-23.json`](evidence/family_matrix_depth_2026-09-23.json).
+
+### Tree-mask MAE, metres, DA2 (n = 4 trees × 6 views per cell)
+
+| Family | source | morning | noon | evening | evening ÷ source, per tree |
+|---|---|---|---|---|---|
+| Envy | 0.134 | 0.177 | 0.152 | **0.906** | 6.1, 6.7, 8.0, 6.6 |
+| UFO | 0.188 | 0.269 | 0.235 | **1.451** | 7.9, 8.2, 8.4, 6.7 |
+
+DINO is within 0.02 m of DA2 in every cell and slightly worse in most, at a
+six-view latency of 2.2 s against DA2's 0.29 s. It adds nothing.
+
+### Registered reading 1 — lighting: **replicated, 8 of 8 trees**
+
+The registration asked for evening ≥ 3× source in at least 3 of 4 trees per
+family. Every tree of both families exceeds 6×. Morning costs 1.3–1.6× and noon
+1.0–1.4×. The pilot's evening finding was not a property of one geometry.
+
+### Registered reading 2 — family: **a consistent gap, and it is an offset**
+
+Per-tree UFO − Envy means, with the sign checked across all four trees of each
+family:
+
+| Light | Envy per-tree MAE | UFO per-tree MAE | UFO − Envy | Worst Envy < best UFO |
+|---|---|---|---|---|
+| source | 0.123–0.143 | 0.167–0.222 | +0.054 | yes |
+| morning | 0.160–0.196 | 0.225–0.302 | +0.092 | yes |
+| noon | 0.133–0.169 | 0.213–0.251 | +0.083 | yes |
+| evening | 0.837–0.978 | 1.409–1.480 | +0.545 | yes |
+
+The families do not overlap under any light. But the error is almost entirely a
+constant under-estimate (signed median ≈ −MAE in every cell), and it is larger
+on UFO (−0.186 m vs −0.122 m at source). **With each frame's own offset
+removed, UFO is no worse than Envy** (0.045 vs 0.054 m at source, 0.037 vs
+0.055 m at noon). So the model reads UFO trees as further away than they are,
+by more than it does Envy trees; it does not describe their shape worse. That
+debiased number uses ground truth and is a diagnostic of the error's structure,
+never an achievable accuracy.
+
+What this cannot separate: every Envy tree was a DA2 validation tree, so part
+of the Envy advantage may be exposure rather than family. Four trees per family
+support the sign and the rough size of the gap; they do not support a finer
+claim.
+
+### Gates — **fail, as expected**
+
+| Model | Target | Frames with target | p95 ≤ 20 mm | rel ≤ 10 % | latency p95 | Pass |
+|---|---|---|---|---|---|---|
+| DA2 | masked | 116 | 4 | 51 | 0.295 s | no |
+| DA2 | unmasked | 116 | 0 | 18 | 0.295 s | no |
+| DINO | masked | 116 | 1 | 42 | 2.248 s | no |
+
+The mask-gated target lets four frames through the 20 mm gate where the
+unmasked window let none; the verdict does not move. Learned control stays
+gated.
+
+### A limitation the pilot could not show
+
+The projected spur centroid was **outside every view for 3 of the 8 trees**
+(`lpy_envy_00003`, `lpy_ufo_00001`, `lpy_ufo_00003`): the registered spur sits
+where the fixed rigs cannot see it. Target-level numbers therefore rest on 5
+trees (116 of 192 frames). The primary metric, tree-mask MAE, covers all 8 trees
+and is unaffected. The register is not changed; a later study that wants
+target-level coverage on every tree needs rig placement that follows the spur,
+which is a different design.
+
+### What the matrix did not test
+
+Unchanged from the registration: no renderer control, no close-range control,
+no `overcast` preset, no closed-loop run on Envy or UFO, and no like-for-like
+comparison with the Isaac lighting presets.

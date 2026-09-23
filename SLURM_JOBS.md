@@ -338,5 +338,18 @@ revision `ff4707a45c5dd87561bbfd6edf1c756d252c7719`, 488 files hashed, batch
 `artifacts/generalization/family-matrix-20260923/`, storage preflight passed at
 1.568 TB projected against the 1.6 TB line. Both PENDING at submission (render
 array reason `None`; five unrelated `lh-v3-search` tasks were running and were
-left alone). **Submission is not evidence.** Until `21402688` finishes there is
-no matrix result; the pilot numbers above stand alone.
+left alone).
+
+**Completed September 23.** Render tasks `21402687_0..5` COMPLETED (0:0) in
+53–62 s each on cn-gpu6/cn-gpu7; evaluation `21402688` COMPLETED (0:0) in
+2 min 10 s on cn-gpu7. All 8 registered trees rendered and scored, 192 frames per
+model, both checkpoint hashes matching the plan. About 8 GPU-minutes used of the
+120 reserved. Result: lighting effect replicated in 8 of 8 trees; UFO worse than
+Envy under every light as a larger constant offset; all gates fail.
+[Evidence](docs/evidence/family_matrix_depth_2026-09-23.json) ·
+[protocol result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026).
+The eight labelled clips planned on September 20 were composed on CPU into
+`artifacts/generalization/family-matrix-20260923/clips/` (30 MB, local only;
+L-Py renders are not redistributed). The
+[clip manifest](docs/evidence/eight_clip_manifest_2026-09-20.json) is now marked
+executed with tree IDs, checkpoint hashes, job IDs and pooled metrics.

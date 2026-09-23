@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — ENVY/UFO + LIGHTING MATRIX SUBMITTED (21402687/21402688), AWAITING RESULT
+CURRENT CHECKPOINT — 2026-09-23 PDT — ENVY/UFO + LIGHTING MATRIX DONE AND PUBLISHED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -56,10 +56,23 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     absent from fine-tuning), 4 Blender lights x 6 views, DA2 + DINO, mask-gated
     target metric, Sept 20 gates unchanged (expected to fail). Pilot trees
     reused; 6 to render. 120 GPU-min reserved, ~11 actual, ~0.4 GB, one GPU.
-  SUBMITTED 2026-09-23 (user approved 120 GPU-min and the 1.6 TB line):
-    render array 21402687 (0-5%1) and eval 21402688 (afterany:21402687),
-    frozen at ff4707a, batch artifacts/generalization/family-matrix-20260923/.
-    NO RESULT YET. When 21402688 is terminal, resume with:
+  DONE 2026-09-23: render array 21402687 (0-5%1) and eval 21402688 both
+    COMPLETED; all 8 trees scored; ~8 GPU-min used of 120 reserved.
+    RESULT (docs/evidence/family_matrix_depth_2026-09-23.json):
+      lighting: evening 6.1-8.4x source in ALL 8 trees (reading 1 replicated)
+      family:   UFO worse than Envy under every light, no overlap (+5-9 cm
+                daylight, +54 cm evening) BUT debiased UFO <= Envy: it is a
+                larger constant under-estimate, not worse shape; Envy trees
+                are validation trees so exposure is a confound
+      gates:    all fail as registered; masked target 4/116 within 20 mm
+      DINO:     adds nothing, 2.2 s six-view latency
+      caveat:   spur target invisible in every view for 3 of 8 trees
+                (envy_00003, ufo_00001, ufo_00003); target-level N = 5 trees
+      clips:    8 MP4s composed (CPU) into
+                artifacts/generalization/family-matrix-20260923/clips/ (30 MB,
+                LOCAL ONLY, not redistributed). eight_clip_manifest_2026-09-20
+                marked executed. Pooled metrics agree with the SQL aggregation.
+    Regenerated with (kept for the record):
       B=artifacts/generalization/family-matrix-20260923
       cat $B/eval/render_status.json          # which of the 8 trees actually rendered
       PYTHONPATH=/nfs/hpc/share/sanchej7/sil-pydeps python tools/aggregate_family_eval.py \
