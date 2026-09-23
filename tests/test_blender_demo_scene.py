@@ -221,3 +221,16 @@ def test_two_original_tree_export_has_separate_materials_and_colliders():
         assert UsdShade.MaterialBindingAPI(prim).ComputeBoundMaterial()[0]
         assert UsdGeom.PrimvarsAPI(prim).GetPrimvar("st").HasValue()
     assert scene.evidence["partition"]["target_center_error_m"] < 1e-6
+
+
+def test_tree_selection_does_not_substitute_other_tree():
+    m = candidate_manifest()
+    import copy
+
+    m["branch_geometry_candidates"]["tree1_SPUR"] = copy.deepcopy(m["branch_geometry_candidates"]["tree0_SPUR"])
+    m["branch_geometry_candidates"]["tree1_SPUR"]["candidates"][0]["component_first_vertex"] = 15004
+    assert select_component(m, first_vertex=15004, tree_index=1)["component_first_vertex"] == 15004
+    with pytest.raises(ValueError):
+        select_component(m, first_vertex=7524, tree_index=1)
+    with pytest.raises(ValueError):
+        select_component(m, tree_index=2)

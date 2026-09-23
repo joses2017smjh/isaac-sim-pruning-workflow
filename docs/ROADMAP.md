@@ -1,5 +1,11 @@
 # Implementation gates
 
+September 20 update: the six-task lighting pilot and two earlier full daylight
+runs are complete and independently pass. The next priority is the
+[Envy/UFO + lighting + learned-depth research audit](RESEARCH_AUDIT_2026-09-20.md),
+starting with checkpoint exposure and storage. Its experiments are not queued.
+The counts and milestone descriptions below retain their original dates.
+
 This turns the research plan into falsifiable gates. A checked item means code
 and evidence exist in this repository; it does not mean the entire phase is
 complete.
@@ -246,8 +252,13 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
 - [x] Add ten tests for morning/noon/evening world-space sunlight presets.
 - [x] Revalidate the saved morning/evening 30-frame lighting probes; capture
       completeness passes, while full-sequence release/return remains unestablished.
-- [ ] Evaluate queued array `21360571`, six raw/CLAHE lighting trials, and retain failures;
-      queued work is not a task-success result.
+- [x] Regrade completed array `21360571`: six raw/CLAHE source/morning/evening
+      runs pass 17/17 checks on the same tree0 spur; historical failures remain.
+      No CLAHE advantage or population generalization is established.
+- [ ] Complete checkpoint-specific provenance/leakage audit, paired Envy/UFO
+      lighting evaluation and learned-depth offline/shadow gates before control.
+      [September 20 priorities](RESEARCH_AUDIT_2026-09-20.md).
+- [ ] Test an explicitly selected target on original orchard tree1 separately.
 - [ ] Review and validate the existing local uncommitted replay-studio prototype.
 - [ ] Evaluate more branch placements and failure cases before reporting a
       task-success rate or collision-avoidance claim.
@@ -268,3 +279,7 @@ blade mechanics, or wood fracture. Those remain separate gates above.
 - [ ] PyBullet sim2sim numbers.
 - [ ] 30 cm box rendered in Isaac and compared to Blender.
 - [ ] ROS 2 hardware-in-the-loop demo (stretch).
+
+## Authorized research execution (2026-09-20)
+
+Implementation and jobs are now in progress; the preceding audit-only snapshot is historical. Frozen DA2 offline evaluation job **21370005** submitted, no dependencies. The one-frame CPU accuracy gate failed; learned control remains conditional. Checkpoint-specific leakage corrections, current job/result states and storage are tracked in the [execution record](RESEARCH_EXECUTION_2026-09-20.md) and `docs/evidence/research_execution_2026-09-20.json`.

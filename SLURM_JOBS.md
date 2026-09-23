@@ -1,6 +1,6 @@
 # SLURM job ledger
 
-Last reconciled: **2026-09-19 16:13 PDT** (`America/Los_Angeles`).
+Last reconciled: **2026-09-20 17:00 PDT** (`America/Los_Angeles`).
 The September 14 queue table is retained as historical evidence.
 
 This ledger covers jobs produced by this repository's `prune-*` submission
@@ -14,7 +14,37 @@ gitignored, so the tracked evidence is the durable GitHub record.
 The existing HPC prose dates job `21036831` to 2026-08-26; Slurm accounting
 records its submission/start on 2026-08-24, which is the date used here.
 
-## September 19 experiment checkpoint
+## September 20 completed-job reconciliation
+
+At the timestamp above, no `prune-*` jobs remain running or pending. No job was
+submitted, cancelled or modified by this audit. All jobs below completed with
+`0:0` and now pass fresh capture validation and all 17 sequence checks.
+
+| Job | Raw allocation ID | Light | Tracker | Elapsed | Release (s) | Commands | Final home error (mm) | Grade |
+|---|---|---|---|---|---|---|---|---|
+| `21360571_0` | `21362298` | source | raw | 00:16:21 | 7.8 | 68 | 0.001140 | 17/17 |
+| `21360571_1` | `21363248` | source | clahe | 00:16:25 | 7.8 | 68 | 0.000248 | 17/17 |
+| `21360571_2` | `21363331` | morning | raw | 00:16:37 | 7.8 | 68 | 0.000426 | 17/17 |
+| `21360571_3` | `21363374` | morning | clahe | 00:16:41 | 7.8 | 68 | 0.001094 | 17/17 |
+| `21360571_4` | `21363432` | evening | raw | 00:16:31 | 7.8 | 68 | 0.000484 | 17/17 |
+| `21360571_5` | `21360571` | evening | clahe | 00:16:36 | 7.7 | 67 | 0.001101 | 17/17 |
+| `21358986` | `21358986` | morning | earlier full run | 00:16:34 | 7.8 | 68 | 0.001195 | 17/17 |
+| `21358987` | `21358987` | evening | earlier full run | 00:16:14 | 7.8 | 68 | 0.001048 | 17/17 |
+
+Every run uses original `tree0_SPUR_component_8235`, RTX optical-Z depth and
+200 frames. Measured piece fall is 809.492 mm in each. There is no demonstrated
+CLAHE task-completion advantage and no Envy/UFO or learned-depth result.
+The array's raw allocation IDs explain the differing `job_id` values inside
+its reports; they are not extra experiments. No pilot dependency remains.
+
+Pilot captures: `artifacts/vision_robustness/lighting-20260919/run_*`.
+Earlier full daylight captures: `artifacts/isaac_render/job_21358986` and
+`job_21358987`. These two runs were absent from the previous ledger.
+[Machine evidence](docs/evidence/repository_audit_2026-09-20.json) preserves exact
+scheduler times, hashes, metrics and fresh grades.
+[Research follow-up](docs/RESEARCH_AUDIT_2026-09-20.md) is planned, not submitted.
+
+## Historical September 19 experiment checkpoint
 
 Independent revalidation found both daylight probes complete: `21329420`
 (morning, A40 `cn-r-4`, 3m25s) and `21329421` (evening, A40 `cn-s-1`, 3m20s),
@@ -47,9 +77,9 @@ Local plan, source snapshot, original queue snapshot and sbatch receipt:
 `artifacts/vision_robustness/lighting-20260919/`. Logs use
 `logs/prune-vision-pilot-21360571_<task>.out` within that batch directory.
 Each run writes `run_<index>_<light>_<method>/experiment_result.json` and
-`sequence_grade.json`. A missing report is incomplete, never a pass. Work stops
-at queue acceptance and this documentation/push checkpoint; GPU results remain
-pending. CPU verification: 514 passed, 9 USD-dependent skips, 1 simulator test
+`sequence_grade.json`. A missing report is incomplete, never a pass. Work stopped
+at queue acceptance at that historical checkpoint; GPU results were pending
+then and are reconciled above. CPU verification: 514 passed, 9 USD-dependent skips, 1 simulator test
 deselected; lint/format and portable demo reproduction pass.
 
 ## Historical queue — September 14, 13:51 PDT
@@ -212,3 +242,13 @@ pending job here.
   its nested root into a pass after the fact.
 - Check `squeue` and `sacct` again immediately before any future submission;
   this file is a timestamped audit, not a live scheduler view.
+
+## Authorized research execution (2026-09-20)
+
+Implementation and jobs are now in progress; the preceding audit-only snapshot is historical. Frozen DA2 offline evaluation job **21370005** submitted, no dependencies. The one-frame CPU accuracy gate failed; learned control remains conditional. Checkpoint-specific leakage corrections, current job/result states and storage are tracked in the [execution record](docs/RESEARCH_EXECUTION_2026-09-20.md) and `docs/evidence/research_execution_2026-09-20.json`.
+
+New preflights: **21370018** Envy 00000 and **21370019** UFO 00000 submitted; two 256x144 source/evening frames each, no dependencies. The 2 m plane test confirmed Cycles optical-Z exactly at center and off axis; lighting determinism passed.
+
+Execution update: 21370005 COMPLETED (600 frames; learned-control gates FAIL); 21370018/19 Blender preflights COMPLETED; 21370021 DINO interface preflight COMPLETED (afterok:21370005). CPU suite 518 passed, 10 skips. New jobs: 21370026 short live DA2 shadow + family USD imports, 21370027/28 paired Envy/UFO pilots (24 frames each), all submitted without dependencies. Source SUN/Filmic baseline and fixed 8mm minimum spur-segment rule documented in frozen code; initial failures retained.
+
+Preflight/result update: 21370039 COMPLETED (48 DA2 +48 DINO predictions); 21370026 FAILED before rendering (unsupported profile), 21370040 FAILED before rendering (mesh-only validator on cylinder assets), both retained. Corrected 21370047 RUNNING; both Envy/UFO USD imports now pass in Isaac. H.264 video smoke passed and was visually inspected. Initial one-tree-per-family evening degradation is diagnostic only, pending four-tree matrix.

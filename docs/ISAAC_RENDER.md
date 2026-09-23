@@ -93,8 +93,13 @@ world-space light direction despite the orchard's rotated parent.
 Morning `21329420` and evening `21329421` are completed **30-frame / three-second
 lighting probes** rechecked September 19. Each passes capture validation, but
 neither contains release or return. The [six-run pilot](RESEARCH_EXPERIMENTS_2026-09-19.md)
-adds full sequences and paired raw/CLAHE tracking. Actual submission status lives
-in the [ledger](../SLURM_JOBS.md).
+subsequently completed: all raw/CLAHE × source/morning/evening sequences pass
+17/17 independent checks at the September 20 audit. Earlier full morning/evening
+runs `21358986` / `21358987` also pass. These all select the same original tree0
+spur with RTX depth. Noon, original tree1 targeting and Envy/UFO learned-depth
+transfer remain untested by these recordings. See the
+[audit evidence](evidence/repository_audit_2026-09-20.json) and
+[ledger](../SLURM_JOBS.md).
 
 ```bash
 export PRUNING_RENDER_MODE=blender_vision PRUNING_RENDER_QUALITY=pathtraced
@@ -399,3 +404,7 @@ existing Isaac capture; the compositor does not invent camera frames.
   configured tree meshes. It is a diagnostic guard, not a validated hardware
   safety controller. Target identity/axis/radius are supplied by scene metadata,
   not recognized by a trained perception model.
+
+## Authorized research execution (2026-09-20)
+
+Implementation and jobs are now in progress; the preceding audit-only snapshot is historical. Frozen DA2 offline evaluation job **21370005** submitted, no dependencies. The one-frame CPU accuracy gate failed; learned control remains conditional. Checkpoint-specific leakage corrections, current job/result states and storage are tracked in the [execution record](RESEARCH_EXECUTION_2026-09-20.md) and `docs/evidence/research_execution_2026-09-20.json`.

@@ -86,8 +86,12 @@ def partition_faces(counts, indices, component_vertices) -> tuple[FacePartition,
     return tuple(results)
 
 
-def select_component(manifest: dict, first_vertex: int = 7524, max_radius_m: float = 0.012) -> dict:
-    candidates = manifest["branch_geometry_candidates"]["tree0_SPUR"]["candidates"]
+def select_component(
+    manifest: dict, first_vertex: int = 7524, max_radius_m: float = 0.012, tree_index: int = 0
+) -> dict:
+    if type(tree_index) is not int or tree_index not in (0, 1):
+        raise ValueError("tree_index must be 0 or 1")
+    candidates = manifest["branch_geometry_candidates"][f"tree{tree_index}_SPUR"]["candidates"]
     matches = [item for item in candidates if item["component_first_vertex"] == first_vertex]
     if len(matches) != 1:
         raise ValueError(f"Expected one source spur component {first_vertex}")
@@ -303,6 +307,7 @@ def spawn_blender_demo_scene(
     yaw_degrees=0,
     component_first_vertex=7524,
     tree_count=1,
+    target_tree_index=0,
 ):
     """Import the original orchard and move one real spur into the robot workspace.
 
@@ -313,14 +318,19 @@ def spawn_blender_demo_scene(
 
     if isinstance(tree_count, bool) or not isinstance(tree_count, int) or tree_count not in (1, 2):
         raise ValueError("tree_count must be 1 or 2")
+    if type(target_tree_index) is not int or not 0 <= target_tree_index < tree_count:
+        raise ValueError("Target tree must be among the imported distinct trees")
+    object_name = f"tree{target_tree_index}_SPUR"
     export_dir = Path(export_dir).resolve()
     manifest = json.loads((export_dir / "manifest.json").read_text())
-    listed = manifest["branch_geometry_candidates"]["tree0_SPUR"]["candidates"]
+    listed = manifest["branch_geometry_candidates"][object_name]["candidates"]
     if any(item["component_first_vertex"] == component_first_vertex for item in listed):
-        candidate = select_component(manifest, first_vertex=component_first_vertex)
+        candidate = select_component(manifest, first_vertex=component_first_vertex, tree_index=target_tree_index)
     else:
         from isaaclab_pruning.sim.blender_component import component_from_export
 
+        if target_tree_index != 0:
+            raise ValueError("Unlisted tree1 components require a new geometry audit")
         measured = component_from_export(export_dir, component_first_vertex)
         candidate = select_component(
             {"branch_geometry_candidates": {"tree0_SPUR": {"candidates": [measured]}}},
@@ -351,8 +361,16 @@ def spawn_blender_demo_scene(
         prim.GetPrim().GetReferences().AddReference(str(export_dir / filename))
         prim.AddTranslateOp().Set(Gf.Vec3d(*translation))
         prim.AddRotateZOp().Set(float(yaw_degrees))
-    source_mesh_path = f"{TREE_PATH}/tree0_SPUR/Shape_IndexedFaceSet"
-    source_mesh = UsdGeom.Mesh(stage.GetPrimAtPath(source_mesh_path))
+    target_tree_path = TREE_PATH if target_tree_index == 0 else SECOND_TREE_PATH
+    matches = [
+        prim
+        for prim in Usd.PrimRange(stage.GetPrimAtPath(target_tree_path))
+        if prim.IsA(UsdGeom.Mesh) and prim.GetParent().GetName() == object_name
+    ]
+    if len(matches) != 1:
+        raise ValueError("Expected exactly one selected original spur mesh")
+    source_mesh_path = str(matches[0].GetPath())
+    source_mesh = UsdGeom.Mesh(matches[0])
     if not source_mesh:
         raise ValueError("Original spur mesh prim is missing")
     body, piece, partition_evidence = _split_mesh(stage, source_mesh, candidate["source_vertex_indices"])
@@ -387,7 +405,7 @@ def spawn_blender_demo_scene(
     axis = rotation @ np.asarray(candidate["axis"])
     axis /= np.linalg.norm(axis)
     target_info = {
-        "id": f"tree0_SPUR_component_{component_first_vertex}",
+        "id": f"{object_name}_component_{component_first_vertex}",
         "position_w_m": target.tolist(),
         "axis_w": axis.tolist(),
         "radius_m": candidate["max_radius_m"],
@@ -404,7 +422,8 @@ def spawn_blender_demo_scene(
         "translation_w_m": translation.tolist(),
         "yaw_degrees": float(yaw_degrees),
         "robot_base_height_m": float(base_height),
-        "tree_path": TREE_PATH,
+        "tree_path": target_tree_path,
+        "target_tree_index": target_tree_index,
         "tree_count": tree_count,
         "tree_paths": [path for path, _ in tree_sources],
         "tree_layout": "Distinct original source trees; shared rigid transform preserves relative placement",

@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "created_on": "2026-09-20",
+  "status": "planned_not_executed",
+  "scope": "Requested frozen learned-model Envy/UFO by four-light study; not the eight reviewed original-tree0 captures.",
+  "selection_policy": "Pre-register targets and held-out checkpoint exposure before final comparison; preserve paired tree/view geometry across lights and retain failures.",
+  "clips": [
+    {
+      "clip": 1,
+      "tree_family": "envy",
+      "tree_id": null,
+      "lighting": "source",
+      "model": null,
+      "checkpoint_sha256": null,
+      "depth_source": null,
+      "job_id": null,
+      "task_outcome": null,
+      "grade": null,
+      "video": null,
+      "status": "planned",
+      "blocking_prerequisites": [
+        "checkpoint-specific provenance and leakage audit",
+        "storage projection",
+        "asset and one-frame inference smoke",
+        "controlled paired lighting render"
+      ]
+    },
+    {
+      "clip": 2,
+      "tree_family": "envy",
+      "tree_id": null,
+      "lighting": "morning",
+      "model": null,
+      "checkpoint_sha256": null,
+      "depth_source": null,
+      "job_id": null,
+      "task_outcome": null,
+      "grade": null,
+      "video": null,
+      "status": "planned",
+      "blocking_prerequisites": [
+        "checkpoint-specific provenance and leakage audit",
+        "storage projection",
+        "asset and one-frame inference smoke",
+        "controlled paired lighting render"
+      ]
+    },
+    {
+      "clip": 3,
+      "tree_family": "envy",
+      "tree_id": null,
+      "lighting": "noon",
+      "model": null,
+      "checkpoint_sha256": null,
+      "depth_source": null,
+      "job_id": null,
+      "task_outcome": null,
+      "grade": null,
+      "video": null,
+      "status": "planned",
+      "blocking_prerequisites": [
+        "checkpoint-specific provenance and leakage audit",
+        "storage projection",
+        "asset and one-frame inference smoke",
+        "controlled paired lighting render"
+      ]
+    },
+    {
+      "clip": 4,
+      "tree_family": "envy",
+      "tree_id": null,
+      "lighting": "evening",
+      "model": null,
+      "checkpoint_sha256": null,
+      "depth_source": null,
+      "job_id": null,
+      "task_outcome": null,
+      "grade": null,
+      "video": null,
+      "status": "planned",
+      "blocking_prerequisites": [
+        "checkpoint-specific provenance and leakage audit",
+        "storage projection",
+        "asset and one-frame inference smoke",
+        "controlled paired lighting render"
+      ]
+    },
+    {
+      "clip": 5,
+      "tree_family": "ufo",
+      "tree_id": null,
+      "lighting": "source",
+      "model": null,
+      "checkpoint_sha256": null,
+      "depth_source": null,
+      "job_id": null,
+      "task_outcome": null,
+      "grade": null,
+      "video": null,
+      "status": "planned",
+      "blocking_prerequisites": [
+        "checkpoint-specific provenance and leakage audit",
+        "storage projection",
+        "asset and one-frame inference smoke",
+        "controlled paired lighting render"
+      ]
+    },
+    {
+      "clip": 6,
+      "tree_family": "ufo",
+      "tree_id": null,
+      "lighting": "morning",
+      "model": null,
+      "checkpoint_sha256": null,
+      "depth_source": null,
+      "job_id": null,
+      "task_outcome": null,
+      "grade": null,
+      "video": null,
+      "status": "planned",
+      "blocking_prerequisites": [
+        "checkpoint-specific provenance and leakage audit",
+        "storage projection",
+        "asset and one-frame inference smoke",
+        "controlled paired lighting render"
+      ]
+    },
+    {
+      "clip": 7,
+      "tree_family": "ufo",
+      "tree_id": null,
+      "lighting": "noon",
+      "model": null,
+      "checkpoint_sha256": null,
+      "depth_source": null,
+      "job_id": null,
+      "task_outcome": null,
+      "grade": null,
+      "video": null,
+      "status": "planned",
+      "blocking_prerequisites": [
+        "checkpoint-specific provenance and leakage audit",
+        "storage projection",
+        "asset and one-frame inference smoke",
+        "controlled paired lighting render"
+      ]
+    },
+    {
+      "clip": 8,
+      "tree_family": "ufo",
+      "tree_id": null,
+      "lighting": "evening",
+      "model": null,
+      "checkpoint_sha256": null,
+      "depth_source": null,
+      "job_id": null,
+      "task_outcome": null,
+      "grade": null,
+      "video": null,
+      "status": "planned",
+      "blocking_prerequisites": [
+        "checkpoint-specific provenance and leakage audit",
+        "storage projection",
+        "asset and one-frame inference smoke",
+        "controlled paired lighting render"
+      ]
+    }
+  ]
+}

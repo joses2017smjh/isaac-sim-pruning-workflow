@@ -1,5 +1,13 @@
 # Outdoor visual-servo robustness pilot — September 19, 2026
 
+September 20 result: all six array `21360571` tasks completed and pass fresh
+17/17 sequence checks. Raw and CLAHE each succeed under source/morning/evening
+lighting on the same original tree0 target. This does not establish a CLAHE
+advantage or Envy/UFO/learned-depth generalization.
+[Reconciled results and next research phase](RESEARCH_AUDIT_2026-09-20.md) ·
+[machine evidence](evidence/repository_audit_2026-09-20.json).
+The protocol and execution record below describe the September 19 checkpoint.
+
 This batch tests whether fixed local contrast normalization helps the existing
 seeded RGB-D tracker under lighting changes. It compares the current controller
 with an opt-in CLAHE variant, first on saved captures and then in six complete
@@ -220,3 +228,7 @@ change queued code. The batch lives at
 Slurm executes it. No existing job was modified. The portable CPU demo also
 reproduced its success, sensor-loss and blocked-geometry outcomes. Work stopped
 at queueing and pushing this checkpoint, without waiting for GPU completion.
+
+## Authorized research execution (2026-09-20)
+
+Implementation and jobs are now in progress; the preceding audit-only snapshot is historical. Frozen DA2 offline evaluation job **21370005** submitted, no dependencies. The one-frame CPU accuracy gate failed; learned control remains conditional. Checkpoint-specific leakage corrections, current job/result states and storage are tracked in the [execution record](RESEARCH_EXECUTION_2026-09-20.md) and `docs/evidence/research_execution_2026-09-20.json`.

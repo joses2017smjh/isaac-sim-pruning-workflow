@@ -54,5 +54,29 @@ exported mesh assets, and texture images are not distributed in this repository.
 Rendered demo images do not imply permission to redistribute those source assets;
 confirm their ownership and licenses before packaging them for another machine.
 
+## September 20 research-audit provenance
+
+The local research audit indexes 100 Envy and 100 UFO PLY/metadata assets from
+`Computer_Vision/trees` and checks existing local USDA conversions. Those
+source assets, textures and converted geometry are not added to the repository
+by the audit. Counts and file hashes document local evidence; they do not
+resolve the source licensing findings above.
+
+The local companion code/data directory has no usable Git revision metadata,
+so it is not represented as a pinned checkout of the named metric-depth
+repository. Existing learned-model weights were neither evaluated nor copied
+into this project. Checkpoint lineage, training exposure and model/asset
+redistribution terms must be recorded before packaging an integration.
+
+The completed raw/CLAHE pilot uses the existing original Blender orchard and
+RTX simulator depth. Its success does not establish provenance or permission
+for different tree populations or learned checkpoints. Local untracked studio
+exports remain outside this audit's publication scope. See the
+[research audit](docs/RESEARCH_AUDIT_2026-09-20.md).
+
 For permission or licensing clarification, contact Jose Sanchez
 <sanchej7@oregonstate.edu> and the relevant upstream owner.
+
+## Authorized local learned-depth execution
+
+The September 20 execution loads existing local DA2 metric ViT-L weights by SHA-256; weights are referenced in place and are not redistributed. Companion checkpoint-specific manifests/logs and DINO checkpoint arguments establish scoped task-training exposure, with unknown backbone pretraining exposure and no usable companion Git revision. The earlier audit-only statement that models were not evaluated is historical. New lighting/render code references local Blender geometry/materials under the same local-use limitations above. See `docs/evidence/checkpoint_provenance_2026-09-20.json` and the [execution record](docs/RESEARCH_EXECUTION_2026-09-20.md).

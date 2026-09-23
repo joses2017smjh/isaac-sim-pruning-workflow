@@ -1,5 +1,10 @@
 # Isaac Sim: two-tree release sequence and recorded failures
 
+Historical release notes. September 20 status: the subsequent daylight pilot
+has completed locally; see the [current ledger](../SLURM_JOBS.md) and
+[audit](RESEARCH_AUDIT_2026-09-20.md). This documentation update does not add or
+publish assets to the September 13 release.
+
 Start with `isaac_two_trees_vision_sequence.mp4`: **20 seconds / 200 frames**,
 both original Blender trees, UR5e, live RGB-D tracking, dual ToF and PhysX motion.
 
@@ -41,3 +46,7 @@ as a task pass without its independent sequence grade.
 Morning/evening sunlight comparison captures are queued, not included yet.
 Browser trajectory replay is proposed, not implemented. See the repository
 job ledger and `docs/ROBOT_STUDIO_PLAN.md` for current scope and dependencies.
+
+## Authorized research execution (2026-09-20)
+
+Implementation and jobs are now in progress; the preceding audit-only snapshot is historical. Frozen DA2 offline evaluation job **21370005** submitted, no dependencies. The one-frame CPU accuracy gate failed; learned control remains conditional. Checkpoint-specific leakage corrections, current job/result states and storage are tracked in the [execution record](RESEARCH_EXECUTION_2026-09-20.md) and `docs/evidence/research_execution_2026-09-20.json`.

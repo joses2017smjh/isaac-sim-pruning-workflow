@@ -1,5 +1,13 @@
 # Reviewer audit and remaining work
 
+September 20 reconciliation: six raw/CLAHE pilot sequences and two earlier
+full daylight runs pass fresh 17/17 grading, all on `tree0_SPUR_component_8235`.
+The [new audit](RESEARCH_AUDIT_2026-09-20.md) records 100 Envy + 100 UFO local
+assets, unresolved checkpoint exposure and the unexecuted learned-depth study.
+Tracked CPU scope passes 514 tests (9 skips, 1 deselected); the full working
+tree has 545 passes and one failure in an existing untracked studio test.
+Historical milestone/test counts below describe earlier checkpoints.
+
 Latest milestone: two-tree job `21328323` passes all 17 independent sequence
 checks: 68 applied vision commands, one surrogate release, 809.49 mm measured
 piece drop and <0.001 mm final home error. Both original trees remain in the
@@ -54,9 +62,10 @@ Historical test counts above refer to their original checkpoint.
   fixed virtual camera is not physically calibrated. ToF noise is disabled;
   the stop gate is diagnostic, not a hardware safety controller. Post-release
   tracking loss is allowed during home-directed return.
-- **Broader evaluation is missing.** One known target and one source-lighting
-  success do not establish multi-tree pruning, daylight robustness or a
-  task-success rate. The earlier failures remain in the evidence.
+- **Broader evaluation is missing.** The completed source/morning/evening pilot
+  still exercises only one known original tree0 target with RTX depth.
+  It does not establish multi-tree pruning, learned-depth transfer, calibrated
+  daylight robustness or a population task-success rate. Earlier failures remain.
 - **Browser prerequisites are missing.** There is no cleared browser asset
   bundle, validated MJCF parity model, trained actor or browser performance
   measurement established by this audit. Local uncommitted browser work is
@@ -147,3 +156,7 @@ a minute. Architecture, the evidence table, and remaining-work caveats stay in
 the same file. The four-command quickstart still runs the CPU demo, not Isaac.
 No section claims learned perception, physical cutting, or a measured
 task-success rate.
+
+## Authorized research execution (2026-09-20)
+
+Implementation and jobs are now in progress; the preceding audit-only snapshot is historical. Frozen DA2 offline evaluation job **21370005** submitted, no dependencies. The one-frame CPU accuracy gate failed; learned control remains conditional. Checkpoint-specific leakage corrections, current job/result states and storage are tracked in the [execution record](RESEARCH_EXECUTION_2026-09-20.md) and `docs/evidence/research_execution_2026-09-20.json`.

@@ -1,63 +1,97 @@
-isaac-sim-pruning-workflow — experiment checkpoint, 2026-09-19 PDT
+CURRENT EXECUTION UPDATE — 2026-09-20 PDT
+  User authorized implementation/submission after the audit below.
+  Job 21370005 SUBMITTED: 600-frame frozen DA2 vs RTX offline evaluation.
+  CPU model load/inference passed; one-frame target error gate FAILED (MAE 462mm).
+  Learned control GATED on offline and live shadow criteria; no control job submitted.
+  Selected DA2 covers all 100 Envy via train/validation; no untouched Envy test.
+  Source of current state: docs/RESEARCH_EXECUTION_2026-09-20.md and
+  docs/evidence/research_execution_2026-09-20.json.
 
-SCOPE
-  Prepare and queue a finite outdoor-vision robustness pilot, then stop.
-  Do not cancel/delete/alter existing HPC jobs. No training jobs submitted.
-  Existing untracked studio, exporter, test and daylight-media work is preserved.
+HISTORICAL AUDIT SNAPSHOT FOLLOWS
 
-INDEPENDENT AUDIT
-  Read all tracked project status/direction/limitation Markdown and text files.
-  Older reports are historical evidence, not current implementation authority.
-  Job 21328323 independently regraded: 17/17 checks, release at 7.8 seconds,
-  809.492 mm measured fall, 0.0007504 mm final home error.
-  Morning 21329420 / evening 21329421 completed September 14 (0:0),
-  3m25s / 3m20s on A40. Both pass all 11 capture checks, 30 frames/commands.
-  Neither reaches closure, release or return; they are not successful full tasks.
-  Corrected stale claims: live dual ToF and RTX wrist RGB-D exist; fresh
-  provenance-checked URDF is promoted. Flow/metric-student policy feeds remain
-  placeholders. PPO runner and executed CuRobo planning are still incomplete.
-  A local uncommitted studio prototype exists; this work does not validate it.
+isaac-sim-pruning-workflow — audited checkpoint, 2026-09-20 PDT
 
-EXPERIMENT IMPLEMENTATION
-  Current tracker remains raw by default. Add opt-in fixed CLAHE normalization
-  (clip 2.0, 8x8 tile grid), preserving existing control/tracking/release gates.
-  CPU paired replay: current demo configuration on successful and failed saved
-  captures, exposure transition, RGB blackout and depth dropout. All attempted
-  frames count; pre/post release and recorded-stop intervals are separate.
-  Replay cannot establish counterfactual closed-loop motion or task success.
-  Full GPU matrix: raw/CLAHE x source/morning/evening, 200 frames (20 s) each.
-  A40, 8 CPU, 48 GB, 25-minute limit per task, array concurrency one GPU.
-  Maximum allocation 150 GPU-minutes. No installation or tuning inside jobs.
-  Submission freezes committed code and hashes external USD/textures/launcher;
-  tasks reject input drift, use exclusive output directories, and retain both
-  capture exit and independent sequence grades, including failures.
-  QUEUED: array 21360571_[0-5%1], accepted 2026-09-19 16:12 PDT.
-  All six tasks PENDING at 16:13 PDT; initial pending reason (None).
-  Frozen code b4b4250fae14df0c1f39c70f60cf21960bae90ba (387 files).
-  Batch: artifacts/vision_robustness/lighting-20260919/.
-  Public receipt: docs/evidence/vision_pilot_submission_2026-09-19.json.
-  No prior job cancelled, held/released, reprioritized or otherwise modified.
-  Stop after pushing current status; do not wait for GPU completion.
+SCOPE AND REPOSITORY
+  Stay in isaac-sim-pruning-workflow; companion data/code read-only for this audit.
+  Branch develop; inspected commit 78c01c466d598c4ddd9dadc3b6e4f759ca180847.
+  Local Computer_Vision companion has no usable Git metadata/root README;
+  its branch, commit and remote identity remain unverified.
+  Existing untracked studio/exporter/tests/daylight-media work is preserved.
+  No new job submitted, cancelled, held/released or otherwise modified.
 
-VERIFICATION
-  514 CPU tests passed, 9 skipped (USD support unavailable), 1 GPU deselected.
-  Ruff lint/format, shell syntax, dry-run and portable CPU demo pass.
-  25 external asset/launcher files independently checked against pinned hashes.
-  Current-baseline CPU replay finds no CLAHE tracking-continuity improvement;
-  both modes lose tracking at abrupt exposure transition frame 10.
-  See docs/evidence/visual_robustness_replay_2026-09-19.json for all conditions.
+JOBS AND RESULTS
+  Queue checked 2026-09-20 17:00 PDT: no active prune-* jobs.
+  Array 21360571_[0-5] COMPLETED (0:0), all six independently pass 17/17 checks.
+  Frozen experiment code b4b4250fae14df0c1f39c70f60cf21960bae90ba.
+  Task  Light    Method  Raw job ID  Release  Commands  Home error (mm)
+  0     source   raw     21362298    7.8 s    68        0.001140
+  1     source   CLAHE   21363248    7.8 s    68        0.000248
+  2     morning  raw     21363331    7.8 s    68        0.000426
+  3     morning  CLAHE   21363374    7.8 s    68        0.001094
+  4     evening  raw     21363432    7.8 s    68        0.000484
+  5     evening  CLAHE   21360571    7.7 s    67        0.001101
+  Earlier full runs 21358986 (morning) / 21358987 (evening) were missing from
+  the ledger; both COMPLETED (0:0) and now regrade 17/17.
+  All eight contain 200 frames and record 809.492 mm piece fall.
+  Every run targets tree0_SPUR_component_8235 using RTX optical-Z depth.
+  Tree1 is present, not targeted. No CLAHE task-completion advantage established.
+  Post-release tracking loss remains recorded; old failed captures unchanged.
+  No pending dependencies. Original submission/queue evidence remains historical.
 
-LIMITS AND NEXT ACTION
-  No new GPU improvement claimed before these six jobs complete.
-  One metadata-selected target; RTX depth is ground truth; virtual camera and
-  artistic illumination are not calibrated hardware or ToF sunlight response.
-  Surrogate rigid-piece release is not blade actuation or wood fracture.
-  After completion, inspect every experiment_result.json/sequence_grade.json;
-  retain failed trials, compare coverage with error, broaden targets/views,
-  then decide whether to retain CLAHE or evaluate causal learned tracking.
-  Research sources, hypotheses and follow-up are in
-  docs/RESEARCH_EXPERIMENTS_2026-09-19.md. Broader gates remain in docs/ROADMAP.md.
-  Licensing/source-asset redistribution issues remain documented in NOTICE.md.
+DATA AND NEW RESEARCH PHASE
+  Actual assets: 100 Envy + 100 UFO PLY, 100 + 100 cylinder metadata JSON,
+  and all 200 existing USDA outputs present; family IDs 00000 through 00099.
+  Inspected Data/* layout: RGB directories for 9 Envy / 0 UFO trees; depth
+  directories for 100 Envy / 0 UFO. Directory presence is not frame completeness.
+  Top-level train_manifest.csv: 9,120 rows, 80 Envy IDs; splits.json: 80 train /
+  20 validation. Envy 00042/00065 are validation in this split only.
+  Actual checkpoint exposure is unresolved: no verified unseen-tree or cross-family
+  claim. DA2/DINO models not loaded/evaluated by this documentation audit.
+  Isaac source/morning/noon/evening presets already exist. Blender generator
+  has overcast/low-light paths; explicit controlled presets remain future work.
+  Learned-depth offline, shadow and control stages are not executed.
+  Eight Envy/UFO x four-light clips are PLANNED, with null job/video fields;
+  the eight original-tree0 recordings are not substitutes. No new clips generated.
+  Training flow/metric-student feeds, PPO runner and executed CuRobo remain gaps.
 
-Branch: develop
+STORAGE
+  Home df: 21.61 GiB used / 25 GiB; 3.39 GiB available (above caution threshold).
+  Home du: 27.10 GiB; counter discrepancy unresolved, not evidence of free quota.
+  HPC user share: at least 1,451,756,738,048 B (1.452 TB / 1.320 TiB).
+  Three Kit screenshot directories unreadable; at most 48.24 GB to 1.5 TB warning.
+  Primary repo: 10.14 GiB, including artifacts 8.65 GiB.
+  Companion Data: 133.50 GiB; checkpoints: 692.45 GiB; da2_weights: 1.25 GiB.
+  This documentation/evidence update projects <1 MiB added; no render allocation.
+  New rendering needs a fresh storage preflight, per-view inventory and estimate.
+  No files deleted or moved. Heavy outputs/caches must stay off home.
+
+VALIDATION
+  Fresh capture validator and independent sequence grader pass on all eight runs.
+  Capture validator samples first/middle/last RGB/depth; grades use all telemetry.
+  Tracked pruning CPU suite: 514 passed, 9 USD-dependent skips, 1 deselected.
+  Full working tree: 545 passed, 1 failed, 9 skipped, 1 deselected.
+  Existing untracked studio orchard test fails tree1 translation > 0.1 (actual 0).
+  Studio remains unvalidated; its files are preserved without changes.
+  Ruff lint/format pass: 122 maintained source/test/tool/renderer files.
+
+DOCUMENTATION AND NEXT ACTION
+  docs/RESEARCH_AUDIT_2026-09-20.md: current findings, priorities and inspect commands.
+  docs/evidence/repository_audit_2026-09-20.json: jobs, hashes, grades, storage.
+  docs/evidence/tree_inventory_2026-09-20.json: 200 assets and scoped split audit.
+  docs/evidence/eight_clip_manifest_2026-09-20.json: planned conditions only.
+  SLURM_JOBS.md: completed job IDs, raw array mapping and historical snapshots.
+  NOTICE.md: local asset/model provenance and unresolved redistribution scope.
+  Next: checkpoint-specific provenance and leakage, storage preflight, then a
+  minimal paired Envy/UFO lighting and frozen-depth pilot before shadow control.
+  After that: broader targets/views and feature surface-membership measurements.
+  On each implementation/submission/result change, reconcile status, ledger,
+  research notes and machine evidence; update notices when asset scope changes.
+  Keep implemented, submitted, running, completed and validated claims distinct.
+
 GitHub: https://github.com/joses2017smjh/isaac-sim-pruning-workflow
+
+New preflights: **21370018** Envy 00000 and **21370019** UFO 00000 submitted; two 256x144 source/evening frames each, no dependencies. The 2 m plane test confirmed Cycles optical-Z exactly at center and off axis; lighting determinism passed.
+
+Execution update: 21370005 COMPLETED (600 frames; learned-control gates FAIL); 21370018/19 Blender preflights COMPLETED; 21370021 DINO interface preflight COMPLETED (afterok:21370005). CPU suite 518 passed, 10 skips. New jobs: 21370026 short live DA2 shadow + family USD imports, 21370027/28 paired Envy/UFO pilots (24 frames each), all submitted without dependencies. Source SUN/Filmic baseline and fixed 8mm minimum spur-segment rule documented in frozen code; initial failures retained.
+
+Preflight/result update: 21370039 COMPLETED (48 DA2 +48 DINO predictions); 21370026 FAILED before rendering (unsupported profile), 21370040 FAILED before rendering (mesh-only validator on cylinder assets), both retained. Corrected 21370047 RUNNING; both Envy/UFO USD imports now pass in Isaac. H.264 video smoke passed and was visually inspected. Initial one-tree-per-family evening degradation is diagnostic only, pending four-tree matrix.

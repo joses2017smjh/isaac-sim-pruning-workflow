@@ -1,0 +1,1503 @@
+{
+  "schema_version": 1,
+  "audited_at": "2026-09-20T17:02:48-07:00",
+  "repository": "isaac-sim-pruning-workflow",
+  "branch": "develop",
+  "code_revision": "78c01c466d598c4ddd9dadc3b6e4f759ca180847",
+  "scope": "Local documentation/data/job reconciliation; no new render, training, or model-inference jobs submitted.",
+  "scheduler_snapshot_at": "2026-09-20T17:00:10-07:00",
+  "scheduler_timezone": "America/Los_Angeles",
+  "active_pruning_jobs": [],
+  "new_jobs_submitted": [],
+  "pilot_frozen_revision": "b4b4250fae14df0c1f39c70f60cf21960bae90ba",
+  "validation": {
+    "capture_validator_scope": "Opens overview/wrist/depth at first, middle, last frame; full completeness uses report and telemetry. Does not inspect every camera pixel.",
+    "grader_scope": "All recorded telemetry frames; capture-rate evidence only.",
+    "grader_sha256": "7414c505a6b2907ecf12f145313037449d7a81335f53c71a93d55d0d1934391f",
+    "capture_validator_sha256": "823764c31c10ce645d59e2d0408deba7b59ff164b66f61989393f52d4bcbeca8",
+    "cpu_suite_working_tree": {
+      "passed": 545,
+      "failed": 1,
+      "skipped": 9,
+      "deselected": 1,
+      "failure": "tests/test_studio_orchard.py::test_actual_local_glb_matches_manifest_units_original_tree_separation_and_hashes",
+      "detail": "Existing untracked test asserts nonzero tree1_TRUNK translation; recorded transform is zero. No studio files changed."
+    },
+    "ruff": {
+      "lint": "passed",
+      "format": "passed",
+      "files": 122
+    },
+    "cpu_suite_tracked_scope": {
+      "passed": 514,
+      "skipped": 9,
+      "deselected": 1,
+      "scope": "Excluded only the pre-existing untracked test_studio_assets.py and test_studio_orchard.py; no code changes."
+    }
+  },
+  "runs": [
+    {
+      "capture_dir": "artifacts/vision_robustness/lighting-20260919/run_00_source_raw",
+      "scheduler": {
+        "JobID": "21360571_0",
+        "JobIDRaw": "21362298",
+        "JobName": "prune-vision-pilot",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:21",
+        "Start": "2026-09-19T22:28:54",
+        "End": "2026-09-19T22:45:15",
+        "NodeList": "cn-r-1"
+      },
+      "lighting": {
+        "preset": "source",
+        "direction": "unchanged exported Sun",
+        "astronomically_calibrated": false
+      },
+      "tracker": "raw",
+      "target": {
+        "id": "tree0_SPUR_component_8235",
+        "position_w_m": [
+          0.25123947,
+          0.63413405,
+          0.81517712
+        ],
+        "axis_w": [
+          -0.17040244586236253,
+          -0.4401597816170257,
+          0.8816021625943172
+        ],
+        "radius_m": 0.006783599982827355,
+        "identity_source": "known_scene_component_not_learned_classifier"
+      },
+      "tree_count": 2,
+      "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+      "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+      "learned_checkpoint": null,
+      "capture_validation": {
+        "ok": true,
+        "frame_count": 200,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+      },
+      "capture_checks": {
+        "frames_complete": true,
+        "overview_nonblank": true,
+        "close_nonblank": true,
+        "wrist_nonblank": true,
+        "metric_depth_finite": true,
+        "robot_physically_moved": true,
+        "overview_changed": true,
+        "capture_did_not_advance_physics": true,
+        "both_tof_live": true,
+        "both_tof_changed": true,
+        "no_unused_intermediate_renders": true
+      },
+      "independent_grade": {
+        "schema_version": 1,
+        "ok": true,
+        "source_job_id": "21362298",
+        "source_task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "checks": {
+          "capture_complete_and_nonblank": true,
+          "ordered_contiguous_frame_indexes": true,
+          "strictly_increasing_capture_times": true,
+          "causal_previous_frame_commands": true,
+          "one_matching_detach_event_and_request": true,
+          "detach_has_completed_certified_closure": true,
+          "detached_state_consistent_with_event": true,
+          "selected_piece_pose_evidence_complete": true,
+          "piece_stationary_before_release": true,
+          "piece_dropped_after_release": true,
+          "robot_position_evidence_complete": true,
+          "post_detach_retreat_toward_home": true,
+          "returned_home_and_final_phase_complete": true,
+          "vision_commands_applied_and_counted": true,
+          "captured_contact_within_limit": true,
+          "no_recorded_stops": true,
+          "capture_did_not_advance_physics": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "minimum_post_detach_drop_m": 0.02,
+          "maximum_pre_detach_piece_motion_m": 0.002,
+          "minimum_home_directed_retreat_m": 0.02,
+          "maximum_final_home_error_m": 0.003,
+          "maximum_captured_contact_force_n": 5.0
+        },
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 1.1403039973800773e-06,
+          "post_detach_home_distance_reduction_m": 0.2651745718572602,
+          "post_detach_home_direction_displacement_m": 0.26517514758115107,
+          "post_detach_retreat_frames": 68
+        },
+        "evidence_scope": "Independent grading of recorded JSON at capture rate; camera completeness/nonblankness is taken from the renderer report, not remeasured from images. PhysX piece poses and robot positions are recorded measurements. This does not certify continuous/subframe contact safety, individual ToF sensor availability, material fracture, learned recognition, or an actuated blade."
+      },
+      "saved_grade_metric_differences": [],
+      "release_time_s": [
+        7.8
+      ],
+      "pre_release_tracking": {
+        "frames": 78,
+        "tracking_frames": 78
+      },
+      "first_tracking_loss": {
+        "frame_index": 78,
+        "time_s": 7.8999999999999995,
+        "reason": "optical_flow_failed",
+        "after_release": true
+      },
+      "release_certificate": {
+        "safe_to_approach": true,
+        "ready_to_close": true,
+        "reasons": [],
+        "mouth_distance_m": 0.004882824427441913,
+        "perpendicularity_error_deg": 0.33661969313426643,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "tof_valid_fraction": {
+        "left": 0.3828125,
+        "right": 0.372109375
+      },
+      "tof_noise_enabled": false,
+      "mp4_paths": [],
+      "input_sha256": {
+        "report.json": "24ef0102f92d02c3cdb61deca374436f103930c2ec0c9cc1bec2c6ae43071309",
+        "frames.json": "302a4260d1ffbb79e6b9dad4b57fe49dc9281dff261f60702d689ed8d89e431f",
+        "preflight.json": "9895dbc4ad2b4c049268c152f6adc7ff372a39515a1256561150df966f18c662",
+        "manifest.json": "24ef0102f92d02c3cdb61deca374436f103930c2ec0c9cc1bec2c6ae43071309",
+        "experiment_result.json": "47ec47da577eae681f92d7fb37c1b6176198ccb01c6a2508c71c8f7de972ddbf",
+        "sequence_grade.json": "4536ba8781b7f3b99dca6c0abaac26663804d17c9800396652b7c5f676750c6c"
+      },
+      "experiment_result": {
+        "condition": {
+          "index": 0,
+          "daylight": "source",
+          "photometric_normalization": "raw"
+        },
+        "code_revision": "b4b4250fae14df0c1f39c70f60cf21960bae90ba",
+        "job_id": "21362298",
+        "capture_exit_code": 0,
+        "capture_ok": true,
+        "sequence_ok": true,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "configuration_matches": true,
+        "ok": true
+      }
+    },
+    {
+      "capture_dir": "artifacts/vision_robustness/lighting-20260919/run_01_source_clahe",
+      "scheduler": {
+        "JobID": "21360571_1",
+        "JobIDRaw": "21363248",
+        "JobName": "prune-vision-pilot",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:25",
+        "Start": "2026-09-20T00:18:26",
+        "End": "2026-09-20T00:34:51",
+        "NodeList": "cn-r-2"
+      },
+      "lighting": {
+        "preset": "source",
+        "direction": "unchanged exported Sun",
+        "astronomically_calibrated": false
+      },
+      "tracker": "clahe",
+      "target": {
+        "id": "tree0_SPUR_component_8235",
+        "position_w_m": [
+          0.25123947,
+          0.63413405,
+          0.81517712
+        ],
+        "axis_w": [
+          -0.17040244586236253,
+          -0.4401597816170257,
+          0.8816021625943172
+        ],
+        "radius_m": 0.006783599982827355,
+        "identity_source": "known_scene_component_not_learned_classifier"
+      },
+      "tree_count": 2,
+      "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+      "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+      "learned_checkpoint": null,
+      "capture_validation": {
+        "ok": true,
+        "frame_count": 200,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+      },
+      "capture_checks": {
+        "frames_complete": true,
+        "overview_nonblank": true,
+        "close_nonblank": true,
+        "wrist_nonblank": true,
+        "metric_depth_finite": true,
+        "robot_physically_moved": true,
+        "overview_changed": true,
+        "capture_did_not_advance_physics": true,
+        "both_tof_live": true,
+        "both_tof_changed": true,
+        "no_unused_intermediate_renders": true
+      },
+      "independent_grade": {
+        "schema_version": 1,
+        "ok": true,
+        "source_job_id": "21363248",
+        "source_task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "checks": {
+          "capture_complete_and_nonblank": true,
+          "ordered_contiguous_frame_indexes": true,
+          "strictly_increasing_capture_times": true,
+          "causal_previous_frame_commands": true,
+          "one_matching_detach_event_and_request": true,
+          "detach_has_completed_certified_closure": true,
+          "detached_state_consistent_with_event": true,
+          "selected_piece_pose_evidence_complete": true,
+          "piece_stationary_before_release": true,
+          "piece_dropped_after_release": true,
+          "robot_position_evidence_complete": true,
+          "post_detach_retreat_toward_home": true,
+          "returned_home_and_final_phase_complete": true,
+          "vision_commands_applied_and_counted": true,
+          "captured_contact_within_limit": true,
+          "no_recorded_stops": true,
+          "capture_did_not_advance_physics": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "minimum_post_detach_drop_m": 0.02,
+          "maximum_pre_detach_piece_motion_m": 0.002,
+          "minimum_home_directed_retreat_m": 0.02,
+          "maximum_final_home_error_m": 0.003,
+          "maximum_captured_contact_force_n": 5.0
+        },
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 2.4755668231600746e-07,
+          "post_detach_home_distance_reduction_m": 0.2652998887331616,
+          "post_detach_home_direction_displacement_m": 0.265300189511416,
+          "post_detach_retreat_frames": 68
+        },
+        "evidence_scope": "Independent grading of recorded JSON at capture rate; camera completeness/nonblankness is taken from the renderer report, not remeasured from images. PhysX piece poses and robot positions are recorded measurements. This does not certify continuous/subframe contact safety, individual ToF sensor availability, material fracture, learned recognition, or an actuated blade."
+      },
+      "saved_grade_metric_differences": [],
+      "release_time_s": [
+        7.8
+      ],
+      "pre_release_tracking": {
+        "frames": 78,
+        "tracking_frames": 78
+      },
+      "first_tracking_loss": {
+        "frame_index": 78,
+        "time_s": 7.8999999999999995,
+        "reason": "optical_flow_failed",
+        "after_release": true
+      },
+      "release_certificate": {
+        "safe_to_approach": true,
+        "ready_to_close": true,
+        "reasons": [],
+        "mouth_distance_m": 0.0045625142003569725,
+        "perpendicularity_error_deg": 0.3330139560797606,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "tof_valid_fraction": {
+        "left": 0.380625,
+        "right": 0.37234375
+      },
+      "tof_noise_enabled": false,
+      "mp4_paths": [],
+      "input_sha256": {
+        "report.json": "6d12c5465a3ee9cb20daa8be9b08a1c4c01c483e9156397152a8569bdb2c39bd",
+        "frames.json": "1e85c1e8f3273dc22807d63b9e963aa45d223b1eacbc8af9f7a0cd7dd60a4efb",
+        "preflight.json": "504a6a439fcb14c8e4b737306338171812a11c4b829eedaae2b62e9db47b9360",
+        "manifest.json": "6d12c5465a3ee9cb20daa8be9b08a1c4c01c483e9156397152a8569bdb2c39bd",
+        "experiment_result.json": "b378fbc32464b2af03eb1cda29c862527bdca7f6a784e7c794c57d894e6c433b",
+        "sequence_grade.json": "a05e15ddd40efa5b0e9fa14e5e3b26d643d73568a0e86dc6a7aeb9277016d228"
+      },
+      "experiment_result": {
+        "condition": {
+          "index": 1,
+          "daylight": "source",
+          "photometric_normalization": "clahe"
+        },
+        "code_revision": "b4b4250fae14df0c1f39c70f60cf21960bae90ba",
+        "job_id": "21363248",
+        "capture_exit_code": 0,
+        "capture_ok": true,
+        "sequence_ok": true,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "configuration_matches": true,
+        "ok": true
+      }
+    },
+    {
+      "capture_dir": "artifacts/vision_robustness/lighting-20260919/run_02_morning_raw",
+      "scheduler": {
+        "JobID": "21360571_2",
+        "JobIDRaw": "21363331",
+        "JobName": "prune-vision-pilot",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:37",
+        "Start": "2026-09-20T00:34:56",
+        "End": "2026-09-20T00:51:33",
+        "NodeList": "cn-r-2"
+      },
+      "lighting": {
+        "preset": "morning",
+        "azimuth_deg": 60.0,
+        "elevation_deg": 18.0,
+        "world_direction_to_sun": [
+          0.4755282581475769,
+          0.8236391035463319,
+          0.3090169943749474
+        ],
+        "sun_intensity": 1600.0,
+        "sun_color_rgb": [
+          1.0,
+          0.78,
+          0.55
+        ],
+        "dome_intensity": 450.0,
+        "dome_color_rgb": [
+          0.82,
+          0.9,
+          1.0
+        ],
+        "astronomically_calibrated": false,
+        "scope": "Artistic fixed sunlight; no time/location, weather, sensor or exposure calibration",
+        "authored_on_composed_stage_only": true
+      },
+      "tracker": "raw",
+      "target": {
+        "id": "tree0_SPUR_component_8235",
+        "position_w_m": [
+          0.25123947,
+          0.63413405,
+          0.81517712
+        ],
+        "axis_w": [
+          -0.17040244586236253,
+          -0.4401597816170257,
+          0.8816021625943172
+        ],
+        "radius_m": 0.006783599982827355,
+        "identity_source": "known_scene_component_not_learned_classifier"
+      },
+      "tree_count": 2,
+      "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+      "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+      "learned_checkpoint": null,
+      "capture_validation": {
+        "ok": true,
+        "frame_count": 200,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+      },
+      "capture_checks": {
+        "frames_complete": true,
+        "overview_nonblank": true,
+        "close_nonblank": true,
+        "wrist_nonblank": true,
+        "metric_depth_finite": true,
+        "robot_physically_moved": true,
+        "overview_changed": true,
+        "capture_did_not_advance_physics": true,
+        "both_tof_live": true,
+        "both_tof_changed": true,
+        "no_unused_intermediate_renders": true
+      },
+      "independent_grade": {
+        "schema_version": 1,
+        "ok": true,
+        "source_job_id": "21363331",
+        "source_task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "checks": {
+          "capture_complete_and_nonblank": true,
+          "ordered_contiguous_frame_indexes": true,
+          "strictly_increasing_capture_times": true,
+          "causal_previous_frame_commands": true,
+          "one_matching_detach_event_and_request": true,
+          "detach_has_completed_certified_closure": true,
+          "detached_state_consistent_with_event": true,
+          "selected_piece_pose_evidence_complete": true,
+          "piece_stationary_before_release": true,
+          "piece_dropped_after_release": true,
+          "robot_position_evidence_complete": true,
+          "post_detach_retreat_toward_home": true,
+          "returned_home_and_final_phase_complete": true,
+          "vision_commands_applied_and_counted": true,
+          "captured_contact_within_limit": true,
+          "no_recorded_stops": true,
+          "capture_did_not_advance_physics": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "minimum_post_detach_drop_m": 0.02,
+          "maximum_pre_detach_piece_motion_m": 0.002,
+          "minimum_home_directed_retreat_m": 0.02,
+          "maximum_final_home_error_m": 0.003,
+          "maximum_captured_contact_force_n": 5.0
+        },
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 4.256623046721727e-07,
+          "post_detach_home_distance_reduction_m": 0.2654471582691468,
+          "post_detach_home_direction_displacement_m": 0.2654476526621505,
+          "post_detach_retreat_frames": 68
+        },
+        "evidence_scope": "Independent grading of recorded JSON at capture rate; camera completeness/nonblankness is taken from the renderer report, not remeasured from images. PhysX piece poses and robot positions are recorded measurements. This does not certify continuous/subframe contact safety, individual ToF sensor availability, material fracture, learned recognition, or an actuated blade."
+      },
+      "saved_grade_metric_differences": [],
+      "release_time_s": [
+        7.8
+      ],
+      "pre_release_tracking": {
+        "frames": 78,
+        "tracking_frames": 78
+      },
+      "first_tracking_loss": {
+        "frame_index": 78,
+        "time_s": 7.8999999999999995,
+        "reason": "optical_flow_failed",
+        "after_release": true
+      },
+      "release_certificate": {
+        "safe_to_approach": true,
+        "ready_to_close": true,
+        "reasons": [],
+        "mouth_distance_m": 0.004061940536640184,
+        "perpendicularity_error_deg": 0.3370914819318598,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "tof_valid_fraction": {
+        "left": 0.376875,
+        "right": 0.3734375
+      },
+      "tof_noise_enabled": false,
+      "mp4_paths": [],
+      "input_sha256": {
+        "report.json": "cce7cf0687253d4eaae62cf95916fc04d28ec75c2c3f3689068cab140ec2c451",
+        "frames.json": "e083392e0ba5196fce085732e82c45c0615bd29d45e63e8f2dab04ea3ef3ec84",
+        "preflight.json": "b1a495d381f4e0f32fde0ea780d8bcfd9df64d5681b516d657c15980ad900de4",
+        "manifest.json": "cce7cf0687253d4eaae62cf95916fc04d28ec75c2c3f3689068cab140ec2c451",
+        "experiment_result.json": "664c2c586f02039b4fe5017f34565c3ba97aae16215b664dcea19df42b332267",
+        "sequence_grade.json": "7f3ad49f94dc0bd953671c39d11c16408ddfacf2e7b94372b26abd31a133c529"
+      },
+      "experiment_result": {
+        "condition": {
+          "index": 2,
+          "daylight": "morning",
+          "photometric_normalization": "raw"
+        },
+        "code_revision": "b4b4250fae14df0c1f39c70f60cf21960bae90ba",
+        "job_id": "21363331",
+        "capture_exit_code": 0,
+        "capture_ok": true,
+        "sequence_ok": true,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "configuration_matches": true,
+        "ok": true
+      }
+    },
+    {
+      "capture_dir": "artifacts/vision_robustness/lighting-20260919/run_03_morning_clahe",
+      "scheduler": {
+        "JobID": "21360571_3",
+        "JobIDRaw": "21363374",
+        "JobName": "prune-vision-pilot",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:41",
+        "Start": "2026-09-20T00:51:35",
+        "End": "2026-09-20T01:08:16",
+        "NodeList": "cn-r-2"
+      },
+      "lighting": {
+        "preset": "morning",
+        "azimuth_deg": 60.0,
+        "elevation_deg": 18.0,
+        "world_direction_to_sun": [
+          0.4755282581475769,
+          0.8236391035463319,
+          0.3090169943749474
+        ],
+        "sun_intensity": 1600.0,
+        "sun_color_rgb": [
+          1.0,
+          0.78,
+          0.55
+        ],
+        "dome_intensity": 450.0,
+        "dome_color_rgb": [
+          0.82,
+          0.9,
+          1.0
+        ],
+        "astronomically_calibrated": false,
+        "scope": "Artistic fixed sunlight; no time/location, weather, sensor or exposure calibration",
+        "authored_on_composed_stage_only": true
+      },
+      "tracker": "clahe",
+      "target": {
+        "id": "tree0_SPUR_component_8235",
+        "position_w_m": [
+          0.25123947,
+          0.63413405,
+          0.81517712
+        ],
+        "axis_w": [
+          -0.17040244586236253,
+          -0.4401597816170257,
+          0.8816021625943172
+        ],
+        "radius_m": 0.006783599982827355,
+        "identity_source": "known_scene_component_not_learned_classifier"
+      },
+      "tree_count": 2,
+      "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+      "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+      "learned_checkpoint": null,
+      "capture_validation": {
+        "ok": true,
+        "frame_count": 200,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+      },
+      "capture_checks": {
+        "frames_complete": true,
+        "overview_nonblank": true,
+        "close_nonblank": true,
+        "wrist_nonblank": true,
+        "metric_depth_finite": true,
+        "robot_physically_moved": true,
+        "overview_changed": true,
+        "capture_did_not_advance_physics": true,
+        "both_tof_live": true,
+        "both_tof_changed": true,
+        "no_unused_intermediate_renders": true
+      },
+      "independent_grade": {
+        "schema_version": 1,
+        "ok": true,
+        "source_job_id": "21363374",
+        "source_task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "checks": {
+          "capture_complete_and_nonblank": true,
+          "ordered_contiguous_frame_indexes": true,
+          "strictly_increasing_capture_times": true,
+          "causal_previous_frame_commands": true,
+          "one_matching_detach_event_and_request": true,
+          "detach_has_completed_certified_closure": true,
+          "detached_state_consistent_with_event": true,
+          "selected_piece_pose_evidence_complete": true,
+          "piece_stationary_before_release": true,
+          "piece_dropped_after_release": true,
+          "robot_position_evidence_complete": true,
+          "post_detach_retreat_toward_home": true,
+          "returned_home_and_final_phase_complete": true,
+          "vision_commands_applied_and_counted": true,
+          "captured_contact_within_limit": true,
+          "no_recorded_stops": true,
+          "capture_did_not_advance_physics": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "minimum_post_detach_drop_m": 0.02,
+          "maximum_pre_detach_piece_motion_m": 0.002,
+          "minimum_home_directed_retreat_m": 0.02,
+          "maximum_final_home_error_m": 0.003,
+          "maximum_captured_contact_force_n": 5.0
+        },
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 1.0941958278826368e-06,
+          "post_detach_home_distance_reduction_m": 0.26523885732148617,
+          "post_detach_home_direction_displacement_m": 0.2652398092039147,
+          "post_detach_retreat_frames": 68
+        },
+        "evidence_scope": "Independent grading of recorded JSON at capture rate; camera completeness/nonblankness is taken from the renderer report, not remeasured from images. PhysX piece poses and robot positions are recorded measurements. This does not certify continuous/subframe contact safety, individual ToF sensor availability, material fracture, learned recognition, or an actuated blade."
+      },
+      "saved_grade_metric_differences": [
+        {
+          "metric": "post_detach_home_direction_displacement_m",
+          "saved": 0.26523980920391477,
+          "regraded": 0.2652398092039147,
+          "absolute_difference": 5.551115123125783e-17
+        }
+      ],
+      "release_time_s": [
+        7.8
+      ],
+      "pre_release_tracking": {
+        "frames": 78,
+        "tracking_frames": 78
+      },
+      "first_tracking_loss": {
+        "frame_index": 78,
+        "time_s": 7.8999999999999995,
+        "reason": "optical_flow_failed",
+        "after_release": true
+      },
+      "release_certificate": {
+        "safe_to_approach": true,
+        "ready_to_close": true,
+        "reasons": [],
+        "mouth_distance_m": 0.004760101488273239,
+        "perpendicularity_error_deg": 0.35602362479584987,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "tof_valid_fraction": {
+        "left": 0.385234375,
+        "right": 0.3715625
+      },
+      "tof_noise_enabled": false,
+      "mp4_paths": [],
+      "input_sha256": {
+        "report.json": "78a38d00960d3d9dbb2baaf5ebf1fbef2213a6ef84dbd5f0afa62d7048f578b1",
+        "frames.json": "e249cd1c7b863dd7be6cd4e928853017b8dac04089d7046464a3db11fb9f2361",
+        "preflight.json": "a2dbef30133e35d3f63bb15852eb46b9b037d676a9254f12b84cbeaa21f76b6b",
+        "manifest.json": "78a38d00960d3d9dbb2baaf5ebf1fbef2213a6ef84dbd5f0afa62d7048f578b1",
+        "experiment_result.json": "e2ced3abd826b8b023f0aec0a7b29ba3ebb77a914daf387f1c25f2f49633e2be",
+        "sequence_grade.json": "b10a78f39330bf3ce9c11c8f3da7c02e923dbc0c5654e43d2dd9dec8121de5f4"
+      },
+      "experiment_result": {
+        "condition": {
+          "index": 3,
+          "daylight": "morning",
+          "photometric_normalization": "clahe"
+        },
+        "code_revision": "b4b4250fae14df0c1f39c70f60cf21960bae90ba",
+        "job_id": "21363374",
+        "capture_exit_code": 0,
+        "capture_ok": true,
+        "sequence_ok": true,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "configuration_matches": true,
+        "ok": true
+      }
+    },
+    {
+      "capture_dir": "artifacts/vision_robustness/lighting-20260919/run_04_evening_raw",
+      "scheduler": {
+        "JobID": "21360571_4",
+        "JobIDRaw": "21363432",
+        "JobName": "prune-vision-pilot",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:31",
+        "Start": "2026-09-20T01:08:26",
+        "End": "2026-09-20T01:24:57",
+        "NodeList": "cn-r-2"
+      },
+      "lighting": {
+        "preset": "evening",
+        "azimuth_deg": 270.0,
+        "elevation_deg": 12.0,
+        "world_direction_to_sun": [
+          -1.7968279924984774e-16,
+          -0.9781476007338057,
+          0.20791169081775934
+        ],
+        "sun_intensity": 1300.0,
+        "sun_color_rgb": [
+          1.0,
+          0.56,
+          0.32
+        ],
+        "dome_intensity": 450.0,
+        "dome_color_rgb": [
+          0.82,
+          0.9,
+          1.0
+        ],
+        "astronomically_calibrated": false,
+        "scope": "Artistic fixed sunlight; no time/location, weather, sensor or exposure calibration",
+        "authored_on_composed_stage_only": true
+      },
+      "tracker": "raw",
+      "target": {
+        "id": "tree0_SPUR_component_8235",
+        "position_w_m": [
+          0.25123947,
+          0.63413405,
+          0.81517712
+        ],
+        "axis_w": [
+          -0.17040244586236253,
+          -0.4401597816170257,
+          0.8816021625943172
+        ],
+        "radius_m": 0.006783599982827355,
+        "identity_source": "known_scene_component_not_learned_classifier"
+      },
+      "tree_count": 2,
+      "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+      "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+      "learned_checkpoint": null,
+      "capture_validation": {
+        "ok": true,
+        "frame_count": 200,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+      },
+      "capture_checks": {
+        "frames_complete": true,
+        "overview_nonblank": true,
+        "close_nonblank": true,
+        "wrist_nonblank": true,
+        "metric_depth_finite": true,
+        "robot_physically_moved": true,
+        "overview_changed": true,
+        "capture_did_not_advance_physics": true,
+        "both_tof_live": true,
+        "both_tof_changed": true,
+        "no_unused_intermediate_renders": true
+      },
+      "independent_grade": {
+        "schema_version": 1,
+        "ok": true,
+        "source_job_id": "21363432",
+        "source_task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "checks": {
+          "capture_complete_and_nonblank": true,
+          "ordered_contiguous_frame_indexes": true,
+          "strictly_increasing_capture_times": true,
+          "causal_previous_frame_commands": true,
+          "one_matching_detach_event_and_request": true,
+          "detach_has_completed_certified_closure": true,
+          "detached_state_consistent_with_event": true,
+          "selected_piece_pose_evidence_complete": true,
+          "piece_stationary_before_release": true,
+          "piece_dropped_after_release": true,
+          "robot_position_evidence_complete": true,
+          "post_detach_retreat_toward_home": true,
+          "returned_home_and_final_phase_complete": true,
+          "vision_commands_applied_and_counted": true,
+          "captured_contact_within_limit": true,
+          "no_recorded_stops": true,
+          "capture_did_not_advance_physics": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "minimum_post_detach_drop_m": 0.02,
+          "maximum_pre_detach_piece_motion_m": 0.002,
+          "minimum_home_directed_retreat_m": 0.02,
+          "maximum_final_home_error_m": 0.003,
+          "maximum_captured_contact_force_n": 5.0
+        },
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 4.842304232499576e-07,
+          "post_detach_home_distance_reduction_m": 0.2651970125702133,
+          "post_detach_home_direction_displacement_m": 0.26519749348855703,
+          "post_detach_retreat_frames": 68
+        },
+        "evidence_scope": "Independent grading of recorded JSON at capture rate; camera completeness/nonblankness is taken from the renderer report, not remeasured from images. PhysX piece poses and robot positions are recorded measurements. This does not certify continuous/subframe contact safety, individual ToF sensor availability, material fracture, learned recognition, or an actuated blade."
+      },
+      "saved_grade_metric_differences": [
+        {
+          "metric": "post_detach_home_direction_displacement_m",
+          "saved": 0.2651974934885571,
+          "regraded": 0.26519749348855703,
+          "absolute_difference": 5.551115123125783e-17
+        }
+      ],
+      "release_time_s": [
+        7.8
+      ],
+      "pre_release_tracking": {
+        "frames": 78,
+        "tracking_frames": 78
+      },
+      "first_tracking_loss": {
+        "frame_index": 78,
+        "time_s": 7.8999999999999995,
+        "reason": "optical_flow_failed",
+        "after_release": true
+      },
+      "release_certificate": {
+        "safe_to_approach": true,
+        "ready_to_close": true,
+        "reasons": [],
+        "mouth_distance_m": 0.0036650517199978607,
+        "perpendicularity_error_deg": 0.2990179260722684,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "tof_valid_fraction": {
+        "left": 0.377578125,
+        "right": 0.373046875
+      },
+      "tof_noise_enabled": false,
+      "mp4_paths": [],
+      "input_sha256": {
+        "report.json": "324e5fb6d29f88717bafc88b12f8d319b166d36a58d73370996473efb3c669bb",
+        "frames.json": "9d5d57f06743c463b2d7d92b70a12479ca5efeb2def92e9caef5b04ca96b7f5f",
+        "preflight.json": "72e51c3e3af6165a98c493e30fe1a38de4fd1ee371d858911f4007cced470bd4",
+        "manifest.json": "324e5fb6d29f88717bafc88b12f8d319b166d36a58d73370996473efb3c669bb",
+        "experiment_result.json": "0409e03a5b4f06d31a83aee4f2a441189cb7636b83410e4bc3bd139c6b21c520",
+        "sequence_grade.json": "129cc3f0982ac77e4956ea17ba607fb6cd3d1ca96ff7ca960c828affb60e3c09"
+      },
+      "experiment_result": {
+        "condition": {
+          "index": 4,
+          "daylight": "evening",
+          "photometric_normalization": "raw"
+        },
+        "code_revision": "b4b4250fae14df0c1f39c70f60cf21960bae90ba",
+        "job_id": "21363432",
+        "capture_exit_code": 0,
+        "capture_ok": true,
+        "sequence_ok": true,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "configuration_matches": true,
+        "ok": true
+      }
+    },
+    {
+      "capture_dir": "artifacts/vision_robustness/lighting-20260919/run_05_evening_clahe",
+      "scheduler": {
+        "JobID": "21360571_5",
+        "JobIDRaw": "21360571",
+        "JobName": "prune-vision-pilot",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:36",
+        "Start": "2026-09-20T01:25:06",
+        "End": "2026-09-20T01:41:42",
+        "NodeList": "cn-r-2"
+      },
+      "lighting": {
+        "preset": "evening",
+        "azimuth_deg": 270.0,
+        "elevation_deg": 12.0,
+        "world_direction_to_sun": [
+          -1.7968279924984774e-16,
+          -0.9781476007338057,
+          0.20791169081775934
+        ],
+        "sun_intensity": 1300.0,
+        "sun_color_rgb": [
+          1.0,
+          0.56,
+          0.32
+        ],
+        "dome_intensity": 450.0,
+        "dome_color_rgb": [
+          0.82,
+          0.9,
+          1.0
+        ],
+        "astronomically_calibrated": false,
+        "scope": "Artistic fixed sunlight; no time/location, weather, sensor or exposure calibration",
+        "authored_on_composed_stage_only": true
+      },
+      "tracker": "clahe",
+      "target": {
+        "id": "tree0_SPUR_component_8235",
+        "position_w_m": [
+          0.25123947,
+          0.63413405,
+          0.81517712
+        ],
+        "axis_w": [
+          -0.17040244586236253,
+          -0.4401597816170257,
+          0.8816021625943172
+        ],
+        "radius_m": 0.006783599982827355,
+        "identity_source": "known_scene_component_not_learned_classifier"
+      },
+      "tree_count": 2,
+      "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+      "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+      "learned_checkpoint": null,
+      "capture_validation": {
+        "ok": true,
+        "frame_count": 200,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+      },
+      "capture_checks": {
+        "frames_complete": true,
+        "overview_nonblank": true,
+        "close_nonblank": true,
+        "wrist_nonblank": true,
+        "metric_depth_finite": true,
+        "robot_physically_moved": true,
+        "overview_changed": true,
+        "capture_did_not_advance_physics": true,
+        "both_tof_live": true,
+        "both_tof_changed": true,
+        "no_unused_intermediate_renders": true
+      },
+      "independent_grade": {
+        "schema_version": 1,
+        "ok": true,
+        "source_job_id": "21360571",
+        "source_task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "checks": {
+          "capture_complete_and_nonblank": true,
+          "ordered_contiguous_frame_indexes": true,
+          "strictly_increasing_capture_times": true,
+          "causal_previous_frame_commands": true,
+          "one_matching_detach_event_and_request": true,
+          "detach_has_completed_certified_closure": true,
+          "detached_state_consistent_with_event": true,
+          "selected_piece_pose_evidence_complete": true,
+          "piece_stationary_before_release": true,
+          "piece_dropped_after_release": true,
+          "robot_position_evidence_complete": true,
+          "post_detach_retreat_toward_home": true,
+          "returned_home_and_final_phase_complete": true,
+          "vision_commands_applied_and_counted": true,
+          "captured_contact_within_limit": true,
+          "no_recorded_stops": true,
+          "capture_did_not_advance_physics": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "minimum_post_detach_drop_m": 0.02,
+          "maximum_pre_detach_piece_motion_m": 0.002,
+          "minimum_home_directed_retreat_m": 0.02,
+          "maximum_final_home_error_m": 0.003,
+          "maximum_captured_contact_force_n": 5.0
+        },
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            76
+          ],
+          "detachment_request_frame_indexes": [
+            76
+          ],
+          "applied_vision_command_frames": 67,
+          "reported_vision_command_count": 67.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 1.10107381355233e-06,
+          "post_detach_home_distance_reduction_m": 0.2611853660256407,
+          "post_detach_home_direction_displacement_m": 0.2611857450872881,
+          "post_detach_retreat_frames": 67
+        },
+        "evidence_scope": "Independent grading of recorded JSON at capture rate; camera completeness/nonblankness is taken from the renderer report, not remeasured from images. PhysX piece poses and robot positions are recorded measurements. This does not certify continuous/subframe contact safety, individual ToF sensor availability, material fracture, learned recognition, or an actuated blade."
+      },
+      "saved_grade_metric_differences": [],
+      "release_time_s": [
+        7.7
+      ],
+      "pre_release_tracking": {
+        "frames": 77,
+        "tracking_frames": 77
+      },
+      "first_tracking_loss": {
+        "frame_index": 77,
+        "time_s": 7.8,
+        "reason": "optical_flow_failed",
+        "after_release": true
+      },
+      "release_certificate": {
+        "safe_to_approach": true,
+        "ready_to_close": true,
+        "reasons": [],
+        "mouth_distance_m": 0.006819129671723185,
+        "perpendicularity_error_deg": 0.2951424887865057,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "tof_valid_fraction": {
+        "left": 0.375546875,
+        "right": 0.373203125
+      },
+      "tof_noise_enabled": false,
+      "mp4_paths": [],
+      "input_sha256": {
+        "report.json": "926c2b48e8c9ef74b76d3a64d8ba6db89172f74065c2d3ae467726cb9a99476c",
+        "frames.json": "4f846114d1e86930406871987a31a5a0d3691104e4784cf980fb7a2b32f20dea",
+        "preflight.json": "ef8b3b04c6cb71d0aa4b368e3d5095a663954149d3d5d040e2c0da86648d8b56",
+        "manifest.json": "926c2b48e8c9ef74b76d3a64d8ba6db89172f74065c2d3ae467726cb9a99476c",
+        "experiment_result.json": "09a5d281772b17a50ff937f4efe478b765d57e873172ea2051182b5ff6a764e7",
+        "sequence_grade.json": "9190f0136d0e18a8e030e3de278e628cb93717c45e108a0b9ce45dfdd1a71581"
+      },
+      "experiment_result": {
+        "condition": {
+          "index": 5,
+          "daylight": "evening",
+          "photometric_normalization": "clahe"
+        },
+        "code_revision": "b4b4250fae14df0c1f39c70f60cf21960bae90ba",
+        "job_id": "21360571",
+        "capture_exit_code": 0,
+        "capture_ok": true,
+        "sequence_ok": true,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "configuration_matches": true,
+        "ok": true
+      }
+    },
+    {
+      "capture_dir": "artifacts/isaac_render/job_21358986",
+      "scheduler": {
+        "JobID": "21358986",
+        "JobIDRaw": "21358986",
+        "JobName": "prune-morning-full",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:34",
+        "Start": "2026-09-19T12:29:17",
+        "End": "2026-09-19T12:45:51",
+        "NodeList": "cn-r-1"
+      },
+      "lighting": {
+        "preset": "morning",
+        "azimuth_deg": 60.0,
+        "elevation_deg": 18.0,
+        "world_direction_to_sun": [
+          0.4755282581475769,
+          0.8236391035463319,
+          0.3090169943749474
+        ],
+        "sun_intensity": 1600.0,
+        "sun_color_rgb": [
+          1.0,
+          0.78,
+          0.55
+        ],
+        "dome_intensity": 450.0,
+        "dome_color_rgb": [
+          0.82,
+          0.9,
+          1.0
+        ],
+        "astronomically_calibrated": false,
+        "scope": "Artistic fixed sunlight; no time/location, weather, sensor or exposure calibration",
+        "authored_on_composed_stage_only": true
+      },
+      "tracker": "not recorded (earlier full run)",
+      "target": {
+        "id": "tree0_SPUR_component_8235",
+        "position_w_m": [
+          0.25123947,
+          0.63413405,
+          0.81517712
+        ],
+        "axis_w": [
+          -0.17040244586236253,
+          -0.4401597816170257,
+          0.8816021625943172
+        ],
+        "radius_m": 0.006783599982827355,
+        "identity_source": "known_scene_component_not_learned_classifier"
+      },
+      "tree_count": 2,
+      "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+      "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+      "learned_checkpoint": null,
+      "capture_validation": {
+        "ok": true,
+        "frame_count": 200,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+      },
+      "capture_checks": {
+        "frames_complete": true,
+        "overview_nonblank": true,
+        "close_nonblank": true,
+        "wrist_nonblank": true,
+        "metric_depth_finite": true,
+        "robot_physically_moved": true,
+        "overview_changed": true,
+        "capture_did_not_advance_physics": true,
+        "both_tof_live": true,
+        "both_tof_changed": true,
+        "no_unused_intermediate_renders": true
+      },
+      "independent_grade": {
+        "schema_version": 1,
+        "ok": true,
+        "source_job_id": "21358986",
+        "source_task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "checks": {
+          "capture_complete_and_nonblank": true,
+          "ordered_contiguous_frame_indexes": true,
+          "strictly_increasing_capture_times": true,
+          "causal_previous_frame_commands": true,
+          "one_matching_detach_event_and_request": true,
+          "detach_has_completed_certified_closure": true,
+          "detached_state_consistent_with_event": true,
+          "selected_piece_pose_evidence_complete": true,
+          "piece_stationary_before_release": true,
+          "piece_dropped_after_release": true,
+          "robot_position_evidence_complete": true,
+          "post_detach_retreat_toward_home": true,
+          "returned_home_and_final_phase_complete": true,
+          "vision_commands_applied_and_counted": true,
+          "captured_contact_within_limit": true,
+          "no_recorded_stops": true,
+          "capture_did_not_advance_physics": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "minimum_post_detach_drop_m": 0.02,
+          "maximum_pre_detach_piece_motion_m": 0.002,
+          "minimum_home_directed_retreat_m": 0.02,
+          "maximum_final_home_error_m": 0.003,
+          "maximum_captured_contact_force_n": 5.0
+        },
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 1.195069411740507e-06,
+          "post_detach_home_distance_reduction_m": 0.2653897960072617,
+          "post_detach_home_direction_displacement_m": 0.26539173464871707,
+          "post_detach_retreat_frames": 68
+        },
+        "evidence_scope": "Independent grading of recorded JSON at capture rate; camera completeness/nonblankness is taken from the renderer report, not remeasured from images. PhysX piece poses and robot positions are recorded measurements. This does not certify continuous/subframe contact safety, individual ToF sensor availability, material fracture, learned recognition, or an actuated blade."
+      },
+      "saved_grade_metric_differences": [],
+      "release_time_s": [
+        7.8
+      ],
+      "pre_release_tracking": {
+        "frames": 78,
+        "tracking_frames": 78
+      },
+      "first_tracking_loss": {
+        "frame_index": 78,
+        "time_s": 7.8999999999999995,
+        "reason": "optical_flow_failed",
+        "after_release": true
+      },
+      "release_certificate": {
+        "safe_to_approach": true,
+        "ready_to_close": true,
+        "reasons": [],
+        "mouth_distance_m": 0.004088290725796723,
+        "perpendicularity_error_deg": 0.3246397562454742,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "tof_valid_fraction": {
+        "left": 0.3775,
+        "right": 0.37296875
+      },
+      "tof_noise_enabled": false,
+      "mp4_paths": [],
+      "input_sha256": {
+        "report.json": "c5c409dc67ade0e7a1ff3606ac432a90e016f349b8a56017c5eac34602686974",
+        "frames.json": "989d01f808df90e515b3373adfbb4dcfc4335dd661b0d63cab70a4edf11fcb4b",
+        "preflight.json": "d4dd0313bcac3043d780068ced04e5fcd02a5697b33dd98646bdde4612d2dcee",
+        "manifest.json": "c5c409dc67ade0e7a1ff3606ac432a90e016f349b8a56017c5eac34602686974"
+      }
+    },
+    {
+      "capture_dir": "artifacts/isaac_render/job_21358987",
+      "scheduler": {
+        "JobID": "21358987",
+        "JobIDRaw": "21358987",
+        "JobName": "prune-evening-full",
+        "State": "COMPLETED",
+        "ExitCode": "0:0",
+        "Elapsed": "00:16:14",
+        "Start": "2026-09-19T12:29:47",
+        "End": "2026-09-19T12:46:01",
+        "NodeList": "cn-s-5"
+      },
+      "lighting": {
+        "preset": "evening",
+        "azimuth_deg": 270.0,
+        "elevation_deg": 12.0,
+        "world_direction_to_sun": [
+          -1.7968279924984774e-16,
+          -0.9781476007338057,
+          0.20791169081775934
+        ],
+        "sun_intensity": 1300.0,
+        "sun_color_rgb": [
+          1.0,
+          0.56,
+          0.32
+        ],
+        "dome_intensity": 450.0,
+        "dome_color_rgb": [
+          0.82,
+          0.9,
+          1.0
+        ],
+        "astronomically_calibrated": false,
+        "scope": "Artistic fixed sunlight; no time/location, weather, sensor or exposure calibration",
+        "authored_on_composed_stage_only": true
+      },
+      "tracker": "not recorded (earlier full run)",
+      "target": {
+        "id": "tree0_SPUR_component_8235",
+        "position_w_m": [
+          0.25123947,
+          0.63413405,
+          0.81517712
+        ],
+        "axis_w": [
+          -0.17040244586236253,
+          -0.4401597816170257,
+          0.8816021625943172
+        ],
+        "radius_m": 0.006783599982827355,
+        "identity_source": "known_scene_component_not_learned_classifier"
+      },
+      "tree_count": 2,
+      "source_blend_sha256": "88352362755f4280aee3f5be2b7c7b2fc4d8892771384fbb4fa02c26e9fe0fb4",
+      "source_mesh_path": "/World/envs/env_0/Tree/tree0_SPUR/Shape_IndexedFaceSet",
+      "depth_source": "Live RTX optical-Z ground truth, not learned depth",
+      "learned_checkpoint": null,
+      "capture_validation": {
+        "ok": true,
+        "frame_count": 200,
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat"
+      },
+      "capture_checks": {
+        "frames_complete": true,
+        "overview_nonblank": true,
+        "close_nonblank": true,
+        "wrist_nonblank": true,
+        "metric_depth_finite": true,
+        "robot_physically_moved": true,
+        "overview_changed": true,
+        "capture_did_not_advance_physics": true,
+        "both_tof_live": true,
+        "both_tof_changed": true,
+        "no_unused_intermediate_renders": true
+      },
+      "independent_grade": {
+        "schema_version": 1,
+        "ok": true,
+        "source_job_id": "21358987",
+        "source_task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "checks": {
+          "capture_complete_and_nonblank": true,
+          "ordered_contiguous_frame_indexes": true,
+          "strictly_increasing_capture_times": true,
+          "causal_previous_frame_commands": true,
+          "one_matching_detach_event_and_request": true,
+          "detach_has_completed_certified_closure": true,
+          "detached_state_consistent_with_event": true,
+          "selected_piece_pose_evidence_complete": true,
+          "piece_stationary_before_release": true,
+          "piece_dropped_after_release": true,
+          "robot_position_evidence_complete": true,
+          "post_detach_retreat_toward_home": true,
+          "returned_home_and_final_phase_complete": true,
+          "vision_commands_applied_and_counted": true,
+          "captured_contact_within_limit": true,
+          "no_recorded_stops": true,
+          "capture_did_not_advance_physics": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "minimum_post_detach_drop_m": 0.02,
+          "maximum_pre_detach_piece_motion_m": 0.002,
+          "minimum_home_directed_retreat_m": 0.02,
+          "maximum_final_home_error_m": 0.003,
+          "maximum_captured_contact_force_n": 5.0
+        },
+        "metrics": {
+          "recorded_frames": 200,
+          "detach_event_frame_indexes": [
+            77
+          ],
+          "detachment_request_frame_indexes": [
+            77
+          ],
+          "applied_vision_command_frames": 68,
+          "reported_vision_command_count": 68.0,
+          "maximum_captured_contact_force_n": 0.0,
+          "recorded_stops": [],
+          "maximum_pre_detach_piece_motion_m": 0.0,
+          "maximum_post_detach_drop_m": 0.8094920702278614,
+          "final_home_error_m": 1.0477540392426817e-06,
+          "post_detach_home_distance_reduction_m": 0.26519629807761863,
+          "post_detach_home_direction_displacement_m": 0.2651974004040028,
+          "post_detach_retreat_frames": 68
+        },
+        "evidence_scope": "Independent grading of recorded JSON at capture rate; camera completeness/nonblankness is taken from the renderer report, not remeasured from images. PhysX piece poses and robot positions are recorded measurements. This does not certify continuous/subframe contact safety, individual ToF sensor availability, material fracture, learned recognition, or an actuated blade."
+      },
+      "saved_grade_metric_differences": [],
+      "release_time_s": [
+        7.8
+      ],
+      "pre_release_tracking": {
+        "frames": 78,
+        "tracking_frames": 78
+      },
+      "first_tracking_loss": {
+        "frame_index": 78,
+        "time_s": 7.8999999999999995,
+        "reason": "optical_flow_failed",
+        "after_release": true
+      },
+      "release_certificate": {
+        "safe_to_approach": true,
+        "ready_to_close": true,
+        "reasons": [],
+        "mouth_distance_m": 0.0036730450945929006,
+        "perpendicularity_error_deg": 0.2991170200118921,
+        "vision_age_s": 0.0,
+        "model": "simulated_detachment_not_fracture"
+      },
+      "tof_valid_fraction": {
+        "left": 0.3775,
+        "right": 0.373125
+      },
+      "tof_noise_enabled": false,
+      "mp4_paths": [],
+      "input_sha256": {
+        "report.json": "9a99e3028068ac1390bb7379e1976295001e6365b479bdae06f20bf5c41d69f4",
+        "frames.json": "55139b27d8dc3d463efc090f06906835972d40c309d73e052870a81db5935ccc",
+        "preflight.json": "2995073865fe840ef5b616452b82c423cfb34052bddc32e16e46cbaf70597710",
+        "manifest.json": "9a99e3028068ac1390bb7379e1976295001e6365b479bdae06f20bf5c41d69f4"
+      }
+    }
+  ],
+  "interpretation": [
+    "All six raw/CLAHE pilot sequences and two earlier full daylight runs pass 17/17 sequence checks.",
+    "One original orchard tree0 spur is targeted in every reviewed full run. Tree1 appears in the scene but is not the target.",
+    "No task-completion improvement from CLAHE established; one run per condition, no seeds or target diversity.",
+    "RTX optical-Z is simulator ground truth; no DA2 or DINO inference was performed.",
+    "Post-release tracking loss is retained and compatible with home-directed retreat.",
+    "These eight recordings are not the requested Envy/UFO by four-light eight-clip experiment. No MP4 exists in these eight capture directories at audit time."
+  ],
+  "storage": {
+    "measured_on": "2026-09-20",
+    "units": "bytes unless specified",
+    "home_du_bytes": 29092970496,
+    "home_df_used_bytes": 23203938304,
+    "home_df_size_bytes": 26843545600,
+    "home_df_available_bytes": 3639607296,
+    "home_measurement_note": "du and df disagree (27.10 GiB walked vs 21.61 GiB reported used). Cause not established; df reports a 25 GiB quota-sized mount. No space was reclaimed or large home writes performed.",
+    "home_inspected_consumers_bytes": {
+      ".local": 3904380928,
+      ".cache": 1239662592,
+      ".codex": 1050001408
+    },
+    "hpc_user_du_bytes": 1451756738048,
+    "hpc_measurement_note": "At least this much allocated use. du could not read three Kit screenshots directories; independent scans agree to the displayed precision. This is user-tree usage, not total shared-filesystem free space.",
+    "hpc_user_warning_bytes": 1500000000000,
+    "hpc_user_hard_limit_bytes": 2000000000000,
+    "hpc_known_bytes_to_warning": 48243261952,
+    "project_du_bytes": 10887434240,
+    "project_artifact_du_bytes": 9291599872,
+    "companion_data_du_bytes": 143341436928,
+    "companion_checkpoint_du_bytes": 743517425664,
+    "companion_da2_weights_du_bytes": 1341427712,
+    "companion_tree_du_bytes": 645824512,
+    "estimated_additional_output_bytes": 1048576,
+    "estimate_scope": "Conservative upper bound for this documentation/evidence update only; no new datasets, checkpoints or videos.",
+    "projected_known_hpc_user_bytes": 1451757786624,
+    "new_render_sweep_projection": null,
+    "large_generation_status": "not_started; render modality/view count and checkpoint provenance must be resolved first"
+  },
+  "companion_audit": {
+    "git_revision": null,
+    "git_branch": null,
+    "remote_verified": false,
+    "files_sha256": {
+      "TRANSFER.md": "eff0743221257152a577b50bfd93a9df5b2b5764ec030604bbc385d7ad8d0533",
+      "Dataloader/generate_tree2.py": "f9030bf4909ebf3c1fa69a9929c76889f1fa3e38d3bb80493d8dfc79714dcb78",
+      "run_da2_finetune_bark02.sh": "8822049dc9516d214f41fadaf405834194d095e068298c46188b1a4fcddf2b8c",
+      "train_depth_da2.py": "e190802f29ff591102be174e4a83b45488ca9752f47040b0bf4f17759b52d7ae",
+      "infer_da2_single.py": "c30cf3392c4a90f3c6adc908c254d22f4e45c1e01a43e045b38c3f4a881fd280",
+      "process_depth_anythingv2.py": "614960ede9b3cc4315d789032865432fe1b4ce5d6bbc563d4cde7e4fe6b12761"
+    },
+    "checkpoint_candidate": {
+      "relative_path": "pretrained/da2_metric_finetuned_vitl.pth",
+      "size_bytes": 1341424667,
+      "sha256": null,
+      "loaded": false,
+      "evaluated": false,
+      "training_provenance": "unresolved"
+    }
+  }
+}

@@ -104,7 +104,7 @@ new corners must pass the next frame's tracking gates.
 | Earlier control smoke | 0.360 mm final error for a 5 mm command | Six-step hold; earlier floor-contact fixture drifted 20.12 mm and failed |
 | CPU clear / blackout / blocked geometry | Accepted at 42 frames / stopped at 20 / rejected at 35 | Ideal tool motion |
 | CPU range fusion | Nominal RMSE 6.08 → 5.49 mm; blackout 8.15 → 9.57 mm | Synthetic metric estimates; blackout coverage differs |
-| Local CPU suite, September 19 | 514 passed; 9 skipped; 1 simulator test deselected | USD support absent in this CPU interpreter; GPU integration is separate |
+| Local CPU suite, September 20 | Tracked scope: 514 passed; 9 skipped; 1 simulator test deselected | Full working tree adds 31 passes and 1 failure in an existing untracked studio test; [audit](docs/RESEARCH_AUDIT_2026-09-20.md) |
 | GitHub CI, checkpoint `68e37c5` | 451 passed; 9 skipped; 1 deselected | Clean runner without external runtime assets |
 
 [Aggregate evidence](docs/evidence/two_tree_summary_2026-09-14.json)
@@ -117,16 +117,19 @@ collider; material/lighting conversion is not Blender Cycles parity.
 [Morning/evening presets](docs/ISAAC_RENDER.md#daylight-variants) change the
 simulated sun, not the source scene.
 
-A six-run [lighting/tracker pilot](docs/RESEARCH_EXPERIMENTS_2026-09-19.md)
-is queued as array **21360571** to compare the current tracker with opt-in
-CLAHE contrast normalization. It uses
-full sequences, frozen source/asset hashes, independent grades and one GPU at a
-time. Short morning/evening probes already contain 30 valid frames each; they
-do not complete pruning. See the [current queue](SLURM_JOBS.md).
+The six-run [lighting/tracker pilot](docs/RESEARCH_EXPERIMENTS_2026-09-19.md)
+completed as array **21360571**. Fresh September 20 grading passes all 17 checks
+in each raw/CLAHE × source/morning/evening sequence. All use the same original
+`tree0` spur and RTX depth; no CLAHE task-completion advantage or population
+robustness is established. Two earlier full daylight runs also pass.
+[Audited results](docs/evidence/repository_audit_2026-09-20.json) · [job ledger](SLURM_JOBS.md).
 
-Remaining: full daylight task validation, broader targets and failure trials,
-learned perception, executed CuRobo/PPO baselines, physical camera calibration,
-actuated blades and cutting mechanics.
+The [September 20 research audit](docs/RESEARCH_AUDIT_2026-09-20.md) verifies
+100 Envy + 100 UFO assets and lists the pending checkpoint-provenance, learned-depth,
+paired-lighting and eight-clip work. None of those new experiments is queued.
+Remaining: broader targets (including original tree1), learned perception,
+executed CuRobo/PPO baselines, physical camera calibration, actuated blades and
+cutting mechanics.
 The [browser-studio proposal](docs/ROBOT_STUDIO_PLAN.md) starts with recorded
 trajectory replay. A local uncommitted prototype is preserved separately from
 this experiment work; there is no trained policy to run in the browser yet.
@@ -141,3 +144,7 @@ this experiment work; there is no trained policy to run in the browser yet.
 - Slurm, Apptainer, pytest, Ruff, GitHub Actions
 
 Jose Sanchez · Oregon State University · [Provenance and licensing](NOTICE.md)
+
+## Authorized research execution (2026-09-20)
+
+Implementation and jobs are now in progress; the preceding audit-only snapshot is historical. Frozen DA2 offline evaluation job **21370005** submitted, no dependencies. The one-frame CPU accuracy gate failed; learned control remains conditional. Checkpoint-specific leakage corrections, current job/result states and storage are tracked in the [execution record](docs/RESEARCH_EXECUTION_2026-09-20.md) and `docs/evidence/research_execution_2026-09-20.json`.

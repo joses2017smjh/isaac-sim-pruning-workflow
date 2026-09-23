@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "validated_on": "2026-09-19",
+  "scope": "Two short Isaac Sim daylight probes of the same original two-tree orchard; not full pruning episodes or a robustness benchmark.",
+  "media_processing": "Existing compose_isaac_workflow.py dashboard, recorded camera pixels, no display denoising or generated imagery. On-screen outcome remains VISION APPROACH INCOMPLETE. Preset is identified by the filename and this summary.",
+  "shared_settings": {
+    "tree_count": 2,
+    "frame_count": 30,
+    "first_capture_time_s": 0.1,
+    "last_capture_time_s": 3.0,
+    "video_duration_s": 3.0,
+    "video_fps": 10.0,
+    "mp4_resolution_px": [1440, 960],
+    "gif_width_px": 864,
+    "gif_encoded_frames": 30,
+    "pathtracing_settings_match": true,
+    "astronomically_calibrated": false,
+    "geometry_and_camera_configuration_unchanged_between_probes": true
+  },
+  "shared_validation": {
+    "capture_validator_passed": true,
+    "render_checks_passed": 11,
+    "render_checks_total": 11,
+    "independent_sequence_passed": false,
+    "sequence_checks_passed": 10,
+    "sequence_checks_total": 17,
+    "sequence_failed_checks": [
+      "one_matching_detach_event_and_request",
+      "detach_has_completed_certified_closure",
+      "detached_state_consistent_with_event",
+      "piece_stationary_before_release",
+      "piece_dropped_after_release",
+      "post_detach_retreat_toward_home",
+      "returned_home_and_final_phase_complete"
+    ],
+    "failed_checks_explanation": "Neither three-second probe reaches closure or release. Event-dependent checks remain unestablished; their failure does not imply that the stationary piece moved.",
+    "task_outcome": "vision_approach_incomplete",
+    "applied_vision_command_count": 30,
+    "recorded_stop_count": 0,
+    "maximum_sampled_contact_force_n": 0.0,
+    "closure_progress": 0.0,
+    "detachment_count": 0,
+    "selected_piece_maximum_drop_m": 0.0,
+    "retreat_observed": false,
+    "distinct_overview_images": 30,
+    "distinct_wrist_images": 30
+  },
+  "probes": [
+    {
+      "job_id": "21329420",
+      "preset": "morning",
+      "sun_azimuth_deg": 60.0,
+      "sun_elevation_deg": 18.0,
+      "sun_intensity": 1600.0,
+      "sun_color_rgb": [1.0, 0.78, 0.55],
+      "final_tracking_features": 10,
+      "final_tracking_confidence": 0.9946947693824768,
+      "max_tool_displacement_m": 0.11300360726385607,
+      "final_tool_center_target_distance_m": 0.22790170649687927,
+      "final_tracked_mouth_target_distance_m": 0.15327928484887765,
+      "tof_left_valid_fraction": 0.3578125,
+      "tof_right_valid_fraction": 0.3697916666666667,
+      "gif": "docs/demo/isaac_two_trees_morning_probe.gif",
+      "poster": "docs/demo/isaac_two_trees_morning_probe.png",
+      "local_video": "artifacts/isaac_render/job_21329420/media/isaac_two_trees_morning_probe.mp4",
+      "sha256": {
+        "report.json": "af3d5d0d41370d1b2089f57dca2205de4baf70031c5264441697c33339263c63",
+        "frames.json": "35414dfeab9003f82e5c6c88028782a1f27d9d4924c49e3421f81661a6a3850a",
+        "sequence_grade": "48954d4a30882c6b042c170db69dcea586b4000991d811fc3f1743a556d76375",
+        "mp4": "3b458d716d3c46bc0ab3af533d79bca0f33716ab17c61f39dce68d7f4ce72438",
+        "gif": "963d95f27c3a67cdee7c66e7292f9d9190c78fee885d00d46b2ae699be3a19f4",
+        "poster": "a7e3e774887f0acb975537f1e2443157275f2d95cb9dd1cbae483406cd8df0cc"
+      }
+    },
+    {
+      "job_id": "21329421",
+      "preset": "evening",
+      "sun_azimuth_deg": 270.0,
+      "sun_elevation_deg": 12.0,
+      "sun_intensity": 1300.0,
+      "sun_color_rgb": [1.0, 0.56, 0.32],
+      "final_tracking_features": 25,
+      "final_tracking_confidence": 0.9961885809898376,
+      "max_tool_displacement_m": 0.11299134672556513,
+      "final_tool_center_target_distance_m": 0.22790856835391324,
+      "final_tracked_mouth_target_distance_m": 0.15287555322049792,
+      "tof_left_valid_fraction": 0.3567708333333333,
+      "tof_right_valid_fraction": 0.37083333333333335,
+      "gif": "docs/demo/isaac_two_trees_evening_probe.gif",
+      "poster": "docs/demo/isaac_two_trees_evening_probe.png",
+      "local_video": "artifacts/isaac_render/job_21329421/media/isaac_two_trees_evening_probe.mp4",
+      "sha256": {
+        "report.json": "9e8426a399321fbf3461087e78e6da9f0ac81b038bb5bd7dc2b22872c4bca37d",
+        "frames.json": "fcbd82907b23311e06b38760ed1bc0f08f7a9fe09eec21ad49103c6ead1bc734",
+        "sequence_grade": "f27c3429c7dabb0efcfdb45f29c33c2580952f235236a0faba6537d15cef45df",
+        "mp4": "1cc8d7c176ad4f4fbb28de3dc9b23f1841ec7b955d12c8bec466938210ed72a3",
+        "gif": "f4b3dcbbd52c02b544760f4d6cbce5f97b3085a7825b80058801e97a7a356019",
+        "poster": "3c74531aef95069d516e30d3926e5adc5952ad09db75e59d18aad8f651d675e5"
+      }
+    }
+  ],
+  "visual_inspection": "Overview frame 15 and wrist frame 29 from each probe, plus the evening dashboard poster, were inspected. Both original trees and the robot are visible. Evening shows warmer bark/ground and long directional shadows; morning is darker. These are different lighting conditions, not different orchard geometry.",
+  "recommended_next_run": "One 200-frame capture per preset, retaining current tracking and safety thresholds. The short probes justify testing full approach, surrogate closure, measured rigid-piece release and home return; they cannot predict success.",
+  "limitations": [
+    "Artistic Sun direction, intensity and color changes; no calibrated clock/location, weather or spectral sensor model.",
+    "The same single scene-selected spur is targeted; two visible trees do not mean both were pruned.",
+    "RGB-D tracking uses renderer depth and scene-supplied initial identity/axis/radius, not learned branch recognition.",
+    "Contact statements are capture-rate evidence, not continuous safety certification.",
+    "No wood fracture or physically actuated CAD cutter is modeled.",
+    "Full source reports, sensor telemetry and compositor provenance remain local; this file is an aggregate summary."
+  ]
+}
