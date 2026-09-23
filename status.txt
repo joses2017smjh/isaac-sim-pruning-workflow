@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — PHASE 1 DONE, PHASE 2 SUBMITTED
+CURRENT CHECKPOINT — 2026-09-23 PDT — PHASES 1 AND 3 DONE, PHASE 2 SUBMITTED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -13,7 +13,8 @@ SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
   Phase 2 success rate  SUBMITTED 2026-09-23: arrays 21400715 (source) and
                        21400716 (morning, afterany:21400715). NO RESULT YET.
                        Aggregation layer still to build. See PHASE 2 below.
-  Phase 3 ROS 2 SIL .. not started (CPU-only, can run while Phase 2 queues)
+  Phase 3 ROS 2 SIL .. DONE. 199/199 recorded decision states reproduced.
+                       Evidence docs/evidence/ros2_sil_parity_2026-09-23.json.
   Phase 4 studio ..... not started (CPU-only)
   Phase 5 CuRobo ..... optional, time-boxed
   Phase 6 docs/claims  not started; needs the user's CLAIM_BANK.md path and
@@ -97,6 +98,39 @@ PHASE 2 — SUBMITTED, NO RESULT YET (2026-09-23)
     Wilson 95% interval, failure taxonomy from recorded stop reasons, tracking
     coverage vs error, docs/evidence/eval_<date>.json, README Result update,
     and one GIF or still of the most common failure mode.
+
+PHASE 3 RESULT — ROS 2 Humble software-in-the-loop (NOT hardware-in-the-loop)
+  ros2/pruning_sil (ament_python) + ros2/pruning_sil_cpp (ament_cmake, gtest).
+  The node imports VisionPruningDemo; it reimplements no perception or control.
+  PARITY on capture 21328323: 199 of 200 frames compared (frame 0 records
+    controller_source_frame_index=-1, so the node publishes an explicit hold with
+    no pose). DECISION STATES AGREE 199/199. Command delta error median 0.07 mm,
+    p95 0.68 mm, max 1.995 mm against a stated 2 mm tolerance.
+  Divergence is in the tracker's accumulated feature state, not the control path:
+    measurement error median 2.7 mm is LARGER than command error median 0.07 mm,
+    because the bounded step attenuates it. Rebuilding with OpenCV 4.11.0 (the
+    recording's version) gave IDENTICAL numbers, so the OpenCV version is not
+    the cause. That hypothesis was tested and rejected.
+  NEGATIVE CONTROLS: RGB blackout and depth dropout each hold 39/39 frames and
+    never authorize approach or release.
+  CONTAINER: /nfs/hpc/share/sanchej7/containers/pruning_sil_humble.sif, built by
+    ros2/containers/pruning_sil_humble.def from docker://ros:humble-ros-base plus
+    rosbag2-storage-mcap, python3-opencv, CPU torch and packaging>=23.2.
+    APPTAINER_CACHEDIR/APPTAINER_TMPDIR must point at the share; home is 92% full.
+    The packaging pin is required: the torch install pulls a setuptools whose
+    metadata path breaks colcon against Ubuntu 22.04's packaging 21.3.
+  RUN: apptainer exec --bind /nfs/hpc/share/sanchej7 <sif> bash -lc \
+    'source /opt/ros/humble/setup.bash && cd <repo> && export PYTHONNOUSERSITE=1 \
+     PYTHONPATH=$PWD/source/isaaclab_pruning:$PWD/ros2/pruning_sil:$PYTHONPATH && ...'
+    PYTHONNOUSERSITE=1 matters: ~/.local has a pytest that breaks in-container.
+    Do NOT replace PYTHONPATH wholesale; append, or rosbag2_py disappears.
+  TESTS: 18 python tests in ros2/pruning_sil/test (procedural fixture, no
+    licensed assets) and 5 gtest cases in pruning_sil_cpp. colcon build and
+    colcon test are green for both packages.
+  CI: .github/workflows/ros2.yml on ros:humble-ros-base (NOT ros:humble, which
+    has no rosbag2), with a step that fails if any 3D asset reaches the build.
+  ROADMAP: the stretch gate is split into SIL done (with evidence) and HIL
+    pending hardware.
 
 KEY FACTS FOR PHASE 2 (established in the Phase 0 audit)
   tools/queue_vision_robustness.py freezes with `git archive HEAD`, so it REFUSES

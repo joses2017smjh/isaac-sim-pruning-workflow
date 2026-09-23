@@ -1,0 +1,52 @@
+# Software-in-the-loop container for ros2/pruning_sil.
+#
+# Base is the official ROS 2 Humble ros-base image. Humble is not incidental:
+# third_party/sources.yaml pins the Universal Robots ROS 2 description to the
+# humble branch (revision 18e6f603, release 2.13.0), because that is the last
+# revision whose ur_robot macro accepts the parameters the pinned mock-pruner
+# Xacro passes.
+#
+# Two additions, both from the distribution's own archives:
+#   rosbag2-storage-mcap  the MCAP storage plugin, so recorded captures export
+#                         to MCAP rather than the sqlite3 default
+#   python3-opencv        the tracker's pyramidal Lucas-Kanade implementation
+#   torch (CPU wheel)     isaaclab_pruning.task imports it transitively; the CPU
+#                         index is the same one .github/workflows/foundation.yml
+#                         installs. No CUDA, and nothing here uses a GPU.
+#
+# No licensed orchard, robot or CAD asset is ever placed in this image.
+#
+# Build (fakeroot works unprivileged on this cluster):
+#   APPTAINER_CACHEDIR=/nfs/hpc/share/$USER/apptainer-cache \
+#   APPTAINER_TMPDIR=/nfs/hpc/share/$USER/apptainer-tmp \
+#   apptainer build --fakeroot pruning_sil_humble.sif pruning_sil_humble.def
+
+Bootstrap: localimage
+From: ros-humble-ros-base.sif
+
+%post
+    set -eux
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ros-humble-rosbag2-storage-mcap \
+        python3-opencv \
+        python3-pip
+    rm -rf /var/lib/apt/lists/*
+    # --no-deps is deliberate: the full dependency set would pull a newer numpy
+    # over the one ROS 2 Humble was built against.
+    pip3 install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch
+    # The torch install pulls a modern setuptools, whose metadata handling calls
+    # packaging with a keyword the Ubuntu 22.04 packaging 21.3 does not accept.
+    # Without this, `colcon build` on any ament_python package fails with
+    # "canonicalize_version() got an unexpected keyword argument".
+    pip3 install --no-cache-dir --upgrade "packaging>=23.2"
+    python3 -c "import torch, numpy; print('torch', torch.__version__, 'numpy', numpy.__version__)"
+
+%environment
+    export ROS_DISTRO=humble
+    # Loopback only: a software-in-the-loop replay must never reach a real rig.
+    export ROS_LOCALHOST_ONLY=1
+
+%labels
+    Purpose Software-in-the-loop replay of recorded pruning captures
+    NotHIL  This image replays recorded data; it does not drive hardware

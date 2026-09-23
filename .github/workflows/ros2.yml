@@ -1,0 +1,71 @@
+name: ROS 2 SIL
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  colcon:
+    runs-on: ubuntu-latest
+    # ros-base rather than the ros:humble core image: rosbag2 is not in core.
+    container: ros:humble-ros-base
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SIL dependencies
+        run: |
+          set -eux
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            ros-humble-rosbag2-storage-mcap \
+            ros-humble-ament-cmake-gtest \
+            python3-opencv \
+            python3-pip
+          rm -rf /var/lib/apt/lists/*
+          python3 -m pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch
+          # Keeps colcon's setuptools metadata path working; see
+          # ros2/containers/pruning_sil_humble.def for the same pin.
+          python3 -m pip install --no-cache-dir --upgrade "packaging>=23.2"
+
+      - name: Build
+        shell: bash
+        run: |
+          set -eux
+          source /opt/ros/humble/setup.bash
+          mkdir -p ws/src
+          cp -r ros2/pruning_sil ros2/pruning_sil_cpp ws/src/
+          cd ws
+          colcon build
+
+      - name: Test
+        shell: bash
+        # The procedural fixture in ros2/pruning_sil/test builds its own scene.
+        # No orchard mesh, bark texture, mock-pruner CAD or recorded capture is
+        # present on a clean runner, and the capture-dependent parity test skips
+        # itself accordingly.
+        env:
+          ROS_LOCALHOST_ONLY: "1"
+          PYTHONNOUSERSITE: "1"
+        run: |
+          set -eux
+          source /opt/ros/humble/setup.bash
+          source ws/install/setup.bash
+          export PYTHONPATH="$PWD/source/isaaclab_pruning:$PWD/ros2/pruning_sil:$PYTHONPATH"
+          python3 -m pytest -q ros2/pruning_sil/test
+          cd ws
+          # pruning_sil_cpp carries the gtest parity check of the C++ time-of-flight
+          # deprojection against the Python original on recorded grids.
+          colcon test --event-handlers console_direct+
+          colcon test-result --verbose
+
+      - name: Confirm no licensed asset reached the build
+        shell: bash
+        run: |
+          set -eux
+          # A bag or package that carried tree meshes, bark textures or
+          # mock-pruner CAD would be a redistribution problem, so fail loudly.
+          if find ws -iname '*.usd*' -o -iname '*.stl' -o -iname '*.glb' -o -iname '*.gltf' \
+               -o -iname '*.blend' -o -iname '*.dae' | grep -q .; then
+            echo "Unexpected 3D asset inside the ROS 2 build"
+            exit 1
+          fi

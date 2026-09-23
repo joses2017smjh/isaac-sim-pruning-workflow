@@ -1,0 +1,49 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Global Options:
+    Background Color: 34; 40; 44
+    Fixed Frame: base_link
+  Displays:
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: true
+    - Class: rviz_default_plugins/Image
+      Name: Wrist RGB
+      Enabled: true
+      Topic:
+        Value: /pruning/wrist/image_raw
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Best Effort
+    - Class: rviz_default_plugins/Image
+      Name: Wrist depth (optical-Z metres)
+      Enabled: true
+      Topic:
+        Value: /pruning/wrist/depth
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Best Effort
+    - Class: rviz_default_plugins/Pose
+      Name: Recorded command
+      Enabled: true
+      Color: 130; 160; 190
+      Topic:
+        Value: /pruning/recorded/command_pose
+        Reliability Policy: Reliable
+    - Class: rviz_default_plugins/Pose
+      Name: Proposed command (advisory, not actuated)
+      Enabled: true
+      Color: 235; 150; 60
+      Topic:
+        Value: /pruning/proposed/command_pose
+        Reliability Policy: Reliable
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 1.6
+      Focal Point: {X: 0.35, Y: 0.45, Z: 0.75}
+      Name: Orbit

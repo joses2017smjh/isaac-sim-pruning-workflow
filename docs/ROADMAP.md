@@ -285,7 +285,21 @@ blade mechanics, or wood fracture. Those remain separate gates above.
 - [ ] Held-out Envy `00042` / `00065` and untouched UFO rollouts in Isaac.
 - [ ] PyBullet sim2sim numbers.
 - [ ] 30 cm box rendered in Isaac and compared to Blender.
-- [ ] ROS 2 hardware-in-the-loop demo (stretch).
+- [x] ROS 2 **software**-in-the-loop: the perception-to-control loop runs as a
+      ROS 2 Humble graph on recorded sensor streams, wrapping the existing
+      tracker, bounded command and gates rather than reimplementing them.
+      Replaying `21328323` reproduces **199/199 recorded decision states**, with
+      command deltas agreeing to a 2 mm stated tolerance (median 0.07 mm).
+      RGB-blackout and depth-dropout controls hold on 39/39 frames and never
+      authorize approach or release. [Notes](ROS2_SIL.md) ·
+      [evidence](evidence/ros2_sil_parity_2026-09-23.json).
+      A C++ port of the time-of-flight deprojection is checked against the
+      Python original on recorded grids (`ros2/pruning_sil_cpp`, gtest).
+- [ ] ROS 2 **hardware**-in-the-loop demo: pending hardware. Requires a physical
+      VL53L8CX pair, a calibrated wrist camera and a UR5e driver. The interface
+      mapping and the list of what would change are in
+      [ROS2_SIL.md](ROS2_SIL.md#what-would-change-for-hardware); none of it has
+      been exercised on a rig.
 
 ## Authorized research execution (2026-09-20)
 

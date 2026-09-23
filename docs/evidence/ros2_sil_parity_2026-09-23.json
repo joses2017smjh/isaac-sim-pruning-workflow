@@ -1,0 +1,2049 @@
+{
+  "schema_version": 1,
+  "scope": "Software-in-the-loop parity between the ROS 2 node and a recorded Isaac capture. Every input is recorded simulator output. This is not hardware-in-the-loop, no physical sensor or robot is involved, and no command is actuated.",
+  "evaluation_type": "software_in_the_loop_replay_parity",
+  "capture_dir": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/isaac_render/job_21328323",
+  "source_job_id": "21328323",
+  "recorded_frames": 200,
+  "frames_compared": 199,
+  "frames_skipped_no_source_image": 1,
+  "decision_state_agreement": "199/199",
+  "decision_states_all_agree": true,
+  "command_tolerance_m": 0.002,
+  "command_within_tolerance": true,
+  "command_delta_error": {
+    "count": 67,
+    "exact_zero": 0,
+    "median_m": 7.063199495339934e-05,
+    "p95_m": 0.0006770593618124996,
+    "p99_m": 0.0015390502311920442,
+    "max_m": 0.001995392559239405,
+    "over_0p1mm": 27,
+    "over_1mm": 2
+  },
+  "tracker_measurement_error": {
+    "count": 78,
+    "exact_zero": 1,
+    "median_m": 0.0027189295117177174,
+    "p95_m": 0.003445161906592993,
+    "p99_m": 0.003524658859571481,
+    "max_m": 0.0035720953831934934,
+    "over_0p1mm": 76,
+    "over_1mm": 66
+  },
+  "runtime": {
+    "python": "3.10.12",
+    "numpy": "1.21.5",
+    "opencv": "4.5.4",
+    "platform": "Linux-5.14.0-611.55.1.el9_7.x86_64-x86_64-with-glibc2.35"
+  },
+  "per_frame": [
+    {
+      "frame_index": 1,
+      "controller_source_frame_index": 0,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 5.87383195090114e-06,
+      "measurement_error_m": 0.0,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 2,
+      "controller_source_frame_index": 1,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 1.8930581757155598e-06,
+      "measurement_error_m": 9.017127841034126e-05,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 3,
+      "controller_source_frame_index": 2,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 3.899863211089685e-06,
+      "measurement_error_m": 0.0005691242395284603,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 4,
+      "controller_source_frame_index": 3,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 4.365927152480165e-06,
+      "measurement_error_m": 0.0002691027085013964,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 5,
+      "controller_source_frame_index": 4,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 4.604423650591443e-06,
+      "measurement_error_m": 0.0002690828827509926,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 6,
+      "controller_source_frame_index": 5,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 5.6058505241215675e-06,
+      "measurement_error_m": 0.00037156471241751377,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 7,
+      "controller_source_frame_index": 6,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 6.250941133619655e-06,
+      "measurement_error_m": 0.0003904383496150511,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 8,
+      "controller_source_frame_index": 7,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 9.491011573306832e-06,
+      "measurement_error_m": 0.0006025575456556685,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 9,
+      "controller_source_frame_index": 8,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 1.1019037299656394e-05,
+      "measurement_error_m": 0.0006823596680893128,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 10,
+      "controller_source_frame_index": 9,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 1.4502821303509418e-05,
+      "measurement_error_m": 0.000844687386869343,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 11,
+      "controller_source_frame_index": 10,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 1.4773078030700991e-05,
+      "measurement_error_m": 0.0009020341629653758,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 12,
+      "controller_source_frame_index": 11,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 1.7750680762061588e-05,
+      "measurement_error_m": 0.0009992001089155897,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 13,
+      "controller_source_frame_index": 12,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 1.7960988104375222e-05,
+      "measurement_error_m": 0.0010484690836077618,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 14,
+      "controller_source_frame_index": 13,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 1.9696373224901643e-05,
+      "measurement_error_m": 0.0010945057257474575,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 15,
+      "controller_source_frame_index": 14,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 2.5117910098932245e-05,
+      "measurement_error_m": 0.0013005483960968245,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 16,
+      "controller_source_frame_index": 15,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 2.5182778968577302e-05,
+      "measurement_error_m": 0.001337206557781201,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 17,
+      "controller_source_frame_index": 16,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 2.574438899473231e-05,
+      "measurement_error_m": 0.001403256463132921,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 18,
+      "controller_source_frame_index": 17,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 2.759214392210231e-05,
+      "measurement_error_m": 0.0014233949620988929,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 19,
+      "controller_source_frame_index": 18,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 2.871366603989454e-05,
+      "measurement_error_m": 0.001504697129664846,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 20,
+      "controller_source_frame_index": 19,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 3.062551062360003e-05,
+      "measurement_error_m": 0.0015246047775219474,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 21,
+      "controller_source_frame_index": 20,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 3.402365909341831e-05,
+      "measurement_error_m": 0.0016403390826617483,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 22,
+      "controller_source_frame_index": 21,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 3.6849349958172195e-05,
+      "measurement_error_m": 0.0017737128086400115,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 23,
+      "controller_source_frame_index": 22,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 4.091067528786639e-05,
+      "measurement_error_m": 0.0018238612545146981,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 24,
+      "controller_source_frame_index": 23,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 4.0242329447059794e-05,
+      "measurement_error_m": 0.0018598896560193326,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 25,
+      "controller_source_frame_index": 24,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 4.422528100448238e-05,
+      "measurement_error_m": 0.0019055479006980795,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 26,
+      "controller_source_frame_index": 25,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 4.413247290063145e-05,
+      "measurement_error_m": 0.001970597563110129,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 27,
+      "controller_source_frame_index": 26,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 4.771798278108049e-05,
+      "measurement_error_m": 0.0020132004648824972,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 28,
+      "controller_source_frame_index": 27,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 4.858306191201683e-05,
+      "measurement_error_m": 0.0020888345178382423,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 29,
+      "controller_source_frame_index": 28,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 5.5408205025073926e-05,
+      "measurement_error_m": 0.0021663919980531294,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 30,
+      "controller_source_frame_index": 29,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 5.408998270144835e-05,
+      "measurement_error_m": 0.0021868081134463766,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 31,
+      "controller_source_frame_index": 30,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 5.705267462600417e-05,
+      "measurement_error_m": 0.002212475927072579,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 32,
+      "controller_source_frame_index": 31,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 6.463842625605741e-05,
+      "measurement_error_m": 0.0023184210769031863,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 33,
+      "controller_source_frame_index": 32,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 6.41369619177297e-05,
+      "measurement_error_m": 0.0023513050900772466,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 34,
+      "controller_source_frame_index": 33,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 7.063199495339934e-05,
+      "measurement_error_m": 0.0023996166304092624,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 35,
+      "controller_source_frame_index": 34,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 7.428344622927245e-05,
+      "measurement_error_m": 0.002481332969013507,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 36,
+      "controller_source_frame_index": 35,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 7.602803554213271e-05,
+      "measurement_error_m": 0.002459868333974632,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 37,
+      "controller_source_frame_index": 36,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 7.599475252521592e-05,
+      "measurement_error_m": 0.0025763175355739782,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 38,
+      "controller_source_frame_index": 37,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 8.893355766975403e-05,
+      "measurement_error_m": 0.0027246937361891186,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 39,
+      "controller_source_frame_index": 38,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 9.221964628388561e-05,
+      "measurement_error_m": 0.002713165287246316,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 40,
+      "controller_source_frame_index": 39,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 9.987366300192811e-05,
+      "measurement_error_m": 0.0027940803046112173,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 41,
+      "controller_source_frame_index": 40,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00010340322738383757,
+      "measurement_error_m": 0.002878077362806152,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 42,
+      "controller_source_frame_index": 41,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00011052234486611088,
+      "measurement_error_m": 0.002913419155818054,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 43,
+      "controller_source_frame_index": 42,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00011246274371432283,
+      "measurement_error_m": 0.002962641059412864,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 44,
+      "controller_source_frame_index": 43,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00012271939967500102,
+      "measurement_error_m": 0.0030238533091831036,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 45,
+      "controller_source_frame_index": 44,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00013421002989181792,
+      "measurement_error_m": 0.003045829912588105,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 46,
+      "controller_source_frame_index": 45,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00013084796736912482,
+      "measurement_error_m": 0.003024320164305552,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 47,
+      "controller_source_frame_index": 46,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0001354203552285239,
+      "measurement_error_m": 0.003131533716209698,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 48,
+      "controller_source_frame_index": 47,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0001466684572754539,
+      "measurement_error_m": 0.003116928335136362,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 49,
+      "controller_source_frame_index": 48,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0001612905035722095,
+      "measurement_error_m": 0.003261145704076441,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 50,
+      "controller_source_frame_index": 49,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0001682841623485997,
+      "measurement_error_m": 0.0032908840184587966,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 51,
+      "controller_source_frame_index": 50,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00018208401863954786,
+      "measurement_error_m": 0.0032692275406053153,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 52,
+      "controller_source_frame_index": 51,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00021029054523443775,
+      "measurement_error_m": 0.0033823137343537775,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 53,
+      "controller_source_frame_index": 52,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00021232260663650284,
+      "measurement_error_m": 0.0035104895083597105,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 54,
+      "controller_source_frame_index": 53,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00023197755355581026,
+      "measurement_error_m": 0.0034373320706811697,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 55,
+      "controller_source_frame_index": 54,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0002545682032171153,
+      "measurement_error_m": 0.0035720953831934934,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 56,
+      "controller_source_frame_index": 55,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0002841320365416194,
+      "measurement_error_m": 0.003494938215583606,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 57,
+      "controller_source_frame_index": 56,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0002930340217193684,
+      "measurement_error_m": 0.003464437343043725,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 58,
+      "controller_source_frame_index": 57,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.00032160141190364224,
+      "measurement_error_m": 0.0034417603589840403,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 59,
+      "controller_source_frame_index": 58,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0003486215863212164,
+      "measurement_error_m": 0.0034136452817557944,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 60,
+      "controller_source_frame_index": 59,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0003867588521993497,
+      "measurement_error_m": 0.0033313984487738234,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 61,
+      "controller_source_frame_index": 60,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0004631688518007505,
+      "measurement_error_m": 0.0033136384540304945,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 62,
+      "controller_source_frame_index": 61,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0005026399465620552,
+      "measurement_error_m": 0.003182161372947477,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 63,
+      "controller_source_frame_index": 62,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0006138883411041162,
+      "measurement_error_m": 0.0032014762206887116,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 64,
+      "controller_source_frame_index": 63,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0007041326564018073,
+      "measurement_error_m": 0.0030735302317107887,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 65,
+      "controller_source_frame_index": 64,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0008945149437759809,
+      "measurement_error_m": 0.0029930037127467992,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 66,
+      "controller_source_frame_index": 65,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.0013039647894706728,
+      "measurement_error_m": 0.0030764425407970083,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 67,
+      "controller_source_frame_index": 66,
+      "proposed_state": "tracking",
+      "recorded_state": "tracking",
+      "state_matches": true,
+      "command_delta_error_m": 0.001995392559239405,
+      "measurement_error_m": 0.0028623187317637585,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 68,
+      "controller_source_frame_index": 67,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.0028211556510329737,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 69,
+      "controller_source_frame_index": 68,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.0027337791683187994,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 70,
+      "controller_source_frame_index": 69,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.002741931805720118,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 71,
+      "controller_source_frame_index": 70,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.0027345446024330173,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 72,
+      "controller_source_frame_index": 71,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.002735039049998649,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 73,
+      "controller_source_frame_index": 72,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.002736510584996942,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 74,
+      "controller_source_frame_index": 73,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.002737344484587908,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 75,
+      "controller_source_frame_index": 74,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.002728111852944516,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 76,
+      "controller_source_frame_index": 75,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.0027322681548625394,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 77,
+      "controller_source_frame_index": 76,
+      "proposed_state": "hold",
+      "recorded_state": "hold",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.0027329660510360967,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 78,
+      "controller_source_frame_index": 77,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": 0.002699404462694634,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 79,
+      "controller_source_frame_index": 78,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 80,
+      "controller_source_frame_index": 79,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 81,
+      "controller_source_frame_index": 80,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 82,
+      "controller_source_frame_index": 81,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 83,
+      "controller_source_frame_index": 82,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 84,
+      "controller_source_frame_index": 83,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 85,
+      "controller_source_frame_index": 84,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 86,
+      "controller_source_frame_index": 85,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 87,
+      "controller_source_frame_index": 86,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 88,
+      "controller_source_frame_index": 87,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 89,
+      "controller_source_frame_index": 88,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 90,
+      "controller_source_frame_index": 89,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 91,
+      "controller_source_frame_index": 90,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 92,
+      "controller_source_frame_index": 91,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 93,
+      "controller_source_frame_index": 92,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 94,
+      "controller_source_frame_index": 93,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 95,
+      "controller_source_frame_index": 94,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 96,
+      "controller_source_frame_index": 95,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 97,
+      "controller_source_frame_index": 96,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 98,
+      "controller_source_frame_index": 97,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 99,
+      "controller_source_frame_index": 98,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 100,
+      "controller_source_frame_index": 99,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 101,
+      "controller_source_frame_index": 100,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 102,
+      "controller_source_frame_index": 101,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 103,
+      "controller_source_frame_index": 102,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 104,
+      "controller_source_frame_index": 103,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 105,
+      "controller_source_frame_index": 104,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 106,
+      "controller_source_frame_index": 105,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 107,
+      "controller_source_frame_index": 106,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 108,
+      "controller_source_frame_index": 107,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 109,
+      "controller_source_frame_index": 108,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 110,
+      "controller_source_frame_index": 109,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 111,
+      "controller_source_frame_index": 110,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 112,
+      "controller_source_frame_index": 111,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 113,
+      "controller_source_frame_index": 112,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 114,
+      "controller_source_frame_index": 113,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 115,
+      "controller_source_frame_index": 114,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 116,
+      "controller_source_frame_index": 115,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 117,
+      "controller_source_frame_index": 116,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 118,
+      "controller_source_frame_index": 117,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 119,
+      "controller_source_frame_index": 118,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 120,
+      "controller_source_frame_index": 119,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 121,
+      "controller_source_frame_index": 120,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 122,
+      "controller_source_frame_index": 121,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 123,
+      "controller_source_frame_index": 122,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 124,
+      "controller_source_frame_index": 123,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 125,
+      "controller_source_frame_index": 124,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 126,
+      "controller_source_frame_index": 125,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 127,
+      "controller_source_frame_index": 126,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 128,
+      "controller_source_frame_index": 127,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 129,
+      "controller_source_frame_index": 128,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 130,
+      "controller_source_frame_index": 129,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 131,
+      "controller_source_frame_index": 130,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 132,
+      "controller_source_frame_index": 131,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 133,
+      "controller_source_frame_index": 132,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 134,
+      "controller_source_frame_index": 133,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 135,
+      "controller_source_frame_index": 134,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 136,
+      "controller_source_frame_index": 135,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 137,
+      "controller_source_frame_index": 136,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 138,
+      "controller_source_frame_index": 137,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 139,
+      "controller_source_frame_index": 138,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 140,
+      "controller_source_frame_index": 139,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 141,
+      "controller_source_frame_index": 140,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 142,
+      "controller_source_frame_index": 141,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 143,
+      "controller_source_frame_index": 142,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 144,
+      "controller_source_frame_index": 143,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 145,
+      "controller_source_frame_index": 144,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 146,
+      "controller_source_frame_index": 145,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 147,
+      "controller_source_frame_index": 146,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 148,
+      "controller_source_frame_index": 147,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 149,
+      "controller_source_frame_index": 148,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 150,
+      "controller_source_frame_index": 149,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 151,
+      "controller_source_frame_index": 150,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 152,
+      "controller_source_frame_index": 151,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 153,
+      "controller_source_frame_index": 152,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 154,
+      "controller_source_frame_index": 153,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 155,
+      "controller_source_frame_index": 154,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 156,
+      "controller_source_frame_index": 155,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 157,
+      "controller_source_frame_index": 156,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 158,
+      "controller_source_frame_index": 157,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 159,
+      "controller_source_frame_index": 158,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 160,
+      "controller_source_frame_index": 159,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 161,
+      "controller_source_frame_index": 160,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 162,
+      "controller_source_frame_index": 161,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 163,
+      "controller_source_frame_index": 162,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 164,
+      "controller_source_frame_index": 163,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 165,
+      "controller_source_frame_index": 164,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 166,
+      "controller_source_frame_index": 165,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 167,
+      "controller_source_frame_index": 166,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 168,
+      "controller_source_frame_index": 167,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 169,
+      "controller_source_frame_index": 168,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 170,
+      "controller_source_frame_index": 169,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 171,
+      "controller_source_frame_index": 170,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 172,
+      "controller_source_frame_index": 171,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 173,
+      "controller_source_frame_index": 172,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 174,
+      "controller_source_frame_index": 173,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 175,
+      "controller_source_frame_index": 174,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 176,
+      "controller_source_frame_index": 175,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 177,
+      "controller_source_frame_index": 176,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 178,
+      "controller_source_frame_index": 177,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 179,
+      "controller_source_frame_index": 178,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 180,
+      "controller_source_frame_index": 179,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 181,
+      "controller_source_frame_index": 180,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 182,
+      "controller_source_frame_index": 181,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 183,
+      "controller_source_frame_index": 182,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 184,
+      "controller_source_frame_index": 183,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 185,
+      "controller_source_frame_index": 184,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 186,
+      "controller_source_frame_index": 185,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 187,
+      "controller_source_frame_index": 186,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 188,
+      "controller_source_frame_index": 187,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 189,
+      "controller_source_frame_index": 188,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 190,
+      "controller_source_frame_index": 189,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 191,
+      "controller_source_frame_index": 190,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 192,
+      "controller_source_frame_index": 191,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 193,
+      "controller_source_frame_index": 192,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 194,
+      "controller_source_frame_index": 193,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 195,
+      "controller_source_frame_index": 194,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 196,
+      "controller_source_frame_index": 195,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 197,
+      "controller_source_frame_index": 196,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 198,
+      "controller_source_frame_index": 197,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    },
+    {
+      "frame_index": 199,
+      "controller_source_frame_index": 198,
+      "proposed_state": "retreat",
+      "recorded_state": "retreat",
+      "state_matches": true,
+      "command_delta_error_m": null,
+      "measurement_error_m": null,
+      "within_tolerance": true
+    }
+  ],
+  "negative_controls": [
+    {
+      "control": "rgb_blackout",
+      "frames_evaluated": 39,
+      "frames_held": 39,
+      "authorized_approach_or_release": [],
+      "passed": true
+    },
+    {
+      "control": "depth_dropout",
+      "frames_evaluated": 39,
+      "frames_held": 39,
+      "authorized_approach_or_release": [],
+      "passed": true
+    }
+  ],
+  "negative_controls_passed": true
+}
