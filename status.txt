@@ -1,9 +1,9 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — ALL PHASES DONE OR STOPPED; NOTHING PUSHED
+CURRENT CHECKPOINT — 2026-09-23 PDT — ALL PHASES DONE OR STOPPED; PUSHED, CI GREEN, PAGES LIVE
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
   Branch develop. Local history now CONTAINS origin/develop 8edb3d7 (merged clean).
-  NOT PUSHED YET. Ask before pushing; never force-push.
+  Pushed through 9831fc1. Ask before any further push; never force-push.
   CPU environment: /nfs/hpc/share/sanchej7/miniforge3/envs/depth-env/bin/python
   (Python 3.10.19, numpy 2.2.6, opencv 4.11.0.86, ruff 0.16.5). No repo venv exists.
 
@@ -29,10 +29,15 @@ SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
                        Their SHA links resolve only after this repo is pushed.
                        Nothing committed in the portfolio repo. Resume bullets and
                        outreach openings were delivered in chat, not written to files.
-  USER ACTIONS PENDING: (1) approve a push of develop; (2) GitHub Settings >
-    Pages > Source = GitHub Actions; (3) decide the fate of studio/src; (4) add
-    topics ros2, ros2-humble, isaac-sim, robotics, visual-servoing,
-    software-in-the-loop, duckdb; (5) GPU OK if a tree1 re-registration is wanted.
+  DONE 2026-09-23: develop pushed; Foundation, ROS 2 SIL and Pages all green.
+    ROS 2 SIL first failed on `set -u` while sourcing ROS; fixed in 9831fc1.
+    The first Pages deploy after enabling Pages hung in "waiting" with no gate;
+    cancelled and re-dispatched, it deployed. Replay studio verified live at
+    https://joses2017smjh.github.io/isaac-sim-pruning-workflow/ (headless
+    Chromium, 390px and 1280px, no errors). CLAIM_BANK entries marked verified.
+  OPTIONAL, USER'S CALL: commit CLAIM_BANK.md in the portfolio repo (beside the
+    user's own uncommitted resume edits); decide the fate of studio/src; add
+    repo topics; GPU OK only if a tree1 re-registration is wanted.
   Agreed gating: run CPU-only work continuously; hard-stop for GPU budget
   approval, any push, and committing further untracked work.
 
