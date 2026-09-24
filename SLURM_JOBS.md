@@ -383,3 +383,26 @@ frames, 432 DINO frames with 40 off-rig groups skipped by design; about
 0.001 m. [Evidence](docs/evidence/generalization_controls_2026-09-23.json) ·
 [protocol result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026).
 [Protocol](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md).
+
+### Strategies, tree1, renderer control and fine-tunes (submitted September 23)
+
+All submitted after the user's approval of the budgets and of raising the
+storage line to 1.7 TB (share measured 1.578 TB; code revision `1c8ef03`).
+
+| Batch | Jobs | Reserved | Notes |
+|---|---|---|---|
+| `strategy-tool-axis-20260923` (10 tree0 targets, `tool_axis_standoff`) | array `21404500` `0-9%1`, 25-min tasks | 170 min | [protocol](docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md) |
+| `strategy-horizontal-20260923` (`horizontal_standoff`) | array `21404502` `0-9%1` | 170 min | |
+| `strategy-fine-step-20260923` (`fine_step`, 400 frames) | array `21404503` `0-9%1`, 50-min tasks | 340 min | |
+| `tree1-listed-baseline-20260923` (7 listed tree1 spurs, baseline) | array `21404504` `0-6%1` | 119 min | first recorded tree1 data |
+| `tree0-replay-20260923` (Cycles at recorded wrist poses, two barks) | render `21404508`, eval `21404509` (afterany) | 50 min | [protocol](docs/EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md) |
+| `finetune-jitter-20260923` | train `21404511` (afterany 21404509), eval `21404512` | 540 min | [protocol](docs/EVAL_PROTOCOL_FINETUNE_2026-09-23.md) |
+| `finetune-control-20260923` | train `21404513` (afterany 21404512), eval `21404514` | 540 min | |
+
+**Disclosed deviation.** The four Isaac arrays were meant to be chained with
+`afterany` so that one A40 ran at a time; the submission loop read the wrong
+key from the launcher's result and submitted them independently. Each array
+still runs one task at a time (`%1`), but up to four Isaac tasks can run
+concurrently. Under rule 2 no submitted job is modified; the reserved minutes
+are unchanged. The depth chain is serial as intended.
+
