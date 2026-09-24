@@ -143,6 +143,10 @@ registered target, and a third reached closure and failed only the drop check.
 [Protocol and result](docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md#result--september-24-2026)
 · [strategies evidence](docs/evidence/strategies_2026-09-24.json)
 · [tree1 evidence](docs/evidence/tree1_listed_2026-09-24.json)
+· [pass, tree1 spur 14944 (GIF)](docs/demo/isaac_tree1_v14944_baseline_pass.gif)
+· [failure, tree0 spur 530 under the tool-axis standoff, hazard contact (GIF)](docs/demo/isaac_tree0_v530_tool_axis_standoff_hazard_contact.gif).
+Every other recorded run has its own GIF, MP4 and poster beside its capture
+(`artifacts/vision_robustness/<batch>/<run>/media/`, local only).
 [Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)
