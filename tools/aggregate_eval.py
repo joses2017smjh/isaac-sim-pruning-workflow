@@ -82,6 +82,14 @@ def _tracking(frames):
     }
 
 
+def _first_frame(frames, predicate):
+    """Index of the first recorded frame satisfying ``predicate``, or None."""
+    for frame in frames:
+        if predicate(frame):
+            return int(frame.get("index", 0))
+    return None
+
+
 def _classify_missing(batch, index, row):
     """Say why a planned run produced no capture, using the job log if it exists."""
     logs = sorted((batch / "logs").glob(f"*_{index}.out")) if (batch / "logs").is_dir() else []
@@ -109,6 +117,9 @@ def read_batch(batch: Path, condition: str):
             name += f"_tree{row['target_tree_index']}_v{row['component_first_vertex']}"
         else:
             name += f"_{row['photometric_normalization']}"
+        # A strategy row's capture is named after the strategy (run_vision_experiment.run_label).
+        if "strategy" in row:
+            name += f"_{row['strategy']['name']}"
         directory = batch / name
 
         record = {
@@ -118,6 +129,10 @@ def read_batch(batch: Path, condition: str):
             "component_first_vertex": row.get("component_first_vertex"),
             "daylight": row.get("daylight"),
             "photometric_normalization": row.get("photometric_normalization"),
+            "strategy": (row.get("strategy") or {}).get("name", "baseline"),
+            "stop_frame": None,
+            "final_phase_frame": None,
+            "failed_checks": None,
             "status": "incomplete",
             "checks_passed": 0,
             "checks_total": 0,
@@ -154,6 +169,11 @@ def read_batch(batch: Path, condition: str):
             checks_total=len(grade["checks"]),
             applied_commands=int((grade.get("metrics") or {}).get("applied_vision_command_frames") or 0),
             stop_reason=_stop_reason(grade),
+            stop_frame=_first_frame(frames, lambda f: f.get("phase") == "stopped_failure"),
+            final_phase_frame=_first_frame(
+                frames, lambda f: (f.get("visual_servo_decision") or {}).get("approach_phase") == "final"
+            ),
+            failed_checks=",".join(sorted(k for k, v in grade["checks"].items() if not v)) or None,
             **_tracking(frames),
         )
         rows.append(record)
@@ -179,6 +199,10 @@ def aggregate(rows, sql_dir=SQL_DIR):
             component_first_vertex    INTEGER,
             daylight                  VARCHAR,
             photometric_normalization VARCHAR,
+            strategy                  VARCHAR,
+            stop_frame                INTEGER,
+            final_phase_frame         INTEGER,
+            failed_checks             VARCHAR,
             status                    VARCHAR,
             checks_passed             INTEGER,
             checks_total              INTEGER,
@@ -196,7 +220,7 @@ def aggregate(rows, sql_dir=SQL_DIR):
     placeholders = ", ".join("?" for _ in columns)
     connection.executemany(
         f"INSERT INTO eval_input VALUES ({placeholders})",
-        [[row[column] for column in columns] for row in rows],
+        [[row.get(column) for column in columns] for row in rows],
     )
 
     applied = []
@@ -217,6 +241,7 @@ def aggregate(rows, sql_dir=SQL_DIR):
         "failure_taxonomy": fetch("failure_taxonomy"),
         "rate_by_exclusion": fetch("rate_by_exclusion"),
         "tracking_coverage": fetch("tracking_coverage"),
+        "per_target_by_strategy": fetch("per_target_by_strategy"),
         "runs": fetch("runs"),
     }
 

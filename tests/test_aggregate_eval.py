@@ -247,3 +247,20 @@ def test_stub_report_from_an_aborted_capture_is_classified_from_its_log(tmp_path
     rows = aggregator.read_batch(batch, "source")
     assert rows[0]["status"] == "infrastructure"
     assert rows[0]["stop_reason"] == "target_not_presentable_unlisted_tree1_component"
+
+
+def test_strategy_rows_keep_their_label_stop_frame_and_failed_checks(aggregator):
+    rows = [
+        _row(0, strategy="baseline", stop_frame=59, final_phase_frame=None, failed_checks="no_recorded_stops"),
+        _row(0, strategy="tool_axis_standoff", stop_frame=61, final_phase_frame=55, failed_checks="no_recorded_stops"),
+    ]
+    rows[1]["run_directory"] = "run_00_source_tree0_v530_tool_axis_standoff"
+    rows[1]["condition"] = "tool_axis_standoff"
+    table = aggregator.aggregate(rows)["per_target_by_strategy"]
+    assert [r["strategy"] for r in table] == ["baseline", "tool_axis_standoff"]
+    assert table[1]["final_phase_frame"] == 55 and table[1]["stop_frame"] == 61
+    assert table[0]["failed_checks"] == "no_recorded_stops"
+    # A row without a strategy field still aggregates (older sweep batches).
+    legacy = _row(1)
+    legacy.pop("strategy", None)
+    assert aggregator.aggregate([legacy])["runs"][0]["strategy"] is None
