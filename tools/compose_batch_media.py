@@ -30,6 +30,14 @@ def compose(run_dir: Path, python: str, force: bool = False, dry_run: bool = Fal
     media = run_dir / "media"
     if not (run_dir / "frames.json").is_file() or not (run_dir / "experiment_result.json").is_file():
         return {"run": run_dir.name, "status": "skipped_no_capture"}
+    try:
+        document = json.loads((run_dir / "frames.json").read_text())
+        frames = document["frames"] if isinstance(document, dict) else document
+    except (OSError, ValueError, KeyError):
+        frames = []
+    if not frames:
+        # A layout refusal records a report and no frames; that is a result, not a video.
+        return {"run": run_dir.name, "status": "skipped_no_frames"}
     if not force and (media / f"{name}.gif").is_file():
         return {"run": run_dir.name, "status": "kept", "gif": str(media / f"{name}.gif")}
     command = [python, str(COMPOSER), "--input-dir", str(run_dir), "--output-dir", str(media), "--name", name]
