@@ -161,7 +161,46 @@ def install_jitter(dataset, size, seed):
         return crop(prepare(normalize(sample)))
 
     dataset.transform = transform
+    # DataLoader workers hold their own copy of ``state``, so the counters below
+    # are only observable without workers. The self-check below is the record
+    # that the jitter path changes an image: it runs the transform once here
+    # with a worker-style seed and compares against the plain pipeline on the
+    # same crop.
     return state
+
+
+def jitter_self_check(dataset, size, seed=12345):
+    """Max absolute change the jitter path makes on one sample at an identical crop."""
+    import cv2
+    from dataset.trunk_da2 import Crop
+    from depth_anything_v2.util.transform import NormalizeImage, PrepareForNet, Resize
+
+    row = dataset.rows[0]
+    image = cv2.cvtColor(cv2.imread(row["rgb_path"]), cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
+    depth = np.load(row["depth_path"]).astype(np.float32)
+    mask = np.ones(depth.shape, dtype=np.float32)
+    resize = Resize(
+        width=size[1],
+        height=size[0],
+        keep_aspect_ratio=True,
+        ensure_multiple_of=14,
+        resize_method="lower_bound",
+        image_interpolation_method=cv2.INTER_CUBIC,
+    )
+    plain = lambda s: Crop(size)(PrepareForNet()(NormalizeImage(mean=dataset.MEAN, std=dataset.STD)(resize(s))))  # noqa: E731
+    previous = os.environ.get("FINETUNE_WORKER_SEED")
+    os.environ["FINETUNE_WORKER_SEED"] = str(seed)
+    try:
+        np.random.seed(seed)
+        jittered = dataset.transform({"image": image.copy(), "depth": depth.copy(), "mask": mask.copy()})["image"]
+    finally:
+        if previous is None:
+            os.environ.pop("FINETUNE_WORKER_SEED", None)
+        else:
+            os.environ["FINETUNE_WORKER_SEED"] = previous
+    np.random.seed(seed)
+    reference = plain({"image": image.copy(), "depth": depth.copy(), "mask": mask.copy()})["image"]
+    return {"seed": seed, "max_abs_change": float(np.abs(jittered - reference).max()), "rgb": row["rgb_path"]}
 
 
 def worker_init(worker_id):
@@ -243,6 +282,7 @@ def main(argv=None) -> int:
     valset = TrunkDA2(str(args.val_manifest), mode="val", size=size)
     extras = [(path, TrunkDA2(str(path), mode="val", size=size)) for path in args.extra_val_manifest]
     jitter_state = install_jitter(trainset, size, args.seed) if args.arm == "jitter" else None
+    jitter_check = jitter_self_check(trainset, size) if args.arm == "jitter" else None
     train_loader = DataLoader(
         trainset,
         batch_size=args.batch_size,
@@ -276,6 +316,11 @@ def main(argv=None) -> int:
         "job_id": os.environ.get("SLURM_JOB_ID"),
         "arm": args.arm,
         "jitter": JITTER if args.arm == "jitter" else None,
+        "jitter_self_check": jitter_check,
+        "jitter_counter_scope": (
+            "counted in the main process only; with DataLoader workers the transform runs in the workers and "
+            "the counter stays at zero, so jitter_self_check is the record that the path is live"
+        ),
         "warm_start": {
             "checkpoint": str(args.checkpoint),
             "checkpoint_sha256": args.checkpoint_sha256,
@@ -339,7 +384,9 @@ def main(argv=None) -> int:
                     for path, loader in extra_loaders
                 },
                 "jitter_applied_fraction": (
-                    jitter_state["applied"] / max(jitter_state["seen"], 1) if jitter_state else None
+                    jitter_state["applied"] / max(jitter_state["seen"], 1)
+                    if jitter_state and args.num_workers == 0
+                    else None
                 ),
                 "elapsed_s": time.time() - started,
             }

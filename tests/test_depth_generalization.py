@@ -73,3 +73,23 @@ def test_masked_target_rejects_a_mismatched_mask():
     gt = np.ones((3, 3))
     with pytest.raises(ValueError, match="Mask shape mismatch"):
         m.target_metrics(gt, gt, [1, 1], mask=np.ones((2, 2), dtype=bool))
+
+
+def test_an_evaluation_document_with_an_embedded_plan_is_accepted(tmp_path, monkeypatch):
+    import json
+
+    class Args:
+        manifest = tmp_path / "evaluation.json"
+        output = tmp_path / "out"
+        companion = tmp_path
+        checkpoint = tmp_path / "ckpt"
+        checkpoint_sha256 = "0" * 64
+        device = "cpu"
+        save_predictions = False
+
+    Args.manifest.write_text(json.dumps({"ok": True, "plan": {"frames": [], "depth_convention": "z"}, "rows": []}))
+    Args.checkpoint.write_bytes(b"")
+    with pytest.raises(ValueError, match="Checkpoint hash"):
+        m.evaluate(Args)
+    written = json.loads((Args.output / "evaluation.json").read_text())
+    assert written["plan"]["depth_convention"] == "z" and "frames" in written["plan"]

@@ -184,6 +184,10 @@ def evaluate(args):
     from PIL import Image
 
     plan = json.loads(args.manifest.read_text())
+    # An evaluation document embeds the plan it scored; accept it so a frozen
+    # run's frames can be rescored by another checkpoint on identical bytes.
+    if "frames" not in plan and isinstance(plan.get("plan"), dict):
+        plan = plan["plan"]
     args.output.mkdir(parents=True, exist_ok=False)
     result = {
         "schema_version": 1,
