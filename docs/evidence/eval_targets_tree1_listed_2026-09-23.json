@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "scope": "Pre-registered target population for a scripted vision-guided pruning sweep. Components come from the original two-tree Blender export; geometry is measured from mesh vertices, not learned. Screening is the existing jaw-fit rule only; visibility is decided later, inside each GPU trial.",
+  "export_dir": "artifacts/blender_scene/orchard_two_trees_v1",
+  "export_sha256": {
+    "tree1.usdc": "d1d6e7dcd82f076d8a3f2c0621bef3f889960ee1433f9106c0e7187ee2dcac5b"
+  },
+  "enumerator_sha256": "ffb59b013182facb8fb53b60f7f30f98c1b89d2df01a696238be5557bc6bc45e",
+  "selection_rule": "Measure every connected component of each tree's SPUR mesh; keep those with 0 < max_radius_m <= 0.012 that the export manifest itself lists as candidates; take all of them, no sampling. This is the renderer's accepted population, not a seeded draw.",
+  "listed_only": true,
+  "seed": 20260923,
+  "targets_per_tree": 10,
+  "max_radius_m": 0.012,
+  "populations": {
+    "tree1": {
+      "measured_components": 399,
+      "screened_in": 259,
+      "screened_out": 140
+    }
+  },
+  "screened_out_component_first_vertexes": {
+    "tree1": [
+      0,
+      239,
+      475,
+      714,
+      952,
+      1072,
+      1531,
+      1771,
+      2602,
+      3195,
+      3255,
+      3786,
+      4024,
+      4381,
+      4620,
+      4858,
+      5096,
+      5335,
+      5573,
+      6169,
+      6407,
+      6467,
+      6644,
+      6879,
+      6999,
+      7294,
+      7951,
+      8189,
+      8427,
+      8661,
+      8897,
+      9134,
+      9373,
+      9606,
+      9666,
+      9842,
+      10081,
+      10261,
+      10141,
+      10677,
+      10916,
+      11154,
+      11333,
+      11393,
+      11628,
+      12224,
+      12460,
+      12698,
+      12816,
+      13047,
+      13524,
+      13880,
+      14117,
+      14354,
+      14594,
+      14824,
+      15064,
+      15659,
+      15896,
+      16128,
+      16475,
+      16595,
+      16947,
+      17545,
+      17783,
+      18023,
+      18263,
+      18502,
+      18739,
+      19324,
+      19564,
+      19800,
+      20039,
+      20278,
+      20638,
+      20758,
+      21234,
+      21470,
+      21708,
+      21826,
+      22532,
+      22765,
+      23004,
+      23235,
+      23471,
+      23531,
+      23766,
+      24002,
+      24120,
+      24061,
+      24651,
+      24829,
+      25068,
+      25307,
+      25532,
+      25772,
+      26008,
+      26247,
+      26485,
+      26725,
+      26785,
+      27024,
+      27243,
+      27481,
+      27718,
+      28555,
+      28913,
+      29273,
+      29510,
+      29749,
+      30343,
+      30580,
+      30640,
+      30815,
+      30994,
+      31172,
+      31232,
+      31410,
+      31648,
+      31888,
+      31948,
+      32714,
+      32950,
+      33306,
+      33535,
+      33770,
+      33830,
+      34363,
+      34599,
+      34837,
+      35073,
+      35427,
+      36256,
+      36494,
+      36726,
+      36963,
+      37202,
+      37262,
+      37440,
+      37676
+    ]
+  },
+  "target_count": 7,
+  "targets": [
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 14884,
+      "max_radius_m": 0.006720446984705388,
+      "length_m": 0.05007074893956549,
+      "axis": [
+        0.4194054901510908,
+        0.6742459192825327,
+        -0.6078581044635134
+      ],
+      "source_center_m": [
+        -2.096596678098043,
+        -0.3682015012146123,
+        1.076078801714511
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "max_radius_m": 0.006743434528356521,
+      "length_m": 0.0499773861245249,
+      "axis": [
+        0.5616836785147071,
+        0.6359413333272389,
+        -0.5292353596049308
+      ],
+      "source_center_m": [
+        -2.121083335081736,
+        -0.4009110900757491,
+        1.1044705358404185
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 15004,
+      "max_radius_m": 0.006705059199213658,
+      "length_m": 0.04906715878566724,
+      "axis": [
+        -0.6428618632212191,
+        -0.24785591628383538,
+        0.7247731159327327
+      ],
+      "source_center_m": [
+        -2.1508416732152305,
+        -0.4228489409416873,
+        1.1354093040215787
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19145,
+      "max_radius_m": 0.008723751864361673,
+      "length_m": 0.100631027014637,
+      "axis": [
+        0.9018868341060617,
+        -0.3187122548701885,
+        0.2915864143983824
+      ],
+      "source_center_m": [
+        2.0084596641925203,
+        -0.5731301644935585,
+        1.6648020016272083
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19264,
+      "max_radius_m": 0.006622086153619761,
+      "length_m": 0.04968777029266064,
+      "axis": [
+        0.9252046508016405,
+        -0.21944758908475953,
+        0.30957892334572906
+      ],
+      "source_center_m": [
+        2.075500003496806,
+        -0.5944291569449432,
+        1.6892468688828473
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19384,
+      "max_radius_m": 0.006564824137688789,
+      "length_m": 0.04994471394516226,
+      "axis": [
+        0.9793699936528095,
+        -0.0820295223293886,
+        -0.1846769422502676
+      ],
+      "source_center_m": [
+        2.000773336489995,
+        -0.4470953019689977,
+        1.3956174810287396
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "max_radius_m": 0.0065845966327450186,
+      "length_m": 0.04983170404144062,
+      "axis": [
+        0.9242986618931908,
+        0.14376344104247185,
+        -0.3535591275049827
+      ],
+      "source_center_m": [
+        1.9533766766389211,
+        -0.44862578855868157,
+        1.4090135081002644
+      ]
+    }
+  ]
+}

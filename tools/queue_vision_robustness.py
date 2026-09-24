@@ -17,9 +17,39 @@ from pathlib import Path
 from vision_experiment_assets import inventory_assets
 
 MINUTES_PER_TRIAL = 17  # Measured 16.5 on array 21360571; rounded up for the declared budget.
+TRIAL_TIME_LIMIT_MINUTES = 25  # The sbatch directive for a 200-frame episode; scaled with the plan's frames.
 
 
-def experiment_plan(targets=None, daylight="source", photometric_normalization="raw"):
+def trial_time_limit(plan):
+    """Slurm time limit per task: the 200-frame reservation scaled by the episode length."""
+    return f"00:{TRIAL_TIME_LIMIT_MINUTES * max(1, round(plan['frames'] / 200)):02d}:00"
+
+
+#: Labelled approach strategies (docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md).
+#: None changes a gate, a threshold or the grader. ``frames`` is the episode
+#: length the strategy needs: the fine step halves the speed of both approach
+#: and retreat, so it gets twice the baseline's 200 frames.
+STRATEGIES = {
+    "baseline": {"name": "baseline", "mode": "straight", "standoff_m": 0.0, "max_step_m": 0.004, "frames": 200},
+    "tool_axis_standoff": {
+        "name": "tool_axis_standoff",
+        "mode": "tool_axis_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "frames": 200,
+    },
+    "horizontal_standoff": {
+        "name": "horizontal_standoff",
+        "mode": "horizontal_standoff",
+        "standoff_m": 0.08,
+        "max_step_m": 0.004,
+        "frames": 200,
+    },
+    "fine_step": {"name": "fine_step", "mode": "straight", "standoff_m": 0.0, "max_step_m": 0.002, "frames": 400},
+}
+
+
+def experiment_plan(targets=None, daylight="source", photometric_normalization="raw", strategy=None):
     """Build the frozen plan. Without targets this is the original lighting pilot."""
     base = {
         "schema_version": 1,
@@ -29,6 +59,12 @@ def experiment_plan(targets=None, daylight="source", photometric_normalization="
         "render_samples": 64,
         "overview_width": 1280,
     }
+    if strategy is not None:
+        if targets is None:
+            raise ValueError("A strategy sweep needs a registered target file")
+        if strategy not in STRATEGIES:
+            raise ValueError(f"Unknown strategy {strategy!r}; registered: {sorted(STRATEGIES)}")
+        base["frames"] = STRATEGIES[strategy]["frames"]
     if targets is None:
         return {
             **base,
@@ -49,6 +85,11 @@ def experiment_plan(targets=None, daylight="source", photometric_normalization="
             "photometric_normalization": photometric_normalization,
             "target_tree_index": int(target["target_tree_index"]),
             "component_first_vertex": int(target["component_first_vertex"]),
+            **(
+                {"strategy": {k: v for k, v in STRATEGIES[strategy].items() if k != "frames"}}
+                if strategy is not None
+                else {}
+            ),
         }
         for index, target in enumerate(targets)
     ]
@@ -64,8 +105,11 @@ def experiment_plan(targets=None, daylight="source", photometric_normalization="
             "orientation and local occlusion at a canonicalized approach pose. Not a field "
             "success rate and not a reachability study."
         ),
-        "protocol": "docs/EVAL_PROTOCOL_2026-09-23.md",
-        "maximum_gpu_minutes": MINUTES_PER_TRIAL * len(runs),
+        "protocol": "docs/EVAL_PROTOCOL_2026-09-23.md"
+        if strategy is None
+        else "docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md",
+        "strategy": None if strategy is None else STRATEGIES[strategy],
+        "maximum_gpu_minutes": MINUTES_PER_TRIAL * len(runs) * (base["frames"] // 200),
         "runs": runs,
     }
 
@@ -176,7 +220,14 @@ def dependency_option(after):
 
 
 def queue_batch(
-    root, batch_id, targets=None, target_provenance=None, daylight="source", normalization="raw", after=None
+    root,
+    batch_id,
+    targets=None,
+    target_provenance=None,
+    daylight="source",
+    normalization="raw",
+    after=None,
+    strategy=None,
 ):
     root = root.resolve()
     if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}", batch_id):
@@ -184,7 +235,7 @@ def queue_batch(
     if _git(root, "diff", "HEAD", "--name-only").strip():
         raise ValueError("Commit tracked changes before freezing experiments; untracked work is preserved")
     revision = _git(root, "rev-parse", "HEAD").decode().strip()
-    plan = experiment_plan(targets, daylight, normalization)
+    plan = experiment_plan(targets, daylight, normalization, strategy)
     if target_provenance:
         plan["target_register"] = target_provenance
     plan["code_revision"] = revision
@@ -216,6 +267,8 @@ def queue_batch(
         "--parsable",
         "--array",
         f"0-{len(plan['runs']) - 1}%1",
+        "--time",
+        trial_time_limit(plan),
         *dependency_option(after),
         "--chdir",
         str(batch / "code"),
@@ -250,6 +303,7 @@ def main():
     parser.add_argument("--daylight", default="source", help="Daylight preset for a target sweep")
     parser.add_argument("--photometric-normalization", default="raw", help="Tracker preprocessing for a target sweep")
     parser.add_argument("--after", help="Queue behind this Slurm job id; that job is never modified")
+    parser.add_argument("--strategy", choices=sorted(STRATEGIES), help="Labelled approach strategy for a target sweep")
     args = parser.parse_args()
 
     targets, provenance = (None, None)
@@ -258,10 +312,17 @@ def main():
 
     if args.submit:
         result = queue_batch(
-            args.root, args.batch_id, targets, provenance, args.daylight, args.photometric_normalization, args.after
+            args.root,
+            args.batch_id,
+            targets,
+            provenance,
+            args.daylight,
+            args.photometric_normalization,
+            args.after,
+            args.strategy,
         )
     else:
-        result = experiment_plan(targets, args.daylight, args.photometric_normalization)
+        result = experiment_plan(targets, args.daylight, args.photometric_normalization, args.strategy)
         if provenance:
             result["target_register"] = provenance
     print(json.dumps(result, indent=2))

@@ -40,14 +40,25 @@ def run_environment(plan, row, batch, output, inherited):
             PRUNING_TARGET_TREE=str(row["target_tree_index"]),
             PRUNING_COMPONENT_VERTEX=str(row["component_first_vertex"]),
         )
+    # A strategy row names its approach; a plan without one keeps the renderer's
+    # baseline defaults, so the September 23 frozen plans are unaffected.
+    if "strategy" in row:
+        strategy = row["strategy"]
+        env.update(
+            PRUNING_APPROACH_MODE=str(strategy["mode"]),
+            PRUNING_STANDOFF_M=repr(float(strategy["standoff_m"])),
+            PRUNING_MAX_STEP_M=repr(float(strategy["max_step_m"])),
+        )
     return env
 
 
 def run_label(index, row):
     """Name the output directory after the condition that produced it."""
+    suffix = f"_{row['strategy']['name']}" if "strategy" in row else ""
     if "component_first_vertex" in row:
-        return f"run_{index:02d}_{row['daylight']}_tree{row['target_tree_index']}_v{row['component_first_vertex']}"
-    return f"run_{index:02d}_{row['daylight']}_{row['photometric_normalization']}"
+        label = f"run_{index:02d}_{row['daylight']}_tree{row['target_tree_index']}_v{row['component_first_vertex']}"
+        return label + suffix
+    return f"run_{index:02d}_{row['daylight']}_{row['photometric_normalization']}" + suffix
 
 
 def configuration_matches(report, row, plan):
@@ -60,6 +71,10 @@ def configuration_matches(report, row, plan):
     if "component_first_vertex" in row:
         expected = f"tree{row['target_tree_index']}_SPUR_component_{row['component_first_vertex']}"
         matches = matches and report.get("blender_scene", {}).get("target", {}).get("id") == expected
+    if "strategy" in row:
+        recorded = report.get("approach_strategy") or {}
+        wanted = row["strategy"]
+        matches = matches and all(recorded.get(key) == wanted[key] for key in ("mode", "standoff_m", "max_step_m"))
     return matches
 
 

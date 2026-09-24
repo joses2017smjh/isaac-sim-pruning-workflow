@@ -7,7 +7,7 @@ This is classical visual servoing, not learned branch recognition or fracture.
 
 from __future__ import annotations
 
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 
 import numpy as np
 
@@ -23,6 +23,40 @@ from isaaclab_pruning.task.simulated_cut import (
     tool_mouth_geometry,
 )
 
+APPROACH_MODES = ("straight", "tool_axis_standoff", "horizontal_standoff")
+STANDOFF_REACHED_M = 0.005
+
+
+@dataclass(frozen=True)
+class ApproachStrategy:
+    """How the mouth travels to the tracked point. Never a gate, never a threshold.
+
+    ``straight`` is the September 23 baseline: every step points from the mouth
+    at the live target. The two standoff modes first bring the mouth to a point
+    ``standoff_m`` short of the target along a fixed axis, then finish along
+    that axis. The axis is frozen at the first ``tracking`` measurement and is
+    never recomputed from scene metadata: ``tool_axis_standoff`` uses the tool's
+    forward (+z, the mouth direction) at that moment, ``horizontal_standoff``
+    the horizontal component of mouth-to-target. ``max_step_m`` is the per-step
+    cap shared by approach and retreat.
+    """
+
+    mode: str = "straight"
+    standoff_m: float = 0.0
+    max_step_m: float = 0.004
+
+    def __post_init__(self):
+        if self.mode not in APPROACH_MODES:
+            raise ValueError(f"approach mode must be one of {APPROACH_MODES}")
+        if not np.isfinite(self.standoff_m) or self.standoff_m < 0:
+            raise ValueError("standoff_m must be finite and nonnegative")
+        if self.mode == "straight" and self.standoff_m != 0.0:
+            raise ValueError("the straight approach has no standoff")
+        if self.mode != "straight" and self.standoff_m <= 0.0:
+            raise ValueError("a standoff approach needs a positive standoff")
+        if not np.isfinite(self.max_step_m) or not 0 < self.max_step_m <= 0.01:
+            raise ValueError("max_step_m must be positive and at most 10 mm")
+
 
 class VisionPruningDemo:
     """One selected branch, no automatic reacquisition or ground-truth fallback."""
@@ -37,12 +71,16 @@ class VisionPruningDemo:
         max_step_m=0.004,
         closing_axis_tool=(1.0, 0.0, 0.0),
         photometric_normalization="raw",
+        approach=None,
     ):
         self.target_id = str(target_id)
         self.axis = np.asarray(branch_axis_w, dtype=float)
         self.radius = float(branch_radius_m)
         self.home = np.asarray(home_pose_wxyz, dtype=float)
-        self.max_step = float(max_step_m)
+        self.approach = approach if approach is not None else ApproachStrategy(max_step_m=max_step_m)
+        self.max_step = float(self.approach.max_step_m)
+        self.approach_axis_w = None
+        self.approach_phase = "straight" if self.approach.mode == "straight" else "standoff"
         self.mouth_offset = (0.0, 0.0, 0.070)
         self.closing_axis_tool = tuple(closing_axis_tool)
         tool_mouth_geometry(self.home, self.mouth_offset, self.closing_axis_tool)
@@ -127,20 +165,50 @@ class VisionPruningDemo:
         mouth, _ = tool_mouth_geometry(pose, self.mouth_offset, self.closing_axis_tool)
         # Zero residual standoff is to the explicitly added demo mouth, 70 mm
         # in front of the mock tool origin, not into the fixed CAD body.
+        axis, standoff = (0.0, 0.0, 1.0), 0.0
+        if self.approach.mode != "straight":
+            if self.approach_axis_w is None:
+                self.approach_axis_w = self._freeze_approach_axis(pose, mouth)
+            if self.approach_axis_w is not None:
+                axis = tuple(self.approach_axis_w)
+                standoff = self.approach.standoff_m if self.approach_phase == "standoff" else 0.0
         decision = bounded_visual_servo_translation(
             self.measurement,
             mouth,
-            approach_axis_world=(0.0, 0.0, 1.0),
-            standoff_m=0.0,
+            approach_axis_world=axis,
+            standoff_m=standoff,
             now_s=float(now_s),
             measurement_time_s=self.measurement_time,
             max_step_m=self.max_step,
             hazard_contact=self.hazard_contact,
         )
+        decision["approach_phase"] = self.approach_phase
+        if (
+            self.approach_phase == "standoff"
+            and decision["state"] == "tracking"
+            and decision["remaining_distance_m"] is not None
+            and decision["remaining_distance_m"] <= STANDOFF_REACHED_M
+        ):
+            self.approach_phase = "final"
         command[:3] += np.asarray(decision["delta_world_m"])
         if decision["state"] == "tracking":
             self.vision_command_request_count += 1
         return command, "vision_approach" if decision["state"] == "tracking" else "vision_hold", decision
+
+    def _freeze_approach_axis(self, pose, mouth):
+        """The fixed approach axis, from the tool pose or the first tracked target; None until tracking."""
+        if not isinstance(self.measurement, dict) or self.measurement.get("state") != "tracking":
+            return None
+        if self.approach.mode == "tool_axis_standoff":
+            forward = np.asarray(mouth, dtype=float) - pose[:3]
+        else:
+            target = np.asarray(self.measurement.get("target_position_world_m"), dtype=float)
+            forward = target - np.asarray(mouth, dtype=float)
+            forward[2] = 0.0
+        norm = float(np.linalg.norm(forward))
+        if not np.isfinite(norm) or norm <= 1e-9:
+            return None
+        return (forward / norm).tolist()
 
     def command_applied(self, phase, decision):
         """Acknowledge only after external gates and a successful physical step."""
@@ -157,6 +225,9 @@ class VisionPruningDemo:
             "vision_command_count": self.vision_command_count,
             "vision_command_request_count": self.vision_command_request_count,
             "external_stop_reason": self.external_stop_reason,
+            "approach_strategy": asdict(self.approach),
+            "approach_axis_w": self.approach_axis_w,
+            "approach_phase": self.approach_phase,
             "mouth_offset_tool_m": list(self.mouth_offset),
             "closing_axis_tool": list(self.closing_axis_tool),
             "target_identity_axis_radius_source": "Selected Blender branch metadata; not learned recognition",

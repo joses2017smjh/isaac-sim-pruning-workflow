@@ -137,3 +137,33 @@ def test_non_metre_export_is_refused(tmp_path, enumerate_targets):
     (export / "manifest.json").write_text(json.dumps({"units": "centimeters", "up_axis": "Z"}), encoding="utf-8")
     with pytest.raises(ValueError, match="meters and Z-up"):
         enumerate_targets.verify_export(export, [0])
+
+
+def test_listed_only_takes_every_screened_listed_spur_and_never_samples(tmp_path, enumerate_targets):
+    import json
+
+    manifest = {
+        "branch_geometry_candidates": {
+            "tree1_SPUR": {"candidates": [{"component_first_vertex": 10}, {"component_first_vertex": 30}]}
+        }
+    }
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    listed = enumerate_targets.listed_candidates(tmp_path / "manifest.json", 1)
+    assert listed == {10, 30}
+    accepted = {
+        1: [
+            {
+                "component_first_vertex": v,
+                "max_radius_m": 0.006,
+                "length_m": 0.05,
+                "axis": [0, 0, 1],
+                "center_m": [0, 0, 0],
+            }
+            for v in (30, 10, 20)
+        ]
+    }
+    selected = enumerate_targets.select_listed(accepted, {1: listed})
+    assert [t["component_first_vertex"] for t in selected] == [10, 30]
+    assert all(t["target_tree_index"] == 1 for t in selected)
+    with pytest.raises(ValueError):
+        enumerate_targets.select_listed({1: []}, {1: listed})

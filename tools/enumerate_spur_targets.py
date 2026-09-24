@@ -114,6 +114,34 @@ def select_targets(accepted_by_tree: dict[int, list[dict]], per_tree: int, seed:
     return selected
 
 
+def listed_candidates(manifest_path: Path, tree_index: int) -> set[int]:
+    """First vertices of the export manifest's own spur candidates for one tree."""
+    manifest = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
+    block = manifest["branch_geometry_candidates"][f"tree{tree_index}_SPUR"]
+    return {int(item["component_first_vertex"]) for item in block["candidates"]}
+
+
+def select_listed(accepted_by_tree: dict[int, list[dict]], listed_by_tree: dict[int, set[int]]) -> list[dict]:
+    """Every screened spur that the export manifest lists, no sampling. A different population."""
+    selected = []
+    for tree_index in sorted(accepted_by_tree):
+        for item in sorted(accepted_by_tree[tree_index], key=lambda entry: entry["component_first_vertex"]):
+            if item["component_first_vertex"] in listed_by_tree[tree_index]:
+                selected.append(
+                    {
+                        "target_tree_index": tree_index,
+                        "component_first_vertex": item["component_first_vertex"],
+                        "max_radius_m": item["max_radius_m"],
+                        "length_m": item["length_m"],
+                        "axis": item["axis"],
+                        "source_center_m": item["center_m"],
+                    }
+                )
+    if not selected:
+        raise ValueError("No listed candidate passed the screen")
+    return selected
+
+
 def enumerate_tree(export_dir: Path, tree_index: int) -> list[dict]:
     """Measure every connected component of one tree's spur mesh. Requires USD."""
     from pxr import Gf, Usd, UsdGeom
@@ -163,7 +191,7 @@ def verify_export(export_dir: Path, tree_indexes) -> dict:
     return digests
 
 
-def build(export_dir: Path, trees, per_tree: int, seed: int, max_radius_m: float) -> dict:
+def build(export_dir: Path, trees, per_tree: int, seed: int, max_radius_m: float, listed_only: bool = False) -> dict:
     digests = verify_export(export_dir, trees)
     populations, accepted_by_tree, rejected_all = {}, {}, {}
     for tree_index in trees:
@@ -177,18 +205,29 @@ def build(export_dir: Path, trees, per_tree: int, seed: int, max_radius_m: float
             "screened_out": len(rejected),
         }
 
-    targets = select_targets(accepted_by_tree, per_tree, seed)
+    if listed_only:
+        listed = {tree_index: listed_candidates(export_dir / "manifest.json", tree_index) for tree_index in trees}
+        targets = select_listed(accepted_by_tree, listed)
+        rule = (
+            "Measure every connected component of each tree's SPUR mesh; keep those with "
+            f"0 < max_radius_m <= {max_radius_m} that the export manifest itself lists as candidates; "
+            "take all of them, no sampling. This is the renderer's accepted population, not a seeded draw."
+        )
+    else:
+        targets = select_targets(accepted_by_tree, per_tree, seed)
+        rule = (
+            "Measure every connected component of each tree's SPUR mesh; keep those with "
+            f"0 < max_radius_m <= {max_radius_m}; sample {per_tree} per tree with seed "
+            f"'{seed}:tree<N>' over the pool ordered by component_first_vertex."
+        )
     return {
         "schema_version": SCHEMA_VERSION,
         "scope": SCOPE,
         "export_dir": str(export_dir),
         "export_sha256": digests,
         "enumerator_sha256": sha256(Path(__file__).resolve()),
-        "selection_rule": (
-            "Measure every connected component of each tree's SPUR mesh; keep those with "
-            f"0 < max_radius_m <= {max_radius_m}; sample {per_tree} per tree with seed "
-            f"'{seed}:tree<N>' over the pool ordered by component_first_vertex."
-        ),
+        "selection_rule": rule,
+        "listed_only": listed_only,
         "seed": seed,
         "targets_per_tree": per_tree,
         "max_radius_m": max_radius_m,
@@ -207,13 +246,16 @@ def main(argv=None) -> int:
     parser.add_argument("--per-tree", type=int, default=10, help="Targets sampled from each tree")
     parser.add_argument("--seed", type=int, default=20260923, help="Fixed selection seed")
     parser.add_argument("--max-radius-m", type=float, default=DEFAULT_MAX_RADIUS_M, help="Jaw-fit screen")
+    parser.add_argument(
+        "--listed-only", action="store_true", help="Register every screened spur the export manifest lists; no sampling"
+    )
     args = parser.parse_args(argv)
 
     trees = [int(value) for value in args.trees.split(",") if value.strip() != ""]
     try:
         if args.output is not None and args.output.exists():
             raise FileExistsError(f"Refusing to overwrite existing output: {args.output}")
-        document = build(args.export_dir, trees, args.per_tree, args.seed, args.max_radius_m)
+        document = build(args.export_dir, trees, args.per_tree, args.seed, args.max_radius_m, args.listed_only)
         serialized = json.dumps(document, indent=2, allow_nan=False) + "\n"
         if args.output is not None:
             with args.output.open("x", encoding="utf-8") as stream:

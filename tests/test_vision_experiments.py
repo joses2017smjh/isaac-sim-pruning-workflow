@@ -292,3 +292,60 @@ def test_register_with_unpresentable_targets_is_refused(tmp_path, scripts):
     manifest.write_text(json.dumps(_manifest([15004])), encoding="utf-8")
     with pytest.raises(ValueError, match="would be refused by the renderer before recording"):
         queue.load_targets(register, manifest)
+
+
+def test_strategy_rows_forward_the_approach_and_are_checked_against_the_capture(tmp_path, scripts):
+    launcher, run = scripts
+    targets = [
+        {"target_tree_index": 0, "component_first_vertex": 530},
+        {"target_tree_index": 0, "component_first_vertex": 7524},
+    ]
+    plan = launcher.experiment_plan(targets, "source", "raw", "tool_axis_standoff")
+    assert plan["frames"] == 200 and plan["strategy"]["standoff_m"] == 0.06
+    assert plan["maximum_gpu_minutes"] == launcher.MINUTES_PER_TRIAL * 2
+    assert plan["protocol"].endswith("STRATEGIES_2026-09-23.md")
+    row = plan["runs"][0]
+    assert row["strategy"] == {
+        "name": "tool_axis_standoff",
+        "mode": "tool_axis_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+    }
+    env = run.run_environment(plan, row, tmp_path, tmp_path / "out", {})
+    assert env["PRUNING_APPROACH_MODE"] == "tool_axis_standoff"
+    assert env["PRUNING_STANDOFF_M"] == "0.06" and env["PRUNING_MAX_STEP_M"] == "0.004"
+    assert run.run_label(3, row) == "run_03_source_tree0_v530_tool_axis_standoff"
+    # The fine step doubles the episode and the reserved minutes with it.
+    fine = launcher.experiment_plan(targets, "source", "raw", "fine_step")
+    assert fine["frames"] == 400 and fine["maximum_gpu_minutes"] == launcher.MINUTES_PER_TRIAL * 4
+    # A plan without a strategy row forwards nothing new.
+    baseline = launcher.experiment_plan(targets, "source", "raw")
+    assert "strategy" not in baseline["runs"][0]
+    assert "PRUNING_APPROACH_MODE" not in run.run_environment(baseline, baseline["runs"][0], tmp_path, tmp_path, {})
+
+    def report(strategy):
+        return {
+            "photometric_normalization": "raw",
+            "frame_count": 200,
+            "approach_strategy": strategy,
+            "blender_scene": {"daylight": {"preset": "source"}, "target": {"id": "tree0_SPUR_component_530"}},
+        }
+
+    assert run.configuration_matches(
+        report({"mode": "tool_axis_standoff", "standoff_m": 0.06, "max_step_m": 0.004}), row, plan
+    )
+    assert not run.configuration_matches(
+        report({"mode": "straight", "standoff_m": 0.0, "max_step_m": 0.004}), row, plan
+    )
+    assert not run.configuration_matches(report(None), row, plan)
+    with pytest.raises(ValueError):
+        launcher.experiment_plan(None, "source", "raw", "fine_step")
+    with pytest.raises(ValueError):
+        launcher.experiment_plan(targets, "source", "raw", "teleport")
+
+
+def test_trial_time_limit_scales_with_the_episode(scripts):
+    launcher, _ = scripts
+    assert launcher.trial_time_limit({"frames": 200}) == "00:25:00"
+    assert launcher.trial_time_limit({"frames": 400}) == "00:50:00"
+    assert launcher.trial_time_limit({"frames": 140}) == "00:25:00"

@@ -273,3 +273,66 @@ def test_external_tof_stop_latches_without_fabricating_contact_or_detachment():
     assert "hazard_contact" not in evidence["cut"]["certificate"]["reasons"]
     controller.stop("later_stop")
     assert controller.external_stop_reason == "tof_minimum_clearance"
+
+
+def test_straight_baseline_is_unchanged_and_strategies_leave_every_gate_identical():
+    from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy
+
+    baseline = VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE)
+    assert baseline.approach == ApproachStrategy() and baseline.approach_phase == "straight"
+    for strategy in (
+        ApproachStrategy("tool_axis_standoff", 0.06),
+        ApproachStrategy("horizontal_standoff", 0.08),
+        ApproachStrategy(max_step_m=0.002),
+    ):
+        variant = VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, approach=strategy)
+        assert variant.tracker.config == baseline.tracker.config
+        assert variant.cutter.config == baseline.cutter.config
+        assert variant.max_step == strategy.max_step_m
+    for bad in (("straight", 0.05), ("tool_axis_standoff", 0.0), ("sideways", 0.05)):
+        with pytest.raises(ValueError):
+            ApproachStrategy(*bad)
+    with pytest.raises(ValueError):
+        ApproachStrategy(max_step_m=0.02)
+
+
+def test_tool_axis_standoff_freezes_the_axis_at_first_tracking_then_finishes_along_it():
+    from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy
+
+    # Tool +z is world +z at POSE (identity rotation); mouth is 0.07 above the tool origin.
+    target = MOUTH + [0.0, 0.0, 0.10]
+    controller = demo(*[tracking(target)] * 40, approach=ApproachStrategy("tool_axis_standoff", 0.06))
+    _, phase, _ = controller.command(POSE, 0.05)
+    assert phase == "observe" and controller.approach_axis_w is None  # nothing frozen before tracking
+    pose = POSE.copy()
+    t = 0.1
+    observe(controller, t)
+    _, phase, decision = controller.command(pose, t + 0.05)
+    assert phase == "vision_approach" and decision["approach_phase"] == "standoff"
+    np.testing.assert_allclose(controller.approach_axis_w, [0, 0, 1], atol=1e-12)
+    # Standoff point is 0.04 above the mouth: ten 4 mm steps reach it, then the final phase begins.
+    phases = []
+    for step in range(14):
+        t += 0.1
+        observe(controller, t)
+        command, phase, decision = controller.command(pose, t + 0.05)
+        phases.append(decision["approach_phase"])
+        pose = command
+    assert "standoff" in phases and "final" in phases and phases.index("final") >= 9
+    assert controller.evidence()["approach_strategy"] == {
+        "mode": "tool_axis_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+    }
+    # In the final phase the mouth keeps moving along the same axis toward the target itself.
+    assert pose[2] > POSE[2] + 0.04 and np.allclose(pose[:2], POSE[:2])
+
+
+def test_horizontal_standoff_axis_has_no_vertical_component():
+    from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy
+
+    target = MOUTH + [0.3, 0.4, 0.2]
+    controller = demo(tracking(target), tracking(target), approach=ApproachStrategy("horizontal_standoff", 0.08))
+    observe(controller, 0.0)
+    controller.command(POSE, 0.05)
+    np.testing.assert_allclose(controller.approach_axis_w, [0.6, 0.8, 0.0], atol=1e-12)

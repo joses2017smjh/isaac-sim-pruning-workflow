@@ -154,7 +154,10 @@ def _json_safe(value):
 
 
 def main() -> int:  # noqa: C901 - the simulator is imported only after AppLauncher.
+    from dataclasses import asdict
+
     from isaaclab_pruning.sim.render_quality import CaptureQuality, apply_capture_quality, settings_readback
+    from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy
 
     root = Path(os.environ["PRUNING_ROOT"])
     quality = None
@@ -162,6 +165,13 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
     photometric_normalization = os.environ.get("PRUNING_PHOTOMETRIC_NORMALIZATION", "raw")
     if photometric_normalization not in ("raw", "clahe"):
         raise ValueError("PRUNING_PHOTOMETRIC_NORMALIZATION must be raw or clahe")
+    # Labelled approach strategy; defaults are the September 23 baseline. Gates
+    # and thresholds are not reachable from the environment.
+    approach = ApproachStrategy(
+        mode=os.environ.get("PRUNING_APPROACH_MODE", "straight"),
+        standoff_m=float(os.environ.get("PRUNING_STANDOFF_M", "0")),
+        max_step_m=float(os.environ.get("PRUNING_MAX_STEP_M", "0.004")),
+    )
     wrist_mount = (0.0, -0.14, -0.025) if blender_mode else WRIST_POSITION_IN_TOOL_M
     if os.environ.get("PRUNING_RENDER_QUALITY") == "pathtraced":
         quality = CaptureQuality(
@@ -191,6 +201,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         "task_outcome": "not_started",
         "frame_count": 0,
         "photometric_normalization": photometric_normalization,
+        "approach_strategy": asdict(approach),
         "provenance": {
             "robot": "UR5e + reviewed BDS mock-pruner, six actuated UR joints",
             "asset_id": os.environ.get("PRUNING_ASSET_ID"),
@@ -593,6 +604,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 initial_tool[0].detach().cpu().numpy(),
                 closing_axis_tool=proxy_closing_tool,
                 photometric_normalization=photometric_normalization,
+                approach=approach,
             )
             report["tracker_config"] = demo.evidence()["tracker_config"]
             report["blender_scene"] = env.blender_scene.evidence
