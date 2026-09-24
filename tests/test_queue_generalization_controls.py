@@ -75,7 +75,7 @@ def test_storage_preflight_uses_the_larger_controls_estimate(tmp_path, launcher)
     written = json.loads((tmp_path / "storage_preflight.json").read_text())
     assert written["estimated_output_bytes"] == launcher.ESTIMATED_OUTPUT_BYTES
     with pytest.raises(RuntimeError):
-        storage_preflight(tmp_path, 1_599_500_000_000, None, estimated_output_bytes=launcher.ESTIMATED_OUTPUT_BYTES)
+        storage_preflight(tmp_path, 1_699_500_000_000, None, estimated_output_bytes=launcher.ESTIMATED_OUTPUT_BYTES)
 
 
 def test_dirty_tree_is_refused_before_anything_is_frozen(tmp_path, monkeypatch, launcher):

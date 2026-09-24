@@ -11,11 +11,12 @@ from pathlib import Path
 
 #: Warning line, in bytes of `du -sx` apparent size on the user's share. This is
 #: the repository's own policy, not a filesystem quota: `lfs quota` reports no
-#: enforced limit on /nfs/hpc/share. Raised from 1.5 TB to 1.6 TB on 2026-09-23
+#: enforced limit on /nfs/hpc/share. Raised from 1.5 TB to 1.6 TB on 2026-09-23 and
+#: to 1.7 TB later that day, both with the user's explicit approval
 #: with the user's approval, after the share measured 1.548 TB (Lustre block
 #: count 1.404 TB) and the registered Envy/UFO matrix, about 0.4 GB, was refused.
 #: The hard limit is unchanged.
-WARNING_BYTES = 1_600_000_000_000
+WARNING_BYTES = 1_700_000_000_000
 HARD_LIMIT_BYTES = 2_000_000_000_000
 
 
