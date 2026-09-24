@@ -326,12 +326,17 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       and none of the magnitude.
       [Protocol and result](EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#result--september-23-2026) ·
       [evidence](evidence/tree0_replay_2026-09-23.json).
-- [ ] Re-fine-tune with lighting variation: a repository-local training wrapper
-      (the companion trainer has no version control and is treated as
-      read-only), photometric jitter or rendered lighting presets, warm start
-      from the current checkpoint on the 6,270 surviving frames (about
-      8 A40-hours). Whether it is the right lever depends on P1 and P2 of the
-      controls protocol.
+- [x] Re-fine-tune with photometric jitter against a control arm (repository-
+      local trainer, warm start, 6 epochs on the 6,270 surviving frames, about
+      3 h per arm on an A40): the jitter cuts Envy evening error to a third
+      and fixes the darkness cell in both families, but helps UFO evening by
+      only 14–18% and leaves the evening shape ceiling unchanged; the control
+      arm changes nothing. Source cost 0.005–0.024 m.
+      [Protocol and result](EVAL_PROTOCOL_FINETUNE_2026-09-23.md#result--september-24-2026) ·
+      [evidence](evidence/finetune_family_matrix_2026-09-24.json).
+- [ ] Re-fine-tune with rendered lighting variation (sun angle, colour, sky):
+      the lever the jitter result leaves for the low-sun shading. Needs a
+      training-render launcher over L-Py trees outside the matrix register.
 - [ ] Vision-guided controller on an Envy or UFO tree in Isaac. No path exists:
       `RenderEnv` presents the Blender orchard export, and the L-Py cylinder USDs
       have no spur-selection route into it. Needs target selection over cylinder

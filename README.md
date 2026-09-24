@@ -123,6 +123,12 @@ orchard tree in Cycles at the recorded Isaac wrist poses (mapping verified to
 1e-6 m) reproduces the Isaac over-estimate from pose and tree alone, under
 either bark; only the shape ceiling (0.18 vs 0.46 m) is the renderer's.
 [Replay result](docs/EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#result--september-23-2026)
+A warm-start re-fine-tune with photometric jitter, against a control arm
+trained identically without it, cuts Envy evening error to a third (0.906 →
+0.322 m) and fixes the darkness cell in both families, but helps the unseen
+UFO trees at evening by only 14–18% and leaves the evening shape ceiling
+where it was: brightness is learnable from a curve, low-sun shading is not.
+[Fine-tune result](docs/EVAL_PROTOCOL_FINETUNE_2026-09-23.md#result--september-24-2026)
 [Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)

@@ -82,3 +82,77 @@ chained. Output about 4.5 GB per arm (two model-only checkpoints of 1.34 GB
 and 1,480 saved predictions). Submitted only by
 `tools/queue_finetune.py --arm <jitter|control> --submit` from a clean
 committed tree after this protocol is committed.
+
+---
+
+## Result — September 24, 2026
+
+Jitter arm: training `21404511` COMPLETED in 2 h 57 min (best epoch 5, companion
+val RMSE 0.0561, checkpoint `658c3c77…`); control arm: training `21404513`
+COMPLETED in 2 h 55 min (best epoch 5, val RMSE 0.0555, `d5691712…`). Each
+arm's evaluation job scored the matrix (192) and the controls (688) and then
+failed on its Stage A step, because the launcher pointed the scorer at an
+evaluation document whose plan sits under a `plan` key (fixed in `0e7750c`);
+the Stage A scores of both checkpoints come from the frozen rescoring job
+`21405526` on identical bytes. Data as trained: 4,980 train and 1,290 val rows
+survived the file filter. The jitter-applied counter in the training log read
+zero because it lived in the main process while the DataLoader workers ran the
+transform; the worker path was verified on CPU to change 6 of 8 samples with a
+maximum normalized change of 1.46 at an identical crop, and later runs record
+a startup self-check.
+[Matrix](evidence/finetune_family_matrix_2026-09-24.json) ·
+[controls](evidence/finetune_controls_2026-09-24.json) ·
+[Stage A](evidence/finetune_stage_a_2026-09-24.json) ·
+[anchoring ceilings](evidence/finetune_anchoring_2026-09-24.json).
+
+### Tree-mask MAE, mean of per-tree values (n = 4 trees per family)
+
+| Cell | Frozen | Jitter arm | Control arm |
+|---|---|---|---|
+| Envy source | 0.134 | 0.153 (1.14×) | 0.137 (1.02×) |
+| Envy evening | 0.906 | **0.322 (0.36×)** | 0.883 (0.98×) |
+| UFO source | 0.188 | 0.196 (1.04×) | 0.185 (0.99×) |
+| UFO evening | 1.451 | 1.247 (0.86×) | 1.442 (0.99×) |
+| Envy `overcast_div2.6` (dark, diffuse) | 0.333 | **0.163** | 0.347 |
+| UFO `overcast_div2.6` | 0.577 | **0.183** | 0.607 |
+| Envy `evening_x2.6` (brighter, low sun) | 0.821 | 0.361 | 0.748 |
+| UFO `evening_x2.6` | 1.443 | 1.276 | 1.421 |
+| Envy close range, target MAE | 0.550 | 0.508 | 0.555 |
+| UFO close range, target MAE | 0.384 | 0.322 | 0.383 |
+| Isaac Stage A source, target MAE (unmasked) | 0.572 | 0.482 | 0.658 |
+
+Per tree, the jitter arm's evening ratio to frozen is 0.27–0.43 on the four
+Envy trees and 0.82–0.93 on the four UFO trees; the control arm's is
+0.94–1.00 on all eight. All pre-registered gates still fail for every model.
+
+### Verdicts
+
+- **P1 not met as registered, and family-split.** The jitter arm cuts evening
+  by at least 40% in 4 of 8 trees, not 6: every Envy tree (57–73%) and no UFO
+  tree (7–18%). The control clause holds (under 2% on every tree), so the
+  gain is the jitter's. Every Envy tree was in the fine-tune's own train or
+  validation split; the four UFO trees are the transfer check, and there the
+  gain is small.
+- **P2 supported.** Source MAE rises by 0.005–0.024 m under jitter on every
+  tree, under the 0.03 m line. Morning and noon on Envy rise more (+0.05 to
+  +0.06 m), which P2 did not cover and is recorded here.
+- **P3 supported.** Evening stays above 0.20 m in both families (0.32, 1.25).
+  The evening affine ceiling is unchanged (Envy 0.128 → 0.116, UFO 0.101 →
+  0.108): the jitter moved the offset, not the shape.
+- **P4 supported, narrowly.** Close-range target error changes by −8% (Envy)
+  and −16% (UFO); Isaac Stage A target error by −16% (jitter) and +15%
+  (control). Range and Isaac are not lighting problems.
+- **P5 supported.** The control arm's validation RMSE is 0.059 after epoch 1
+  and 0.0555 at best, within 0.01 of the frozen model's 0.054.
+
+### Unpredicted
+
+The jitter arm fixes the **darkness** cell outright in both families
+(`overcast_div2.6`: Envy 0.333 → 0.163, UFO 0.577 → 0.183, both near their
+source cells) while leaving the low-sun cells far off (`evening_x2.6` UFO
+1.276). That is the controls' decomposition confirmed from the training side:
+brightness is a curve the jitter teaches; cast shadows and the warm sky are
+not. The remaining evening failure needs rendered lighting variation in
+training, which is now the justified next batch and needs a training-render
+launcher that does not yet exist.
+

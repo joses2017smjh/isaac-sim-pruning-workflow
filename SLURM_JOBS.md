@@ -397,8 +397,8 @@ storage line to 1.7 TB (share measured 1.578 TB; code revision `1c8ef03`).
 | `tree1-listed-baseline-20260923` (7 listed tree1 spurs, baseline) | array `21404504` `0-6%1` | 119 min | first recorded tree1 data |
 | `tree0-replay-20260923` (Cycles at recorded wrist poses, two barks) | render `21404508` COMPLETED 12 min, eval `21404509` COMPLETED 2 min | 50 min | 156/156 scored; [result](docs/EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#result--september-23-2026) |
 | `finetune-jitter-20260923` | train `21404511` COMPLETED 2 h 57 min, eval `21404512` FAILED at its third step | 540 min | matrix (192) and controls (688) scored; the Stage A step failed on a plan-format mistake in the launcher, rescored by `21405526` |
-| `rescore-finetune-stage-a-20260923` | `21405526` (afterany 21404514), both arms' best.pth on Stage A | 20 min | completes the approved evaluation step |
-| `finetune-control-20260923` | train `21404513` (afterany 21404512), eval `21404514` | 540 min | |
+| `rescore-finetune-stage-a-20260923` | `21405526` COMPLETED 4 min, both arms' best.pth on Stage A | 20 min | completes the approved evaluation step |
+| `finetune-control-20260923` | train `21404513` COMPLETED 2 h 55 min, eval `21404514` FAILED at its third step (same plan-format mistake), Stage A rescored by `21405526` | 540 min | [result](docs/EVAL_PROTOCOL_FINETUNE_2026-09-23.md#result--september-24-2026) |
 
 **First recorded pass.** `21404504_1`, tree1 listed spur 14944 under the
 baseline strategy, passed all 17 grader checks (source light); its neighbour
