@@ -1,0 +1,494 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-09-24",
+  "scope": "Task success rate over spur geometry, axis orientation and local occlusion at a canonicalized approach pose, from pre-registered targets. Not a field success rate, not a reachability study, and not outdoor or sensor-calibrated robustness.",
+  "protocol": "docs/EVAL_PROTOCOL_2026-09-23.md",
+  "batches": [
+    {
+      "condition": "tree1_listed_baseline",
+      "batch_dir": "artifacts/vision_robustness/tree1-listed-baseline-20260923",
+      "planned_runs_kept": 7
+    }
+  ],
+  "grader": "tools/validate_vision_sequence.py:grade_sequence",
+  "aggregation": "DuckDB over sql/*.sql; every reported number is produced by those queries",
+  "queries": [
+    {
+      "file": "01_runs.sql",
+      "sha256": "22c1488e869e7d5fcb21f5fb358296ce36e99161d1a3d7522083c0413c65e66f"
+    },
+    {
+      "file": "02_success_rate.sql",
+      "sha256": "f58b3ff5a42031cabd63c59122f85621e18ce7e4036d25f6a2b823faaea8ad7c"
+    },
+    {
+      "file": "03_failure_taxonomy.sql",
+      "sha256": "ef4b59e94cdad336bab27125b7721a9fc07c0b6cca6a32b951de041b66d67096"
+    },
+    {
+      "file": "04_per_condition.sql",
+      "sha256": "dada1f7b0287e3be2bd6772b6ecb7cf091983e54e6aef5aa03372409f9816434"
+    },
+    {
+      "file": "05_tracking_coverage.sql",
+      "sha256": "42d17c3276b36262782273f0a33b184a095d1de1c929de4df36849ff1ec911e2"
+    },
+    {
+      "file": "06_rate_excluding_infrastructure.sql",
+      "sha256": "9720c9d54b21efeb7920a55c15d5f1beeec60094cb74e45af7ecc9007bb41bf5"
+    },
+    {
+      "file": "07_per_target_by_strategy.sql",
+      "sha256": "497e74070aa5d3668aeb3573955b7da342da564c96e15094723c172d2366a157"
+    }
+  ],
+  "success_rate": {
+    "successes": 2,
+    "attempts": 7,
+    "rate": 0.2857142857142857,
+    "wilson_lower": 0.08221892400405673,
+    "wilson_upper": 0.6410655481673807
+  },
+  "per_condition": [
+    {
+      "condition": "tree1_listed_baseline",
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "attempts": 7,
+      "successes": 2,
+      "rate": 0.2857
+    }
+  ],
+  "failure_taxonomy": [
+    {
+      "outcome": "stopped_tof_minimum_clearance",
+      "runs": 2,
+      "mean_applied_commands": 44.5,
+      "min_applied_commands": 44,
+      "max_applied_commands": 45,
+      "run_directories": [
+        "run_05_source_tree1_v19384_baseline",
+        "run_06_source_tree1_v19444_baseline"
+      ]
+    },
+    {
+      "outcome": "failed_other",
+      "runs": 1,
+      "mean_applied_commands": 68.0,
+      "min_applied_commands": 68,
+      "max_applied_commands": 68,
+      "run_directories": [
+        "run_00_source_tree1_v14884_baseline"
+      ]
+    },
+    {
+      "outcome": "rejected_layout_startup_contact",
+      "runs": 1,
+      "mean_applied_commands": 0.0,
+      "min_applied_commands": 0,
+      "max_applied_commands": 0,
+      "run_directories": [
+        "run_03_source_tree1_v19145_baseline"
+      ]
+    },
+    {
+      "outcome": "stopped_initial_target_not_visible",
+      "runs": 1,
+      "mean_applied_commands": 0.0,
+      "min_applied_commands": 0,
+      "max_applied_commands": 0,
+      "run_directories": [
+        "run_04_source_tree1_v19264_baseline"
+      ]
+    }
+  ],
+  "rate_by_exclusion": [
+    {
+      "level": "inclusive (headline)",
+      "successes": 2,
+      "attempts": 7,
+      "rate": 0.2857142857142857,
+      "wilson_lower": 0.08221892400405667,
+      "wilson_upper": 0.6410655481673806
+    },
+    {
+      "level": "presented (excludes infrastructure)",
+      "successes": 2,
+      "attempts": 7,
+      "rate": 0.2857142857142857,
+      "wilson_lower": 0.08221892400405667,
+      "wilson_upper": 0.6410655481673806
+    },
+    {
+      "level": "recorded (excludes infrastructure and layout rejection)",
+      "successes": 2,
+      "attempts": 6,
+      "rate": 0.3333333333333333,
+      "wilson_lower": 0.09677141110578047,
+      "wilson_upper": 0.700006684861608
+    }
+  ],
+  "tracking_coverage": [
+    {
+      "run_directory": "run_01_source_tree1_v14944_baseline",
+      "outcome": "pass",
+      "passed": true,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.39,
+      "tracked_feature_count_min": 7,
+      "tracked_confidence_min": 0.5606322559443387,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_02_source_tree1_v15004_baseline",
+      "outcome": "pass",
+      "passed": true,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.39,
+      "tracked_feature_count_min": 12,
+      "tracked_confidence_min": 0.5107107054103505,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_05_source_tree1_v19384_baseline",
+      "outcome": "stopped_tof_minimum_clearance",
+      "passed": false,
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracking_fraction": 1.0,
+      "tracked_feature_count_min": 11,
+      "tracked_confidence_min": 0.9557023048400879,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_06_source_tree1_v19444_baseline",
+      "outcome": "stopped_tof_minimum_clearance",
+      "passed": false,
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracking_fraction": 1.0,
+      "tracked_feature_count_min": 10,
+      "tracked_confidence_min": 0.9856929183006287,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_00_source_tree1_v14884_baseline",
+      "outcome": "failed_other",
+      "passed": false,
+      "tracking_frames": 81,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.405,
+      "tracked_feature_count_min": 5,
+      "tracked_confidence_min": 0.3781975232637846,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_04_source_tree1_v19264_baseline",
+      "outcome": "stopped_initial_target_not_visible",
+      "passed": false,
+      "tracking_frames": 0,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.0,
+      "tracked_feature_count_min": null,
+      "tracked_confidence_min": null,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_03_source_tree1_v19145_baseline",
+      "outcome": "rejected_layout_startup_contact",
+      "passed": false,
+      "tracking_frames": 0,
+      "recorded_frames": 0,
+      "tracking_fraction": null,
+      "tracked_feature_count_min": null,
+      "tracked_confidence_min": null,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    }
+  ],
+  "per_target_by_strategy": [
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 14884,
+      "strategy": "baseline",
+      "condition": "tree1_listed_baseline",
+      "outcome": "failed_other",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "checks_passed": 16,
+      "checks_total": 17,
+      "failed_checks": "piece_dropped_after_release",
+      "applied_commands": 68
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "strategy": "baseline",
+      "condition": "tree1_listed_baseline",
+      "outcome": "pass",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "checks_passed": 17,
+      "checks_total": 17,
+      "failed_checks": null,
+      "applied_commands": 68
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 15004,
+      "strategy": "baseline",
+      "condition": "tree1_listed_baseline",
+      "outcome": "pass",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "checks_passed": 17,
+      "checks_total": 17,
+      "failed_checks": null,
+      "applied_commands": 68
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19145,
+      "strategy": "baseline",
+      "condition": "tree1_listed_baseline",
+      "outcome": "rejected_layout_startup_contact",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "checks_passed": 0,
+      "checks_total": 0,
+      "failed_checks": null,
+      "applied_commands": 0
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19264,
+      "strategy": "baseline",
+      "condition": "tree1_listed_baseline",
+      "outcome": "stopped_initial_target_not_visible",
+      "stop_frame": 0,
+      "final_phase_frame": null,
+      "checks_passed": 8,
+      "checks_total": 17,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete,vision_commands_applied_and_counted",
+      "applied_commands": 0
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19384,
+      "strategy": "baseline",
+      "condition": "tree1_listed_baseline",
+      "outcome": "stopped_tof_minimum_clearance",
+      "stop_frame": 45,
+      "final_phase_frame": null,
+      "checks_passed": 9,
+      "checks_total": 17,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "applied_commands": 45
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "strategy": "baseline",
+      "condition": "tree1_listed_baseline",
+      "outcome": "stopped_tof_minimum_clearance",
+      "stop_frame": 44,
+      "final_phase_frame": null,
+      "checks_passed": 9,
+      "checks_total": 17,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "applied_commands": 44
+    }
+  ],
+  "runs": [
+    {
+      "condition": "tree1_listed_baseline",
+      "run_directory": "run_00_source_tree1_v14884_baseline",
+      "target_tree_index": 1,
+      "component_first_vertex": 14884,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "baseline",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "failed_checks": "piece_dropped_after_release",
+      "status": "graded",
+      "checks_passed": 16,
+      "checks_total": 17,
+      "applied_commands": 68,
+      "stop_reason": null,
+      "tracking_frames": 81,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 5,
+      "tracked_confidence_min": 0.3781975232637846,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "failed_other"
+    },
+    {
+      "condition": "tree1_listed_baseline",
+      "run_directory": "run_01_source_tree1_v14944_baseline",
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "baseline",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "failed_checks": null,
+      "status": "graded",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "applied_commands": 68,
+      "stop_reason": null,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 7,
+      "tracked_confidence_min": 0.5606322559443387,
+      "centroid_error_m": null,
+      "passed": true,
+      "outcome": "pass"
+    },
+    {
+      "condition": "tree1_listed_baseline",
+      "run_directory": "run_02_source_tree1_v15004_baseline",
+      "target_tree_index": 1,
+      "component_first_vertex": 15004,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "baseline",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "failed_checks": null,
+      "status": "graded",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "applied_commands": 68,
+      "stop_reason": null,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 12,
+      "tracked_confidence_min": 0.5107107054103505,
+      "centroid_error_m": null,
+      "passed": true,
+      "outcome": "pass"
+    },
+    {
+      "condition": "tree1_listed_baseline",
+      "run_directory": "run_03_source_tree1_v19145_baseline",
+      "target_tree_index": 1,
+      "component_first_vertex": 19145,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "baseline",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "failed_checks": null,
+      "status": "rejected_layout_startup_contact",
+      "checks_passed": 0,
+      "checks_total": 0,
+      "applied_commands": 0,
+      "stop_reason": "Orchard layout rejected",
+      "tracking_frames": 0,
+      "recorded_frames": 0,
+      "tracked_feature_count_min": null,
+      "tracked_confidence_min": null,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "rejected_layout_startup_contact"
+    },
+    {
+      "condition": "tree1_listed_baseline",
+      "run_directory": "run_04_source_tree1_v19264_baseline",
+      "target_tree_index": 1,
+      "component_first_vertex": 19264,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "baseline",
+      "stop_frame": 0,
+      "final_phase_frame": null,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete,vision_commands_applied_and_counted",
+      "status": "graded",
+      "checks_passed": 8,
+      "checks_total": 17,
+      "applied_commands": 0,
+      "stop_reason": "initial_target_not_visible",
+      "tracking_frames": 0,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": null,
+      "tracked_confidence_min": null,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_initial_target_not_visible"
+    },
+    {
+      "condition": "tree1_listed_baseline",
+      "run_directory": "run_05_source_tree1_v19384_baseline",
+      "target_tree_index": 1,
+      "component_first_vertex": 19384,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "baseline",
+      "stop_frame": 45,
+      "final_phase_frame": null,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "status": "graded",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "applied_commands": 45,
+      "stop_reason": "tof_minimum_clearance",
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 11,
+      "tracked_confidence_min": 0.9557023048400879,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_tof_minimum_clearance"
+    },
+    {
+      "condition": "tree1_listed_baseline",
+      "run_directory": "run_06_source_tree1_v19444_baseline",
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "baseline",
+      "stop_frame": 44,
+      "final_phase_frame": null,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "status": "graded",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "applied_commands": 44,
+      "stop_reason": "tof_minimum_clearance",
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 10,
+      "tracked_confidence_min": 0.9856929183006287,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_tof_minimum_clearance"
+    }
+  ],
+  "target_register": {
+    "path": "docs/evidence/eval_targets_tree1_listed_2026-09-23.json",
+    "sha256": "e428ed18c3d16153388c5b97f01ee4d37bc4b3c5d6a591bfa06dbeadd44b7b11",
+    "seed": 20260923,
+    "target_count": 7,
+    "selection_rule": "Measure every connected component of each tree's SPUR mesh; keep those with 0 < max_radius_m <= 0.012 that the export manifest itself lists as candidates; take all of them, no sampling. This is the renderer's accepted population, not a seeded draw."
+  }
+}

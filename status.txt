@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-24 PDT — TREE0 REPLAY AND FINE-TUNES PUBLISHED; STRATEGY ARRAYS FINISHING
+CURRENT CHECKPOINT — 2026-09-24 PDT — ALL SEVEN BATCHES COMPLETE AND PUBLISHED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -143,7 +143,17 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     Evidence docs/evidence/finetune_{family_matrix,controls,stage_a,anchoring}_2026-09-24.json.
     NEXT LEVER: rendered lighting variation in training (needs a training-
     render launcher over non-register L-Py trees; not queued).
-  WHEN THE ISAAC ARRAYS FINISH (25/37 done): grade every run (validate_vision_sequence), aggregate
+  STRATEGIES PUBLISHED (2026-09-24): 37/37 graded. Tree0 0/40 under every
+    strategy, each target failing as before (body/arm contact on the way in,
+    depth gate at the spur edge, layout refusals); P1 half, P2 in substance
+    refuted, P3-P5 supported. Tree1 listed population 2/7 PASS (14944, 15004,
+    17/17 each, Wilson 0.08-0.64) + 14884 16/17 (piece did not fall). Evidence
+    docs/evidence/strategies_2026-09-24.json, tree1_listed_2026-09-24.json.
+    Media (GIF/MP4/poster) per recorded run under each run's media/.
+  NEXT LEVERS (each needs registration + GPU approval): collision-aware
+    approach from home (body/arm contacts); tracker depth window at spur
+    edges (labelled tracker experiment); rendered-lighting training arm.
+  DONE EARLIER TODAY: grade every run (validate_vision_sequence), aggregate
     through the sql/ layers, judge the predictions, append results, compose a
     GIF/MP4/poster per run with tools/compose_isaac_workflow.py (CPU, serial),
     update README/ROADMAP/SLURM_JOBS, commit, push. Many-zone anchoring done

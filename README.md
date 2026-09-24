@@ -129,6 +129,20 @@ trained identically without it, cuts Envy evening error to a third (0.906 →
 UFO trees at evening by only 14–18% and leaves the evening shape ceiling
 where it was: brightness is learnable from a curve, low-sun shading is not.
 [Fine-tune result](docs/EVAL_PROTOCOL_FINETUNE_2026-09-23.md#result--september-24-2026)
+
+**Approach strategies and the first recorded passes (September 24).** Three
+labelled changes to how the mouth travels (a 60 mm standoff along the tool
+axis, an 80 mm horizontal standoff, a 2 mm step), with no gate, threshold or
+grader touched, were run on the ten registered tree0 targets: **0 of 40**, and
+every target failed the way it did before. The body or arm hits wood on the way
+in, the tracker's depth gate trips at the spur edge, or the layout is refused
+at startup; the path of the mouth is not the problem. On a different
+population, the seven tree1 spurs the export manifest itself lists, the
+baseline passed **2 of 7** (Wilson 0.08–0.64), the first passes on any
+registered target, and a third reached closure and failed only the drop check.
+[Protocol and result](docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md#result--september-24-2026)
+· [strategies evidence](docs/evidence/strategies_2026-09-24.json)
+· [tree1 evidence](docs/evidence/tree1_listed_2026-09-24.json)
 [Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)

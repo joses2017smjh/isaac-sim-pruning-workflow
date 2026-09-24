@@ -341,7 +341,21 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       `RenderEnv` presents the Blender orchard export, and the L-Py cylinder USDs
       have no spur-selection route into it. Needs target selection over cylinder
       metadata, a spawn path, and its own registration.
-- [ ] Test an explicitly selected target on original orchard tree1 separately.
+- [x] Labelled approach strategies on the registered tree0 targets (tool-axis
+      standoff, horizontal standoff, fine step; gates untouched): 0 of 40, every
+      target failing as before; the mouth's path is not what fails. Next levers:
+      collision-aware approach planning for the body and arm, and the tracker's
+      depth window at spur edges, each its own registration.
+      [Protocol and result](EVAL_PROTOCOL_STRATEGIES_2026-09-23.md#result--september-24-2026) ·
+      [evidence](evidence/strategies_2026-09-24.json).
+- [x] Tree1 from the export manifest's own listed candidates (7 spurs, no
+      sampling): 2 of 7 pass, the first recorded passes on a registered target;
+      a third reached closure and the piece did not fall.
+      [evidence](evidence/tree1_listed_2026-09-24.json).
+- [ ] Collision-aware approach path from the home pose (the pruner body and
+      the upper arm hit wood on the way in on two of ten tree0 targets).
+- [ ] Tracker depth window at spur edges (three of ten tree0 targets trip the
+      depth-spread gate within three seconds), as a labelled tracker experiment.
 - [x] Ship a replay studio: a static page that plays recorded runs frame by frame
       with camera video, tracker confidence and feature count, both 8x8
       time-of-flight grids with validity, gate states and proposed against

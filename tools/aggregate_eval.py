@@ -256,6 +256,12 @@ def main(argv=None) -> int:
         help="Repeatable. Example: source=artifacts/vision_robustness/targets-source-20260923",
     )
     parser.add_argument("--targets-file", type=Path, help="The pre-registered target register")
+    parser.add_argument(
+        "--tree",
+        type=int,
+        default=None,
+        help="Keep only this tree's planned runs, so a batch that registered two populations is reported on one",
+    )
     parser.add_argument("--output", type=Path, help="New JSON file; an existing file is never overwritten")
     parser.add_argument("--recorded-on", default=None)
     args = parser.parse_args(argv)
@@ -268,8 +274,11 @@ def main(argv=None) -> int:
         if "=" not in spec:
             parser.error(f"--batch needs CONDITION=DIR, got {spec!r}")
         condition, directory = spec.split("=", 1)
-        rows.extend(read_batch(Path(directory), condition))
-        batches.append({"condition": condition, "batch_dir": directory})
+        batch_rows = read_batch(Path(directory), condition)
+        if args.tree is not None:
+            batch_rows = [row for row in batch_rows if row["target_tree_index"] == args.tree]
+        rows.extend(batch_rows)
+        batches.append({"condition": condition, "batch_dir": directory, "planned_runs_kept": len(batch_rows)})
 
     result = aggregate(rows)
     document = {

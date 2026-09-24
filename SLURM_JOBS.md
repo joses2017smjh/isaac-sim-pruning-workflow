@@ -391,19 +391,21 @@ storage line to 1.7 TB (share measured 1.578 TB; code revision `1c8ef03`).
 
 | Batch | Jobs | Reserved | Notes |
 |---|---|---|---|
-| `strategy-tool-axis-20260923` (10 tree0 targets, `tool_axis_standoff`) | array `21404500` `0-9%1`, 25-min tasks | 170 min | [protocol](docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md) |
-| `strategy-horizontal-20260923` (`horizontal_standoff`) | array `21404502` `0-9%1` | 170 min | |
-| `strategy-fine-step-20260923` (`fine_step`, 400 frames) | array `21404503` `0-9%1`, 50-min tasks | 340 min | |
-| `tree1-listed-baseline-20260923` (7 listed tree1 spurs, baseline) | array `21404504` `0-6%1` | 119 min | first recorded tree1 data |
+| `strategy-tool-axis-20260923` (10 tree0 targets, `tool_axis_standoff`) | array `21404500` `0-9%1`, all tasks ended (10–16 min recorded, under 1 min refused), 0/10 | 170 min | [protocol and result](docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md#result--september-24-2026) |
+| `strategy-horizontal-20260923` (`horizontal_standoff`) | array `21404502` `0-9%1`, all ended, 0/10 | 170 min | |
+| `strategy-fine-step-20260923` (`fine_step`, 400 frames) | array `21404503` `0-9%1`, 50-min tasks, 20–30 min recorded, 0/10 | 340 min | |
+| `tree1-listed-baseline-20260923` (7 listed tree1 spurs, baseline) | array `21404504` `0-6%1`, all ended, **2/7 pass** (`_1` spur 14944, `_2` spur 15004, both exit 0:0) | 119 min | first recorded passes on a registered target |
 | `tree0-replay-20260923` (Cycles at recorded wrist poses, two barks) | render `21404508` COMPLETED 12 min, eval `21404509` COMPLETED 2 min | 50 min | 156/156 scored; [result](docs/EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#result--september-23-2026) |
 | `finetune-jitter-20260923` | train `21404511` COMPLETED 2 h 57 min, eval `21404512` FAILED at its third step | 540 min | matrix (192) and controls (688) scored; the Stage A step failed on a plan-format mistake in the launcher, rescored by `21405526` |
 | `rescore-finetune-stage-a-20260923` | `21405526` COMPLETED 4 min, both arms' best.pth on Stage A | 20 min | completes the approved evaluation step |
 | `finetune-control-20260923` | train `21404513` COMPLETED 2 h 55 min, eval `21404514` FAILED at its third step (same plan-format mistake), Stage A rescored by `21405526` | 540 min | [result](docs/EVAL_PROTOCOL_FINETUNE_2026-09-23.md#result--september-24-2026) |
 
-**First recorded pass.** `21404504_1`, tree1 listed spur 14944 under the
-baseline strategy, passed all 17 grader checks (source light); its neighbour
-14884 reached closure and failed only the post-release drop check. Both are
-the listed-candidate population, not the seeded register.
+**First recorded passes.** `21404504_1` (spur 14944) and `21404504_2` (spur
+15004), tree1 listed candidates under the baseline strategy and the source
+light, passed all 17 grader checks; their neighbour 14884 reached closure and
+failed only the post-release drop check. This is the listed-candidate
+population, not the seeded register. Slurm exit 0:0 on those two tasks is the
+runner reporting the grader's pass, not evidence by itself.
 
 **Disclosed deviation.** The four Isaac arrays were meant to be chained with
 `afterany` so that one A40 ran at a time; the submission loop read the wrong
