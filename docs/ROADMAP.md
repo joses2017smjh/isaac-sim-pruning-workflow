@@ -300,15 +300,19 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
 - [ ] Multi-zone anchoring: fit per-frame scale and shift to the two recorded
       8×8 ToF grids (registration of zones into the wrist image needed) and
       compare with the affine ceiling.
-- [ ] Single-axis generalization controls, registered with seven predictions
-      before submission: evening brightness against shadow structure
+- [x] Single-axis generalization controls, registered with seven predictions
+      before submission and judged on September 23 (P1 half, P2 and P3 and P7
+      supported, P4 family-dependent, P5 supported with two misses, P6 refuted
+      at frame level; the close-range shape is right in Cycles and wrong in
+      Isaac, so the renderer control is now necessary): evening brightness against shadow structure
       (`evening_x2.6`, `overcast`, `overcast_div2.6`, four fixed test-time
       normalizations), the Isaac wrist camera model at matrix distance, close
       and 39.7°-pitched rigs at 0.16–0.39 m, an eight-distance sweep, and the
       public relative DA2 head through an all-GT disparity-affine ceiling on the
       controls, the matrix and Isaac Stage A. Frozen launcher
       `tools/queue_generalization_controls.py`; 180 GPU-minutes reserved.
-      [Protocol](EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md).
+      [Protocol and result](EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026) ·
+      [evidence](evidence/generalization_controls_2026-09-23.json).
 - [ ] Renderer control for Stage A: the original orchard tree in Cycles at the
       recorded wrist poses. Deferred until the Isaac-to-Blender world mapping is
       derived and verified; the close-range controls above decide whether it is

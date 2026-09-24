@@ -373,5 +373,13 @@ budget and the push: render array **`21403403`** (`0-7%1`) and evaluation
 preflight passed at 1.597 TB projected (share measured at 1.575 TB) against
 the 1.6 TB line. Both PENDING at submission; the user's unrelated `lh-v3`,
 `ood-advanced` and `sf04` jobs were left alone. Receipts are in the batch
-directory. The result is appended here when the grader has run.
+directory.
+
+**Completed September 23.** Render tasks `21403403_0..7` COMPLETED (0:0) in
+2 min 21 s to 2 min 30 s each on cn-gpu5; evaluation `21403404` COMPLETED (0:0)
+in 12 min 28 s. 688 of 688 registered frames scored (DA2), 1,480 relative-head
+frames, 432 DINO frames with 40 off-rig groups skipped by design; about
+32 GPU-minutes used of 180. Baseline cells reproduced the matrix within
+0.001 m. [Evidence](docs/evidence/generalization_controls_2026-09-23.json) ·
+[protocol result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026).
 [Protocol](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md).

@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-23 PDT — CONTROLS BATCH SUBMITTED (21403403 render array, 21403404 eval)
+CURRENT CHECKPOINT — 2026-09-23 PDT — CONTROLS BATCH COMPLETE AND PUBLISHED (P1-P7 judged)
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -109,9 +109,19 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     + sql/controls/; launcher tools/queue_generalization_controls.py (frozen
     source, plan before sbatch, array 0-7%1, eval afterany). Budget approved:
     180 GPU-min reserved (~40 expected), 2.5 GB preflight passed at 1.597 TB.
-    Next: when 21403404 completes, aggregate (tools/aggregate_controls_eval.py,
-    anchor_depth_analysis on the controls DA2 result), judge P1-P7, append the
-    result to the protocol, write docs/evidence/generalization_controls_2026-09-23.json.
+    DONE: 21403403_0..7 and 21403404 COMPLETED, 688/688 scored, ~32 GPU-min.
+    Evidence docs/evidence/generalization_controls_2026-09-23.json and
+    generalization_controls_anchoring_2026-09-23.json; result appended to the
+    protocol. Findings: evening = darkness (2-3x) + low-sun shading (~3x), no
+    test-time curve fixes it (gamma best, 4.8x); close range reproduces the
+    0.6-0.9 m floor in Cycles from range alone, camera/pitch add <=0.03 m; BUT
+    the metric head's shape at close range is right in Cycles (ceiling
+    0.01-0.04 m) and wrong in Isaac (0.37-0.46 m) -> Isaac collapse is renderer
+    or asset. Baselines matched the matrix within 0.001 m.
+    NEXT (each needs its own registration and GPU approval): orchard-tree0
+    Cycles replay at recorded wrist poses (derive/verify Isaac->Blender
+    mapping first); repo-local trainer for a lighting-varied re-fine-tune;
+    close-range training poses; many-point anchor at close range.
   NOT QUEUED, STATED IN THE PROTOCOL: orchard-tree0 renderer control (Isaac-to-
     Blender mapping unverified); re-fine-tune with lighting jitter (~8 A40-h,
     needs a repo-local trainer); controller on Envy/UFO (no path).

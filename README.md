@@ -107,8 +107,17 @@ against shadow structure (a ×2.6 evening and a ÷2.6 overcast at matched luma,
 plus four fixed test-time normalizations), the Isaac wrist camera model, close
 and upward-pitched rigs at the Isaac working distance, a distance sweep, and
 the public relative DA2 head scored through an all-GT disparity fit, with seven
-predictions written before submission.
-[Controls protocol](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md)
+predictions written before submission. Result (688/688 frames, 32 GPU-min):
+brightening evening by its full luma ratio recovers nothing (still 6–8×), while
+darkening a diffuse scene to the same luma costs only 2–3×, so low-sun shading
+is the larger factor; no test-time curve fixes it (best, gamma, 4.8×). The
+close-range failure reproduces in Cycles from range alone (predictions floor at
+0.6–0.9 m below 0.4 m in 8/8 trees; camera model and pitch add ≤ 0.03 m), yet
+the model's *shape* there is right (affine ceiling 0.01–0.04 m) where Isaac's is
+not (0.37–0.46 m), so the Isaac collapse is renderer or asset, not range. The
+re-rendered baseline cells matched the matrix within 0.001 m.
+[Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
+· [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)
 · [matrix evidence](docs/evidence/family_matrix_depth_2026-09-23.json)
 · [Stage A](docs/evidence/stage_a_depth_2026-09-23.json)
