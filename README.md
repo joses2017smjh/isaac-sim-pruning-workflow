@@ -115,7 +115,10 @@ close-range failure reproduces in Cycles from range alone (predictions floor at
 0.6–0.9 m below 0.4 m in 8/8 trees; camera model and pitch add ≤ 0.03 m), yet
 the model's *shape* there is right (affine ceiling 0.01–0.04 m) where Isaac's is
 not (0.37–0.46 m), so the Isaac collapse is renderer or asset, not range. The
-re-rendered baseline cells matched the matrix within 0.001 m.
+re-rendered baseline cells matched the matrix within 0.001 m. An exploratory
+8×8-zone fit (ground-truth ranges, no sensor model) then reaches the affine
+ceiling everywhere in Blender and cuts the close-range target error from
+0.4–0.55 m to 0.006–0.02 m; on Isaac it stops at the shape ceiling (0.16 m).
 [Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)

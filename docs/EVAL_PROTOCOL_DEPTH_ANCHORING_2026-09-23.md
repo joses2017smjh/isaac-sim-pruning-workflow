@@ -160,3 +160,42 @@ points would work on both families.
 
 The next experiments follow from this and are registered separately; this
 analysis used no GPU and changed no model.
+
+---
+
+## Follow-up — many-zone fit, September 23, 2026 (exploratory)
+
+Run after the controls batch and **not registered here before running**; the
+only prior statement is the September 23 anchoring audit's expectation that a
+zone fit would come within 0.02 m of the affine ceiling in Blender daylight
+and stay above 0.35 m on Isaac. The variant, in `tools/anchor_depth_analysis.py`:
+an 8×8 grid with a 65° diagonal (the simulator's VL53L8CX model), co-located
+with the camera and aligned to its axis, one range per zone (median ground
+truth over the zone's tree pixels, 4 or more, within 3.4 m), a per-frame
+least-squares scale and shift over the zones with one robust trim, scored on
+the tree mask and at the 3×3 target window. The sensor's baseline, cone
+footprint, noise and multipath are not modelled; the ranges are ground truth.
+[Evidence](evidence/generalization_controls_anchoring_2026-09-23.json).
+
+| Cell (DA2) | raw MAE | one anchor (shift) | zone fit | affine ceiling | zones | target err raw → zone |
+|---|---|---|---|---|---|---|
+| Envy source | 0.134 | 0.176 | 0.053 | 0.053 | 36 | 0.25 → 0.18 |
+| UFO source | 0.188 | 0.057 | 0.041 | 0.039 | 19 | 0.20 → 0.05 |
+| Envy evening | 0.906 | 0.285 | 0.132 | 0.128 | 36 | 0.65 → 0.13 |
+| UFO evening | 1.451 | 0.193 | 0.118 | 0.101 | 19 | 1.35 → 0.46 |
+| Envy close, training camera | 0.527 | 0.069 | 0.045 | 0.028 | 16 | 0.55 → 0.020 |
+| UFO close, training camera | 0.385 | 0.045 | 0.011 | 0.011 | 17 | 0.38 → 0.006 |
+| Envy close, Isaac camera | 0.529 | 0.082 | 0.039 | 0.026 | 17 | 0.53 → 0.016 |
+| UFO close, Isaac camera | 0.410 | 0.050 | 0.015 | 0.014 | 18 | 0.40 → 0.006 |
+| Isaac Stage A, source | 0.614 | 0.473 | 0.520 | 0.464 | 55 | 0.57 → 0.16 |
+| Isaac Stage A, evening | 0.665 | 0.504 | 0.469 | 0.456 | 55 | 0.85 → 0.40 |
+
+The zone fit reaches the affine ceiling in every Blender cell, which the single
+anchor did not on Envy (0.176 against 0.053 at source). At the close-range
+cells it turns a 0.4–0.55 m target error into 0.006–0.02 m with 16–18 zones:
+where the model's shape is right, many ranges fix its scale. On Isaac it does
+not (target 0.57 → 0.16 m, tree mask unchanged at ~0.5 m), because the ceiling
+there is the shape. At evening the target error after the fit stays 0.13 m
+(Envy) and 0.46 m (UFO), the structure problem again. The audit's daylight
+expectation held; its Isaac expectation held.
+

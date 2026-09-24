@@ -8,7 +8,11 @@ SELECT
     ROUND(AVG(raw_mae_m), 4)                                  AS raw_mae_m,
     ROUND(AVG(CASE WHEN anchored THEN shift_mae_m END), 4)    AS shift_mae_m,
     ROUND(AVG(CASE WHEN anchored THEN scale_mae_m END), 4)    AS scale_mae_m,
-    ROUND(AVG(affine_ceiling_mae_m), 4)                       AS affine_ceiling_mae_m
+    ROUND(AVG(affine_ceiling_mae_m), 4)                       AS affine_ceiling_mae_m,
+    ROUND(AVG(n_zones), 1)                                    AS n_zones_mean,
+    ROUND(AVG(zone_mae_m), 4)                                 AS zone_mae_m,
+    ROUND(AVG(raw_target_abs_m), 4)                           AS raw_target_abs_m,
+    ROUND(AVG(zone_target_abs_m), 4)                          AS zone_target_abs_m
 FROM anchor_input
 GROUP BY model, family, tree_id, condition
 ORDER BY model, family, tree_id,

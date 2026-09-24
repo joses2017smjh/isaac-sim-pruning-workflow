@@ -215,3 +215,23 @@ def test_conditions_under_one_light_are_separate_cells(anchoring, tmp_path):
         "raw_mae_m"
     ] == pytest.approx(0.5)
     assert all(c["lighting"] == "source" for c in cells.values())
+
+
+def test_zone_fit_recovers_scale_and_shift_from_zone_medians_but_not_from_too_few_zones(anchoring):
+    import numpy as np
+
+    rng = np.random.default_rng(3)
+    gt = rng.uniform(0.5, 2.5, size=(64, 96))
+    pred = (gt - 0.3) / 1.2  # true depth = 1.2 * pred + 0.3
+    K = [[80.0, 0, 47.5], [0, 80.0, 31.5], [0, 0, 1]]
+    valid = anchoring.valid_pixels(pred, gt, np.ones_like(gt, dtype=bool))
+    n, err, scale, shift, fitted = anchoring.zone_fit(pred, gt, valid, K)
+    assert n >= 20 and err < 1e-6 and scale == pytest.approx(1.2) and shift == pytest.approx(0.3)
+    row = anchoring.score_frame(pred, gt, np.ones_like(gt, dtype=bool), [48, 32], True, K=K)
+    assert row["zone_mae_m"] < 1e-6 and row["zone_target_abs_m"] < 1e-6 and row["raw_target_abs_m"] > 0.1
+    # Zones cover only a 65 degree diagonal; a narrow mask leaves fewer than three zones.
+    narrow = np.zeros_like(gt, dtype=bool)
+    narrow[31:33, 47:49] = True
+    n, err, *_ = anchoring.zone_fit(pred, gt, anchoring.valid_pixels(pred, gt, narrow), K)
+    assert n < 3 and err is None
+    assert anchoring.score_frame(pred, gt, None, None, None)["n_zones"] == 0

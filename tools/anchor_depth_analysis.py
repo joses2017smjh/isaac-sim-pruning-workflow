@@ -63,7 +63,21 @@ COLUMNS = [
     ("affine_scale", "DOUBLE"),
     ("affine_shift_m", "DOUBLE"),
     ("pred_gt_correlation", "DOUBLE"),
+    # Many-zone variant: an 8x8 grid of ranges standing in for the VL53L8CX,
+    # co-located with the camera, fitted per frame by scale and shift.
+    ("n_zones", "INTEGER"),
+    ("zone_mae_m", "DOUBLE"),
+    ("zone_scale", "DOUBLE"),
+    ("zone_shift_m", "DOUBLE"),
+    ("raw_target_abs_m", "DOUBLE"),
+    ("zone_target_abs_m", "DOUBLE"),
 ]
+
+ZONE_GRID = 8
+#: VL53L8CX diagonal field of view, the value the simulator's raycaster uses.
+ZONE_DIAGONAL_FOV_DEG = 65.0
+ZONE_MIN_PIXELS = 4
+ZONE_MAX_RANGE_M = 3.4
 
 
 def sha256(path) -> str:
@@ -145,7 +159,60 @@ def correlation(pred, gt, valid):
     return float(np.corrcoef(p, g)[0, 1])
 
 
-def score_frame(pred, gt, mask, pixel, target_visible):
+def zone_grid(K, shape):
+    """Zone index (row, col) of every pixel for an 8x8 grid centred on the camera boresight.
+
+    The grid is a square pinhole with a 65 degree diagonal, the simulator's
+    VL53L8CX model, aligned with the camera's optical axis. The real sensor sits
+    beside the camera; that baseline and its reprojection are not modelled here.
+    """
+    fx, fy, cx, cy = float(K[0][0]), float(K[1][1]), float(K[0][2]), float(K[1][2])
+    half = np.tan(np.radians(ZONE_DIAGONAL_FOV_DEG / 2)) / np.sqrt(2)
+    width = 2 * half / ZONE_GRID
+    ys, xs = np.mgrid[0 : shape[0], 0 : shape[1]]
+    col = np.floor(((xs - cx) / fx + half) / width).astype(int)
+    row = np.floor(((ys - cy) / fy + half) / width).astype(int)
+    inside = (col >= 0) & (col < ZONE_GRID) & (row >= 0) & (row < ZONE_GRID)
+    return np.where(inside, row * ZONE_GRID + col, -1)
+
+
+def zone_fit(pred, gt, valid, K):
+    """Per-frame scale and shift from zone medians. Returns (n_zones, mae, scale, shift, fitted)."""
+    zones = zone_grid(K, gt.shape)
+    usable = valid & (zones >= 0) & (gt <= ZONE_MAX_RANGE_M)
+    pairs = []
+    for zone in np.unique(zones[usable]):
+        member = usable & (zones == zone)
+        if member.sum() >= ZONE_MIN_PIXELS:
+            pairs.append((np.median(pred[member]), np.median(gt[member])))
+    if len(pairs) < 3:
+        return len(pairs), None, None, None, None
+    p, g = np.asarray(pairs).T
+    design = np.stack([p, np.ones_like(p)], axis=1)
+    (scale, shift), *_ = np.linalg.lstsq(design, g, rcond=None)
+    residual = np.abs(scale * p + shift - g)
+    keep = residual <= max(3 * np.median(residual), 0.02)  # one robust trim against occluded zones
+    if keep.sum() >= 3 and keep.sum() < len(p):
+        (scale, shift), *_ = np.linalg.lstsq(design[keep], g[keep], rcond=None)
+    fitted = scale * pred + shift
+    return len(pairs), mae(fitted, gt, valid), float(scale), float(shift), fitted
+
+
+def target_abs(values, gt, valid, pixel, radius=1):
+    if pixel is None:
+        return None
+    x, y = np.asarray(pixel, dtype=float)
+    if not np.isfinite([x, y]).all() or x < 0 or y < 0 or x >= gt.shape[1] or y >= gt.shape[0]:
+        return None
+    x, y = int(round(x)), int(round(y))
+    window = np.s_[max(0, y - radius) : y + radius + 1, max(0, x - radius) : x + radius + 1]
+    inside = valid[window]
+    if not inside.any():
+        return None
+    return float(np.abs(np.median(values[window][inside]) - np.median(gt[window][inside])))
+
+
+def score_frame(pred, gt, mask, pixel, target_visible, K=None):
     valid = valid_pixels(pred, gt, mask)
     row = {
         "anchored": False,
@@ -156,8 +223,20 @@ def score_frame(pred, gt, mask, pixel, target_visible):
         "shift_mae_m": None,
         "scale_mae_m": None,
         "pred_gt_correlation": correlation(pred, gt, valid),
+        "n_zones": 0,
+        "zone_mae_m": None,
+        "zone_scale": None,
+        "zone_shift_m": None,
+        "raw_target_abs_m": None,
+        "zone_target_abs_m": None,
     }
     row["affine_ceiling_mae_m"], row["affine_scale"], row["affine_shift_m"] = affine_ceiling(pred, gt, valid)
+    if K is not None and valid.any():
+        n_zones, zone_mae, zone_scale, zone_shift, fitted = zone_fit(pred, gt, valid, K)
+        row.update(n_zones=int(n_zones), zone_mae_m=zone_mae, zone_scale=zone_scale, zone_shift_m=zone_shift)
+        if target_visible is not False and fitted is not None:
+            row["raw_target_abs_m"] = target_abs(pred, gt, valid, pixel)
+            row["zone_target_abs_m"] = target_abs(fitted, gt, valid, pixel)
     if target_visible is False or not valid.any():
         return row
     anchor_pred, anchor_range = anchor_values(pred, gt, valid, pixel)
@@ -186,7 +265,8 @@ def build_rows(model, evaluation):
             if mask is not None
             else "rtx_optical_z_at_tracked_pixel_as_used_by_controller"
         )
-        scored = score_frame(pred, gt, mask, frame.get("target_pixel_xy"), frame.get("target_visible"))
+        K = frame.get("K") or (frame.get("camera") or {}).get("wrist_intrinsics")
+        scored = score_frame(pred, gt, mask, frame.get("target_pixel_xy"), frame.get("target_visible"), K=K)
         rows.append(
             {
                 "model": model,

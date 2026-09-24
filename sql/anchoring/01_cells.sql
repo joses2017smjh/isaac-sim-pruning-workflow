@@ -15,6 +15,10 @@ SELECT
     ROUND(AVG(CASE WHEN anchored THEN shift_mae_m END), 4)    AS shift_mae_m,
     ROUND(AVG(CASE WHEN anchored THEN scale_mae_m END), 4)    AS scale_mae_m,
     ROUND(AVG(affine_ceiling_mae_m), 4)                       AS affine_ceiling_mae_m,
+    ROUND(AVG(n_zones), 1)                                    AS n_zones_mean,
+    ROUND(AVG(zone_mae_m), 4)                                 AS zone_mae_m,
+    ROUND(AVG(raw_target_abs_m), 4)                           AS raw_target_abs_m,
+    ROUND(AVG(zone_target_abs_m), 4)                          AS zone_target_abs_m,
     ROUND(AVG(CASE WHEN anchored THEN shift_mae_m / NULLIF(raw_mae_m, 0) END), 3) AS shift_over_raw,
     ROUND(AVG(CASE WHEN anchored THEN scale_mae_m / NULLIF(raw_mae_m, 0) END), 3) AS scale_over_raw,
     ROUND(AVG(pred_gt_correlation), 3)                        AS pred_gt_correlation_mean

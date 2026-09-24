@@ -297,9 +297,14 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       P1 refuted, P2 and P4 supported, P3 half refuted, all on the record.
       [Protocol and result](EVAL_PROTOCOL_DEPTH_ANCHORING_2026-09-23.md) ·
       [evidence](evidence/depth_anchoring_2026-09-23.json).
-- [ ] Multi-zone anchoring: fit per-frame scale and shift to the two recorded
-      8×8 ToF grids (registration of zones into the wrist image needed) and
-      compare with the affine ceiling.
+- [x] Many-zone anchoring (exploratory, ground-truth zone ranges, no sensor
+      model): an 8×8 fit reaches the affine ceiling in every Blender cell and
+      turns the close-range target error from 0.4–0.55 m into 0.006–0.02 m;
+      on Isaac the ceiling itself is the limit (target 0.57 → 0.16 m).
+      [Follow-up](EVAL_PROTOCOL_DEPTH_ANCHORING_2026-09-23.md#follow-up--many-zone-fit-september-23-2026-exploratory).
+- [ ] The same fit on the two recorded 8×8 ToF grids (zone-to-pixel
+      registration through the recorded poses; the simulation chain is fully
+      recorded, the hardware extrinsic is not).
 - [x] Single-axis generalization controls, registered with seven predictions
       before submission and judged on September 23 (P1 half, P2 and P3 and P7
       supported, P4 family-dependent, P5 supported with two misses, P6 refuted
