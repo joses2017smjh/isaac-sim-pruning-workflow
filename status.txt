@@ -126,6 +126,15 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     predictions: EVAL_PROTOCOL_STRATEGIES, _TREE0_REPLAY, _FINETUNE (all
     2026-09-23). DEVIATION: the Isaac arrays were not chained (wrong result
     key in my loop); each is %1 but up to four can run at once; not modified.
+  INTERIM (2026-09-23 late): tree0 replay PUBLISHED (bark irrelevant; pose+tree
+    reproduce the Isaac magnitude; ceiling 0.18 Cycles vs 0.46 Isaac). Jitter
+    arm trained (best epoch 5, val rmse 0.0561, sha 658c3c77): matrix evening
+    Envy 0.906->0.322 (all 4 trees >=57% better), UFO 1.451->1.247 (14-18%),
+    darkness cell fixed in both families, source +0.01-0.02, close range within
+    15%; P1 not met as written (4/8 trees >=40%); control arm 21404513 pending
+    (QOS), Stage A rescore 21405526 queued after it. Its Stage A step failed on
+    a launcher plan-format mistake (fixed in 0e7750c). FIRST PASS: tree1
+    listed spur 14944 baseline 17/17 (21404504_1). 12/37 Isaac trials done.
   WHEN THEY FINISH: grade every run (validate_vision_sequence), aggregate
     through the sql/ layers, judge the predictions, append results, compose a
     GIF/MP4/poster per run with tools/compose_isaac_workflow.py (CPU, serial),
