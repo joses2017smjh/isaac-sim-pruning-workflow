@@ -118,7 +118,11 @@ not (0.37–0.46 m), so the Isaac collapse is renderer or asset, not range. The
 re-rendered baseline cells matched the matrix within 0.001 m. An exploratory
 8×8-zone fit (ground-truth ranges, no sensor model) then reaches the affine
 ceiling everywhere in Blender and cuts the close-range target error from
-0.4–0.55 m to 0.006–0.02 m; on Isaac it stops at the shape ceiling (0.16 m).
+0.4–0.55 m to 0.006–0.02 m; on Isaac it stops at the shape ceiling (0.16 m). Rendering the original
+orchard tree in Cycles at the recorded Isaac wrist poses (mapping verified to
+1e-6 m) reproduces the Isaac over-estimate from pose and tree alone, under
+either bark; only the shape ceiling (0.18 vs 0.46 m) is the renderer's.
+[Replay result](docs/EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#result--september-23-2026)
 [Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)

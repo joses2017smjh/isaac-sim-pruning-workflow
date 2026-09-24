@@ -318,10 +318,14 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       `tools/queue_generalization_controls.py`; 180 GPU-minutes reserved.
       [Protocol and result](EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026) ·
       [evidence](evidence/generalization_controls_2026-09-23.json).
-- [ ] Renderer control for Stage A: the original orchard tree in Cycles at the
-      recorded wrist poses. Deferred until the Isaac-to-Blender world mapping is
-      derived and verified; the close-range controls above decide whether it is
-      needed.
+- [x] Renderer control for Stage A: the original orchard tree in Cycles at the
+      recorded wrist poses (mapping verified to 1e-6 m), two barks. Cycles
+      reproduces the Isaac over-estimate (+0.41 m signed, target 0.45 m) from
+      the same tree and poses; bark has no effect; the shape ceiling is 0.18 m
+      in Cycles against 0.46 m on Isaac, so RTX appearance owns the shape part
+      and none of the magnitude.
+      [Protocol and result](EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#result--september-23-2026) ·
+      [evidence](evidence/tree0_replay_2026-09-23.json).
 - [ ] Re-fine-tune with lighting variation: a repository-local training wrapper
       (the companion trainer has no version control and is treated as
       read-only), photometric jitter or rendered lighting presets, warm start
