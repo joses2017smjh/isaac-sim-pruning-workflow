@@ -15,6 +15,40 @@ from dataclasses import dataclass
 
 import numpy as np
 
+MOTION_MODELS = ("translation", "similarity")
+
+
+def propagate_pixel(pixel_xy, old_points, new_points, motion_model="translation"):
+    """Next tracked pixel from accepted feature pairs, and what was applied.
+
+    ``translation`` adds the median flow. ``similarity`` fits a 4-DOF
+    similarity (``cv2.estimateAffinePartial2D`` with LMedS) to the same pairs
+    and maps the pixel through it, falling back to the median flow when no
+    finite model is returned. Both use only features that already passed the
+    tracker's unchanged roundtrip, LK-error and flow-residual checks.
+    """
+    import cv2
+
+    pixel = np.asarray(pixel_xy, dtype=np.float64).reshape(2)
+    old = np.asarray(old_points, dtype=np.float64).reshape(-1, 2)
+    new = np.asarray(new_points, dtype=np.float64).reshape(-1, 2)
+    if old.shape != new.shape or len(old) == 0:
+        raise ValueError("feature pairs must be non-empty and matched")
+    median_flow = np.median(new - old, axis=0)
+    if motion_model == "translation":
+        return pixel + median_flow, {"motion_model": "translation"}
+    if motion_model != "similarity":
+        raise ValueError(f"motion_model must be one of {MOTION_MODELS}")
+    model, _ = cv2.estimateAffinePartial2D(old.astype(np.float32), new.astype(np.float32), method=cv2.LMEDS)
+    if model is None or not np.isfinite(model).all():
+        return pixel + median_flow, {"motion_model": "similarity", "similarity_fallback": True}
+    scale = float(np.sqrt(abs(np.linalg.det(model[:, :2]))))
+    return model[:, :2] @ pixel + model[:, 2], {
+        "motion_model": "similarity",
+        "similarity_fallback": False,
+        "similarity_scale": scale,
+    }
+
 
 @dataclass(frozen=True)
 class VisualServoConfig:
@@ -36,10 +70,18 @@ class VisualServoConfig:
     max_depth_m: float = 5.0
     max_depth_spread_m: float = 0.025
     max_world_jump_m: float = 0.06
+    # How the tracked pixel follows its accepted features. "translation" (the
+    # default, unchanged) moves it by their median flow; "similarity" fits
+    # scale, rotation and translation to the same accepted features, which
+    # removes the sideways drift a median flow shows under approach zoom when
+    # the features sit to one side of the tracked point. No gate reads it.
+    motion_model: str = "translation"
 
     def __post_init__(self):
         if self.photometric_normalization not in ("raw", "clahe"):
             raise ValueError("photometric_normalization must be raw or clahe")
+        if self.motion_model not in MOTION_MODELS:
+            raise ValueError(f"motion_model must be one of {MOTION_MODELS}")
         if not isinstance(self.replenish_features, bool):
             raise ValueError("replenish_features must be bool")
         if (
@@ -198,6 +240,7 @@ class VisualServoTracker:
         self._last_world = None
         self._lost = True
         self._frame_index = 0
+        self._accepted_pairs = None
         # Fixed, explicitly experimental preprocessing; depth and all gates are
         # unchanged. CLAHE can amplify noise and is not an automatic fallback.
         self._clahe = None
@@ -352,6 +395,7 @@ class VisualServoTracker:
         if np.count_nonzero(valid) < self.config.min_features:
             return None, None, {**details, "flow_reason": "incoherent_motion"}
         details["median_roundtrip_error_px"] = float(np.median(roundtrip[valid]))
+        self._accepted_pairs = (old[valid], new[valid])
         return new[valid].reshape(-1, 1, 2), np.median(flow[valid], axis=0), details
 
     def _appearance(self, gray, next_pixel):
@@ -412,7 +456,12 @@ class VisualServoTracker:
         points, flow, details = self._track_points(gray)
         if points is None:
             return self._lose("optical_flow_failed", **details)
-        next_pixel = self._pixel + flow
+        if self.config.motion_model == "translation":
+            next_pixel = self._pixel + flow
+        else:
+            next_pixel, applied = propagate_pixel(self._pixel, *self._accepted_pairs, self.config.motion_model)
+            next_pixel = np.asarray(next_pixel, dtype=np.float32)
+            details.update(applied)
         if not (0 <= next_pixel[0] < gray.shape[1] and 0 <= next_pixel[1] < gray.shape[0]):
             return self._lose("target_outside_image", **details)
         correlation = self._appearance(gray, next_pixel)

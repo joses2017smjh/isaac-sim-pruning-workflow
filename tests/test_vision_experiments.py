@@ -269,29 +269,39 @@ def _manifest(listed_tree1):
     }
 
 
-def test_unlisted_tree1_targets_are_found_before_any_gpu_time(scripts):
+def test_tree1_components_resolve_and_only_constructive_refusals_remain(scripts):
     queue, _ = scripts
     targets = [
-        {"target_tree_index": 0, "component_first_vertex": 530},
-        {"target_tree_index": 1, "component_first_vertex": 15004},
-        {"target_tree_index": 1, "component_first_vertex": 1012},
+        {"target_tree_index": 0, "component_first_vertex": 530, "max_radius_m": 0.005},
+        {"target_tree_index": 1, "component_first_vertex": 15004, "max_radius_m": 0.0067},
+        # An unlisted tree1 component: refused before September 26, resolved at run time since.
+        {"target_tree_index": 1, "component_first_vertex": 1012, "max_radius_m": 0.006},
+        {"target_tree_index": 2, "component_first_vertex": 7, "max_radius_m": 0.006},
+        {"target_tree_index": 0, "component_first_vertex": 9, "max_radius_m": 0.02},
     ]
     refused = queue.unpresentable_targets(targets, _manifest([15004, 14944]))
-    # tree0 is never refused by this rule; only unlisted tree1 components are.
-    assert [item["component_first_vertex"] for item in refused] == [1012]
+    assert [item["component_first_vertex"] for item in refused] == [7, 9]
 
 
 def test_register_with_unpresentable_targets_is_refused(tmp_path, scripts):
     queue, _ = scripts
     register = tmp_path / "targets.json"
     register.write_text(
-        json.dumps({"target_count": 1, "targets": [{"target_tree_index": 1, "component_first_vertex": 1012}]}),
+        json.dumps(
+            {
+                "target_count": 1,
+                "targets": [{"target_tree_index": 0, "component_first_vertex": 12, "max_radius_m": 0.03}],
+            }
+        ),
         encoding="utf-8",
     )
     manifest = tmp_path / "manifest.json"
     manifest.write_text(json.dumps(_manifest([15004])), encoding="utf-8")
     with pytest.raises(ValueError, match="would be refused by the renderer before recording"):
         queue.load_targets(register, manifest)
+    # The Sept 23 register's ten unlisted tree1 targets now load.
+    targets, _ = queue.load_targets(Path(__file__).resolve().parents[1] / "docs/evidence/eval_targets_2026-09-23.json")
+    assert sum(1 for item in targets if item["target_tree_index"] == 1) == 10
 
 
 def test_strategy_rows_forward_the_approach_and_are_checked_against_the_capture(tmp_path, scripts):
@@ -349,3 +359,49 @@ def test_trial_time_limit_scales_with_the_episode(scripts):
     assert launcher.trial_time_limit({"frames": 200}) == "00:25:00"
     assert launcher.trial_time_limit({"frames": 400}) == "00:50:00"
     assert launcher.trial_time_limit({"frames": 140}) == "00:25:00"
+
+
+def test_perception_variants_forward_tracker_and_mount_and_are_checked_against_the_capture(tmp_path, scripts):
+    launcher, run = scripts
+    targets = [{"target_tree_index": 0, "component_first_vertex": 590}]
+    plan = launcher.experiment_plan(targets, "source", "raw", "similarity_mount")
+    row = plan["runs"][0]
+    assert row["strategy"]["motion_model"] == "similarity" and row["strategy"]["mount_side_rule"] == "mirror_if_end_on"
+    assert plan["frames"] == 200 and plan["maximum_gpu_minutes"] == launcher.MINUTES_PER_TRIAL
+    env = run.run_environment(plan, row, tmp_path, tmp_path / "out", {})
+    assert env["PRUNING_MOTION_MODEL"] == "similarity" and env["PRUNING_MOUNT_SIDE_RULE"] == "mirror_if_end_on"
+    assert env["PRUNING_APPROACH_MODE"] == "straight"
+    tracker_only = launcher.experiment_plan(targets, "source", "raw", "similarity_tracker")["runs"][0]
+    assert "PRUNING_MOUNT_SIDE_RULE" not in run.run_environment(plan, tracker_only, tmp_path, tmp_path, {})
+
+    def report(motion_model, rule):
+        return {
+            "photometric_normalization": "raw",
+            "frame_count": 200,
+            "approach_strategy": {"mode": "straight", "standoff_m": 0.0, "max_step_m": 0.004},
+            "tracker_config": {"motion_model": motion_model},
+            "camera_mount_selection": {"rule": rule},
+            "blender_scene": {"daylight": {"preset": "source"}, "target": {"id": "tree0_SPUR_component_590"}},
+        }
+
+    assert run.configuration_matches(report("similarity", "mirror_if_end_on"), row, plan)
+    assert not run.configuration_matches(report("translation", "mirror_if_end_on"), row, plan)
+    assert not run.configuration_matches(report("similarity", "fixed"), row, plan)
+    assert run.run_label(0, row) == "run_00_source_tree0_v590_similarity_mount"
+
+
+def test_vision_storage_preflight_scales_with_runs_and_frames_and_refuses_over_the_line(tmp_path, scripts):
+    queue, _ = scripts
+    targets = [{"target_tree_index": 0, "component_first_vertex": v} for v in (530, 590)]
+    plan = queue.experiment_plan(targets, "source", "raw", "fine_step")
+    assert queue.estimated_output_bytes(plan) == 2 * queue.BYTES_PER_200_FRAME_RUN * 2
+    report = queue.vision_storage_preflight(tmp_path, plan, share_used_bytes=1_000_000_000_000)
+    assert report["ok"] and json.loads((tmp_path / "storage_preflight.json").read_text())["ok"]
+    with pytest.raises(RuntimeError):
+        queue.vision_storage_preflight(tmp_path, plan, share_used_bytes=1_699_000_000_000)
+    with pytest.raises(ValueError):
+        queue.vision_storage_preflight(tmp_path, plan)
+    empty = tmp_path / "du.txt"
+    empty.write_text("")
+    with pytest.raises(ValueError, match="empty"):
+        queue.vision_storage_preflight(tmp_path, plan, share_du_file=empty)

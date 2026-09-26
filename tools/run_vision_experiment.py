@@ -49,6 +49,10 @@ def run_environment(plan, row, batch, output, inherited):
             PRUNING_STANDOFF_M=repr(float(strategy["standoff_m"])),
             PRUNING_MAX_STEP_M=repr(float(strategy["max_step_m"])),
         )
+        if "motion_model" in strategy:
+            env["PRUNING_MOTION_MODEL"] = str(strategy["motion_model"])
+        if "mount_side_rule" in strategy:
+            env["PRUNING_MOUNT_SIDE_RULE"] = str(strategy["mount_side_rule"])
     return env
 
 
@@ -75,6 +79,12 @@ def configuration_matches(report, row, plan):
         recorded = report.get("approach_strategy") or {}
         wanted = row["strategy"]
         matches = matches and all(recorded.get(key) == wanted[key] for key in ("mode", "standoff_m", "max_step_m"))
+        if "motion_model" in wanted:
+            tracker = report.get("tracker_config") or {}
+            matches = matches and tracker.get("motion_model") == wanted["motion_model"]
+        if "mount_side_rule" in wanted:
+            mount = report.get("camera_mount_selection") or {}
+            matches = matches and mount.get("rule") == wanted["mount_side_rule"]
     return matches
 
 

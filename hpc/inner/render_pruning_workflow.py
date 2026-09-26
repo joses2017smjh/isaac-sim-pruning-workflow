@@ -167,6 +167,8 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         raise ValueError("PRUNING_PHOTOMETRIC_NORMALIZATION must be raw or clahe")
     # Labelled approach strategy; defaults are the September 23 baseline. Gates
     # and thresholds are not reachable from the environment.
+    motion_model = os.environ.get("PRUNING_MOTION_MODEL", "translation")
+    mount_side_rule = os.environ.get("PRUNING_MOUNT_SIDE_RULE", "fixed")
     approach = ApproachStrategy(
         mode=os.environ.get("PRUNING_APPROACH_MODE", "straight"),
         standoff_m=float(os.environ.get("PRUNING_STANDOFF_M", "0")),
@@ -580,7 +582,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         report["initial_tool_pose_wxyz"] = initial_tool.detach().cpu().tolist()
         demo = None
         if blender_mode:
-            from isaaclab_pruning.sim.blender_demo_scene import gap_aligned_camera_mount
+            from isaaclab_pruning.sim.blender_demo_scene import choose_camera_mount
             from isaaclab_pruning.sim.vision_demo_controller import VisionPruningDemo
 
             initial_contact_n = max(
@@ -595,7 +597,14 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             proxy_closing_w = np.cross(tool_rotation_w[:, 2], np.asarray(env.blender_scene.target_axis_w))
             proxy_closing_w /= np.linalg.norm(proxy_closing_w)
             proxy_closing_tool = tool_rotation_w.T @ proxy_closing_w
-            wrist_mount = gap_aligned_camera_mount(proxy_closing_tool)
+            wrist_mount, mount_choice = choose_camera_mount(
+                proxy_closing_tool,
+                initial_tool[0, :3].detach().cpu().numpy(),
+                tool_rotation_w,
+                target_position,
+                env.blender_scene.target_axis_w,
+                rule=mount_side_rule,
+            )
             env.blender_scene.set_proxy_closing_axis_tool(proxy_closing_tool)
             demo = VisionPruningDemo(
                 env.blender_scene.target_id,
@@ -605,6 +614,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 closing_axis_tool=proxy_closing_tool,
                 photometric_normalization=photometric_normalization,
                 approach=approach,
+                motion_model=motion_model,
             )
             report["tracker_config"] = demo.evidence()["tracker_config"]
             report["blender_scene"] = env.blender_scene.evidence
@@ -615,6 +625,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 "radial_distance_m": 0.14,
                 "hardware_calibration": False,
                 "dynamic_reaiming": False,
+                **mount_choice,
             }
             env.blender_scene.update_tool_proxy(initial_tool[0].detach().cpu().numpy(), 0.0)
         report["target_position_m"] = target_position.tolist()

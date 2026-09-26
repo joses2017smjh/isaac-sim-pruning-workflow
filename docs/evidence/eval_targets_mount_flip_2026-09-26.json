@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "scope": "The registered targets whose wrist camera the mount-side rule changes: the only ones where the mount_side variant differs from the baseline.",
+  "selection_rule": "Apply blender_demo_scene.choose_camera_mount(rule='mirror_if_end_on', threshold 20 deg) at the recorded initial tool pose of every recorded registered target (14 targets); keep those it mirrors. It mirrors exactly two: tree0 8353 (10.4 deg default, 51.8 deg mirrored) and tree1 19264 (10.2 deg, 32.4 deg). Every other target's camera is byte-identical under the rule.",
+  "seed": null,
+  "derived_from": [
+    {
+      "path": "docs/evidence/eval_targets_tree0_2026-09-23.json",
+      "sha256": "3d34ec70c040d6ffa1f441b9e423657de60f29628e59d5422f1d9f4838ba6b02"
+    },
+    {
+      "path": "docs/evidence/eval_targets_tree1_listed_2026-09-23.json",
+      "sha256": "e428ed18c3d16153388c5b97f01ee4d37bc4b3c5d6a591bfa06dbeadd44b7b11"
+    }
+  ],
+  "target_count": 2,
+  "targets": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 8353,
+      "max_radius_m": 0.004884687598240223,
+      "length_m": 0.049996640234950485,
+      "axis": [
+        0.7655437425065629,
+        -0.14124436874086863,
+        0.6276884630197045
+      ],
+      "source_center_m": [
+        -0.2433200001716614,
+        0.3746307312584865,
+        0.6854695292553835
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19264,
+      "max_radius_m": 0.006622086153619761,
+      "length_m": 0.04968777029266064,
+      "axis": [
+        0.9252046508016405,
+        -0.21944758908475953,
+        0.30957892334572906
+      ],
+      "source_center_m": [
+        2.075500003496806,
+        -0.5944291569449432,
+        1.6892468688828473
+      ]
+    }
+  ]
+}

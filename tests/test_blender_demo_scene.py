@@ -53,6 +53,38 @@ def test_gap_aligned_camera_rejects_invalid_axes(axis):
         gap_aligned_camera_mount(axis)
 
 
+def test_mount_side_rule_mirrors_only_near_end_on_views_and_keeps_the_gap_geometry():
+    from isaaclab_pruning.sim.blender_demo_scene import choose_camera_mount, gap_aligned_camera_mount
+
+    closing = [1.0, 0.0, 0.0]
+    default = np.asarray(gap_aligned_camera_mount(closing))
+    tool_position, tool_rotation = np.zeros(3), np.eye(3)
+    camera_default = tool_position + default
+    target = np.array([0.0, 0.05, 0.25])
+    # An axis pointing straight at the default camera is end-on (0 degrees) from that side.
+    end_on_axis = (target - camera_default) / np.linalg.norm(target - camera_default)
+    fixed, record = choose_camera_mount(closing, tool_position, tool_rotation, target, end_on_axis, rule="fixed")
+    assert np.allclose(fixed, default) and record["side"] == "default"
+    assert record["view_angle_default_deg"] == pytest.approx(0.0, abs=1e-6)
+    mirrored, record = choose_camera_mount(
+        closing, tool_position, tool_rotation, target, end_on_axis, rule="mirror_if_end_on"
+    )
+    assert record["side"] == "mirrored" and record["view_angle_mirrored_deg"] > 20.0
+    assert np.allclose(mirrored, [-default[0], -default[1], default[2]])
+    # The mirror is the same gap-aligned rule on the other side: still between the jaws.
+    for fraction in np.linspace(0, 1, 10):
+        point = np.asarray(mirrored) + fraction * (np.array([0, 0, 0.07]) - np.asarray(mirrored))
+        assert abs(point[0]) < 1e-8
+    # A broadside axis is never mirrored.
+    broadside = np.cross(end_on_axis, [0.0, 0.0, 1.0])
+    kept, record = choose_camera_mount(
+        closing, tool_position, tool_rotation, target, broadside, rule="mirror_if_end_on"
+    )
+    assert record["side"] == "default" and np.allclose(kept, default)
+    with pytest.raises(ValueError):
+        choose_camera_mount(closing, tool_position, tool_rotation, target, broadside, rule="always_mirror")
+
+
 def candidate_manifest(radius=0.0068):
     return {
         "branch_geometry_candidates": {

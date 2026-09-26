@@ -72,6 +72,7 @@ class VisionPruningDemo:
         closing_axis_tool=(1.0, 0.0, 0.0),
         photometric_normalization="raw",
         approach=None,
+        motion_model="translation",
     ):
         self.target_id = str(target_id)
         self.axis = np.asarray(branch_axis_w, dtype=float)
@@ -94,6 +95,7 @@ class VisionPruningDemo:
                 feature_quality_level=0.005,
                 replenish_features=True,
                 photometric_normalization=photometric_normalization,
+                motion_model=motion_model,
             )
         )
         self.cutter = SimulatedCutController(

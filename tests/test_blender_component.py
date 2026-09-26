@@ -89,3 +89,22 @@ def test_original_export_component_8235_matches_full_mesh_geometry():
     assert result["axis"] == pytest.approx([-0.0725070438, 0.4663907755, 0.8816021626], abs=1e-8)
     assert result["max_radius_m"] == pytest.approx(0.0067835999828273555)
     assert result["length_m"] == pytest.approx(0.04992177715716928)
+
+
+def test_tree1_components_resolve_from_the_hash_verified_export_and_match_the_listed_candidates():
+    pytest.importorskip("pxr.Usd")
+    export_dir = Path(__file__).resolve().parents[1] / "artifacts/blender_scene/orchard_two_trees_v1"
+    if not (export_dir / "tree1.usdc").is_file():
+        pytest.skip("local-only export not present")
+    manifest = json.loads((export_dir / "manifest.json").read_text())
+    listed = manifest["branch_geometry_candidates"]["tree1_SPUR"]["candidates"]
+    for candidate in listed[:3]:
+        measured = component_from_export(export_dir, candidate["component_first_vertex"], tree_index=1)
+        assert measured["object_name"] == "tree1_SPUR"
+        assert measured["source_vertex_indices"] == candidate["source_vertex_indices"]
+        np.testing.assert_allclose(measured["center_m"], candidate["center_m"], atol=1e-6)
+        assert measured["max_radius_m"] == pytest.approx(candidate["max_radius_m"], abs=1e-6)
+    # An unlisted tree1 spur of the Sept 23 register resolves too.
+    assert component_from_export(export_dir, 1012, tree_index=1)["component_first_vertex"] == 1012
+    with pytest.raises(ValueError):
+        component_from_export(export_dir, 1012, tree_index=2)

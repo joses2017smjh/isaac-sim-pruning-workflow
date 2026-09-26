@@ -46,7 +46,7 @@ def component_vertex_indices(vertex_count, counts, indices, first_vertex):
     return result
 
 
-def component_geometry(points, vertex_indices):
+def component_geometry(points, vertex_indices, object_name="tree0_SPUR"):
     """Measure PCA centerline/radius while preserving original vertex IDs."""
     points = np.asarray(points, dtype=float)
     indices = list(vertex_indices)
@@ -66,7 +66,7 @@ def component_geometry(points, vertex_indices):
     if length <= 1e-10 or radius <= 1e-10:
         raise ValueError("Source component has degenerate length or radius")
     return {
-        "object_name": "tree0_SPUR",
+        "object_name": object_name,
         "component_first_vertex": indices[0],
         "source_vertex_indices": indices,
         "center_m": center.tolist(),
@@ -76,35 +76,46 @@ def component_geometry(points, vertex_indices):
     }
 
 
-def component_from_export(export_dir, first_vertex):
+def _is_spur_mesh(path: str, tree_index: int) -> bool:
+    """The exporter's spur mesh of one tree: tree0 keeps its exact historical path."""
+    if tree_index == 0:
+        return path.endswith("/tree0_SPUR/Shape_IndexedFaceSet")
+    parent, _, leaf = path.rpartition("/")
+    return parent.endswith(f"/tree{tree_index}_SPUR") and leaf.startswith("Shape_IndexedFaceSet")
+
+
+def component_from_export(export_dir, first_vertex, tree_index=0):
     """Resolve a component absent from the export's ten-candidate preview list.
 
     The full tree stays unchanged. The caller can split only the returned source
     IDs after choosing an orchard placement and validating collision clearance.
+    ``tree_index`` selects tree0.usdc or tree1.usdc, each verified against the
+    export manifest's hash before any geometry is read.
     """
+    if type(tree_index) is not int or tree_index not in (0, 1):
+        raise ValueError("tree_index must be 0 or 1")
     export_dir = Path(export_dir).resolve()
     manifest = json.loads((export_dir / "manifest.json").read_text())
     if manifest.get("units") != "meters" or manifest.get("up_axis") != "Z":
         raise ValueError("Export must explicitly use meters and Z-up")
-    expected = [item["sha256"] for item in manifest["artifacts"] if item["path"] == "tree0.usdc"]
-    path = export_dir / "tree0.usdc"
+    filename = f"tree{tree_index}.usdc"
+    expected = [item["sha256"] for item in manifest["artifacts"] if item["path"] == filename]
+    path = export_dir / filename
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     if len(expected) != 1 or digest.hexdigest() != expected[0]:
-        raise ValueError("Export provenance mismatch: tree0.usdc")
+        raise ValueError(f"Export provenance mismatch: {filename}")
 
     from pxr import Gf, Usd, UsdGeom
 
     stage = Usd.Stage.Open(str(path))
     matches = [
-        prim
-        for prim in stage.Traverse()
-        if prim.IsA(UsdGeom.Mesh) and str(prim.GetPath()).endswith("/tree0_SPUR/Shape_IndexedFaceSet")
+        prim for prim in stage.Traverse() if prim.IsA(UsdGeom.Mesh) and _is_spur_mesh(str(prim.GetPath()), tree_index)
     ]
     if len(matches) != 1:
-        raise ValueError("Expected exactly one original tree0_SPUR mesh")
+        raise ValueError(f"Expected exactly one original tree{tree_index}_SPUR mesh")
     mesh = UsdGeom.Mesh(matches[0])
     source_points = mesh.GetPointsAttr().Get()
     component = component_vertex_indices(
@@ -112,4 +123,4 @@ def component_from_export(export_dir, first_vertex):
     )
     transform = UsdGeom.XformCache().GetLocalToWorldTransform(matches[0])
     points = np.asarray([transform.Transform(Gf.Vec3d(point)) for point in source_points])
-    return component_geometry(points, component)
+    return component_geometry(points, component, object_name=f"tree{tree_index}_SPUR")

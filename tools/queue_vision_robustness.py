@@ -14,10 +14,44 @@ import tarfile
 from datetime import datetime, timezone
 from pathlib import Path
 
+from research_storage import assess
 from vision_experiment_assets import inventory_assets
 
 MINUTES_PER_TRIAL = 17  # Measured 16.5 on array 21360571; rounded up for the declared budget.
 TRIAL_TIME_LIMIT_MINUTES = 25  # The sbatch directive for a 200-frame episode; scaled with the plan's frames.
+
+
+#: Measured on the September 23-24 sweeps: 398-422 MB per recorded 200-frame run.
+BYTES_PER_200_FRAME_RUN = 450 * 1024 * 1024
+
+
+def estimated_output_bytes(plan):
+    """Capture bytes the plan can write: every run recorded at its episode length."""
+    return len(plan["runs"]) * BYTES_PER_200_FRAME_RUN * max(1, round(plan["frames"] / 200))
+
+
+def vision_storage_preflight(batch, plan, share_used_bytes=None, share_du_file=None):
+    """Refuse the batch when the projection crosses the share warning line; write the record first."""
+    if share_used_bytes is None:
+        if share_du_file is None or not Path(share_du_file).is_file():
+            raise ValueError("A share measurement is required: pass --share-used-bytes or --share-du-file")
+        text = Path(share_du_file).read_text(encoding="utf-8").strip()
+        if not text:
+            raise ValueError(f"Share measurement file is empty (du still running?): {share_du_file}")
+        share_used_bytes = int(text.split()[0])
+    report = {
+        "schema_version": 1,
+        "measured_at": datetime.now(timezone.utc).isoformat(),
+        "share_used_bytes": int(share_used_bytes),
+        "estimated_output_bytes": estimated_output_bytes(plan),
+        "projection": assess(int(share_used_bytes), estimated_output_bytes(plan)),
+        "policy": "No heavy home writes; reserve 20 GB; refuse at warning even below hard limit.",
+    }
+    report["ok"] = bool(report["projection"]["ok"])
+    (batch / "storage_preflight.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    if not report["ok"]:
+        raise RuntimeError("Storage preflight did not pass; nothing was submitted")
+    return report
 
 
 def trial_time_limit(plan):
@@ -46,7 +80,39 @@ STRATEGIES = {
         "frames": 200,
     },
     "fine_step": {"name": "fine_step", "mode": "straight", "standoff_m": 0.0, "max_step_m": 0.002, "frames": 400},
+    # Labelled perception variants (docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md): the straight
+    # baseline path with the tracker's similarity motion model, the per-target mount side, or both.
+    # Neither changes a gate, a threshold or the grader; the mount rule reads the known target axis.
+    "similarity_tracker": {
+        "name": "similarity_tracker",
+        "mode": "straight",
+        "standoff_m": 0.0,
+        "max_step_m": 0.004,
+        "motion_model": "similarity",
+        "frames": 200,
+    },
+    "mount_side": {
+        "name": "mount_side",
+        "mode": "straight",
+        "standoff_m": 0.0,
+        "max_step_m": 0.004,
+        "mount_side_rule": "mirror_if_end_on",
+        "frames": 200,
+    },
+    "similarity_mount": {
+        "name": "similarity_mount",
+        "mode": "straight",
+        "standoff_m": 0.0,
+        "max_step_m": 0.004,
+        "motion_model": "similarity",
+        "mount_side_rule": "mirror_if_end_on",
+        "frames": 200,
+    },
 }
+
+#: Keys a strategy row may carry and their baseline values; a row that omits
+#: one runs the baseline for it.
+STRATEGY_DEFAULTS = {"motion_model": "translation", "mount_side_rule": "fixed"}
 
 
 def experiment_plan(targets=None, daylight="source", photometric_normalization="raw", strategy=None):
@@ -114,23 +180,20 @@ def experiment_plan(targets=None, daylight="source", photometric_normalization="
     }
 
 
-def unpresentable_targets(targets, manifest):
-    """Targets the renderer would refuse before recording anything.
+def unpresentable_targets(targets, manifest, max_radius_m=0.012):
+    """Targets the renderer would refuse by construction, before recording anything.
 
-    blender_demo_scene.spawn_blender_demo_scene only accepts a tree1 spur that is
-    among the export's listed candidates; any other tree1 component raises
-    "Unlisted tree1 components require a new geometry audit" inside the GPU job.
-    Checking here, on CPU, means such a register is refused before it can spend
-    an allocation discovering the same thing.
+    Until September 26 the renderer accepted only listed tree1 candidates; it now
+    resolves any component of tree0 or tree1 from the hash-verified export. What
+    it still refuses by construction is a tree index outside the two-tree export,
+    or a registered radius beyond the demo jaw geometry. ``manifest`` is kept in
+    the signature for the export it is checked against.
     """
-    listed = {
-        int(item["component_first_vertex"])
-        for item in manifest["branch_geometry_candidates"]["tree1_SPUR"]["candidates"]
-    }
+    del manifest
     return [
         target
         for target in targets
-        if int(target["target_tree_index"]) == 1 and int(target["component_first_vertex"]) not in listed
+        if int(target["target_tree_index"]) not in (0, 1) or float(target.get("max_radius_m", 0.0)) > max_radius_m
     ]
 
 
@@ -150,7 +213,7 @@ def load_targets(path, manifest_path=DEFAULT_EXPORT_MANIFEST):
         if refused:
             vertexes = ", ".join(str(item["component_first_vertex"]) for item in refused)
             raise ValueError(
-                f"{len(refused)} registered tree1 targets are not listed export candidates and would be "
+                f"{len(refused)} registered targets are outside the two-tree export or the jaw geometry and would be "
                 f"refused by the renderer before recording: {vertexes}"
             )
     return targets, {
@@ -228,6 +291,8 @@ def queue_batch(
     normalization="raw",
     after=None,
     strategy=None,
+    share_used_bytes=None,
+    share_du_file=None,
 ):
     root = root.resolve()
     if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}", batch_id):
@@ -259,6 +324,7 @@ def queue_batch(
     plan["external_assets_sha256"] = inventory_assets(batch / "code")
     (batch / "plan.json").write_text(json.dumps(plan, indent=2) + "\n")
     (batch / "queue_before.txt").write_text(queue_before)
+    vision_storage_preflight(batch, plan, share_used_bytes, share_du_file)
     # The array size follows the frozen plan rather than the sbatch directive, so a
     # sweep can never launch more or fewer tasks than it registered. Concurrency
     # stays at one GPU.
@@ -304,6 +370,8 @@ def main():
     parser.add_argument("--photometric-normalization", default="raw", help="Tracker preprocessing for a target sweep")
     parser.add_argument("--after", help="Queue behind this Slurm job id; that job is never modified")
     parser.add_argument("--strategy", choices=sorted(STRATEGIES), help="Labelled approach strategy for a target sweep")
+    parser.add_argument("--share-used-bytes", type=int, help="Measured du of the user's share, in bytes")
+    parser.add_argument("--share-du-file", type=Path, help="File holding 'du -sx -B1' output for the share")
     args = parser.parse_args()
 
     targets, provenance = (None, None)
@@ -320,6 +388,8 @@ def main():
             args.photometric_normalization,
             args.after,
             args.strategy,
+            share_used_bytes=args.share_used_bytes,
+            share_du_file=args.share_du_file,
         )
     else:
         result = experiment_plan(targets, args.daylight, args.photometric_normalization, args.strategy)

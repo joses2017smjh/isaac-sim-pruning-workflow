@@ -12,6 +12,7 @@ from isaaclab_pruning.perception.visual_servo import (
     VisualServoTracker,
     bounded_visual_servo_translation,
     project_depth_to_world,
+    propagate_pixel,
 )
 
 
@@ -387,3 +388,67 @@ def test_visual_servo_hazard_holds_independently_of_valid_perception():
 def test_visual_servo_invalid_control_configuration_is_rejected(kwargs):
     with pytest.raises(ValueError):
         _servo(**kwargs)
+
+
+def test_motion_model_defaults_to_translation_and_rejects_unknown_values():
+    assert VisualServoConfig().motion_model == "translation"
+    with pytest.raises(ValueError):
+        VisualServoConfig(motion_model="affine")
+    # Every gate is identical whatever the motion model.
+    base, similar = VisualServoConfig(), VisualServoConfig(motion_model="similarity")
+    for name in (
+        "min_features",
+        "max_roundtrip_error_px",
+        "max_lk_error",
+        "max_flow_residual_px",
+        "min_patch_correlation",
+        "min_confidence",
+        "depth_radius_px",
+        "max_depth_spread_m",
+        "max_world_jump_m",
+    ):
+        assert getattr(base, name) == getattr(similar, name)
+
+
+def test_similarity_follows_a_zoom_that_a_median_flow_drifts_under():
+    # Features sit to one side of the tracked pixel while the image scales by
+    # 1.2 about a point: the median flow carries their mean displacement onto
+    # the pixel, the similarity fit maps the pixel exactly.
+    rng = np.random.default_rng(3)
+    centre = np.array([200.0, 120.0])
+    old = centre + np.column_stack([rng.uniform(4, 12, 20), rng.uniform(-10, 10, 20)])
+    pixel = np.array([198.0, 120.0])
+    new = centre + 1.2 * (old - centre) + np.array([1.5, -0.5])
+    truth = centre + 1.2 * (pixel - centre) + np.array([1.5, -0.5])
+    moved, info = propagate_pixel(pixel, old, new, "translation")
+    assert info == {"motion_model": "translation"}
+    assert np.linalg.norm(moved - truth) > 1.0
+    fitted, info = propagate_pixel(pixel, old, new, "similarity")
+    assert info["motion_model"] == "similarity" and not info["similarity_fallback"]
+    assert info["similarity_scale"] == pytest.approx(1.2, abs=1e-3)
+    np.testing.assert_allclose(fitted, truth, atol=1e-3)
+    with pytest.raises(ValueError):
+        propagate_pixel(pixel, old, new[:3], "similarity")
+    with pytest.raises(ValueError):
+        propagate_pixel(pixel, old, new, "homography")
+
+
+def test_similarity_tracker_matches_translation_on_a_pure_translation_and_keeps_every_gate():
+    results = {}
+    for model in ("translation", "similarity"):
+        tracker = VisualServoTracker(VisualServoConfig(motion_model=model))
+        image, depth = _scene()
+        assert tracker.initialize(image, (120, 80), depth)["state"] == "initialized"
+        for dx, dy in [(2, 1), (4, 2), (6, 3)]:
+            image, depth = _scene(dx, dy)
+            results[model] = tracker.update(image, depth, K, WORLD_FROM_OPTICAL)
+            assert results[model]["state"] == "tracking", results[model]
+    np.testing.assert_allclose(results["similarity"]["pixel_xy"], results["translation"]["pixel_xy"], atol=0.2)
+    assert results["similarity"]["motion_model"] == "similarity"
+    # A mixed-depth window still fails closed under the similarity model.
+    tracker = VisualServoTracker(VisualServoConfig(motion_model="similarity"))
+    image, depth = _scene()
+    tracker.initialize(image, (120, 80), depth)
+    image, depth = _scene(2, 1)
+    depth[79:83, 121:124] = 1.5
+    assert tracker.update(image, depth, K, WORLD_FROM_OPTICAL)["state"] != "tracking"

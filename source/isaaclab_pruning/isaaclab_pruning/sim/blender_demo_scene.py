@@ -41,6 +41,66 @@ def gap_aligned_camera_mount(closing_axis_tool, radial_distance_m=0.14, z_offset
     return tuple(float(value) for value in offset)
 
 
+MOUNT_SIDE_RULES = ("fixed", "mirror_if_end_on")
+#: Below this angle between the camera-to-target ray and the spur axis the
+#: default side sees the spur nearly end-on. Fixed before any run; it chooses
+#: the mount once at startup and is not a tracker, cut or grader gate.
+END_ON_THRESHOLD_DEG = 20.0
+
+
+def view_angle_to_axis_deg(tool_position_w, tool_rotation_w, mount_tool, target_w, axis_w):
+    """Angle between the ray from a tool-mounted camera to the target and the target's axis."""
+    camera = np.asarray(tool_position_w, dtype=float) + np.asarray(tool_rotation_w, dtype=float) @ np.asarray(
+        mount_tool, dtype=float
+    )
+    ray = np.asarray(target_w, dtype=float) - camera
+    axis = np.asarray(axis_w, dtype=float)
+    if np.linalg.norm(ray) < 1e-9 or np.linalg.norm(axis) < 1e-9:
+        raise ValueError("Camera must not sit on the target and the axis must be nonzero")
+    cosine = abs(float(ray @ axis) / (np.linalg.norm(ray) * np.linalg.norm(axis)))
+    return math.degrees(math.acos(min(1.0, cosine)))
+
+
+def choose_camera_mount(
+    closing_axis_tool,
+    tool_position_w,
+    tool_rotation_w,
+    target_w,
+    target_axis_w,
+    rule="fixed",
+    threshold_deg=END_ON_THRESHOLD_DEG,
+):
+    """The gap-aligned mount, or its mirror on the other side of the same jaw gap.
+
+    ``fixed`` is the September 23 behaviour. ``mirror_if_end_on`` uses the
+    selected target's known axis once, at startup: when the default side sees
+    the spur within ``threshold_deg`` of end-on and the mirrored side sees it
+    at a wider angle, the mirrored side is used. Both angles and the choice are
+    returned for the report. Uses scene metadata (the target axis), so it is a
+    known-map choice, like the seed pixel.
+    """
+    if rule not in MOUNT_SIDE_RULES:
+        raise ValueError(f"mount side rule must be one of {MOUNT_SIDE_RULES}")
+    default = gap_aligned_camera_mount(closing_axis_tool)
+    mirrored = (-default[0], -default[1], default[2])
+    angles = {
+        side: view_angle_to_axis_deg(tool_position_w, tool_rotation_w, mount, target_w, target_axis_w)
+        for side, mount in (("default", default), ("mirrored", mirrored))
+    }
+    chosen = "default"
+    if rule == "mirror_if_end_on" and angles["default"] < threshold_deg and angles["mirrored"] > angles["default"]:
+        chosen = "mirrored"
+    record = {
+        "rule": rule,
+        "threshold_deg": float(threshold_deg),
+        "view_angle_default_deg": angles["default"],
+        "view_angle_mirrored_deg": angles["mirrored"],
+        "side": chosen,
+        "known_map_input": "selected target position and axis from scene metadata, used once at startup",
+    }
+    return (mirrored if chosen == "mirrored" else default), record
+
+
 @dataclass(frozen=True)
 class FacePartition:
     point_indices: tuple[int, ...]
@@ -329,12 +389,14 @@ def spawn_blender_demo_scene(
     else:
         from isaaclab_pruning.sim.blender_component import component_from_export
 
-        if target_tree_index != 0:
-            raise ValueError("Unlisted tree1 components require a new geometry audit")
-        measured = component_from_export(export_dir, component_first_vertex)
+        # Unlisted components of either tree are measured from the hash-verified
+        # export at run time; the listed tree1 candidates are reproduced by this
+        # measurement to 1e-7 m (docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md).
+        measured = component_from_export(export_dir, component_first_vertex, tree_index=target_tree_index)
         candidate = select_component(
-            {"branch_geometry_candidates": {"tree0_SPUR": {"candidates": [measured]}}},
+            {"branch_geometry_candidates": {object_name: {"candidates": [measured]}}},
             first_vertex=component_first_vertex,
+            tree_index=target_tree_index,
         )
     target = np.asarray(target_position_w, dtype=float)
     if target.shape != (3,) or not np.isfinite(target).all() or not math.isfinite(yaw_degrees):
