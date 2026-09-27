@@ -199,3 +199,16 @@ there is the shape. At evening the target error after the fit stays 0.13 m
 (Envy) and 0.46 m (UFO), the structure problem again. The audit's daylight
 expectation held; its Isaac expectation held.
 
+---
+
+## Correction — September 27, 2026
+
+The Isaac ceiling of 0.37–0.46 m in P3 and P4 is a full-frame figure that
+includes the tool jaws (7% of pixels, predicted at 0.86–1.24 m against 0.11 m).
+On the tree pixels only, it is 0.21–0.24 m in daylight and 0.28 m at evening,
+against 0.29 m for the best constant ([evidence](evidence/tree0_replay_like_for_like_2026-09-27.json)). P3's conclusion holds:
+an affine correction recovers little on Isaac, so it is not a scale problem.
+Its explanation does not: at the same distance and field of view the L-Py trees
+reach 0.01–0.04 m in Cycles, so the cause is the tree and the recorded view, not
+the working distance or the field of view.
+

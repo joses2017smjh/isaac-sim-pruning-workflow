@@ -295,3 +295,19 @@ not an optional one.
    is the first camera effect that differs by family; it should be part of
    any close-range training set.
 
+---
+
+## Correction — September 27, 2026
+
+The "unpredicted finding" above compares the close Cycles cells' tree-mask
+ceiling (0.01–0.04 m) with the Isaac Stage A **full-frame** ceiling
+(0.37–0.46 m), which includes the tool jaws the model reads as far background.
+On the tree pixels the Isaac frames share with a Cycles replay of the same tree
+at the same poses, the Isaac ceiling is 0.21–0.24 m in daylight and the Cycles
+ceiling 0.17–0.18 m ([evidence](evidence/tree0_replay_like_for_like_2026-09-27.json),
+[replay correction](EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#correction--september-27-2026)).
+The difference from the L-Py close cells is therefore mostly the tree and the
+recorded upward view, which both renderers share; RTX adds 5–6 cm. Point 3 of
+"What this means for generalizing better" should read: the Isaac shape problem
+is the pose and scene content first, the renderer second, and the tool third.
+

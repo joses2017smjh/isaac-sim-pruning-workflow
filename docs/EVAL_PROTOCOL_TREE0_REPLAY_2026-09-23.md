@@ -146,3 +146,45 @@ Ordered by what they buy: close-range and upward-view poses in training,
 then the RTX-versus-Cycles appearance gap (dome light, tone mapping, tool
 jaws), then nothing about bark.
 
+---
+
+## Correction — September 27, 2026
+
+The result above compared unlike quantities. Its Cycles rows are tree-mask
+ceilings over the 26 replayed frames per light; its Isaac rows are full-frame
+ceilings over all 200 Stage A frames, which include the tool jaws (7% of every
+frame, 0.11 m away) together with the posts, wires and ground. The model reads
+the tool as far background: its median prediction on tool pixels is 0.86–1.24 m.
+Scored on identical pixels of identical poses by
+`tools/renderer_gap_like_for_like.py` through `sql/renderer_gap/`
+([evidence](evidence/tree0_replay_like_for_like_2026-09-27.json)), which reproduces every published anchor exactly
+(Cycles tree mask 0.1819 / 0.1701 / 0.2887; Isaac full frame 0.4639 / 0.3710 /
+0.4563 over 200 frames and 0.4485 / 0.3573 / 0.4680 over the 26):
+
+| DA2 affine ceiling, m (26 poses per light) | source | morning | evening |
+|---|---|---|---|
+| Isaac, full frame (as published) | 0.464 | 0.371 | 0.456 |
+| Isaac, full frame, the same 26 poses | 0.449 | 0.357 | 0.468 |
+| Isaac, without the tool and its edge | 0.361 | 0.283 | 0.512 |
+| **Isaac, tree pixels both renders share** | **0.241** | **0.212** | **0.281** |
+| **Cycles (palm), the same pixels** | **0.181** | **0.166** | **0.274** |
+| Best constant on the same pixels | 0.290 | 0.288 | 0.287 |
+| Isaac minus Cycles, per-pose mean (min to max) | +0.061 (+0.018 to +0.109) | +0.046 (−0.011 to +0.087) | +0.007 (−0.021 to +0.035) |
+
+Corrected reading of the verdicts:
+
+- **P1 stands as "not supported", for a different reason.** On shared tree
+  pixels the renderer costs 5–6 cm of ceiling in daylight (Isaac worse on 26 of
+  26 and 23 of 26 poses) and nothing at evening. The published "0.18 vs 0.46 m,
+  the renderer owns the shape" is withdrawn.
+- **What owns the shape at these poses is shared by both renderers.** Cycles on
+  the same tree at the same upward-looking poses already sits at 0.17–0.18 m,
+  close to the 0.29 m of a constant, whereas the L-Py trees at the same
+  distances with the same camera reach 0.01–0.04 m. The tree and the recorded
+  view, not RTX, account for most of the poor shape; the tool accounts for
+  about 0.09 m of the published full-frame figure.
+- **P2, P3 and P4 are unchanged**; bark is irrelevant on the shared pixels too
+  (palm 0.181 / 0.166, bark_brown_02 0.180 / 0.161).
+- Leaving the tool out of the 8×8 zone fit makes the zone-fit target error
+  worse (0.16 → 0.22 m), so the tool is informative to that fit, not noise.
+

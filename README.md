@@ -113,16 +113,19 @@ darkening a diffuse scene to the same luma costs only 2–3×, so low-sun shadin
 is the larger factor; no test-time curve fixes it (best, gamma, 4.8×). The
 close-range failure reproduces in Cycles from range alone (predictions floor at
 0.6–0.9 m below 0.4 m in 8/8 trees; camera model and pitch add ≤ 0.03 m), yet
-the model's *shape* there is right (affine ceiling 0.01–0.04 m) where Isaac's is
-not (0.37–0.46 m), so the Isaac collapse is renderer or asset, not range. The
+the model's *shape* there is right (affine ceiling 0.01–0.04 m). The
 re-rendered baseline cells matched the matrix within 0.001 m. An exploratory
 8×8-zone fit (ground-truth ranges, no sensor model) then reaches the affine
 ceiling everywhere in Blender and cuts the close-range target error from
 0.4–0.55 m to 0.006–0.02 m; on Isaac it stops at the shape ceiling (0.16 m). Rendering the original
 orchard tree in Cycles at the recorded Isaac wrist poses (mapping verified to
 1e-6 m) reproduces the Isaac over-estimate from pose and tree alone, under
-either bark; only the shape ceiling (0.18 vs 0.46 m) is the renderer's.
-[Replay result](docs/EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#result--september-23-2026)
+either bark. Scored on the tree pixels both renders share (corrected September
+27; the first comparison set Isaac's full frame, tool jaws included, against
+Cycles' tree mask), the renderer costs 5–6 cm of affine ceiling in daylight
+and none at evening; the poor shape at those poses is mostly the tree and the
+upward view, which Cycles shares.
+[Replay result and correction](docs/EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#correction--september-27-2026)
 A warm-start re-fine-tune with photometric jitter, against a control arm
 trained identically without it, cuts Envy evening error to a third (0.906 →
 0.322 m) and fixes the darkness cell in both families, but helps the unseen

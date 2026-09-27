@@ -293,7 +293,9 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
 - [x] Zero-GPU anchoring analysis, registered before running: one metric range
       at the target fixes UFO daylight (0.19 → 0.06 m) but not Envy (spur error
       is not the frame error; a many-point affine fit would, ceiling 0.04–0.06 m);
-      nothing fixes evening (ceiling 0.10–0.13 m) or Isaac (ceiling 0.37–0.46 m).
+      nothing fixes evening (ceiling 0.10–0.13 m) or Isaac (ceiling 0.21–0.24 m on
+      tree pixels; the published 0.37–0.46 m was full frame with the tool, corrected
+      September 27).
       P1 refuted, P2 and P4 supported, P3 half refuted, all on the record.
       [Protocol and result](EVAL_PROTOCOL_DEPTH_ANCHORING_2026-09-23.md) ·
       [evidence](evidence/depth_anchoring_2026-09-23.json).
@@ -321,9 +323,11 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
 - [x] Renderer control for Stage A: the original orchard tree in Cycles at the
       recorded wrist poses (mapping verified to 1e-6 m), two barks. Cycles
       reproduces the Isaac over-estimate (+0.41 m signed, target 0.45 m) from
-      the same tree and poses; bark has no effect; the shape ceiling is 0.18 m
-      in Cycles against 0.46 m on Isaac, so RTX appearance owns the shape part
-      and none of the magnitude.
+      the same tree and poses; bark has no effect. Corrected September 27: on
+      the tree pixels both renders share the ceiling is 0.17–0.18 m in Cycles
+      and 0.21–0.24 m on Isaac, so RTX costs 5–6 cm of shape in daylight and
+      the rest is the tree and the upward view; the published 0.18 vs 0.46 m
+      compared a tree mask with a full frame that includes the tool.
       [Protocol and result](EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#result--september-23-2026) ·
       [evidence](evidence/tree0_replay_2026-09-23.json).
 - [x] Re-fine-tune with photometric jitter against a control arm (repository-
