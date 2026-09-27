@@ -26,8 +26,11 @@ from queue_family_matrix import COMPANION, MODELS, _sbatch, storage_preflight  #
 from queue_vision_robustness import _git, dependency_option, freeze_source, submission_environment  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-ARMS = ("jitter", "control")
-EPOCHS = 6
+ARMS = ("jitter", "control", "rendered_jitter", "rendered_control")
+#: The rendered arms train on twice the rows, so 3 epochs give the same 14,940 optimizer steps as 6 on the
+#: surviving frames alone; the photometric jitter is on in the *_jitter arms only.
+EPOCHS = {"jitter": 6, "control": 6, "rendered_jitter": 3, "rendered_control": 3}
+TRAINER_ARM = {"jitter": "jitter", "control": "control", "rendered_jitter": "jitter", "rendered_control": "control"}
 TRAIN_HOURS_RESERVED = 8
 EVAL_MINUTES_RESERVED = 60
 MAX_RUNTIME_SECONDS = 7 * 3600  # leaves time for the last validation and save inside the reservation
@@ -45,9 +48,16 @@ EVALUATION_PLANS = {
 }
 
 
-def finetune_plan(arm, *, hash_assets=True, companion=COMPANION, evaluation_plans=EVALUATION_PLANS):
+def finetune_plan(
+    arm, *, hash_assets=True, companion=COMPANION, evaluation_plans=EVALUATION_PLANS, rendered_batches=None
+):
     if arm not in ARMS:
         raise ValueError(f"arm must be one of {ARMS}")
+    rendered = arm.startswith("rendered_")
+    if rendered and not rendered_batches:
+        raise ValueError("A rendered arm needs the rendered-lighting batch directories it trains on")
+    if not rendered and rendered_batches:
+        raise ValueError("Only the rendered arms take rendered-lighting batches")
     plan = {
         "schema_version": 1,
         "scope": (
@@ -55,10 +65,28 @@ def finetune_plan(arm, *, hash_assets=True, companion=COMPANION, evaluation_plan
             "(jitter arm) or without (control arm) photometric jitter, scored afterwards on the frozen "
             "matrix, controls and Isaac Stage A plans. Not a new dataset, not a new architecture."
         ),
-        "protocol": "docs/EVAL_PROTOCOL_FINETUNE_2026-09-23.md",
+        "protocol": (
+            "docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md"
+            if rendered
+            else "docs/EVAL_PROTOCOL_FINETUNE_2026-09-23.md"
+        ),
         "arm": arm,
-        "jitter": JITTER if arm == "jitter" else None,
-        "epochs": EPOCHS,
+        "trainer_arm": TRAINER_ARM[arm],
+        "jitter": JITTER if TRAINER_ARM[arm] == "jitter" else None,
+        "epochs": EPOCHS[arm],
+        "data_description": (
+            "4,980 surviving train-split frames under the legacy source light plus the same poses re-rendered under "
+            "seeded rendered-lighting-v1 draws (verified rows only), instead of 68,400"
+            if rendered
+            else "6,270 surviving frames (box and box_cam1-4, bark_brown_02) instead of 68,400"
+        ),
+        "rendered_batches": [str(b) for b in rendered_batches] if rendered else None,
+        "train_manifest_rule": (
+            "built inside the training job, after the renders, by tools/build_training_lighting_manifest.py over "
+            "rendered_batches: surviving rows plus rendered rows whose geometry check passed; hashes in the job"
+            if rendered
+            else "the companion's spur_train.csv filtered by file existence, at submission"
+        ),
         "max_runtime_seconds": MAX_RUNTIME_SECONDS,
         "max_concurrent_gpus": 1,
         "maximum_gpu_minutes": TRAIN_HOURS_RESERVED * 60 + EVAL_MINUTES_RESERVED,
@@ -68,6 +96,10 @@ def finetune_plan(arm, *, hash_assets=True, companion=COMPANION, evaluation_plan
             "best.pth by the companion validation split's RMSE; the family-matrix frames are logged, never selected on"
         ),
     }
+    if hash_assets and rendered:
+        for batch in rendered_batches:
+            if not (Path(batch) / "plan.json").is_file():
+                raise FileNotFoundError(f"Rendered-lighting batch has no frozen plan: {batch}")
     if hash_assets:
         for name in COMPANION_FILES:
             path = companion / name
@@ -85,27 +117,28 @@ def write_manifests(batch, plan, manifest_dir=MANIFEST_DIR, family_plan=EVALUATI
     out = batch / "manifests"
     out.mkdir()
     manifests = {
-        "train": filter_manifest(manifest_dir / "spur_train.csv", out / "train.csv"),
         "val": filter_manifest(manifest_dir / "spur_val.csv", out / "val.csv"),
         "family_matrix": plan_frames_to_manifest(family_plan, out / "family_matrix.csv"),
     }
+    if not plan.get("rendered_batches"):
+        manifests["train"] = filter_manifest(manifest_dir / "spur_train.csv", out / "train.csv")
     for name, entry in manifests.items():
         entry["path"] = str(out / f"{name}.csv")
         entry["sha256"] = sha256(entry["path"])
-    if manifests["train"]["kept"] == 0 or manifests["val"]["kept"] == 0:
+    if manifests["val"]["kept"] == 0 or ("train" in manifests and manifests["train"]["kept"] == 0):
         raise ValueError("The filtered manifests are empty; the surviving frames were not found")
     plan["manifests"] = manifests
     return manifests
 
 
-def queue_batch(root, batch_id, arm, *, share_used_bytes=None, share_du_file=None, after=None):
+def queue_batch(root, batch_id, arm, *, share_used_bytes=None, share_du_file=None, after=None, rendered_batches=None):
     root = Path(root).resolve()
     if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}", batch_id):
         raise ValueError("batch-id must be a short letters/digits/underscore/dash identifier")
     if _git(root, "diff", "HEAD", "--name-only").strip():
         raise ValueError("Commit tracked changes before freezing experiments; untracked work is preserved")
     revision = _git(root, "rev-parse", "HEAD").decode().strip()
-    plan = finetune_plan(arm)
+    plan = finetune_plan(arm, rendered_batches=rendered_batches)
     plan["code_revision"] = revision
     plan["created_utc"] = datetime.now(timezone.utc).isoformat()
     env = submission_environment(os.environ)
@@ -121,6 +154,8 @@ def queue_batch(root, batch_id, arm, *, share_used_bytes=None, share_du_file=Non
         "hpc/slurm/finetune_eval_frozen.sbatch",
         "tools/finetune_da2.py",
         "tools/depth_generalization.py",
+        "tools/build_training_lighting_manifest.py",
+        "tools/training_lighting.py",
     ):
         if name not in hashes:
             raise ValueError(f"Required runner is not committed: {name}")
@@ -169,6 +204,9 @@ def main():
     parser.add_argument("--share-used-bytes", type=int)
     parser.add_argument("--share-du-file", type=Path)
     parser.add_argument("--after", help="Queue the training job behind this Slurm job id; it is never modified")
+    parser.add_argument(
+        "--rendered-batch", type=Path, action="append", default=None, help="Rendered-lighting batch (rendered arms)"
+    )
     args = parser.parse_args()
     batch_id = args.batch_id or f"finetune-{args.arm}-20260923"
     if args.submit:
@@ -179,9 +217,10 @@ def main():
             share_used_bytes=args.share_used_bytes,
             share_du_file=args.share_du_file,
             after=args.after,
+            rendered_batches=args.rendered_batch,
         )
     else:
-        result = finetune_plan(args.arm)
+        result = finetune_plan(args.arm, rendered_batches=args.rendered_batch, hash_assets=False)
     print(json.dumps(result, indent=2))
 
 

@@ -256,6 +256,11 @@ def main(argv=None) -> int:
     parser.add_argument("--min-depth", type=float, default=0.001)
     parser.add_argument("--max-depth", type=float, default=20.0)
     parser.add_argument("--smoke-iterations", type=int, default=0, help="Stop each epoch after N iterations")
+    parser.add_argument(
+        "--data-description",
+        default="6,270 surviving frames (box and box_cam1-4, bark_brown_02) instead of 68,400",
+        help="How the training data differs from the original recipe, recorded in training.json",
+    )
     args = parser.parse_args(argv)
     args.output.mkdir(parents=True, exist_ok=False)
 
@@ -334,7 +339,7 @@ def main(argv=None) -> int:
         "recipe_changed": [
             "warm start from the fine-tuned checkpoint instead of the relative backbone",
             f"{args.epochs} epochs instead of 14",
-            "6,270 surviving frames (box and box_cam1-4, bark_brown_02) instead of 68,400",
+            args.data_description,
             "photometric jitter (jitter arm only)",
         ],
         "train_rows": len(trainset),

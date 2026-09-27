@@ -26,11 +26,38 @@ batch = Path(sys.argv[1])
 if not json.loads((batch / "storage_preflight.json").read_text())["ok"]:
     raise SystemExit("storage preflight did not pass")
 plan = json.loads((batch / "plan.json").read_text())
-print(plan["arm"], plan["epochs"], plan["warm_start"]["checkpoint"], plan["warm_start"]["checkpoint_sha256"], plan["max_runtime_seconds"])
+print(plan.get("trainer_arm", plan["arm"]), plan["epochs"], plan["warm_start"]["checkpoint"],
+      plan["warm_start"]["checkpoint_sha256"], plan["max_runtime_seconds"])
 PYEOF
 )
+DESCRIPTION=$("$PY" -c "import json,sys;print(json.load(open(sys.argv[1])).get('data_description','6,270 surviving frames (box and box_cam1-4, bark_brown_02) instead of 68,400'))" "$BATCH_DIR/plan.json")
+# A rendered arm builds its training manifest here, after the renders it waited
+# for, from the batches its plan registered; zero verified rendered rows is a
+# failure, never a silent fall-back to the surviving frames alone.
+RENDERED=$("$PY" -c "import json,sys;print(' '.join('--batch '+b for b in (json.load(open(sys.argv[1])).get('rendered_batches') or [])))" "$BATCH_DIR/plan.json")
+if [ -n "$RENDERED" ]; then
+  "$PY" "$CODE/tools/build_training_lighting_manifest.py" $RENDERED \
+    --surviving-manifest /nfs/hpc/share/$USER/Computer_Vision/manifests/full_spur_2tex_all_3view_seed1/spur_train.csv \
+    --output "$BATCH_DIR/manifests/rendered"
+  "$PY" - "$BATCH_DIR" <<'PYEOF'
+import json, sys
+from pathlib import Path
+sys.path.insert(0, str(Path(sys.argv[1]) / "code/tools"))
+from finetune_da2 import filter_manifest, sha256
+batch = Path(sys.argv[1])
+summary = json.loads((batch / "manifests/rendered/summary.json").read_text())
+if summary["kept_frames"] == 0:
+    raise SystemExit("no rendered frame passed the geometry check; refusing to train on the surviving rows alone")
+report = filter_manifest(batch / "manifests/rendered/combined.csv", batch / "manifests/train.csv")
+report["sha256"] = sha256(batch / "manifests/train.csv")
+report["rendered_summary_sha256"] = sha256(batch / "manifests/rendered/summary.json")
+(batch / "manifests/train_built_in_job.json").write_text(json.dumps(report, indent=2) + "\n")
+print(json.dumps(report))
+PYEOF
+fi
 exec "$PY" "$CODE/tools/finetune_da2.py" --companion /nfs/hpc/share/$USER/Computer_Vision \
  --checkpoint "$CKPT" --checkpoint-sha256 "$SHA" --arm "$ARM" --epochs "$EPOCHS" \
  --train-manifest "$BATCH_DIR/manifests/train.csv" --val-manifest "$BATCH_DIR/manifests/val.csv" \
  --extra-val-manifest "$BATCH_DIR/manifests/family_matrix.csv" \
- --output "$BATCH_DIR/train" --max-runtime-seconds "$SECONDS_LIMIT" --num-workers 4
+ --output "$BATCH_DIR/train" --max-runtime-seconds "$SECONDS_LIMIT" --num-workers 4 \
+ --data-description "$DESCRIPTION"
