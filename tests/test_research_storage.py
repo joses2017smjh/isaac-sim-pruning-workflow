@@ -19,9 +19,12 @@ def storage(monkeypatch):
 
 
 def test_policy_lines_are_the_documented_ones(storage):
-    assert storage.WARNING_BYTES == 1_649_267_441_664  # Lustre project 30762 soft quota, 1.5 TiB
+    assert storage.SOFT_QUOTA_BYTES == 1_649_267_441_664  # Lustre project 30762 soft quota, 1.5 TiB
     assert storage.HARD_LIMIT_BYTES == 2_199_023_255_552  # Lustre project 30762 hard limit, 2 TiB
-    assert storage.HARD_LIMIT_BYTES > storage.WARNING_BYTES
+    # The user's 2026-09-27 choice: refuse at the hard limit, the reserve added inside each projection.
+    assert storage.WARNING_BYTES == storage.HARD_LIMIT_BYTES
+    report = storage.assess(1_640_000_000_000, 15_000_000_000)
+    assert report["ok"] is True and report["over_soft_quota"] is True
 
 
 def test_the_measurement_that_was_refused_now_passes_and_the_reserve_still_counts(storage):

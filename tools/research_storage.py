@@ -18,10 +18,16 @@ from pathlib import Path
 #: 1.6 TB and then 1.7 TB on 2026-09-23 with the user's approval, both above the
 #: soft quota without anyone knowing it. On 2026-09-27 the user chose to let the
 #: already-queued perception round run past the soft quota and free space later,
-#: and asked that future batches check the real quota; this line is that quota.
-WARNING_BYTES = 1_649_267_441_664
+#: and asked that future batches check the real quota. Later on 2026-09-27, when
+#: approving the rendered-lighting training batch, the user chose the hard limit
+#: as the line: the home quota is the one that blocks their HPC use, and the
+#: hpc-share's binding limit is 2 TiB hard. The soft quota is still recorded in
+#: every assessment so the grace-clock risk stays visible.
+SOFT_QUOTA_BYTES = 1_649_267_441_664
 #: The project's hard block limit, 2 TiB. Writes fail at once above it.
 HARD_LIMIT_BYTES = 2_199_023_255_552
+#: Refuse when used + estimate + reserve reaches the hard limit (the reserve is added in ``assess``).
+WARNING_BYTES = HARD_LIMIT_BYTES
 
 
 def assess(used, additional, reserve=20_000_000_000, warning=WARNING_BYTES, hard=HARD_LIMIT_BYTES):
@@ -35,6 +41,8 @@ def assess(used, additional, reserve=20_000_000_000, warning=WARNING_BYTES, hard
         "projected_with_reserve_bytes": projected,
         "warning_bytes": warning,
         "hard_limit_bytes": hard,
+        "soft_quota_bytes": SOFT_QUOTA_BYTES,
+        "over_soft_quota": projected >= SOFT_QUOTA_BYTES,
         "ok": projected < warning and projected < hard,
     }
 
