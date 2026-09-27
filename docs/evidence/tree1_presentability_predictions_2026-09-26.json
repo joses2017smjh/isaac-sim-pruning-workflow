@@ -1,0 +1,436 @@
+{
+  "schema_version": 1,
+  "scope": "CPU presentability predictions for the tree1 targets registered on September 26, made BEFORE any of them ran. Known-map prediction from the exported tree geometry, the URDF forward kinematics at the recorded settled home and the robot's convex link hulls. It never filters a register; it is scored against the recorded outcome afterwards.",
+  "method": {
+    "layout": "any robot link convex hull overlapping orchard geometry at the recorded settled home joints, with the tree placed as the runtime places it (yaw 150 deg, target moved to the fixed world point)",
+    "visibility": "ray through the projected seed pixel from the recorded initial camera; first hit must be the target within the runtime's 20 mm tolerance",
+    "limits": [
+      "does not model the 120-step settle; an overlap can settle at 0 N (18669 did)",
+      "ignores the jaw proxy and robot self-occlusion",
+      "misjudges near-axial grazing views (8353)"
+    ]
+  },
+  "validation_on_recorded_targets": {
+    "layout_refusals_flagged": "4 of 4, one extra flag (18669) that settled at 0 N",
+    "visibility_correct": "12 of 13 presented targets"
+  },
+  "registers": {
+    "tree1_seeded_ten": {
+      "register": "docs/evidence/eval_targets_tree1_seeded_2026-09-26.json",
+      "register_sha256": "563c0e900816d6a243f975100bcf93a9bc072e579452bcd9c34376e5fd9cba00",
+      "counts": {
+        "predicted_layout_overlap": 7,
+        "predicted_clear": 3
+      },
+      "targets": [
+        {
+          "component_first_vertex": 1012,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 36.7,
+          "overlapping_links": [
+            "ur5e__forearm_link",
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 1353,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 54.4,
+          "overlapping_links": [
+            "ur5e__forearm_link",
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 5395,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 66.8,
+          "overlapping_links": [
+            "mock_pruner__base",
+            "ur5e__forearm_link",
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 5753,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 46.3,
+          "overlapping_links": [
+            "dovetail_female_mount__body",
+            "dovetail_male_mount__body",
+            "mock_pruner__base",
+            "ur5e__upper_arm_link",
+            "ur5e__wrist_1_link",
+            "ur5e__wrist_2_link"
+          ]
+        },
+        {
+          "component_first_vertex": 13820,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 34.0,
+          "overlapping_links": [
+            "ur5e__forearm_link",
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 15599,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 83.5,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 35897,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 64.6,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "component_first_vertex": 36666,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 64.6,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "component_first_vertex": 37023,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 60.2,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 37796,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 77.8,
+          "overlapping_links": []
+        }
+      ]
+    },
+    "tree1_seeded30": {
+      "register": "docs/evidence/eval_targets_tree1_seeded30_2026-09-26.json",
+      "register_sha256": "eb6043c108a603e24d93e796f30c8e6dbdfc2046b2bad674e759c7d88f9b2233",
+      "counts": {
+        "predicted_layout_overlap": 22,
+        "predicted_clear": 6,
+        "predicted_not_visible": 2
+      },
+      "targets": [
+        {
+          "component_first_vertex": 654,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 80.6,
+          "overlapping_links": [
+            "dovetail_male_mount__body",
+            "mock_pruner__base",
+            "rotation_correction_plate__body",
+            "ur5e__forearm_link",
+            "ur5e__upper_arm_link",
+            "ur5e__wrist_3_link"
+          ]
+        },
+        {
+          "component_first_vertex": 1189,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 45.9,
+          "overlapping_links": [
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 2065,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 24.1,
+          "overlapping_links": [
+            "ur5e__forearm_link",
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 2243,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 47.6,
+          "overlapping_links": [
+            "dovetail_female_mount__body",
+            "mock_pruner__base",
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 3015,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 80.1,
+          "overlapping_links": [
+            "mock_pruner__base",
+            "ur5e__wrist_2_link"
+          ]
+        },
+        {
+          "component_first_vertex": 3493,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 71.4,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 4261,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 73.1,
+          "overlapping_links": [
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 5932,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 82.3,
+          "overlapping_links": [
+            "dovetail_female_mount__body",
+            "dovetail_male_mount__body",
+            "mock_pruner__base",
+            "rotation_correction_plate__body",
+            "ur5e__wrist_2_link",
+            "ur5e__wrist_3_link"
+          ]
+        },
+        {
+          "component_first_vertex": 6939,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 34.0,
+          "overlapping_links": [
+            "rotation_correction_plate__body",
+            "ur5e__forearm_link",
+            "ur5e__upper_arm_link",
+            "ur5e__wrist_2_link",
+            "ur5e__wrist_3_link"
+          ]
+        },
+        {
+          "component_first_vertex": 8721,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 52.6,
+          "overlapping_links": [
+            "mock_pruner__base",
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 9546,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 74.6,
+          "overlapping_links": [
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 10557,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 81.3,
+          "overlapping_links": [
+            "dovetail_female_mount__body",
+            "mock_pruner__base",
+            "rotation_correction_plate__body",
+            "ur5e__shoulder_link",
+            "ur5e__wrist_3_link"
+          ]
+        },
+        {
+          "component_first_vertex": 10737,
+          "prediction": "predicted_not_visible",
+          "view_to_axis_deg": 15.0,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 11094,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 75.1,
+          "overlapping_links": [
+            "ur5e__shoulder_link"
+          ]
+        },
+        {
+          "component_first_vertex": 11688,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 78.0,
+          "overlapping_links": [
+            "ur5e__shoulder_link",
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "component_first_vertex": 14944,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 80.1,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 17723,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 41.3,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 19504,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 85.5,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 20099,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 15.2,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "component_first_vertex": 22885,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 40.1,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "component_first_vertex": 25652,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 62.9,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "component_first_vertex": 26545,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 89.1,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "component_first_vertex": 29869,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 63.4,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "component_first_vertex": 30283,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 20.8,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 31828,
+          "prediction": "predicted_not_visible",
+          "view_to_axis_deg": 30.4,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 32536,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 21.0,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 35546,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 37.4,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "component_first_vertex": 35837,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 21.0,
+          "overlapping_links": [
+            "dovetail_female_mount__body",
+            "dovetail_male_mount__body",
+            "mock_pruner__base",
+            "rotation_correction_plate__body",
+            "ur5e__wrist_2_link",
+            "ur5e__wrist_3_link"
+          ]
+        },
+        {
+          "component_first_vertex": 35957,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 44.6,
+          "overlapping_links": [
+            "dovetail_female_mount__body",
+            "dovetail_male_mount__body",
+            "mock_pruner__base",
+            "rotation_correction_plate__body",
+            "ur5e__wrist_3_link"
+          ]
+        },
+        {
+          "component_first_vertex": 36017,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 54.7,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        }
+      ]
+    },
+    "tree1_listed": {
+      "register": "docs/evidence/eval_targets_tree1_listed_2026-09-23.json",
+      "register_sha256": "e428ed18c3d16153388c5b97f01ee4d37bc4b3c5d6a591bfa06dbeadd44b7b11",
+      "counts": {
+        "predicted_clear": 5,
+        "predicted_layout_overlap": 1,
+        "predicted_not_visible": 1
+      },
+      "targets": [
+        {
+          "component_first_vertex": 14884,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 71.1,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 14944,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 80.1,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 15004,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 88.8,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 19145,
+          "prediction": "predicted_layout_overlap",
+          "view_to_axis_deg": 13.5,
+          "overlapping_links": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "component_first_vertex": 19264,
+          "prediction": "predicted_not_visible",
+          "view_to_axis_deg": 10.2,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 19384,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 47.3,
+          "overlapping_links": []
+        },
+        {
+          "component_first_vertex": 19444,
+          "prediction": "predicted_clear",
+          "view_to_axis_deg": 63.7,
+          "overlapping_links": []
+        }
+      ]
+    }
+  }
+}
