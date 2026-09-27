@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-27 PDT — PERCEPTION AND TREE1 ROUND QUEUED (111 trials); THREE MORE DESIGNS IN DIAGNOSIS
+CURRENT CHECKPOINT — 2026-09-27 PDT — PERCEPTION/TREE1 ROUND RUNNING; LIGHTING-TRAINING CHAIN QUEUED; RENDERER CLAIM CORRECTED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -165,16 +165,27 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     QUEUED 2026-09-27 (approved, 2,775 GPU-min): chain A 21442138 -> 21442140
     -> 21442141 -> 21442142 -> 21442143; chain B 21442144 -> 21442145 ->
     21442146 -> 21442147 -> 21442151 -> 21442152 -> 21442153 (SLURM_JOBS.md).
-  STILL IN DIAGNOSIS (needs its own GPU approval after): collision-aware
-    approach (body/arm contacts, ToF stops, wire 12142); renderer shape gap
-    (jaw/sky/tone swaps); rendered-lighting training set + fine-tune arm.
-  STORAGE (CORRECTED 2026-09-27): the share is Lustre project 30762, quota
+  RENDERER CLAIM CORRECTED (2026-09-27, commit 5a39618): on identical tree
+    pixels RTX costs 5-6 cm of affine ceiling, not 0.28 m (the published
+    comparison set Isaac full frame incl. tool against the Cycles tree mask).
+    tools/renderer_gap_like_for_like.py + sql/renderer_gap/; dated corrections
+    in the replay, controls and anchoring protocols. Pixel-swap matrix
+    (tool/colour/detail) deferred: effects below 1 cm are not resolvable with
+    ~3.6 effective poses.
+  LIGHTING TRAINING (2026-09-27, approved 6,010 GPU-min, commit d1576f7): pilot
+    21442469 -> full render 21442470 (74 trees) -> 21442471 (5 trees) ->
+    rendered_jitter 21442472/21442473 -> rendered_control 21442474/21442475.
+    Protocol docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md (L1-L4, R1-R7).
+  STILL IN DIAGNOSIS: collision-aware approach (body/arm contacts, ToF stops,
+    wire 12142) — its own registration and GPU approval after.
+  HOME QUOTA: 25 GB, 93% used; keep every output on the hpc-share or /scratch.
+  STORAGE (2026-09-27): the share is Lustre project 30762, quota
     1.5 TiB soft (1.649 TB) / 2 TiB hard, grace 4w2d; the 1.6/1.7 TB lines were
     above the soft quota (the old check read the unset user quota). Used 1.611 TB
     on 2026-09-27. The user chose to let the queued round run past the soft
-    quota and free space later; research_storage.py now refuses at the soft
-    quota for every future batch, so the lighting-training render (~13 GB)
-    and any new round need space freed first.
+    quota and free space later, then set the repo's refusal line to the 2 TiB
+    hard limit (commit 715b811); each preflight records over_soft_quota.
+    Crossing the soft quota starts a 4w2d grace clock for the whole project.
   DONE EARLIER TODAY: grade every run (validate_vision_sequence), aggregate
     through the sql/ layers, judge the predictions, append results, compose a
     GIF/MP4/poster per run with tools/compose_isaac_workflow.py (CPU, serial),

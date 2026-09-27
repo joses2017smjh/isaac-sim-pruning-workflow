@@ -446,3 +446,21 @@ chose to let it run and free space later, and asked that future batches check
 the real quota: `tools/research_storage.py` now refuses at 1.5 TiB (with the
 20 GB reserve) and treats 2 TiB as the hard limit.
 
+### Rendered lighting variation in training (submitted September 27)
+
+Approved by the user on September 27 (6,010 GPU-minutes reserved), together
+with the storage choice to refuse at the 2 TiB hard limit rather than the
+1.5 TiB soft quota. Code revision `715b811`; protocol and eleven predictions
+committed before submission:
+[protocol](docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md). Share usage
+1.614 TB by `df`; the full render's preflight records that the projection
+crosses the soft quota. One `afterany` chain, one GPU at a time:
+
+| Step | Batch | Job | Reserved |
+|---|---|---|---|
+| Pilot render (lpy_envy_00001, 90 frames + 2 source checks) | `training-lighting-pilot-20260927` | `21442469` | 90 min |
+| Full render, 74 trees of 60 frames | `training-lighting-full-20260927` | array `21442470` `0-73%1`, 60-min tasks | 4,440 min |
+| Full render, 5 trees of 90 frames | same batch | array `21442471` `0-4%1`, 80-min tasks | 400 min |
+| Fine-tune arm A (`rendered_jitter`), manifest built in-job | `finetune-rendered-jitter-20260927` | train `21442472`, eval `21442473` | 540 min |
+| Fine-tune arm B (`rendered_control`) | `finetune-rendered-control-20260927` | train `21442474`, eval `21442475` | 540 min |
+
