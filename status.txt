@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-24 PDT — ALL SEVEN BATCHES COMPLETE AND PUBLISHED
+CURRENT CHECKPOINT — 2026-09-27 PDT — PERCEPTION AND TREE1 ROUND QUEUED (111 trials); THREE MORE DESIGNS IN DIAGNOSIS
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -150,9 +150,24 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     17/17 each, Wilson 0.08-0.64) + 14884 16/17 (piece did not fall). Evidence
     docs/evidence/strategies_2026-09-24.json, tree1_listed_2026-09-24.json.
     Media (GIF/MP4/poster) per recorded run under each run's media/.
-  NEXT LEVERS (each needs registration + GPU approval): collision-aware
-    approach from home (body/arm contacts); tracker depth window at spur
-    edges (labelled tracker experiment); rendered-lighting training arm.
+  PERCEPTION + TREE1 ROUND (2026-09-26/27): diagnosis from recorded frames
+    (offline tracker replay reproduces all 46 runs exactly): 590 = drift of
+    the median-flow motion model into an edge; 8353/19264 = end-on views from
+    the fixed camera side; 12142 = trellis wire in front of the camera. Built
+    (commit 5cd39b4): similarity motion model (labelled tracker option), mount
+    side rule (mirror below 20 deg end-on, known axis), tree1 resolver (tree1
+    components now resolve from the hash-verified export), Isaac storage
+    preflight. Protocol docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md (P1-P8),
+    predictions docs/evidence/tree1_presentability_predictions_2026-09-26.json.
+    QUEUED 2026-09-27 (approved, 2,775 GPU-min): chain A 21442138 -> 21442140
+    -> 21442141 -> 21442142 -> 21442143; chain B 21442144 -> 21442145 ->
+    21442146 -> 21442147 -> 21442151 -> 21442152 -> 21442153 (SLURM_JOBS.md).
+  STILL IN DIAGNOSIS (needs its own GPU approval after): collision-aware
+    approach (body/arm contacts, ToF stops, wire 12142); renderer shape gap
+    (jaw/sky/tone swaps); rendered-lighting training set + fine-tune arm.
+  STORAGE: share 1.610 TB on 2026-09-27 (+44 GB since 09-25 from other work);
+    this round projects 1.683 TB; the lighting training set will need the
+    line or space revisited.
   DONE EARLIER TODAY: grade every run (validate_vision_sequence), aggregate
     through the sql/ layers, judge the predictions, append results, compose a
     GIF/MP4/poster per run with tools/compose_isaac_workflow.py (CPU, serial),

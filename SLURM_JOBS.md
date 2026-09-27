@@ -414,3 +414,26 @@ still runs one task at a time (`%1`), but up to four Isaac tasks can run
 concurrently. Under rule 2 no submitted job is modified; the reserved minutes
 are unchanged. The depth chain is serial as intended.
 
+### Perception fixes and the tree1 population (submitted September 27)
+
+Approved by the user on September 27 (all 111 trials, 2,775 GPU-minutes
+reserved). Code revision `7853132`; protocol and predictions committed before
+submission: [protocol](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md). Share
+measured at 1.610 TB (du exit 1 from unreadable cache paths; total kept, 20 GB
+reserve applied); the round projects to 1.683 TB against the 1.7 TB line. Every
+array runs one 25-minute A40 task at a time; the batches form two `afterany`
+chains, so at most two tasks of this round run at once.
+
+| Chain | Batch | Variant | Array job | Trials |
+|---|---|---|---|---|
+| A | `perc-similarity-tree0-20260926` | `similarity_tracker`, tree0 ten | `21442138` | 10 |
+| A | `perc-similarity-tree1-20260926` | `similarity_tracker`, tree1 listed seven | `21442140` | 7 |
+| A | `perc-mount-flip-20260926` | `mount_side`, 8353 and 19264 | `21442141` | 2 |
+| A | `perc-both-tree0-20260926` | `similarity_mount`, tree0 ten | `21442142` | 10 |
+| A | `perc-both-tree1-20260926` | `similarity_mount`, tree1 listed seven | `21442143` | 7 |
+| B | `tree1-listed-repeat-r1/r2/r3-20260926` | baseline, three repeats | `21442144`, `21442145`, `21442146` | 21 |
+| B | `tree1-listed-morning-20260926` | baseline, morning light | `21442147` | 7 |
+| B | `tree1-listed-evening-20260926` | baseline, evening light | `21442151` | 7 |
+| B | `tree1-seeded-ten-20260926` | baseline, the tree1 half of the Sept 23 register | `21442152` | 10 |
+| B | `tree1-seeded30-20260926` | baseline, new seeded draw of 30 | `21442153` | 30 |
+
