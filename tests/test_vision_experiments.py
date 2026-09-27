@@ -398,7 +398,7 @@ def test_vision_storage_preflight_scales_with_runs_and_frames_and_refuses_over_t
     report = queue.vision_storage_preflight(tmp_path, plan, share_used_bytes=1_000_000_000_000)
     assert report["ok"] and json.loads((tmp_path / "storage_preflight.json").read_text())["ok"]
     with pytest.raises(RuntimeError):
-        queue.vision_storage_preflight(tmp_path, plan, share_used_bytes=1_699_000_000_000)
+        queue.vision_storage_preflight(tmp_path, plan, share_used_bytes=1_648_000_000_000)
     with pytest.raises(ValueError):
         queue.vision_storage_preflight(tmp_path, plan)
     empty = tmp_path / "du.txt"

@@ -9,15 +9,19 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-#: Warning line, in bytes of `du -sx` apparent size on the user's share. This is
-#: the repository's own policy, not a filesystem quota: `lfs quota` reports no
-#: enforced limit on /nfs/hpc/share. Raised from 1.5 TB to 1.6 TB on 2026-09-23 and
-#: to 1.7 TB later that day, both with the user's explicit approval
-#: with the user's approval, after the share measured 1.548 TB (Lustre block
-#: count 1.404 TB) and the registered Envy/UFO matrix, about 0.4 GB, was refused.
-#: The hard limit is unchanged.
-WARNING_BYTES = 1_700_000_000_000
-HARD_LIMIT_BYTES = 2_000_000_000_000
+#: Warning line, in bytes of `du -sx` apparent size on the user's share.
+#: Corrected on 2026-09-27 to the share's real limit: the share belongs to Lustre
+#: project 30762, whose block quota is 1.5 TiB soft and 2 TiB hard with a grace
+#: time of 4 weeks 2 days (`lfs quota -p 30762 /nfs/hpc/share`; `df` reports the
+#: same 1,649,267,441,664-byte size). The earlier text said `lfs quota` showed no
+#: limit; that was the user quota, which is unset. The line had been raised to
+#: 1.6 TB and then 1.7 TB on 2026-09-23 with the user's approval, both above the
+#: soft quota without anyone knowing it. On 2026-09-27 the user chose to let the
+#: already-queued perception round run past the soft quota and free space later,
+#: and asked that future batches check the real quota; this line is that quota.
+WARNING_BYTES = 1_649_267_441_664
+#: The project's hard block limit, 2 TiB. Writes fail at once above it.
+HARD_LIMIT_BYTES = 2_199_023_255_552
 
 
 def assess(used, additional, reserve=20_000_000_000, warning=WARNING_BYTES, hard=HARD_LIMIT_BYTES):

@@ -437,3 +437,12 @@ chains, so at most two tasks of this round run at once.
 | B | `tree1-seeded-ten-20260926` | baseline, the tree1 half of the Sept 23 register | `21442152` | 10 |
 | B | `tree1-seeded30-20260926` | baseline, new seeded draw of 30 | `21442153` | 30 |
 
+**Storage correction (September 27).** The share is Lustre project 30762 with a
+block quota of 1.5 TiB soft (1,649,267,441,664 B) and 2 TiB hard, grace 4 weeks
+2 days. The 1.6 and 1.7 TB lines approved on September 23 were above the soft
+quota; the original check had read the user quota, which is unset. This round
+was projected against 1.7 TB and will probably cross the soft quota. The user
+chose to let it run and free space later, and asked that future batches check
+the real quota: `tools/research_storage.py` now refuses at 1.5 TiB (with the
+20 GB reserve) and treats 2 TiB as the hard limit.
+

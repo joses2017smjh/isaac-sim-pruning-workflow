@@ -168,9 +168,13 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
   STILL IN DIAGNOSIS (needs its own GPU approval after): collision-aware
     approach (body/arm contacts, ToF stops, wire 12142); renderer shape gap
     (jaw/sky/tone swaps); rendered-lighting training set + fine-tune arm.
-  STORAGE: share 1.610 TB on 2026-09-27 (+44 GB since 09-25 from other work);
-    this round projects 1.683 TB; the lighting training set will need the
-    line or space revisited.
+  STORAGE (CORRECTED 2026-09-27): the share is Lustre project 30762, quota
+    1.5 TiB soft (1.649 TB) / 2 TiB hard, grace 4w2d; the 1.6/1.7 TB lines were
+    above the soft quota (the old check read the unset user quota). Used 1.611 TB
+    on 2026-09-27. The user chose to let the queued round run past the soft
+    quota and free space later; research_storage.py now refuses at the soft
+    quota for every future batch, so the lighting-training render (~13 GB)
+    and any new round need space freed first.
   DONE EARLIER TODAY: grade every run (validate_vision_sequence), aggregate
     through the sql/ layers, judge the predictions, append results, compose a
     GIF/MP4/poster per run with tools/compose_isaac_workflow.py (CPU, serial),

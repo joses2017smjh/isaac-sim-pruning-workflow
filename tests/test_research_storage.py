@@ -19,8 +19,8 @@ def storage(monkeypatch):
 
 
 def test_policy_lines_are_the_documented_ones(storage):
-    assert storage.WARNING_BYTES == 1_700_000_000_000
-    assert storage.HARD_LIMIT_BYTES == 2_000_000_000_000
+    assert storage.WARNING_BYTES == 1_649_267_441_664  # Lustre project 30762 soft quota, 1.5 TiB
+    assert storage.HARD_LIMIT_BYTES == 2_199_023_255_552  # Lustre project 30762 hard limit, 2 TiB
     assert storage.HARD_LIMIT_BYTES > storage.WARNING_BYTES
 
 
