@@ -157,7 +157,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
     from dataclasses import asdict
 
     from isaaclab_pruning.sim.render_quality import CaptureQuality, apply_capture_quality, settings_readback
-    from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy
+    from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy, closing_axis_tool_at
 
     root = Path(os.environ["PRUNING_ROOT"])
     quality = None
@@ -169,10 +169,13 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
     # and thresholds are not reachable from the environment.
     motion_model = os.environ.get("PRUNING_MOTION_MODEL", "translation")
     mount_side_rule = os.environ.get("PRUNING_MOUNT_SIDE_RULE", "fixed")
+    planned_quat = os.environ.get("PRUNING_PLANNED_TOOL_QUAT")
     approach = ApproachStrategy(
         mode=os.environ.get("PRUNING_APPROACH_MODE", "straight"),
         standoff_m=float(os.environ.get("PRUNING_STANDOFF_M", "0")),
         max_step_m=float(os.environ.get("PRUNING_MAX_STEP_M", "0.004")),
+        max_rotation_deg=float(os.environ.get("PRUNING_MAX_ROTATION_DEG", "1.5")),
+        planned_tool_quat_wxyz=tuple(float(v) for v in planned_quat.split(",")) if planned_quat else None,
     )
     wrist_mount = (0.0, -0.14, -0.025) if blender_mode else WRIST_POSITION_IN_TOOL_M
     if os.environ.get("PRUNING_RENDER_QUALITY") == "pathtraced":
@@ -605,6 +608,14 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 env.blender_scene.target_axis_w,
                 rule=mount_side_rule,
             )
+            if approach.mode == "planned_pose_standoff":
+                # The known-map plan chooses the final tool orientation, so the jaws are set to straddle the
+                # branch at that orientation. The camera mount above stays the baseline one.
+                planned = approach.planned_tool_quat_wxyz or tuple(initial_tool[0, 3:7].detach().cpu().numpy().tolist())
+                proxy_closing_tool = np.asarray(
+                    closing_axis_tool_at(planned, env.blender_scene.target_axis_w), dtype=float
+                )
+                report["planned_closing_axis_tool"] = proxy_closing_tool.tolist()
             env.blender_scene.set_proxy_closing_axis_tool(proxy_closing_tool)
             demo = VisionPruningDemo(
                 env.blender_scene.target_id,

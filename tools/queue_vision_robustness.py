@@ -108,11 +108,30 @@ STRATEGIES = {
         "mount_side_rule": "mirror_if_end_on",
         "frames": 200,
     },
+    # Known-map re-oriented approach (docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md). The final tool
+    # orientation of each target comes from its register entry; None means the home orientation.
+    "planned_pose": {
+        "name": "planned_pose",
+        "mode": "planned_pose_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "max_rotation_deg": 1.5,
+        "frames": 200,
+    },
 }
 
 #: Keys a strategy row may carry and their baseline values; a row that omits
 #: one runs the baseline for it.
 STRATEGY_DEFAULTS = {"motion_model": "translation", "mount_side_rule": "fixed"}
+
+
+def _strategy_row(strategy, target):
+    """The strategy as frozen in one plan row; a planned approach carries this target's own orientation."""
+    row = {k: v for k, v in strategy.items() if k != "frames"}
+    if strategy["mode"] == "planned_pose_standoff":
+        planned = target.get("planned_final_tool_quat_wxyz")
+        row["planned_tool_quat_wxyz"] = None if planned is None else [float(v) for v in planned]
+    return row
 
 
 def experiment_plan(targets=None, daylight="source", photometric_normalization="raw", strategy=None):
@@ -151,11 +170,7 @@ def experiment_plan(targets=None, daylight="source", photometric_normalization="
             "photometric_normalization": photometric_normalization,
             "target_tree_index": int(target["target_tree_index"]),
             "component_first_vertex": int(target["component_first_vertex"]),
-            **(
-                {"strategy": {k: v for k, v in STRATEGIES[strategy].items() if k != "frames"}}
-                if strategy is not None
-                else {}
-            ),
+            **({"strategy": _strategy_row(STRATEGIES[strategy], target)} if strategy is not None else {}),
         }
         for index, target in enumerate(targets)
     ]

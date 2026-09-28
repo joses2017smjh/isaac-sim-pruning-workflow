@@ -323,6 +323,8 @@ def test_tool_axis_standoff_freezes_the_axis_at_first_tracking_then_finishes_alo
         "mode": "tool_axis_standoff",
         "standoff_m": 0.06,
         "max_step_m": 0.004,
+        "max_rotation_deg": 1.5,
+        "planned_tool_quat_wxyz": None,
     }
     # In the final phase the mouth keeps moving along the same axis toward the target itself.
     assert pose[2] > POSE[2] + 0.04 and np.allclose(pose[:2], POSE[:2])
@@ -336,3 +338,98 @@ def test_horizontal_standoff_axis_has_no_vertical_component():
     observe(controller, 0.0)
     controller.command(POSE, 0.05)
     np.testing.assert_allclose(controller.approach_axis_w, [0.6, 0.8, 0.0], atol=1e-12)
+
+
+def test_quaternion_helpers_rotate_at_a_bounded_rate_and_build_a_perpendicular_closing_axis():
+    from isaaclab_pruning.sim.vision_demo_controller import (
+        closing_axis_tool_at,
+        quat_angle_deg,
+        quat_to_matrix,
+        rotate_toward,
+    )
+
+    identity = np.array([1.0, 0.0, 0.0, 0.0])
+    quarter = np.array([np.cos(np.pi / 4), 0.0, np.sin(np.pi / 4), 0.0])  # 90 deg about y
+    assert quat_angle_deg(identity, quarter) == pytest.approx(90.0)
+    step = rotate_toward(identity, quarter, 1.5)
+    assert quat_angle_deg(identity, step) == pytest.approx(1.5, abs=1e-6)
+    assert np.allclose(rotate_toward(identity, quarter, 120.0), quarter)
+    np.testing.assert_allclose(quat_to_matrix(quarter) @ [0, 0, 1], [1, 0, 0], atol=1e-12)
+    closing = closing_axis_tool_at(identity, (0.0, 1.0, 0.0))
+    np.testing.assert_allclose(closing, [-1.0, 0.0, 0.0], atol=1e-12)  # z cross y
+    with pytest.raises(ValueError):
+        closing_axis_tool_at(identity, (0.0, 0.0, 1.0))
+
+
+def test_planned_strategy_validates_its_orientation():
+    from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy
+
+    good = ApproachStrategy("planned_pose_standoff", 0.06, planned_tool_quat_wxyz=(1.0, 0.0, 0.0, 0.0))
+    assert good.planned_tool_quat_wxyz == (1.0, 0.0, 0.0, 0.0) and good.max_rotation_deg == 1.5
+    with pytest.raises(ValueError):
+        ApproachStrategy("planned_pose_standoff", 0.06, planned_tool_quat_wxyz=(2.0, 0.0, 0.0, 0.0))
+    with pytest.raises(ValueError):
+        ApproachStrategy("tool_axis_standoff", 0.06, planned_tool_quat_wxyz=(1.0, 0.0, 0.0, 0.0))
+    with pytest.raises(ValueError):
+        ApproachStrategy("planned_pose_standoff", 0.06, max_rotation_deg=10.0)
+
+
+def test_planned_approach_rotates_moves_to_a_standoff_from_the_tracked_target_then_finishes_and_retreats():
+    from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy, quat_angle_deg, quat_to_matrix
+
+    # Final orientation: 20 degrees about x from home; its tool axis is where the mouth must approach from.
+    half = np.radians(20.0) / 2
+    planned = (float(np.cos(half)), float(np.sin(half)), 0.0, 0.0)
+    axis = quat_to_matrix(planned)[:, 2]
+    target = MOUTH + 0.15 * axis + np.array([0.0, 0.0, 0.0])
+    strategy = ApproachStrategy("planned_pose_standoff", 0.06, planned_tool_quat_wxyz=planned)
+    controller = demo(*[tracking(target)] * 400, approach=strategy)
+    pose, t, phases, rotations, steps = POSE.copy(), 0.0, [], [], []
+    for _ in range(120):
+        observe(controller, t, pose)
+        command, phase, decision = controller.command(pose, t + 0.05)
+        if phase == "align":  # the unchanged cut gate takes over inside its 8 mm mouth tolerance
+            break
+        assert phase == "vision_approach", decision
+        rotations.append(quat_angle_deg(pose[3:], command[3:]))
+        steps.append(float(np.linalg.norm(decision["mouth_delta_world_m"])))
+        phases.append(decision["approach_phase"])
+        pose, t = command, t + 0.1
+    assert phase == "align"
+    assert max(rotations) <= 1.5 + 1e-9 and max(steps) <= 0.004 + 1e-9
+    assert "standoff" in phases and "final" in phases
+    # The standoff point was frozen from the tracked target, 60 mm back along the planned axis.
+    np.testing.assert_allclose(controller.standoff_point_w, target - 0.06 * axis, atol=1e-9)
+    assert quat_angle_deg(pose[3:], planned) < 1e-6
+    assert np.linalg.norm(controller._mouth(pose[:3], pose[3:]) - target) <= 0.008
+    # After detachment the retreat goes back out to the standoff point, then home, rotating back.
+    controller.cut_step = type("Step", (), {"detached": True, "phase": "retreat"})()
+    retreat_phases = []
+    for _ in range(200):
+        command, phase, decision = controller.command(pose, t)
+        retreat_phases.append(decision["retreat_phase"])
+        assert quat_angle_deg(pose[3:], command[3:]) <= 1.5 + 1e-9
+        pose = command
+        if phase == "complete":
+            break
+    assert retreat_phases[0] == "to_standoff" and retreat_phases[-1] == "to_home"
+    np.testing.assert_allclose(pose[:3], POSE[:3], atol=0.0031)
+    assert quat_angle_deg(pose[3:], POSE[3:]) <= 0.5
+
+
+def test_planned_approach_holds_without_valid_tracking_and_identity_plan_uses_the_home_orientation():
+    from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy
+
+    controller = demo(
+        tracking(MOUTH + [0, 0, 0.1]),
+        tracking(MOUTH + [0, 0, 0.1]),
+        approach=ApproachStrategy("planned_pose_standoff", 0.06),
+    )
+    observe(controller, 0.0)
+    # A stale measurement holds exactly as the baseline does, and freezes nothing.
+    command, phase, decision = controller.command(POSE, 1.0)
+    assert phase == "vision_hold" and np.array_equal(command, POSE) and controller.standoff_point_w is None
+    observe(controller, 0.1)
+    command, phase, _ = controller.command(POSE, 0.15)
+    assert phase == "vision_approach" and np.allclose(command[3:], POSE[3:])
+    assert controller.evidence()["planned_tool_quat_wxyz"] == pytest.approx(list(POSE[3:]))

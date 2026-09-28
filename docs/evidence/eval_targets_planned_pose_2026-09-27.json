@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "scope": "Targets for the known-map re-oriented approach: the two contact targets whose planned final orientation has a clear swept path (530, 19444), and the two recorded tree1 passes as identity-plan controls (14944, 15004: final orientation = home).",
+  "selection_rule": "From docs/evidence/contact_diagnosis_2026-09-27.json: of the 7 contact/ToF targets, only 530 and 19444 have a gate-clear reachable final pose with a clear path; the two recorded tree1 passes are the controls. Planned orientations (wxyz, world) from the diagnosis's final-pose search over 6016 orientations, normalized.",
+  "seed": null,
+  "derived_from": [
+    {
+      "path": "docs/evidence/eval_targets_tree0_2026-09-23.json",
+      "sha256": "3d34ec70c040d6ffa1f441b9e423657de60f29628e59d5422f1d9f4838ba6b02"
+    },
+    {
+      "path": "docs/evidence/eval_targets_tree1_listed_2026-09-23.json",
+      "sha256": "e428ed18c3d16153388c5b97f01ee4d37bc4b3c5d6a591bfa06dbeadd44b7b11"
+    },
+    {
+      "path": "docs/evidence/contact_diagnosis_2026-09-27.json",
+      "sha256": "2ac64fe785b9e33d02b1ab14ead60d47ad4de918dc102241a1e6cde353ce32e5"
+    }
+  ],
+  "planned_orientation_notes": {
+    "530": "55.5 deg total re-orientation from home; tool axis (-0.614, 0.604, 0.508); clear path 13.0 mm to wood, ToF 70.1 mm",
+    "19444": "83.6 deg; tool axis (-0.457, 0.889, 0.022); clear path 9.5 mm, ToF 73.4 mm"
+  },
+  "target_count": 4,
+  "targets": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 530,
+      "max_radius_m": 0.0049202724425022526,
+      "length_m": 0.04787710930189219,
+      "axis": [
+        0.8678482780408019,
+        -0.08091452009686302,
+        -0.49019609008957793
+      ],
+      "source_center_m": [
+        -0.3856199989716212,
+        0.12683776568005367,
+        0.5184510511230163
+      ],
+      "planned_final_tool_quat_wxyz": [
+        -0.0036999055611158134,
+        -0.3523910053343818,
+        0.34939108190645,
+        0.8681778400434457
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "max_radius_m": 0.0065845966327450186,
+      "length_m": 0.04983170404144062,
+      "axis": [
+        0.9242986618931908,
+        0.14376344104247185,
+        -0.3535591275049827
+      ],
+      "source_center_m": [
+        1.9533766766389211,
+        -0.44862578855868157,
+        1.4090135081002644
+      ],
+      "planned_final_tool_quat_wxyz": [
+        0.6103972623744174,
+        -0.36409836702248577,
+        -0.5967973233700069,
+        -0.37239832979723625
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "max_radius_m": 0.006743434528356521,
+      "length_m": 0.0499773861245249,
+      "axis": [
+        0.5616836785147071,
+        0.6359413333272389,
+        -0.5292353596049308
+      ],
+      "source_center_m": [
+        -2.121083335081736,
+        -0.4009110900757491,
+        1.1044705358404185
+      ],
+      "planned_final_tool_quat_wxyz": null
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 15004,
+      "max_radius_m": 0.006705059199213658,
+      "length_m": 0.04906715878566724,
+      "axis": [
+        -0.6428618632212191,
+        -0.24785591628383538,
+        0.7247731159327327
+      ],
+      "source_center_m": [
+        -2.1508416732152305,
+        -0.4228489409416873,
+        1.1354093040215787
+      ],
+      "planned_final_tool_quat_wxyz": null
+    }
+  ]
+}

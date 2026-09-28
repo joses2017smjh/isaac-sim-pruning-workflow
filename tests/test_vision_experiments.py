@@ -405,3 +405,36 @@ def test_vision_storage_preflight_scales_with_runs_and_frames_and_refuses_over_t
     empty.write_text("")
     with pytest.raises(ValueError, match="empty"):
         queue.vision_storage_preflight(tmp_path, plan, share_du_file=empty)
+
+
+def test_planned_rows_carry_each_targets_own_orientation_and_are_checked(tmp_path, scripts):
+    launcher, run = scripts
+    quat = [0.6104, -0.3641, -0.5968, -0.3724]
+    targets = [
+        {"target_tree_index": 1, "component_first_vertex": 19444, "planned_final_tool_quat_wxyz": quat},
+        {"target_tree_index": 1, "component_first_vertex": 14944, "planned_final_tool_quat_wxyz": None},
+    ]
+    plan = launcher.experiment_plan(targets, "source", "raw", "planned_pose")
+    first, second = plan["runs"]
+    assert first["strategy"]["planned_tool_quat_wxyz"] == quat and second["strategy"]["planned_tool_quat_wxyz"] is None
+    env = run.run_environment(plan, first, tmp_path, tmp_path / "out", {})
+    assert env["PRUNING_APPROACH_MODE"] == "planned_pose_standoff" and env["PRUNING_MAX_ROTATION_DEG"] == "1.5"
+    assert [float(v) for v in env["PRUNING_PLANNED_TOOL_QUAT"].split(",")] == quat
+    assert "PRUNING_PLANNED_TOOL_QUAT" not in run.run_environment(plan, second, tmp_path, tmp_path, {})
+
+    def report(recorded_quat):
+        return {
+            "photometric_normalization": "raw",
+            "frame_count": 200,
+            "approach_strategy": {
+                "mode": "planned_pose_standoff",
+                "standoff_m": 0.06,
+                "max_step_m": 0.004,
+                "planned_tool_quat_wxyz": recorded_quat,
+            },
+            "blender_scene": {"daylight": {"preset": "source"}, "target": {"id": "tree1_SPUR_component_19444"}},
+        }
+
+    assert run.configuration_matches(report(quat), first, plan)
+    assert not run.configuration_matches(report(None), first, plan)
+    assert not run.configuration_matches(report([1.0, 0.0, 0.0, 0.0]), first, plan)

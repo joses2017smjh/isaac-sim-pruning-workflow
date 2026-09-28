@@ -53,6 +53,10 @@ def run_environment(plan, row, batch, output, inherited):
             env["PRUNING_MOTION_MODEL"] = str(strategy["motion_model"])
         if "mount_side_rule" in strategy:
             env["PRUNING_MOUNT_SIDE_RULE"] = str(strategy["mount_side_rule"])
+        if "max_rotation_deg" in strategy:
+            env["PRUNING_MAX_ROTATION_DEG"] = repr(float(strategy["max_rotation_deg"]))
+        if strategy.get("planned_tool_quat_wxyz") is not None:
+            env["PRUNING_PLANNED_TOOL_QUAT"] = ",".join(repr(float(v)) for v in strategy["planned_tool_quat_wxyz"])
     return env
 
 
@@ -85,6 +89,17 @@ def configuration_matches(report, row, plan):
         if "mount_side_rule" in wanted:
             mount = report.get("camera_mount_selection") or {}
             matches = matches and mount.get("rule") == wanted["mount_side_rule"]
+        if "planned_tool_quat_wxyz" in wanted:
+            recorded_quat = recorded.get("planned_tool_quat_wxyz")
+            wanted_quat = wanted["planned_tool_quat_wxyz"]
+            if wanted_quat is None:
+                matches = matches and recorded_quat is None
+            else:
+                matches = (
+                    matches
+                    and recorded_quat is not None
+                    and all(abs(float(a) - float(b)) < 1e-6 for a, b in zip(recorded_quat, wanted_quat, strict=True))
+                )
     return matches
 
 
