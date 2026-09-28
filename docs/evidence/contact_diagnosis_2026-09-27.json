@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-09-27",
+  "scope": "Read-only CPU diagnosis of the recorded hazard-contact, ToF-clearance and occlusion stops, with a known-map swept-geometry model (URDF kinematics, the robot's convex link hulls as PhysX uses them, the exported orchard meshes, the recorded settled home). Simulator geometry; not perception; no GPU.",
+  "model_validation": {
+    "kinematics_max_tool_error": "7.2 micrometres, 0.001 deg",
+    "contact_geometry": "hull clearance -0.3 to +1.2 mm on every recorded firing frame",
+    "tof_recast": "recorded ranges reproduced to 4e-6 to 3e-3 m",
+    "stops_reproduced": "7 of 7 in-scope stops on the same link and object, 0-4 frames early; 4 recorded passes event-free; 4 refused layouts overlap at home",
+    "unseen_run": "590 under the similarity tracker predicted (ToF step 60, contact step 61) before job 21442150 recorded frame 62, tof0 0.0593 m, 13.6 N"
+  },
+  "motion_interface": {
+    "command": "each frame the measured tool pose plus a position step of at most 4 mm toward the tracked target; orientation setpoint = measured orientation (drifted 2.3 deg by frame 59 on 530)",
+    "ik": "Isaac Lab DifferentialIKController, command_type pose (6-D), damped least squares 0.05, 0.05 rad joint step limit, 12 physics substeps per frame",
+    "home": "settled home differs from the commanded one (shoulder lift -0.528 vs model -0.586)"
+  },
+  "stops": [
+    {
+      "target": 530,
+      "fires": "mock_pruner__base 25.12 N at frame 59 (baseline)",
+      "met": "tree0 BRANCH 0, scaffold branch 0.67 m long, radius 1.7 cm, 3.3 cm from the spur",
+      "mouth_to_target_m": 0.042
+    },
+    {
+      "target": 7524,
+      "fires": "mock_pruner__base 5.77 N at frame 9",
+      "met": "neighbouring spur 7049, 2.8 cm from the pruner at home",
+      "mouth_to_target_m": 0.24,
+      "note": "the strategies protocol's 0.31 m was the tool origin"
+    },
+    {
+      "target": 22988,
+      "fires": "ur5e upper arm 12.55 N at frame 22",
+      "met": "spur 28375 at z 1.09 m, 3.9 cm from the arm at home"
+    },
+    {
+      "target": 18669,
+      "fires": "forearm 0.1-0.8 N at home (under the gate); ToF tof1 0.0545-0.0592 m at frames 25-55",
+      "met": "spur 19265 at home (-1.0 mm); the ToF stops are trellis wire wire0_3, not wood"
+    },
+    {
+      "target": 19384,
+      "fires": "tof1 0.0588 m at frame 44",
+      "met": "its own parent branch 6646, 3.9-4.1 mm from the spur"
+    },
+    {
+      "target": 19444,
+      "fires": "tof1 0.0598 m at frame 43",
+      "met": "parent branch 6646"
+    },
+    {
+      "target": 12142,
+      "fires": "tracking lost at frames 29-60",
+      "met": "trellis wire wire0_2 crossing the camera's line of sight 2.8-4.6 cm in front of the lens on the frame tracking is lost"
+    }
+  ],
+  "straight_path_final_penetration_mm": {
+    "530": -20.8,
+    "7524": -47.3,
+    "22988": -59.5,
+    "18669": -27.9,
+    "19384": -15.4,
+    "19444": -10.7,
+    "12142": -6.0,
+    "590": -12.5
+  },
+  "candidate_families_cleared": {
+    "pre_approach_waypoints_6": "0 of 7",
+    "tool_roll_5_angles": "0 of 7; every angle breaks the Stage A 8235 pass",
+    "alternative_arm_configurations_3_usable": "0 of 7",
+    "approach_axis_grid_34_home_orientation": "0 of 34 on each of the 7",
+    "reoriented_final_pose_6016_orientations": "gate-clear reachable final poses for 6 of 7 (none for 22988); clear paths only for 530 (55.5 deg) and 19444 (83.6 deg)",
+    "perception_only_from_home_depth": "declines 5 of the 6 feasible targets and the 14944 pass; home depth sees 0 pixels of spur 28375, spur 19265 and both wires"
+  },
+  "collision_shape": "the pruner's collision hull is 5.8x its CAD volume, but at every recorded pruner contact the CAD surface is also within 0.24 mm of the wood, so a truer shape would not change these stops",
+  "limits": [
+    "dynamics, orientation drift and contact forces are not modelled",
+    "the replay is pessimistic at the final pose (8235: 0.58 mm predicted vs 9.9 mm recorded)",
+    "whether the tracker survives a 55-84 deg re-orientation is untested"
+  ]
+}

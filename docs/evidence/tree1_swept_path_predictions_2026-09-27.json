@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-09-27",
+  "scope": "Known-map CPU predictions of how each queued tree1 target of the seeded registers ends under the baseline straight path, made before any of them ran. Never a filter: every registered target runs and is reported. Built from URDF kinematics, the robot's convex link hulls (the PhysX collision shapes), the exported orchard meshes and the recorded settled home pose; the replay step k corresponds to recorded frames k+1 to k+4.",
+  "validation_before_registration": {
+    "recorded_stops_reproduced": "7 of 7 in-scope stops (530, 7524, 22988, 18669 home and ToF, 19384, 19444) plus the 12142 line-of-sight block, same link and object, 0-4 frames early",
+    "recorded_passes": "14944, 15004, 14884 and Stage A 8235 predicted event-free",
+    "unseen_run_predicted": "590 under the similarity tracker (job 21442150): ToF at step 60 and pruner contact at step 61 predicted before the run; recorded stop at frame 62, tof0 0.0593 m, 13.6 N, same sensor and branch",
+    "limits": [
+      "home-overlap calls ignore the 120-step settle, which can push the arm clear (18669 settled at 0 N)",
+      "the replay is pessimistic at the final pose",
+      "it ignores tracker behaviour and the drop check"
+    ]
+  },
+  "rules": [
+    "home_overlap: a link hull penetrates orchard geometry at the settled home",
+    "not_visible: the seed pixel line of sight is blocked at home",
+    "marginal_home: a link hull within 2 mm of orchard geometry at home",
+    "hazard_contact / tof_minimum_clearance: the earliest event on the straight path, at replay step k (recorded frame k+1..k+5)",
+    "geometry_clear: none of the above"
+  ],
+  "registers": {
+    "eval_targets_tree1_seeded_2026-09-26.json": {
+      "register_sha256": "563c0e900816d6a243f975100bcf93a9bc072e579452bcd9c34376e5fd9cba00",
+      "counts": {
+        "home_overlap": 6,
+        "hazard_contact": 1,
+        "marginal_home": 1,
+        "tof_minimum_clearance": 2
+      },
+      "predicted_passes_at_most": 0,
+      "targets": [
+        {
+          "component_first_vertex": 1012,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into tree0_BRANCH:1462 by 34.7 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 1353,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into tree0_BRANCH:1462 by 49.2 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 5395,
+          "class": "home_overlap",
+          "detail": "ur5e__forearm_link into tree0_SPUR:1894 by 28.0 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 5753,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into wire0_1:0 by 52.8 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 13820,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into tree0_BRANCH:3418 by 32.3 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 15599,
+          "class": "hazard_contact",
+          "step": 59,
+          "recorded_frame_window": [
+            60,
+            64
+          ],
+          "detail": "mock_pruner__base on tree1_SPUR(non-target):15659"
+        },
+        {
+          "component_first_vertex": 35897,
+          "class": "marginal_home",
+          "detail": "mock_pruner__base within 0.5 mm of wire1_6:0 at home"
+        },
+        {
+          "component_first_vertex": 36666,
+          "class": "home_overlap",
+          "detail": "mock_pruner__base into tree1_BRANCH:12418 by 18.7 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 37023,
+          "class": "tof_minimum_clearance",
+          "step": 13,
+          "recorded_frame_window": [
+            14,
+            18
+          ],
+          "detail": "ToF 0.0585 m"
+        },
+        {
+          "component_first_vertex": 37796,
+          "class": "tof_minimum_clearance",
+          "step": 1,
+          "recorded_frame_window": [
+            2,
+            6
+          ],
+          "detail": "ToF 0.0593 m"
+        }
+      ]
+    },
+    "eval_targets_tree1_seeded30_2026-09-26.json": {
+      "register_sha256": "eb6043c108a603e24d93e796f30c8e6dbdfc2046b2bad674e759c7d88f9b2233",
+      "counts": {
+        "home_overlap": 16,
+        "tof_minimum_clearance": 2,
+        "hazard_contact": 1,
+        "not_visible": 2,
+        "geometry_clear": 3,
+        "marginal_home": 6
+      },
+      "predicted_passes_at_most": 3,
+      "targets": [
+        {
+          "component_first_vertex": 654,
+          "class": "home_overlap",
+          "detail": "mock_pruner__base into tree1_TRUNK:0 by 50.0 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 1189,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into tree0_BRANCH:1462 by 32.0 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 2065,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into tree0_SPUR:5330 by 58.9 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 2243,
+          "class": "home_overlap",
+          "detail": "mock_pruner__base into tree1_BRANCH:527 by 22.6 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 3015,
+          "class": "home_overlap",
+          "detail": "mock_pruner__base into tree1_SPUR(non-target):1249 by 49.4 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 3493,
+          "class": "tof_minimum_clearance",
+          "step": 63,
+          "recorded_frame_window": [
+            64,
+            68
+          ],
+          "detail": "ToF 0.0571 m"
+        },
+        {
+          "component_first_vertex": 4261,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into tree0_SPUR:6873 by 57.2 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 5932,
+          "class": "home_overlap",
+          "detail": "mock_pruner__base into tree0_BRANCH:867 by 28.5 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 6939,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into wire0_1:0 by 59.1 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 8721,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into tree1_BRANCH:3913 by 42.6 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 9546,
+          "class": "hazard_contact",
+          "step": 19,
+          "recorded_frame_window": [
+            20,
+            24
+          ],
+          "detail": "ur5e__upper_arm_link on wire0_2:0"
+        },
+        {
+          "component_first_vertex": 10557,
+          "class": "home_overlap",
+          "detail": "ur5e__shoulder_link into tree0_SPUR:6098 by 12.9 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 10737,
+          "class": "not_visible",
+          "detail": "the seed pixel's line of sight is blocked at home"
+        },
+        {
+          "component_first_vertex": 11094,
+          "class": "home_overlap",
+          "detail": "ur5e__shoulder_link into tree0_SPUR:6514 by 0.6 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 11688,
+          "class": "home_overlap",
+          "detail": "ur5e__upper_arm_link into tree0_SPUR:8822 by 19.5 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 14944,
+          "class": "geometry_clear",
+          "detail": "no contact, ToF or line-of-sight event on the straight path; may still fail on perception or the drop check"
+        },
+        {
+          "component_first_vertex": 17723,
+          "class": "marginal_home",
+          "detail": "mock_pruner__base within 0.4 mm of tree1_SPUR(non-target):9134 at home"
+        },
+        {
+          "component_first_vertex": 19504,
+          "class": "tof_minimum_clearance",
+          "step": 35,
+          "recorded_frame_window": [
+            36,
+            40
+          ],
+          "detail": "ToF 0.0587 m"
+        },
+        {
+          "component_first_vertex": 20099,
+          "class": "home_overlap",
+          "detail": "mock_pruner__base into tree1_BRANCH:8091 by 46.3 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 22885,
+          "class": "home_overlap",
+          "detail": "mock_pruner__base into wire1_3:0 by 42.5 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 25652,
+          "class": "marginal_home",
+          "detail": "mock_pruner__base within 1.4 mm of wire1_4:0 at home"
+        },
+        {
+          "component_first_vertex": 26545,
+          "class": "home_overlap",
+          "detail": "mock_pruner__base into wire1_4:0 by 22.0 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 29869,
+          "class": "home_overlap",
+          "detail": "mock_pruner__base into post3:0 by 4.4 mm at the settled home"
+        },
+        {
+          "component_first_vertex": 30283,
+          "class": "geometry_clear",
+          "detail": "no contact, ToF or line-of-sight event on the straight path; may still fail on perception or the drop check"
+        },
+        {
+          "component_first_vertex": 31828,
+          "class": "not_visible",
+          "detail": "the seed pixel's line of sight is blocked at home"
+        },
+        {
+          "component_first_vertex": 32536,
+          "class": "geometry_clear",
+          "detail": "no contact, ToF or line-of-sight event on the straight path; may still fail on perception or the drop check"
+        },
+        {
+          "component_first_vertex": 35546,
+          "class": "marginal_home",
+          "detail": "mock_pruner__base within 0.7 mm of wire1_6:0 at home"
+        },
+        {
+          "component_first_vertex": 35837,
+          "class": "marginal_home",
+          "detail": "dovetail_female_mount__body within 0.1 mm of wire1_6:0 at home"
+        },
+        {
+          "component_first_vertex": 35957,
+          "class": "marginal_home",
+          "detail": "ur5e__wrist_3_link within 0.0 mm of wire1_6:0 at home"
+        },
+        {
+          "component_first_vertex": 36017,
+          "class": "marginal_home",
+          "detail": "mock_pruner__base within 0.1 mm of wire1_6:0 at home"
+        }
+      ]
+    }
+  }
+}

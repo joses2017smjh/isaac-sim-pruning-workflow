@@ -174,3 +174,29 @@ confidence, with the piece falling after release. The next levers are
 collision-aware approach planning for the body and arm, and the tracker's
 depth window at spur edges, each its own registered experiment.
 
+---
+
+## Correction and follow-up — September 27, 2026
+
+A read-only CPU diagnosis with a known-map swept-geometry model (URDF
+kinematics, the robot's convex collision hulls, the exported orchard meshes)
+reproduced all seven contact and ToF stops on the same link and object, and
+predicted an eighth run it had not seen
+([evidence](evidence/contact_diagnosis_2026-09-27.json)). Two statements above
+are corrected:
+
+- On 7524 the contact comes with the **mouth** 0.240 m from the target; the
+  0.31 m above is the tool origin.
+- The ToF stops on 18669 see **trellis wire wire0_3**, not neighbouring wood.
+  The ToF stops on 19384 and 19444 see the spurs' own parent branch, which runs
+  4 mm from each.
+
+What the diagnosis adds: continued to the end, the straight path would push
+0.6–6 cm into wood on every one of these targets, and no path change with the
+home tool orientation clears any of them (waypoints 0 of 7, tool roll 0 of 7
+and breaking the Stage A pass, other arm configurations 0 of 7, a 34-axis grid
+0 of 34 each). Only re-orienting the tool reaches a gate-clear final pose (6 of
+7 targets), and only 530 and 19444 also have a clear path, needing 55.5° and
+83.6° of re-orientation. That is a known-map plan, and it is registered as its
+own experiment.
+
