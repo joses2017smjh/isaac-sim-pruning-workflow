@@ -372,10 +372,19 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       refuted (the two fixes do not compose on 8353) and P6 refuted (below).
       [Protocol and result](EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#result--september-28-2026) ·
       [verdicts](evidence/perception_round_verdicts_2026-09-28.json).
-- [ ] Tracker appearance check under low sun on tree1: evening light stops both
-      tree1 passes on the last approach frame (patch correlation 0.92 → 0.10 in
-      one frame) and morning stops 15004 during closure. Diagnose on the recorded
-      frames before any new tracker variant.
+- [x] Diagnose the low-sun appearance stops on the recorded frames (post hoc).
+      All three coincide with the low-sun shadow of the visual jaw surrogate
+      crossing the tracker's 13×13 appearance patch. The tracker compares the
+      right bark (≤ 0.38 px); the shadow's exit at 67 brightens a flat patch,
+      and in the morning the closing jaw shadows the lit sliver. No arm, pruner
+      or orchard caster is involved.
+      [Diagnosis](EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc) ·
+      [evidence](evidence/appearance_loss_diagnosis_2026-09-28.json).
+- [ ] Counterfactual for the jaw shadow (proposed, not registered): rerun
+      evening 14944 and 15004 and morning 15004 with the surrogate jaw casting
+      no shadow, against unchanged runs. Needs a recorded scene option with a
+      unit test, a protocol, and a GPU approval (12 runs, 540 GPU-min reserved
+      at 45 min per task).
 - [ ] Repeat any single-run class change on a target near a tracker floor: the
       RGB render differs run to run (0 of 69 same-scene frame-0 pairs identical;
       depth and pose identical in all), and 22988 flipped class on it.

@@ -159,7 +159,11 @@ time-of-flight gate instead, so **no pass count rose**: tree0 is still 0/10.
 Tree1's seven listed spurs pass **2/7 in all five source-light batches**, but
 **evening light stops both passes** on the last approach frame through the
 tracker's appearance check, and morning light stops one during closure. These
-are the first light-dependent outcomes on registered targets. The first seeded
+are the first light-dependent outcomes on registered targets. A post hoc
+diagnosis traces all three to the low-sun shadow of the visual jaw surrogate
+crossing the tracker's appearance patch: the tracker compares the right bark,
+and no intervention has been run yet
+([diagnosis](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc)). The first seeded
 draws of tree1 give 0/10 and 1/30, dominated by layout refusals, as predicted.
 Physics repeats bit for bit, but the RGB render does not: 0 of 69 same-scene
 frame-0 pairs are identical, and one tree0 target changed class on that noise

@@ -266,3 +266,94 @@ not a registered prediction, and nothing above depends on it. The same applies
 to the `unseen_run` line of `contact_diagnosis_2026-09-27.json` ("before job
 21442150 recorded frame 62"): when the run reached frame 62 is not recorded, so
 that ordering is not established either. Both files are left unchanged.
+
+## Corrections and diagnosis of the light-dependent stops — September 28, 2026 (post hoc)
+
+**Two corrections to the result above; the original text is kept.**
+- *"Mean patch brightness changes by under 10 grey levels."* That was measured
+  over the 29×49 tracking region, not the 13×13 patch the appearance check
+  compares. On that patch, 14944 brightens from a mean of 72.3 (std 13.4) to
+  110.0 (std 43.2), +37.7 levels; 15004 goes from 44.1 to 53.5, +9.4.
+- *"The source-light runs hold at least 0.95 at the same frame."* That held
+  for the r1 runs quoted. Across the three repeats, the six source runs are at
+  0.944–0.982 at frame 67 (15004 r3 is 0.944).
+
+**Diagnosis.** A multi-agent diagnosis tested four explanations on the
+recorded frames: four independent probes, a synthesis, and three skeptics who
+tried to refute it. Its method is committed as `tools/extract_shadow_casters.py`
+and `tools/diagnose_appearance_loss.py`
+([evidence](evidence/appearance_loss_diagnosis_2026-09-28.json), 11 runs, code
+`9254569`). A fresh run reproduced the output byte for byte, and an
+independent verifier's own code reproduced the load-bearing numbers. The tool
+first replays the tracker exactly (largest correlation difference 1.8e-7),
+checks forward kinematics against the recorded tool pose and ray-cast depth
+against recorded depth, and stops on any mismatch.
+
+- **The tracker compares the right place.** At the three stops the propagated
+  pixel is 0.38, 0.36 and 0.06 px from the correspondence given by recorded
+  depth and pose. The correlation at that true correspondence also collapses:
+  0.116, 0.266 and 0.288. The feature tracker does not drift. The bark's own
+  appearance changed.
+- **What changed is a sun shadow cast by the visual jaw surrogate.** The
+  surrogate is two 6×25×30 mm cubes posed from the recorded tool pose, proxy
+  roll and closure. The model ray-casts the bark points under the patch toward
+  the recorded sun, against the trees, orchard, robot links and surrogate.
+  - *Evening, 14944 and 15004.* The jaw shadow enters the patch at 57–59.
+    Modelled lit-to-shadow flips are 47/68/26 and 34/63/37. The correlation
+    dips to 0.755/0.753/0.767 and 0.830/0.672/0.523, which are near-misses.
+  - The shadow then covers the patch's sun-facing part. Its lit fraction falls
+    from 0.83 and 0.81 to 0.00–0.01, and the patch goes flat (std 13–15).
+  - At 67 the shadow leaves: 70 and 21 bark points turn from shadow to lit.
+    That brightening against a flat patch is the stop, at 0.103 and 0.297.
+  - *Morning, 15004.* During closure the closing jaw shadows the patch's only
+    sunlit sliver: 13, 11 and 7 points at 73–75, correlation 0.742/0.552/0.264.
+  - Every modelled flip at the three stops is cast by a jaw cube, and none by
+    an arm link, the pruner body or the orchard.
+- **Pixel and frame agreement.** On the same bark points followed through the
+  frames, the flipped points' median grey goes:
+  - 14944: 165 → 68–78 (58–66) → 159 (67);
+  - 15004: 104 → 30 → 89;
+  - morning 15004: 186 → 155 → 35 at 73–75.
+
+  Neighbouring points the model keeps in shadow barely move at the stop: 72 →
+  76 and 42 → 41. Leaving out the modelled flip pixels, with a 3×3 dilation,
+  gives back a correlation of 0.921 (62 pixels kept), 0.958 (124) and 0.967
+  (152). Count-matched random removals give a 95th percentile of 0.255, 0.386
+  and 0.369. No mask shifted by 2 px or more (160 shifts) reaches the true
+  value; 1-px shifts come close, so the location is right to about ±1 px.
+- **Sensitivity.** The flip count depends on how far the shadow ray starts off
+  the bark. At four offsets (0 to 2 mm back, 0.1 to 0.5 mm along the normal)
+  the 14944 count at 67 is 42/55/70/82, always the same jaw. Masking restores
+  the correlation to 0.76–0.97 in 11 of the 12 stop-by-offset cases. The
+  exception is morning 15004 at the 2 mm offset, where only 2 points flip and
+  the mask no longer explains the change (0.007). The strongest values are at
+  the default offset, which the first probe chose; all four are in the
+  evidence.
+- **Controls.** No point of the patch is sunlit anywhere in the window of
+  any of the eight control runs (evening 14884, morning 14944 and the six
+  source repeats), so the model has no flip to find in any of them. The source
+  sun is at the zenith, so neither 14944's nor 15004's patch ever receives
+  direct sun under source. The diagnosis workflow gives the reasons for the two
+  low-sun controls, but the committed evidence does not record them: evening
+  14884's sun-facing points sit in an orchard post's shadow, and morning
+  14944's patch faces away from the sun.
+
+**What this changes.** P6 stays refuted. What it measured is narrower than
+"light matters": it is the low-sun shadow of the visual jaw surrogate crossing
+the tracker's frame-to-frame appearance patch. A real jaw would also shade the
+spur, with different timing and extent. The source-light passes are not a
+like-for-like control for self-shadowing.
+
+**Limits.** This is post hoc on one render per run, and no intervention was
+run, so the shadow is a pixel-by-pixel and frame-by-frame association, not a
+demonstrated cause. The model predicts where and when the patch changes, not
+how much, so it does not predict pass or fail at the 0.35 gate: 15004 missed
+it by 0.053. Frames were path traced (64 spp, non-temporal OptiX denoiser)
+per each report's `capture_quality.actual`; the report's `render_settings`
+field was the unused scene-construction config, now labelled (commit
+`87767eb`).
+
+**Proposed, not registered.** A counterfactual would settle causality: the
+same runs with the surrogate jaw set to cast no shadow, against unchanged
+runs. See the roadmap. It needs a small scene option, its own registration and
+a GPU approval.
