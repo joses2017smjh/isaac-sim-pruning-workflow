@@ -250,3 +250,14 @@ runs and never filtered a target.
   before its predicted ToF event. Of the six marginal calls, 5 were refused
   and 17723 hit the predicted link at frame 1. One pass against at most 3
   predicted.
+
+**Correction to the swept-path register (September 28).**
+`tree1_swept_path_predictions_2026-09-27.json` says, in its validation
+section, that 590's run under the similarity tracker was "predicted before the
+run". The run (task `21442138_1`, job `21442150`) started at 15:01:29 on
+September 27, and its report was written at 15:16:50. The session transcript
+logs the prediction at 15:07:25, while the run was executing, and git holds it
+only from the 18:23 commit. It was made before the outcome was written, not
+before the run, and it is not verifiable from the repository. It is validation,
+not a registered prediction, and nothing above depends on it. The file is left
+unchanged.
