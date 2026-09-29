@@ -515,3 +515,31 @@ either fine-tune has built its manifest. Code revision `7252be6`.
 | Batch | Job | Reserved |
 |---|---|---|
 | `training-lighting-resume-20260928` (51 frames of `lpy_envy_00014`) | array `21461896` `0-0%1` | 50 min |
+
+### Scheduler changes at the user's request (September 28, late)
+
+The user asked, with `ampere` drained for maintenance until October 1, to let
+the pruning jobs take any suitable free GPU. The user chose each option after
+the hardware risks were stated:
+
+- **Lighting render concurrency.** `scontrol update ArrayTaskThrottle=4` on
+  `21442470` and `21442471`, which were throttled at 1. The tasks are
+  independent: each renders its own tree into its own directory with
+  node-local scratch.
+- **Rendered-lighting fine-tunes.** `21442472` and `21442474` now run on
+  `dgxh,ampere` (H100 or A40), with the `a40` constraint removed; the fp32
+  trainer's torch build includes sm_90. RTX 8000 is excluded because the 7 h
+  runtime cap could cut training below the registered steps. Both now also
+  depend on the `lpy_envy_00014` resume `21461896`, so its frames enter first.
+- **Planned-approach chain.** `21461306` → `21461307` → `21461308` (A40 only,
+  25-minute tasks) never started. It was cancelled and resubmitted to
+  `gpu,ampere` with the constraint `a40|rtx8000` and 45-minute tasks, 540
+  GPU-minutes reserved (approved). H100 is excluded because it has no RT cores.
+  The protocol amendment was committed before submission. Code revision
+  `bb7e3b5`.
+
+| Batch | Array job | Placement |
+|---|---|---|
+| `planned-pose-gpu-r1-20260929` | `21464467` `0-3%1` | gpu,ampere; a40\|rtx8000; 45 min |
+| `planned-pose-gpu-r2-20260929` | `21464468` `0-3%1`, after `21464467` | same |
+| `planned-pose-gpu-r3-20260929` | `21464469` `0-3%1`, after `21464468` | same |
