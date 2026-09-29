@@ -168,6 +168,8 @@ refuted, both on the record.
 [Protocol and result](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#result--september-28-2026)
 · [verdicts](docs/evidence/perception_round_verdicts_2026-09-28.json)
 · [per-batch evidence](docs/evidence/perception_round_2026-09-28/)
+· [evening failure, tree1 spur 14944 (GIF)](docs/demo/isaac_tree1_v14944_evening_vision_invalid.gif)
+beside the [source-light pass of the same spur](docs/demo/isaac_tree1_v14944_baseline_pass.gif).
 [Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)

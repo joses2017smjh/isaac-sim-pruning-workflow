@@ -212,6 +212,9 @@ is not isolated. Under morning light, 15004's correlation falls from 1.00 to
 0.26 over frames 72–75 while the jaw closes. The September 23 sweep found no
 light dependence on tree0, where nothing reached that phase.
 
+[Evening failure of 14944 (GIF)](demo/isaac_tree1_v14944_evening_vision_invalid.gif);
+every recorded run's GIF, MP4 and poster is beside its capture under `media/`.
+
 **Physics repeats; the RGB render does not.** 14884's drop (1.13 mm) and
 19145's startup force (60.554 N) are identical in all eight runs of each. A
 post hoc check compared 69 pairs of runs with the same revision, target, light
