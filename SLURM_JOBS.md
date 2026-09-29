@@ -496,3 +496,19 @@ preflight records `over_soft_quota: true` against the 2 TiB hard line. Strategy
 | `planned-pose-r1-20260928` | 530, 19444 (planned); 14944, 15004 (identity plan) | `21461306` `0-3%1` | 4 |
 | `planned-pose-r2-20260928` | same | `21461307` `0-3%1`, after `21461306` | 4 |
 | `planned-pose-r3-20260928` | same | `21461308` `0-3%1`, after `21461307` | 4 |
+
+### Resume of the timed-out lighting tree (submitted September 28)
+
+Approved by the user on September 28 (60 GPU-minutes; 50 reserved). Task 8 of
+`21442470` (`lpy_envy_00014`, job `21445630`) hit a transient CUDA init failure
+on `cn-gpu5`. Cycles fell back to CPU and the task timed out with 9 of 60
+frames, all 9 verified. `cn-gpu5` rendered 38 other tasks of the array on GPU.
+The renderer now refuses a CPU fallback and gains `--resume`. The resume writes
+the 51 missing frames into the same tree directory of
+`training-lighting-full-20260927`, after copying the old manifest aside, so the
+two queued rendered-lighting fine-tunes pick them up. It refuses to start once
+either fine-tune has built its manifest. Code revision `7252be6`.
+
+| Batch | Job | Reserved |
+|---|---|---|
+| `training-lighting-resume-20260928` (51 frames of `lpy_envy_00014`) | array `21461896` `0-0%1` | 50 min |

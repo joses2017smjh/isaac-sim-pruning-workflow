@@ -201,8 +201,13 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     Task 8 (lpy_envy_00014) timed out at 9/60 frames after a CUDA init failure
     on cn-gpu5 (CPU fallback). CORRECTED 2026-09-28: the manifest builder keeps
     its 9 verified frames and records the other 51 as not_rendered in
-    summary.json; the tree is partly in, not excluded. A re-render would add the
-    51 missing frames.
+    summary.json; the tree is partly in, not excluded. RESUME QUEUED 2026-09-28
+    (user-approved 60 GPU-min, 50 reserved): 21461896, batch
+    training-lighting-resume-20260928, commit 7252be6; writes the 51 missing
+    frames into the full batch's tree dir (old manifest copied aside), refuses
+    once either rendered fine-tune has built its manifest. Renderer now refuses
+    CPU fallback. NOTE: this Claude session runs inside the user's interactive
+    job 21460133 (cn-gpu3); SLURM_JOB_ID leaks into local runs.
   HOME QUOTA: 25 GB, 93% used; keep every output on the hpc-share or /scratch.
   STORAGE (2026-09-27): the share is Lustre project 30762, quota
     1.5 TiB soft (1.649 TB) / 2 TiB hard, grace 4w2d; the 1.6/1.7 TB lines were
