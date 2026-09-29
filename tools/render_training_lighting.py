@@ -16,6 +16,13 @@ Only the RGB is kept. Depth and the tree mask are rendered to node-local
 scratch, compared with the surviving files the training row will reuse, and
 deleted; a frame whose geometry does not reproduce is kept in the manifest with
 ``ok`` false and is never used for training. No companion file is written.
+
+A training render must run on a GPU: when Cycles finds no CUDA or OptiX device
+it falls back to CPU, which cannot finish a tree inside its time limit, so the
+render refuses instead. ``--resume`` continues a tree whose task stopped: the
+earlier manifest is copied aside, its records are kept as written, only the
+frames it never rendered are rendered, and the resume is recorded in the
+manifest with the job that did it.
 """
 
 from __future__ import annotations
@@ -145,6 +152,18 @@ def apply_lighting(daylight_presets, scene, name, config, seed):
         daylight_presets.PRESETS.pop(name, None)
 
 
+def compute_devices():
+    """The Cycles compute devices this process can use, as Blender reports them."""
+    addon = bpy.context.preferences.addons.get("cycles")
+    if addon is None:
+        return {"compute_device_type": None, "devices": []}
+    preferences = addon.preferences
+    return {
+        "compute_device_type": str(preferences.compute_device_type),
+        "devices": [{"name": d.name, "type": d.type, "use": bool(d.use)} for d in preferences.devices],
+    }
+
+
 def write_manifest(output, result):
     """Atomic rewrite of the render manifest with the frames recorded so far."""
     result["frames_ok"] = sum(1 for f in result["frames"] if f.get("ok"))
@@ -165,8 +184,16 @@ def main():
     )
     parser.add_argument("--smoke", action="store_true", help="64 px, 1 sample, CPU: code path only, no assertions")
     parser.add_argument("--max-frames", type=int, default=0)
+    parser.add_argument("--resume", action="store_true", help="Continue a stopped tree in its existing output")
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1 :])
-    args.output.mkdir(parents=True, exist_ok=False)
+    if args.resume:
+        if args.source_checks:
+            raise ValueError("--resume renders registered frames only, without source checks")
+        previous_path = args.output / "render_manifest.json"
+        previous_text = previous_path.read_text()
+        previous = json.loads(previous_text)
+    else:
+        args.output.mkdir(parents=True, exist_ok=False)
     args.scratch.mkdir(parents=True, exist_ok=True)
     os.environ["COMPUTER_VISION_ROOT"] = str(args.companion)
     sys.path.insert(0, str(args.companion / "Dataloader"))
@@ -177,6 +204,10 @@ def main():
     frames = plan["trees"][args.tree_id]["frames"]
     if args.max_frames:
         frames = frames[: args.max_frames]
+    if args.resume:
+        kept, remaining = tl.resume_state(previous, frames, smoke=args.smoke)
+    else:
+        kept, remaining = [], list(enumerate(frames))
     scene = bpy.context.scene
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.scale_length = 1.0
@@ -196,10 +227,15 @@ def main():
         scene.render.threads_mode = "FIXED"
         scene.render.threads = 2
     settings = sampler_settings(scene)
+    devices = compute_devices()
     if not args.smoke:
         wrong = {k: (settings[k], v) for k, v in TEMPLATE_SAMPLER.items() if settings[k] != v}
         if wrong or settings["view_transform"] != "Filmic" or settings["resolution"] != [gen.W, gen.H, 100]:
             raise RuntimeError(f"Template sampler differs from the training render: {wrong} {settings}")
+        if settings["device"] != "GPU":
+            raise RuntimeError(
+                f"Cycles found no GPU and fell back to {settings['device']}; refusing a CPU render: {devices}"
+            )
     template_tree = bpy.data.objects.get(gen.TREE_OBJ.format(0))
     saved = {0: (template_tree.matrix_world.to_translation().copy(), None)}
     gen.remove_all_tree_objects()
@@ -213,9 +249,12 @@ def main():
     view_layer.use_pass_z = True
     view_layer.use_pass_object_index = True
 
+    job_id = os.environ.get("SLURM_JOB_ID")
     result = {
         "schema_version": 1,
-        "job_id": os.environ.get("SLURM_JOB_ID"),
+        "job_id": job_id,
+        "code_revision": os.environ.get("PRUNING_CODE_REVISION"),
+        "compute_devices": devices,
         "tree_id": args.tree_id,
         "smoke": args.smoke,
         "sampler_version": tl.SAMPLER_VERSION,
@@ -231,8 +270,29 @@ def main():
         "source_checks": [],
         "ok": False,
     }
+    if args.resume:
+        same = ("tree_id", "sampler_version", "blender", "source_blend_sha256", "companion_sha256", "metadata_sha256")
+        changed = {k: (previous.get(k), result[k]) for k in same if previous.get(k) != result[k]}
+        old_settings = {k: v for k, v in previous["render_settings"].items() if k != "device"}
+        if old_settings != {k: v for k, v in settings.items() if k != "device"}:
+            changed["render_settings"] = (previous["render_settings"], settings)
+        if changed:
+            raise RuntimeError(f"Cannot resume: the render setup differs from the stopped task: {changed}")
+        with (args.output / f"render_manifest.before_resume_{job_id}.json").open("x") as stream:
+            stream.write(previous_text)
+        resume = {
+            "job_id": job_id,
+            "code_revision": result["code_revision"],
+            "render_settings": settings,
+            "compute_devices": devices,
+            "previous_manifest_sha256": hashlib.sha256(previous_text.encode()).hexdigest(),
+            "previous_frames": len(kept),
+            "previous_frames_ok": sum(1 for f in kept if f.get("ok")),
+            "frames_to_render": len(remaining),
+        }
+        result = {**previous, "frames": list(kept), "ok": False, "resumes": [*previous.get("resumes", []), resume]}
     try:
-        for index, frame in enumerate(frames):
+        for index, frame in remaining:
             started = time.time()
             annotation, rect_present = place_camera(gen, cam, args.companion, frame)
             draw = tl.sample(
@@ -265,6 +325,8 @@ def main():
                 "rect_present": rect_present,
                 "mean_luma": luma(load_channel(rgb)),
                 "render_seconds": time.time() - started,
+                "job_id": job_id,
+                "device": settings["device"],
             }
             if args.smoke:
                 record["agreement"] = {"ok": None, "reason": "smoke render at 64 px; the surviving files are 1920x1080"}

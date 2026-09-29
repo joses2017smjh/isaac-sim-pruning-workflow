@@ -110,3 +110,76 @@ def test_manifest_builder_keeps_verified_frames_and_accounts_for_the_rest(monkey
     (batch / "render/lpy_envy_00002/render_manifest.json").write_text(json.dumps({"smoke": True, "frames": rendered}))
     with pytest.raises(ValueError, match="Smoke"):
         b.build([batch], surviving, tmp_path / "out2")
+
+
+def _registered(tree, count):
+    return [
+        {
+            "bark": "bark_brown_02",
+            "tree": tree,
+            "set_id": "box",
+            "shot": f"shot{i:02d}",
+            "view": "l",
+            "rgb_path": f"/x/{i}.png",
+            "depth_path": f"/x/{i}.npy",
+            "mask_path": f"/x/{i}_mask.png",
+        }
+        for i in range(count)
+    ]
+
+
+def test_resume_keeps_every_earlier_record_and_renders_only_the_missing_frames(monkeypatch):
+    tl = _load(monkeypatch, "training_lighting")
+    frames = _registered("lpy_envy_00014", 6)
+    previous = {"frames": [{**frames[0], "ok": True}, {**frames[2], "ok": False}], "smoke": False}
+    kept, remaining = tl.resume_state(previous, frames)
+    # A failed check stays on the record and is not rendered again; plan indices survive the resume.
+    assert [r["shot"] for r in kept] == ["shot00", "shot02"]
+    assert [index for index, _ in remaining] == [1, 3, 4, 5]
+    with pytest.raises(ValueError, match="not registered"):
+        tl.resume_state({"frames": [{**frames[0], "shot": "shot99"}]}, frames)
+    with pytest.raises(ValueError, match="twice"):
+        tl.resume_state({"frames": [frames[0], frames[0]]}, frames)
+    with pytest.raises(ValueError, match="smoke"):
+        tl.resume_state({"frames": [], "smoke": True}, frames)
+    with pytest.raises(ValueError, match="smoke"):
+        tl.resume_state({"frames": [], "smoke": False}, frames, smoke=True)
+    assert tl.resume_state({"frames": [frames[0]], "smoke": True}, frames, smoke=True)[1][0][0] == 1
+
+
+def test_resume_plan_registers_the_missing_frames_and_the_fine_tunes_that_read_the_batch(monkeypatch, tmp_path):
+    q = _load(monkeypatch, "queue_training_lighting")
+    target = tmp_path / "generalization/training-lighting-full"
+    tree = "lpy_envy_00014"
+    frames = _registered(tree, 60)
+    (target / "render" / tree).mkdir(parents=True)
+    (target / "plan.json").write_text(
+        json.dumps(
+            {
+                "code_revision": "715b811",
+                "seconds_per_frame_reserved": 50.0,
+                "trees": {tree: {"status": "to_render", "frames": frames}, "done": {"status": "rendered_pilot"}},
+            }
+        )
+    )
+    manifest = {"smoke": False, "frames": [{**f, "ok": True} for f in frames[:9]]}
+    (target / "render" / tree / "render_manifest.json").write_text(json.dumps(manifest))
+    reader = tmp_path / "generalization/finetune-rendered-jitter"
+    reader.mkdir(parents=True)
+    (reader / "plan.json").write_text(json.dumps({"rendered_batches": [str(target)]}))
+    (tmp_path / "generalization/finetune-other").mkdir()
+    (tmp_path / "generalization/finetune-other/plan.json").write_text(json.dumps({"rendered_batches": None}))
+
+    consumers = q.consumers_of(target, tmp_path / "generalization")
+    assert [c["batch"] for c in consumers] == [str(reader)]
+    plan = q.resume_plan(target, [tree], consumers)
+    assert plan["trees"][tree]["recorded"] == 9 and plan["trees"][tree]["to_render"] == 51
+    # 51 frames at the batch's reserved 50 s plus setup, rounded up to 10 minutes.
+    assert plan["arrays"] == [{"trees": [tree], "minutes_per_task": 50}]
+    assert plan["maximum_gpu_minutes"] == 50 and plan["frames_to_render"] == 51
+    with pytest.raises(ValueError, match="not a tree this batch rendered"):
+        q.resume_plan(target, ["done"], consumers)
+    manifest["frames"] = [{**f, "ok": True} for f in frames]
+    (target / "render" / tree / "render_manifest.json").write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match="nothing to resume"):
+        q.resume_plan(target, [tree], consumers)

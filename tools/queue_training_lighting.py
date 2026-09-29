@@ -136,6 +136,126 @@ def training_plan(mode, *, manifest=TRAIN_MANIFEST, pilot_manifest=None, compani
     return plan
 
 
+def consumers_of(target_batch, generalization_dir):
+    """Fine-tune batches whose frozen plan reads renders from ``target_batch``."""
+    target = str(Path(target_batch).resolve())
+    found = []
+    for plan_path in sorted(Path(generalization_dir).glob("*/plan.json")):
+        plan = json.loads(plan_path.read_text())
+        if target in [str(Path(b).resolve()) for b in (plan.get("rendered_batches") or [])]:
+            found.append({"batch": str(plan_path.parent), "plan_sha256": sha256(plan_path)})
+    return found
+
+
+def resume_plan(target_batch, tree_ids, consumers=()):
+    """Register the frames a stopped render task never rendered, for a resume inside its own batch.
+
+    The resume writes into ``target_batch/render/<tree>`` so the fine-tunes that already read that batch pick the
+    frames up; each consumer is recorded, and the job refuses to start once any of them has built its manifest.
+    """
+    target = Path(target_batch).resolve()
+    source = json.loads((target / "plan.json").read_text())
+    trees = {}
+    for tree_id in tree_ids:
+        entry = source["trees"].get(tree_id)
+        if entry is None or entry["status"] != "to_render":
+            raise ValueError(f"{tree_id} is not a tree this batch rendered")
+        manifest = target / "render" / tree_id / "render_manifest.json"
+        if not manifest.is_file():
+            raise ValueError(f"{tree_id} has no render manifest to resume: {manifest}")
+        kept, remaining = tl.resume_state(json.loads(manifest.read_text()), entry["frames"])
+        if not remaining:
+            raise ValueError(f"{tree_id} has every registered frame recorded; nothing to resume")
+        trees[tree_id] = {
+            "registered": len(entry["frames"]),
+            "recorded": len(kept),
+            "recorded_ok": sum(1 for f in kept if f.get("ok")),
+            "to_render": len(remaining),
+            "render_manifest": str(manifest),
+            "render_manifest_sha256": sha256(manifest),
+        }
+    seconds_per_frame = source["seconds_per_frame_reserved"]
+    minutes = max(task_minutes(t["to_render"], seconds_per_frame) for t in trees.values())
+    to_render = sum(t["to_render"] for t in trees.values())
+    return {
+        "schema_version": 1,
+        "scope": (
+            "Resume of stopped rendered-lighting tasks inside their own batch: only the registered frames the "
+            "stopped task never rendered, with the same sampler and the same seeded draws; earlier records are "
+            "kept as written."
+        ),
+        "protocol": "docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md",
+        "mode": "resume",
+        "target_batch": str(target),
+        "target_plan_sha256": sha256(target / "plan.json"),
+        "target_code_revision": source.get("code_revision"),
+        "consumers": list(consumers),
+        "seconds_per_frame_reserved": seconds_per_frame,
+        "trees": trees,
+        "arrays": [{"trees": sorted(trees), "minutes_per_task": minutes}],
+        "frames_to_render": to_render,
+        "max_concurrent_gpus": 1,
+        "maximum_gpu_minutes": minutes * len(trees),
+        "estimated_output_bytes": to_render * BYTES_PER_FRAME,
+    }
+
+
+def queue_resume(root, batch_id, target_batch, tree_ids, *, share_used_bytes=None, share_du_file=None, exclude=None):
+    root = Path(root).resolve()
+    if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}", batch_id):
+        raise ValueError("batch-id must be a short letters/digits/underscore/dash identifier")
+    if _git(root, "diff", "HEAD", "--name-only").strip():
+        raise ValueError("Commit tracked changes before freezing experiments; untracked work is preserved")
+    revision = _git(root, "rev-parse", "HEAD").decode().strip()
+    generalization = root / "artifacts/generalization"
+    plan = resume_plan(target_batch, tree_ids, consumers_of(target_batch, generalization))
+    built = [c["batch"] for c in plan["consumers"] if (Path(c["batch"]) / "manifests/rendered").exists()]
+    if built:
+        raise ValueError(f"These fine-tunes already built their manifests from the target batch: {built}")
+    plan["code_revision"] = revision
+    plan["created_utc"] = datetime.now(timezone.utc).isoformat()
+    plan["exclude_nodes"] = exclude
+    env = submission_environment(os.environ)
+    queue_before = subprocess.check_output(
+        ["squeue", "--user", os.environ["USER"], "--noheader", "--format=%i|%j|%T|%R"], env=env, timeout=30
+    ).decode()
+    batch = generalization / batch_id
+    batch.mkdir(parents=True, exist_ok=False)
+    (batch / "logs").mkdir()
+    hashes = freeze_source(root, batch / "code", revision)
+    for name in (
+        "hpc/slurm/training_lighting_resume_frozen.sbatch",
+        "tools/render_training_lighting.py",
+        "tools/training_lighting.py",
+    ):
+        if name not in hashes:
+            raise ValueError(f"Required runner is not committed: {name}")
+    plan["source_sha256"] = hashes
+    (batch / "plan.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
+    (batch / "queue_before.txt").write_text(queue_before, encoding="utf-8")
+    storage_preflight(batch, share_used_bytes, share_du_file, estimated_output_bytes=plan["estimated_output_bytes"])
+    array = plan["arrays"][0]
+    command = [
+        "sbatch",
+        "--parsable",
+        "--array",
+        f"0-{len(array['trees']) - 1}%1",
+        "--time",
+        f"{array['minutes_per_task'] // 60:02d}:{array['minutes_per_task'] % 60:02d}:00",
+        *(["--exclude", exclude] if exclude else []),
+        "--chdir",
+        str(batch / "code"),
+        "--output",
+        str(batch / "logs/%x-%A_%a.out"),
+        "--error",
+        str(batch / "logs/%x-%A_%a.out"),
+        str(batch / "code/hpc/slurm/training_lighting_resume_frozen.sbatch"),
+        str(batch),
+    ]
+    job_id = _sbatch(command, env, batch, "resume_0")
+    return {"array_job_id": job_id, "batch_dir": str(batch), **{k: v for k, v in plan.items() if k != "trees"}}
+
+
 def queue_batch(root, batch_id, mode, *, pilot_manifest=None, share_used_bytes=None, share_du_file=None, after=None):
     root = Path(root).resolve()
     if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}", batch_id):
@@ -193,16 +313,35 @@ def queue_batch(root, batch_id, mode, *, pilot_manifest=None, share_used_bytes=N
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT)
-    parser.add_argument("--mode", choices=("pilot", "full"), required=True)
+    parser.add_argument("--mode", choices=("pilot", "full", "resume"), required=True)
     parser.add_argument("--batch-id", default=None, help="Default: training-lighting-<mode>-20260927")
     parser.add_argument("--pilot-manifest", type=Path, help="Finished pilot render_manifest.json to reuse in full mode")
     parser.add_argument("--submit", action="store_true")
     parser.add_argument("--share-used-bytes", type=int)
     parser.add_argument("--share-du-file", type=Path)
     parser.add_argument("--after", help="Queue behind this Slurm job id; it is never modified")
+    parser.add_argument("--target-batch", type=Path, help="Resume: the batch whose stopped trees are continued")
+    parser.add_argument("--tree", action="append", default=[], help="Resume: a stopped tree (repeatable)")
+    parser.add_argument("--exclude", help="Resume: nodes to keep the task off, passed to sbatch --exclude")
     args = parser.parse_args()
     batch_id = args.batch_id or f"training-lighting-{args.mode}-20260927"
-    if args.submit:
+    if args.mode == "resume":
+        if not args.target_batch or not args.tree:
+            parser.error("--mode resume needs --target-batch and at least one --tree")
+        if args.submit:
+            result = queue_resume(
+                args.root,
+                batch_id,
+                args.target_batch,
+                args.tree,
+                share_used_bytes=args.share_used_bytes,
+                share_du_file=args.share_du_file,
+                exclude=args.exclude,
+            )
+        else:
+            consumers = consumers_of(args.target_batch, args.root / "artifacts/generalization")
+            result = resume_plan(args.target_batch, args.tree, consumers)
+    elif args.submit:
         result = queue_batch(
             args.root,
             batch_id,

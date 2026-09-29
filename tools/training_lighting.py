@@ -216,3 +216,32 @@ def agreement(new_depth, new_mask, old_depth, old_mask, tolerance_m=AGREEMENT_TO
         "tolerance_m": tolerance_m,
         "ok": iou >= AGREEMENT_MIN_IOU and fraction >= AGREEMENT_MIN_FRACTION,
     }
+
+
+def frame_key(frame):
+    """A registered frame's identity: tree, set, shot and view."""
+    return (frame["tree"], frame["set_id"], frame["shot"], frame["view"])
+
+
+def resume_state(previous, frames, smoke=False):
+    """Split a tree's registered frames into the records a stopped render holds and the frames it never rendered.
+
+    Every earlier record is kept exactly as written, verified or not, so no frame is rendered twice. A smoke
+    manifest, a record the plan does not list, or two records for one frame refuse the resume. The remaining
+    frames keep their plan index, so a resumed tree's records carry the same indices a single run would. A smoke
+    resume (the CPU code-path check) continues only a smoke manifest.
+    """
+    if bool(previous.get("smoke")) != smoke:
+        raise ValueError("A smoke render and a training render cannot be resumed into each other")
+    registered = {frame_key(frame) for frame in frames}
+    kept, done = [], set()
+    for record in previous.get("frames", []):
+        key = frame_key(record)
+        if key not in registered:
+            raise ValueError(f"Recorded frame {key} is not registered for this tree")
+        if key in done:
+            raise ValueError(f"Frame {key} is recorded twice")
+        done.add(key)
+        kept.append(record)
+    remaining = [(index, frame) for index, frame in enumerate(frames) if frame_key(frame) not in done]
+    return kept, remaining
