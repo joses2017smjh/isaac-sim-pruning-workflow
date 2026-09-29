@@ -564,6 +564,14 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         env.settling = False
         if quality:
             report["capture_quality"] = apply_capture_quality(carb.settings.get_settings(), quality)
+        # render_settings is the RenderCfg the scene was built with; a capture-quality profile overrides it for
+        # every recorded frame, so the report names which one was in force.
+        report["render_profile_in_force"] = "capture_quality" if quality else "render_settings"
+        report["render_settings_scope"] = (
+            "Isaac Lab RenderCfg at scene construction; superseded for recorded frames by capture_quality.actual"
+            if quality
+            else "Isaac Lab RenderCfg at scene construction; in force for recorded frames"
+        )
         initial_tool = env._control_tool_pose_w().clone()
         root_pose = as_torch(env.robot.data.root_pose_w)
         tool_pos_b, tool_quat_b = subtract_frame_transforms(
