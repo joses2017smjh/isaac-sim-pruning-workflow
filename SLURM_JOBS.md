@@ -464,3 +464,28 @@ crosses the soft quota. One `afterany` chain, one GPU at a time:
 | Fine-tune arm A (`rendered_jitter`), manifest built in-job | `finetune-rendered-jitter-20260927` | train `21442472`, eval `21442473` | 540 min |
 | Fine-tune arm B (`rendered_control`) | `finetune-rendered-control-20260927` | train `21442474`, eval `21442475` | 540 min |
 
+
+**Throttle reset (September 28, user-authorized).** Array `21442470` sat for
+about a day with reason `JobArrayTaskLimit` and no task running. At the user's
+explicit instruction, the one scheduler change made to a queued job in this
+project was `scontrol update JobId=21442470 ArrayTaskThrottle=1`, which set the
+concurrency limit to the value it was submitted with. The reason changed to
+`Priority`. Nothing else was altered.
+
+### Known-map re-oriented approach (submitted September 28)
+
+Approved by the user on September 28 (300 GPU-minutes reserved). Code revision
+`3cd1024`; protocol and three predictions committed before submission:
+[protocol](docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md). Every result is
+labelled *known-map plan, jaw orientation set at the planned pose* and is
+reported apart from the unchanged-gate results. Share usage 1.652 TB by
+`lfs quota -p 30762` (over the 1.5 TiB soft quota, grace running); each
+preflight records `over_soft_quota: true` against the 2 TiB hard line. Strategy
+`planned_pose`, source light, 200 frames, one 25-minute A40 task at a time, one
+`afterany` chain:
+
+| Batch | Targets | Array job | Trials |
+|---|---|---|---|
+| `planned-pose-r1-20260928` | 530, 19444 (planned); 14944, 15004 (identity plan) | `21461306` `0-3%1` | 4 |
+| `planned-pose-r2-20260928` | same | `21461307` `0-3%1`, after `21461306` | 4 |
+| `planned-pose-r3-20260928` | same | `21461308` `0-3%1`, after `21461307` | 4 |

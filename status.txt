@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-27 PDT — PERCEPTION/TREE1 ROUND RUNNING; LIGHTING-TRAINING CHAIN QUEUED; RENDERER CLAIM CORRECTED
+CURRENT CHECKPOINT — 2026-09-28 PDT — PERCEPTION/TREE1 ROUND FINISHED (GRADING); PLANNED APPROACH + LIGHTING CHAIN QUEUED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -176,8 +176,20 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     21442469 -> full render 21442470 (74 trees) -> 21442471 (5 trees) ->
     rendered_jitter 21442472/21442473 -> rendered_control 21442474/21442475.
     Protocol docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md (L1-L4, R1-R7).
-  STILL IN DIAGNOSIS: collision-aware approach (body/arm contacts, ToF stops,
-    wire 12142) — its own registration and GPU approval after.
+  CONTACT DIAGNOSIS DONE (2026-09-27): known-map swept model reproduces all 7
+    contact/ToF stops; only re-orienting the tool clears any, and only 530 and
+    19444 have a clear path (docs/evidence/contact_diagnosis_2026-09-27.json).
+  PLANNED APPROACH QUEUED (2026-09-28, approved 300 GPU-min, commit 3cd1024):
+    21461306 -> 21461307 -> 21461308, strategy planned_pose, 4 targets each.
+    Protocol docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md (Q1-Q3). Results
+    labelled "known-map plan, jaw orientation set at the planned pose", never
+    pooled with unchanged-gate results.
+  THROTTLE RESET (2026-09-28, user-authorized, the only scheduler change):
+    scontrol update JobId=21442470 ArrayTaskThrottle=1; reason now Priority.
+    Task 8 (lpy_envy_00014) timed out at 9/60 frames after a CUDA init failure
+    on cn-gpu5 (CPU fallback); needs a re-render before the fine-tunes use it
+    (the manifest builder only keeps verified rows, so it is excluded, not
+    silently filled).
   HOME QUOTA: 25 GB, 93% used; keep every output on the hpc-share or /scratch.
   STORAGE (2026-09-27): the share is Lustre project 30762, quota
     1.5 TiB soft (1.649 TB) / 2 TiB hard, grace 4w2d; the 1.6/1.7 TB lines were
