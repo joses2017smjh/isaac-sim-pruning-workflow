@@ -33,6 +33,11 @@ A new labelled approach mode, `planned_pose_standoff`
   mode with an identity plan (final orientation = home), which reduces to a
   60 mm standoff along the home tool axis.
 
+**Labelling, fixed before submission (September 28).** Because the cut gate
+evaluates a different jaw orientation, every result of this experiment is
+labelled *known-map plan, jaw orientation set at the planned pose* and is
+reported apart from the unchanged-gate results, never pooled with them.
+
 No tracker setting, threshold or grader check changes. Three separate batches
 of the four targets (the launcher refuses a repeated target inside one plan),
 baseline tracker, source light, 200 frames.
