@@ -259,5 +259,7 @@ September 27, and its report was written at 15:16:50. The session transcript
 logs the prediction at 15:07:25, while the run was executing, and git holds it
 only from the 18:23 commit. It was made before the outcome was written, not
 before the run, and it is not verifiable from the repository. It is validation,
-not a registered prediction, and nothing above depends on it. The file is left
-unchanged.
+not a registered prediction, and nothing above depends on it. The same applies
+to the `unseen_run` line of `contact_diagnosis_2026-09-27.json` ("before job
+21442150 recorded frame 62"): when the run reached frame 62 is not recorded, so
+that ordering is not established either. Both files are left unchanged.
