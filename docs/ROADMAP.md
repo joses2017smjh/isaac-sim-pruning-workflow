@@ -339,8 +339,10 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       [Protocol and result](EVAL_PROTOCOL_FINETUNE_2026-09-23.md#result--september-24-2026) ·
       [evidence](evidence/finetune_family_matrix_2026-09-24.json).
 - [ ] Re-fine-tune with rendered lighting variation (sun angle, colour, sky):
-      the lever the jitter result leaves for the low-sun shading. Needs a
-      training-render launcher over L-Py trees outside the matrix register.
+      the lever the jitter result leaves for the low-sun shading. Registered and
+      queued September 27 (pilot met L1–L3; full render and both arms in the
+      chain `21442469`–`21442475`).
+      [Protocol](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md).
 - [ ] Vision-guided controller on an Envy or UFO tree in Isaac. No path exists:
       `RenderEnv` presents the Blender orchard export, and the L-Py cylinder USDs
       have no spur-selection route into it. Needs target selection over cylinder
@@ -357,9 +359,26 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       a third reached closure and the piece did not fall.
       [evidence](evidence/tree1_listed_2026-09-24.json).
 - [ ] Collision-aware approach path from the home pose (the pruner body and
-      the upper arm hit wood on the way in on two of ten tree0 targets).
-- [ ] Tracker depth window at spur edges (three of ten tree0 targets trip the
-      depth-spread gate within three seconds), as a labelled tracker experiment.
+      the upper arm hit wood on the way in on two of ten tree0 targets). A
+      known-map swept model reproduces all seven contact and ToF stops; only
+      re-orienting the tool clears any, and only for 530 and 19444. That
+      known-map plan is queued as a labelled experiment (`21461306`–`21461308`).
+      [Diagnosis](evidence/contact_diagnosis_2026-09-27.json) ·
+      [protocol](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md).
+- [x] Tracker drift and camera side, as labelled experiments (similarity
+      motion model, mirrored mount when end-on): 590's drift and 8353's and
+      19264's perception failures are gone, each exposing a contact or ToF stop
+      behind it; no pass count rose. Six of eight predictions supported; P4
+      refuted (the two fixes do not compose on 8353) and P6 refuted (below).
+      [Protocol and result](EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#result--september-28-2026) ·
+      [verdicts](evidence/perception_round_verdicts_2026-09-28.json).
+- [ ] Tracker appearance check under low sun on tree1: evening light stops both
+      tree1 passes on the last approach frame (patch correlation 0.92 → 0.10 in
+      one frame) and morning stops 15004 during closure. Diagnose on the recorded
+      frames before any new tracker variant.
+- [ ] Repeat any single-run class change on a target near a tracker floor: the
+      RGB render differs run to run (0 of 69 same-scene frame-0 pairs identical;
+      depth and pose identical in all), and 22988 flipped class on it.
 - [x] Ship a replay studio: a static page that plays recorded runs frame by frame
       with camera video, tracker confidence and feature count, both 8x8
       time-of-flight grids with validity, gate states and proposed against
@@ -377,10 +396,12 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       [Protocol and result](EVAL_PROTOCOL_2026-09-23.md#result--september-23-2026) ·
       [evidence](evidence/eval_2026-09-23.json). Only tree0 was actually
       measured; see the next gate. No collision-avoidance claim is made.
-- [ ] Evaluate tree1 targets. The registered tree1 spurs were outside the
-      renderer's accepted candidates and never ran. Needs a new registration
-      drawn from the listed candidates, or the geometry audit the renderer
-      requires for unlisted components.
+- [x] Evaluate tree1 targets. The resolver now takes any tree1 component from
+      the hash-verified export. Listed seven: 2/7 in all five source-light
+      batches. Seeded ten: 0/10 (7 layout refusals). Seeded thirty: 1/30
+      (Wilson 0.006–0.17; 21 layout refusals, as predicted, since canonical
+      placement puts most interior tree1 spurs inside the robot).
+      [Per-batch evidence](evidence/perception_round_2026-09-28/).
 
 The latest recorded outcome is `vision_guided_simulated_detachment_and_retreat`. Known mesh metadata
 provides branch identity, axis, and radius; classical image tracking supplies

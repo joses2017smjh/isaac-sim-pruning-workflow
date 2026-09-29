@@ -150,6 +150,24 @@ registered target, and a third reached closure and failed only the drop check.
 · [failure, tree0 spur 530 under the tool-axis standoff, hazard contact (GIF)](docs/demo/isaac_tree0_v530_tool_axis_standoff_hazard_contact.gif).
 Every other recorded run has its own GIF, MP4 and poster beside its capture
 (`artifacts/vision_robustness/<batch>/<run>/media/`, local only).
+
+**Perception fixes, light and the tree1 population (September 28, 111 runs).**
+Two labelled tracker changes (a similarity motion model, and mirroring the
+wrist camera when it sees the spur end-on) removed the three perception
+failures they were built for. Each target then stopped on a contact or
+time-of-flight gate instead, so **no pass count rose**: tree0 is still 0/10.
+Tree1's seven listed spurs pass **2/7 in all five source-light batches**, but
+**evening light stops both passes** on the last approach frame through the
+tracker's appearance check, and morning light stops one during closure. These
+are the first light-dependent outcomes on registered targets. The first seeded
+draws of tree1 give 0/10 and 1/30, dominated by layout refusals, as predicted.
+Physics repeats bit for bit, but the RGB render does not: 0 of 69 same-scene
+frame-0 pairs are identical, and one tree0 target changed class on that noise
+alone. Six of eight pre-registered predictions are supported and two are
+refuted, both on the record.
+[Protocol and result](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#result--september-28-2026)
+· [verdicts](docs/evidence/perception_round_verdicts_2026-09-28.json)
+· [per-batch evidence](docs/evidence/perception_round_2026-09-28/)
 [Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)

@@ -1,0 +1,1657 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the September 26 perception and tree1 protocol (P1-P8) from the grader's outcomes of 111 planned simulator runs in twelve batches, plus the two known-map prediction registers and a post hoc render-repeatability diagnosis. Simulator ground truth at a canonicalized approach pose; not a field success rate. Outcomes come from tools/validate_vision_sequence.py via tools/aggregate_eval.py.",
+  "protocol": "docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md",
+  "code_revision": "9c1da09ffdbb5eb72a241b333ae9280bbb20f778",
+  "code_tree_dirty": false,
+  "inputs_sha256": {
+    "docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md": "89aee90d72e988bd1d53721548178f94033307fe262f9f56ea3698451c47ff69",
+    "docs/evidence/strategies_2026-09-24.json": "20e3f30950a15ef5813f9a69df7204608027e1df6fb2ef736f2a0de40e0d054a",
+    "docs/evidence/tree1_listed_2026-09-24.json": "59d1061f419af8aeddd29b15bacc24bc3ba1d3d1baba4f2d65fd817e09ffc025",
+    "docs/evidence/tree1_presentability_predictions_2026-09-26.json": "c5edb24f8b268e8e7a7c2f7200cba19b16a660b26da65819d7113870b868e63e",
+    "docs/evidence/tree1_swept_path_predictions_2026-09-27.json": "0bd58b6d0df9a13298703867eb377cc5042686e4c581404093eee97dead819af",
+    "docs/evidence/perception_round_2026-09-28/perc-similarity-tree0-20260926.json": "cf49298c6970fc18afa576b4efb919c8603c6d1bdb9f7bed107a19f56b367a5c",
+    "docs/evidence/perception_round_2026-09-28/perc-similarity-tree1-20260926.json": "7a2b583fd118939959118525246aada54534b23376fe436152672b36426afd5b",
+    "docs/evidence/perception_round_2026-09-28/perc-mount-flip-20260926.json": "817edd095840e0b81c8ba8ba2b5aece0e25ea2bb88746a56b80dc5419e7db694",
+    "docs/evidence/perception_round_2026-09-28/perc-both-tree0-20260926.json": "13d28332eb085e2de4bcd08fd33c9a9d2012aab0bbbde9298af54a7e0465688b",
+    "docs/evidence/perception_round_2026-09-28/perc-both-tree1-20260926.json": "887f8cd8d82b0ef9bf3c255f20c02b31abc539e2e813c52f3fc8087257047c55",
+    "docs/evidence/perception_round_2026-09-28/tree1-listed-repeat-r1-20260926.json": "92ac828cf36db181199b699acbfe24b0a8eac9e482133ec02d8495954eb02c92",
+    "docs/evidence/perception_round_2026-09-28/tree1-listed-repeat-r2-20260926.json": "9a6113e06067f9b04343a8af4ee7b79c8d45b38850f69adb159a81627836245b",
+    "docs/evidence/perception_round_2026-09-28/tree1-listed-repeat-r3-20260926.json": "3e61380de2eb1a11b812efa14c419633c32afd4b31158d422c1e02ba39fed5dc",
+    "docs/evidence/perception_round_2026-09-28/tree1-listed-morning-20260926.json": "c1901f2ea17834dd403bf15497526e0734e7c2237bf3c6dd92223aee4737d27a",
+    "docs/evidence/perception_round_2026-09-28/tree1-listed-evening-20260926.json": "d1ac9c8c2d8e3bd5203abaa673132661bdb79b3eab3a64a19e6b500dd9ee79eb",
+    "docs/evidence/perception_round_2026-09-28/tree1-seeded-ten-20260926.json": "848e20a86322ecbe3436a1b95f4b981de1553aab20775fcfb0b16a3a96391f07",
+    "docs/evidence/perception_round_2026-09-28/tree1-seeded30-20260926.json": "e50494808ec1fb92f480096d7baf2bc1b10c5b290f134b002925351296513542"
+  },
+  "frame_convention": "stop_frame is the index of the first stopped_failure frame; decision_frame is the frame whose controller output first carries the stop, one earlier; both 0-based frames.json indices",
+  "predictions": [
+    {
+      "id": "P1",
+      "prediction": "Similarity tracker, tree0: 590 no longer stops mixed_surfaces before align; 8353 and 12142 keep their vision_invalid stops; contact, ToF and layout targets keep their class.",
+      "clauses": [
+        {
+          "clause": "590 does not stop mixed_surfaces before align",
+          "observed": {
+            "outcome": "stopped_tof_minimum_clearance",
+            "stop_frame": 63,
+            "decision_frame": 62,
+            "cut_phases_seen": [
+              "approach",
+              "stopped"
+            ]
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "8353 still stops vision_invalid",
+          "observed": {
+            "outcome": "stopped_vision_invalid",
+            "stop_frame": 2,
+            "decision_frame": 1,
+            "tracker_reason_at_stop": "depth_measurement_rejected",
+            "depth_reason_at_stop": "mixed_surfaces",
+            "first_non_tracking_frame": 1,
+            "first_non_tracking_reason": "depth_measurement_rejected"
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "8353 stops within its first 10 frames",
+          "observed": 2,
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "12142 still stops vision_invalid",
+          "observed": {
+            "outcome": "stopped_vision_invalid",
+            "stop_frame": 31,
+            "decision_frame": 30,
+            "tracker_reason_at_stop": "world_target_jump_or_wrong_surface",
+            "first_non_tracking_frame": 30,
+            "first_non_tracking_reason": "world_target_jump_or_wrong_surface"
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "12142 stops at frames 27-33 on a world jump, flow or appearance loss",
+          "observed": {
+            "outcome": "stopped_vision_invalid",
+            "stop_frame": 31,
+            "decision_frame": 30,
+            "tracker_reason_at_stop": "world_target_jump_or_wrong_surface",
+            "first_non_tracking_frame": 30,
+            "first_non_tracking_reason": "world_target_jump_or_wrong_surface"
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "every contact, ToF and layout target keeps its class",
+          "observed": {},
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P2",
+      "prediction": "Similarity tracker, tree1 listed: 14944 and 15004 pass; every other listed spur keeps its class.",
+      "clauses": [
+        {
+          "clause": "14944 and 15004 pass",
+          "observed": {
+            "14944": "pass",
+            "15004": "pass"
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "every other listed spur keeps its class",
+          "observed": {},
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P3",
+      "prediction": "Mount side: 19264 initializes; 8353's first non-tracking frame is later than frame 7, and a later mixed_surfaces stop would hold pixels off the spur.",
+      "clauses": [
+        {
+          "clause": "19264 initializes (not refused as not visible)",
+          "observed": {
+            "outcome": "stopped_tof_minimum_clearance",
+            "stop_frame": 37,
+            "decision_frame": 36
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "8353's first non-tracking frame is later than frame 7",
+          "observed": {
+            "first_non_tracking_frame": null,
+            "stop_frame": 74,
+            "vacuous": true
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "8353 does not stop within 7 frames",
+          "observed": {
+            "outcome": "stopped_hazard_contact",
+            "stop_frame": 74,
+            "decision_frame": 73
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "8353 does not stop with a mixed_surfaces window (the off-spur test applies only if it does)",
+          "observed": {
+            "depth_reason_at_stop": null,
+            "vacuous": true
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P4",
+      "prediction": "Similarity tracker and mount rule together: tree0 vision_invalid falls to at most 12142; contact, ToF and layout classes unchanged; tree1 listed passes at least 2 of 7 with 14944 and 15004.",
+      "clauses": [
+        {
+          "clause": "590 does not stop vision_invalid",
+          "observed": {
+            "outcome": "stopped_tof_minimum_clearance",
+            "stop_frame": 63,
+            "decision_frame": 62
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "8353 does not stop vision_invalid",
+          "observed": {
+            "outcome": "stopped_vision_invalid",
+            "stop_frame": 55,
+            "decision_frame": 54,
+            "tracker_reason_at_stop": "depth_measurement_rejected",
+            "depth_reason_at_stop": "mixed_surfaces",
+            "first_non_tracking_frame": 54,
+            "first_non_tracking_reason": "depth_measurement_rejected"
+          },
+          "holds": false,
+          "refutes": true
+        },
+        {
+          "clause": "14944 and 15004 pass",
+          "observed": {
+            "14944": "pass",
+            "15004": "pass"
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "tree0 vision_invalid targets are at most 12142",
+          "observed": {
+            "vision_invalid_targets": [
+              8353,
+              12142,
+              22988
+            ]
+          },
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "contact, ToF and layout classes unchanged",
+          "observed": {
+            "22988": {
+              "before": "stopped_hazard_contact",
+              "after": "stopped_vision_invalid",
+              "outcome": "stopped_vision_invalid",
+              "stop_frame": 1,
+              "decision_frame": 0,
+              "tracker_reason_at_stop": "optical_flow_failed",
+              "first_non_tracking_frame": 0,
+              "first_non_tracking_reason": "optical_flow_failed"
+            }
+          },
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "tree1 listed passes at least 2 of 7",
+          "observed": 2,
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "refuted"
+    },
+    {
+      "id": "P5",
+      "prediction": "Three baseline repeats of the tree1 listed seven: every outcome class repeats; 14944 and 15004 pass 3 of 3.",
+      "clauses": [
+        {
+          "clause": "no outcome class changes in any repeat",
+          "observed": {
+            "repeat_r1": {},
+            "repeat_r2": {},
+            "repeat_r3": {}
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "14884 fails only the drop check, drop under 2 mm",
+          "observed": {
+            "repeat_r1": {
+              "14884_failed_checks": "piece_dropped_after_release",
+              "14884_drop_m": 0.0011306405067443848,
+              "19145_startup_contact_n": 60.554,
+              "19384_stop_frame": 45,
+              "19444_stop_frame": 44
+            },
+            "repeat_r2": {
+              "14884_failed_checks": "piece_dropped_after_release",
+              "14884_drop_m": 0.0011306405067443848,
+              "19145_startup_contact_n": 60.554,
+              "19384_stop_frame": 45,
+              "19444_stop_frame": 44
+            },
+            "repeat_r3": {
+              "14884_failed_checks": "piece_dropped_after_release",
+              "14884_drop_m": 0.0011306405067443848,
+              "19145_startup_contact_n": 60.554,
+              "19384_stop_frame": 45,
+              "19444_stop_frame": 44
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "19145 is refused at 60.554 N",
+          "observed": {
+            "repeat_r1": 60.554,
+            "repeat_r2": 60.554,
+            "repeat_r3": 60.554
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "19384 and 19444 stop within one frame of 45 and 44",
+          "observed": {
+            "repeat_r1": [
+              45,
+              44
+            ],
+            "repeat_r2": [
+              45,
+              44
+            ],
+            "repeat_r3": [
+              45,
+              44
+            ]
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P6",
+      "prediction": "Morning and evening light: every listed spur keeps its source-light outcome class.",
+      "clauses": [
+        {
+          "clause": "no class change under morning or evening",
+          "observed": {
+            "morning": {
+              "15004": {
+                "before": "pass",
+                "after": "stopped_vision_invalid",
+                "outcome": "stopped_vision_invalid",
+                "stop_frame": 76,
+                "decision_frame": 75,
+                "tracker_reason_at_stop": "appearance_changed_or_occluded",
+                "first_non_tracking_frame": 75,
+                "first_non_tracking_reason": "appearance_changed_or_occluded",
+                "patch_correlation_at_stop": 0.2643493413925171,
+                "source_repeat_r1_outcome": "pass"
+              }
+            },
+            "evening": {
+              "14944": {
+                "before": "pass",
+                "after": "stopped_vision_invalid",
+                "outcome": "stopped_vision_invalid",
+                "stop_frame": 68,
+                "decision_frame": 67,
+                "tracker_reason_at_stop": "appearance_changed_or_occluded",
+                "first_non_tracking_frame": 67,
+                "first_non_tracking_reason": "appearance_changed_or_occluded",
+                "patch_correlation_at_stop": 0.10267166048288345,
+                "source_repeat_r1_outcome": "pass"
+              },
+              "15004": {
+                "before": "pass",
+                "after": "stopped_vision_invalid",
+                "outcome": "stopped_vision_invalid",
+                "stop_frame": 68,
+                "decision_frame": 67,
+                "tracker_reason_at_stop": "appearance_changed_or_occluded",
+                "first_non_tracking_frame": 67,
+                "first_non_tracking_reason": "appearance_changed_or_occluded",
+                "patch_correlation_at_stop": 0.2972193658351898,
+                "source_repeat_r1_outcome": "pass"
+              }
+            }
+          },
+          "holds": false,
+          "refutes": true
+        }
+      ],
+      "verdict": "refuted"
+    },
+    {
+      "id": "P7",
+      "prediction": "Seeded ten, first presentation: 15599, 37023 and 37796 are presented; at least 4 of the other 7 are refused at startup; at most 3 of 10 pass.",
+      "clauses": [
+        {
+          "clause": "15599, 37023, 37796 presented",
+          "observed": {
+            "15599": "stopped_hazard_contact",
+            "37023": "stopped_tof_minimum_clearance",
+            "37796": "stopped_tof_minimum_clearance"
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "at least 4 of the other 7 refused",
+          "observed": "7 of 7",
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "at most 3 of 10 pass",
+          "observed": 0,
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P8",
+      "prediction": "Seeded thirty: layout refusals plus not-visible exceed 40%; no pass comes from a target predicted to overlap at home.",
+      "clauses": [
+        {
+          "clause": "layout refusals plus not-visible exceed 40% of 30",
+          "observed": {
+            "refused_or_not_visible": 22,
+            "of": 30,
+            "fraction": 0.7333,
+            "also_failed_tracker_initialization_at_frame_0": 2
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "no pass from a target predicted to overlap at home",
+          "observed": {
+            "passes": [
+              14944
+            ],
+            "predicted_overlap_passes": []
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    }
+  ],
+  "known_map_presentability": {
+    "label": "known-map CPU prediction, registered 2026-09-26 before the runs; never a filter",
+    "seeded_ten": {
+      "agreeing": 10,
+      "of": 10,
+      "refusals_flagged": "7 of 7",
+      "flags_refused": "7 of 7",
+      "targets": [
+        {
+          "target": 1012,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 1353,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 5395,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 5753,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 13820,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 15599,
+          "call": "predicted_clear",
+          "outcome": "stopped_hazard_contact",
+          "agrees": true
+        },
+        {
+          "target": 35897,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 36666,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 37023,
+          "call": "predicted_clear",
+          "outcome": "stopped_tof_minimum_clearance",
+          "agrees": true
+        },
+        {
+          "target": 37796,
+          "call": "predicted_clear",
+          "outcome": "stopped_tof_minimum_clearance",
+          "agrees": true
+        }
+      ]
+    },
+    "seeded30": {
+      "agreeing": 28,
+      "of": 30,
+      "refusals_flagged": "21 of 21",
+      "flags_refused": "21 of 22",
+      "targets": [
+        {
+          "target": 654,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 1189,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 2065,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 2243,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 3015,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 3493,
+          "call": "predicted_clear",
+          "outcome": "stopped_tof_minimum_clearance",
+          "agrees": true
+        },
+        {
+          "target": 4261,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 5932,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 6939,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 8721,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 9546,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 10557,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 10737,
+          "call": "predicted_not_visible",
+          "outcome": "stopped_initial_target_not_visible",
+          "agrees": true
+        },
+        {
+          "target": 11094,
+          "call": "predicted_layout_overlap",
+          "outcome": "stopped_hazard_contact",
+          "agrees": false
+        },
+        {
+          "target": 11688,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 14944,
+          "call": "predicted_clear",
+          "outcome": "pass",
+          "agrees": true
+        },
+        {
+          "target": 17723,
+          "call": "predicted_clear",
+          "outcome": "stopped_hazard_contact",
+          "agrees": true
+        },
+        {
+          "target": 19504,
+          "call": "predicted_clear",
+          "outcome": "stopped_vision_invalid",
+          "agrees": true
+        },
+        {
+          "target": 20099,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 22885,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 25652,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 26545,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 29869,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 30283,
+          "call": "predicted_clear",
+          "outcome": "stopped_vision_invalid",
+          "agrees": true
+        },
+        {
+          "target": 31828,
+          "call": "predicted_not_visible",
+          "outcome": "stopped_vision_invalid",
+          "agrees": false
+        },
+        {
+          "target": 32536,
+          "call": "predicted_clear",
+          "outcome": "stopped_vision_invalid",
+          "agrees": true
+        },
+        {
+          "target": 35546,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 35837,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 35957,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        },
+        {
+          "target": 36017,
+          "call": "predicted_layout_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "agrees": true
+        }
+      ]
+    }
+  },
+  "known_map_swept_path": {
+    "label": "known-map CPU prediction, registered 2026-09-27 before the seeded runs; never a filter. Its validation section cites run 21442150, which finished before the file was committed; only the seeded-register calls are predictions relative to their own runs.",
+    "seeded_ten": {
+      "counts": {
+        "agrees": 9,
+        "no definite call": 1
+      },
+      "passes": 0,
+      "predicted_passes_at_most": 0,
+      "targets": [
+        {
+          "target": 1012,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into tree0_BRANCH:1462 by 34.7 mm at the settled home",
+          "startup_contact_n": 1516176.75
+        },
+        {
+          "target": 1353,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into tree0_BRANCH:1462 by 49.2 mm at the settled home",
+          "startup_contact_n": 645735.25
+        },
+        {
+          "target": 5395,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__forearm_link into tree0_SPUR:1894 by 28.0 mm at the settled home",
+          "startup_contact_n": 81695.875
+        },
+        {
+          "target": 5753,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into wire0_1:0 by 52.8 mm at the settled home",
+          "startup_contact_n": 235728.547
+        },
+        {
+          "target": 13820,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into tree0_BRANCH:3418 by 32.3 mm at the settled home",
+          "startup_contact_n": 317.83
+        },
+        {
+          "target": 15599,
+          "call": "hazard_contact",
+          "outcome": "stopped_hazard_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base on tree1_SPUR(non-target):15659",
+          "predicted_decision_window": [
+            60,
+            64
+          ],
+          "decision_frame": 65,
+          "in_window": false,
+          "contact_bodies_at_stop": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "target": 35897,
+          "call": "marginal_home",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "no definite call",
+          "detail": "mock_pruner__base within 0.5 mm of wire1_6:0 at home",
+          "startup_contact_n": 88.898
+        },
+        {
+          "target": 36666,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base into tree1_BRANCH:12418 by 18.7 mm at the settled home",
+          "startup_contact_n": 212.861
+        },
+        {
+          "target": 37023,
+          "call": "tof_minimum_clearance",
+          "outcome": "stopped_tof_minimum_clearance",
+          "status": "agrees",
+          "detail": "ToF 0.0585 m",
+          "predicted_decision_window": [
+            14,
+            18
+          ],
+          "decision_frame": 16,
+          "in_window": true
+        },
+        {
+          "target": 37796,
+          "call": "tof_minimum_clearance",
+          "outcome": "stopped_tof_minimum_clearance",
+          "status": "agrees",
+          "detail": "ToF 0.0593 m",
+          "predicted_decision_window": [
+            2,
+            6
+          ],
+          "decision_frame": 3,
+          "in_window": true
+        }
+      ]
+    },
+    "seeded30": {
+      "counts": {
+        "agrees": 20,
+        "disagrees": 3,
+        "no definite call": 6,
+        "untested: perception stopped before the predicted event": 1
+      },
+      "passes": 1,
+      "predicted_passes_at_most": 3,
+      "targets": [
+        {
+          "target": 654,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base into tree1_TRUNK:0 by 50.0 mm at the settled home",
+          "startup_contact_n": 544153.938
+        },
+        {
+          "target": 1189,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into tree0_BRANCH:1462 by 32.0 mm at the settled home",
+          "startup_contact_n": 8722.953
+        },
+        {
+          "target": 2065,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into tree0_SPUR:5330 by 58.9 mm at the settled home",
+          "startup_contact_n": 208466.375
+        },
+        {
+          "target": 2243,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base into tree1_BRANCH:527 by 22.6 mm at the settled home",
+          "startup_contact_n": 3607312.0
+        },
+        {
+          "target": 3015,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base into tree1_SPUR(non-target):1249 by 49.4 mm at the settled home",
+          "startup_contact_n": 720.101
+        },
+        {
+          "target": 3493,
+          "call": "tof_minimum_clearance",
+          "outcome": "stopped_tof_minimum_clearance",
+          "status": "agrees",
+          "detail": "ToF 0.0571 m",
+          "predicted_decision_window": [
+            64,
+            68
+          ],
+          "decision_frame": 64,
+          "in_window": true
+        },
+        {
+          "target": 4261,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into tree0_SPUR:6873 by 57.2 mm at the settled home",
+          "startup_contact_n": 3318051.5
+        },
+        {
+          "target": 5932,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base into tree0_BRANCH:867 by 28.5 mm at the settled home",
+          "startup_contact_n": 317.593
+        },
+        {
+          "target": 6939,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into wire0_1:0 by 59.1 mm at the settled home",
+          "startup_contact_n": 6420.83
+        },
+        {
+          "target": 8721,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into tree1_BRANCH:3913 by 42.6 mm at the settled home",
+          "startup_contact_n": 455.88
+        },
+        {
+          "target": 9546,
+          "call": "hazard_contact",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "disagrees",
+          "detail": "ur5e__upper_arm_link on wire0_2:0",
+          "predicted_decision_window": [
+            20,
+            24
+          ],
+          "decision_frame": null,
+          "in_window": false,
+          "startup_contact_n": 274.505
+        },
+        {
+          "target": 10557,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__shoulder_link into tree0_SPUR:6098 by 12.9 mm at the settled home",
+          "startup_contact_n": 16184023040.0
+        },
+        {
+          "target": 10737,
+          "call": "not_visible",
+          "outcome": "stopped_initial_target_not_visible",
+          "status": "agrees",
+          "detail": "the seed pixel's line of sight is blocked at home"
+        },
+        {
+          "target": 11094,
+          "call": "home_overlap",
+          "outcome": "stopped_hazard_contact",
+          "status": "disagrees",
+          "detail": "ur5e__shoulder_link into tree0_SPUR:6514 by 0.6 mm at the settled home",
+          "contact_bodies_at_stop": [
+            "ur5e__upper_arm_link"
+          ]
+        },
+        {
+          "target": 11688,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "ur5e__upper_arm_link into tree0_SPUR:8822 by 19.5 mm at the settled home",
+          "startup_contact_n": 15282156.0
+        },
+        {
+          "target": 14944,
+          "call": "geometry_clear",
+          "outcome": "pass",
+          "status": "agrees",
+          "detail": "no contact, ToF or line-of-sight event on the straight path; may still fail on perception or the drop check"
+        },
+        {
+          "target": 17723,
+          "call": "marginal_home",
+          "outcome": "stopped_hazard_contact",
+          "status": "no definite call",
+          "detail": "mock_pruner__base within 0.4 mm of tree1_SPUR(non-target):9134 at home",
+          "contact_bodies_at_stop": [
+            "mock_pruner__base"
+          ]
+        },
+        {
+          "target": 19504,
+          "call": "tof_minimum_clearance",
+          "outcome": "stopped_vision_invalid",
+          "status": "untested: perception stopped before the predicted event",
+          "detail": "ToF 0.0587 m",
+          "predicted_decision_window": [
+            36,
+            40
+          ],
+          "decision_frame": 0,
+          "in_window": false
+        },
+        {
+          "target": 20099,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base into tree1_BRANCH:8091 by 46.3 mm at the settled home",
+          "startup_contact_n": 187.168
+        },
+        {
+          "target": 22885,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base into wire1_3:0 by 42.5 mm at the settled home",
+          "startup_contact_n": 186.954
+        },
+        {
+          "target": 25652,
+          "call": "marginal_home",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "no definite call",
+          "detail": "mock_pruner__base within 1.4 mm of wire1_4:0 at home",
+          "startup_contact_n": 53.655
+        },
+        {
+          "target": 26545,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base into wire1_4:0 by 22.0 mm at the settled home",
+          "startup_contact_n": 181.465
+        },
+        {
+          "target": 29869,
+          "call": "home_overlap",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "agrees",
+          "detail": "mock_pruner__base into post3:0 by 4.4 mm at the settled home",
+          "startup_contact_n": 19.946
+        },
+        {
+          "target": 30283,
+          "call": "geometry_clear",
+          "outcome": "stopped_vision_invalid",
+          "status": "agrees",
+          "detail": "no contact, ToF or line-of-sight event on the straight path; may still fail on perception or the drop check"
+        },
+        {
+          "target": 31828,
+          "call": "not_visible",
+          "outcome": "stopped_vision_invalid",
+          "status": "disagrees",
+          "detail": "the seed pixel's line of sight is blocked at home"
+        },
+        {
+          "target": 32536,
+          "call": "geometry_clear",
+          "outcome": "stopped_vision_invalid",
+          "status": "agrees",
+          "detail": "no contact, ToF or line-of-sight event on the straight path; may still fail on perception or the drop check"
+        },
+        {
+          "target": 35546,
+          "call": "marginal_home",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "no definite call",
+          "detail": "mock_pruner__base within 0.7 mm of wire1_6:0 at home",
+          "startup_contact_n": 80.369
+        },
+        {
+          "target": 35837,
+          "call": "marginal_home",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "no definite call",
+          "detail": "dovetail_female_mount__body within 0.1 mm of wire1_6:0 at home",
+          "startup_contact_n": 104.298
+        },
+        {
+          "target": 35957,
+          "call": "marginal_home",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "no definite call",
+          "detail": "ur5e__wrist_3_link within 0.0 mm of wire1_6:0 at home",
+          "startup_contact_n": 195.809
+        },
+        {
+          "target": 36017,
+          "call": "marginal_home",
+          "outcome": "rejected_layout_startup_contact",
+          "status": "no definite call",
+          "detail": "mock_pruner__base within 0.1 mm of wire1_6:0 at home",
+          "startup_contact_n": 164.795
+        }
+      ]
+    }
+  },
+  "post_hoc_22988": {
+    "label": "post hoc diagnosis, not a prediction",
+    "runs": [
+      "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_08_source_tree0_v22988_similarity_tracker",
+      "artifacts/vision_robustness/perc-both-tree0-20260926/run_08_source_tree0_v22988_similarity_mount"
+    ],
+    "camera_side": [
+      "default",
+      "default"
+    ],
+    "mount_rule": [
+      "fixed",
+      "mirror_if_end_on"
+    ],
+    "tool_pose_identical": true,
+    "seed_pixel_identical": true,
+    "nodes": [
+      "cn-r-6",
+      "cn-r-5"
+    ],
+    "wrist_frame0_pixels_differing": 1562,
+    "wrist_frame0_max_grey_level_difference": 6,
+    "initial_feature_count": [
+      14,
+      12
+    ],
+    "frame0_tracker": [
+      {
+        "state": "tracking",
+        "reason": null,
+        "feature_count": 5,
+        "roundtrip_inlier_count": 5
+      },
+      {
+        "state": "tracking_lost",
+        "reason": "optical_flow_failed",
+        "feature_count": 12,
+        "roundtrip_inlier_count": 3
+      }
+    ]
+  },
+  "post_hoc_render_repeatability": {
+    "label": "post hoc diagnosis, not a prediction",
+    "totals": {
+      "pairs": 69,
+      "rgb_identical_pairs": 0,
+      "depth_identical_pairs": 69,
+      "pose_identical_groups": 14,
+      "groups": 14
+    },
+    "groups": [
+      {
+        "tree": 0,
+        "target": 530,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_00_source_tree0_v530_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree0-20260926/run_00_source_tree0_v530_similarity_mount"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 45248,
+          "pixels": 153600,
+          "max_grey_level_difference": 5
+        },
+        "close": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 81530,
+          "pixels": 307200,
+          "max_grey_level_difference": 13
+        },
+        "overview": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 298700,
+          "pixels": 921600,
+          "max_grey_level_difference": 68
+        },
+        "depth": {
+          "pairs": 1,
+          "identical_pairs": 1
+        }
+      },
+      {
+        "tree": 0,
+        "target": 590,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_01_source_tree0_v590_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree0-20260926/run_01_source_tree0_v590_similarity_mount"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 33023,
+          "pixels": 153600,
+          "max_grey_level_difference": 3
+        },
+        "close": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 71949,
+          "pixels": 307200,
+          "max_grey_level_difference": 14
+        },
+        "overview": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 261812,
+          "pixels": 921600,
+          "max_grey_level_difference": 35
+        },
+        "depth": {
+          "pairs": 1,
+          "identical_pairs": 1
+        }
+      },
+      {
+        "tree": 0,
+        "target": 7524,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_02_source_tree0_v7524_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree0-20260926/run_02_source_tree0_v7524_similarity_mount"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 4574,
+          "pixels": 153600,
+          "max_grey_level_difference": 10
+        },
+        "close": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 75442,
+          "pixels": 307200,
+          "max_grey_level_difference": 13
+        },
+        "overview": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 288370,
+          "pixels": 921600,
+          "max_grey_level_difference": 41
+        },
+        "depth": {
+          "pairs": 1,
+          "identical_pairs": 1
+        }
+      },
+      {
+        "tree": 0,
+        "target": 8353,
+        "daylight": "source",
+        "camera_side": "mirrored",
+        "runs": [
+          "artifacts/vision_robustness/perc-mount-flip-20260926/run_00_source_tree0_v8353_mount_side",
+          "artifacts/vision_robustness/perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 40829,
+          "pixels": 153600,
+          "max_grey_level_difference": 16
+        },
+        "close": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 96799,
+          "pixels": 307200,
+          "max_grey_level_difference": 29
+        },
+        "overview": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 305386,
+          "pixels": 921600,
+          "max_grey_level_difference": 21
+        },
+        "depth": {
+          "pairs": 1,
+          "identical_pairs": 1
+        }
+      },
+      {
+        "tree": 0,
+        "target": 12142,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_06_source_tree0_v12142_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree0-20260926/run_06_source_tree0_v12142_similarity_mount"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 4958,
+          "pixels": 153600,
+          "max_grey_level_difference": 6
+        },
+        "close": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 48357,
+          "pixels": 307200,
+          "max_grey_level_difference": 26
+        },
+        "overview": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 241138,
+          "pixels": 921600,
+          "max_grey_level_difference": 27
+        },
+        "depth": {
+          "pairs": 1,
+          "identical_pairs": 1
+        }
+      },
+      {
+        "tree": 0,
+        "target": 18669,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_07_source_tree0_v18669_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree0-20260926/run_07_source_tree0_v18669_similarity_mount"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 2108,
+          "pixels": 153600,
+          "max_grey_level_difference": 20
+        },
+        "close": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 36685,
+          "pixels": 307200,
+          "max_grey_level_difference": 10
+        },
+        "overview": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 226076,
+          "pixels": 921600,
+          "max_grey_level_difference": 118
+        },
+        "depth": {
+          "pairs": 1,
+          "identical_pairs": 1
+        }
+      },
+      {
+        "tree": 0,
+        "target": 22988,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_08_source_tree0_v22988_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree0-20260926/run_08_source_tree0_v22988_similarity_mount"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 1562,
+          "pixels": 153600,
+          "max_grey_level_difference": 6
+        },
+        "close": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 46253,
+          "pixels": 307200,
+          "max_grey_level_difference": 58
+        },
+        "overview": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 218783,
+          "pixels": 921600,
+          "max_grey_level_difference": 19
+        },
+        "depth": {
+          "pairs": 1,
+          "identical_pairs": 1
+        }
+      },
+      {
+        "tree": 1,
+        "target": 14884,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_00_source_tree1_v14884_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree1-20260926/run_00_source_tree1_v14884_similarity_mount",
+          "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_00_source_tree1_v14884_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_00_source_tree1_v14884_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_00_source_tree1_v14884_baseline"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 5810,
+          "pixels": 153600,
+          "max_grey_level_difference": 20
+        },
+        "close": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 60759,
+          "pixels": 307200,
+          "max_grey_level_difference": 36
+        },
+        "overview": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 283509,
+          "pixels": 921600,
+          "max_grey_level_difference": 97
+        },
+        "depth": {
+          "pairs": 10,
+          "identical_pairs": 10
+        }
+      },
+      {
+        "tree": 1,
+        "target": 14944,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_01_source_tree1_v14944_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree1-20260926/run_01_source_tree1_v14944_similarity_mount",
+          "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_01_source_tree1_v14944_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_01_source_tree1_v14944_baseline",
+          "artifacts/vision_robustness/tree1-seeded30-20260926/run_15_source_tree1_v14944_baseline"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 15,
+          "identical_pairs": 0,
+          "max_pixels_differing": 6083,
+          "pixels": 153600,
+          "max_grey_level_difference": 8
+        },
+        "close": {
+          "pairs": 15,
+          "identical_pairs": 0,
+          "max_pixels_differing": 67935,
+          "pixels": 307200,
+          "max_grey_level_difference": 66
+        },
+        "overview": {
+          "pairs": 15,
+          "identical_pairs": 0,
+          "max_pixels_differing": 290298,
+          "pixels": 921600,
+          "max_grey_level_difference": 61
+        },
+        "depth": {
+          "pairs": 15,
+          "identical_pairs": 15
+        }
+      },
+      {
+        "tree": 1,
+        "target": 15004,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_02_source_tree1_v15004_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree1-20260926/run_02_source_tree1_v15004_similarity_mount",
+          "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_02_source_tree1_v15004_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_02_source_tree1_v15004_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_02_source_tree1_v15004_baseline"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 3271,
+          "pixels": 153600,
+          "max_grey_level_difference": 3
+        },
+        "close": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 70949,
+          "pixels": 307200,
+          "max_grey_level_difference": 47
+        },
+        "overview": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 266858,
+          "pixels": 921600,
+          "max_grey_level_difference": 50
+        },
+        "depth": {
+          "pairs": 10,
+          "identical_pairs": 10
+        }
+      },
+      {
+        "tree": 1,
+        "target": 19264,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_04_source_tree1_v19264_similarity_tracker",
+          "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_04_source_tree1_v19264_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_04_source_tree1_v19264_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_04_source_tree1_v19264_baseline"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 6,
+          "identical_pairs": 0,
+          "max_pixels_differing": 3400,
+          "pixels": 153600,
+          "max_grey_level_difference": 6
+        },
+        "close": {
+          "pairs": 6,
+          "identical_pairs": 0,
+          "max_pixels_differing": 57689,
+          "pixels": 307200,
+          "max_grey_level_difference": 25
+        },
+        "overview": {
+          "pairs": 6,
+          "identical_pairs": 0,
+          "max_pixels_differing": 251679,
+          "pixels": 921600,
+          "max_grey_level_difference": 101
+        },
+        "depth": {
+          "pairs": 6,
+          "identical_pairs": 6
+        }
+      },
+      {
+        "tree": 1,
+        "target": 19264,
+        "daylight": "source",
+        "camera_side": "mirrored",
+        "runs": [
+          "artifacts/vision_robustness/perc-mount-flip-20260926/run_01_source_tree1_v19264_mount_side",
+          "artifacts/vision_robustness/perc-both-tree1-20260926/run_04_source_tree1_v19264_similarity_mount"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 22990,
+          "pixels": 153600,
+          "max_grey_level_difference": 5
+        },
+        "close": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 58613,
+          "pixels": 307200,
+          "max_grey_level_difference": 16
+        },
+        "overview": {
+          "pairs": 1,
+          "identical_pairs": 0,
+          "max_pixels_differing": 239839,
+          "pixels": 921600,
+          "max_grey_level_difference": 21
+        },
+        "depth": {
+          "pairs": 1,
+          "identical_pairs": 1
+        }
+      },
+      {
+        "tree": 1,
+        "target": 19384,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_05_source_tree1_v19384_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree1-20260926/run_05_source_tree1_v19384_similarity_mount",
+          "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_05_source_tree1_v19384_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_05_source_tree1_v19384_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_05_source_tree1_v19384_baseline"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 5563,
+          "pixels": 153600,
+          "max_grey_level_difference": 5
+        },
+        "close": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 60400,
+          "pixels": 307200,
+          "max_grey_level_difference": 22
+        },
+        "overview": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 269683,
+          "pixels": 921600,
+          "max_grey_level_difference": 22
+        },
+        "depth": {
+          "pairs": 10,
+          "identical_pairs": 10
+        }
+      },
+      {
+        "tree": 1,
+        "target": 19444,
+        "daylight": "source",
+        "camera_side": "default",
+        "runs": [
+          "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_06_source_tree1_v19444_similarity_tracker",
+          "artifacts/vision_robustness/perc-both-tree1-20260926/run_06_source_tree1_v19444_similarity_mount",
+          "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_06_source_tree1_v19444_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_06_source_tree1_v19444_baseline",
+          "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_06_source_tree1_v19444_baseline"
+        ],
+        "tool_pose_identical": true,
+        "joints_identical": true,
+        "wrist": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 8529,
+          "pixels": 153600,
+          "max_grey_level_difference": 8
+        },
+        "close": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 62158,
+          "pixels": 307200,
+          "max_grey_level_difference": 34
+        },
+        "overview": {
+          "pairs": 10,
+          "identical_pairs": 0,
+          "max_pixels_differing": 268152,
+          "pixels": 921600,
+          "max_grey_level_difference": 33
+        },
+        "depth": {
+          "pairs": 10,
+          "identical_pairs": 10
+        }
+      }
+    ]
+  }
+}

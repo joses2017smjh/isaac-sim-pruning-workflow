@@ -150,3 +150,103 @@ reserved**, one task at a time within each batch. About 50 GB of captures
 (450 MB per recorded run); each batch runs the launcher's storage preflight
 against the 1.7 TB line. Every recorded run is composed afterwards into a
 labelled GIF, MP4 and poster on CPU, pass or fail.
+
+## Result — September 28, 2026
+
+All 111 planned runs are accounted for: 70 recorded and graded, 41 refused at
+startup by the layout guard, none incomplete. The round used 942 of the 2,775
+reserved GPU-minutes. Slurm marked 12 tasks COMPLETED and 99 FAILED; the 12 are
+exactly the graded passes, but only `tools/validate_vision_sequence.py`
+decides. Each batch was aggregated alone, never pooled
+([per-batch evidence](evidence/perception_round_2026-09-28/)). The verdicts
+come from `tools/score_perception_round.py`
+([verdict evidence](evidence/perception_round_verdicts_2026-09-28.json)), which
+records every clause with its observed value. An independent re-derivation
+from the same files, done blind to these verdicts, reached the same eight.
+
+| Batch | Variant | Population | Passed | Wilson 95% | Other outcomes |
+|---|---|---|---|---|---|
+| `perc-similarity-tree0` | `similarity_tracker` | tree0 ten | 0/10 | 0–0.28 | 3 layout, 3 contact, 2 ToF, 2 vision |
+| `perc-similarity-tree1` | `similarity_tracker` | tree1 listed seven | 2/7 | 0.08–0.64 | 14884 drop check, 1 layout, 1 not visible, 2 ToF |
+| `perc-mount-flip` | `mount_side` | 8353, 19264 | 0/2 | 0–0.66 | 8353 contact at 74, 19264 ToF at 37 |
+| `perc-both-tree0` | `similarity_mount` | tree0 ten | 0/10 | 0–0.28 | 3 layout, 2 contact, 2 ToF, **3 vision** |
+| `perc-both-tree1` | `similarity_mount` | tree1 listed seven | 2/7 | 0.08–0.64 | 14884 drop check, 1 layout, 3 ToF |
+| `tree1-listed-repeat-r1`, `-r2`, `-r3` | `baseline` | tree1 listed seven | 2/7 each | 0.08–0.64 | identical classes in all three |
+| `tree1-listed-morning` | `baseline`, morning | tree1 listed seven | **1/7** | 0.03–0.51 | 15004 vision at 76 |
+| `tree1-listed-evening` | `baseline`, evening | tree1 listed seven | **0/7** | 0–0.35 | 14944 and 15004 vision at 68 |
+| `tree1-seeded-ten` | `baseline` | seeded ten, first presentation | 0/10 | 0–0.28 | 7 layout, 1 contact, 2 ToF |
+| `tree1-seeded30` | `baseline` | seeded thirty | 1/30 | 0.006–0.17 | 21 layout, 1 not visible, 4 vision, 2 contact, 1 ToF |
+
+Frame numbers are `stop_frame`, the index of the first `stopped_failure` frame.
+
+| | Verdict | What decided it |
+|---|---|---|
+| P1 | supported | 590 no longer stops on vision: it tracks every frame to a ToF stop at 63. 8353 still stops at 2 (`mixed_surfaces`). 12142 still stops at 31 (`world_target_jump_or_wrong_surface`). No contact, ToF or layout target changed. Because 590 stops before `align`, whether the similarity model carries it through `align` is untested. |
+| P2 | supported | 14944 and 15004 pass 17/17. The other five keep their class. |
+| P3 | supported | 19264 initializes and runs to a ToF stop at 37. 8353 never loses tracking; it stops on a `mock_pruner__base` contact (8.2 N) at 74. The "later than frame 7" clause is met vacuously, and the `mixed_surfaces` clause never arises. |
+| P4 | **refuted** | 8353 stops `vision_invalid` at 55 (`mixed_surfaces`, depth spread 0.317 m). 22988 also turns from contact to `vision_invalid` at 1 (see below). Tree0 `vision_invalid` targets: 8353, 12142, 22988. Tree1 still passes 2/7. |
+| P5 | supported | No class changes in any repeat. 14884 fails only the drop check, at 1.13 mm every time. 19145 is refused at 60.554 N every time. 19384 and 19444 stop at 45 and 44. |
+| P6 | **refuted** | Three class changes. Evening: 14944 and 15004 both stop `vision_invalid` at 68. Morning: 15004 stops `vision_invalid` at 76, during closure. |
+| P7 | supported | 15599, 37023 and 37796 are presented, the other 7 are all refused, and 0 of 10 pass. |
+| P8 | supported | Layout refusals plus not-visible are 22/30 (73%). The one pass, 14944, was predicted clear. |
+
+**What the fixes did.** The similarity motion model removed the drift it was
+built for, but no tree0 target passes. 590 now runs 63 frames and stops at the
+time-of-flight clearance gate, like the contact targets behind it. The
+mirrored camera removed 8353's and 19264's perception failures and exposed
+geometry failures behind them: a pruner-body contact and a ToF stop. The two
+fixes do not compose on 8353. With both, the track is lost at 55 on a window
+spanning 0.32 m of depth, and whether that window left the spur cannot be told
+from the records. No perception change raised a pass count on either registered
+population. The contact and ToF stops belong to the
+[planned-approach experiment](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md),
+now queued.
+
+**Light matters on tree1.** These are the first light-dependent outcomes on a
+registered target, and both come from the appearance check, not depth. Under
+evening light, both passing spurs lose the track on the last approach frame:
+patch correlation drops from 0.92 and 0.98 to 0.10 and 0.30 in one frame. The
+source-light runs hold at least 0.95 at the same frame. Mean patch brightness
+changes by under 10 grey levels, so the patch does not simply go dark; the cause
+is not isolated. Under morning light, 15004's correlation falls from 1.00 to
+0.26 over frames 72–75 while the jaw closes. The September 23 sweep found no
+light dependence on tree0, where nothing reached that phase.
+
+**Physics repeats; the RGB render does not.** 14884's drop (1.13 mm) and
+19145's startup force (60.554 N) are identical in all eight runs of each. A
+post hoc check compared 69 pairs of runs with the same revision, target, light
+and camera side at frame 0. Robot pose and depth are identical in all 69; RGB
+is identical in none, with up to 45,248 of 153,600 wrist pixels differing by up
+to 20 grey levels. 22988 is the consequence. Under `similarity_mount` it keeps
+the default camera, the same pose and the same seed pixel as the
+`similarity_tracker` run. The initializer found 12 features instead of 14, only
+3 passed the round-trip check at frame 0 against a minimum of 4, and the run
+stopped at 1; the other run tracked to its contact at 23. The target was
+already marginal: 5 features at frame 0 on September 23. P4 stays refuted under
+its own rule. From here on, a class change on a target near a tracker floor
+counts only when it repeats.
+
+**The tree1 population.** The listed seven give 2/7 in all five source-light
+batches (three baseline repeats and both perception variants). The seeded
+registers are dominated by the canonical placement, as stated in advance:
+the seeded ten are 0/10 and the seeded thirty 1/30, and that one pass is
+14944, the only target the thirty share with the earlier registers.
+
+**Known-map predictions, scored.** Both registers were committed before their
+runs and never filtered a target.
+- **Presentability.** 10/10 on the seeded ten and 28/30 on the seeded thirty.
+  Every one of the 28 refusals had been flagged. The two misses:
+  - 11094 was flagged by 0.6 mm, settled clear, and hit the upper arm at 39.
+    This is the stated settle limit.
+  - 31828 was called not visible. It passed the runtime visibility check,
+    then had no valid initial depth (0 features).
+- **Swept path, seeded ten.** All 9 definite calls agree in class. 15599's
+  contact is on the predicted link, one frame after the predicted window.
+- **Swept path, seeded thirty.** 20 calls agree and 3 disagree:
+  - 9546: a path contact was predicted; it was refused at startup at 274.5 N.
+  - 11094 and 31828, as above.
+
+  One call is untested: 19504's tracker failed to initialize (3 features)
+  before its predicted ToF event. Of the six marginal calls, 5 were refused
+  and 17723 hit the predicted link at frame 1. One pass against at most 3
+  predicted.

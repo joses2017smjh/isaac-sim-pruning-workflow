@@ -437,6 +437,13 @@ chains, so at most two tasks of this round run at once.
 | B | `tree1-seeded-ten-20260926` | baseline, the tree1 half of the Sept 23 register | `21442152` | 10 |
 | B | `tree1-seeded30-20260926` | baseline, new seeded draw of 30 | `21442153` | 30 |
 
+**Outcome (September 28).** All 111 tasks finished (Slurm: 12 COMPLETED, 99
+FAILED; the 12 are exactly the graded passes, and Slurm state is not the
+grade). Wall time 942 GPU-minutes of 2,775 reserved. All 111 planned runs are
+accounted for: 70 graded, 41 refused at startup, none incomplete. Graded,
+aggregated per batch and scored:
+[result](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#result--september-28-2026).
+
 **Storage correction (September 27).** The share is Lustre project 30762 with a
 block quota of 1.5 TiB soft (1,649,267,441,664 B) and 2 TiB hard, grace 4 weeks
 2 days. The 1.6 and 1.7 TB lines approved on September 23 were above the soft

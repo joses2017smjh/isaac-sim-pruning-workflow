@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-28 PDT — PERCEPTION/TREE1 ROUND FINISHED (GRADING); PLANNED APPROACH + LIGHTING CHAIN QUEUED
+CURRENT CHECKPOINT — 2026-09-28 PDT — PERCEPTION/TREE1 ROUND PUBLISHED (6/8 SUPPORTED, P4+P6 REFUTED); PLANNED APPROACH + LIGHTING CHAIN QUEUED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -153,6 +153,18 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     17/17 each, Wilson 0.08-0.64) + 14884 16/17 (piece did not fall). Evidence
     docs/evidence/strategies_2026-09-24.json, tree1_listed_2026-09-24.json.
     Media (GIF/MP4/poster) per recorded run under each run's media/.
+  PERCEPTION + TREE1 ROUND PUBLISHED (2026-09-28): 111/111 accounted for (70
+    graded, 41 layout refusals), 942 of 2,775 GPU-min. P1 P2 P3 P5 P7 P8
+    supported; P4 refuted (8353 vision_invalid at 55 under similarity+mirror;
+    22988 flipped contact->vision at frame 1 on render noise); P6 refuted
+    (evening stops 14944+15004 at 68, morning stops 15004 at 76; appearance
+    check). Tree0 still 0/10; tree1 listed 2/7 in all 5 source batches; seeded
+    ten 0/10, seeded thirty 1/30. RGB render not repeatable (0/69 frame-0 pairs
+    identical; depth/pose identical). Blind re-derivation agreed on all 8.
+    Evidence: docs/evidence/perception_round_2026-09-28/ (per batch, via
+    aggregate_eval --protocol), docs/evidence/perception_round_verdicts_2026-09-28.json
+    (tools/score_perception_round.py). Media: compose_batch_media.py over the
+    12 batches, CPU serial (TMPDIR on scratch).
   PERCEPTION + TREE1 ROUND (2026-09-26/27): diagnosis from recorded frames
     (offline tracker replay reproduces all 46 runs exactly): 590 = drift of
     the median-flow motion model into an edge; 8353/19264 = end-on views from
