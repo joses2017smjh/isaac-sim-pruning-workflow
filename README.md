@@ -12,6 +12,7 @@ validity, gate states and proposed against applied commands. Every value is read
 · [Wrist-camera video](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence_wrist.mp4)
 · [Measured results](docs/evidence/two_tree_summary_2026-09-14.json)
 · [Capture guide](docs/ISAAC_RENDER.md)
+· [Pending work and stretch goals](docs/PENDING.md)
 
 ## Problem
 

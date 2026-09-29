@@ -543,3 +543,8 @@ the hardware risks were stated:
 | `planned-pose-gpu-r1-20260929` | `21464467` `0-3%1` | gpu,ampere; a40\|rtx8000; 45 min |
 | `planned-pose-gpu-r2-20260929` | `21464468` `0-3%1`, after `21464467` | same |
 | `planned-pose-gpu-r3-20260929` | `21464469` `0-3%1`, after `21464468` | same |
+
+**Resume outcome (September 29).** `21461896` completed on `cn-gpu6`: it
+rendered the 51 missing frames of `lpy_envy_00014` on GPU at 15.5 s per frame,
+and 60 of 60 frames now pass the geometry check. The earlier manifest is kept as
+`render_manifest.before_resume_21461896.json`.
