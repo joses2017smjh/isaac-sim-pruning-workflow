@@ -34,6 +34,9 @@ SCOPE = (
     "not a reachability study, and not outdoor or sensor-calibrated robustness."
 )
 
+#: The protocol recorded when none is named; later rounds pass their own with ``--protocol``.
+DEFAULT_PROTOCOL = "docs/EVAL_PROTOCOL_2026-09-23.md"
+
 #: A run that aborted before recording, with the guard that refused it.
 LAYOUT_REJECTION = "Orchard layout rejected"
 
@@ -264,6 +267,7 @@ def main(argv=None) -> int:
     )
     parser.add_argument("--output", type=Path, help="New JSON file; an existing file is never overwritten")
     parser.add_argument("--recorded-on", default=None)
+    parser.add_argument("--protocol", default=DEFAULT_PROTOCOL, help="The protocol that registered these batches")
     args = parser.parse_args(argv)
 
     if args.output is not None and args.output.exists():
@@ -285,7 +289,7 @@ def main(argv=None) -> int:
         "schema_version": SCHEMA_VERSION,
         "recorded_on": args.recorded_on or datetime.now(timezone.utc).date().isoformat(),
         "scope": SCOPE,
-        "protocol": "docs/EVAL_PROTOCOL_2026-09-23.md",
+        "protocol": args.protocol,
         "batches": batches,
         "grader": "tools/validate_vision_sequence.py:grade_sequence",
         "aggregation": "DuckDB over sql/*.sql; every reported number is produced by those queries",

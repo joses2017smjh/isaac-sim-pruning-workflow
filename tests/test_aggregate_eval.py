@@ -264,3 +264,30 @@ def test_strategy_rows_keep_their_label_stop_frame_and_failed_checks(aggregator)
     legacy = _row(1)
     legacy.pop("strategy", None)
     assert aggregator.aggregate([legacy])["runs"][0]["strategy"] is None
+
+
+def test_the_evidence_names_the_protocol_it_was_registered_under(tmp_path, aggregator, capsys):
+    batch = tmp_path / "batch"
+    (batch / "logs").mkdir(parents=True)
+    plan = {
+        "runs": [
+            {
+                "index": 0,
+                "daylight": "source",
+                "photometric_normalization": "raw",
+                "target_tree_index": 0,
+                "component_first_vertex": 530,
+            }
+        ]
+    }
+    (batch / "plan.json").write_text(json.dumps(plan), encoding="utf-8")
+    (batch / "logs/prune-vision-pilot-111_0.out").write_text(
+        "RuntimeError: Orchard layout rejected: startup robot contact 226.126 N > 5 N", encoding="utf-8"
+    )
+    default, named = tmp_path / "default.json", tmp_path / "named.json"
+    assert aggregator.main(["--batch", f"source={batch}", "--output", str(default)]) == 0
+    protocol = "docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md"
+    assert aggregator.main(["--batch", f"source={batch}", "--output", str(named), "--protocol", protocol]) == 0
+    capsys.readouterr()
+    assert json.loads(default.read_text())["protocol"] == aggregator.DEFAULT_PROTOCOL
+    assert json.loads(named.read_text())["protocol"] == protocol

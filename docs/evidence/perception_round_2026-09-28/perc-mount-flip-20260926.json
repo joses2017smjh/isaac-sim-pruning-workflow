@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-09-28",
+  "scope": "Task success rate over spur geometry, axis orientation and local occlusion at a canonicalized approach pose, from pre-registered targets. Not a field success rate, not a reachability study, and not outdoor or sensor-calibrated robustness.",
+  "protocol": "docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md",
+  "batches": [
+    {
+      "condition": "mount_side_flip_pair",
+      "batch_dir": "artifacts/vision_robustness/perc-mount-flip-20260926",
+      "planned_runs_kept": 2
+    }
+  ],
+  "grader": "tools/validate_vision_sequence.py:grade_sequence",
+  "aggregation": "DuckDB over sql/*.sql; every reported number is produced by those queries",
+  "queries": [
+    {
+      "file": "01_runs.sql",
+      "sha256": "22c1488e869e7d5fcb21f5fb358296ce36e99161d1a3d7522083c0413c65e66f"
+    },
+    {
+      "file": "02_success_rate.sql",
+      "sha256": "f58b3ff5a42031cabd63c59122f85621e18ce7e4036d25f6a2b823faaea8ad7c"
+    },
+    {
+      "file": "03_failure_taxonomy.sql",
+      "sha256": "ef4b59e94cdad336bab27125b7721a9fc07c0b6cca6a32b951de041b66d67096"
+    },
+    {
+      "file": "04_per_condition.sql",
+      "sha256": "dada1f7b0287e3be2bd6772b6ecb7cf091983e54e6aef5aa03372409f9816434"
+    },
+    {
+      "file": "05_tracking_coverage.sql",
+      "sha256": "42d17c3276b36262782273f0a33b184a095d1de1c929de4df36849ff1ec911e2"
+    },
+    {
+      "file": "06_rate_excluding_infrastructure.sql",
+      "sha256": "9720c9d54b21efeb7920a55c15d5f1beeec60094cb74e45af7ecc9007bb41bf5"
+    },
+    {
+      "file": "07_per_target_by_strategy.sql",
+      "sha256": "497e74070aa5d3668aeb3573955b7da342da564c96e15094723c172d2366a157"
+    }
+  ],
+  "success_rate": {
+    "successes": 0,
+    "attempts": 2,
+    "rate": 0.0,
+    "wilson_lower": 0.0,
+    "wilson_upper": 0.6576197724933468
+  },
+  "per_condition": [
+    {
+      "condition": "mount_side_flip_pair",
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "attempts": 2,
+      "successes": 0,
+      "rate": 0.0
+    }
+  ],
+  "failure_taxonomy": [
+    {
+      "outcome": "stopped_hazard_contact",
+      "runs": 1,
+      "mean_applied_commands": 74.0,
+      "min_applied_commands": 74,
+      "max_applied_commands": 74,
+      "run_directories": [
+        "run_00_source_tree0_v8353_mount_side"
+      ]
+    },
+    {
+      "outcome": "stopped_tof_minimum_clearance",
+      "runs": 1,
+      "mean_applied_commands": 37.0,
+      "min_applied_commands": 37,
+      "max_applied_commands": 37,
+      "run_directories": [
+        "run_01_source_tree1_v19264_mount_side"
+      ]
+    }
+  ],
+  "rate_by_exclusion": [
+    {
+      "level": "inclusive (headline)",
+      "successes": 0,
+      "attempts": 2,
+      "rate": 0.0,
+      "wilson_lower": 0.0,
+      "wilson_upper": 0.657619772493347
+    },
+    {
+      "level": "presented (excludes infrastructure)",
+      "successes": 0,
+      "attempts": 2,
+      "rate": 0.0,
+      "wilson_lower": 0.0,
+      "wilson_upper": 0.657619772493347
+    },
+    {
+      "level": "recorded (excludes infrastructure and layout rejection)",
+      "successes": 0,
+      "attempts": 2,
+      "rate": 0.0,
+      "wilson_lower": 0.0,
+      "wilson_upper": 0.657619772493347
+    }
+  ],
+  "tracking_coverage": [
+    {
+      "run_directory": "run_00_source_tree0_v8353_mount_side",
+      "outcome": "stopped_hazard_contact",
+      "passed": false,
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracking_fraction": 1.0,
+      "tracked_feature_count_min": 4,
+      "tracked_confidence_min": 0.23814451694488525,
+      "centroid_error_m": null,
+      "touched_feature_floor": true,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_01_source_tree1_v19264_mount_side",
+      "outcome": "stopped_tof_minimum_clearance",
+      "passed": false,
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracking_fraction": 1.0,
+      "tracked_feature_count_min": 11,
+      "tracked_confidence_min": 0.956102728843689,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    }
+  ],
+  "per_target_by_strategy": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 8353,
+      "strategy": "mount_side",
+      "condition": "mount_side_flip_pair",
+      "outcome": "stopped_hazard_contact",
+      "stop_frame": 74,
+      "final_phase_frame": null,
+      "checks_passed": 8,
+      "checks_total": 17,
+      "failed_checks": "captured_contact_within_limit,detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "applied_commands": 74
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19264,
+      "strategy": "mount_side",
+      "condition": "mount_side_flip_pair",
+      "outcome": "stopped_tof_minimum_clearance",
+      "stop_frame": 37,
+      "final_phase_frame": null,
+      "checks_passed": 9,
+      "checks_total": 17,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "applied_commands": 37
+    }
+  ],
+  "runs": [
+    {
+      "condition": "mount_side_flip_pair",
+      "run_directory": "run_00_source_tree0_v8353_mount_side",
+      "target_tree_index": 0,
+      "component_first_vertex": 8353,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "mount_side",
+      "stop_frame": 74,
+      "final_phase_frame": null,
+      "failed_checks": "captured_contact_within_limit,detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "status": "graded",
+      "checks_passed": 8,
+      "checks_total": 17,
+      "applied_commands": 74,
+      "stop_reason": "hazard_contact",
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 4,
+      "tracked_confidence_min": 0.23814451694488525,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_hazard_contact"
+    },
+    {
+      "condition": "mount_side_flip_pair",
+      "run_directory": "run_01_source_tree1_v19264_mount_side",
+      "target_tree_index": 1,
+      "component_first_vertex": 19264,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "mount_side",
+      "stop_frame": 37,
+      "final_phase_frame": null,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "status": "graded",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "applied_commands": 37,
+      "stop_reason": "tof_minimum_clearance",
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 11,
+      "tracked_confidence_min": 0.956102728843689,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_tof_minimum_clearance"
+    }
+  ],
+  "target_register": {
+    "path": "docs/evidence/eval_targets_mount_flip_2026-09-26.json",
+    "sha256": "d4f0d623ec0a557853d4e2971bb89df95478c0f53b48d200634d4bbccbe68f7c",
+    "seed": null,
+    "target_count": 2,
+    "selection_rule": "Apply blender_demo_scene.choose_camera_mount(rule='mirror_if_end_on', threshold 20 deg) at the recorded initial tool pose of every recorded registered target (14 targets); keep those it mirrors. It mirrors exactly two: tree0 8353 (10.4 deg default, 51.8 deg mirrored) and tree1 19264 (10.2 deg, 32.4 deg). Every other target's camera is byte-identical under the rule."
+  }
+}
