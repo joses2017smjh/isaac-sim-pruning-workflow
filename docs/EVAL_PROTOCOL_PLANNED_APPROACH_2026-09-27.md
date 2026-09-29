@@ -70,3 +70,28 @@ does not include dynamics or orientation drift; whether the tracker survives a
 12 trials of 200 frames on `ampere` A40, 25 minutes reserved each: **300
 GPU-minutes reserved**, one task at a time, about 5 GB of captures on the
 hpc-share.
+
+## Amendment before any run — September 28, 2026
+
+The user approved this change. The first submission (`21461306` → `21461307` →
+`21461308`, A40 only, 25-minute tasks) never started, because every `ampere`
+node was drained for maintenance until October 1. It was cancelled before any
+task ran and resubmitted:
+
+- **Where it runs.** Partitions `gpu` and `ampere` with the constraint
+  `a40|rtx8000`, so an RTX 8000 or an A40; both have RT cores. H100 (`dgxh`) is
+  excluded because it has no RT cores for the capture's path tracing.
+- **Time and budget.** Tasks get 45 minutes, since a recorded run takes about
+  15 minutes on an A40 and the RTX 8000 is expected to be slower. The
+  reservation is 12 × 45 = **540 GPU-minutes**, approved.
+- **Labelling by GPU model.** Each run's report names its node; `cn-r-*` and
+  `cn-s-*` are A40, `cn-gpu*` are RTX 8000. Each run's GPU model is reported
+  beside its outcome. The RGB render already differs run to run on a single GPU
+  model (perception round), and a change of model may add a systematic
+  difference. Repeats are therefore also reported per GPU model, and the 14944
+  and 15004 controls are compared with their A40 passes with that caveat.
+- **What does not change.** The targets, the `planned_pose` strategy, every
+  gate and threshold, and predictions Q1–Q3.
+- **Code revision.** The code revision moves from `3cd1024`. The only change
+  since then in code these runs execute is two report keys that name the render
+  profile in force; the launcher gained the placement option used here.

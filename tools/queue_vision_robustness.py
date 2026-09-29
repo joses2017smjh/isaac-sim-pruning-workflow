@@ -59,6 +59,34 @@ def trial_time_limit(plan):
     return f"00:{TRIAL_TIME_LIMIT_MINUTES * max(1, round(plan['frames'] / 200)):02d}:00"
 
 
+def placement_options(placement):
+    """sbatch options that override the frozen script's partition, constraint and time directives.
+
+    ``placement`` is None (the script's own A40 directives stand) or a dict with ``partition`` (comma-separated
+    names), ``constraint`` (Slurm feature expression) and ``minutes_per_task``; each is validated so a typo cannot
+    reach the scheduler, and the whole dict is recorded in the plan.
+    """
+    if placement is None:
+        return []
+    options = []
+    partition = placement.get("partition")
+    if partition is not None:
+        if not re.fullmatch(r"[a-z0-9_-]+(,[a-z0-9_-]+)*", partition):
+            raise ValueError(f"Invalid partition list: {partition!r}")
+        options += ["--partition", partition]
+    constraint = placement.get("constraint")
+    if constraint is not None:
+        if not re.fullmatch(r"[a-z0-9_]+([|&][a-z0-9_]+)*", constraint):
+            raise ValueError(f"Invalid constraint: {constraint!r}")
+        options += ["--constraint", constraint]
+    minutes = placement.get("minutes_per_task")
+    if minutes is not None:
+        if not isinstance(minutes, int) or not 1 <= minutes <= 2880:
+            raise ValueError("minutes_per_task must be an integer from 1 to 2880")
+        options += ["--time", f"{minutes // 60:02d}:{minutes % 60:02d}:00"]
+    return options
+
+
 #: Labelled approach strategies (docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md).
 #: None changes a gate, a threshold or the grader. ``frames`` is the episode
 #: length the strategy needs: the fine step halves the speed of both approach
@@ -308,8 +336,10 @@ def queue_batch(
     strategy=None,
     share_used_bytes=None,
     share_du_file=None,
+    placement=None,
 ):
     root = root.resolve()
+    extra_options = placement_options(placement)
     if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}", batch_id):
         raise ValueError("batch-id must be a short letters/digits/underscore/dash identifier")
     if _git(root, "diff", "HEAD", "--name-only").strip():
@@ -320,6 +350,10 @@ def queue_batch(
         plan["target_register"] = target_provenance
     plan["code_revision"] = revision
     plan["created_utc"] = datetime.now(timezone.utc).isoformat()
+    if placement is not None:
+        plan["placement"] = dict(placement)
+        if placement.get("minutes_per_task") is not None:
+            plan["maximum_gpu_minutes"] = placement["minutes_per_task"] * len(plan["runs"])
     env = submission_environment(os.environ)
     # Abort before submission if the queue cannot be observed. This never
     # changes priorities, dependencies, running allocations or pending jobs.
@@ -350,6 +384,8 @@ def queue_batch(
         f"0-{len(plan['runs']) - 1}%1",
         "--time",
         trial_time_limit(plan),
+        # Later options win: a registered placement overrides the directives and the default time above.
+        *extra_options,
         *dependency_option(after),
         "--chdir",
         str(batch / "code"),
@@ -387,7 +423,17 @@ def main():
     parser.add_argument("--strategy", choices=sorted(STRATEGIES), help="Labelled approach strategy for a target sweep")
     parser.add_argument("--share-used-bytes", type=int, help="Measured du of the user's share, in bytes")
     parser.add_argument("--share-du-file", type=Path, help="File holding 'du -sx -B1' output for the share")
+    parser.add_argument("--partition", help="Override the script's partition, e.g. gpu,ampere")
+    parser.add_argument("--constraint", help="Override the script's feature constraint, e.g. 'a40|rtx8000'")
+    parser.add_argument("--minutes-per-task", type=int, help="Override the per-task time limit")
     args = parser.parse_args()
+    placement = None
+    if args.partition or args.constraint or args.minutes_per_task:
+        placement = {
+            "partition": args.partition,
+            "constraint": args.constraint,
+            "minutes_per_task": args.minutes_per_task,
+        }
 
     targets, provenance = (None, None)
     if args.targets_file is not None:
@@ -405,9 +451,13 @@ def main():
             args.strategy,
             share_used_bytes=args.share_used_bytes,
             share_du_file=args.share_du_file,
+            placement=placement,
         )
     else:
         result = experiment_plan(targets, args.daylight, args.photometric_normalization, args.strategy)
+        if placement is not None:
+            result["placement"] = placement
+            result["sbatch_placement_options"] = placement_options(placement)
         if provenance:
             result["target_register"] = provenance
     print(json.dumps(result, indent=2))

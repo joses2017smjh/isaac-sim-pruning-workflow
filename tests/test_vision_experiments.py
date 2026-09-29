@@ -438,3 +438,19 @@ def test_planned_rows_carry_each_targets_own_orientation_and_are_checked(tmp_pat
     assert run.configuration_matches(report(quat), first, plan)
     assert not run.configuration_matches(report(None), first, plan)
     assert not run.configuration_matches(report([1.0, 0.0, 0.0, 0.0]), first, plan)
+
+
+def test_placement_overrides_are_validated_and_ordered_after_the_defaults(scripts):
+    queue, _ = scripts
+    assert queue.placement_options(None) == []
+    options = queue.placement_options({"partition": "gpu,ampere", "constraint": "a40|rtx8000", "minutes_per_task": 45})
+    assert options == ["--partition", "gpu,ampere", "--constraint", "a40|rtx8000", "--time", "00:45:00"]
+    assert queue.placement_options({"minutes_per_task": 90}) == ["--time", "01:30:00"]
+    for bad in (
+        {"partition": "gpu; rm -rf"},
+        {"constraint": "a40 || x"},
+        {"minutes_per_task": 0},
+        {"minutes_per_task": 4.5},
+    ):
+        with pytest.raises(ValueError):
+            queue.placement_options(bad)
