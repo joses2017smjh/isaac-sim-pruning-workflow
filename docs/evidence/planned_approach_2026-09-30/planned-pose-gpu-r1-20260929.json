@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-09-30",
+  "scope": "Task success rate over spur geometry, axis orientation and local occlusion at a canonicalized approach pose, from pre-registered targets. Not a field success rate, not a reachability study, and not outdoor or sensor-calibrated robustness.",
+  "protocol": "docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md",
+  "batches": [
+    {
+      "condition": "planned_pose_r1",
+      "batch_dir": "artifacts/vision_robustness/planned-pose-gpu-r1-20260929",
+      "planned_runs_kept": 4
+    }
+  ],
+  "grader": "tools/validate_vision_sequence.py:grade_sequence",
+  "aggregation": "DuckDB over sql/*.sql; every reported number is produced by those queries",
+  "queries": [
+    {
+      "file": "01_runs.sql",
+      "sha256": "22c1488e869e7d5fcb21f5fb358296ce36e99161d1a3d7522083c0413c65e66f"
+    },
+    {
+      "file": "02_success_rate.sql",
+      "sha256": "f58b3ff5a42031cabd63c59122f85621e18ce7e4036d25f6a2b823faaea8ad7c"
+    },
+    {
+      "file": "03_failure_taxonomy.sql",
+      "sha256": "ef4b59e94cdad336bab27125b7721a9fc07c0b6cca6a32b951de041b66d67096"
+    },
+    {
+      "file": "04_per_condition.sql",
+      "sha256": "dada1f7b0287e3be2bd6772b6ecb7cf091983e54e6aef5aa03372409f9816434"
+    },
+    {
+      "file": "05_tracking_coverage.sql",
+      "sha256": "42d17c3276b36262782273f0a33b184a095d1de1c929de4df36849ff1ec911e2"
+    },
+    {
+      "file": "06_rate_excluding_infrastructure.sql",
+      "sha256": "9720c9d54b21efeb7920a55c15d5f1beeec60094cb74e45af7ecc9007bb41bf5"
+    },
+    {
+      "file": "07_per_target_by_strategy.sql",
+      "sha256": "497e74070aa5d3668aeb3573955b7da342da564c96e15094723c172d2366a157"
+    }
+  ],
+  "success_rate": {
+    "successes": 2,
+    "attempts": 4,
+    "rate": 0.5,
+    "wilson_lower": 0.15003898915214953,
+    "wilson_upper": 0.8499610108478505
+  },
+  "per_condition": [
+    {
+      "condition": "planned_pose_r1",
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "attempts": 4,
+      "successes": 2,
+      "rate": 0.5
+    }
+  ],
+  "failure_taxonomy": [
+    {
+      "outcome": "stopped_gate_lost_during_closure",
+      "runs": 1,
+      "mean_applied_commands": 71.0,
+      "min_applied_commands": 71,
+      "max_applied_commands": 71,
+      "run_directories": [
+        "run_00_source_tree0_v530_planned_pose"
+      ]
+    },
+    {
+      "outcome": "stopped_vision_invalid",
+      "runs": 1,
+      "mean_applied_commands": 69.0,
+      "min_applied_commands": 69,
+      "max_applied_commands": 69,
+      "run_directories": [
+        "run_01_source_tree1_v19444_planned_pose"
+      ]
+    }
+  ],
+  "rate_by_exclusion": [
+    {
+      "level": "inclusive (headline)",
+      "successes": 2,
+      "attempts": 4,
+      "rate": 0.5,
+      "wilson_lower": 0.15003898915214947,
+      "wilson_upper": 0.8499610108478506
+    },
+    {
+      "level": "presented (excludes infrastructure)",
+      "successes": 2,
+      "attempts": 4,
+      "rate": 0.5,
+      "wilson_lower": 0.15003898915214947,
+      "wilson_upper": 0.8499610108478506
+    },
+    {
+      "level": "recorded (excludes infrastructure and layout rejection)",
+      "successes": 2,
+      "attempts": 4,
+      "rate": 0.5,
+      "wilson_lower": 0.15003898915214947,
+      "wilson_upper": 0.8499610108478506
+    }
+  ],
+  "tracking_coverage": [
+    {
+      "run_directory": "run_02_source_tree1_v14944_planned_pose",
+      "outcome": "pass",
+      "passed": true,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.39,
+      "tracked_feature_count_min": 7,
+      "tracked_confidence_min": 0.5593177459456704,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_03_source_tree1_v15004_planned_pose",
+      "outcome": "pass",
+      "passed": true,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.39,
+      "tracked_feature_count_min": 11,
+      "tracked_confidence_min": 0.4902079360825675,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_00_source_tree0_v530_planned_pose",
+      "outcome": "stopped_gate_lost_during_closure",
+      "passed": false,
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracking_fraction": 1.0,
+      "tracked_feature_count_min": 7,
+      "tracked_confidence_min": 0.25028104291242714,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_01_source_tree1_v19444_planned_pose",
+      "outcome": "stopped_vision_invalid",
+      "passed": false,
+      "tracking_frames": 68,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.34,
+      "tracked_feature_count_min": 7,
+      "tracked_confidence_min": 0.26086410609158606,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    }
+  ],
+  "per_target_by_strategy": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 530,
+      "strategy": "planned_pose",
+      "condition": "planned_pose_r1",
+      "outcome": "stopped_gate_lost_during_closure",
+      "stop_frame": 80,
+      "final_phase_frame": 56,
+      "checks_passed": 9,
+      "checks_total": 17,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "applied_commands": 71
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "strategy": "planned_pose",
+      "condition": "planned_pose_r1",
+      "outcome": "pass",
+      "stop_frame": null,
+      "final_phase_frame": 54,
+      "checks_passed": 17,
+      "checks_total": 17,
+      "failed_checks": null,
+      "applied_commands": 68
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 15004,
+      "strategy": "planned_pose",
+      "condition": "planned_pose_r1",
+      "outcome": "pass",
+      "stop_frame": null,
+      "final_phase_frame": 54,
+      "checks_passed": 17,
+      "checks_total": 17,
+      "failed_checks": null,
+      "applied_commands": 68
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "strategy": "planned_pose",
+      "condition": "planned_pose_r1",
+      "outcome": "stopped_vision_invalid",
+      "stop_frame": 69,
+      "final_phase_frame": 63,
+      "checks_passed": 9,
+      "checks_total": 17,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "applied_commands": 69
+    }
+  ],
+  "runs": [
+    {
+      "condition": "planned_pose_r1",
+      "run_directory": "run_00_source_tree0_v530_planned_pose",
+      "target_tree_index": 0,
+      "component_first_vertex": 530,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "planned_pose",
+      "stop_frame": 80,
+      "final_phase_frame": 56,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "status": "graded",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "applied_commands": 71,
+      "stop_reason": "gate_lost_during_closure",
+      "tracking_frames": 200,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 7,
+      "tracked_confidence_min": 0.25028104291242714,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_gate_lost_during_closure"
+    },
+    {
+      "condition": "planned_pose_r1",
+      "run_directory": "run_01_source_tree1_v19444_planned_pose",
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "planned_pose",
+      "stop_frame": 69,
+      "final_phase_frame": 63,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "status": "graded",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "applied_commands": 69,
+      "stop_reason": "vision_invalid",
+      "tracking_frames": 68,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 7,
+      "tracked_confidence_min": 0.26086410609158606,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_vision_invalid"
+    },
+    {
+      "condition": "planned_pose_r1",
+      "run_directory": "run_02_source_tree1_v14944_planned_pose",
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "planned_pose",
+      "stop_frame": null,
+      "final_phase_frame": 54,
+      "failed_checks": null,
+      "status": "graded",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "applied_commands": 68,
+      "stop_reason": null,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 7,
+      "tracked_confidence_min": 0.5593177459456704,
+      "centroid_error_m": null,
+      "passed": true,
+      "outcome": "pass"
+    },
+    {
+      "condition": "planned_pose_r1",
+      "run_directory": "run_03_source_tree1_v15004_planned_pose",
+      "target_tree_index": 1,
+      "component_first_vertex": 15004,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "planned_pose",
+      "stop_frame": null,
+      "final_phase_frame": 54,
+      "failed_checks": null,
+      "status": "graded",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "applied_commands": 68,
+      "stop_reason": null,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 11,
+      "tracked_confidence_min": 0.4902079360825675,
+      "centroid_error_m": null,
+      "passed": true,
+      "outcome": "pass"
+    }
+  ],
+  "target_register": {
+    "path": "docs/evidence/eval_targets_planned_pose_2026-09-27.json",
+    "sha256": "9ceb188111cc3a6c827be52571d63758e22929530c4715ac66b0cffb01c5ec3e",
+    "seed": null,
+    "target_count": 4,
+    "selection_rule": "From docs/evidence/contact_diagnosis_2026-09-27.json: of the 7 contact/ToF targets, only 530 and 19444 have a gate-clear reachable final pose with a clear path; the two recorded tree1 passes are the controls. Planned orientations (wxyz, world) from the diagnosis's final-pose search over 6016 orientations, normalized."
+  }
+}
