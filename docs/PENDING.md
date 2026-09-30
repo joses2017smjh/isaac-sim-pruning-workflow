@@ -1,37 +1,34 @@
 # Pending work and stretch goals
 
-Updated September 29, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
+Updated September 30, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
 and results in the [roadmap](ROADMAP.md).
 
-## Queued (no action needed)
+## Queued
 
-The `ampere` A40 nodes are drained until October 1, 16:00, so start times
-depend on the `gpu` and `dgxh` nodes.
+Nothing is queued. The rendered-lighting training and the known-map approach
+finished on September 30 and are published:
+[lighting result](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026) ·
+[approach result](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
 
-| Work | Jobs | Registered predictions |
-|---|---|---|
-| Rendered-lighting training render: the last 6 of 74 trees, then 5 trees of 90 frames | `21442470` (up to 4 at once) → `21442471` | L4 ([protocol](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md)) |
-| Fine-tunes on the rendered frames, jitter and control arms (H100 or A40) | `21442472` → `21442473`; `21442474` → `21442475` | R1–R7 (same protocol) |
-| Known-map re-oriented approach for 530 and 19444, with controls 14944 and 15004, 3 repeats (RTX 8000 or A40) | `21464467` → `21464468` → `21464469` | Q1–Q3 ([protocol](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md)) |
+## Needs a decision (GPU)
 
-The timed-out tree, `lpy_envy_00014`, has been resumed and is complete: 60 of
-60 frames pass the geometry check.
-
-## Next, once results land (CPU only)
-
-- Grade the approach runs, score Q1–Q3, and label each run by GPU model.
-  Compose a GIF for every recorded run. Publish.
-- Score both fine-tune arms against R1–R7 and the render against L4. Publish.
-
-## Needs a decision
-
-- **Jaw-shadow counterfactual.** Rerun evening 14944 and 15004 and morning
-  15004, with and without a shadow from the visual jaw surrogate. 12 runs, 540
-  GPU-minutes reserved. It needs a recorded no-shadow scene option and its own
-  protocol, and would test the
+- **Jaw in the camera's view.** Both remaining approach stops are the robot's
+  own jaw: during closure the tracker follows it (530), and on the final leg
+  it covers the tracked patch (19444). The candidates are a jaw self-mask, an
+  ego-motion consistency filter, the mirrored camera side, and holding the
+  aligned target through closure. The last one changes what the cut gate sees,
+  so it needs registration. About 270 GPU-min for one variant on both targets.
+- **Jaw-shadow counterfactual.** Rerun the low-sun stops with the jaw casting
+  no shadow: 12 runs, 540 GPU-min reserved. It tests the
   [low-sun diagnosis](EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc).
+- **Render gap vs lighting.** Score the rendered-lighting arms on
+  companion-resolution renders of the matrix trees. This separates robustness
+  to the evaluation renderer from robustness to light.
+
+## Needs a decision (no GPU)
+
 - **Storage.** The share is over its 1.5 TiB soft quota and the grace clock is
-  running (about four weeks left). Free space, or accept the risk.
+  running (about four weeks left).
 - **Repository housekeeping.** Decide what to do with the uncommitted
   `studio/src` prototype and add repository topics.
 
@@ -47,6 +44,8 @@ The timed-out tree, `lpy_envy_00014`, has been resumed and is complete: 60 of
   pose do not. Seeding the path tracer would make single-run comparisons
   meaningful; until then, a class change near a tracker floor counts only if
   it repeats.
+- **Close the Isaac depth gap.** The rendered-lighting model fixes Blender
+  evening but leaves the Isaac wrist camera above 0.5 m of target error.
 - **Envy and UFO trees in Isaac.** The vision controller on the learned-depth
   families, and held-out Envy `00042` / `00065` and UFO rollouts. There is no
   spawn or target-selection path for these trees yet.

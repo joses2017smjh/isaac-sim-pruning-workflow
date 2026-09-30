@@ -95,3 +95,52 @@ task ran and resubmitted:
 - **Code revision.** The code revision moves from `3cd1024`. The only change
   since then in code these runs execute is two report keys that name the render
   profile in force; the launcher gained the placement option used here.
+
+## Result — September 30, 2026
+
+Every result here is labelled *known-map plan, jaw orientation set at the
+planned pose* and is reported apart from the unchanged-gate results. All 12
+planned runs are graded. Slurm marked the six planned-target runs FAILED and
+the six control runs COMPLETED; the grader decides, not Slurm.
+([Per-batch evidence](evidence/planned_approach_2026-09-30/),
+[verdicts](evidence/planned_approach_verdicts_2026-09-30.json), code
+`da38bb3`.)
+
+| Target | r1 | r2 | r3 |
+|---|---|---|---|
+| 530, re-oriented 55.5° | 9/17, gate lost during closure (A40) | 9/17, same (RTX 8000) | 9/17, same (A40) |
+| 19444, re-oriented 83.6° | 9/17, `vision_invalid` at 68 (A40) | 9/17, same at 68 (RTX 8000) | 9/17, same at 70 (RTX 8000) |
+| 14944, identity plan | **pass** 17/17 (A40) | **pass** (RTX 8000) | **pass** (RTX 8000) |
+| 15004, identity plan | **pass** 17/17 (A40) | **pass** (RTX 8000) | **pass** (RTX 8000) |
+
+The largest contact force in all 12 runs is 0 N.
+
+- **Q1, partly supported.**
+  - *530* reaches `align` in 3 of 3 with no contact and no ToF stop. That is
+    the first time the geometry of a contact target has cleared under any
+    strategy.
+  - *19444* never reaches `align`. The tracker's appearance check stops it on
+    the final leg in all three repeats, which does not trigger the protocol's
+    refutation (a contact or ToF stop). The protocol anticipated a vision stop
+    only on the re-orientation leg, so for 19444 the geometry claim is
+    untested.
+- **Q2, supported.** Both controls pass 3 of 3, on both GPU models.
+- **Q3, refuted.** Neither planned target passes in any repeat.
+
+**Why the two planned targets stop (post hoc, from recorded ground truth and
+depth).**
+- **530.** It aligns with the mouth 4.3 mm from the spur and 0° off
+  perpendicular, then starts to close. During closure the tool moves at most
+  0.4 mm and the spur not at all. Yet the tracked point slides about 16 px (r1),
+  the tracked features fall from 17 to as few as 7, and the measured spur drifts
+  from 4.2–4.4 to 9.8–10.3 mm off its true position until the 8 mm gate trips. The tracker follows
+  the closing jaw, whose pads sit at the spur's depth. The controls show none
+  of this.
+- **19444.** At the stop, pixels nearer than the tracked depth by over 1 cm
+  enter the 13×13 appearance patch: 31, 42 and 89 of 169 in the three repeats.
+  The open jaw passes between the camera and the spur on the final leg, a view
+  that the 84° re-orientation creates.
+
+Both stops are the robot's own jaw in its camera's view, not the orchard. A
+fix would be a labelled perception experiment; see the roadmap. It is proposed,
+not registered.

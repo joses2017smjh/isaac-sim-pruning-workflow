@@ -548,3 +548,19 @@ the hardware risks were stated:
 rendered the 51 missing frames of `lpy_envy_00014` on GPU at 15.5 s per frame,
 and 60 of 60 frames now pass the geometry check. The earlier manifest is kept as
 `render_manifest.before_resume_21461896.json`.
+
+### Outcomes (September 30)
+
+- **Rendered-lighting render.** `21442470` finished all 74 trees (task 8
+  resumed as `21461896`), and `21442471` all 5 trees of 90 frames. The
+  `ampere` nodes returned on September 29; with the concurrency limit raised
+  to 4, the last tasks ran two at a time on A40.
+- **Fine-tunes.** Arm A trained 2 h 41 min on `cn-r-5` (`21442472`) and was
+  evaluated on `cn-gpu7` (`21442473`); arm B trained on `cn-r-2` (`21442474`)
+  and was evaluated on `cn-gpu7` (`21442475`). All COMPLETED.
+  [Result](docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026).
+- **Planned approach.** `21464467` → `21464468` → `21464469` completed: 5 runs
+  on A40 and 7 on RTX 8000. Slurm marked the six planned-target runs FAILED;
+  the grader has 530 and 19444 at 9/17 and the controls at 17/17. A GIF, MP4,
+  poster and frame JSON were composed for all 12 runs (51 MB, local).
+  [Result](docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).

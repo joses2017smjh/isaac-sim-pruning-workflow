@@ -175,6 +175,28 @@ refuted, both on the record.
 · [per-batch evidence](docs/evidence/perception_round_2026-09-28/)
 · [evening failure, tree1 spur 14944 (GIF)](docs/demo/isaac_tree1_v14944_evening_vision_invalid.gif)
 beside the [source-light pass of the same spur](docs/demo/isaac_tree1_v14944_baseline_pass.gif).
+
+**Rendered lighting in training (September 30).** Relighting the depth
+model's own training frames under seeded suns, sky and colour, kept at least
+15° from every test preset, cut evening error from 0.88 to 0.05 m on the Envy
+validation trees and from 1.44 to 0.09 m on the unseen UFO family. The
+evening shape ceiling fell 60%. All 11 pre-registered predictions are
+supported. Two findings were not predicted, and they limit the claim. Source
+error fell 35–45% too, so part of the gain is not specific to low sun. The
+companion's own validation score did not move, so part may be robustness to
+the evaluation renderer. The Isaac camera is barely helped: target error
+there stays above half a metre.
+[Protocol and result](docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026)
+· [verdicts](docs/evidence/lighting_training_verdicts_2026-09-30.json)
+
+**Known-map re-oriented approach (September 30).** Re-orienting the tool to a
+pose planned on the scene map let contact target 530 reach alignment with
+0 N of contact in 3 of 3 repeats, a first for any contact target. Neither
+planned target passes, though. During closure the tracker follows the
+closing jaw (530), and on the final leg the open jaw covers the tracked patch
+(19444). Both controls pass 3 of 3 on A40 and RTX 8000.
+[Protocol and result](docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026)
+· [verdicts](docs/evidence/planned_approach_verdicts_2026-09-30.json)
 [Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)

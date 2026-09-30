@@ -1,0 +1,460 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the rendered-lighting training batch (L1-L4, R1-R7). Synthetic training renders of the companion's Envy train split; evaluation on the registered Blender matrix, controls and the Isaac Stage A replay, identical bytes to the published arms. Simulator and renderer ground truth only.",
+  "protocol": "docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md",
+  "code_revision": "52d90c1154ea3b89af291aa6cc3155eb6fc925bd",
+  "code_tree_dirty": false,
+  "models": {
+    "F": "da2_frozen",
+    "J": "da2_jitter",
+    "C": "da2_control",
+    "A": "da2_rendered_jitter",
+    "B": "da2_rendered_control"
+  },
+  "interpretations": [
+    "per-tree values are means over the tree's frames in that cell",
+    "R5 morning and noon compare family means of A and J on Envy",
+    "R6 Stage A uses the source light (as the published arms did); morning and evening are reported beside it",
+    "R6 and R7 give no separate refutation; each is refuted when its stated condition fails",
+    "L4 counts the full render only (the pilot tree is L1-L3)"
+  ],
+  "inputs_sha256": {
+    "docs/evidence/finetune_rendered_family_matrix_2026-09-30.json": "e34a744987fc0b867d20f0a6477f711563c54ca657913e378144a923c323d0f0",
+    "docs/evidence/finetune_rendered_anchoring_2026-09-30.json": "d24032af5ebd16e2a8df7119e8d1350b979dd80a76d8ebb7fe9bf7b8a44f4ff4",
+    "docs/evidence/finetune_rendered_controls_2026-09-30.json": "3b22f666331102f69e8d6b50876ead988c51f8df7064bae2ed37fce7e6f5e4cd",
+    "docs/evidence/finetune_rendered_stage_a_2026-09-30.json": "6a1674cc740215789532d6425bb974050f2b4b19880b9765f894847c342dc434"
+  },
+  "sun_holdout": {
+    "training_draws": 4980,
+    "closest_training_sun_to_preset_deg": {
+      "source": 15.015,
+      "morning": 15.039,
+      "noon": 15.063,
+      "evening": 15.01
+    },
+    "holdout_radius_deg": 15.0,
+    "holds": true,
+    "evaluation_suns_as_rendered_deg": {
+      "source": [
+        0.0,
+        90.0
+      ],
+      "morning": [
+        60.0,
+        18.0
+      ],
+      "noon": [
+        160.0,
+        65.0
+      ],
+      "evening": [
+        315.0,
+        12.0
+      ]
+    },
+    "evaluation_manifest": "artifacts/generalization/phase-20260920/family_code_v2/pilot_lpy_envy_00000_job_21370027/render_manifest.json",
+    "evaluation_suns_equal_presets": true
+  },
+  "family_means": {
+    "F": {
+      "envy_source": 0.1335,
+      "ufo_source": 0.1878,
+      "envy_morning": 0.1772,
+      "ufo_morning": 0.269,
+      "envy_noon": 0.1521,
+      "ufo_noon": 0.2351,
+      "envy_evening": 0.9059,
+      "ufo_evening": 1.4506,
+      "envy_evening_x2.6": 0.8209,
+      "ufo_evening_x2.6": 1.4431,
+      "envy_evening_affine_ceiling": 0.1283,
+      "ufo_evening_affine_ceiling": 0.1011
+    },
+    "J": {
+      "envy_source": 0.1528,
+      "ufo_source": 0.1956,
+      "envy_morning": 0.2234,
+      "ufo_morning": 0.2789,
+      "envy_noon": 0.2107,
+      "ufo_noon": 0.2749,
+      "envy_evening": 0.3216,
+      "ufo_evening": 1.2474,
+      "envy_evening_x2.6": 0.3609,
+      "ufo_evening_x2.6": 1.2762,
+      "envy_evening_affine_ceiling": 0.1156,
+      "ufo_evening_affine_ceiling": 0.1081
+    },
+    "C": {
+      "envy_source": 0.1367,
+      "ufo_source": 0.1855,
+      "envy_morning": 0.1748,
+      "ufo_morning": 0.2348,
+      "envy_noon": 0.1407,
+      "ufo_noon": 0.1949,
+      "envy_evening": 0.8835,
+      "ufo_evening": 1.4422,
+      "envy_evening_x2.6": 0.7477,
+      "ufo_evening_x2.6": 1.4213,
+      "envy_evening_affine_ceiling": 0.1274,
+      "ufo_evening_affine_ceiling": 0.1027
+    },
+    "A": {
+      "envy_source": 0.086,
+      "ufo_source": 0.117,
+      "envy_morning": 0.0975,
+      "ufo_morning": 0.1141,
+      "envy_noon": 0.0934,
+      "ufo_noon": 0.1247,
+      "envy_evening": 0.048,
+      "ufo_evening": 0.0954,
+      "envy_evening_x2.6": 0.0495,
+      "ufo_evening_x2.6": 0.1054,
+      "envy_evening_affine_ceiling": 0.0434,
+      "ufo_evening_affine_ceiling": 0.047
+    },
+    "B": {
+      "envy_source": 0.0738,
+      "ufo_source": 0.1004,
+      "envy_morning": 0.0712,
+      "ufo_morning": 0.0921,
+      "envy_noon": 0.0742,
+      "ufo_noon": 0.1138,
+      "envy_evening": 0.0483,
+      "ufo_evening": 0.086,
+      "envy_evening_x2.6": 0.0465,
+      "ufo_evening_x2.6": 0.0925,
+      "envy_evening_affine_ceiling": 0.0426,
+      "ufo_evening_affine_ceiling": 0.0485
+    }
+  },
+  "predictions": [
+    {
+      "id": "L1",
+      "prediction": "All 90 pilot frames pass the geometry check.",
+      "clauses": [
+        {
+          "clause": "90 of 90 pass",
+          "observed": "90 of 90",
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "L2",
+      "prediction": "Pilot render time is at most 40 s per frame.",
+      "clauses": [
+        {
+          "clause": "mean <= 40 s",
+          "observed": 14.74,
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "L3",
+      "prediction": "The two source frames match the surviving RGB within 2/255 mean on the tree mask.",
+      "clauses": [
+        {
+          "clause": "both <= 2/255",
+          "observed": [
+            0.13827216083882377,
+            0.1382924066274427
+          ],
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "L4",
+      "prediction": "At least 99% of the full render passes the geometry check, and at least 30% of kept frames have mean luma at or below 90.",
+      "clauses": [
+        {
+          "clause": ">= 99% pass",
+          "observed": {
+            "passed": 4890,
+            "registered": 4890,
+            "fraction": 1.0
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": ">= 30% dark",
+          "observed": 0.5022,
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "R1",
+      "prediction": "B's evening_x2.6 error is at most 0.6 x C in at least 3 of 4 Envy trees.",
+      "clauses": [
+        {
+          "clause": "B <= 0.6 x C in at least 3 of 4 Envy trees",
+          "observed": {
+            "B": {
+              "lpy_envy_00000": 0.04975336735459148,
+              "lpy_envy_00003": 0.047878317901951954,
+              "lpy_envy_00008": 0.053058218575439485,
+              "lpy_envy_00012": 0.035442256113940675
+            },
+            "C": {
+              "lpy_envy_00000": 0.7523344008156,
+              "lpy_envy_00003": 0.743901710372854,
+              "lpy_envy_00008": 0.8323033138296414,
+              "lpy_envy_00012": 0.662075530708044
+            },
+            "B_over_C": {
+              "lpy_envy_00000": 0.06613198505964134,
+              "lpy_envy_00003": 0.06436108054914226,
+              "lpy_envy_00008": 0.06374865712273209,
+              "lpy_envy_00012": 0.05353204350572756
+            },
+            "B_mean": 0.046533039986480895
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "R2",
+      "prediction": "A's evening affine ceiling is at most 0.8 x J in both families.",
+      "clauses": [
+        {
+          "clause": "A <= 0.8 x J in Envy and UFO",
+          "observed": {
+            "A": {
+              "envy": 0.0434,
+              "ufo": 0.047
+            },
+            "J": {
+              "envy": 0.1156,
+              "ufo": 0.1081
+            },
+            "A_over_J": {
+              "envy": 0.37543252595155713,
+              "ufo": 0.43478260869565216
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "R3",
+      "prediction": "A's Envy evening error is at most 0.20 m in at least 3 of 4 trees.",
+      "clauses": [
+        {
+          "clause": "A <= 0.20 m in at least 3 of 4 Envy trees",
+          "observed": {
+            "A": {
+              "lpy_envy_00000": 0.0498,
+              "lpy_envy_00003": 0.0514,
+              "lpy_envy_00008": 0.0519,
+              "lpy_envy_00012": 0.039
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "R4",
+      "prediction": "A's UFO evening error is at most 0.75 m in at least 3 of 4 trees.",
+      "clauses": [
+        {
+          "clause": "A <= 0.75 m in at least 3 of 4 UFO trees",
+          "observed": {
+            "A": {
+              "lpy_ufo_00000": 0.0681,
+              "lpy_ufo_00001": 0.1013,
+              "lpy_ufo_00002": 0.0729,
+              "lpy_ufo_00003": 0.1391
+            },
+            "J": {
+              "lpy_ufo_00000": 1.3436,
+              "lpy_ufo_00001": 1.2419,
+              "lpy_ufo_00002": 1.1924,
+              "lpy_ufo_00003": 1.2117
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "R5",
+      "prediction": "Daylight is not paid for: source within F + 0.03 m, and A's Envy morning and noon no worse than J.",
+      "clauses": [
+        {
+          "clause": "A's source error is at most F + 0.03 m in at least 6 of 8 trees",
+          "observed": {
+            "rise_over_F_m": {
+              "lpy_envy_00000": -0.05850000000000001,
+              "lpy_envy_00003": -0.04450000000000001,
+              "lpy_envy_00008": -0.04529999999999999,
+              "lpy_envy_00012": -0.0417,
+              "lpy_ufo_00000": -0.08109999999999999,
+              "lpy_ufo_00001": -0.056999999999999995,
+              "lpy_ufo_00002": -0.0686,
+              "lpy_ufo_00003": -0.0766
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "B's source error is at most F + 0.03 m in at least 6 of 8 trees",
+          "observed": {
+            "rise_over_F_m": {
+              "lpy_envy_00000": -0.0673,
+              "lpy_envy_00003": -0.057700000000000015,
+              "lpy_envy_00008": -0.0587,
+              "lpy_envy_00012": -0.05539999999999999,
+              "lpy_ufo_00000": -0.0958,
+              "lpy_ufo_00001": -0.072,
+              "lpy_ufo_00002": -0.08329999999999999,
+              "lpy_ufo_00003": -0.09849999999999999
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "A's Envy morning and noon are no worse than J (family means)",
+          "observed": {
+            "morning": {
+              "A": 0.0975,
+              "J": 0.2234
+            },
+            "noon": {
+              "A": 0.0934,
+              "J": 0.2107
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "R6",
+      "prediction": "Close-range and Stage A target errors stay within 20% of J (arm A) and C (arm B).",
+      "clauses": [
+        {
+          "clause": "A's close-range and Stage A target errors within 20% of J",
+          "observed": {
+            "ratio": {
+              "close_envy": 1.0131785995279308,
+              "close_ufo": 1.0911910669975184,
+              "stage_a_source": 1.0610085079892093
+            },
+            "A": {
+              "close": {
+                "envy": 0.5151,
+                "ufo": 0.3518
+              },
+              "stage_a": {
+                "source": 0.5113,
+                "morning": 0.4955,
+                "evening": 0.5631
+              }
+            },
+            "J": {
+              "close": {
+                "envy": 0.5084,
+                "ufo": 0.3224
+              }
+            },
+            "J_stage_a": {
+              "source": 0.4819,
+              "morning": 0.5366,
+              "evening": 0.7195
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "B's close-range and Stage A target errors within 20% of C",
+          "observed": {
+            "ratio": {
+              "close_envy": 1.0241397946315978,
+              "close_ufo": 0.989281045751634,
+              "stage_a_source": 0.8333840072970508
+            },
+            "B": {
+              "close": {
+                "envy": 0.5685,
+                "ufo": 0.3784
+              },
+              "stage_a": {
+                "source": 0.5482,
+                "morning": 0.524,
+                "evening": 0.5999
+              }
+            },
+            "C": {
+              "close": {
+                "envy": 0.5551,
+                "ufo": 0.3825
+              }
+            },
+            "C_stage_a": {
+              "source": 0.6578,
+              "morning": 0.6744,
+              "evening": 0.9105
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "R7",
+      "prediction": "Each arm's best validation RMSE is within 0.01 of 0.054.",
+      "clauses": [
+        {
+          "clause": "A's best validation RMSE within 0.01 of 0.054",
+          "observed": {
+            "best_val_rmse": 0.0568237213896193,
+            "best_epoch": 2,
+            "optimizer_steps": 14939
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "B's best validation RMSE within 0.01 of 0.054",
+          "observed": {
+            "best_val_rmse": 0.056828464908110624,
+            "best_epoch": 2,
+            "optimizer_steps": 14939
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    }
+  ]
+}

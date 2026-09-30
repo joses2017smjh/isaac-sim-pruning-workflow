@@ -338,11 +338,15 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       arm changes nothing. Source cost 0.005–0.024 m.
       [Protocol and result](EVAL_PROTOCOL_FINETUNE_2026-09-23.md#result--september-24-2026) ·
       [evidence](evidence/finetune_family_matrix_2026-09-24.json).
-- [ ] Re-fine-tune with rendered lighting variation (sun angle, colour, sky):
-      the lever the jitter result leaves for the low-sun shading. Registered and
-      queued September 27 (pilot met L1–L3; full render and both arms in the
-      chain `21442469`–`21442475`).
-      [Protocol](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md).
+- [x] Re-fine-tune with rendered lighting variation (sun angle, colour, sky):
+      11 of 11 predictions supported. Evening error falls 0.88 → 0.05 m (Envy)
+      and 1.44 → 0.09 m (UFO, unseen), and the evening shape ceiling falls 60%.
+      Source error also fell 35–45%, so the gain is not specific to low sun.
+      Isaac Stage A is barely helped.
+      [Result](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026).
+- [ ] Separate the render gap from lighting: score the rendered arms on
+      companion-resolution frames (1920×1080, adaptive sampler) of the matrix
+      trees under the presets. CPU scoring plus a small render.
 - [ ] Vision-guided controller on an Envy or UFO tree in Isaac. No path exists:
       `RenderEnv` presents the Blender orchard export, and the L-Py cylinder USDs
       have no spur-selection route into it. Needs target selection over cylinder
@@ -362,9 +366,20 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       the upper arm hit wood on the way in on two of ten tree0 targets). A
       known-map swept model reproduces all seven contact and ToF stops; only
       re-orienting the tool clears any, and only for 530 and 19444. That
-      known-map plan is queued as a labelled experiment (`21461306`–`21461308`).
+      known-map plan was run on September 30: 530 reached alignment at 0 N
+      in 3 of 3 (the geometry clears), but no planned target passed. The
+      remaining stops are the robot's own jaw in its camera's view.
       [Diagnosis](evidence/contact_diagnosis_2026-09-27.json) ·
-      [protocol](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md).
+      [result](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
+- [ ] Jaw in the camera's view (proposed, not registered). During closure the
+      tracker follows the closing jaw (530); on the final leg the open jaw
+      covers the patch (19444). Candidates, each a labelled perception
+      variant: a jaw self-mask from known kinematics, an ego-motion
+      consistency filter, and the mirrored camera side at the planned pose.
+      A pass on 530 also needs the controller to hold the aligned target
+      through closure while the camera is still. That changes what the cut
+      gate sees, so it must be a registered experiment (about 270 GPU-min for
+      both targets).
 - [x] Tracker drift and camera side, as labelled experiments (similarity
       motion model, mirrored mount when end-on): 590's drift and 8353's and
       19264's perception failures are gone, each exposing a contact or ToF stop

@@ -129,3 +129,81 @@ frames, in two arrays (74 trees of 60 frames at 60 minutes and 5 of 90 frames at
 4,840 GPU-minutes reserved, about 30–40 hours of wall time one task at a time. Fine-tune: 2 arms × (8 h training + 1 h
 evaluation) = 1,080 GPU-minutes reserved, about 3 h each expected. About 15 GB of
 renders and 9 GB of checkpoints and predictions on the hpc-share.
+
+## Result — September 30, 2026
+
+All 11 predictions are supported, most by wide margins
+([verdicts](evidence/lighting_training_verdicts_2026-09-30.json), code
+`52d90c1`). The four aggregate files hold all five models side by side
+([matrix](evidence/finetune_rendered_family_matrix_2026-09-30.json),
+[anchoring](evidence/finetune_rendered_anchoring_2026-09-30.json),
+[controls](evidence/finetune_rendered_controls_2026-09-30.json),
+[Stage A](evidence/finetune_rendered_stage_a_2026-09-30.json)). The frozen
+model and the published jitter and control arms reproduce the September 24
+evidence exactly on every row.
+
+**Render.**
+- **L1.** 90 of 90 pilot frames pass the geometry check.
+- **L2.** The pilot renders at 14.7 s per frame on average.
+- **L3.** The two source frames differ from the surviving RGB by 0.14/255 on
+  the tree mask.
+- **L4.** The full render passes 4,890 of 4,890 frames, and 50.2% have mean
+  luma at or below 90.
+- **Hold-out.** Recomputed from all 4,980 recorded draws, the closest training
+  sun to any preset sun is 15.01–15.06°. The evaluation frames were rendered
+  with exactly those preset suns, so the test is interpolation, as registered.
+- **Resume.** One tree timed out and was resumed inside its own batch (see
+  `SLURM_JOBS.md`); every frame entered training.
+
+**Training.** Both arms ran 3 epochs, 14,939 optimizer steps (14,940
+registered; the September 24 arms show the same off-by-one), on 9,960 rows.
+The best validation RMSE is 0.0568 in both arms, at epoch 2 (R7).
+
+Per-family mean tree-mask error in metres. F is the frozen model, J and C the
+published jitter and control arms, A (rendered + jitter) and B (rendered, no
+jitter) the new arms.
+
+| | F | J | C | A | B |
+|---|---|---|---|---|---|
+| Envy source | 0.134 | 0.153 | 0.137 | 0.086 | 0.074 |
+| Envy evening | 0.906 | 0.322 | 0.884 | **0.048** | **0.048** |
+| Envy evening ×2.6 | 0.821 | 0.361 | 0.748 | 0.050 | **0.047** |
+| UFO source | 0.188 | 0.196 | 0.186 | 0.117 | 0.100 |
+| UFO evening | 1.451 | 1.247 | 1.442 | **0.095** | 0.086 |
+| Evening affine ceiling, Envy / UFO | 0.128 / 0.101 | 0.116 / 0.108 | 0.127 / 0.103 | **0.043 / 0.047** | 0.043 / 0.049 |
+| Stage A target, source / evening | 0.572 / 0.850 | 0.482 / 0.720 | 0.658 / 0.911 | 0.511 / 0.563 | 0.548 / 0.600 |
+
+- **R1.** B's evening ×2.6 error is 0.035–0.053 m per Envy tree, 0.05–0.07 of
+  C.
+- **R2.** A's evening affine ceiling is 0.38× (Envy) and 0.43× (UFO) that of J.
+  The shape itself improved, not only the offset.
+- **R3.** A's Envy evening error is 0.039–0.052 m in all four trees.
+- **R4.** A's UFO evening error is 0.068–0.139 m in all four trees, where J is
+  1.19–1.34 m. The unseen family transfers.
+- **R5.** Source error falls in every tree for both arms, and A's Envy morning
+  and noon (0.098 and 0.093) beat J (0.223 and 0.211).
+- **R6.** Close-range and Stage A source target errors are within 20% of J and
+  C.
+
+**Two findings nobody predicted, and what they limit.**
+- **Source error fell 35–45% as well** (Envy 0.134 → 0.086 and 0.074), and so
+  did the overcast cells, which are outside the sampler's support. R5 only
+  bounded harm. So the gain is not specific to low sun: rendered lighting
+  variation (sun, colour, sky and world) improves every Blender cell. The
+  low-sun gain (about 0.8 m at evening) is still about fifteen times the
+  general one (about 0.05 m), so R1–R4 stand as written.
+- **The companion's own validation RMSE did not move.** It is 0.0568, against
+  0.0561 (J) and 0.0555 (C), on 1,290 source-lit 1920×1080 frames of the
+  validation trees. The gain appears on this repository's 512×288, 16-sample
+  evaluation renders of the same trees. Part of it may be robustness to that
+  render gap, which this design cannot separate from lighting.
+
+**Limits.**
+- **Isaac is barely helped.** Stage A target error at source is unchanged
+  within 20%. At evening it falls from 0.72/0.91 (J/C) to 0.56/0.60 m, but
+  every Isaac error is still over half a metre, so the controller's own camera
+  is not fixed. Every large gain is measured on Blender renders of one bark.
+- **Close-range UFO means cover three trees.** The target of `lpy_ufo_00003`
+  is never visible.
+- **Stale plan description.** The new plans' `scope` string still describes
+  the published arms' 6,270 frames; `data_description` is correct.

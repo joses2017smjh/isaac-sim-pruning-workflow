@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-09-28 PDT — PERCEPTION/TREE1 ROUND PUBLISHED (6/8 SUPPORTED, P4+P6 REFUTED); PLANNED APPROACH + LIGHTING CHAIN QUEUED
+CURRENT CHECKPOINT — 2026-09-30 PDT — LIGHTING TRAINING (11/11) AND KNOWN-MAP APPROACH (Q1 partly, Q2 yes, Q3 no) PUBLISHED; NOTHING QUEUED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -165,6 +165,21 @@ ENVY/UFO + LIGHTING + LEARNED DEPTH (2026-09-23, after the user asked)
     aggregate_eval --protocol), docs/evidence/perception_round_verdicts_2026-09-28.json
     (tools/score_perception_round.py). Media: compose_batch_media.py over the
     12 batches, CPU serial (TMPDIR on scratch).
+  PUBLISHED 2026-09-30:
+    LIGHTING TRAINING: L1-L4 and R1-R7 all supported (verdicts
+    docs/evidence/lighting_training_verdicts_2026-09-30.json, scorer
+    tools/score_lighting_training.py). Evening 0.88->0.05 m Envy, 1.44->0.09 m
+    UFO. Unpredicted: source error also fell 35-45%; the companion val RMSE did
+    not move (render-gap robustness not separable). Isaac Stage A stays >0.5 m.
+    Sun hold-out recomputed from the draws: min 15.01 deg.
+    KNOWN-MAP APPROACH: Q1 partly (530 aligned 3/3 at 0 N; 19444 stopped by the
+    tracker on the final leg), Q2 supported (controls 6/6, A40 + RTX 8000), Q3
+    refuted. Post hoc: 530's tracker follows the closing jaw (tool and spur
+    still, measured spur 4.2 -> 9.9 mm); on 19444 the open jaw covers the patch.
+    Scorer tools/score_planned_approach.py.
+    NOTE: the submit node caps each process at 15 GB virtual and each user at
+    400 threads; run the test suite in chunks, and run pxr/open3d work on a
+    compute node (pxr in the Isaac venv needs EL9 glibc).
   LOW-SUN STOPS DIAGNOSED (2026-09-28, post hoc, b6ee660): all three
     appearance stops coincide with the visual jaw surrogate's low-sun shadow
     crossing the 13x13 patch (evening: shadow exits at 67 and brightens a flat
