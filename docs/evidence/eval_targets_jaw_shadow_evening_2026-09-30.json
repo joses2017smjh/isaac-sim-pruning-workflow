@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "scope": "Targets for the jaw-shadow counterfactual under evening light: the tree1 listed spurs whose recorded evening runs stopped on the appearance check (docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md, P6).",
+  "selection_rule": "Every registered target whose low-sun run stopped with appearance_changed_or_occluded; entries copied unchanged from the tree1 listed register.",
+  "seed": null,
+  "derived_from": [
+    {
+      "path": "docs/evidence/eval_targets_tree1_listed_2026-09-23.json",
+      "sha256": "e428ed18c3d16153388c5b97f01ee4d37bc4b3c5d6a591bfa06dbeadd44b7b11"
+    }
+  ],
+  "target_count": 2,
+  "targets": [
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "max_radius_m": 0.006743434528356521,
+      "length_m": 0.0499773861245249,
+      "axis": [
+        0.5616836785147071,
+        0.6359413333272389,
+        -0.5292353596049308
+      ],
+      "source_center_m": [
+        -2.121083335081736,
+        -0.4009110900757491,
+        1.1044705358404185
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 15004,
+      "max_radius_m": 0.006705059199213658,
+      "length_m": 0.04906715878566724,
+      "axis": [
+        -0.6428618632212191,
+        -0.24785591628383538,
+        0.7247731159327327
+      ],
+      "source_center_m": [
+        -2.1508416732152305,
+        -0.4228489409416873,
+        1.1354093040215787
+      ]
+    }
+  ]
+}

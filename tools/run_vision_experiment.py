@@ -57,6 +57,8 @@ def run_environment(plan, row, batch, output, inherited):
             env["PRUNING_MAX_ROTATION_DEG"] = repr(float(strategy["max_rotation_deg"]))
         if strategy.get("planned_tool_quat_wxyz") is not None:
             env["PRUNING_PLANNED_TOOL_QUAT"] = ",".join(repr(float(v)) for v in strategy["planned_tool_quat_wxyz"])
+        if "jaw_casts_shadow" in strategy:
+            env["PRUNING_JAW_CASTS_SHADOW"] = "1" if strategy["jaw_casts_shadow"] else "0"
     return env
 
 
@@ -89,6 +91,18 @@ def configuration_matches(report, row, plan):
         if "mount_side_rule" in wanted:
             mount = report.get("camera_mount_selection") or {}
             matches = matches and mount.get("rule") == wanted["mount_side_rule"]
+        if "jaw_casts_shadow" in wanted:
+            shadow = report.get("blender_scene", {}).get("jaw_proxy_shadow") or {}
+            readback = shadow.get("do_not_cast_shadows_readback") or []
+            if wanted["jaw_casts_shadow"]:
+                matches = matches and shadow.get("casts_shadow_requested") is True and not any(readback)
+            else:
+                matches = (
+                    matches
+                    and shadow.get("casts_shadow_requested") is False
+                    and len(readback) == 2
+                    and all(value is True for value in readback)
+                )
         if "planned_tool_quat_wxyz" in wanted:
             recorded_quat = recorded.get("planned_tool_quat_wxyz")
             wanted_quat = wanted["planned_tool_quat_wxyz"]

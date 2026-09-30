@@ -146,6 +146,16 @@ STRATEGIES = {
         "max_rotation_deg": 1.5,
         "frames": 200,
     },
+    # The baseline with the visual jaw surrogate casting no shadow (docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md);
+    # the jaws stay visible in RGB and depth. A scene counterfactual, not a controller or tracker change.
+    "jaw_no_shadow": {
+        "name": "jaw_no_shadow",
+        "mode": "straight",
+        "standoff_m": 0.0,
+        "max_step_m": 0.004,
+        "jaw_casts_shadow": False,
+        "frames": 200,
+    },
 }
 
 #: Keys a strategy row may carry and their baseline values; a row that omits

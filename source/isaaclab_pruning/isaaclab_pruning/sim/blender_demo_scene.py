@@ -286,6 +286,31 @@ class BlenderDemoScene:
         self.evidence["visual_proxy_closing_axis_tool"] = axis.tolist()
         self.evidence["visual_proxy_roll_rad"] = self._proxy_roll_rad
 
+    def set_jaw_shadow_casting(self, casts_shadow):
+        """Whether the visual jaw surrogate casts shadows; it stays visible in RGB and depth either way.
+
+        A labelled counterfactual for the low-sun appearance stops. The default authors nothing, so a
+        baseline stage is unchanged; turning shadows off authors ``primvars:doNotCastShadows`` on both
+        cubes. The value is read back from the prims and recorded, so a run cannot claim an arm its
+        stage did not have.
+        """
+        from pxr import Sdf, UsdGeom
+
+        readback = []
+        for name in ("LeftJaw", "RightJaw"):
+            prim = self.stage.GetPrimAtPath(f"{PROXY_PATH}/{name}")
+            api = UsdGeom.PrimvarsAPI(prim)
+            if not casts_shadow:
+                api.CreatePrimvar("doNotCastShadows", Sdf.ValueTypeNames.Bool).Set(True)
+            primvar = api.GetPrimvar("doNotCastShadows")
+            readback.append(bool(primvar.Get()) if primvar and primvar.IsDefined() else None)
+        self.evidence["jaw_proxy_shadow"] = {
+            "casts_shadow_requested": bool(casts_shadow),
+            "do_not_cast_shadows_readback": readback,
+            "attribute": "primvars:doNotCastShadows",
+        }
+        return self.evidence["jaw_proxy_shadow"]
+
     def initialize_physics_tracking(self, tensors=None):
         """Bind only after physics startup; read PhysX instead of stale USD/Fabric."""
         if tensors is None:

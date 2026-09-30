@@ -454,3 +454,32 @@ def test_placement_overrides_are_validated_and_ordered_after_the_defaults(script
     ):
         with pytest.raises(ValueError):
             queue.placement_options(bad)
+
+
+def test_jaw_shadow_counterfactual_is_forwarded_and_the_readback_decides_the_arm(tmp_path, scripts):
+    launcher, run = scripts
+    targets = [{"target_tree_index": 1, "component_first_vertex": 14944}]
+    plan = launcher.experiment_plan(targets, "evening", "raw", "jaw_no_shadow")
+    row = plan["runs"][0]
+    assert row["strategy"]["jaw_casts_shadow"] is False and row["strategy"]["mode"] == "straight"
+    assert run.run_environment(plan, row, tmp_path, tmp_path / "out", {})["PRUNING_JAW_CASTS_SHADOW"] == "0"
+    baseline = launcher.experiment_plan(targets, "evening", "raw", "baseline")
+    assert "PRUNING_JAW_CASTS_SHADOW" not in run.run_environment(baseline, baseline["runs"][0], tmp_path, tmp_path, {})
+
+    def report(shadow):
+        scene = {"daylight": {"preset": "evening"}, "target": {"id": "tree1_SPUR_component_14944"}}
+        if shadow is not None:
+            scene["jaw_proxy_shadow"] = shadow
+        return {
+            "photometric_normalization": "raw",
+            "frame_count": 200,
+            "approach_strategy": {"mode": "straight", "standoff_m": 0.0, "max_step_m": 0.004},
+            "blender_scene": scene,
+        }
+
+    off = {"casts_shadow_requested": False, "do_not_cast_shadows_readback": [True, True]}
+    assert run.configuration_matches(report(off), row, plan)
+    # The primvar must be on both cubes; a request without the readback is not the arm.
+    assert not run.configuration_matches(report({**off, "do_not_cast_shadows_readback": [True, None]}), row, plan)
+    assert not run.configuration_matches(report(None), row, plan)
+    assert run.run_label(0, row) == "run_00_evening_tree1_v14944_jaw_no_shadow"

@@ -266,3 +266,30 @@ def test_tree_selection_does_not_substitute_other_tree():
         select_component(m, first_vertex=7524, tree_index=1)
     with pytest.raises(ValueError):
         select_component(m, tree_index=2)
+
+
+def test_jaw_shadow_switch_authors_nothing_by_default_and_reads_back_when_off():
+    pytest.importorskip("pxr.Usd")
+    from pxr import Usd, UsdGeom
+
+    from isaaclab_pruning.sim.blender_demo_scene import PROXY_PATH, BlenderDemoScene
+
+    def scene():
+        stage = Usd.Stage.CreateInMemory()
+        piece = UsdGeom.Mesh.Define(stage, "/Piece")
+        target = {"position_w_m": [0, 0, 0], "axis_w": [1, 0, 0], "radius_m": 0.005, "id": "t"}
+        return stage, BlenderDemoScene(stage, None, piece, target, {})
+
+    stage, default = scene()
+    record = default.set_jaw_shadow_casting(True)
+    assert record["casts_shadow_requested"] is True and record["do_not_cast_shadows_readback"] == [None, None]
+    assert not UsdGeom.PrimvarsAPI(stage.GetPrimAtPath(f"{PROXY_PATH}/LeftJaw")).HasPrimvar("doNotCastShadows")
+    stage, off = scene()
+    record = off.set_jaw_shadow_casting(False)
+    assert record["do_not_cast_shadows_readback"] == [True, True]
+    assert off.evidence["jaw_proxy_shadow"] is record
+    for name in ("LeftJaw", "RightJaw"):
+        primvar = UsdGeom.PrimvarsAPI(stage.GetPrimAtPath(f"{PROXY_PATH}/{name}")).GetPrimvar("doNotCastShadows")
+        assert primvar.Get() is True
+        # The jaw stays renderable: only shadow casting changes.
+        assert UsdGeom.Imageable(stage.GetPrimAtPath(f"{PROXY_PATH}/{name}")).ComputeVisibility() == "inherited"

@@ -169,6 +169,9 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
     # and thresholds are not reachable from the environment.
     motion_model = os.environ.get("PRUNING_MOTION_MODEL", "translation")
     mount_side_rule = os.environ.get("PRUNING_MOUNT_SIDE_RULE", "fixed")
+    jaw_casts_shadow = os.environ.get("PRUNING_JAW_CASTS_SHADOW", "1")
+    if jaw_casts_shadow not in ("0", "1"):
+        raise ValueError("PRUNING_JAW_CASTS_SHADOW must be 0 or 1")
     planned_quat = os.environ.get("PRUNING_PLANNED_TOOL_QUAT")
     approach = ApproachStrategy(
         mode=os.environ.get("PRUNING_APPROACH_MODE", "straight"),
@@ -625,6 +628,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 )
                 report["planned_closing_axis_tool"] = proxy_closing_tool.tolist()
             env.blender_scene.set_proxy_closing_axis_tool(proxy_closing_tool)
+            env.blender_scene.set_jaw_shadow_casting(jaw_casts_shadow == "1")
             demo = VisionPruningDemo(
                 env.blender_scene.target_id,
                 env.blender_scene.target_axis_w,
