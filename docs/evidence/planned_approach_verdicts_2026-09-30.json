@@ -1,0 +1,928 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the known-map re-oriented approach (Q1-Q3) from the grader's outcomes of 12 planned simulator runs in three batches. Results are labelled 'known-map plan, jaw orientation set at the planned pose' and are never pooled with unchanged-gate results. Simulator ground truth; not a field success rate.",
+  "protocol": "docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md",
+  "code_revision": "da38bb322a383b2d3595ef63a722045bd38ed28c",
+  "code_tree_dirty": false,
+  "inputs_sha256": {
+    "docs/evidence/planned_approach_2026-09-30/planned-pose-gpu-r1-20260929.json": "2d3f8695ba1e4695b88179ea63f2a98ef31cbc4977486e9a1b6d9bd6f7f886fb",
+    "docs/evidence/planned_approach_2026-09-30/planned-pose-gpu-r2-20260929.json": "09c1347eb7dd59201947f41dfd6dc168bc2d8b4607a7455c393abdd1af973d6d",
+    "docs/evidence/planned_approach_2026-09-30/planned-pose-gpu-r3-20260929.json": "91ca1a6d9488974979bb572b114a5e90f167b7f70bb931a1ab205b3b51d71f48"
+  },
+  "runs": [
+    {
+      "batch": "planned-pose-gpu-r1-20260929",
+      "target": 530,
+      "outcome": "stopped_gate_lost_during_closure",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "node": "cn-s-1",
+      "gpu_model": "A40",
+      "reached_align": true,
+      "cut_phases_reached": [
+        "approach",
+        "align",
+        "closing",
+        "stopped"
+      ],
+      "max_contact_n": 0.0,
+      "stop": {
+        "decision_frame": 79,
+        "approach_leg": null,
+        "tracker_state": "tracking",
+        "tracker_reason": null
+      }
+    },
+    {
+      "batch": "planned-pose-gpu-r1-20260929",
+      "target": 14944,
+      "outcome": "pass",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "node": "cn-s-2",
+      "gpu_model": "A40",
+      "reached_align": true,
+      "cut_phases_reached": [
+        "approach",
+        "align",
+        "closing",
+        "retreat"
+      ],
+      "max_contact_n": 0.0,
+      "stop": null
+    },
+    {
+      "batch": "planned-pose-gpu-r1-20260929",
+      "target": 15004,
+      "outcome": "pass",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "node": "cn-s-2",
+      "gpu_model": "A40",
+      "reached_align": true,
+      "cut_phases_reached": [
+        "approach",
+        "align",
+        "closing",
+        "retreat"
+      ],
+      "max_contact_n": 0.0,
+      "stop": null
+    },
+    {
+      "batch": "planned-pose-gpu-r1-20260929",
+      "target": 19444,
+      "outcome": "stopped_vision_invalid",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "node": "cn-s-2",
+      "gpu_model": "A40",
+      "reached_align": false,
+      "cut_phases_reached": [
+        "approach",
+        "stopped"
+      ],
+      "max_contact_n": 0.0,
+      "stop": {
+        "decision_frame": 68,
+        "approach_leg": "final",
+        "tracker_state": "tracking_lost",
+        "tracker_reason": "appearance_changed_or_occluded"
+      }
+    },
+    {
+      "batch": "planned-pose-gpu-r2-20260929",
+      "target": 530,
+      "outcome": "stopped_gate_lost_during_closure",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "node": "cn-gpu7",
+      "gpu_model": "RTX 8000",
+      "reached_align": true,
+      "cut_phases_reached": [
+        "approach",
+        "align",
+        "closing",
+        "stopped"
+      ],
+      "max_contact_n": 0.0,
+      "stop": {
+        "decision_frame": 79,
+        "approach_leg": null,
+        "tracker_state": "tracking",
+        "tracker_reason": null
+      }
+    },
+    {
+      "batch": "planned-pose-gpu-r2-20260929",
+      "target": 14944,
+      "outcome": "pass",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "node": "cn-gpu7",
+      "gpu_model": "RTX 8000",
+      "reached_align": true,
+      "cut_phases_reached": [
+        "approach",
+        "align",
+        "closing",
+        "retreat"
+      ],
+      "max_contact_n": 0.0,
+      "stop": null
+    },
+    {
+      "batch": "planned-pose-gpu-r2-20260929",
+      "target": 15004,
+      "outcome": "pass",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "node": "cn-gpu7",
+      "gpu_model": "RTX 8000",
+      "reached_align": true,
+      "cut_phases_reached": [
+        "approach",
+        "align",
+        "closing",
+        "retreat"
+      ],
+      "max_contact_n": 0.0,
+      "stop": null
+    },
+    {
+      "batch": "planned-pose-gpu-r2-20260929",
+      "target": 19444,
+      "outcome": "stopped_vision_invalid",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "node": "cn-gpu7",
+      "gpu_model": "RTX 8000",
+      "reached_align": false,
+      "cut_phases_reached": [
+        "approach",
+        "stopped"
+      ],
+      "max_contact_n": 0.0,
+      "stop": {
+        "decision_frame": 68,
+        "approach_leg": "final",
+        "tracker_state": "tracking_lost",
+        "tracker_reason": "appearance_changed_or_occluded"
+      }
+    },
+    {
+      "batch": "planned-pose-gpu-r3-20260929",
+      "target": 530,
+      "outcome": "stopped_gate_lost_during_closure",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "node": "cn-r-5",
+      "gpu_model": "A40",
+      "reached_align": true,
+      "cut_phases_reached": [
+        "approach",
+        "align",
+        "closing",
+        "stopped"
+      ],
+      "max_contact_n": 0.0,
+      "stop": {
+        "decision_frame": 79,
+        "approach_leg": null,
+        "tracker_state": "tracking",
+        "tracker_reason": null
+      }
+    },
+    {
+      "batch": "planned-pose-gpu-r3-20260929",
+      "target": 14944,
+      "outcome": "pass",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "node": "cn-gpu7",
+      "gpu_model": "RTX 8000",
+      "reached_align": true,
+      "cut_phases_reached": [
+        "approach",
+        "align",
+        "closing",
+        "retreat"
+      ],
+      "max_contact_n": 0.0,
+      "stop": null
+    },
+    {
+      "batch": "planned-pose-gpu-r3-20260929",
+      "target": 15004,
+      "outcome": "pass",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "node": "cn-gpu7",
+      "gpu_model": "RTX 8000",
+      "reached_align": true,
+      "cut_phases_reached": [
+        "approach",
+        "align",
+        "closing",
+        "retreat"
+      ],
+      "max_contact_n": 0.0,
+      "stop": null
+    },
+    {
+      "batch": "planned-pose-gpu-r3-20260929",
+      "target": 19444,
+      "outcome": "stopped_vision_invalid",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "node": "cn-gpu7",
+      "gpu_model": "RTX 8000",
+      "reached_align": false,
+      "cut_phases_reached": [
+        "approach",
+        "stopped"
+      ],
+      "max_contact_n": 0.0,
+      "stop": {
+        "decision_frame": 70,
+        "approach_leg": "final",
+        "tracker_state": "tracking_lost",
+        "tracker_reason": "appearance_changed_or_occluded"
+      }
+    }
+  ],
+  "predictions": [
+    {
+      "id": "Q1",
+      "prediction": "530 and 19444 reach align with no contact over 5 N and no ToF stop in 3 of 3 repeats each.",
+      "clauses": [
+        {
+          "clause": "530 reaches align with no contact over 5 N and no ToF stop in 3 of 3",
+          "observed": [
+            {
+              "batch": "planned-pose-gpu-r1-20260929",
+              "outcome": "stopped_gate_lost_during_closure",
+              "reached_align": true,
+              "max_contact_n": 0.0,
+              "stop": {
+                "decision_frame": 79,
+                "approach_leg": null,
+                "tracker_state": "tracking",
+                "tracker_reason": null
+              },
+              "gpu_model": "A40"
+            },
+            {
+              "batch": "planned-pose-gpu-r2-20260929",
+              "outcome": "stopped_gate_lost_during_closure",
+              "reached_align": true,
+              "max_contact_n": 0.0,
+              "stop": {
+                "decision_frame": 79,
+                "approach_leg": null,
+                "tracker_state": "tracking",
+                "tracker_reason": null
+              },
+              "gpu_model": "RTX 8000"
+            },
+            {
+              "batch": "planned-pose-gpu-r3-20260929",
+              "outcome": "stopped_gate_lost_during_closure",
+              "reached_align": true,
+              "max_contact_n": 0.0,
+              "stop": {
+                "decision_frame": 79,
+                "approach_leg": null,
+                "tracker_state": "tracking",
+                "tracker_reason": null
+              },
+              "gpu_model": "A40"
+            }
+          ],
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "19444 reaches align with no contact over 5 N and no ToF stop in 3 of 3",
+          "observed": [
+            {
+              "batch": "planned-pose-gpu-r1-20260929",
+              "outcome": "stopped_vision_invalid",
+              "reached_align": false,
+              "max_contact_n": 0.0,
+              "stop": {
+                "decision_frame": 68,
+                "approach_leg": "final",
+                "tracker_state": "tracking_lost",
+                "tracker_reason": "appearance_changed_or_occluded"
+              },
+              "gpu_model": "A40"
+            },
+            {
+              "batch": "planned-pose-gpu-r2-20260929",
+              "outcome": "stopped_vision_invalid",
+              "reached_align": false,
+              "max_contact_n": 0.0,
+              "stop": {
+                "decision_frame": 68,
+                "approach_leg": "final",
+                "tracker_state": "tracking_lost",
+                "tracker_reason": "appearance_changed_or_occluded"
+              },
+              "gpu_model": "RTX 8000"
+            },
+            {
+              "batch": "planned-pose-gpu-r3-20260929",
+              "outcome": "stopped_vision_invalid",
+              "reached_align": false,
+              "max_contact_n": 0.0,
+              "stop": {
+                "decision_frame": 70,
+                "approach_leg": "final",
+                "tracker_state": "tracking_lost",
+                "tracker_reason": "appearance_changed_or_occluded"
+              },
+              "gpu_model": "RTX 8000"
+            }
+          ],
+          "holds": false,
+          "refutes": false
+        }
+      ],
+      "verdict": "partly supported"
+    },
+    {
+      "id": "Q2",
+      "prediction": "14944 and 15004 pass 17 of 17 checks in 3 of 3 repeats under the identity plan.",
+      "clauses": [
+        {
+          "clause": "every control repeat passes",
+          "observed": {
+            "14944 planned-pose-gpu-r1-20260929": "pass",
+            "14944 planned-pose-gpu-r2-20260929": "pass",
+            "14944 planned-pose-gpu-r3-20260929": "pass",
+            "15004 planned-pose-gpu-r1-20260929": "pass",
+            "15004 planned-pose-gpu-r2-20260929": "pass",
+            "15004 planned-pose-gpu-r3-20260929": "pass"
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "Q3",
+      "prediction": "At least one of 530 and 19444 passes all 17 checks in at least one repeat.",
+      "clauses": [
+        {
+          "clause": "a planned target passes in some repeat",
+          "observed": {
+            "passes": []
+          },
+          "holds": false,
+          "refutes": true
+        }
+      ],
+      "verdict": "refuted"
+    }
+  ],
+  "post_hoc": {
+    "label": "post hoc diagnosis from recorded ground truth and depth, not a prediction",
+    "530_closure": {
+      "planned-pose-gpu-r1-20260929": [
+        {
+          "frame": 71,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.186455067620965,
+          "feature_count": 17,
+          "pixel_xy": [
+            206.0080108642578,
+            253.94256591796875
+          ],
+          "tool_moved_mm": 0.0,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 72,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.212716926012137,
+          "feature_count": 17,
+          "pixel_xy": [
+            205.68373107910156,
+            254.3223876953125
+          ],
+          "tool_moved_mm": 0.3243536369760093,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 73,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.2150714764448765,
+          "feature_count": 17,
+          "pixel_xy": [
+            205.61119079589844,
+            254.37728881835938
+          ],
+          "tool_moved_mm": 0.3790893175878659,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 74,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.216360885911539,
+          "feature_count": 17,
+          "pixel_xy": [
+            205.601318359375,
+            254.39324951171875
+          ],
+          "tool_moved_mm": 0.3888295068106995,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 75,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.214574313689854,
+          "feature_count": 17,
+          "pixel_xy": [
+            205.5860595703125,
+            254.3919677734375
+          ],
+          "tool_moved_mm": 0.390424206040878,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 76,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.16666666666666607,
+          "measured_minus_true_mm": 4.224540148230631,
+          "feature_count": 10,
+          "pixel_xy": [
+            205.65728759765625,
+            254.39279174804688
+          ],
+          "tool_moved_mm": 0.3904743406156312,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 77,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.33333333333333365,
+          "measured_minus_true_mm": 5.581968831523223,
+          "feature_count": 8,
+          "pixel_xy": [
+            210.27362060546875,
+            250.843994140625
+          ],
+          "tool_moved_mm": 0.3904743406156312,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 78,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.4999999999999997,
+          "measured_minus_true_mm": 7.771722773386416,
+          "feature_count": 7,
+          "pixel_xy": [
+            214.66970825195312,
+            247.47836303710938
+          ],
+          "tool_moved_mm": 0.3904743406156312,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 79,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.6666666666666673,
+          "measured_minus_true_mm": 9.875986307046128,
+          "feature_count": 11,
+          "pixel_xy": [
+            218.523681640625,
+            244.71473693847656
+          ],
+          "tool_moved_mm": 0.3904743406156312,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 80,
+          "phase": "stopped_failure",
+          "jaw_closure_progress": 0.6666666666666673,
+          "measured_minus_true_mm": 9.875259849150357,
+          "feature_count": 17,
+          "pixel_xy": [
+            218.52310180664062,
+            244.7168731689453
+          ],
+          "tool_moved_mm": 0.3904743406156312,
+          "true_target_moved_mm": 0.0
+        }
+      ],
+      "planned-pose-gpu-r2-20260929": [
+        {
+          "frame": 71,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.24285694782136,
+          "feature_count": 17,
+          "pixel_xy": [
+            205.9922332763672,
+            254.04620361328125
+          ],
+          "tool_moved_mm": 0.0,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 72,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.263668752338532,
+          "feature_count": 17,
+          "pixel_xy": [
+            205.6269989013672,
+            254.41879272460938
+          ],
+          "tool_moved_mm": 0.325469519993772,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 73,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.266740084441902,
+          "feature_count": 17,
+          "pixel_xy": [
+            205.5537109375,
+            254.4860076904297
+          ],
+          "tool_moved_mm": 0.38084616210938116,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 74,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.267018210844583,
+          "feature_count": 17,
+          "pixel_xy": [
+            205.5402374267578,
+            254.48849487304688
+          ],
+          "tool_moved_mm": 0.390590425347559,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 75,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.265401219503844,
+          "feature_count": 17,
+          "pixel_xy": [
+            205.5270538330078,
+            254.48666381835938
+          ],
+          "tool_moved_mm": 0.3924512495278655,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 76,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.16666666666666607,
+          "measured_minus_true_mm": 4.270847731380679,
+          "feature_count": 10,
+          "pixel_xy": [
+            205.56434631347656,
+            254.48287963867188
+          ],
+          "tool_moved_mm": 0.3924512495278655,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 77,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.33333333333333365,
+          "measured_minus_true_mm": 5.613628023697534,
+          "feature_count": 10,
+          "pixel_xy": [
+            210.12762451171875,
+            251.11814880371094
+          ],
+          "tool_moved_mm": 0.3924512495278655,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 78,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.4999999999999997,
+          "measured_minus_true_mm": 7.68267019550604,
+          "feature_count": 11,
+          "pixel_xy": [
+            214.45176696777344,
+            248.06773376464844
+          ],
+          "tool_moved_mm": 0.3924512495278655,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 79,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.6666666666666673,
+          "measured_minus_true_mm": 9.794685173192061,
+          "feature_count": 13,
+          "pixel_xy": [
+            218.3508758544922,
+            245.3787384033203
+          ],
+          "tool_moved_mm": 0.3924512495278655,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 80,
+          "phase": "stopped_failure",
+          "jaw_closure_progress": 0.6666666666666673,
+          "measured_minus_true_mm": 9.790301443298917,
+          "feature_count": 17,
+          "pixel_xy": [
+            218.34632873535156,
+            245.3904571533203
+          ],
+          "tool_moved_mm": 0.3924512495278655,
+          "true_target_moved_mm": 0.0
+        }
+      ],
+      "planned-pose-gpu-r3-20260929": [
+        {
+          "frame": 71,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.4004731948760805,
+          "feature_count": 18,
+          "pixel_xy": [
+            206.263916015625,
+            253.28199768066406
+          ],
+          "tool_moved_mm": 0.0,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 72,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.39669995932465,
+          "feature_count": 18,
+          "pixel_xy": [
+            205.8868865966797,
+            253.64047241210938
+          ],
+          "tool_moved_mm": 0.3271803372201914,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 73,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.40392925994171,
+          "feature_count": 18,
+          "pixel_xy": [
+            205.82861328125,
+            253.69696044921875
+          ],
+          "tool_moved_mm": 0.3830203099512668,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 74,
+          "phase": "align",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.405972004990258,
+          "feature_count": 18,
+          "pixel_xy": [
+            205.8194580078125,
+            253.70068359375
+          ],
+          "tool_moved_mm": 0.39312269104566117,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 75,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.0,
+          "measured_minus_true_mm": 4.404635692175605,
+          "feature_count": 18,
+          "pixel_xy": [
+            205.80941772460938,
+            253.6928253173828
+          ],
+          "tool_moved_mm": 0.3947124043540068,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 76,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.16666666666666607,
+          "measured_minus_true_mm": 4.417212869995015,
+          "feature_count": 10,
+          "pixel_xy": [
+            205.87173461914062,
+            253.69912719726562
+          ],
+          "tool_moved_mm": 0.3947124043540068,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 77,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.33333333333333365,
+          "measured_minus_true_mm": 6.071795467419696,
+          "feature_count": 10,
+          "pixel_xy": [
+            210.44393920898438,
+            250.463134765625
+          ],
+          "tool_moved_mm": 0.3947124043540068,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 78,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.4999999999999997,
+          "measured_minus_true_mm": 8.064210078524932,
+          "feature_count": 10,
+          "pixel_xy": [
+            214.49867248535156,
+            247.672607421875
+          ],
+          "tool_moved_mm": 0.3947124043540068,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 79,
+          "phase": "simulated_closure",
+          "jaw_closure_progress": 0.6666666666666673,
+          "measured_minus_true_mm": 10.295953618625198,
+          "feature_count": 12,
+          "pixel_xy": [
+            218.52455139160156,
+            244.82496643066406
+          ],
+          "tool_moved_mm": 0.3947124043540068,
+          "true_target_moved_mm": 0.0
+        },
+        {
+          "frame": 80,
+          "phase": "stopped_failure",
+          "jaw_closure_progress": 0.6666666666666673,
+          "measured_minus_true_mm": 10.292361939987023,
+          "feature_count": 18,
+          "pixel_xy": [
+            218.5196533203125,
+            244.83212280273438
+          ],
+          "tool_moved_mm": 0.3947124043540068,
+          "true_target_moved_mm": 0.0
+        }
+      ]
+    },
+    "19444_patch_occlusion": {
+      "planned-pose-gpu-r1-20260929": {
+        "stop_decision_frame": 68,
+        "frames": [
+          {
+            "frame": 64,
+            "patch_correlation": 0.9927999973297119,
+            "tracked_depth_m": 0.2015010416507721,
+            "patch_pixels_nearer_by_1cm": 0,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 65,
+            "patch_correlation": 0.9910013675689697,
+            "tracked_depth_m": 0.19843870401382446,
+            "patch_pixels_nearer_by_1cm": 0,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 66,
+            "patch_correlation": 0.9490957260131836,
+            "tracked_depth_m": 0.19530953466892242,
+            "patch_pixels_nearer_by_1cm": 1,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 67,
+            "patch_correlation": 0.3586881458759308,
+            "tracked_depth_m": 0.1916581243276596,
+            "patch_pixels_nearer_by_1cm": 31,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 68,
+            "patch_correlation": 0.3060861825942993,
+            "tracked_depth_m": 0.18836742639541626,
+            "patch_pixels_nearer_by_1cm": 31,
+            "tracker_state": "tracking_lost",
+            "tracker_reason": "appearance_changed_or_occluded"
+          }
+        ]
+      },
+      "planned-pose-gpu-r2-20260929": {
+        "stop_decision_frame": 68,
+        "frames": [
+          {
+            "frame": 64,
+            "patch_correlation": 0.9914262890815735,
+            "tracked_depth_m": 0.20267388224601746,
+            "patch_pixels_nearer_by_1cm": 0,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 65,
+            "patch_correlation": 0.9883419275283813,
+            "tracked_depth_m": 0.19971078634262085,
+            "patch_pixels_nearer_by_1cm": 0,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 66,
+            "patch_correlation": 0.9148111939430237,
+            "tracked_depth_m": 0.19679471850395203,
+            "patch_pixels_nearer_by_1cm": 4,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 67,
+            "patch_correlation": 0.4856839179992676,
+            "tracked_depth_m": 0.193839430809021,
+            "patch_pixels_nearer_by_1cm": 42,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 68,
+            "patch_correlation": 0.3424789607524872,
+            "tracked_depth_m": 0.18811902403831482,
+            "patch_pixels_nearer_by_1cm": 42,
+            "tracker_state": "tracking_lost",
+            "tracker_reason": "appearance_changed_or_occluded"
+          }
+        ]
+      },
+      "planned-pose-gpu-r3-20260929": {
+        "stop_decision_frame": 70,
+        "frames": [
+          {
+            "frame": 66,
+            "patch_correlation": 0.9886456727981567,
+            "tracked_depth_m": 0.19736933708190918,
+            "patch_pixels_nearer_by_1cm": 0,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 67,
+            "patch_correlation": 0.9304490089416504,
+            "tracked_depth_m": 0.21019470691680908,
+            "patch_pixels_nearer_by_1cm": 89,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 68,
+            "patch_correlation": 0.6106513738632202,
+            "tracked_depth_m": 0.1910264939069748,
+            "patch_pixels_nearer_by_1cm": 40,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 69,
+            "patch_correlation": 0.49298587441444397,
+            "tracked_depth_m": 0.15706081688404083,
+            "patch_pixels_nearer_by_1cm": 0,
+            "tracker_state": "tracking",
+            "tracker_reason": null
+          },
+          {
+            "frame": 70,
+            "patch_correlation": 0.0611901693046093,
+            "tracked_depth_m": 0.15706077218055725,
+            "patch_pixels_nearer_by_1cm": 0,
+            "tracker_state": "tracking_lost",
+            "tracker_reason": "appearance_changed_or_occluded"
+          }
+        ]
+      }
+    }
+  }
+}
