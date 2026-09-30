@@ -34,7 +34,7 @@ finished on September 30 and are published:
 
 ## Stretch goals
 
-- **Approach planning from sensors.** The queued experiment uses the known
+- **Approach planning from sensors.** The known-map experiment used the
   scene map, so it is an upper bound. The next step is a planner that sees the
   arm-side obstacles from its own sensors.
 - **Appearance check robust to cast shadows.** A labelled tracker variant, only
