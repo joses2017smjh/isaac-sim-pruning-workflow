@@ -210,6 +210,22 @@ Two predictions are supported, one partly and one refuted.
 [Protocol and result](docs/EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md#result--october-1-2026)
 · [verdicts](docs/evidence/render_gap_verdicts_2026-10-01.json)
 
+**Depth-aware appearance check, held-out replay (October 1).** The user
+suggested giving the tracker more inputs, so lighting would not stop it. A
+depth test was designed on the earlier recordings: when the patch's
+brightness check fails, it asks whether the surface itself stayed put. It was
+then replayed on 12 new recordings it had never seen.
+- It accepts all 6 low-sun shadow events, where the surface stayed within
+  0.07 mm of the static-world prediction.
+- Across 141 recordings it accepts no real occlusion or wrong surface: the
+  jaw, the wire and 14 mixed-surface stops are all kept.
+- The strict variant would have continued past 4 of the 6 held-out stops.
+
+All four pre-registered predictions are supported. The depth is simulator
+ground truth, and the test is offline, not a closed loop.
+[Protocol and result](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026)
+· [verdicts](docs/evidence/depth_heldout_verdicts_2026-10-01.json)
+
 **Known-map re-oriented approach (September 30).** Re-orienting the tool to a
 pose planned on the scene map let contact target 530 reach alignment with
 0 N of contact in 3 of 3 repeats, a first for any contact target. Neither

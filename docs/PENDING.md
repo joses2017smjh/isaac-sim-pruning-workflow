@@ -17,6 +17,8 @@ and results in the [roadmap](ROADMAP.md).
     by a committed scorer once the runs are graded.
 
 Finished and published: the
+[depth-aware appearance held-out replay](EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026)
+(H1–H4 supported), the
 [render-gap check](EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md#result--october-1-2026)
 (G0 and G2 supported, G1 partly, G3 refuted), the
 [jaw-shadow counterfactual](EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026)
@@ -25,13 +27,16 @@ Finished and published: the
 and the
 [known-map approach](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
 
-## Next (CPU, no approval needed)
+## Needs a decision (GPU)
 
-- **Depth-aware appearance check, held-out replay** (the user's suggestion; the
-  user chose this path): replay the strict variant plus the jaw guard on the 12
-  counterfactual recordings. Arm A has new appearance events, and arm B is a
-  negative control where it must not act. A closed-loop GPU test is proposed
-  only if this holds.
+- **Depth-aware appearance check, closed loop.** The held-out replay supports
+  [all four predictions](EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026):
+  - every shadow event is accepted;
+  - no real occlusion is accepted across 141 recordings;
+  - D_strict would have continued past 4 of 6 held-out stops.
+
+  As registered, the next step is a closed-loop GPU test of D_strict + J. It
+  needs its own protocol and the user's approval of a budget.
 
 ## Needs a decision (no GPU)
 

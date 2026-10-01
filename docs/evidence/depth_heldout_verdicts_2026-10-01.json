@@ -1,0 +1,864 @@
+{
+ "schema_version": 1,
+ "scope": "Scoring of the depth-aware appearance check's held-out offline replay (H1-H4): D_strict + J and the agreement arm replayed on the 12 jaw-shadow recordings (held out) and the 129 earlier runs (regression). Simulator depth: RTX optical-Z ground truth, noise-free, perfectly registered, exact camera motion; not a sensor. Offline replay of recorded images, not a closed loop.",
+ "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md",
+ "code_revision": "e6fcdccb428cf639a44c9f7bd7e75a867c5ae948",
+ "code_tree_dirty": false,
+ "replay_code_revision": {
+  "heldout": "ff363c952bcb01059587f1b3dbdbf243546fb6c0",
+  "regression": "ff363c952bcb01059587f1b3dbdbf243546fb6c0"
+ },
+ "replay_source_status": {
+  "heldout": "",
+  "regression": ""
+ },
+ "inputs_sha256": {
+  "heldout": {
+   "path": "docs/evidence/depth_heldout_replay_2026-10-01.json",
+   "sha256": "db16ecbe421777277c0618cef54fdb72d490d4df534ef97606139b7e65c35be6"
+  },
+  "regression": {
+   "path": "docs/evidence/depth_regression_replay_2026-10-01.json",
+   "sha256": "5371650a2e782582b34398363bdc0f0d411e602e112d8d5a014d8420c57b9a80"
+  },
+  "docs/evidence/jaw_in_view_p0_replay_2026-10-01.json": "47163fd5b90621f11e43c9e088429a5a304d6d541db00cbd5c3f6a144f4b5fff"
+ },
+ "interpretations": [
+  "arm A and arm B are read from the jaw-shadow batch names (-a- unchanged scene, -b- jaw casting no shadow)",
+  "an arm-A appearance stop is a recorded stop whose recorded tracker reason is appearance_changed_or_occluded; H1 judges the depth test's decision on the replayed event at that frame",
+  "H2 judges every accepted event of the held-out runs: the strict arm is consistent when it continues with a strict confidence >= 0.15 or stops at the confidence gate below it; a stop at another gate (depth window, calibration, world jump) neither supports nor refutes the rule and is listed",
+  "H2's agreement clause is refuted by any accepted event at which the agreement arm does not continue",
+  "H2's expectation for evening 14944 (a low-confidence stop) is reported as a clause that cannot refute",
+  "H3 and H4 count a divergence as any frame where an arm's replayed measurement differs from the recording (state, reason and pixel exactly, correlation within 1e-6), through each run's recorded stop",
+  "H4's kept stops are the 19444 r1-r3 jaw stops, every run of the wire target 12142 with a recorded stop, and every recorded stop whose depth reason is mixed_surfaces; kept means the strict arm is not tracking at the recorded stop frame",
+  "variant results count only where the base tracker reproduces the recording; a run where it does not makes its prediction unable to hold"
+ ],
+ "predictions": [
+  {
+   "id": "H1",
+   "prediction": "At each of the 6 arm-A appearance-stop frames the depth test accepts (silhouette clear, no nearer pixels beyond the limit, median within 3 mm).",
+   "clauses": [
+    {
+     "clause": "the depth test accepts at all 6 arm-A appearance stops",
+     "observed": {
+      "events": {
+       "jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline@67": {
+        "ncc": 0.06787029653787613,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.02545136120170355,
+        "agreement_confidence": 0.375,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 2.4339631125719352e-05,
+        "pixel_disagreement_px": 0.3252626965465375,
+        "strict_decision": {
+         "state": "tracking_lost",
+         "reason": "low_confidence",
+         "continues": false,
+         "accept": true,
+         "ended_by": [
+          "tracking_lost",
+          "low_confidence"
+         ]
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false
+       },
+       "jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline@67": {
+        "ncc": 0.19176079332828522,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.19176079332828522,
+        "agreement_confidence": 1.0,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 3.803495131782242e-05,
+        "pixel_disagreement_px": 0.2508551677929421,
+        "strict_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false
+       },
+       "jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline@67": {
+        "ncc": -0.04829251021146774,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.0,
+        "agreement_confidence": 0.375,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 7.20715382141468e-05,
+        "pixel_disagreement_px": 0.5303357605012184,
+        "strict_decision": {
+         "state": "tracking_lost",
+         "reason": "low_confidence",
+         "continues": false,
+         "accept": true,
+         "ended_by": [
+          "tracking_lost",
+          "low_confidence"
+         ]
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false
+       },
+       "jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline@67": {
+        "ncc": 0.2036670446395874,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.2036670446395874,
+        "agreement_confidence": 1.0,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 5.433124289189184e-05,
+        "pixel_disagreement_px": 0.25298518312121476,
+        "strict_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false
+       },
+       "jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline@75": {
+        "ncc": 0.22001424431800842,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.18858363798686434,
+        "agreement_confidence": 0.8571428571428571,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 1.7157013587620895e-09,
+        "pixel_disagreement_px": 0.04574517201953096,
+        "strict_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false
+       },
+       "jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline@75": {
+        "ncc": 0.32719478011131287,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.2648719648520152,
+        "agreement_confidence": 0.8095238095238095,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 1.1705895530678134e-08,
+        "pixel_disagreement_px": 0.05695404138000374,
+        "strict_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false
+       }
+      },
+      "rejected": [],
+      "no_event_at_stop": [],
+      "base_exact": true
+     },
+     "holds": true,
+     "refutes": false
+    }
+   ],
+   "verdict": "supported"
+  },
+  {
+   "id": "H2",
+   "prediction": "At each accepted event D_strict continues if and only if its strict confidence is at least 0.15, and the agreement arm continues at every accepted event.",
+   "clauses": [
+    {
+     "clause": "D_strict's decision agrees with its own strict confidence at every accepted event",
+     "observed": {
+      "events": {
+       "jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline@67": {
+        "ncc": 0.06787029653787613,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.02545136120170355,
+        "agreement_confidence": 0.375,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 2.4339631125719352e-05,
+        "pixel_disagreement_px": 0.3252626965465375,
+        "strict_decision": {
+         "state": "tracking_lost",
+         "reason": "low_confidence",
+         "continues": false,
+         "accept": true,
+         "ended_by": [
+          "tracking_lost",
+          "low_confidence"
+         ]
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false,
+        "strict_rule": "consistent"
+       },
+       "jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline@67": {
+        "ncc": 0.19176079332828522,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.19176079332828522,
+        "agreement_confidence": 1.0,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 3.803495131782242e-05,
+        "pixel_disagreement_px": 0.2508551677929421,
+        "strict_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false,
+        "strict_rule": "consistent"
+       },
+       "jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline@67": {
+        "ncc": -0.04829251021146774,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.0,
+        "agreement_confidence": 0.375,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 7.20715382141468e-05,
+        "pixel_disagreement_px": 0.5303357605012184,
+        "strict_decision": {
+         "state": "tracking_lost",
+         "reason": "low_confidence",
+         "continues": false,
+         "accept": true,
+         "ended_by": [
+          "tracking_lost",
+          "low_confidence"
+         ]
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false,
+        "strict_rule": "consistent"
+       },
+       "jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline@67": {
+        "ncc": 0.2036670446395874,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.2036670446395874,
+        "agreement_confidence": 1.0,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 5.433124289189184e-05,
+        "pixel_disagreement_px": 0.25298518312121476,
+        "strict_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false,
+        "strict_rule": "consistent"
+       },
+       "jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline@75": {
+        "ncc": 0.22001424431800842,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.18858363798686434,
+        "agreement_confidence": 0.8571428571428571,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 1.7157013587620895e-09,
+        "pixel_disagreement_px": 0.04574517201953096,
+        "strict_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false,
+        "strict_rule": "consistent"
+       },
+       "jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline@75": {
+        "ncc": 0.32719478011131287,
+        "accept": true,
+        "reasons": [],
+        "failed_conditions": [],
+        "not_evaluated_conditions": [],
+        "strict_confidence": 0.2648719648520152,
+        "agreement_confidence": 0.8095238095238095,
+        "verified_fraction": 1.0,
+        "n_same_surface": 169,
+        "near_fraction": 0.0,
+        "median_abs_m": 1.1705895530678134e-08,
+        "pixel_disagreement_px": 0.05695404138000374,
+        "strict_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "agreement_decision": {
+         "state": "tracking",
+         "reason": null,
+         "continues": true,
+         "accept": true,
+         "ended_by": null
+        },
+        "jaw_touches": false,
+        "strict_rule": "consistent"
+       }
+      },
+      "inconsistent": [],
+      "ended_by_another_gate": []
+     },
+     "holds": true,
+     "refutes": false
+    },
+    {
+     "clause": "the agreement arm continues at every accepted event",
+     "observed": {
+      "agreement_stops": []
+     },
+     "holds": true,
+     "refutes": false
+    },
+    {
+     "clause": "expected (cannot refute): evening 14944's accepted events end in a low-confidence stop",
+     "observed": {
+      "jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline@67": "low_confidence",
+      "jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline@67": "low_confidence"
+     },
+     "holds": true,
+     "refutes": false
+    }
+   ],
+   "verdict": "supported"
+  },
+  {
+   "id": "H3",
+   "prediction": "In all 6 arm-B runs no grey check fails, D never acts, and the replay equals the recording on every frame.",
+   "clauses": [
+    {
+     "clause": "6 of 6 arm-B runs: no grey failure and no divergence in either arm",
+     "observed": {
+      "runs": {
+       "jaw-shadow-eve-b-r1-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+        "grey_failures": [],
+        "base_exact": true,
+        "strict_divergence": [],
+        "agreement_divergence": []
+       },
+       "jaw-shadow-eve-b-r1-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+        "grey_failures": [],
+        "base_exact": true,
+        "strict_divergence": [],
+        "agreement_divergence": []
+       },
+       "jaw-shadow-eve-b-r2-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+        "grey_failures": [],
+        "base_exact": true,
+        "strict_divergence": [],
+        "agreement_divergence": []
+       },
+       "jaw-shadow-eve-b-r2-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+        "grey_failures": [],
+        "base_exact": true,
+        "strict_divergence": [],
+        "agreement_divergence": []
+       },
+       "jaw-shadow-mor-b-r1-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+        "grey_failures": [],
+        "base_exact": true,
+        "strict_divergence": [],
+        "agreement_divergence": []
+       },
+       "jaw-shadow-mor-b-r2-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+        "grey_failures": [],
+        "base_exact": true,
+        "strict_divergence": [],
+        "agreement_divergence": []
+       }
+      },
+      "diverged": []
+     },
+     "holds": true,
+     "refutes": false
+    }
+   ],
+   "verdict": "supported"
+  },
+  {
+   "id": "H4",
+   "prediction": "On the 129 earlier runs D_strict + J diverges from the recording only at the earlier low-sun appearance events, and every real occlusion or wrong-surface stop is kept.",
+   "clauses": [
+    {
+     "clause": "the 129 registered runs replayed, the base exact on each",
+     "observed": {
+      "runs": 129,
+      "equal_to_p0_inventory": true,
+      "errors": [],
+      "base_not_exact": []
+     },
+     "holds": true,
+     "refutes": false
+    },
+    {
+     "clause": "D_strict diverges only at the earlier low-sun events",
+     "observed": {
+      "low_sun_divergences": {
+       "tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline@67": "low_confidence",
+       "tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline@67": null,
+       "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline@75": null
+      },
+      "other_divergences": []
+     },
+     "holds": true,
+     "refutes": false
+    },
+    {
+     "clause": "every jaw, wire and mixed-surfaces stop is kept",
+     "observed": {
+      "stops": {
+       "perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount@54": {
+        "frame": 54,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "perc-both-tree0-20260926/run_06_source_tree0_v12142_similarity_mount@30": {
+        "frame": 30,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "world_target_jump_or_wrong_surface",
+        "depth_reason": null,
+        "strict_state_at_stop": "tracking_lost"
+       },
+       "perc-similarity-tree0-20260926/run_03_source_tree0_v8353_similarity_tracker@1": {
+        "frame": 1,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "perc-similarity-tree0-20260926/run_06_source_tree0_v12142_similarity_tracker@30": {
+        "frame": 30,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "world_target_jump_or_wrong_surface",
+        "depth_reason": null,
+        "strict_state_at_stop": "tracking_lost"
+       },
+       "planned-pose-gpu-r1-20260929/run_01_source_tree1_v19444_planned_pose@68": {
+        "frame": 68,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "depth_reason": null,
+        "strict_state_at_stop": "tracking_lost"
+       },
+       "planned-pose-gpu-r2-20260929/run_01_source_tree1_v19444_planned_pose@68": {
+        "frame": 68,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "depth_reason": null,
+        "strict_state_at_stop": "tracking_lost"
+       },
+       "planned-pose-gpu-r3-20260929/run_01_source_tree1_v19444_planned_pose@70": {
+        "frame": 70,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "depth_reason": null,
+        "strict_state_at_stop": "tracking_lost"
+       },
+       "strategy-fine-step-20260923/run_01_source_tree0_v590_fine_step@41": {
+        "frame": 41,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "strategy-fine-step-20260923/run_03_source_tree0_v8353_fine_step@6": {
+        "frame": 6,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "strategy-fine-step-20260923/run_06_source_tree0_v12142_fine_step@59": {
+        "frame": 59,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "strategy-horizontal-20260923/run_01_source_tree0_v590_horizontal_standoff@16": {
+        "frame": 16,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "strategy-horizontal-20260923/run_03_source_tree0_v8353_horizontal_standoff@0": {
+        "frame": 0,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "strategy-horizontal-20260923/run_06_source_tree0_v12142_horizontal_standoff@30": {
+        "frame": 30,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "world_target_jump_or_wrong_surface",
+        "depth_reason": null,
+        "strict_state_at_stop": "tracking_lost"
+       },
+       "strategy-tool-axis-20260923/run_01_source_tree0_v590_tool_axis_standoff@20": {
+        "frame": 20,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "strategy-tool-axis-20260923/run_03_source_tree0_v8353_tool_axis_standoff@2": {
+        "frame": 2,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "strategy-tool-axis-20260923/run_06_source_tree0_v12142_tool_axis_standoff@29": {
+        "frame": 29,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "depth_reason": null,
+        "strict_state_at_stop": "tracking_lost"
+       },
+       "targets-morning-20260923/run_01_morning_tree0_v590@12": {
+        "frame": 12,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "targets-morning-20260923/run_03_morning_tree0_v8353@1": {
+        "frame": 1,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "targets-source-20260923/run_01_source_tree0_v590@24": {
+        "frame": 24,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "targets-source-20260923/run_03_source_tree0_v8353@1": {
+        "frame": 1,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "tree1-seeded30-20260926/run_23_source_tree1_v30283_baseline@43": {
+        "frame": 43,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       },
+       "tree1-seeded30-20260926/run_25_source_tree1_v32536_baseline@5": {
+        "frame": 5,
+        "stop_reason": "vision_invalid",
+        "tracker_reason": "depth_measurement_rejected",
+        "depth_reason": "mixed_surfaces",
+        "strict_state_at_stop": "invalid_depth"
+       }
+      },
+      "continued": [],
+      "jaw_stops_missing": []
+     },
+     "holds": true,
+     "refutes": false
+    }
+   ],
+   "verdict": "supported"
+  }
+ ],
+ "agreement_arm_regression_divergences": {
+  "tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline": [
+   67
+  ],
+  "tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline": [
+   67
+  ],
+  "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline": [
+   75
+  ]
+ },
+ "heldout_runs": {
+  "jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline": {
+   "arm": "A",
+   "recorded_stop": {
+    "frame": 67,
+    "stop_reason": "vision_invalid",
+    "tracker_reason": "appearance_changed_or_occluded",
+    "depth_reason": null
+   },
+   "grey_failures": [
+    67
+   ],
+   "base_exact": true
+  },
+  "jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline": {
+   "arm": "A",
+   "recorded_stop": {
+    "frame": 67,
+    "stop_reason": "vision_invalid",
+    "tracker_reason": "appearance_changed_or_occluded",
+    "depth_reason": null
+   },
+   "grey_failures": [
+    67
+   ],
+   "base_exact": true
+  },
+  "jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline": {
+   "arm": "A",
+   "recorded_stop": {
+    "frame": 67,
+    "stop_reason": "vision_invalid",
+    "tracker_reason": "appearance_changed_or_occluded",
+    "depth_reason": null
+   },
+   "grey_failures": [
+    67
+   ],
+   "base_exact": true
+  },
+  "jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline": {
+   "arm": "A",
+   "recorded_stop": {
+    "frame": 67,
+    "stop_reason": "vision_invalid",
+    "tracker_reason": "appearance_changed_or_occluded",
+    "depth_reason": null
+   },
+   "grey_failures": [
+    67
+   ],
+   "base_exact": true
+  },
+  "jaw-shadow-eve-b-r1-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+   "arm": "B",
+   "recorded_stop": {
+    "frame": null,
+    "stop_reason": null,
+    "tracker_reason": null,
+    "depth_reason": null
+   },
+   "grey_failures": [],
+   "base_exact": true
+  },
+  "jaw-shadow-eve-b-r1-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+   "arm": "B",
+   "recorded_stop": {
+    "frame": null,
+    "stop_reason": null,
+    "tracker_reason": null,
+    "depth_reason": null
+   },
+   "grey_failures": [],
+   "base_exact": true
+  },
+  "jaw-shadow-eve-b-r2-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+   "arm": "B",
+   "recorded_stop": {
+    "frame": null,
+    "stop_reason": null,
+    "tracker_reason": null,
+    "depth_reason": null
+   },
+   "grey_failures": [],
+   "base_exact": true
+  },
+  "jaw-shadow-eve-b-r2-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+   "arm": "B",
+   "recorded_stop": {
+    "frame": null,
+    "stop_reason": null,
+    "tracker_reason": null,
+    "depth_reason": null
+   },
+   "grey_failures": [],
+   "base_exact": true
+  },
+  "jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline": {
+   "arm": "A",
+   "recorded_stop": {
+    "frame": 75,
+    "stop_reason": "vision_invalid",
+    "tracker_reason": "appearance_changed_or_occluded",
+    "depth_reason": null
+   },
+   "grey_failures": [
+    75
+   ],
+   "base_exact": true
+  },
+  "jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline": {
+   "arm": "A",
+   "recorded_stop": {
+    "frame": 75,
+    "stop_reason": "vision_invalid",
+    "tracker_reason": "appearance_changed_or_occluded",
+    "depth_reason": null
+   },
+   "grey_failures": [
+    75
+   ],
+   "base_exact": true
+  },
+  "jaw-shadow-mor-b-r1-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+   "arm": "B",
+   "recorded_stop": {
+    "frame": null,
+    "stop_reason": null,
+    "tracker_reason": null,
+    "depth_reason": null
+   },
+   "grey_failures": [],
+   "base_exact": true
+  },
+  "jaw-shadow-mor-b-r2-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+   "arm": "B",
+   "recorded_stop": {
+    "frame": null,
+    "stop_reason": null,
+    "tracker_reason": null,
+    "depth_reason": null
+   },
+   "grey_failures": [],
+   "base_exact": true
+  }
+ }
+}

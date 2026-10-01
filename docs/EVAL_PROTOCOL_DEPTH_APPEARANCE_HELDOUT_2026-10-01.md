@@ -125,3 +125,54 @@ its output.
   recordings. The regression set is exactly the 129 earlier runs, excluding
   `jaw-shadow-*` and `jaw-hold-*`. A run still recording, or one recorded with
   the jaw arms, is never replayed.
+
+## Result — October 1, 2026
+
+All four predictions are supported. Evidence:
+[verdicts](evidence/depth_heldout_verdicts_2026-10-01.json), with the
+[held-out replay](evidence/depth_heldout_replay_2026-10-01.json) and the
+[regression replay](evidence/depth_regression_replay_2026-10-01.json). The
+replays ran at `ff363c9` (CPU job `21502037`), and the scorer was committed
+at `e6fcdcc` before any held-out output existed. The base tracker reproduces
+all 12 held-out and all 129 regression recordings exactly.
+
+| Arm-A appearance stop | Depth test | Median \|Δ\| | Nearer >10 mm | Pixel vs static | Strict confidence | D_strict | Agreement arm |
+|---|---|---|---|---|---|---|---|
+| Evening 14944 r1 @67 | accept | 0.02 mm | 0% | 0.33 px | 0.025 | stops (low confidence) | continues |
+| Evening 14944 r2 @67 | accept | 0.07 mm | 0% | 0.53 px | 0.000 | stops (low confidence) | continues |
+| Evening 15004 r1 @67 | accept | 0.04 mm | 0% | 0.25 px | 0.192 | continues | continues |
+| Evening 15004 r2 @67 | accept | 0.05 mm | 0% | 0.25 px | 0.204 | continues | continues |
+| Morning 15004 r1 @75 | accept | 0.00 mm | 0% | 0.05 px | 0.189 | continues | continues |
+| Morning 15004 r2 @75 | accept | 0.00 mm | 0% | 0.06 px | 0.265 | continues | continues |
+
+- **H1 (supported).** The depth test accepts all 6 shadow events. The jaw
+  silhouette is clear in each.
+- **H2 (supported).** D_strict's decision agrees with its own confidence at
+  all 6 accepted events. Evening 14944 stops on low confidence, as expected.
+  The agreement arm continues at all 6.
+- **H3 (supported).** In all 6 arm-B runs no grey check fails, and both arms
+  equal the recording on every frame.
+- **H4 (supported).** On the 129 earlier runs, D_strict diverges only at the
+  three earlier low-sun events. It keeps all 22 real stops:
+  - 19444 r1–r3 (the jaw);
+  - 5 stops on the wire target 12142;
+  - 14 `mixed_surfaces` stops.
+
+**What this settles.** On recordings that played no part in setting its
+thresholds, the depth test classifies every low-sun shadow event as a change of
+brightness on an unchanged surface. Across 141 recordings it falsely accepts
+no real occlusion or wrong-surface stop. With the raw NCC kept in the
+confidence, D_strict would have continued past 4 of the 6 stops; the
+agreement arm would have continued past all 6. As registered, the next step is
+a closed-loop GPU test of D_strict + J. It needs its own protocol and the
+user's approval of a budget.
+
+**Limits.**
+- **Not a closed loop.** Each result shows that the stop would not have
+  happened at that frame, not what the robot does next.
+- **Perfect depth.** Simulator optical-Z: no sensor noise, pose error or time
+  sync.
+- **Held out in recordings, not in scene.** The 12 recordings are new, but they
+  are the same two targets and the same two low suns as the events that set
+  the thresholds.
+- **Same-depth occluders remain untested.**

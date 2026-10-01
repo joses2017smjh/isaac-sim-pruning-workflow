@@ -627,6 +627,12 @@ killer had also taken VS Code processes.
 | `21502003` | Preview of the hardened checker, after its adversarial review (not evidence) | All four checks passed |
 | `21502011` | Hardened checker `f16c8ca` on the same replays | **P0 passed**: [recheck evidence](docs/evidence/jaw_in_view_p0_replay_recheck_2026-10-01.json) |
 
+### Depth-aware appearance check, held-out replay (CPU, October 1)
+
+| Job | What | Outcome |
+|---|---|---|
+| `21502037` | `--regression` (129 runs) and `--heldout` (12 runs), from a shared clone at `ff363c9` | COMPLETED in 3 min on `cn-b05`; base exact on 141 of 141. [H1–H4 supported](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026) |
+
 ### Jaw in the camera's view (submitted October 1)
 
 The user approved 270 GPU-minutes on September 30. On October 1, after the gate
