@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "scope": "Closed-loop test of the depth-aware appearance check D_strict + J (docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md). Results of this arm change the 0.35 appearance gate's rule and are never pooled with unchanged-gate runs. Control: tree0 spur 12142 with the tool-axis standoff approach, whose recorded run stops on the appearance check when a wire crosses the patch (the depth test must keep that stop).",
+  "selection_rule": "Entry copied unchanged from the tree0 register.",
+  "seed": null,
+  "derived_from": [
+    {
+      "path": "docs/evidence/eval_targets_tree0_2026-09-23.json",
+      "sha256": "3d34ec70c040d6ffa1f441b9e423657de60f29628e59d5422f1d9f4838ba6b02"
+    }
+  ],
+  "target_count": 1,
+  "targets": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 12142,
+      "max_radius_m": 0.006665057202559772,
+      "length_m": 0.04969327470769758,
+      "axis": [
+        0.7985094508135132,
+        -0.5633866256818327,
+        -0.2120805671539482
+      ],
+      "source_center_m": [
+        -0.4070728810156806,
+        0.38210571529074994,
+        1.3653335141494891
+      ]
+    }
+  ]
+}

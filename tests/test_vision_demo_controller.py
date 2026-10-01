@@ -754,3 +754,50 @@ def test_real_tracker_mask_and_hold_on_a_synthetic_closure(closure_hold):
     else:
         assert phases[-1] == "stopped" and evidence["cut"]["stopped_reason"] == "vision_invalid"
         assert len(states) == first_occluded + 1
+
+
+class DepthRecordingTracker(StubTracker):
+    """Records the jaw boxes each update received; refuses the self-mask, as the registered variant does."""
+
+    def __init__(self, responses, config):
+        super().__init__(responses, config)
+        self.boxes = []
+
+    def update(self, rgb, depth, matrix, transform, exclusion_mask=None, *, jaw_boxes=None):
+        assert exclusion_mask is None
+        self.boxes.append(jaw_boxes)
+        return self.responses.popleft()
+
+
+def test_depth_appearance_runs_the_strict_depth_tracker_alone_with_the_rendered_jaw():
+    from isaaclab_pruning.perception.depth_appearance import DepthAppearanceTracker, frame_jaw_boxes
+    from isaaclab_pruning.perception.visual_servo import VisualServoTracker
+
+    plain = VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE)
+    assert type(plain.tracker) is VisualServoTracker and plain.depth_appearance is False
+    real = VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, depth_appearance=True)
+    assert type(real.tracker) is DepthAppearanceTracker and real.tracker.arm == "strict"
+    assert real.tracker.config == plain.tracker.config
+    for other in ({"jaw_self_mask": True}, {"closure_hold": True}):
+        with pytest.raises(ValueError, match="depth_appearance"):
+            VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, depth_appearance=True, **other)
+    with pytest.raises(ValueError, match="bool"):
+        VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, depth_appearance=1)
+
+    controller = VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, depth_appearance=True)
+    controller.tracker = DepthRecordingTracker([tracking(MOUTH)] * 8, controller.tracker.config)
+    progresses = []
+    for time_s in (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7):
+        rendered = controller.cut_step.closure_progress if controller.cut_step else 0.0
+        evidence = observe_frame(controller, time_s)
+        boxes, expected = controller.tracker.boxes[-1], frame_jaw_boxes(POSE, 0.0, rendered, 0.004)
+        assert len(boxes) == len(expected) == 2
+        for (centre, rotation, half), (centre_e, rotation_e, half_e) in zip(boxes, expected, strict=True):
+            np.testing.assert_array_equal(centre, centre_e)
+            np.testing.assert_array_equal(rotation, rotation_e)
+            np.testing.assert_array_equal(half, half_e)
+        assert evidence["depth_appearance"] == {"closure_progress_used": rendered, "jaw_boxes_known": True}
+        assert "jaw_self_mask" not in evidence and "closure_hold" not in evidence
+        json.dumps(evidence, allow_nan=False)
+        progresses.append(rendered)
+    assert progresses[:5] == [0.0] * 5 and progresses[5] > 0

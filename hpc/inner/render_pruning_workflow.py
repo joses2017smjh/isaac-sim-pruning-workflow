@@ -156,6 +156,7 @@ def _json_safe(value):
 def main() -> int:  # noqa: C901 - the simulator is imported only after AppLauncher.
     from dataclasses import asdict
 
+    from isaaclab_pruning.perception.depth_appearance import SIMULATOR_DEPTH_LABEL, registered_depth_appearance
     from isaaclab_pruning.perception.jaw_self_mask import (
         CLOSURE_HOLD_EXPLAINED_BRANCHES,
         MODEL_LABEL,
@@ -188,6 +189,12 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         raise ValueError("PRUNING_CLOSURE_HOLD must be 0 or 1")
     if not blender_mode and "1" in (jaw_self_mask, closure_hold):
         raise ValueError("PRUNING_JAW_SELF_MASK and PRUNING_CLOSURE_HOLD need PRUNING_RENDER_MODE=blender_vision")
+    # Labelled arm, default off: D_strict + J in front of the tracker's appearance gate (a gate-rule change).
+    depth_appearance = os.environ.get("PRUNING_DEPTH_APPEARANCE", "0")
+    if depth_appearance not in ("0", "1"):
+        raise ValueError("PRUNING_DEPTH_APPEARANCE must be 0 or 1")
+    if depth_appearance == "1" and (not blender_mode or "1" in (jaw_self_mask, closure_hold)):
+        raise ValueError("PRUNING_DEPTH_APPEARANCE needs blender_vision and runs without the jaw self-mask or hold")
     planned_quat = os.environ.get("PRUNING_PLANNED_TOOL_QUAT")
     approach = ApproachStrategy(
         mode=os.environ.get("PRUNING_APPROACH_MODE", "straight"),
@@ -275,6 +282,13 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             "pose_and_camera_source": "the tool pose and rendering camera passed to observe for that frame",
             "pixel_convention": "pixel index (u, v) has its centre at continuous (u + 0.5, v + 0.5); corners_px use it",
             "scope": "Robot self-model, never evidence; simulator-exact, so a real jaw needs a re-measured margin",
+        }
+        report["depth_appearance"] = {
+            "enabled": depth_appearance == "1",
+            "constants": registered_depth_appearance(),
+            "label": SIMULATOR_DEPTH_LABEL,
+            "jaw_silhouette_source": "the jaw self-mask's model: rendered tool pose and progress, roll, scene radius",
+            "scope": "Changes the 0.35 appearance gate's rule; results are never pooled with unchanged-gate runs",
         }
         report["closure_hold"] = {
             "enabled": closure_hold == "1",
@@ -685,6 +699,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 motion_model=motion_model,
                 jaw_self_mask=jaw_self_mask == "1",
                 closure_hold=closure_hold == "1",
+                depth_appearance=depth_appearance == "1",
             )
             report["tracker_config"] = demo.evidence()["tracker_config"]
             report["blender_scene"] = env.blender_scene.evidence

@@ -46,8 +46,9 @@ from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy, Vision
 from isaaclab_pruning.task.simulated_cut import tool_mouth_geometry
 
 VISION_ROBUSTNESS = ROOT / "artifacts/vision_robustness"
-#: Batches still being recorded when this tool was written; --all leaves them out.
-EXCLUDED_BATCH_PREFIXES = ("jaw-shadow-",)
+#: Batches recorded after the jaw-in-view study (with other scenes or with the labelled arms on); --all leaves
+#: them out, so --all is always the 129 earlier runs.
+EXCLUDED_BATCH_PREFIXES = ("jaw-shadow-", "jaw-hold-", "depth-loop-")
 CORRELATION_TOLERANCE = 1e-6
 #: Commands within 1 um of the recorded one count as the recorded command. The replay rebuilds the preview
 #: camera pose from the initial tool pose, which moves the frozen standoff point, and so every planned step, by
@@ -55,6 +56,7 @@ CORRELATION_TOLERANCE = 1e-6
 COMMAND_TOLERANCE_MM = 1e-3
 HAZARD_CONTACT_N = 5.0
 SOURCE_FILES = (
+    "source/isaaclab_pruning/isaaclab_pruning/perception/depth_appearance.py",
     "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py",
     "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py",
     "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py",
@@ -131,7 +133,7 @@ def genuine_external_stops(report, frames):
     return stops
 
 
-def build_demo(report, jaw_self_mask, closure_hold):
+def build_demo(report, jaw_self_mask, closure_hold, depth_appearance=False):
     """The controller exactly as the runner constructed it, plus the requested arms."""
     target = report["blender_scene"]["target"]
     initial = report["initial_live_vision"]
@@ -148,6 +150,7 @@ def build_demo(report, jaw_self_mask, closure_hold):
         motion_model=tracker_config.get("motion_model", "translation"),
         jaw_self_mask=jaw_self_mask,
         closure_hold=closure_hold,
+        depth_appearance=depth_appearance,
     )
 
 
@@ -238,6 +241,7 @@ def _frame_row(index, time_s, evidence, recorded_frame, rendered_progress, comma
         "waived_checks": list(certificate.get("waived_checks") or []),
         "closure_hold": evidence.get("closure_hold"),
         "cut_without_hold": evidence.get("cut_without_hold"),
+        "depth_appearance": measurement.get("depth_appearance"),
         "jaw_mask_pixel_count": None if jaw is None else jaw["mask_pixel_count"],
         "closure_progress_used": rendered_progress,
         "recorded_closure_progress": recorded_progress,
@@ -286,7 +290,7 @@ def _comparison(rows):
     }
 
 
-def replay_run(path, *, jaw_self_mask=False, closure_hold=False):
+def replay_run(path, *, jaw_self_mask=False, closure_hold=False, depth_appearance=False):
     """Replay one recorded run; returns the per-run summary with its per-frame rows."""
     path = Path(path)
     report = json.loads((path / "report.json").read_text())
@@ -297,7 +301,7 @@ def replay_run(path, *, jaw_self_mask=False, closure_hold=False):
     camera_matrix = np.asarray(report["camera"]["wrist_intrinsics"], dtype=float)
     initial_pose = np.asarray(report["initial_tool_pose_wxyz"][0], dtype=float)
     stops = genuine_external_stops(report, frames)
-    demo = build_demo(report, jaw_self_mask, closure_hold)
+    demo = build_demo(report, jaw_self_mask, closure_hold, depth_appearance)
 
     # Seed and preview, in the runner's order: visibility stop, initialize, preview observe at t = 0.
     preview_rgb = _rgb(path / "preview_wrist.png")
@@ -411,7 +415,7 @@ def replay_run(path, *, jaw_self_mask=False, closure_hold=False):
         "run": f"{path.parent.name}/{path.name}",
         "path": str(path),
         "frames": len(frames),
-        "flags": {"jaw_self_mask": jaw_self_mask, "closure_hold": closure_hold},
+        "flags": {"jaw_self_mask": jaw_self_mask, "closure_hold": closure_hold, "depth_appearance": depth_appearance},
         "tracker_config_matches_recording": tracker_config_matches(demo, report),
         "external_stops_injected": {str(key): value for key, value in sorted(stops.items())},
         "contact_force_missing_frames": missing_contact,
@@ -448,6 +452,9 @@ def replay_run(path, *, jaw_self_mask=False, closure_hold=False):
             "matches_recording": preview_matches,
             "state": preview["measurement"].get("state"),
             "reason": preview["measurement"].get("reason"),
+            "pixel_xy": preview["measurement"].get("pixel_xy"),
+            "patch_correlation": preview["measurement"].get("patch_correlation"),
+            "depth_appearance": preview["measurement"].get("depth_appearance"),
             "cut_phase": (preview["cut"] or {}).get("phase"),
             "jaw_mask_pixel_count": (preview.get("jaw_self_mask") or {}).get("mask_pixel_count"),
         },
@@ -491,6 +498,7 @@ def main(argv=None):
     parser.add_argument("--output", type=Path, required=True, help="New JSON file outside the repository")
     parser.add_argument("--jaw-self-mask", action="store_true", help="Enable the jaw self-mask arm")
     parser.add_argument("--closure-hold", action="store_true", help="Enable the closure-hold arm")
+    parser.add_argument("--depth-appearance", action="store_true", help="Enable the D_strict + J arm")
     args = parser.parse_args(argv)
     refusal = output_refusal(args.output)
     if refusal:
@@ -502,7 +510,12 @@ def main(argv=None):
     results = []
     for path in runs:
         try:
-            result = replay_run(path, jaw_self_mask=args.jaw_self_mask, closure_hold=args.closure_hold)
+            result = replay_run(
+                path,
+                jaw_self_mask=args.jaw_self_mask,
+                closure_hold=args.closure_hold,
+                depth_appearance=args.depth_appearance,
+            )
         except Exception as error:  # noqa: BLE001 - a failed replay is recorded, never dropped
             result = {"run": f"{Path(path).parent.name}/{Path(path).name}", "path": str(path), "error": repr(error)}
         results.append(result)
@@ -525,7 +538,11 @@ def main(argv=None):
     document = {
         "schema_version": 1,
         "tool": "tools/replay_jaw_self_mask.py",
-        "flags": {"jaw_self_mask": args.jaw_self_mask, "closure_hold": args.closure_hold},
+        "flags": {
+            "jaw_self_mask": args.jaw_self_mask,
+            "closure_hold": args.closure_hold,
+            "depth_appearance": args.depth_appearance,
+        },
         **_provenance(),
         "criterion": (
             "Through each run's recorded stop (the first frame whose recorded cut phase is 'stopped'; every frame "

@@ -170,13 +170,45 @@ STRATEGIES = {
         "closure_hold": True,
         "frames": 200,
     },
+    # The depth-aware appearance check D_strict + J (perception/depth_appearance.py) on three existing approaches.
+    # It changes the 0.35 appearance gate's rule, so its results are never pooled with unchanged-gate runs. The
+    # jaw keeps casting its shadow; nothing else changes.
+    "baseline_depth_appearance": {
+        "name": "baseline_depth_appearance",
+        "mode": "straight",
+        "standoff_m": 0.0,
+        "max_step_m": 0.004,
+        "depth_appearance": True,
+        "frames": 200,
+    },
+    "planned_pose_depth_appearance": {
+        "name": "planned_pose_depth_appearance",
+        "mode": "planned_pose_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "max_rotation_deg": 1.5,
+        "depth_appearance": True,
+        "frames": 200,
+    },
+    "tool_axis_standoff_depth_appearance": {
+        "name": "tool_axis_standoff_depth_appearance",
+        "mode": "tool_axis_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "depth_appearance": True,
+        "frames": 200,
+    },
 }
 
 #: The protocol that registered a strategy, where it is not the September 23 strategies protocol.
+DEPTH_LOOP_PROTOCOL = "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md"
 STRATEGY_PROTOCOLS = {
     "planned_pose": "docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md",
     "jaw_no_shadow": "docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md",
     "planned_pose_jaw_hold": "docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md",
+    "baseline_depth_appearance": DEPTH_LOOP_PROTOCOL,
+    "planned_pose_depth_appearance": DEPTH_LOOP_PROTOCOL,
+    "tool_axis_standoff_depth_appearance": DEPTH_LOOP_PROTOCOL,
 }
 
 #: Keys a strategy row may carry and their baseline values; a row that omits

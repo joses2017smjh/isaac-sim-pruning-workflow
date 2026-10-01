@@ -579,3 +579,89 @@ def test_jaw_hold_per_batch_registers_split_the_planned_pose_register(scripts):
         ]
         seen.append(partner)
     assert sorted(seen) == [14944, 15004, 19444]
+
+
+DEPTH_STRATEGIES = {
+    "baseline_depth_appearance": "straight",
+    "planned_pose_depth_appearance": "planned_pose_standoff",
+    "tool_axis_standoff_depth_appearance": "tool_axis_standoff",
+}
+
+
+def _depth_report(block, mode="straight", standoff=0.0):
+    report = {
+        "photometric_normalization": "raw",
+        "frame_count": 200,
+        "approach_strategy": {"mode": mode, "standoff_m": standoff, "max_step_m": 0.004},
+        "blender_scene": {"daylight": {"preset": "evening"}, "target": {"id": "tree1_SPUR_component_14944"}},
+    }
+    if block is not None:
+        report["depth_appearance"] = block
+    return json.loads(json.dumps(report))
+
+
+def test_depth_strategies_forward_only_their_flag_and_the_capture_must_show_the_registered_constants(tmp_path, scripts):
+    from isaaclab_pruning.perception.depth_appearance import registered_depth_appearance
+
+    launcher, run = scripts
+    targets = [{"target_tree_index": 1, "component_first_vertex": 14944, "planned_final_tool_quat_wxyz": None}]
+    for name, mode in DEPTH_STRATEGIES.items():
+        assert launcher.STRATEGY_PROTOCOLS[name] == "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md"
+        plan = launcher.experiment_plan(targets, "evening", "raw", name)
+        row = plan["runs"][0]
+        assert row["strategy"]["depth_appearance"] is True and row["strategy"]["mode"] == mode
+        assert "jaw_casts_shadow" not in row["strategy"]
+        env = run.run_environment(plan, row, tmp_path, tmp_path / "out", {"PRUNING_DEPTH_APPEARANCE": "0"})
+        assert env["PRUNING_DEPTH_APPEARANCE"] == "1"
+        assert not {"PRUNING_JAW_SELF_MASK", "PRUNING_CLOSURE_HOLD", "PRUNING_JAW_CASTS_SHADOW"} & set(env)
+        assert run.run_label(0, row) == f"run_00_evening_tree1_v14944_{name}"
+    for name in launcher.STRATEGIES:
+        if name not in DEPTH_STRATEGIES:
+            other = launcher.experiment_plan(targets, "evening", "raw", name)
+            assert "PRUNING_DEPTH_APPEARANCE" not in run.run_environment(
+                other, other["runs"][0], tmp_path, tmp_path, {}
+            )
+
+    plan = launcher.experiment_plan(targets, "evening", "raw", "baseline_depth_appearance")
+    row = plan["runs"][0]
+    good = {"enabled": True, "constants": registered_depth_appearance()}
+    assert run.configuration_matches(_depth_report(good), row, plan)
+    for bad in (
+        None,
+        {**good, "enabled": False},
+        {**good, "enabled": "true"},
+        {**good, "constants": {**registered_depth_appearance(), "max_near_fraction": 0.1}},
+    ):
+        assert not run.configuration_matches(_depth_report(bad), row, plan)
+    baseline = launcher.experiment_plan(targets, "evening", "raw", "baseline")
+    assert run.configuration_matches(_depth_report(None), baseline["runs"][0], baseline)
+    assert run.configuration_matches(_depth_report({**good, "enabled": False}), baseline["runs"][0], baseline)
+    assert not run.configuration_matches(_depth_report(good), baseline["runs"][0], baseline)
+
+
+def test_depth_loop_registers_copy_their_sources_unchanged(scripts):
+    launcher, _ = scripts
+    evidence = Path(__file__).resolve().parents[1] / "docs/evidence"
+    expected = {
+        "tree1": ("eval_targets_tree1_listed_2026-09-23.json", [14944, 15004], "baseline_depth_appearance"),
+        "15004": ("eval_targets_tree1_listed_2026-09-23.json", [15004], "baseline_depth_appearance"),
+        "19444": ("eval_targets_planned_pose_2026-09-27.json", [19444], "planned_pose_depth_appearance"),
+        "12142": ("eval_targets_tree0_2026-09-23.json", [12142], "tool_axis_standoff_depth_appearance"),
+    }
+    for name, (source, vertices, strategy) in expected.items():
+        path = evidence / f"eval_targets_depth_loop_{name}_2026-10-01.json"
+        targets, _ = launcher.load_targets(path)
+        by_vertex = {t["component_first_vertex"]: t for t in json.loads((evidence / source).read_text())["targets"]}
+        assert [t["component_first_vertex"] for t in targets] == vertices
+        assert all(t == by_vertex[t["component_first_vertex"]] for t in targets)
+        derived = json.loads(path.read_text())["derived_from"][0]
+        assert derived["sha256"] == hashlib.sha256((evidence / source).read_bytes()).hexdigest()
+        plan = launcher.experiment_plan(targets, "source", "raw", strategy)
+        assert all(r["strategy"]["depth_appearance"] is True for r in plan["runs"])
+    planned = launcher.experiment_plan(
+        launcher.load_targets(evidence / "eval_targets_depth_loop_19444_2026-10-01.json")[0],
+        "source",
+        "raw",
+        "planned_pose_depth_appearance",
+    )
+    assert planned["runs"][0]["strategy"]["planned_tool_quat_wxyz"] is not None

@@ -382,3 +382,62 @@ def test_renderer_reports_both_arms_with_the_registered_constants(flags):
     assert hold["waived_checks"] == list(CLOSURE_HOLD_WAIVED_CHECKS) and len(hold["explained_branches"]) == 3
     assert "cut-gate change" in hold["label"] and "vision_source=closure_hold" in hold["label"]
     json.dumps(namespace["report"], allow_nan=False)
+
+
+def test_renderer_reads_the_depth_flag_strictly_and_refuses_it_with_the_jaw_arms():
+    body = _main_body()
+    start = next(
+        index
+        for index, node in enumerate(body)
+        if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "depth_appearance" for t in node.targets)
+    )
+    nodes = body[start : start + 3]
+    assert [type(node).__name__ for node in nodes] == ["Assign", "If", "If"]
+
+    def read(environ, blender_mode=True, jaw=("0", "0")):
+        namespace = {
+            "os": SimpleNamespace(environ=environ),
+            "blender_mode": blender_mode,
+            "jaw_self_mask": jaw[0],
+            "closure_hold": jaw[1],
+        }
+        _execute_capture_nodes(nodes, namespace)
+        return namespace["depth_appearance"]
+
+    assert read({}) == "0" and read({}, blender_mode=False) == "0"
+    assert read({"PRUNING_DEPTH_APPEARANCE": "1"}) == "1"
+    for bad in ({"PRUNING_DEPTH_APPEARANCE": "true"}, {"PRUNING_DEPTH_APPEARANCE": ""}):
+        with pytest.raises(ValueError):
+            read(bad)
+    with pytest.raises(ValueError, match="blender_vision"):
+        read({"PRUNING_DEPTH_APPEARANCE": "1"}, blender_mode=False)
+    for jaw in (("1", "0"), ("0", "1")):
+        with pytest.raises(ValueError):
+            read({"PRUNING_DEPTH_APPEARANCE": "1"}, jaw=jaw)
+    calls = [node for node in ast.walk(ast.parse(inspect.getsource(_runner().main))) if isinstance(node, ast.Call)]
+    demo_call = next(call for call in calls if getattr(call.func, "id", None) == "VisionPruningDemo")
+    keywords = {keyword.arg: ast.unparse(keyword.value) for keyword in demo_call.keywords}
+    assert keywords["depth_appearance"] == "depth_appearance == '1'"
+
+
+@pytest.mark.parametrize("flag", ["0", "1"])
+def test_renderer_reports_the_depth_arm_with_its_registered_constants(flag):
+    from isaaclab_pruning.perception import depth_appearance as da
+
+    blocks = [
+        node
+        for node in ast.walk(ast.parse(inspect.getsource(_runner().main)))
+        if isinstance(node, ast.Assign) and any(ast.unparse(t) == "report['depth_appearance']" for t in node.targets)
+    ]
+    assert len(blocks) == 1
+    namespace = {
+        "report": {},
+        "depth_appearance": flag,
+        "registered_depth_appearance": da.registered_depth_appearance,
+        "SIMULATOR_DEPTH_LABEL": da.SIMULATOR_DEPTH_LABEL,
+    }
+    _execute_capture_nodes(blocks, namespace)
+    block = namespace["report"]["depth_appearance"]
+    assert block["enabled"] is (flag == "1") and block["constants"] == da.registered_depth_appearance()
+    assert "0.35" in block["label"] and "never pooled" in block["scope"]
+    json.dumps(namespace["report"], allow_nan=False)

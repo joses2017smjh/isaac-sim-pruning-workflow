@@ -4,11 +4,14 @@ Only the initial pixel and branch identity/axis/radius are supplied by the scene
 Subsequent approach positions come from live image tracking and rendered depth.
 This is classical visual servoing, not learned branch recognition or fracture.
 
-Two labelled, default-off arms change what the demo measures or certifies:
-``jaw_self_mask`` (the tracker ignores the robot's own predicted jaw pixels) and
+Three labelled, default-off arms change what the demo measures or certifies:
+``jaw_self_mask`` (the tracker ignores the robot's own predicted jaw pixels),
 ``closure_hold`` (a cut-gate change: during closure only, a loss the jaw mask
-explains is replaced by the closure-start target, recorded as such). With both
-off, every call, input and output is what it was before they existed.
+explains is replaced by the closure-start target, recorded as such) and
+``depth_appearance`` (D_strict + J: when the grey appearance check fails, a
+static-world depth test and the jaw silhouette decide whether the 0.35 gate
+passes). With all off, every call, input and output is what it was before they
+existed.
 """
 
 from __future__ import annotations
@@ -17,6 +20,7 @@ from dataclasses import asdict, dataclass, replace
 
 import numpy as np
 
+from isaaclab_pruning.perception.depth_appearance import DepthAppearanceTracker, frame_jaw_boxes
 from isaaclab_pruning.perception.jaw_self_mask import (
     HOLD_MAX_ROTATION_DEG,
     HOLD_MAX_TRANSLATION_M,
@@ -167,9 +171,13 @@ class VisionPruningDemo:
         motion_model="translation",
         jaw_self_mask=False,
         closure_hold=False,
+        depth_appearance=False,
     ):
-        if not isinstance(jaw_self_mask, bool) or not isinstance(closure_hold, bool):
-            raise ValueError("jaw_self_mask and closure_hold must be bool")
+        if not all(isinstance(flag, bool) for flag in (jaw_self_mask, closure_hold, depth_appearance)):
+            raise ValueError("jaw_self_mask, closure_hold and depth_appearance must be bool")
+        if depth_appearance and (jaw_self_mask or closure_hold):
+            # The registered depth variant runs on the unmasked tracker; the arms are never combined.
+            raise ValueError("depth_appearance is registered without the jaw self-mask and the closure hold")
         self.target_id = str(target_id)
         self.axis = np.asarray(branch_axis_w, dtype=float)
         self.radius = float(branch_radius_m)
@@ -188,16 +196,19 @@ class VisionPruningDemo:
         # spur. All subsequent inlier, appearance, depth and stop gates remain
         # unchanged. Maintain local corners only after valid measurements;
         # new corners are validated next frame and never reinitialize a loss.
-        self.tracker = VisualServoTracker(
-            VisualServoConfig(
-                depth_radius_px=1,
-                feature_quality_level=0.005,
-                replenish_features=True,
-                photometric_normalization=photometric_normalization,
-                motion_model=motion_model,
-                # The registered value; read by the tracker only when a self-mask is supplied.
-                min_unmasked_patch_elements=MIN_UNMASKED_PATCH_ELEMENTS,
-            )
+        tracker_config = VisualServoConfig(
+            depth_radius_px=1,
+            feature_quality_level=0.005,
+            replenish_features=True,
+            photometric_normalization=photometric_normalization,
+            motion_model=motion_model,
+            # The registered value; read by the tracker only when a self-mask is supplied.
+            min_unmasked_patch_elements=MIN_UNMASKED_PATCH_ELEMENTS,
+        )
+        self.tracker = (
+            DepthAppearanceTracker(tracker_config, arm="strict")
+            if depth_appearance
+            else VisualServoTracker(tracker_config)
         )
         self.cutter = SimulatedCutController(
             CutConfig(
@@ -219,8 +230,10 @@ class VisionPruningDemo:
         # Labelled arms; nothing below is touched when both are off.
         self.jaw_self_mask = jaw_self_mask
         self.closure_hold = closure_hold
-        self.jaw_roll_rad = proxy_roll_rad(self.closing_axis_tool) if jaw_self_mask else None
+        self.depth_appearance = depth_appearance
+        self.jaw_roll_rad = proxy_roll_rad(self.closing_axis_tool) if (jaw_self_mask or depth_appearance) else None
         self.jaw_record = None
+        self.depth_record = None
         self.cutter_without_hold = SimulatedCutController(self.cutter.config) if closure_hold else None
         self.cut_without_hold_step = None
         self.closure_pose = None
@@ -267,6 +280,14 @@ class VisionPruningDemo:
                 tool_pose_wxyz, rendered_progress, camera_matrix, world_from_optical, np.shape(rgb)[:2]
             )
             self.measurement = self.tracker.update(rgb, depth, camera_matrix, world_from_optical, exclusion_mask=mask)
+        elif self.depth_appearance:
+            # J's jaw silhouette: the same self-model as the mask (rendered pose and progress, roll, radius).
+            boxes = frame_jaw_boxes(tool_pose_wxyz, self.jaw_roll_rad, rendered_progress, self.radius)
+            self.depth_record = {
+                "closure_progress_used": float(rendered_progress),
+                "jaw_boxes_known": boxes is not None,
+            }
+            self.measurement = self.tracker.update(rgb, depth, camera_matrix, world_from_optical, jaw_boxes=boxes)
         else:
             self.measurement = self.tracker.update(rgb, depth, camera_matrix, world_from_optical)
         self.measurement_time = float(time_s)
@@ -511,6 +532,8 @@ class VisionPruningDemo:
         evidence = self._base_evidence()
         if self.jaw_self_mask:
             evidence["jaw_self_mask"] = self.jaw_record
+        if self.depth_appearance:
+            evidence["depth_appearance"] = self.depth_record
         if self.closure_hold:
             evidence["closure_hold"] = self.hold_record
             step = self.cut_without_hold_step

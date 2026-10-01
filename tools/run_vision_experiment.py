@@ -63,6 +63,8 @@ def run_environment(plan, row, batch, output, inherited):
             env["PRUNING_JAW_SELF_MASK"] = "1" if strategy["jaw_self_mask"] else "0"
         if "closure_hold" in strategy:
             env["PRUNING_CLOSURE_HOLD"] = "1" if strategy["closure_hold"] else "0"
+        if "depth_appearance" in strategy:
+            env["PRUNING_DEPTH_APPEARANCE"] = "1" if strategy["depth_appearance"] else "0"
     return env
 
 
@@ -76,14 +78,22 @@ def run_label(index, row):
 
 
 def _registered_jaw_arms():
-    """The jaw arms' registered constants from the frozen source, JSON-normalized like a report."""
+    """The labelled arms' registered constants from the frozen source, JSON-normalized like a report."""
     try:
+        from isaaclab_pruning.perception.depth_appearance import registered_depth_appearance
         from isaaclab_pruning.perception.jaw_self_mask import registered_closure_hold, registered_jaw_self_mask
     except ImportError:
         sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "source" / "isaaclab_pruning"))
+        from isaaclab_pruning.perception.depth_appearance import registered_depth_appearance
         from isaaclab_pruning.perception.jaw_self_mask import registered_closure_hold, registered_jaw_self_mask
     return json.loads(
-        json.dumps({"jaw_self_mask": registered_jaw_self_mask(), "closure_hold": registered_closure_hold()})
+        json.dumps(
+            {
+                "jaw_self_mask": registered_jaw_self_mask(),
+                "closure_hold": registered_closure_hold(),
+                "depth_appearance": registered_depth_appearance(),
+            }
+        )
     )
 
 
@@ -119,7 +129,11 @@ def configuration_matches(report, row, plan):
                     and len(readback) == 2
                     and all(value is True for value in readback)
                 )
-        for flag, registered in (("jaw_self_mask", "constants"), ("closure_hold", "thresholds")):
+        for flag, registered in (
+            ("jaw_self_mask", "constants"),
+            ("closure_hold", "thresholds"),
+            ("depth_appearance", "constants"),
+        ):
             if flag in wanted:
                 block = report.get(flag) or {}
                 matches = matches and block.get("enabled") is bool(wanted[flag])
