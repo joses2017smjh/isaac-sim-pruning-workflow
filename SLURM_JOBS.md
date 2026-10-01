@@ -585,3 +585,21 @@ and under the 2 TiB hard limit.
 | `jaw-shadow-eve-b-r2-20260930` | B | evening, 14944 + 15004 | `21491147` |
 | `jaw-shadow-mor-a-r2-20260930` | A | morning, 15004 | `21491148` |
 | `jaw-shadow-mor-b-r2-20260930` | B | morning, 15004 | `21491149` |
+
+**Jaw-shadow counterfactual outcome (October 1).** All 12 tasks finished, all on
+A40. Slurm marked the 6 arm-A tasks FAILED and the 6 arm-B tasks COMPLETED; the
+grader agrees: every arm-A run stops at the original appearance frame and every
+arm-B run passes 17/17.
+[Result](docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026).
+
+### Render-gap check (submitted October 1)
+
+Approved by the user on October 1 at 180 GPU-minutes reserved. Code revision
+`a6e8266`; the protocol was committed at `dc85782` before submission:
+[protocol](docs/EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md). Placement `gpu,ampere`.
+Both jobs were held by the October 1 08:00–16:00 maintenance reservation at
+submission.
+
+| Batch | Jobs | Reserved |
+|---|---|---|
+| `render-gap-20260930` | render array `21499598` `0-7%1` (15 min each), evaluation `21499599` afterany (60 min) | 180 min |

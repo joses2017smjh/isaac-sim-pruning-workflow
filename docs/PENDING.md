@@ -1,30 +1,33 @@
 # Pending work and stretch goals
 
-Updated September 30, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
+Updated October 1, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
 and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-- **Jaw-shadow counterfactual** (approved, 540 GPU-min): 8 chained batches,
-  `21491132` → … → `21491149`. J1–J5 in its
-  [protocol](EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md).
+- **Render-gap check** (approved, 180 GPU-min): render array `21499598` →
+  evaluation `21499599`, G0–G3 in its
+  [protocol](EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md). Held until the October 1
+  maintenance window ends.
+- **Jaw in the camera's view** (approved with the gate waiver, 270 GPU-min):
+  [protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md) registered. It is
+  submitted once its pre-submission replay check (P0) passes on the committed
+  code.
 
-The rendered-lighting training and the known-map approach finished on
-September 30 and are published:
-[lighting result](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026) ·
-[approach result](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
+Finished and published: the
+[jaw-shadow counterfactual](EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026)
+(5 of 5 predictions supported), the
+[rendered-lighting training](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026)
+and the
+[known-map approach](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
 
-## In preparation (approved September 30)
+## Next (CPU, no approval needed)
 
-- **Jaw in the camera's view** (270 GPU-min): offline replay of a jaw
-  self-mask on the recorded 530 and 19444 frames decides the design, then a
-  protocol, then submission.
-- **Render-gap check**: re-render the matrix trees with the training
-  renderer's settings and score all five depth models on them. The exact
-  reservation is stated in its protocol before submission.
-- **Depth-aware appearance check** (the user's suggestion): an offline replay
-  of every recorded run with an appearance decision that also uses depth.
-  CPU only.
+- **Depth-aware appearance check, held-out replay** (the user's suggestion; the
+  user chose this path): replay the strict variant plus the jaw guard on the 12
+  counterfactual recordings. Arm A has new appearance events, and arm B is a
+  negative control where it must not act. A closed-loop GPU test is proposed
+  only if this holds.
 
 ## Needs a decision (no GPU)
 

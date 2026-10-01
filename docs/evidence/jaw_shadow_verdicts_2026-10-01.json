@@ -1,0 +1,630 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the jaw-shadow counterfactual (J1-J5): 12 simulator runs, arm A unchanged and arm B with the visual jaw surrogate casting no shadow (still visible in RGB and depth). Simulator renders; the surrogate is not the pruner CAD; removing the shadow isolates a cause and is not a remedy.",
+  "protocol": "docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md",
+  "code_revision": "e1684a88401d2c5d9a3aab01f66e46e114721955",
+  "code_tree_dirty": false,
+  "inputs_sha256": {
+    "docs/evidence/jaw_shadow_2026-10-01/jaw-shadow-eve-a-r1-20260930.json": "0e8172b45e68be636526eaa1e302053713146d3b4d4e8d77b892d7fda7e07fb7",
+    "docs/evidence/jaw_shadow_2026-10-01/jaw-shadow-eve-a-r2-20260930.json": "0a6b4a479ba131fc06feccee5cb7a956add2bb3a854cd15bd2eb4fcd91465aae",
+    "docs/evidence/jaw_shadow_2026-10-01/jaw-shadow-eve-b-r1-20260930.json": "7badc0195ae5c89a2cd90f92460daee6645c182ce7f8a6879edc097b0c0ca588",
+    "docs/evidence/jaw_shadow_2026-10-01/jaw-shadow-eve-b-r2-20260930.json": "7caa70613bae06b571ba651abf309b22278deb0c41a8da9bcc539444b4d0a335",
+    "docs/evidence/jaw_shadow_2026-10-01/jaw-shadow-mor-a-r1-20260930.json": "09ffb1989e2aae6dfafb8c2013d442800586248753c27a58367a234eee2f72f8",
+    "docs/evidence/jaw_shadow_2026-10-01/jaw-shadow-mor-a-r2-20260930.json": "11f6fe9cd890a544288adde47b9d683ea8aae9082e3471239f257efa7fb33d55",
+    "docs/evidence/jaw_shadow_2026-10-01/jaw-shadow-mor-b-r1-20260930.json": "412563d4a3360fcabee11b556a05b8a7abd261f141c600c3020073e502976748",
+    "docs/evidence/jaw_shadow_2026-10-01/jaw-shadow-mor-b-r2-20260930.json": "a8b21fc308e3e474ec91f24ba9007646407017253715a26e5761af57432b9175"
+  },
+  "runs": [
+    {
+      "batch": "jaw-shadow-eve-a-r1-20260930",
+      "target": 14944,
+      "daylight": "evening",
+      "arm": "A",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "node": "cn-r-5",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        null,
+        null
+      ],
+      "stop": {
+        "decision_frame": 67,
+        "phase": "vision_approach",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "stopped_reason": "vision_invalid"
+      },
+      "patch_correlation": {
+        "57": 0.7568362951278687,
+        "58": 0.7482276558876038,
+        "59": 0.7481649518013,
+        "67": 0.06787027418613434
+      },
+      "patch_darkening": {
+        "frames": [
+          56,
+          59
+        ],
+        "before": 146.70384216308594,
+        "after": 75.85859680175781,
+        "change": -0.48291336011889685
+      }
+    },
+    {
+      "batch": "jaw-shadow-eve-a-r1-20260930",
+      "target": 15004,
+      "daylight": "evening",
+      "arm": "A",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "node": "cn-s-5",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        null,
+        null
+      ],
+      "stop": {
+        "decision_frame": 67,
+        "phase": "vision_approach",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "stopped_reason": "vision_invalid"
+      },
+      "patch_correlation": {
+        "57": 0.8040644526481628,
+        "58": 0.7321863174438477,
+        "59": 0.626448929309845,
+        "67": 0.19176079332828522
+      },
+      "patch_darkening": {
+        "frames": [
+          56,
+          59
+        ],
+        "before": 119.65975952148438,
+        "after": 55.02367401123047,
+        "change": -0.5401655975971503
+      }
+    },
+    {
+      "batch": "jaw-shadow-eve-a-r2-20260930",
+      "target": 14944,
+      "daylight": "evening",
+      "arm": "A",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "node": "cn-r-3",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        null,
+        null
+      ],
+      "stop": {
+        "decision_frame": 67,
+        "phase": "vision_approach",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "stopped_reason": "vision_invalid"
+      },
+      "patch_correlation": {
+        "57": 0.7585427761077881,
+        "58": 0.7499240040779114,
+        "59": 0.7519673109054565,
+        "67": -0.048292502760887146
+      },
+      "patch_darkening": {
+        "frames": [
+          56,
+          59
+        ],
+        "before": 146.72129821777344,
+        "after": 76.23970031738281,
+        "change": -0.48037741457124505
+      }
+    },
+    {
+      "batch": "jaw-shadow-eve-a-r2-20260930",
+      "target": 15004,
+      "daylight": "evening",
+      "arm": "A",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "node": "cn-r-2",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        null,
+        null
+      ],
+      "stop": {
+        "decision_frame": 67,
+        "phase": "vision_approach",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "stopped_reason": "vision_invalid"
+      },
+      "patch_correlation": {
+        "57": 0.8074193000793457,
+        "58": 0.7318910360336304,
+        "59": 0.6146928071975708,
+        "67": 0.2036670744419098
+      },
+      "patch_darkening": {
+        "frames": [
+          56,
+          59
+        ],
+        "before": 119.53692626953125,
+        "after": 55.23175811767578,
+        "change": -0.5379523312056771
+      }
+    },
+    {
+      "batch": "jaw-shadow-eve-b-r1-20260930",
+      "target": 14944,
+      "daylight": "evening",
+      "arm": "B",
+      "outcome": "pass",
+      "checks": "17/17",
+      "node": "cn-s-5",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        true,
+        true
+      ],
+      "stop": null,
+      "patch_correlation": {
+        "57": 0.9947654008865356,
+        "58": 0.9951494336128235,
+        "59": 0.9955444931983948,
+        "67": 0.9931973218917847
+      },
+      "patch_darkening": {
+        "frames": [
+          56,
+          59
+        ],
+        "before": 146.82919311523438,
+        "after": 146.07644653320312,
+        "change": -0.005126682004173877
+      }
+    },
+    {
+      "batch": "jaw-shadow-eve-b-r1-20260930",
+      "target": 15004,
+      "daylight": "evening",
+      "arm": "B",
+      "outcome": "pass",
+      "checks": "17/17",
+      "node": "cn-s-5",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        true,
+        true
+      ],
+      "stop": null,
+      "patch_correlation": {
+        "57": 0.9930335879325867,
+        "58": 0.9932116866111755,
+        "59": 0.9939337372779846,
+        "67": 0.9939756393432617
+      },
+      "patch_darkening": {
+        "frames": [
+          56,
+          59
+        ],
+        "before": 120.33321380615234,
+        "after": 121.0208740234375,
+        "change": 0.005714633520824242
+      }
+    },
+    {
+      "batch": "jaw-shadow-eve-b-r2-20260930",
+      "target": 14944,
+      "daylight": "evening",
+      "arm": "B",
+      "outcome": "pass",
+      "checks": "17/17",
+      "node": "cn-r-2",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        true,
+        true
+      ],
+      "stop": null,
+      "patch_correlation": {
+        "57": 0.9946051239967346,
+        "58": 0.9949160218238831,
+        "59": 0.996775209903717,
+        "67": 0.9934473633766174
+      },
+      "patch_darkening": {
+        "frames": [
+          56,
+          59
+        ],
+        "before": 146.63528442382812,
+        "after": 146.2855987548828,
+        "change": -0.0023847307305286947
+      }
+    },
+    {
+      "batch": "jaw-shadow-eve-b-r2-20260930",
+      "target": 15004,
+      "daylight": "evening",
+      "arm": "B",
+      "outcome": "pass",
+      "checks": "17/17",
+      "node": "cn-r-2",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        true,
+        true
+      ],
+      "stop": null,
+      "patch_correlation": {
+        "57": 0.9955397248268127,
+        "58": 0.9923476576805115,
+        "59": 0.9924487471580505,
+        "67": 0.9929965138435364
+      },
+      "patch_darkening": {
+        "frames": [
+          56,
+          59
+        ],
+        "before": 120.53617095947266,
+        "after": 121.1207504272461,
+        "change": 0.00484982609883966
+      }
+    },
+    {
+      "batch": "jaw-shadow-mor-a-r1-20260930",
+      "target": 15004,
+      "daylight": "morning",
+      "arm": "A",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "node": "cn-s-5",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        null,
+        null
+      ],
+      "stop": {
+        "decision_frame": 75,
+        "phase": "simulated_closure",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "stopped_reason": "vision_invalid"
+      },
+      "patch_correlation": {
+        "73": 0.6877995729446411,
+        "74": 0.4789167046546936,
+        "75": 0.22001422941684723
+      },
+      "patch_darkening": {
+        "frames": [
+          72,
+          75
+        ],
+        "before": 89.24856567382812,
+        "after": 52.45154571533203,
+        "change": -0.4122981661461783
+      }
+    },
+    {
+      "batch": "jaw-shadow-mor-a-r2-20260930",
+      "target": 15004,
+      "daylight": "morning",
+      "arm": "A",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "node": "cn-r-2",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        null,
+        null
+      ],
+      "stop": {
+        "decision_frame": 75,
+        "phase": "simulated_closure",
+        "tracker_reason": "appearance_changed_or_occluded",
+        "stopped_reason": "vision_invalid"
+      },
+      "patch_correlation": {
+        "73": 0.7520342469215393,
+        "74": 0.5932595133781433,
+        "75": 0.32719486951828003
+      },
+      "patch_darkening": {
+        "frames": [
+          72,
+          75
+        ],
+        "before": 93.96027374267578,
+        "after": 54.60219955444336,
+        "change": -0.41887994383690685
+      }
+    },
+    {
+      "batch": "jaw-shadow-mor-b-r1-20260930",
+      "target": 15004,
+      "daylight": "morning",
+      "arm": "B",
+      "outcome": "pass",
+      "checks": "17/17",
+      "node": "cn-s-5",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        true,
+        true
+      ],
+      "stop": null,
+      "patch_correlation": {
+        "73": 0.9990167021751404,
+        "74": 0.9988066554069519,
+        "75": 0.9992238879203796
+      },
+      "patch_darkening": {
+        "frames": [
+          72,
+          75
+        ],
+        "before": 101.85317993164062,
+        "after": 98.76630401611328,
+        "change": -0.030307113804390995
+      }
+    },
+    {
+      "batch": "jaw-shadow-mor-b-r2-20260930",
+      "target": 15004,
+      "daylight": "morning",
+      "arm": "B",
+      "outcome": "pass",
+      "checks": "17/17",
+      "node": "cn-r-2",
+      "gpu_model": "A40",
+      "do_not_cast_shadows_readback": [
+        true,
+        true
+      ],
+      "stop": null,
+      "patch_correlation": {
+        "73": 0.9987321496009827,
+        "74": 0.9986826181411743,
+        "75": 0.9990302920341492
+      },
+      "patch_darkening": {
+        "frames": [
+          72,
+          75
+        ],
+        "before": 98.13692474365234,
+        "after": 94.50314331054688,
+        "change": -0.03702766764495036
+      }
+    }
+  ],
+  "predictions": [
+    {
+      "id": "J1",
+      "prediction": "Every arm-B run reads back doNotCastShadows on both cubes and its patch darkens by less than 15%.",
+      "clauses": [
+        {
+          "clause": "readback true on both cubes in every arm-B run",
+          "observed": true,
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "arm-B patch darkening under 15% over the shadow frames",
+          "observed": {
+            "jaw-shadow-eve-b-r1-20260930 14944": -0.005126682004173877,
+            "jaw-shadow-eve-b-r1-20260930 15004": 0.005714633520824242,
+            "jaw-shadow-eve-b-r2-20260930 14944": -0.0023847307305286947,
+            "jaw-shadow-eve-b-r2-20260930 15004": 0.00484982609883966,
+            "jaw-shadow-mor-b-r1-20260930 15004": -0.030307113804390995,
+            "jaw-shadow-mor-b-r2-20260930 15004": -0.03702766764495036,
+            "arm_A_for_comparison": {
+              "jaw-shadow-eve-a-r1-20260930 14944": -0.48291336011889685,
+              "jaw-shadow-eve-a-r1-20260930 15004": -0.5401655975971503,
+              "jaw-shadow-eve-a-r2-20260930 14944": -0.48037741457124505,
+              "jaw-shadow-eve-a-r2-20260930 15004": -0.5379523312056771,
+              "jaw-shadow-mor-a-r1-20260930 15004": -0.4122981661461783,
+              "jaw-shadow-mor-a-r2-20260930 15004": -0.41887994383690685
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "J2",
+      "prediction": "Arm B evening 14944 and 15004: no appearance loss during the approach, correlation >= 0.85 at 57-59 and 67.",
+      "clauses": [
+        {
+          "clause": "no arm-B evening appearance stop during the approach",
+          "observed": {
+            "jaw-shadow-eve-b-r1-20260930 14944": null,
+            "jaw-shadow-eve-b-r1-20260930 15004": null,
+            "jaw-shadow-eve-b-r2-20260930 14944": null,
+            "jaw-shadow-eve-b-r2-20260930 15004": null
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "correlation >= 0.85 at 57-59 and 67",
+          "observed": {
+            "jaw-shadow-eve-b-r1-20260930 14944": {
+              "57": 0.9947654008865356,
+              "58": 0.9951494336128235,
+              "59": 0.9955444931983948,
+              "67": 0.9931973218917847
+            },
+            "jaw-shadow-eve-b-r1-20260930 15004": {
+              "57": 0.9930335879325867,
+              "58": 0.9932116866111755,
+              "59": 0.9939337372779846,
+              "67": 0.9939756393432617
+            },
+            "jaw-shadow-eve-b-r2-20260930 14944": {
+              "57": 0.9946051239967346,
+              "58": 0.9949160218238831,
+              "59": 0.996775209903717,
+              "67": 0.9934473633766174
+            },
+            "jaw-shadow-eve-b-r2-20260930 15004": {
+              "57": 0.9955397248268127,
+              "58": 0.9923476576805115,
+              "59": 0.9924487471580505,
+              "67": 0.9929965138435364
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "J3",
+      "prediction": "Arm B morning 15004 completes closure without an appearance loss, correlation >= 0.9 at 73-75.",
+      "clauses": [
+        {
+          "clause": "no arm-B morning appearance loss during closure, correlation >= 0.9 at 73-75",
+          "observed": {
+            "jaw-shadow-mor-b-r1-20260930 15004": {
+              "stop": null,
+              "corr": {
+                "73": 0.9990167021751404,
+                "74": 0.9988066554069519,
+                "75": 0.9992238879203796
+              }
+            },
+            "jaw-shadow-mor-b-r2-20260930 15004": {
+              "stop": null,
+              "corr": {
+                "73": 0.9987321496009827,
+                "74": 0.9986826181411743,
+                "75": 0.9990302920341492
+              }
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "J4",
+      "prediction": "Arm A evening 14944 loses appearance at the last approach frame (correlation < 0.5 at 67) in 2 of 2.",
+      "clauses": [
+        {
+          "clause": "arm A evening 14944 loses appearance with correlation < 0.5 at 67",
+          "observed": {
+            "jaw-shadow-eve-a-r1-20260930": {
+              "stop": {
+                "decision_frame": 67,
+                "phase": "vision_approach",
+                "tracker_reason": "appearance_changed_or_occluded",
+                "stopped_reason": "vision_invalid"
+              },
+              "corr_67": 0.06787027418613434
+            },
+            "jaw-shadow-eve-a-r2-20260930": {
+              "stop": {
+                "decision_frame": 67,
+                "phase": "vision_approach",
+                "tracker_reason": "appearance_changed_or_occluded",
+                "stopped_reason": "vision_invalid"
+              },
+              "corr_67": -0.048292502760887146
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "measurements (not predicted): arm A evening 15004 and morning 15004",
+          "observed": {
+            "jaw-shadow-eve-a-r1-20260930 15004": {
+              "outcome": "stopped_vision_invalid",
+              "stop": {
+                "decision_frame": 67,
+                "phase": "vision_approach",
+                "tracker_reason": "appearance_changed_or_occluded",
+                "stopped_reason": "vision_invalid"
+              },
+              "corr": {
+                "57": 0.8040644526481628,
+                "58": 0.7321863174438477,
+                "59": 0.626448929309845,
+                "67": 0.19176079332828522
+              }
+            },
+            "jaw-shadow-eve-a-r2-20260930 15004": {
+              "outcome": "stopped_vision_invalid",
+              "stop": {
+                "decision_frame": 67,
+                "phase": "vision_approach",
+                "tracker_reason": "appearance_changed_or_occluded",
+                "stopped_reason": "vision_invalid"
+              },
+              "corr": {
+                "57": 0.8074193000793457,
+                "58": 0.7318910360336304,
+                "59": 0.6146928071975708,
+                "67": 0.2036670744419098
+              }
+            },
+            "jaw-shadow-mor-a-r1-20260930 15004": {
+              "outcome": "stopped_vision_invalid",
+              "stop": {
+                "decision_frame": 75,
+                "phase": "simulated_closure",
+                "tracker_reason": "appearance_changed_or_occluded",
+                "stopped_reason": "vision_invalid"
+              },
+              "corr": {
+                "73": 0.6877995729446411,
+                "74": 0.4789167046546936,
+                "75": 0.22001422941684723
+              }
+            },
+            "jaw-shadow-mor-a-r2-20260930 15004": {
+              "outcome": "stopped_vision_invalid",
+              "stop": {
+                "decision_frame": 75,
+                "phase": "simulated_closure",
+                "tracker_reason": "appearance_changed_or_occluded",
+                "stopped_reason": "vision_invalid"
+              },
+              "corr": {
+                "73": 0.7520342469215393,
+                "74": 0.5932595133781433,
+                "75": 0.32719486951828003
+              }
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "J5",
+      "prediction": "Arm B evening 14944 and 15004 pass 17 of 17 in at least 3 of their 4 runs.",
+      "clauses": [
+        {
+          "clause": "arm-B evening passes",
+          "observed": "4 of 4",
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    }
+  ]
+}

@@ -81,3 +81,45 @@ nothing else.
 12 runs of 200 frames, 45 minutes reserved each, one task at a time: **540
 GPU-minutes reserved** (approved by the user on September 30). About 5.4 GB of
 captures on the hpc-share.
+
+## Result — October 1, 2026
+
+All 12 runs are graded and all 5 predictions are supported
+([verdicts](evidence/jaw_shadow_verdicts_2026-10-01.json),
+[per-batch evidence](evidence/jaw_shadow_2026-10-01/), code `e1684a8`). Every
+run ran on an A40.
+
+| Condition | Arm A (jaw casts shadow) | Arm B (jaw casts no shadow) |
+|---|---|---|
+| Evening 14944, r1 / r2 | stops at 67, appearance loss (correlation 0.07 / −0.05) | **pass** 17/17 / **pass** |
+| Evening 15004, r1 / r2 | stops at 67, appearance loss (0.19 / 0.20) | **pass** / **pass** |
+| Morning 15004, r1 / r2 | stops at 75 in closure, appearance loss (0.22 / 0.33) | **pass** / **pass** |
+
+- **J1.** Both jaw cubes read back `doNotCastShadows = true` in every arm-B
+  run. Over the shadow frames the arm-B patch changes by −3.7% to +0.6%, while
+  the arm-A patch darkens 41–54%, as recorded before.
+- **J2.** Arm-B evening correlation is at least 0.99 at 57–59 and 67, with no
+  appearance loss.
+- **J3.** Arm-B morning correlation is 1.00 at 73–75, and closure completes.
+- **J4.** Arm A reproduces the original stops at the original frames in all
+  six runs. Evening 15004 again falls under the gate (0.19, 0.20).
+- **J5.** 4 of 4 arm-B evening runs pass.
+
+**What this settles.** The
+[post hoc diagnosis](EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc)
+found an association; this is an intervention. Removing only the visual jaw
+surrogate's shadow, with the jaw still visible in RGB and depth, turns 6 of 6
+low-sun appearance stops into passes. Keeping the shadow reproduces 6 of 6 at
+the same frames. In this simulator the light-dependent tree1 outcomes
+(perception round, P6) are caused by the jaw surrogate's low-sun shadow
+crossing the tracker's appearance patch.
+
+**Limits.**
+- **The caster is the two-box surrogate**, not the pruner CAD. A real jaw also
+  casts a shadow, with different timing and extent.
+- **Removing a shadow is not a remedy.** The candidate remedy is the
+  user-suggested depth-aware appearance check. As agreed, it comes next as a
+  zero-GPU held-out replay on these 12 recordings: arm A's appearance events
+  played no part in setting its thresholds, and arm B is a negative control
+  where it must not act.
+- **This is a mechanism test, not a rate:** three targets, two repeats each.

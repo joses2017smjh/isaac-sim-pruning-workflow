@@ -395,11 +395,14 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       or orchard caster is involved.
       [Diagnosis](EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc) ·
       [evidence](evidence/appearance_loss_diagnosis_2026-09-28.json).
-- [ ] Counterfactual for the jaw shadow (proposed, not registered): rerun
-      evening 14944 and 15004 and morning 15004 with the surrogate jaw casting
-      no shadow, against unchanged runs. Needs a recorded scene option with a
-      unit test, a protocol, and a GPU approval (12 runs, 540 GPU-min reserved
-      at 45 min per task).
+- [x] Counterfactual for the jaw shadow: with only the jaw surrogate's shadow
+      removed, 6 of 6 low-sun appearance stops became passes; with it kept,
+      6 of 6 recurred at the same frames. J1-J5 supported.
+      [Result](EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026).
+- [ ] Depth-aware appearance check (the user's suggestion): offline it rescues
+      the three low-sun stops and keeps every real occlusion stop. Next is a
+      zero-GPU held-out replay on the counterfactual's recordings; a
+      closed-loop test is proposed only if that holds.
 - [ ] Repeat any single-run class change on a target near a tracker floor: the
       RGB render differs run to run (0 of 69 same-scene frame-0 pairs identical;
       depth and pose identical in all), and 22988 flipped class on it.

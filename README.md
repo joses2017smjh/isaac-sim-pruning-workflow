@@ -162,8 +162,11 @@ Tree1's seven listed spurs pass **2/7 in all five source-light batches**, but
 tracker's appearance check, and morning light stops one during closure. These
 are the first light-dependent outcomes on registered targets. A post hoc
 diagnosis traces all three to the low-sun shadow of the visual jaw surrogate
-crossing the tracker's appearance patch: the tracker compares the right bark,
-and no intervention has been run yet
+crossing the tracker's appearance patch: the tracker compares the right bark.
+An intervention then confirmed it: with only that shadow removed, 6 of 6 of
+those low-sun stops became passes, and with it kept, 6 of 6 recurred at the
+same frames
+([counterfactual](docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026))
 ([diagnosis](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc)). The first seeded
 draws of tree1 give 0/10 and 1/30, dominated by layout refusals, as predicted.
 Physics repeats bit for bit, but the RGB render does not: 0 of 69 same-scene
