@@ -156,8 +156,15 @@ def _json_safe(value):
 def main() -> int:  # noqa: C901 - the simulator is imported only after AppLauncher.
     from dataclasses import asdict
 
+    from isaaclab_pruning.perception.jaw_self_mask import (
+        CLOSURE_HOLD_EXPLAINED_BRANCHES,
+        MODEL_LABEL,
+        registered_closure_hold,
+        registered_jaw_self_mask,
+    )
     from isaaclab_pruning.sim.render_quality import CaptureQuality, apply_capture_quality, settings_readback
     from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy, closing_axis_tool_at
+    from isaaclab_pruning.task.simulated_cut import CLOSURE_HOLD_WAIVED_CHECKS
 
     root = Path(os.environ["PRUNING_ROOT"])
     quality = None
@@ -172,6 +179,15 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
     jaw_casts_shadow = os.environ.get("PRUNING_JAW_CASTS_SHADOW", "1")
     if jaw_casts_shadow not in ("0", "1"):
         raise ValueError("PRUNING_JAW_CASTS_SHADOW must be 0 or 1")
+    # Labelled arms, default off: the tracker's jaw self-mask, and the closure hold (a cut-gate change).
+    jaw_self_mask = os.environ.get("PRUNING_JAW_SELF_MASK", "0")
+    if jaw_self_mask not in ("0", "1"):
+        raise ValueError("PRUNING_JAW_SELF_MASK must be 0 or 1")
+    closure_hold = os.environ.get("PRUNING_CLOSURE_HOLD", "0")
+    if closure_hold not in ("0", "1"):
+        raise ValueError("PRUNING_CLOSURE_HOLD must be 0 or 1")
+    if not blender_mode and "1" in (jaw_self_mask, closure_hold):
+        raise ValueError("PRUNING_JAW_SELF_MASK and PRUNING_CLOSURE_HOLD need PRUNING_RENDER_MODE=blender_vision")
     planned_quat = os.environ.get("PRUNING_PLANNED_TOOL_QUAT")
     approach = ApproachStrategy(
         mode=os.environ.get("PRUNING_APPROACH_MODE", "straight"),
@@ -249,6 +265,35 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             cutting="Visual jaw surrogate and gated rigid-piece detachment; no wood fracture or actuated blade CAD",
             recognition="Branch identity, axis and radius supplied by selected mesh metadata; not learned recognition",
         )
+        report["jaw_self_mask"] = {
+            "enabled": jaw_self_mask == "1",
+            "constants": registered_jaw_self_mask(),
+            "model": MODEL_LABEL,
+            "radius_source": "blender_scene.target_radius_m, the radius update_tool_proxy closes the rendered gap to",
+            "closure_progress_source": "the cut step before each observation, the progress update_tool_proxy rendered",
+            "roll_source": "atan2 of the controller's closing_axis_tool, as set_proxy_closing_axis_tool derives it",
+            "pose_and_camera_source": "the tool pose and rendering camera passed to observe for that frame",
+            "pixel_convention": "pixel index (u, v) has its centre at continuous (u + 0.5, v + 0.5); corners_px use it",
+            "scope": "Robot self-model, never evidence; simulator-exact, so a real jaw needs a re-measured margin",
+        }
+        report["closure_hold"] = {
+            "enabled": closure_hold == "1",
+            "label": (
+                "cut-gate change: freshness and frame-reuse waived on held frames; certificate "
+                "vision_source=closure_hold"
+            ),
+            "thresholds": registered_closure_hold(),
+            "explained_branches": list(CLOSURE_HOLD_EXPLAINED_BRANCHES),
+            "waived_checks": list(CLOSURE_HOLD_WAIVED_CHECKS),
+            "still_binding_on_held_frames": [
+                "mouth distance (held target vs live mouth)",
+                "perpendicularity",
+                "mouth speed",
+                "hazard contact",
+                "closure clock",
+            ],
+            "shadow_verdict": "cut_without_hold: an unchanged cut controller fed the honest observation every frame",
+        }
 
     def flush():
         (output / "report.json").write_text(json.dumps(_json_safe(report), indent=2, allow_nan=False) + "\n")
@@ -638,6 +683,8 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 photometric_normalization=photometric_normalization,
                 approach=approach,
                 motion_model=motion_model,
+                jaw_self_mask=jaw_self_mask == "1",
+                closure_hold=closure_hold == "1",
             )
             report["tracker_config"] = demo.evidence()["tracker_config"]
             report["blender_scene"] = env.blender_scene.evidence
@@ -804,7 +851,14 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 "pixel_xy": seed_pixel.tolist(),
                 "source": "Known selected component projected once; no per-frame oracle update or automatic reseeding",
                 "visibility": visibility,
-                "tracker": demo.initialize(preview_rgb, preview_depth, seed_pixel)
+                "tracker": demo.initialize(
+                    preview_rgb,
+                    preview_depth,
+                    seed_pixel,
+                    camera_matrix=camera_matrix,
+                    world_from_optical=optical_transform(position, rotation),
+                    tool_pose_wxyz=initial_tool[0].detach().cpu().numpy(),
+                )
                 if visibility["visible"]
                 else {"state": "initialization_rejected", "reason": visibility["reason"]},
             }

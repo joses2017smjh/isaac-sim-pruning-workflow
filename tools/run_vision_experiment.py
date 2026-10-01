@@ -59,6 +59,10 @@ def run_environment(plan, row, batch, output, inherited):
             env["PRUNING_PLANNED_TOOL_QUAT"] = ",".join(repr(float(v)) for v in strategy["planned_tool_quat_wxyz"])
         if "jaw_casts_shadow" in strategy:
             env["PRUNING_JAW_CASTS_SHADOW"] = "1" if strategy["jaw_casts_shadow"] else "0"
+        if "jaw_self_mask" in strategy:
+            env["PRUNING_JAW_SELF_MASK"] = "1" if strategy["jaw_self_mask"] else "0"
+        if "closure_hold" in strategy:
+            env["PRUNING_CLOSURE_HOLD"] = "1" if strategy["closure_hold"] else "0"
     return env
 
 
@@ -69,6 +73,18 @@ def run_label(index, row):
         label = f"run_{index:02d}_{row['daylight']}_tree{row['target_tree_index']}_v{row['component_first_vertex']}"
         return label + suffix
     return f"run_{index:02d}_{row['daylight']}_{row['photometric_normalization']}" + suffix
+
+
+def _registered_jaw_arms():
+    """The jaw arms' registered constants from the frozen source, JSON-normalized like a report."""
+    try:
+        from isaaclab_pruning.perception.jaw_self_mask import registered_closure_hold, registered_jaw_self_mask
+    except ImportError:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "source" / "isaaclab_pruning"))
+        from isaaclab_pruning.perception.jaw_self_mask import registered_closure_hold, registered_jaw_self_mask
+    return json.loads(
+        json.dumps({"jaw_self_mask": registered_jaw_self_mask(), "closure_hold": registered_closure_hold()})
+    )
 
 
 def configuration_matches(report, row, plan):
@@ -103,6 +119,21 @@ def configuration_matches(report, row, plan):
                     and len(readback) == 2
                     and all(value is True for value in readback)
                 )
+        for flag, registered in (("jaw_self_mask", "constants"), ("closure_hold", "thresholds")):
+            if flag in wanted:
+                block = report.get(flag) or {}
+                matches = matches and block.get("enabled") is bool(wanted[flag])
+                if wanted[flag]:
+                    # The capture must also show the registered constants, not merely the flag.
+                    matches = matches and block.get(registered) == _registered_jaw_arms()[flag]
+            else:
+                # A row that does not ask for the arm must not have run with it.
+                matches = matches and (report.get(flag) or {}).get("enabled") is not True
+        if wanted.get("jaw_self_mask"):
+            # The tracker's own minimum is the one that decided, not only the reported constant.
+            tracker = report.get("tracker_config") or {}
+            expected = _registered_jaw_arms()["jaw_self_mask"]["min_unmasked_patch_elements"]
+            matches = matches and tracker.get("min_unmasked_patch_elements") == expected
         if "planned_tool_quat_wxyz" in wanted:
             recorded_quat = recorded.get("planned_tool_quat_wxyz")
             wanted_quat = wanted["planned_tool_quat_wxyz"]

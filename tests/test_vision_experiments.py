@@ -483,3 +483,99 @@ def test_jaw_shadow_counterfactual_is_forwarded_and_the_readback_decides_the_arm
     assert not run.configuration_matches(report({**off, "do_not_cast_shadows_readback": [True, None]}), row, plan)
     assert not run.configuration_matches(report(None), row, plan)
     assert run.run_label(0, row) == "run_00_evening_tree1_v14944_jaw_no_shadow"
+
+
+def _jaw_hold_report(target_id, quat, jaw_block, hold_block, tracker_minimum=140):
+    report = {
+        "photometric_normalization": "raw",
+        "frame_count": 200,
+        "approach_strategy": {
+            "mode": "planned_pose_standoff",
+            "standoff_m": 0.06,
+            "max_step_m": 0.004,
+            "planned_tool_quat_wxyz": quat,
+        },
+        "blender_scene": {"daylight": {"preset": "source"}, "target": {"id": target_id}},
+        "tracker_config": {"min_unmasked_patch_elements": tracker_minimum},
+    }
+    if jaw_block is not None:
+        report["jaw_self_mask"] = jaw_block
+    if hold_block is not None:
+        report["closure_hold"] = hold_block
+    return json.loads(json.dumps(report))
+
+
+def test_jaw_hold_strategy_forwards_both_flags_and_the_capture_must_show_them(tmp_path, scripts):
+    from isaaclab_pruning.perception.jaw_self_mask import registered_closure_hold, registered_jaw_self_mask
+
+    launcher, run = scripts
+    quat = [-0.0037, -0.3524, 0.3494, 0.8682]
+    targets = [
+        {"target_tree_index": 0, "component_first_vertex": 530, "planned_final_tool_quat_wxyz": quat},
+        {"target_tree_index": 1, "component_first_vertex": 14944, "planned_final_tool_quat_wxyz": None},
+    ]
+    plan = launcher.experiment_plan(targets, "source", "raw", "planned_pose_jaw_hold")
+    assert plan["frames"] == 200 and plan["maximum_gpu_minutes"] == launcher.MINUTES_PER_TRIAL * 2
+    row = plan["runs"][0]
+    assert row["strategy"]["jaw_self_mask"] is True and row["strategy"]["closure_hold"] is True
+    assert row["strategy"]["mode"] == "planned_pose_standoff" and row["strategy"]["planned_tool_quat_wxyz"] == quat
+    env = run.run_environment(plan, row, tmp_path, tmp_path / "out", {"PRUNING_JAW_SELF_MASK": "0"})
+    assert env["PRUNING_JAW_SELF_MASK"] == "1" and env["PRUNING_CLOSURE_HOLD"] == "1"
+    assert env["PRUNING_APPROACH_MODE"] == "planned_pose_standoff"
+    assert run.run_label(0, row) == "run_00_source_tree0_v530_planned_pose_jaw_hold"
+    # Every earlier strategy forwards neither flag, so the renderer keeps its default (off).
+    for name in launcher.STRATEGIES:
+        if name == "planned_pose_jaw_hold":
+            continue
+        other = launcher.experiment_plan(targets, "source", "raw", name)
+        other_env = run.run_environment(other, other["runs"][0], tmp_path, tmp_path, {})
+        assert "PRUNING_JAW_SELF_MASK" not in other_env and "PRUNING_CLOSURE_HOLD" not in other_env
+
+    jaw = {"enabled": True, "constants": registered_jaw_self_mask(), "model": "two-box visual surrogate"}
+    hold = {"enabled": True, "thresholds": registered_closure_hold()}
+    target_id = "tree0_SPUR_component_530"
+    assert run.configuration_matches(_jaw_hold_report(target_id, quat, jaw, hold), row, plan)
+    refused = [
+        (None, None),
+        ({**jaw, "enabled": False}, hold),
+        (jaw, {**hold, "enabled": False}),
+        (jaw, None),
+        (None, hold),
+        ({**jaw, "constants": {**registered_jaw_self_mask(), "mask_margin_px": 1.0}}, hold),
+        ({**jaw, "constants": {**registered_jaw_self_mask(), "min_unmasked_patch_elements": 60}}, hold),
+        (jaw, {**hold, "thresholds": {"max_translation_m": 0.001, "max_rotation_deg": 0.25}}),
+        ({**jaw, "enabled": "true"}, hold),
+    ]
+    for jaw_block, hold_block in refused:
+        assert not run.configuration_matches(_jaw_hold_report(target_id, quat, jaw_block, hold_block), row, plan)
+    # The tracker that ran must have used the registered minimum too.
+    assert not run.configuration_matches(_jaw_hold_report(target_id, quat, jaw, hold, tracker_minimum=60), row, plan)
+    # A planned-pose capture without the arms still matches its own (flagless) strategy row.
+    planned = launcher.experiment_plan(targets, "source", "raw", "planned_pose")
+    assert run.configuration_matches(_jaw_hold_report(target_id, quat, None, None), planned["runs"][0], planned)
+    # ...but a flagless row refuses a capture that ran with either arm enabled.
+    assert not run.configuration_matches(_jaw_hold_report(target_id, quat, jaw, None), planned["runs"][0], planned)
+    assert not run.configuration_matches(_jaw_hold_report(target_id, quat, None, hold), planned["runs"][0], planned)
+
+
+def test_jaw_hold_per_batch_registers_split_the_planned_pose_register(scripts):
+    launcher, _ = scripts
+    evidence = Path(__file__).resolve().parents[1] / "docs/evidence"
+    source = json.loads((evidence / "eval_targets_planned_pose_2026-09-27.json").read_text())
+    by_vertex = {item["component_first_vertex"]: item for item in source["targets"]}
+    seen = []
+    for name, partner in (("a", 19444), ("b", 14944), ("c", 15004)):
+        path = evidence / f"eval_targets_jaw_hold_{name}_2026-09-30.json"
+        targets, provenance = launcher.load_targets(path)
+        assert [item["component_first_vertex"] for item in targets] == [530, partner]
+        assert all(item == by_vertex[item["component_first_vertex"]] for item in targets)
+        derived = json.loads(path.read_text())["derived_from"][0]
+        expected = hashlib.sha256((evidence / "eval_targets_planned_pose_2026-09-27.json").read_bytes()).hexdigest()
+        assert derived["sha256"] == expected and provenance["targets_sha256"]
+        plan = launcher.experiment_plan(targets, "source", "raw", "planned_pose_jaw_hold")
+        assert [run["strategy"]["planned_tool_quat_wxyz"] for run in plan["runs"]] == [
+            by_vertex[530]["planned_final_tool_quat_wxyz"],
+            by_vertex[partner]["planned_final_tool_quat_wxyz"],
+        ]
+        seen.append(partner)
+    assert sorted(seen) == [14944, 15004, 19444]

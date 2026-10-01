@@ -17,6 +17,20 @@ import numpy as np
 
 MODEL_LABEL = "simulated_detachment_not_fracture"
 
+#: Where an observation's target came from. ``live`` is the camera measurement of this frame (every
+#: observation before the labelled closure-hold arm, and every observation by default). ``closure_hold``
+#: is the labelled cut-gate change: during closure only, the target measured at closure start replaces a
+#: loss explained by the robot's own jaw, and the certificate records which checks that waives.
+VISION_SOURCES = ("live", "closure_hold")
+#: The checks a closure-hold observation passes only because it is labelled valid and fresh. They are
+#: listed in every closure-hold certificate so a held frame can never pass for a live one.
+CLOSURE_HOLD_WAIVED_CHECKS = (
+    "vision_invalid",
+    "vision_stale_or_future",
+    "vision_timestamp_regressed",
+    "vision_frame_reused_during_closure",
+)
+
 
 def _vector(value: tuple[float, float, float], *, unit: bool = False) -> np.ndarray | None:
     vector = np.asarray(value, dtype=float)
@@ -76,6 +90,10 @@ class CutObservation:
     *perpendicular* to it. The mouth position is not necessarily the tool origin.
     ``hazard_contact`` must exclude only intentionally permitted target contact;
     post/trunk, arm, and non-target wood contacts are hazards.
+
+    ``vision_source`` is ``live`` unless the caller holds the closure-start target
+    (``closure_hold``, see ``VISION_SOURCES``); a held observation must carry the
+    closure reference's target and its timestamp in ``held_target_timestamp_s``.
     """
 
     time_s: float
@@ -89,11 +107,19 @@ class CutObservation:
     mouth_position_w: tuple[float, float, float]
     cutter_closing_axis_w: tuple[float, float, float]
     hazard_contact: bool = False
+    vision_source: str = "live"
+    held_target_timestamp_s: float | None = None
 
 
 @dataclass(frozen=True)
 class CutCertificate:
-    """Geometric gate only; the controller separately verifies temporal stability."""
+    """Geometric gate only; the controller separately verifies temporal stability.
+
+    ``vision_source`` repeats the observation's source. For ``closure_hold`` it is
+    joined by ``held_target_age_s`` (frame time minus the held target's timestamp)
+    and ``waived_checks`` (``CLOSURE_HOLD_WAIVED_CHECKS``); both stay empty for a
+    live observation.
+    """
 
     safe_to_approach: bool
     ready_to_close: bool
@@ -102,11 +128,16 @@ class CutCertificate:
     perpendicularity_error_deg: float | None
     vision_age_s: float | None
     model: str = MODEL_LABEL
+    vision_source: str = "live"
+    held_target_age_s: float | None = None
+    waived_checks: tuple[str, ...] = ()
 
 
 def evaluate_cut_gate(observation: CutObservation, config: CutConfig) -> CutCertificate:
     """Fail closed on identity, age, contact, radius, or malformed geometry."""
     reasons: list[str] = []
+    if observation.vision_source not in VISION_SOURCES:
+        reasons.append("invalid_vision_source")
     if not observation.vision_valid:
         reasons.append("vision_invalid")
     if observation.target_id != config.selected_target_id:
@@ -140,6 +171,12 @@ def evaluate_cut_gate(observation: CutObservation, config: CutConfig) -> CutCert
         reasons.append("outside_mouth_tolerance")
     if alignment is not None and alignment > config.alignment_tolerance_deg:
         reasons.append("closing_axis_not_perpendicular")
+    held = observation.vision_source == "closure_hold"
+    held_age = None
+    held_stamp = observation.held_target_timestamp_s
+    if held and isinstance(held_stamp, (int, float)) and not isinstance(held_stamp, bool):
+        held_age = observation.time_s - float(held_stamp)
+        held_age = held_age if math.isfinite(held_age) else None
     return CutCertificate(
         safe_to_approach=safe,
         ready_to_close=not reasons,
@@ -147,6 +184,9 @@ def evaluate_cut_gate(observation: CutObservation, config: CutConfig) -> CutCert
         mouth_distance_m=distance,
         perpendicularity_error_deg=alignment,
         vision_age_s=age if math.isfinite(age) else None,
+        vision_source=observation.vision_source,
+        held_target_age_s=held_age,
+        waived_checks=CLOSURE_HOLD_WAIVED_CHECKS if held else (),
     )
 
 
@@ -206,6 +246,13 @@ class SimulatedCutController:
     *new* camera observations must be slow and aligned before closure starts.
     After detachment, the caller owns safe retreat; target visibility may naturally
     disappear as the detached piece falls, but hazard contact still latches a stop.
+
+    A ``closure_hold`` observation (the labelled cut-gate change) is accepted only
+    while closing and only with the closure reference's target and timestamp; it
+    stops with ``closure_hold_outside_closing`` or ``closure_hold_target_mismatch``
+    otherwise, and any unknown source stops with ``invalid_vision_source``. Every
+    other check still applies to a held observation; its certificate lists the
+    checks the hold waives. Live observations are handled exactly as before.
     """
 
     def __init__(self, config: CutConfig):
@@ -221,6 +268,33 @@ class SimulatedCutController:
         self.stopped_reason: str | None = None
         self._previous: CutObservation | None = None
         self._closure_reference: CutObservation | None = None
+
+    @property
+    def closure_reference(self) -> CutObservation | None:
+        """The (frozen) observation closure started on; None before closure. Read-only."""
+        return self._closure_reference
+
+    def _vision_source_stop(self, observation: CutObservation) -> str | None:
+        """Why an observation's vision source must stop the cut, or None.
+
+        A live observation proceeds exactly as before; it must not carry a held
+        timestamp. A closure-hold observation is accepted only while closing and
+        only with the closure reference's own target and timestamp.
+        """
+        if observation.vision_source == "live":
+            return None if observation.held_target_timestamp_s is None else "invalid_vision_source"
+        if observation.vision_source != "closure_hold":
+            return "invalid_vision_source"
+        if self.phase != "closing":
+            return "closure_hold_outside_closing"
+        reference = self._closure_reference
+        if (
+            reference is None
+            or tuple(observation.target_position_w) != tuple(reference.target_position_w)
+            or observation.held_target_timestamp_s != reference.vision_timestamp_s
+        ):
+            return "closure_hold_target_mismatch"
+        return None
 
     def _snapshot(self, certificate: CutCertificate, *, detach_event: bool = False) -> CutStep:
         return CutStep(
@@ -274,6 +348,11 @@ class SimulatedCutController:
             raise ValueError("time_s must be finite and strictly increasing.")
         certificate = evaluate_cut_gate(observation, self.config)
         if self.phase == "stopped":
+            return self._snapshot(certificate)
+        source_stop = self._vision_source_stop(observation)
+        if source_stop is not None:
+            self._stop(source_stop)
+            self._previous = observation
             return self._snapshot(certificate)
         if self.detached_at_s is not None:
             if observation.hazard_contact:

@@ -156,6 +156,27 @@ STRATEGIES = {
         "jaw_casts_shadow": False,
         "frames": 200,
     },
+    # The planned approach with two labelled arms that DO change gates, so its results are never pooled with
+    # unchanged-gate runs: the tracker's jaw self-mask (a new jaw_mask_occluded stop, and an appearance check over
+    # the unmasked patch elements) and the closure hold (a cut-gate change: freshness and frame reuse are waived on
+    # held frames, each certified vision_source=closure_hold). Registered constants: perception/jaw_self_mask.py.
+    "planned_pose_jaw_hold": {
+        "name": "planned_pose_jaw_hold",
+        "mode": "planned_pose_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "max_rotation_deg": 1.5,
+        "jaw_self_mask": True,
+        "closure_hold": True,
+        "frames": 200,
+    },
+}
+
+#: The protocol that registered a strategy, where it is not the September 23 strategies protocol.
+STRATEGY_PROTOCOLS = {
+    "planned_pose": "docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md",
+    "jaw_no_shadow": "docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md",
+    "planned_pose_jaw_hold": "docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md",
 }
 
 #: Keys a strategy row may carry and their baseline values; a row that omits
@@ -226,7 +247,7 @@ def experiment_plan(targets=None, daylight="source", photometric_normalization="
         ),
         "protocol": "docs/EVAL_PROTOCOL_2026-09-23.md"
         if strategy is None
-        else "docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md",
+        else STRATEGY_PROTOCOLS.get(strategy, "docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md"),
         "strategy": None if strategy is None else STRATEGIES[strategy],
         "maximum_gpu_minutes": MINUTES_PER_TRIAL * len(runs) * (base["frames"] // 200),
         "runs": runs,

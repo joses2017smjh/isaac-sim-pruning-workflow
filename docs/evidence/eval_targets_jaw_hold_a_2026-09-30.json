@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "scope": "Batch A of the jaw self-mask + closure-hold arm (strategy planned_pose_jaw_hold): spurs 530 and 19444 under the known-map planned approach. The launcher refuses a repeated target inside one plan, so the three 530 repeats are split across batches A {530, 19444}, B {530, 14944} and C {530, 15004}. Results of this arm are never pooled with unchanged-gate runs.",
+  "selection_rule": "Entries copied unchanged (including each planned_final_tool_quat_wxyz) from the planned-pose register; 530 in every batch, then one of 19444, 14944, 15004.",
+  "seed": null,
+  "derived_from": [
+    {
+      "path": "docs/evidence/eval_targets_planned_pose_2026-09-27.json",
+      "sha256": "9ceb188111cc3a6c827be52571d63758e22929530c4715ac66b0cffb01c5ec3e"
+    }
+  ],
+  "planned_orientation_notes": {
+    "530": "55.5 deg total re-orientation from home; tool axis (-0.614, 0.604, 0.508); clear path 13.0 mm to wood, ToF 70.1 mm",
+    "19444": "83.6 deg; tool axis (-0.457, 0.889, 0.022); clear path 9.5 mm, ToF 73.4 mm"
+  },
+  "target_count": 2,
+  "targets": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 530,
+      "max_radius_m": 0.0049202724425022526,
+      "length_m": 0.04787710930189219,
+      "axis": [
+        0.8678482780408019,
+        -0.08091452009686302,
+        -0.49019609008957793
+      ],
+      "source_center_m": [
+        -0.3856199989716212,
+        0.12683776568005367,
+        0.5184510511230163
+      ],
+      "planned_final_tool_quat_wxyz": [
+        -0.0036999055611158134,
+        -0.3523910053343818,
+        0.34939108190645,
+        0.8681778400434457
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "max_radius_m": 0.0065845966327450186,
+      "length_m": 0.04983170404144062,
+      "axis": [
+        0.9242986618931908,
+        0.14376344104247185,
+        -0.3535591275049827
+      ],
+      "source_center_m": [
+        1.9533766766389211,
+        -0.44862578855868157,
+        1.4090135081002644
+      ],
+      "planned_final_tool_quat_wxyz": [
+        0.6103972623744174,
+        -0.36409836702248577,
+        -0.5967973233700069,
+        -0.37239832979723625
+      ]
+    }
+  ]
+}

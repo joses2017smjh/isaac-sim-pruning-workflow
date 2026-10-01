@@ -3,14 +3,32 @@
 Only the initial pixel and branch identity/axis/radius are supplied by the scene.
 Subsequent approach positions come from live image tracking and rendered depth.
 This is classical visual servoing, not learned branch recognition or fracture.
+
+Two labelled, default-off arms change what the demo measures or certifies:
+``jaw_self_mask`` (the tracker ignores the robot's own predicted jaw pixels) and
+``closure_hold`` (a cut-gate change: during closure only, a loss the jaw mask
+explains is replaced by the closure-start target, recorded as such). With both
+off, every call, input and output is what it was before they existed.
 """
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 
 import numpy as np
 
+from isaaclab_pruning.perception.jaw_self_mask import (
+    HOLD_MAX_ROTATION_DEG,
+    HOLD_MAX_TRANSLATION_M,
+    MIN_UNMASKED_PATCH_ELEMENTS,
+    closure_hold_explanation,
+    jaw_boxes,
+    jaw_gap_m,
+    jaw_mask,
+    jaw_mask_summary,
+    pose_change,
+    proxy_roll_rad,
+)
 from isaaclab_pruning.perception.visual_servo import (
     VisualServoConfig,
     VisualServoTracker,
@@ -121,7 +139,19 @@ class ApproachStrategy:
 
 
 class VisionPruningDemo:
-    """One selected branch, no automatic reacquisition or ground-truth fallback."""
+    """One selected branch, no automatic reacquisition or ground-truth fallback.
+
+    ``jaw_self_mask``: each frame's tracker update receives the robot's own jaw
+    silhouette (``perception.jaw_self_mask``) predicted from the rendered tool
+    pose, the jaw's attachment roll, the closure progress that was rendered into
+    the frame (the cut step *before* this observation), the branch radius and
+    the rendering camera. ``closure_hold``: while the cutter is closing, the tool
+    is still within ``HOLD_MAX_*`` of its closure-start pose and the tracker's
+    loss is one the mask explains, the cut observation carries the closure
+    reference's target labelled ``vision_source='closure_hold'``; a second,
+    unchanged cutter receives the honest observation every frame and is recorded
+    as ``cut_without_hold``. Both default to off.
+    """
 
     def __init__(
         self,
@@ -135,7 +165,11 @@ class VisionPruningDemo:
         photometric_normalization="raw",
         approach=None,
         motion_model="translation",
+        jaw_self_mask=False,
+        closure_hold=False,
     ):
+        if not isinstance(jaw_self_mask, bool) or not isinstance(closure_hold, bool):
+            raise ValueError("jaw_self_mask and closure_hold must be bool")
         self.target_id = str(target_id)
         self.axis = np.asarray(branch_axis_w, dtype=float)
         self.radius = float(branch_radius_m)
@@ -161,6 +195,8 @@ class VisionPruningDemo:
                 replenish_features=True,
                 photometric_normalization=photometric_normalization,
                 motion_model=motion_model,
+                # The registered value; read by the tracker only when a self-mask is supplied.
+                min_unmasked_patch_elements=MIN_UNMASKED_PATCH_ELEMENTS,
             )
         )
         self.cutter = SimulatedCutController(
@@ -180,17 +216,59 @@ class VisionPruningDemo:
         self.vision_command_request_count = 0
         self.hazard_contact = False
         self.external_stop_reason = None
+        # Labelled arms; nothing below is touched when both are off.
+        self.jaw_self_mask = jaw_self_mask
+        self.closure_hold = closure_hold
+        self.jaw_roll_rad = proxy_roll_rad(self.closing_axis_tool) if jaw_self_mask else None
+        self.jaw_record = None
+        self.cutter_without_hold = SimulatedCutController(self.cutter.config) if closure_hold else None
+        self.cut_without_hold_step = None
+        self.closure_pose = None
+        self.latched_by_jaw = False
+        self.hold_record = None
 
     def stop(self, reason):
         self.cutter.request_stop(reason)
+        if self.cutter_without_hold is not None:
+            # The shadow verdict must see every external stop the real cutter sees.
+            self.cutter_without_hold.request_stop(reason)
         if self.external_stop_reason is None:
             self.external_stop_reason = reason
 
-    def initialize(self, rgb, depth, seed_pixel):
-        return self.tracker.initialize(rgb, seed_pixel, depth)
+    def initialize(self, rgb, depth, seed_pixel, camera_matrix=None, world_from_optical=None, tool_pose_wxyz=None):
+        if not self.jaw_self_mask:
+            return self.tracker.initialize(rgb, seed_pixel, depth)
+        if camera_matrix is None or world_from_optical is None or tool_pose_wxyz is None:
+            raise ValueError("jaw_self_mask needs the camera calibration, camera pose and tool pose to initialize")
+        # The preview is rendered with the jaws open (closure progress 0).
+        mask, record = self._jaw_self_mask(tool_pose_wxyz, 0.0, camera_matrix, world_from_optical, np.shape(rgb)[:2])
+        result = self.tracker.initialize(rgb, seed_pixel, depth, exclusion_mask=mask)
+        result["jaw_self_mask"] = record
+        return result
+
+    def _jaw_self_mask(self, tool_pose_wxyz, closure_progress, camera_matrix, world_from_optical, shape):
+        """The robot's own jaw pixels in this frame, and their telemetry record."""
+        boxes = jaw_boxes(tool_pose_wxyz, self.jaw_roll_rad, closure_progress, self.radius)
+        mask = jaw_mask(boxes, camera_matrix, world_from_optical, shape)
+        record = {
+            "closure_progress_used": float(closure_progress),
+            "gap_m": float(jaw_gap_m(closure_progress, self.radius)),
+            "roll_rad": self.jaw_roll_rad,
+            **jaw_mask_summary(boxes, mask, camera_matrix, world_from_optical),
+        }
+        return mask, record
 
     def observe(self, rgb, depth, camera_matrix, world_from_optical, time_s, tool_pose_wxyz, hazard_contact=False):
-        self.measurement = self.tracker.update(rgb, depth, camera_matrix, world_from_optical)
+        # The closure progress the runner rendered into this frame is the cut step from the previous
+        # observation; the cutter advances it only further down, so it must be read first.
+        rendered_progress = self.cut_step.closure_progress if self.cut_step else 0.0
+        if self.jaw_self_mask:
+            mask, self.jaw_record = self._jaw_self_mask(
+                tool_pose_wxyz, rendered_progress, camera_matrix, world_from_optical, np.shape(rgb)[:2]
+            )
+            self.measurement = self.tracker.update(rgb, depth, camera_matrix, world_from_optical, exclusion_mask=mask)
+        else:
+            self.measurement = self.tracker.update(rgb, depth, camera_matrix, world_from_optical)
         self.measurement_time = float(time_s)
         self.observations += 1
         self.hazard_contact = bool(hazard_contact)
@@ -210,8 +288,62 @@ class VisionPruningDemo:
             cutter_closing_axis_w=closing_axis,
             hazard_contact=self.hazard_contact,
         )
+        if not self.closure_hold:
+            self.cut_step = self.cutter.update(observation)
+            return self.evidence()
+        honest = observation
+        observation, self.hold_record = self._closure_hold(honest, tool_pose_wxyz, float(time_s))
+        was_closing = self.cutter.phase == "closing"
         self.cut_step = self.cutter.update(observation)
+        if self.cut_step.phase == "closing" and not was_closing:
+            self.closure_pose = np.asarray(tool_pose_wxyz, dtype=float).copy()
+        self.cut_without_hold_step = self.cutter_without_hold.update(honest)
         return self.evidence()
+
+    def _closure_hold(self, observation, tool_pose_wxyz, time_s):
+        """The observation the cutter receives, and the per-frame hold record.
+
+        The hold applies only while the cutter is closing, the tool is still
+        within ``HOLD_MAX_*`` of its closure-start pose, and the measurement is a
+        loss the jaw mask explains (``closure_hold_explanation``). A held
+        observation carries the closure reference's target and timestamp,
+        ``vision_valid=True`` and this frame's time; the cut certificate then
+        lists the checks that labelling waives.
+        """
+        eligible = self.cutter.phase == "closing"
+        stationary, dt_mm, dr_deg = False, None, None
+        if self.closure_pose is not None:
+            translation_m, rotation_deg = pose_change(self.closure_pose, tool_pose_wxyz)
+            dt_mm, dr_deg = translation_m * 1e3, rotation_deg
+            stationary = translation_m < HOLD_MAX_TRANSLATION_M and rotation_deg < HOLD_MAX_ROTATION_DEG
+        explained, explanation = closure_hold_explanation(self.measurement, self.latched_by_jaw)
+        held = bool(eligible and stationary and explained)
+        held_age = None
+        if held:
+            reference = self.cutter.closure_reference
+            observation = replace(
+                observation,
+                target_position_w=reference.target_position_w,
+                vision_valid=True,
+                vision_timestamp_s=time_s,
+                vision_source="closure_hold",
+                held_target_timestamp_s=reference.vision_timestamp_s,
+            )
+            held_age = time_s - reference.vision_timestamp_s
+            self.latched_by_jaw = True
+        record = {
+            "eligible": eligible,
+            "stationary": stationary,
+            "dt_mm": dt_mm,
+            "dr_deg": dr_deg,
+            "explained": explained,
+            "explanation": explanation,
+            "held": held,
+            "held_target_age_s": held_age,
+            "latched_by_jaw": self.latched_by_jaw,
+            "measurement_state": self.measurement.get("state"),
+        }
+        return observation, record
 
     def command(self, tool_pose_wxyz, now_s):
         pose = np.asarray(tool_pose_wxyz, dtype=float)
@@ -376,6 +508,18 @@ class VisionPruningDemo:
             self.vision_command_count += 1
 
     def evidence(self):
+        evidence = self._base_evidence()
+        if self.jaw_self_mask:
+            evidence["jaw_self_mask"] = self.jaw_record
+        if self.closure_hold:
+            evidence["closure_hold"] = self.hold_record
+            step = self.cut_without_hold_step
+            evidence["cut_without_hold"] = (
+                None if step is None else {"phase": step.phase, "stopped_reason": step.stopped_reason}
+            )
+        return evidence
+
+    def _base_evidence(self):
         return {
             "tracker_config": asdict(self.tracker.config),
             "measurement": self.measurement,

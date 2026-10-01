@@ -281,3 +281,134 @@ def test_tool_mouth_rejects_zero_quaternion():
 def test_invalid_config_is_rejected(kwargs):
     with pytest.raises(ValueError):
         controller(**kwargs)
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Closure hold (labelled cut-gate change): vision_source and its certificate
+# ---------------------------------------------------------------------------------------------------------------
+def _closing(stable_frames=2, **kwargs):
+    cut = controller(stable_frames=stable_frames, **kwargs)
+    cut.update(observation(0.0))
+    assert cut.update(observation(0.1)).phase == "closing"
+    return cut
+
+
+def held(time_s, reference_time_s=0.1, **kwargs):
+    base = {
+        "vision_source": "closure_hold",
+        "held_target_timestamp_s": reference_time_s,
+        "vision_valid": True,
+        "vision_timestamp_s": time_s,
+    }
+    base.update(kwargs)
+    return observation(time_s, **base)
+
+
+def test_live_certificate_records_its_source_and_waives_nothing():
+    certificate = evaluate_cut_gate(observation(), CutConfig("branch_7"))
+    assert certificate.vision_source == "live"
+    assert certificate.held_target_age_s is None and certificate.waived_checks == ()
+    assert asdict(controller().update(observation(0.0)))["certificate"]["vision_source"] == "live"
+
+
+def test_closure_hold_certificate_records_source_age_and_the_four_waived_checks():
+    from isaaclab_pruning.task.simulated_cut import CLOSURE_HOLD_WAIVED_CHECKS
+
+    assert CLOSURE_HOLD_WAIVED_CHECKS == (
+        "vision_invalid",
+        "vision_stale_or_future",
+        "vision_timestamp_regressed",
+        "vision_frame_reused_during_closure",
+    )
+    cut = _closing()
+    step = cut.update(held(0.4))
+    assert step.phase == "closing" and step.closure_progress == pytest.approx(0.6)
+    certificate = asdict(step)["certificate"]
+    assert certificate["vision_source"] == "closure_hold"
+    assert certificate["held_target_age_s"] == pytest.approx(0.3)
+    assert certificate["waived_checks"] == CLOSURE_HOLD_WAIVED_CHECKS
+    assert certificate["ready_to_close"] and certificate["reasons"] == ()
+
+
+def test_held_frames_reach_detachment_on_the_closure_clock():
+    cut = _closing()
+    assert not cut.update(held(0.3)).detach_event
+    complete = cut.update(held(0.61))
+    assert complete.detach_event and complete.phase == "retreat"
+    assert complete.certificate.vision_source == "closure_hold"
+
+
+@pytest.mark.parametrize("phase_frames", [0, 1])
+def test_a_closure_hold_outside_closing_stops(phase_frames):
+    cut = controller(stable_frames=3)
+    for index in range(phase_frames):
+        cut.update(observation(0.1 * index))
+    step = cut.update(held(0.5, reference_time_s=0.0))
+    assert step.phase == "stopped" and step.stopped_reason == "closure_hold_outside_closing"
+    assert not step.detach_event
+
+
+def test_a_closure_hold_after_detachment_stops():
+    cut = _closing()
+    assert cut.update(observation(0.7)).detach_event
+    step = cut.update(held(0.8))
+    assert step.phase == "stopped" and step.stopped_reason == "closure_hold_outside_closing" and step.detached
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"target_position_w": (1.0005, 2.0, 3.0)},
+        {"held_target_timestamp_s": 0.0},
+        {"held_target_timestamp_s": None},
+    ],
+)
+def test_a_closure_hold_that_is_not_the_closure_reference_stops(changes):
+    cut = _closing()
+    step = cut.update(held(0.3, **changes))
+    assert step.phase == "stopped" and step.stopped_reason == "closure_hold_target_mismatch"
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [{"vision_source": "replay"}, {"vision_source": None}, {"vision_source": "live", "held_target_timestamp_s": 0.1}],
+)
+def test_an_unknown_vision_source_stops(changes):
+    cut = _closing()
+    step = cut.update(observation(0.3, **changes))
+    assert step.phase == "stopped" and step.stopped_reason == "invalid_vision_source"
+    assert not step.detach_event
+    if changes["vision_source"] != "live":
+        assert "invalid_vision_source" in step.certificate.reasons
+
+
+@pytest.mark.parametrize(
+    "changes,reason",
+    [
+        # The default mouth tolerance is 12 mm; 6 mm in the 0.2 s since the last frame is 30 mm/s (> 25 mm/s).
+        ({"mouth_position_w": (1.0, 2.0, 2.987)}, "gate_lost_during_closure"),
+        ({"cutter_closing_axis_w": (0.0, 0.0, 1.0)}, "gate_lost_during_closure"),
+        ({"hazard_contact": True}, "hazard_contact"),
+        ({"mouth_position_w": (1.0, 2.0, 3.006)}, "unstable_during_closure"),
+    ],
+)
+def test_held_frames_stay_bound_by_mouth_distance_perpendicularity_hazard_and_speed(changes, reason):
+    cut = _closing()
+    step = cut.update(held(0.3, **changes))
+    assert step.phase == "stopped" and step.stopped_reason == reason
+
+
+def test_held_frames_keep_the_reference_radius_check():
+    cut = _closing()
+    step = cut.update(held(0.3, target_radius_m=0.006))
+    assert step.stopped_reason == "unstable_during_closure"
+
+
+def test_closure_reference_is_read_only():
+    cut = controller(stable_frames=2)
+    assert cut.closure_reference is None
+    cut.update(observation(0.0))
+    cut.update(observation(0.1))
+    assert cut.closure_reference.time_s == 0.1
+    with pytest.raises(AttributeError):
+        cut.closure_reference = observation(0.2)

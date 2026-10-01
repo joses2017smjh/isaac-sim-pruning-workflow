@@ -16,6 +16,12 @@ from dataclasses import dataclass
 import numpy as np
 
 MOTION_MODELS = ("translation", "similarity")
+#: Side of the square appearance patch compared by normalized cross-correlation.
+PATCH_SIZE_PX = 13
+PATCH_ELEMENTS = PATCH_SIZE_PX * PATCH_SIZE_PX
+#: Latched state when too few appearance-patch elements lie outside the robot's own self-pixel mask.
+JAW_MASK_OCCLUDED_STATE = "jaw_mask_occluded"
+JAW_MASK_OCCLUDED_REASON = "too_few_unmasked_patch_pixels"
 
 
 def propagate_pixel(pixel_xy, old_points, new_points, motion_model="translation"):
@@ -76,10 +82,20 @@ class VisualServoConfig:
     # removes the sideways drift a median flow shows under approach zoom when
     # the features sit to one side of the tracked point. No gate reads it.
     motion_model: str = "translation"
+    # Read only when the caller supplies a robot self-pixel exclusion mask: the
+    # fewest of the 169 appearance-patch elements that must be unmasked in both
+    # patches before the correlation may be judged (else jaw_mask_occluded).
+    min_unmasked_patch_elements: int = 140
 
     def __post_init__(self):
         if self.photometric_normalization not in ("raw", "clahe"):
             raise ValueError("photometric_normalization must be raw or clahe")
+        if (
+            isinstance(self.min_unmasked_patch_elements, (bool, np.bool_))
+            or not isinstance(self.min_unmasked_patch_elements, (int, np.integer))
+            or not 1 <= self.min_unmasked_patch_elements <= PATCH_ELEMENTS
+        ):
+            raise ValueError(f"min_unmasked_patch_elements must be an integer in 1..{PATCH_ELEMENTS}, not bool")
         if self.motion_model not in MOTION_MODELS:
             raise ValueError(f"motion_model must be one of {MOTION_MODELS}")
         if not isinstance(self.replenish_features, bool):
@@ -122,6 +138,21 @@ def _gray(rgb):
     if rgb.ndim != 3 or rgb.shape[2] not in (3, 4) or rgb.dtype != np.uint8:
         raise ValueError("rgb must be an H x W x 3 (or 4) uint8 RGB image")
     return cv2.cvtColor(np.ascontiguousarray(rgb[:, :, :3]), cv2.COLOR_RGB2GRAY)
+
+
+def _points_in_mask(mask, points):
+    """Whether each point's nearest pixel (``np.rint``) lies inside the bool mask; off-image points do not."""
+    pts = np.asarray(points, float).reshape(-1, 2)
+    out = np.zeros(len(pts), bool)
+    if mask is None or len(pts) == 0:
+        return out
+    finite = np.isfinite(pts).all(axis=1)
+    xy = np.full((len(pts), 2), -1, int)
+    xy[finite] = np.rint(pts[finite]).astype(int)
+    height, width = mask.shape
+    inside = finite & (xy[:, 0] >= 0) & (xy[:, 0] < width) & (xy[:, 1] >= 0) & (xy[:, 1] < height)
+    out[inside] = mask[xy[inside, 1], xy[inside, 0]]
+    return out
 
 
 def project_depth_to_world(pixel_xy, depth_m, camera_matrix, world_from_optical):
@@ -229,6 +260,17 @@ class VisualServoTracker:
     Every other state returns ``target_position_world_m=None``. Tracking loss is
     latched until explicit initialization; invalid depth can recover on the next
     frame, but never authorizes motion in the missing-data interval.
+
+    ``exclusion_mask`` (optional, bool H x W, True = the robot's own pixels) marks
+    pixels that are never evidence: an LK feature whose tracked position (rounded)
+    lies in this frame's mask, or whose previous position lay in the previous
+    frame's mask, is dropped before the feature count, median flow and residual
+    filter; masked pixels are excluded from initial and replenished corners; and
+    the appearance correlation uses only patch elements unmasked in both patches,
+    with the latched state ``jaw_mask_occluded`` when fewer than
+    ``min_unmasked_patch_elements`` remain (checked before the correlation
+    threshold). ``jaw_mask_*`` keys are attribution telemetry, never a decision.
+    Without a mask every output is exactly what it was before masks existed.
     """
 
     def __init__(self, config: VisualServoConfig | None = None):
@@ -241,6 +283,9 @@ class VisualServoTracker:
         self._lost = True
         self._frame_index = 0
         self._accepted_pairs = None
+        # Exclusion masks of the frame held in _previous_gray and of the frame being measured.
+        self._mask_previous = None
+        self._mask_current = None
         # Fixed, explicitly experimental preprocessing; depth and all gates are
         # unchanged. CLAHE can amplify noise and is not an automatic fallback.
         self._clahe = None
@@ -252,6 +297,18 @@ class VisualServoTracker:
     def _prepare_gray(self, rgb):
         gray = _gray(rgb)
         return gray if self._clahe is None else self._clahe.apply(gray)
+
+    @staticmethod
+    def _exclusion_mask(mask, shape):
+        """None, or the caller's bool mask after checking it covers exactly the image (fail closed)."""
+        if mask is None:
+            return None
+        mask = np.asarray(mask)
+        if mask.dtype != bool or mask.ndim != 2:
+            raise ValueError("exclusion_mask must be a boolean H x W array (True = robot self-pixel)")
+        if mask.shape != tuple(shape):
+            raise ValueError(f"exclusion_mask shape {mask.shape} differs from the image {tuple(shape)}")
+        return mask
 
     def _result(self, state, reason=None, **details):
         return {
@@ -315,11 +372,16 @@ class VisualServoTracker:
             return None, {**details, "depth_reason": "invalid_or_inconsistent_center"}
         return median, {**details, "depth_reason": None, "depth_m": median}
 
-    def initialize(self, rgb, pixel_xy, depth=None):
-        """Select an initial target once; does not itself authorize any motion."""
+    def initialize(self, rgb, pixel_xy, depth=None, exclusion_mask=None):
+        """Select an initial target once; does not itself authorize any motion.
+
+        ``exclusion_mask`` (bool H x W, True = robot self-pixel) keeps initial
+        corners off the robot's own pixels; None keeps the original behaviour.
+        """
         import cv2
 
         gray = self._prepare_gray(rgb)
+        excluded = self._exclusion_mask(exclusion_mask, gray.shape)
         pixel = np.asarray(pixel_xy, dtype=np.float32)
         if pixel.shape != (2,) or not np.isfinite(pixel).all():
             raise ValueError("pixel_xy must contain two finite coordinates")
@@ -329,19 +391,25 @@ class VisualServoTracker:
         self._previous_gray, self._pixel = gray, pixel
         self._points, self._last_world = None, None
         self._initial_count, self._frame_index, self._lost = 0, 0, True
+        self._mask_previous, self._mask_current = excluded, None
         half_x, half_y = self.config.roi_half_size_px
         x, y = np.rint(pixel).astype(int)
         mask = np.zeros_like(gray)
         mask[max(0, y - half_y) : min(height, y + half_y + 1), max(0, x - half_x) : min(width, x + half_x + 1)] = 255
+        mask_details = {}
+        if excluded is not None:
+            mask_details["jaw_mask_roi_pixels"] = int(np.count_nonzero((mask > 0) & excluded))
         if depth is not None:
             initial_z, details = self._depth_sample(depth, pixel)
             if initial_z is None:
-                return self._result("initialization_failed", "invalid_initial_depth", **details)
+                return self._result("initialization_failed", "invalid_initial_depth", **details, **mask_details)
             depth_array = np.asarray(depth).reshape(gray.shape)
             same_surface = np.isfinite(depth_array) & (
                 np.abs(depth_array - initial_z) <= self.config.max_depth_spread_m
             )
             mask[~same_surface] = 0
+        if excluded is not None:
+            mask[excluded] = 0
         self._points = cv2.goodFeaturesToTrack(
             gray,
             maxCorners=self.config.max_features,
@@ -352,9 +420,9 @@ class VisualServoTracker:
         )
         self._initial_count = 0 if self._points is None else len(self._points)
         if self._initial_count < self.config.min_features:
-            return self._result("initialization_failed", "insufficient_texture")
+            return self._result("initialization_failed", "insufficient_texture", **mask_details)
         self._lost = False
-        return self._result("initialized", "awaiting_rgb_depth_measurement")
+        return self._result("initialized", "awaiting_rgb_depth_measurement", **mask_details)
 
     def _track_points(self, gray):
         import cv2
@@ -386,17 +454,48 @@ class VisualServoTracker:
             & (new[:, 1] >= 0)
             & (new[:, 1] < height)
         )
+        mask_details = {}
+        if self._mask_current is not None:
+            # A feature on the robot's own pixels (now, or in the previous frame) never votes on the flow.
+            in_mask = _points_in_mask(self._mask_current, new) | _points_in_mask(self._mask_previous, old)
+            would_pass, would_accept = self._unmasked_flow_outcome(valid, old, new)
+            mask_details = {
+                "jaw_mask_features_in": int(len(old)),
+                "jaw_mask_valid_before_mask": int(valid.sum()),
+                "jaw_mask_dropped_valid": int((valid & in_mask).sum()),
+                "jaw_mask_in_mask_any": int(in_mask.sum()),
+                "jaw_mask_unmasked_flow_would_pass": would_pass,
+                "jaw_mask_unmasked_accepted_count": would_accept,
+            }
+            valid = valid & ~in_mask
         if np.count_nonzero(valid) < self.config.min_features:
-            return None, None, {"flow_reason": "too_few_roundtrip_inliers", "roundtrip_inlier_count": int(valid.sum())}
+            return (
+                None,
+                None,
+                {
+                    "flow_reason": "too_few_roundtrip_inliers",
+                    "roundtrip_inlier_count": int(valid.sum()),
+                    **mask_details,
+                },
+            )
         flow = new - old
         median_flow = np.median(flow[valid], axis=0)
         valid &= np.linalg.norm(flow - median_flow, axis=1) <= self.config.max_flow_residual_px
-        details = {"roundtrip_inlier_count": int(valid.sum())}
+        details = {"roundtrip_inlier_count": int(valid.sum()), **mask_details}
         if np.count_nonzero(valid) < self.config.min_features:
             return None, None, {**details, "flow_reason": "incoherent_motion"}
         details["median_roundtrip_error_px"] = float(np.median(roundtrip[valid]))
         self._accepted_pairs = (old[valid], new[valid])
         return new[valid].reshape(-1, 1, 2), np.median(flow[valid], axis=0), details
+
+    def _unmasked_flow_outcome(self, valid, old, new):
+        """Attribution only: whether the same LK output without the mask passes the flow checks, and its count."""
+        if np.count_nonzero(valid) < self.config.min_features:
+            return False, int(valid.sum())
+        flow = new - old
+        median_flow = np.median(flow[valid], axis=0)
+        accepted = valid & (np.linalg.norm(flow - median_flow, axis=1) <= self.config.max_flow_residual_px)
+        return bool(np.count_nonzero(accepted) >= self.config.min_features), int(accepted.sum())
 
     def _appearance(self, gray, next_pixel):
         import cv2
@@ -408,6 +507,47 @@ class VisualServoTracker:
             return 0.0
         correlation = np.mean((previous - previous.mean()) * (current - current.mean())) / (old_std * new_std)
         return float(np.clip(correlation, -1.0, 1.0))
+
+    def _masked_appearance(self, gray, next_pixel):
+        """Correlation over patch elements unmasked in both patches (None when none remain), and telemetry.
+
+        The masks are sampled with the patch's own ``getRectSubPix`` footprint and
+        any nonzero weight counts as masked. ``min_patch_std`` applies to the kept
+        elements; with nothing masked the full-patch formula runs unchanged.
+        """
+        import cv2
+
+        size = (PATCH_SIZE_PX, PATCH_SIZE_PX)
+        previous_masked = cv2.getRectSubPix(self._mask_previous.astype(np.float32), size, tuple(self._pixel)) > 0
+        current_masked = cv2.getRectSubPix(self._mask_current.astype(np.float32), size, tuple(next_pixel)) > 0
+        keep = ~(previous_masked | current_masked)
+        kept = int(keep.sum())
+        info = {
+            "jaw_mask_patch_unmasked": kept,
+            "jaw_mask_patch_masked_prev": int(previous_masked.sum()),
+            "jaw_mask_patch_masked_cur": int(current_masked.sum()),
+        }
+        if kept == PATCH_ELEMENTS:
+            return self._appearance(gray, next_pixel), info
+        if kept == 0:
+            return None, info
+        previous = cv2.getRectSubPix(self._previous_gray.astype(np.float32), size, tuple(self._pixel))[keep]
+        current = cv2.getRectSubPix(gray.astype(np.float32), size, tuple(next_pixel))[keep]
+        old_std, new_std = float(previous.std()), float(current.std())
+        info["jaw_mask_kept_std"] = [old_std, new_std]
+        if min(old_std, new_std) < self.config.min_patch_std:
+            return 0.0, info
+        correlation = np.mean((previous - previous.mean()) * (current - current.mean())) / (old_std * new_std)
+        return float(np.clip(correlation, -1.0, 1.0)), info
+
+    def _mask_pixel_flags(self, pixel, mask):
+        """Telemetry: whether a pixel, or the depth window around it, touches the mask."""
+        x, y = np.rint(pixel).astype(int)
+        radius = self.config.depth_radius_px
+        height, width = mask.shape
+        window = mask[max(0, y - radius) : min(height, y + radius + 1), max(0, x - radius) : min(width, x + radius + 1)]
+        inside = 0 <= x < width and 0 <= y < height and bool(mask[y, x])
+        return {"jaw_mask_pixel_in_mask": inside, "jaw_mask_depth_window_in_mask": bool(window.any())}
 
     def _replenish_for_next_frame(self, depth, depth_m):
         """Add local same-depth corners AFTER a valid measurement, never re-seed.
@@ -430,6 +570,8 @@ class VisualServoTracker:
         mask[max(0, y - half_y) : min(height, y + half_y + 1), max(0, x - half_x) : min(width, x + half_x + 1)] = 255
         values = np.asarray(depth).reshape(gray.shape)
         mask[~np.isfinite(values) | (np.abs(values - depth_m) > self.config.max_depth_spread_m)] = 0
+        if self._mask_previous is not None:
+            mask[self._mask_previous] = 0  # this frame's self-pixels (previous_gray is this frame here)
         for point in self._points.reshape(-1, 2):
             cv2.circle(mask, tuple(np.rint(point).astype(int)), 3, 0, -1)
         candidates = cv2.goodFeaturesToTrack(
@@ -445,14 +587,22 @@ class VisualServoTracker:
         self._points = np.concatenate((self._points, candidates))
         return candidates.reshape(-1, 2).astype(float).tolist()
 
-    def update(self, rgb, depth, camera_matrix, world_from_optical):
-        """Measure the tracked target; non-tracking results require a hold/stop."""
+    def update(self, rgb, depth, camera_matrix, world_from_optical, exclusion_mask=None):
+        """Measure the tracked target; non-tracking results require a hold/stop.
+
+        ``exclusion_mask`` is this frame's robot self-pixel mask (see the class
+        docstring); None gives exactly the unmasked tracker.
+        """
+        excluded = self._exclusion_mask(exclusion_mask, np.shape(rgb)[:2]) if exclusion_mask is not None else None
         self._frame_index += 1
         if self._lost or self._previous_gray is None:
             return self._result("tracking_lost", "explicit_initialization_required")
         gray = self._prepare_gray(rgb)
         if gray.shape != self._previous_gray.shape:
             return self._lose("image_shape_changed")
+        self._mask_current = excluded
+        if excluded is not None and self._mask_previous is None:
+            self._mask_previous = np.zeros(gray.shape, bool)
         points, flow, details = self._track_points(gray)
         if points is None:
             return self._lose("optical_flow_failed", **details)
@@ -464,11 +614,26 @@ class VisualServoTracker:
             details.update(applied)
         if not (0 <= next_pixel[0] < gray.shape[1] and 0 <= next_pixel[1] < gray.shape[0]):
             return self._lose("target_outside_image", **details)
-        correlation = self._appearance(gray, next_pixel)
+        if excluded is None:
+            correlation = self._appearance(gray, next_pixel)
+        else:
+            correlation, patch_details = self._masked_appearance(gray, next_pixel)
+            details.update(patch_details)
+            details.update(
+                {f"{key}_propagated": value for key, value in self._mask_pixel_flags(next_pixel, excluded).items()}
+            )
+            if patch_details["jaw_mask_patch_unmasked"] < self.config.min_unmasked_patch_elements:
+                # Too little of the patch is the branch: no appearance judgement, no target, latched.
+                self._lost = True
+                details["jaw_mask_patch_correlation_kept"] = correlation
+                return self._result(JAW_MASK_OCCLUDED_STATE, JAW_MASK_OCCLUDED_REASON, **details)
         details["patch_correlation"] = correlation
         if correlation < self.config.min_patch_correlation:
             return self._lose("appearance_changed_or_occluded", **details)
         self._previous_gray, self._points, self._pixel = gray, points, next_pixel
+        self._mask_previous = excluded
+        if excluded is not None:
+            details.update(self._mask_pixel_flags(self._pixel, excluded))
         depth_m, depth_details = self._depth_sample(depth, self._pixel)
         details.update(depth_details)
         if depth_m is None:
@@ -484,6 +649,13 @@ class VisualServoTracker:
         confidence = float(
             min(1.0, len(points) / self._initial_count) * max(0.0, correlation) * details["depth_valid_fraction"]
         )
+        if excluded is not None and "jaw_mask_unmasked_accepted_count" in details:
+            # Attribution only: the same confidence with the feature count the unmasked flow would have accepted.
+            details["jaw_mask_confidence_with_unmasked_count"] = float(
+                min(1.0, details["jaw_mask_unmasked_accepted_count"] / self._initial_count)
+                * max(0.0, correlation)
+                * details["depth_valid_fraction"]
+            )
         if confidence < self.config.min_confidence:
             return self._lose("low_confidence", measured_confidence=confidence, **details)
         self._last_world = world

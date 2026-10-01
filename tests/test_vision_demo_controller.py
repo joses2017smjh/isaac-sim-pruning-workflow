@@ -433,3 +433,324 @@ def test_planned_approach_holds_without_valid_tracking_and_identity_plan_uses_th
     command, phase, _ = controller.command(POSE, 0.15)
     assert phase == "vision_approach" and np.allclose(command[3:], POSE[3:])
     assert controller.evidence()["planned_tool_quat_wxyz"] == pytest.approx(list(POSE[3:]))
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Labelled arms: jaw self-mask and closure hold
+# ---------------------------------------------------------------------------------------------------------------
+UNCHANGED_EVIDENCE_KEYS = {
+    "tracker_config",
+    "measurement",
+    "measurement_time_s",
+    "cut",
+    "observations",
+    "vision_command_count",
+    "vision_command_request_count",
+    "external_stop_reason",
+    "approach_strategy",
+    "approach_axis_w",
+    "approach_phase",
+    "planned_tool_quat_wxyz",
+    "standoff_point_w",
+    "retreat_phase",
+    "mouth_offset_tool_m",
+    "closing_axis_tool",
+    "target_identity_axis_radius_source",
+    "depth_source",
+    "cut_model",
+}
+SHAPE = (320, 480)
+CAMERA = np.array([[320.0, 0.0, 240.0], [0.0, 320.0, 160.0], [0.0, 0.0, 1.0]])
+
+
+def jaw_camera(pose=POSE):
+    """Optical axes along world axes, 12 cm in front of the jaw centre (tool-local z 0.07) and looking at it."""
+    transform = np.eye(4)
+    transform[:3, 3] = np.asarray(pose[:3]) + [0.0, 0.0, -0.05]
+    return transform
+
+
+def occluded():
+    return {"state": "jaw_mask_occluded", "reason": "too_few_unmasked_patch_pixels", "target_position_world_m": None}
+
+
+def latched():
+    return {"state": "tracking_lost", "reason": "explicit_initialization_required", "target_position_world_m": None}
+
+
+def lost(reason, **telemetry):
+    return {"state": "tracking_lost", "reason": reason, "target_position_world_m": None, **telemetry}
+
+
+class MaskRecordingTracker(StubTracker):
+    def __init__(self, responses, config):
+        super().__init__(responses, config)
+        self.masks = []
+        self.initial_masks = []
+
+    def initialize(self, rgb, pixel, depth, exclusion_mask=None):
+        self.initial_masks.append(exclusion_mask)
+        return {"state": "initialized", "target_position_world_m": None}
+
+    def update(self, rgb, depth, matrix, transform, exclusion_mask=None):
+        self.masks.append(exclusion_mask)
+        return self.responses.popleft()
+
+
+def masked_demo(*responses, **kwargs):
+    options = dict(target_id="branch_7", branch_axis_w=(0, 0, 1), branch_radius_m=0.004, home_pose_wxyz=POSE)
+    options.update(kwargs)
+    controller = VisionPruningDemo(**options)
+    controller.tracker = MaskRecordingTracker(responses, controller.tracker.config)
+    return controller
+
+
+def observe_frame(controller, time_s, pose=POSE, **kwargs):
+    rgb = np.zeros((*SHAPE, 3), dtype=np.uint8)
+    depth = np.zeros(SHAPE, dtype=np.float32)
+    return controller.observe(rgb, depth, CAMERA, jaw_camera(pose), time_s, pose, **kwargs)
+
+
+def test_flags_off_is_the_unchanged_controller_with_unchanged_calls_and_evidence():
+    responses = [tracking(MOUTH), tracking(MOUTH), occluded(), latched(), tracking(MOUTH)]
+    default = demo(*responses)
+    explicit = demo(*responses, jaw_self_mask=False, closure_hold=False)
+    assert explicit.cutter_without_hold is None and explicit.jaw_roll_rad is None
+    assert default.initialize("seed rgb", "seed depth", [3, 4]) == explicit.initialize("seed rgb", "seed depth", [3, 4])
+    for time_s in (0.0, 0.1, 0.2, 0.3, 0.4):
+        first, second = observe(default, time_s), observe(explicit, time_s)
+        assert first == second
+        assert set(first) == UNCHANGED_EVIDENCE_KEYS
+        assert first["cut"]["certificate"]["vision_source"] == "live"
+        assert first["cut"]["certificate"]["waived_checks"] == ()
+        assert first["cut"]["certificate"]["held_target_age_s"] is None
+    # StubTracker's 4-argument update would raise on any extra argument; the loss stopped the cut as before.
+    assert all(len(update) == 4 for update in explicit.tracker.updates)
+    assert explicit.cut_step.stopped_reason == "vision_invalid"
+
+
+def test_arms_must_be_booleans():
+    for bad in ({"jaw_self_mask": 1}, {"closure_hold": "yes"}):
+        with pytest.raises(ValueError, match="bool"):
+            VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, **bad)
+
+
+def test_jaw_mask_uses_the_rendered_pre_update_closure_progress():
+    from isaaclab_pruning.perception.jaw_self_mask import jaw_boxes, jaw_mask
+
+    controller = masked_demo(*[tracking(MOUTH)] * 8, jaw_self_mask=True)
+    progresses = []
+    for time_s in (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7):
+        rendered = controller.cut_step.closure_progress if controller.cut_step else 0.0
+        evidence = observe_frame(controller, time_s)
+        mask = controller.tracker.masks[-1]
+        assert mask.dtype == bool and mask.shape == SHAPE
+        expected = jaw_mask(jaw_boxes(POSE, 0.0, rendered, 0.004), CAMERA, jaw_camera(), SHAPE)
+        np.testing.assert_array_equal(mask, expected)
+        record = evidence["jaw_self_mask"]
+        assert record["closure_progress_used"] == rendered
+        assert record["gap_m"] == pytest.approx((1 - rendered) * 0.032 + rendered * 0.008)
+        assert record["mask_pixel_count"] == int(expected.sum()) and len(record["corners_px"]) == 16
+        advanced = controller.cut_step.closure_progress
+        if advanced != rendered:
+            # The progress the cutter reaches during this observation is NOT what this frame was rendered with.
+            assert not np.array_equal(
+                mask, jaw_mask(jaw_boxes(POSE, 0.0, advanced, 0.004), CAMERA, jaw_camera(), SHAPE)
+            )
+        progresses.append(rendered)
+        json.dumps(evidence, allow_nan=False)
+    assert progresses[:5] == [0.0] * 5 and progresses[5] > 0 and progresses == sorted(progresses)
+
+
+def test_jaw_initialization_builds_the_open_preview_mask_and_refuses_without_camera_or_pose():
+    from isaaclab_pruning.perception.jaw_self_mask import jaw_boxes, jaw_mask
+
+    controller = masked_demo(jaw_self_mask=True)
+    rgb, depth = np.zeros((*SHAPE, 3), dtype=np.uint8), np.zeros(SHAPE, dtype=np.float32)
+    with pytest.raises(ValueError, match="jaw_self_mask"):
+        controller.initialize(rgb, depth, [240, 160])
+    with pytest.raises(ValueError, match="jaw_self_mask"):
+        controller.initialize(rgb, depth, [240, 160], camera_matrix=CAMERA, world_from_optical=jaw_camera())
+    result = controller.initialize(
+        rgb, depth, [240, 160], camera_matrix=CAMERA, world_from_optical=jaw_camera(), tool_pose_wxyz=POSE
+    )
+    expected = jaw_mask(jaw_boxes(POSE, 0.0, 0.0, 0.004), CAMERA, jaw_camera(), SHAPE)
+    np.testing.assert_array_equal(controller.tracker.initial_masks[-1], expected)
+    assert result["jaw_self_mask"]["closure_progress_used"] == 0.0 and result["jaw_self_mask"]["gap_m"] == 0.032
+
+
+def _into_closing(controller, observe_fn=observe):
+    for time_s in (0.0, 0.1, 0.2, 0.3):
+        observe_fn(controller, time_s)
+    assert controller.cut_step.phase == "closing"
+
+
+def test_closure_hold_carries_the_reference_target_to_detachment_and_records_the_shadow_stop():
+    from isaaclab_pruning.task.simulated_cut import CLOSURE_HOLD_WAIVED_CHECKS
+
+    controller = demo(*[tracking(MOUTH)] * 4, occluded(), *[latched()] * 5, closure_hold=True)
+    _into_closing(controller)
+    reference = controller.cutter.closure_reference
+    assert reference.target_position_w == tuple(MOUTH) and reference.vision_timestamp_s == 0.3
+    evidence = observe(controller, 0.4)
+    hold = evidence["closure_hold"]
+    assert hold["eligible"] and hold["stationary"] and hold["explained"] and hold["held"] and hold["latched_by_jaw"]
+    assert hold["explanation"] == "too_few_unmasked_patch_pixels" and hold["dt_mm"] == 0.0 and hold["dr_deg"] == 0.0
+    certificate = evidence["cut"]["certificate"]
+    assert certificate["vision_source"] == "closure_hold"
+    assert certificate["waived_checks"] == CLOSURE_HOLD_WAIVED_CHECKS
+    assert certificate["held_target_age_s"] == pytest.approx(0.1) == hold["held_target_age_s"]
+    assert certificate["mouth_distance_m"] == 0.0 and certificate["ready_to_close"]
+    assert evidence["cut"]["phase"] == "closing" and evidence["cut"]["closure_progress"] == pytest.approx(1 / 6)
+    # M alone (the shadow cutter fed the honest observation) stops here, as the unchanged gate would.
+    assert evidence["cut_without_hold"] == {"phase": "stopped", "stopped_reason": "vision_invalid"}
+    for time_s in (0.5, 0.6, 0.7, 0.8):
+        evidence = observe(controller, time_s)
+        assert (
+            evidence["closure_hold"]["held"] and evidence["closure_hold"]["explanation"] == "latched_by_held_jaw_loss"
+        )
+        assert evidence["cut"]["phase"] == "closing" and not evidence["cut"]["detach_event"]
+    evidence = observe(controller, 0.9)
+    assert evidence["cut"]["detach_event"] and evidence["cut"]["phase"] == "retreat"
+    assert evidence["cut"]["certificate"]["vision_source"] == "closure_hold"
+    assert evidence["cut"]["certificate"]["held_target_age_s"] == pytest.approx(0.6)
+    assert evidence["cut_without_hold"] == {"phase": "stopped", "stopped_reason": "vision_invalid"}
+    displaced = POSE.copy()
+    displaced[:3] += [0.01, 0, 0]
+    assert controller.command(displaced, 0.9)[1] == "retreat"
+    json.dumps(evidence, allow_nan=False)
+
+
+def test_flow_failure_after_a_mask_drop_is_held():
+    flow = lost("optical_flow_failed", jaw_mask_dropped_valid=1, jaw_mask_unmasked_flow_would_pass=True)
+    controller = demo(*[tracking(MOUTH)] * 4, flow, latched(), closure_hold=True)
+    _into_closing(controller)
+    assert observe(controller, 0.4)["closure_hold"]["explanation"] == "flow_failed_only_after_mask_drop"
+    assert observe(controller, 0.5)["closure_hold"]["held"]
+    assert controller.cut_step.phase == "closing"
+
+
+@pytest.mark.parametrize(
+    "measurement",
+    [
+        lost("appearance_changed_or_occluded"),
+        lost("optical_flow_failed", jaw_mask_dropped_valid=0, jaw_mask_unmasked_flow_would_pass=True),
+        lost("optical_flow_failed", jaw_mask_dropped_valid=3, jaw_mask_unmasked_flow_would_pass=False),
+        lost("optical_flow_failed"),
+        lost("world_target_jump_or_wrong_surface"),
+        lost("low_confidence"),
+        {"state": "invalid_depth", "reason": "depth_measurement_rejected", "target_position_world_m": None},
+        latched(),
+    ],
+)
+def test_losses_the_mask_does_not_explain_still_stop_during_closure(measurement):
+    controller = demo(*[tracking(MOUTH)] * 4, measurement, closure_hold=True)
+    _into_closing(controller)
+    evidence = observe(controller, 0.4)
+    assert not evidence["closure_hold"]["held"] and not evidence["closure_hold"]["explained"]
+    assert evidence["cut"]["phase"] == "stopped" and evidence["cut"]["stopped_reason"] == "vision_invalid"
+    assert evidence["cut"]["certificate"]["vision_source"] == "live"
+    assert evidence["cut_without_hold"] == {"phase": "stopped", "stopped_reason": "vision_invalid"}
+
+
+@pytest.mark.parametrize(
+    "delta,stationary",
+    [
+        ({"translation": [0.0004, 0.0, 0.0]}, True),
+        ({"translation": [0.0006, 0.0, 0.0]}, False),
+        ({"rotation_deg": 0.2}, True),
+        ({"rotation_deg": 0.3}, False),
+    ],
+)
+def test_the_hold_requires_the_tool_still_at_its_closure_start_pose(delta, stationary):
+    moved = POSE.copy()
+    moved[:3] += delta.get("translation", [0.0, 0.0, 0.0])
+    half = np.radians(delta.get("rotation_deg", 0.0)) / 2
+    moved[3:] = [np.cos(half), 0.0, 0.0, np.sin(half)]  # about the tool axis: the mouth stays put
+    controller = demo(*[tracking(MOUTH)] * 4, occluded(), closure_hold=True)
+    _into_closing(controller)
+    evidence = observe(controller, 0.4, moved)
+    assert evidence["closure_hold"]["stationary"] is stationary
+    assert evidence["closure_hold"]["held"] is stationary
+    assert evidence["cut"]["phase"] == ("closing" if stationary else "stopped")
+
+
+def test_no_hold_in_approach_or_align():
+    approach = demo(tracking(MOUTH + [0.1, 0, 0]), occluded(), closure_hold=True)
+    assert observe(approach, 0.0)["cut"]["phase"] == "approach"
+    evidence = observe(approach, 0.1)
+    assert not evidence["closure_hold"]["eligible"] and not evidence["closure_hold"]["held"]
+    assert evidence["closure_hold"]["explained"]  # a jaw occlusion, but not during closure
+    assert evidence["cut"]["stopped_reason"] == "vision_invalid"
+    align = demo(tracking(MOUTH), tracking(MOUTH), occluded(), closure_hold=True)
+    observe(align, 0.0)
+    assert observe(align, 0.1)["cut"]["phase"] == "align"
+    evidence = observe(align, 0.2)
+    assert not evidence["closure_hold"]["held"] and evidence["cut"]["stopped_reason"] == "vision_invalid"
+    assert align.latched_by_jaw is False
+
+
+def test_external_stops_reach_the_shadow_cutter_too():
+    controller = demo(*[tracking(MOUTH)] * 6, closure_hold=True)
+    observe(controller, 0.0)
+    observe(controller, 0.1)
+    controller.stop("tof_minimum_clearance")
+    evidence = observe(controller, 0.2)
+    assert evidence["cut"]["stopped_reason"] == "tof_minimum_clearance"
+    assert evidence["cut_without_hold"] == {"phase": "stopped", "stopped_reason": "tof_minimum_clearance"}
+
+
+def test_arm_evidence_appears_only_with_its_flag():
+    masked = masked_demo(*[tracking(MOUTH)] * 2, jaw_self_mask=True)
+    assert masked.evidence()["jaw_self_mask"] is None and "closure_hold" not in masked.evidence()
+    evidence = observe_frame(masked, 0.0)
+    assert set(evidence) == UNCHANGED_EVIDENCE_KEYS | {"jaw_self_mask"}
+    held = demo(tracking(MOUTH), closure_hold=True)
+    assert held.evidence()["cut_without_hold"] is None
+    assert set(observe(held, 0.0)) == UNCHANGED_EVIDENCE_KEYS | {"closure_hold", "cut_without_hold"}
+
+
+def _synthetic_frame(progress, radius):
+    """A static textured plane through the mouth height, with the jaw surrogate drawn where it is rendered."""
+    from isaaclab_pruning.perception.jaw_self_mask import jaw_boxes, jaw_mask
+
+    rgb = np.random.default_rng(5).integers(20, 236, (*SHAPE, 3), dtype=np.uint8)
+    depth = np.full(SHAPE, 0.12, dtype=np.float32)
+    jaw = jaw_mask(jaw_boxes(POSE, 0.0, progress, radius), CAMERA, jaw_camera(), SHAPE, margin_px=0.0)
+    rgb[jaw] = (107, 120, 135)
+    depth[jaw] = 0.105
+    return rgb, depth
+
+
+@pytest.mark.parametrize("closure_hold", [True, False])
+def test_real_tracker_mask_and_hold_on_a_synthetic_closure(closure_hold):
+    # The tracked bark sits 6 mm from the mouth toward one jaw; the closing jaw covers its patch mid-closure.
+    pytest.importorskip("cv2")
+    radius = 0.002
+    controller = VisionPruningDemo("branch_7", (0, 1, 0), radius, POSE, jaw_self_mask=True, closure_hold=closure_hold)
+    rgb, depth = _synthetic_frame(0.0, radius)
+    seed = [240 + 320 * 0.006 / 0.12, 160.0]
+    initialized = controller.initialize(
+        rgb, depth, seed, camera_matrix=CAMERA, world_from_optical=jaw_camera(), tool_pose_wxyz=POSE
+    )
+    assert initialized["state"] == "initialized"
+    states, phases = [], []
+    for step in range(10):
+        progress = controller.cut_step.closure_progress if controller.cut_step else 0.0
+        rgb, depth = _synthetic_frame(progress, radius)
+        evidence = controller.observe(rgb, depth, CAMERA, jaw_camera(), step / 10, POSE)
+        states.append(evidence["measurement"]["state"])
+        phases.append(evidence["cut"]["phase"])
+        json.dumps(evidence, allow_nan=False)
+        if evidence["cut"]["phase"] in ("stopped", "retreat"):
+            break
+    first_occluded = states.index("jaw_mask_occluded")
+    assert first_occluded > phases.index("closing")
+    assert all(state == "tracking" for state in states[:first_occluded])
+    if closure_hold:
+        assert phases[-1] == "retreat" and evidence["cut"]["detach_event"]
+        assert evidence["cut"]["certificate"]["vision_source"] == "closure_hold"
+        assert evidence["cut_without_hold"] == {"phase": "stopped", "stopped_reason": "vision_invalid"}
+    else:
+        assert phases[-1] == "stopped" and evidence["cut"]["stopped_reason"] == "vision_invalid"
+        assert len(states) == first_occluded + 1

@@ -452,3 +452,260 @@ def test_similarity_tracker_matches_translation_on_a_pure_translation_and_keeps_
     image, depth = _scene(2, 1)
     depth[79:83, 121:124] = 1.5
     assert tracker.update(image, depth, K, WORLD_FROM_OPTICAL)["state"] != "tracking"
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Robot self-pixel exclusion mask (the jaw self-mask arm)
+# ---------------------------------------------------------------------------------------------------------------
+def _no_mask_keys(result):
+    return {key: value for key, value in result.items() if not key.startswith("jaw_mask_")}
+
+
+def _loss_sequence():
+    """Tracking, depth dropout, recovery, motion, a blank frame, then the latched loss."""
+    sequence = []
+    for dx, dy in [(0, 0), (2, 1), (2, 1), (4, 2), (6, 3)]:
+        sequence.append(_scene(dx, dy))
+    image, depth = _scene(2, 1)
+    sequence.insert(2, (image, np.full_like(depth, np.nan)))
+    sequence.append((np.zeros_like(image), depth))
+    sequence.append(_scene(6, 3))
+    return sequence
+
+
+@pytest.mark.parametrize(
+    "config",
+    [
+        VisualServoConfig(),
+        VisualServoConfig(depth_radius_px=1, feature_quality_level=0.005, replenish_features=True),
+        VisualServoConfig(replenish_features=True, motion_model="similarity"),
+    ],
+)
+def test_exclusion_mask_none_and_all_false_give_identical_measurements(config):
+    plain, masked = VisualServoTracker(config), VisualServoTracker(config)
+    image, depth = _scene()
+    empty = np.zeros(depth.shape, bool)
+    first = plain.initialize(image, [120, 80], depth)
+    assert "jaw_mask_roi_pixels" not in first
+    assert _no_mask_keys(masked.initialize(image, [120, 80], depth, exclusion_mask=empty)) == first
+    for image, depth in _loss_sequence():
+        expected = plain.update(image, depth, K, WORLD_FROM_OPTICAL)
+        assert not any(key.startswith("jaw_mask_") for key in expected)
+        result = masked.update(image, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=empty)
+        assert _no_mask_keys(result) == expected
+        json.dumps(result, allow_nan=False)
+
+
+def _jaw_scene(shift):
+    """Static textured branch everywhere, plus two textured 'jaw' bands that move +2 px per frame in x.
+
+    The bands cover rows 56-70 and 90-104 of the 29 x 49 ROI around (120, 80), well over half of it, and never
+    the 13 x 13 appearance patch (rows 74-86). Depth is one surface, so every corner is a candidate feature.
+    """
+    rng = np.random.default_rng(11)
+    image = rng.integers(20, 236, (160, 240, 3), dtype=np.uint8)
+    jaw = np.random.default_rng(23).integers(0, 256, (49, 90, 3), dtype=np.uint8)
+    mask = np.zeros((160, 240), bool)
+    for top in (56, 90):
+        x0 = 75 + shift
+        image[top : top + 15, x0 : x0 + 90] = jaw[top - 56 : top - 56 + 15]
+        mask[top : top + 15, x0 : x0 + 90] = True
+    return image, np.full((160, 240), 0.6, dtype=np.float32), mask
+
+
+def test_features_on_a_moving_masked_region_never_vote():
+    results = {}
+    for name in ("plain", "masked"):
+        tracker = VisualServoTracker()
+        image, depth, _ = _jaw_scene(0)
+        assert tracker.initialize(image, [120, 80], depth)["state"] == "initialized"
+        assert (
+            sum(56 <= y <= 70 or 90 <= y <= 104 for _, y in tracker._points.reshape(-1, 2)) > len(tracker._points) / 2
+        )
+        trail = []
+        for step in (1, 2, 3):
+            image, depth, mask = _jaw_scene(2 * step)
+            if name == "masked":
+                # The previous frame's mask came from the frame before (the initial frame had no mask here).
+                result = tracker.update(image, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=mask)
+            else:
+                result = tracker.update(image, depth, K, WORLD_FROM_OPTICAL)
+            trail.append(result)
+        results[name] = trail
+    masked = results["masked"]
+    assert all(result["state"] == "tracking" for result in masked), [r["state"] for r in masked]
+    for result in masked:
+        np.testing.assert_allclose(result["pixel_xy"], [120, 80], atol=0.05)
+        assert result["jaw_mask_patch_unmasked"] == 169
+    assert masked[0]["jaw_mask_dropped_valid"] > 0
+    # Without the mask the moving bands carry the median flow: the pixel leaves the static texture or is lost.
+    plain = results["plain"]
+    assert any(
+        result["state"] != "tracking" or np.linalg.norm(np.subtract(result["pixel_xy"], [120, 80])) > 1.0
+        for result in plain
+    )
+
+
+def _patch_tracker(masked_elements, config=None):
+    """A tracker initialized at the integer pixel (120, 80) with ``masked_elements`` of its 13 x 13 patch masked."""
+    image, depth = _scene()
+    mask = np.zeros(depth.shape, bool)
+    rows, cols = np.unravel_index(np.arange(masked_elements), (13, 13))
+    mask[74 + rows, 114 + cols] = True
+    tracker = VisualServoTracker(config)
+    assert tracker.initialize(image, [120, 80], depth, exclusion_mask=mask)["state"] == "initialized"
+    return tracker, image, depth, mask
+
+
+def test_correlation_uses_only_elements_unmasked_in_both_patches():
+    cv2 = pytest.importorskip("cv2")
+    tracker, image, depth, mask = _patch_tracker(26)
+    tracker._mask_current = np.zeros(depth.shape, bool)
+    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    changed = gray.copy()
+    changed[74:76, 114:127] = np.where(changed[74:76, 114:127] > 128, 0, 255)  # only the masked rows change
+    correlation, info = tracker._masked_appearance(changed, np.float32([120.0, 80.0]))
+    assert info["jaw_mask_patch_unmasked"] == 169 - 26 and info["jaw_mask_patch_masked_prev"] == 26
+    assert correlation == pytest.approx(1.0, abs=1e-6)
+    keep = np.ones((13, 13), bool)
+    keep[:2, :] = False
+    previous = gray[74:87, 114:127].astype(np.float32)[keep]
+    shifted = np.roll(gray, 1, axis=1)
+    current = shifted[74:87, 114:127].astype(np.float32)[keep]
+    expected = np.mean((previous - previous.mean()) * (current - current.mean())) / (previous.std() * current.std())
+    assert tracker._masked_appearance(shifted, np.float32([120.0, 80.0]))[0] == pytest.approx(expected, abs=1e-6)
+    # The full-patch correlation of the changed frame is what the unmasked tracker would judge.
+    assert tracker._appearance(changed, np.float32([120.0, 80.0])) < correlation - 0.2
+    # Nothing masked: the full-patch formula, bit for bit.
+    tracker._mask_previous = np.zeros(depth.shape, bool)
+    assert tracker._masked_appearance(shifted, np.float32([120.0, 80.0]))[0] == tracker._appearance(
+        shifted, np.float32([120.0, 80.0])
+    )
+
+
+def test_a_change_confined_to_masked_elements_keeps_tracking_and_only_lowers_the_unmasked_correlation():
+    tracker, image, depth, mask = _patch_tracker(26)
+    changed = image.copy()
+    changed[74:76, 106:135] = 255 - changed[74:76, 106:135]
+    result = tracker.update(changed, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=mask)
+    assert result["state"] == "tracking", result.get("reason")
+    assert result["jaw_mask_patch_unmasked"] >= 140
+    plain = VisualServoTracker()
+    plain.initialize(image, [120, 80], depth)
+    assert plain.update(changed, depth, K, WORLD_FROM_OPTICAL)["patch_correlation"] < result["patch_correlation"]
+
+
+@pytest.mark.parametrize("masked_elements,occluded", [(30, True), (29, False)])
+def test_fewer_than_140_unmasked_elements_is_a_latched_jaw_mask_occluded_state(masked_elements, occluded):
+    tracker, image, depth, _ = _patch_tracker(masked_elements)
+    empty = np.zeros(depth.shape, bool)
+    result = tracker.update(image, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=empty)
+    assert result["jaw_mask_patch_unmasked"] == 169 - masked_elements
+    if not occluded:
+        assert result["state"] == "tracking"
+        return
+    assert result["state"] == "jaw_mask_occluded"
+    assert result["reason"] == "too_few_unmasked_patch_pixels"
+    assert result["target_position_world_m"] is None and result["requires_reinitialize"] is True
+    assert "patch_correlation" not in result and result["jaw_mask_patch_correlation_kept"] == pytest.approx(1.0)
+    assert "pending_feature_pixels_for_next_frame" not in result
+    json.dumps(result, allow_nan=False)
+    following = tracker.update(image, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=empty)
+    assert (following["state"], following["reason"]) == ("tracking_lost", "explicit_initialization_required")
+
+
+@pytest.mark.parametrize("masked_elements,expected", [(40, "jaw_mask_occluded"), (29, "tracking_lost")])
+def test_occluded_is_checked_before_the_correlation_threshold(masked_elements, expected):
+    # Invert the lower rows of the patch: the kept-element correlation fails the 0.35 threshold (the 29-element
+    # control shows it), yet with fewer than 140 kept elements the explicit occluded state is reported first.
+    tracker, image, depth, _ = _patch_tracker(masked_elements)
+    changed = image.copy()
+    changed[77:87, 106:135] = 255 - changed[77:87, 106:135]
+    result = tracker.update(changed, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=np.zeros(depth.shape, bool))
+    assert result["state"] == expected
+    if expected == "tracking_lost":
+        assert result["reason"] == "appearance_changed_or_occluded"
+        assert result["patch_correlation"] < tracker.config.min_patch_correlation
+
+
+def test_minimum_unmasked_elements_is_read_only_with_a_mask():
+    config = VisualServoConfig(min_unmasked_patch_elements=169)
+    tracker, image, depth, _ = _patch_tracker(1, config)
+    assert tracker.update(image, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=np.zeros(depth.shape, bool))["state"] == (
+        "jaw_mask_occluded"
+    )
+    plain = VisualServoTracker(config)
+    plain.initialize(image, [120, 80], depth)
+    assert plain.update(image, depth, K, WORLD_FROM_OPTICAL)["state"] == "tracking"
+
+
+def test_initial_and_replenished_corners_avoid_the_mask():
+    image, depth = _scene()
+    mask = np.zeros(depth.shape, bool)
+    mask[54:106, 106:113] = True  # the left part of the ROI, clear of the appearance patch (columns 114-126)
+    tracker = VisualServoTracker(VisualServoConfig(replenish_features=True))
+    initialized = tracker.initialize(image, [120, 80], depth, exclusion_mask=mask)
+    assert initialized["state"] == "initialized" and initialized["jaw_mask_roi_pixels"] > 0
+    assert not any(mask[round(y), round(x)] for x, y in initialized["feature_pixels_xy"])
+    plain = VisualServoTracker(VisualServoConfig(replenish_features=True))
+    assert any(mask[round(y), round(x)] for x, y in plain.initialize(image, [120, 80], depth)["feature_pixels_xy"])
+    # Force replenishment capacity with four anchors in the middle rows, then mask the top band of the ROI in the
+    # next frame (away from the anchors and the appearance patch): the new corners must avoid that frame's mask.
+    middle = [point for point in tracker._points.reshape(-1, 2) if 72 <= point[1] <= 88]
+    assert len(middle) >= tracker.config.min_features
+    tracker._points = np.asarray(middle[: tracker.config.min_features], dtype=np.float32).reshape(-1, 1, 2)
+    tracker._initial_count = tracker.config.min_features * 4
+    moved = np.zeros(depth.shape, bool)
+    moved[54:71, 106:135] = True
+    result = tracker.update(image, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=moved)
+    assert result["state"] == "tracking", result.get("reason")
+    pending = result["pending_feature_pixels_for_next_frame"]
+    assert pending and not any(moved[round(y), round(x)] for x, y in pending)
+    unmasked = VisualServoTracker(VisualServoConfig(replenish_features=True))
+    unmasked.initialize(image, [120, 80], depth)
+    unmasked._points = tracker._points.copy()
+    unmasked._initial_count = tracker._initial_count
+    candidates = unmasked.update(image, depth, K, WORLD_FROM_OPTICAL)["pending_feature_pixels_for_next_frame"]
+    assert any(moved[round(y), round(x)] for x, y in candidates)
+
+
+def test_flow_failure_caused_only_by_the_mask_is_attributed():
+    image, depth = _scene()
+    tracker = VisualServoTracker()
+    tracker.initialize(image, [120, 80], depth)
+    everything = np.ones(depth.shape, bool)
+    result = tracker.update(image, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=everything)
+    assert (result["state"], result["reason"]) == ("tracking_lost", "optical_flow_failed")
+    assert result["flow_reason"] == "too_few_roundtrip_inliers" and result["roundtrip_inlier_count"] == 0
+    assert result["jaw_mask_dropped_valid"] == result["jaw_mask_valid_before_mask"] > 0
+    assert result["jaw_mask_unmasked_flow_would_pass"] is True
+    assert result["jaw_mask_unmasked_accepted_count"] >= tracker.config.min_features
+
+
+@pytest.mark.parametrize(
+    "mask", [np.zeros((10, 10), bool), np.zeros((160, 240), np.uint8), np.zeros((160, 240, 1), bool), [[True]]]
+)
+def test_a_mask_that_does_not_cover_the_image_fails_closed(mask):
+    image, depth = _scene()
+    with pytest.raises(ValueError, match="exclusion_mask"):
+        VisualServoTracker().initialize(image, [120, 80], depth, exclusion_mask=mask)
+    tracker = _tracker()
+    frame_index = tracker._frame_index
+    with pytest.raises(ValueError, match="exclusion_mask"):
+        tracker.update(image, depth, K, WORLD_FROM_OPTICAL, exclusion_mask=mask)
+    assert tracker._frame_index == frame_index
+    assert tracker.update(image, depth, K, WORLD_FROM_OPTICAL)["state"] == "tracking"
+
+
+@pytest.mark.parametrize("value", [0, 170, -1, True, 1.5, "140", None])
+def test_minimum_unmasked_patch_elements_is_validated(value):
+    with pytest.raises(ValueError, match="min_unmasked_patch_elements"):
+        VisualServoConfig(min_unmasked_patch_elements=value)
+
+
+def test_minimum_unmasked_patch_elements_defaults_to_the_registration():
+    from isaaclab_pruning.perception.jaw_self_mask import MIN_UNMASKED_PATCH_ELEMENTS
+
+    assert VisualServoConfig().min_unmasked_patch_elements == MIN_UNMASKED_PATCH_ELEMENTS == 140
+    assert VisualServoConfig(min_unmasked_patch_elements=1).min_unmasked_patch_elements == 1
+    assert VisualServoConfig(min_unmasked_patch_elements=169).min_unmasked_patch_elements == 169

@@ -307,3 +307,78 @@ def test_live_return_error_uses_home_before_first_command_not_first_captured_pos
     }
     _execute_capture_nodes([assignment], namespace)
     assert namespace["report"]["metrics"]["retreat_return_error_m"] == pytest.approx(0.0, abs=1e-12)
+
+
+def _main_body():
+    return ast.parse(inspect.getsource(_runner().main)).body[0].body
+
+
+def test_renderer_reads_both_jaw_flags_strictly_and_defaults_them_off():
+    body = _main_body()
+    start = next(
+        index
+        for index, node in enumerate(body)
+        if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "jaw_self_mask" for t in node.targets)
+    )
+    nodes = body[start : start + 5]
+    assert [type(node).__name__ for node in nodes] == ["Assign", "If", "Assign", "If", "If"]
+
+    def read(environ, blender_mode=True):
+        namespace = {"os": SimpleNamespace(environ=environ), "blender_mode": blender_mode}
+        _execute_capture_nodes(nodes, namespace)
+        return namespace["jaw_self_mask"], namespace["closure_hold"]
+
+    assert read({}) == ("0", "0")
+    assert read({"PRUNING_JAW_SELF_MASK": "1", "PRUNING_CLOSURE_HOLD": "1"}) == ("1", "1")
+    assert read({"PRUNING_JAW_SELF_MASK": "1"}) == ("1", "0")
+    for bad in ({"PRUNING_JAW_SELF_MASK": "true"}, {"PRUNING_CLOSURE_HOLD": "2"}, {"PRUNING_CLOSURE_HOLD": ""}):
+        with pytest.raises(ValueError):
+            read(bad)
+    with pytest.raises(ValueError, match="blender_vision"):
+        read({"PRUNING_JAW_SELF_MASK": "1"}, blender_mode=False)
+    assert read({}, blender_mode=False) == ("0", "0")
+
+
+def test_renderer_passes_the_flags_and_the_preview_camera_and_pose_to_the_controller():
+    calls = [node for node in ast.walk(ast.parse(inspect.getsource(_runner().main))) if isinstance(node, ast.Call)]
+    demo_call = next(call for call in calls if getattr(call.func, "id", None) == "VisionPruningDemo")
+    assert {"jaw_self_mask", "closure_hold"} <= {keyword.arg for keyword in demo_call.keywords}
+    initialize = next(call for call in calls if isinstance(call.func, ast.Attribute) and call.func.attr == "initialize")
+    keywords = {keyword.arg: ast.unparse(keyword.value) for keyword in initialize.keywords}
+    assert keywords == {
+        "camera_matrix": "camera_matrix",
+        "world_from_optical": "optical_transform(position, rotation)",
+        "tool_pose_wxyz": "initial_tool[0].detach().cpu().numpy()",
+    }
+
+
+@pytest.mark.parametrize("flags", [("0", "0"), ("1", "1")])
+def test_renderer_reports_both_arms_with_the_registered_constants(flags):
+    from isaaclab_pruning.perception import jaw_self_mask as jsm
+    from isaaclab_pruning.task.simulated_cut import CLOSURE_HOLD_WAIVED_CHECKS
+
+    blocks = [
+        node
+        for node in ast.walk(ast.parse(inspect.getsource(_runner().main)))
+        if isinstance(node, ast.Assign)
+        and any(ast.unparse(target) in ("report['jaw_self_mask']", "report['closure_hold']") for target in node.targets)
+    ]
+    assert len(blocks) == 2
+    namespace = {
+        "report": {},
+        "jaw_self_mask": flags[0],
+        "closure_hold": flags[1],
+        "registered_jaw_self_mask": jsm.registered_jaw_self_mask,
+        "registered_closure_hold": jsm.registered_closure_hold,
+        "MODEL_LABEL": jsm.MODEL_LABEL,
+        "CLOSURE_HOLD_EXPLAINED_BRANCHES": jsm.CLOSURE_HOLD_EXPLAINED_BRANCHES,
+        "CLOSURE_HOLD_WAIVED_CHECKS": CLOSURE_HOLD_WAIVED_CHECKS,
+    }
+    _execute_capture_nodes(blocks, namespace)
+    jaw, hold = namespace["report"]["jaw_self_mask"], namespace["report"]["closure_hold"]
+    assert jaw["enabled"] is (flags[0] == "1") and hold["enabled"] is (flags[1] == "1")
+    assert jaw["constants"] == jsm.registered_jaw_self_mask() and jaw["model"] == jsm.MODEL_LABEL
+    assert hold["thresholds"] == jsm.registered_closure_hold()
+    assert hold["waived_checks"] == list(CLOSURE_HOLD_WAIVED_CHECKS) and len(hold["explained_branches"]) == 3
+    assert "cut-gate change" in hold["label"] and "vision_source=closure_hold" in hold["label"]
+    json.dumps(namespace["report"], allow_nan=False)
