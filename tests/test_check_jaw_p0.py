@@ -90,10 +90,11 @@ def _row(frame, **overrides):
     return row
 
 
-def _replay_run(run, rows, last, name=NAME, **replay):
+def _replay_run(run, rows, last, name=NAME, recorded_closure_start=None, **replay):
     return {
         "run": name,
         "path": str(run),
+        "recorded": {"closure_start_frame": recorded_closure_start},
         "frames_detail": rows,
         "compared_through_frame": last,
         "initialization": {"replayed_state": "initialized", "replayed_feature_count": 13},
@@ -149,7 +150,7 @@ def test_flags_off_fails_when_a_recorded_run_is_missing_or_errored(checker, tmp_
     assert not checker.check_flags_off(errored, {NAME: run})["passed"]
 
 
-def test_provenance_requires_one_revision_unchanged_sources_and_this_checkouts_sources(checker):
+def test_provenance_requires_the_registration_commit_unchanged_sources_and_complete_replays(checker):
     current = {name: checker.sha256(ROOT / name) for name in checker.replay.SOURCE_FILES}
     flags = {
         "off": {"jaw_self_mask": False, "closure_hold": False},
@@ -158,18 +159,25 @@ def test_provenance_requires_one_revision_unchanged_sources_and_this_checkouts_s
     }
 
     def headers(**changes):
-        base = {"code_revision": "abc", "source_files_differ_from_revision": False, "source_sha256": current}
+        base = {
+            "code_revision": checker.REGISTRATION_COMMIT,
+            "source_files_differ_from_revision": False,
+            "source_sha256": current,
+            "summary": {"runs": checker.EXPECTED_RUNS, "errors": []},
+        }
         return {name: {**base, "flags": flags[name], **changes.get(name, {})} for name in flags}
 
     assert checker.check_provenance(headers())["passed"]
-    assert not checker.check_provenance(headers(mask={"code_revision": "def"}))["passed"]
+    later = {name: {"code_revision": "0" * 40} for name in flags}
+    assert not checker.check_provenance(headers(**later))["passed"]
     assert not checker.check_provenance(headers(off={"source_files_differ_from_revision": True}))["passed"]
     assert not checker.check_provenance(headers(mask_hold={"flags": flags["mask"]}))["passed"]
+    assert not checker.check_provenance(headers(mask={"summary": {"runs": 3, "errors": []}}))["passed"]
     other = {**current, next(iter(current)): "0" * 64}
     assert not checker.check_provenance(headers(off={"source_sha256": other}))["passed"]
 
 
-def _study(tmp_path, divergences, last, name=NAME):
+def _study(tmp_path, divergences, last, key_rows=(), name=NAME):
     study = tmp_path / "study"
     batch, run = name.split("/")
     (study / "runs" / batch).mkdir(parents=True)
@@ -187,101 +195,177 @@ def _study(tmp_path, divergences, last, name=NAME):
         "preview": {"arms": {"M": {"state": "tracking", "reason": None}}},
     }
     (study / "runs" / batch / f"{run}.json").write_text(json.dumps(document))
-    (study / "key/key_runs.json").write_text(json.dumps({"runs": []}))
+    runs = [{"summary": {"run": name}, "rows": list(key_rows)}] if key_rows else []
+    (study / "key/key_runs.json").write_text(json.dumps({"runs": runs}))
     return study
 
 
-def test_mask_check_requires_the_studys_divergent_frames_and_values(checker, tmp_path, monkeypatch):
+def _key_row(row):
+    return {
+        "frame": row["index"],
+        "M": {
+            "state": row["state"],
+            "reason": row["reason"],
+            "pixel_xy": row["pixel_xy"],
+            "jaw_mask_patch_unmasked": row["unmasked_patch_elements"],
+            "feature_count": row["feature_count"],
+            "jaw_mask_dropped_valid": row["mask_dropped_valid_features"],
+            "jaw_mask_unmasked_flow_would_pass": row["unmasked_flow_would_pass"],
+            "flow_reason": row["flow_reason"],
+            "jaw_mask_patch_masked_prev": row["masked_patch_elements_prev_cur"][0],
+            "jaw_mask_patch_masked_cur": row["masked_patch_elements_prev_cur"][1],
+            "patch_correlation": row["patch_correlation"],
+            "jaw_mask_patch_correlation_kept": row["patch_correlation_kept"],
+            "target_position_world_m": row["target_position_world_m"],
+        },
+    }
+
+
+def test_mask_check_requires_the_studys_divergent_frames_values_cut_and_key_rows(checker, tmp_path, monkeypatch):
     monkeypatch.setattr(checker, "KEPT_19444_R3", (NAME, 1, 139))
+    monkeypatch.setattr(checker, "KEY_RUNS", 1)
+    monkeypatch.setattr(checker, "KEY_ROWS", 1)
     run, frames = _recording(tmp_path, ["approach", "approach", "approach"])
     rows = [_row(f) for f in frames]
     rows[1].update(state="jaw_mask_occluded", reason="jaw_mask_occluded", patch_correlation=None)
     rows[1].update(unmasked_patch_elements=139)
     divergence = checker._study_measurement_diff(rows[1], frames[1]["live_vision"]["measurement"])
-    divergence.update(frame=1, mask={"jaw_mask_patch_unmasked": 139, "jaw_mask_dropped_valid": 0})
-    study = _study(tmp_path, [divergence], 2)
-    assert checker.check_mask(_document(_replay_run(run, rows, 2)), study)["passed"]
+    divergence.update(
+        frame=1,
+        mask={"jaw_mask_patch_unmasked": 139, "jaw_mask_dropped_valid": 0},
+        cut_variant=["approach", None, False],
+    )
+    inventory = {NAME: run}
+    study = _study(tmp_path, [divergence], 2, key_rows=[_key_row(rows[1])])
+    assert checker.check_mask(_document(_replay_run(run, rows, 2)), study, inventory)["passed"]
 
-    other_tmp = tmp_path / "other"
-    other_tmp.mkdir()
-    missing = _study(other_tmp, [], 2)
-    assert not checker.check_mask(_document(_replay_run(run, rows, 2)), missing)["passed"]
+    no_divergence = _study(tmp_path / "a", [], 2, key_rows=[_key_row(rows[1])])
+    assert not checker.check_mask(_document(_replay_run(run, rows, 2)), no_divergence, inventory)["passed"]
+
+    other_cut = dict(divergence, cut_variant=["stopped", "vision_invalid", False])
+    stopped = _study(tmp_path / "b", [other_cut], 2, key_rows=[_key_row(rows[1])])
+    assert not checker.check_mask(_document(_replay_run(run, rows, 2)), stopped, inventory)["passed"]
+
+    no_key_rows = _study(tmp_path / "c", [divergence], 2)
+    assert not checker.check_mask(_document(_replay_run(run, rows, 2)), no_key_rows, inventory)["passed"]
 
     wrong = [dict(r) for r in rows]
     wrong[1]["unmasked_patch_elements"] = 140
-    assert not checker.check_mask(_document(_replay_run(run, wrong, 2)), study)["passed"]
+    assert not checker.check_mask(_document(_replay_run(run, wrong, 2)), study, inventory)["passed"]
 
 
-def _held(row, waived, age=0.3):
-    hold = {"held": True, "held_target_age_s": age, "explanation": "jaw_mask_occluded", "dt_mm": 0.0, "dr_deg": 0.0}
+def _held(row):
+    hold = {"held": True, "held_target_age_s": 0.3, "explanation": "jaw_mask_occluded", "dt_mm": 0.0, "dr_deg": 0.0}
     return {
         **row,
         "closure_hold": hold,
         "vision_source": "closure_hold",
-        "waived_checks": waived,
-        "held_target_age_s": age,
+        "waived_checks": list(PROTOCOL_WAIVED),
+        "held_target_age_s": 0.3,
     }
 
 
-def _hold_setup(checker, tmp_path, monkeypatch, held_frames=(1,)):
-    monkeypatch.setattr(checker, "RUNS_530", (NAME,))
-    monkeypatch.setattr(checker, "HELD_THROUGH_STOP_530", list(held_frames))
-    run, frames = _recording(tmp_path, ["closing", "closing", "closing"])
-    base = [_row(f) for f in frames]
-    waived = list(checker.CLOSURE_HOLD_WAIVED_CHECKS)
-    rows = [_held(r, waived) if r["index"] in held_frames else r for r in base]
-    held = {
+PROTOCOL_WAIVED = (
+    "vision_invalid",
+    "vision_stale_or_future",
+    "vision_timestamp_regressed",
+    "vision_frame_reused_during_closure",
+)
+
+
+def _instrumented(frames, **overrides):
+    entry = {
+        "sent_target_is_closure_start_target": True,
+        "held_timestamp_is_closure_start_time": True,
+        "closure_reference_is_closure_start": True,
+        "sent_vision_source": "closure_hold",
+    }
+    return {
         NAME: {
             "closure_start_frame": 0,
-            "held_frames": list(held_frames),
-            "held": [
-                {
-                    "frame": i,
-                    "sent_target_is_reference": True,
-                    "reference_is_closure_start_frame": True,
-                    "held_timestamp_is_reference": True,
-                    "sent_vision_source": "closure_hold",
-                }
-                for i in held_frames
-            ],
+            "held_frames": list(frames),
+            "held": [{"frame": i, **entry, **overrides} for i in frames],
         }
     }
-    mask_runs = checker.compact_mask_runs(_document(_replay_run(run, base, 2)))
-    return run, rows, held, mask_runs
 
 
-def test_hold_check_passes_a_labelled_530_hold_and_rejects_bad_labels_and_targets(checker, tmp_path, monkeypatch):
-    run, rows, held, mask_runs = _hold_setup(checker, tmp_path, monkeypatch)
-    document = _document(_replay_run(run, rows, 2, closure_start_frame=0, held_frames=[1]))
-    assert checker.check_hold(document, mask_runs, held)["passed"]
+def _hold_case(checker, tmp_path, monkeypatch, held_frames=(2, 3, 4), stop_at_3=False):
+    """A miniature 530 run: closure starts at 0, the recording stops at 3, the deadline is 4."""
+    monkeypatch.setattr(checker, "RUNS_530", (NAME,))
+    monkeypatch.setattr(checker, "CLOSURE_START_530", 0)
+    monkeypatch.setattr(checker, "RECORDED_STOP_530", [3, "vision_invalid"])
+    monkeypatch.setattr(checker, "HELD_THROUGH_STOP_530", [2, 3])
+    monkeypatch.setattr(checker, "HELD_AFTER_STOP_530", [4])
+    run, frames = _recording(tmp_path, ["closing", "closing", "closing", "stopped", "stopped"])
+    base = [_row(f, cut_phase="closing", stopped_reason=None) for f in frames]
+    base[4].update(cut_phase="retreat", detach_event=True, evaluable=False)
+    if stop_at_3:
+        base[3].update(cut_phase="stopped", stopped_reason="unstable_during_closure")
+    rows = [_held(r) if r["index"] in held_frames else r for r in base]
+    mask_only = _replay_run(run, base, 3, stop_frame=2, stop_reason="vision_invalid")
+    mask_runs = checker.compact_mask_runs(_document(mask_only))
+    replay = {
+        "closure_start_frame": 0,
+        "held_frames": list(held_frames),
+        "cut_without_hold_stop_frame": 2,
+        "cut_without_hold_stop_reason": "vision_invalid",
+        "detach_frame": 4,
+    }
+    document = _document(_replay_run(run, rows, 3, recorded_closure_start=0, **replay))
+    return run, document, mask_runs
 
-    unlabelled = [dict(r) for r in rows]
-    unlabelled[1]["waived_checks"] = []
-    document = _document(_replay_run(run, unlabelled, 2, closure_start_frame=0, held_frames=[1]))
-    assert not checker.check_hold(document, mask_runs, held)["passed"]
 
-    moved = {NAME: {**held[NAME], "held": [{**held[NAME]["held"][0], "sent_target_is_reference": False}]}}
-    document = _document(_replay_run(run, rows, 2, closure_start_frame=0, held_frames=[1]))
-    assert not checker.check_hold(document, mask_runs, moved)["passed"]
+def test_hold_check_passes_the_530_deadline_structure_and_rejects_each_departure(checker, tmp_path, monkeypatch):
+    run, document, mask_runs = _hold_case(checker, tmp_path, monkeypatch)
+    inventory = {NAME: run}
+    assert checker.check_hold(document, mask_runs, _instrumented((2, 3, 4)), inventory)["passed"]
+
+    moved = _instrumented((2, 3, 4), sent_target_is_closure_start_target=False)
+    assert not checker.check_hold(document, mask_runs, moved, inventory)["passed"]
+
+    unlabelled = json.loads(json.dumps(document))
+    unlabelled["runs"][0]["frames_detail"][2]["waived_checks"] = PROTOCOL_WAIVED[:3]
+    assert not checker.check_hold(unlabelled, mask_runs, _instrumented((2, 3, 4)), inventory)["passed"]
 
 
-def test_hold_check_rejects_a_hold_outside_the_530_runs(checker, tmp_path, monkeypatch):
-    run, rows, held, mask_runs = _hold_setup(checker, tmp_path, monkeypatch)
-    monkeypatch.setattr(checker, "RUNS_530", ("batch-z/run_00_elsewhere",))
-    document = _document(_replay_run(run, rows, 2, closure_start_frame=0, held_frames=[1]))
-    result = checker.check_hold(document, mask_runs, held)
+def test_hold_check_requires_the_deadline_hold_and_closing_before_it(checker, tmp_path, monkeypatch):
+    run, document, mask_runs = _hold_case(checker, tmp_path / "a", monkeypatch, held_frames=(2, 3))
+    result = checker.check_hold(document, mask_runs, _instrumented((2, 3)), {NAME: run})
     assert not result["passed"]
-    assert {p["kind"] for p in result["detail"]["problems"]} >= {"hold_outside_530", "530_runs_missing"}
+    assert "530_deadline_hold" in {p["kind"] for p in result["detail"]["problems"]}
+    run, document, mask_runs = _hold_case(checker, tmp_path / "b", monkeypatch, stop_at_3=True)
+    result = checker.check_hold(document, mask_runs, _instrumented((2, 3, 4)), {NAME: run})
+    assert "530_not_closing_before_deadline" in {p["kind"] for p in result["detail"]["problems"]}
+
+
+def test_hold_check_rejects_a_hold_outside_530_and_an_incomplete_replay(checker, tmp_path, monkeypatch):
+    run, document, mask_runs = _hold_case(checker, tmp_path, monkeypatch)
+    inventory = {NAME: run}
+    monkeypatch.setattr(checker, "RUNS_530", ("batch-z/run_00_elsewhere",))
+    kinds = {p["kind"] for p in checker.check_hold(document, mask_runs, {}, inventory)["detail"]["problems"]}
+    assert kinds >= {"hold_outside_530", "530_runs_missing"}
+    monkeypatch.setattr(checker, "RUNS_530", (NAME,))
+    other, _ = _recording(tmp_path, ["approach"], name="batch-b/run_00_other")
+    wider = {NAME: run, "batch-b/run_00_other": other}
+    result = checker.check_hold(document, mask_runs, _instrumented((2, 3, 4)), wider)
+    assert not result["passed"]
+    assert "run_set" in {p["kind"] for p in result["detail"]["problems"]}
+
+
+def test_the_protocols_waived_checks_are_hard_coded(checker):
+    assert list(PROTOCOL_WAIVED) == checker.PROTOCOL_WAIVED_CHECKS
 
 
 @pytest.mark.skipif(not (RECORDED_530 / "frames.json").is_file(), reason="recorded planned-pose run not present")
-def test_held_frames_of_a_recorded_530_run_carry_the_closure_reference(checker):
+def test_held_frames_of_a_recorded_530_run_carry_the_closure_start_target_and_time(checker):
     result = checker.held_targets({RECORDED_530.parent.name + "/" + RECORDED_530.name: RECORDED_530})
     [run] = result.values()
     assert run["held_frames"] == [76, 77, 78, 79, 80]
     assert [h["frame"] for h in run["held"]] == run["held_frames"]
     assert all(
-        h["sent_target_is_reference"] and h["reference_is_closure_start_frame"] and h["held_timestamp_is_reference"]
+        h["sent_target_is_closure_start_target"]
+        and h["held_timestamp_is_closure_start_time"]
+        and h["closure_reference_is_closure_start"]
         for h in run["held"]
     )
     assert checker.replay.VisionPruningDemo.__name__ == "VisionPruningDemo"
