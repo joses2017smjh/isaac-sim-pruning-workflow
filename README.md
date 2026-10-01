@@ -192,6 +192,24 @@ there stays above half a metre.
 [Protocol and result](docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026)
 · [verdicts](docs/evidence/lighting_training_verdicts_2026-09-30.json)
 
+**Render gap or lighting? (October 1).** The 8 evaluation trees were
+re-rendered with the training renderer at the same poses, and the geometry
+matched exactly. This separated the two gains:
+- **The low-sun gain is lighting.** On the training-like frames the
+  rendered-lighting model's evening error is still about a tenth of the
+  control's.
+- **Most of the source gain is not.** It shrinks from 35–45% to 10–20% at
+  matrix resolution, and at full resolution it is gone.
+- **Not predicted.** Every model does worse on training-renderer frames
+  shrunk to matrix size than on the matrix's own frames of the same views:
+  source error is 1.4–2.7 times higher, and the trees are darker and sharper in
+  192 of 192 frames. The published matrix therefore flatters source-light
+  accuracy.
+
+Two predictions are supported, one partly and one refuted.
+[Protocol and result](docs/EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md#result--october-1-2026)
+· [verdicts](docs/evidence/render_gap_verdicts_2026-10-01.json)
+
 **Known-map re-oriented approach (September 30).** Re-orienting the tool to a
 pose planned on the scene map let contact target 530 reach alignment with
 0 N of contact in 3 of 3 repeats, a first for any contact target. Neither

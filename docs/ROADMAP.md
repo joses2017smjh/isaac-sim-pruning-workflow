@@ -344,9 +344,13 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       Source error also fell 35–45%, so the gain is not specific to low sun.
       Isaac Stage A is barely helped.
       [Result](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026).
-- [ ] Separate the render gap from lighting: score the rendered arms on
-      companion-resolution frames (1920×1080, adaptive sampler) of the matrix
-      trees under the presets. CPU scoring plus a small render.
+- [x] Separate the render gap from lighting: the 8 matrix trees re-rendered
+      with the training renderer, scored at matrix resolution (Matched) and at
+      1920×1080 (Native). The low-sun gain is lighting: B/C Envy evening is
+      0.08–0.11. The source gain shrinks to 10–20% (G1 partly supported) and
+      is gone at full resolution. G3 is refuted: every model does worse on
+      training-renderer frames shrunk to matrix size, by 1.4–2.7× at source.
+      [Result](EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md#result--october-1-2026).
 - [ ] Vision-guided controller on an Envy or UFO tree in Isaac. No path exists:
       `RenderEnv` presents the Blender orchard export, and the L-Py cylinder USDs
       have no spur-selection route into it. Needs target selection over cylinder

@@ -1,0 +1,970 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the render-gap check (G0-G3): the 8 matrix trees re-rendered with the training renderer, five checkpoints scored by the frozen depth_generalization.py on Matched (512x288 area-downsampled RGB against the published matrix depth and mask) and Native (1920x1080 against the new render's own depth and mask). Blender only, one bark, one render per frame; the Isaac camera is not touched.",
+  "protocol": "docs/EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md",
+  "code_revision": "2b683ede323ea1289d0ab9c07c1cc3d194821bdc",
+  "code_tree_dirty": false,
+  "inputs_sha256": {
+    "docs/evidence/render_gap_matched_matrix_2026-10-01.json": "e83db65932144fd5187c8f1298d616db6b8891579521ec2af61263b7a6b2ace2",
+    "docs/evidence/render_gap_native_matrix_2026-10-01.json": "0ab46ee609ba3e78bda45f9df4a3742eb0df09a536560b40b17ba07e63a377ae",
+    "docs/evidence/render_gap_matched_anchoring_2026-10-01.json": "b90dc39acb3fcb11f183300eda7245c2c523b6e855837f635eb36086a3458e10",
+    "docs/evidence/render_gap_native_anchoring_2026-10-01.json": "21ae665328eb9145a4b413f199dd208949a710922daf0d0c1d494ae1de26b5e0",
+    "docs/evidence/finetune_rendered_family_matrix_2026-09-30.json": "e34a744987fc0b867d20f0a6477f711563c54ca657913e378144a923c323d0f0",
+    "artifacts/generalization/render-gap-20260930/eval/pose_identity.json": "ddcfae7d7b0cc2ee0a0dd0e9f8ed388eea134709f8fd0bafb6d6163742f5ca99",
+    "artifacts/generalization/render-gap-20260930/eval/render_status.json": "a6bef8d3fb882d3a0b79817df7c09e0e5973c249c4f66233db3637b35e16a0ca"
+  },
+  "checkpoints_sha256": {
+    "matched": {
+      "da2_frozen": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+      "da2_jitter": "658c3c77af789a001b3825f5b2599686de0f5e29b4c00e313f6c6a82fb8e9984",
+      "da2_control": "d56917128db213efb4f250053c20e761095dc0926c381c052a0a17da1ad5af47",
+      "da2_rendered_jitter": "c98b37eacfdf67767a51d0da03ee81092a161c26aeae7476fa542a7bdff3358b",
+      "da2_rendered_control": "cb9659ef863a3a5c621b2ffef806957e526be41493e9381f9714eda47fba3356"
+    },
+    "native": {
+      "da2_frozen": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+      "da2_jitter": "658c3c77af789a001b3825f5b2599686de0f5e29b4c00e313f6c6a82fb8e9984",
+      "da2_control": "d56917128db213efb4f250053c20e761095dc0926c381c052a0a17da1ad5af47",
+      "da2_rendered_jitter": "c98b37eacfdf67767a51d0da03ee81092a161c26aeae7476fa542a7bdff3358b",
+      "da2_rendered_control": "cb9659ef863a3a5c621b2ffef806957e526be41493e9381f9714eda47fba3356"
+    },
+    "published": {
+      "da2_frozen": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+      "da2_jitter": "658c3c77af789a001b3825f5b2599686de0f5e29b4c00e313f6c6a82fb8e9984",
+      "da2_control": "d56917128db213efb4f250053c20e761095dc0926c381c052a0a17da1ad5af47",
+      "da2_rendered_jitter": "c98b37eacfdf67767a51d0da03ee81092a161c26aeae7476fa542a7bdff3358b",
+      "da2_rendered_control": "cb9659ef863a3a5c621b2ffef806957e526be41493e9381f9714eda47fba3356"
+    }
+  },
+  "checkpoints_match_published": true,
+  "render_status": {
+    "registered": 8,
+    "native": 8,
+    "matched": 8
+  },
+  "stalled_or_missing_trees": [],
+  "matched_trees": [
+    "lpy_envy_00000",
+    "lpy_envy_00003",
+    "lpy_envy_00008",
+    "lpy_envy_00012",
+    "lpy_ufo_00000",
+    "lpy_ufo_00001",
+    "lpy_ufo_00002",
+    "lpy_ufo_00003"
+  ],
+  "interpretations": [
+    "per-tree errors are the published lighting_effect values: the mean tree-mask MAE over the tree's 6 views, rounded to 4 dp, from aggregate_family_eval.py (as the published scorer used them); ratios are of those values",
+    "G0 re-applies the registered gate to every view's recorded grid-pass agreement (IoU >= 0.995 and >= 99.5% of tree pixels within 1 mm); a tree passes only with all 6 views passing; the cross-grid point samples are reported, never gating",
+    "a tree that fails G0 is left out of Matched; the counts stay 'of 8' (or 'of 4'), so a missing tree counts toward neither holding nor refuting",
+    "G1 is one clause per arm (A/C and B/C), each holding at >= 0.85 in >= 6 trees and refuting at <= 0.70 in >= 6; the prediction is refuted if either arm refutes and partly supported if neither holds nor refutes",
+    "G2's UFO clause (A/J <= 0.5 in >= 3 of 4) states no refutation",
+    "G3's 'at least as large' is a ratio >= 1.0",
+    "Native against Matched is a measurement: per model, tree and preset, the Native per-tree error over the Matched one, and each arm's family means; Native differs in resolution, input filtering and ground truth"
+  ],
+  "g0_geometry": {
+    "lpy_envy_00000": {
+      "family": "envy",
+      "views_checked": 6,
+      "views_passing": 6,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0,
+      "cross_grid_views_would_pass": 0
+    },
+    "lpy_envy_00003": {
+      "family": "envy",
+      "views_checked": 6,
+      "views_passing": 6,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0,
+      "cross_grid_views_would_pass": 0
+    },
+    "lpy_envy_00008": {
+      "family": "envy",
+      "views_checked": 6,
+      "views_passing": 6,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0,
+      "cross_grid_views_would_pass": 0
+    },
+    "lpy_envy_00012": {
+      "family": "envy",
+      "views_checked": 6,
+      "views_passing": 6,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0,
+      "cross_grid_views_would_pass": 0
+    },
+    "lpy_ufo_00000": {
+      "family": "ufo",
+      "views_checked": 6,
+      "views_passing": 6,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0,
+      "cross_grid_views_would_pass": 0
+    },
+    "lpy_ufo_00001": {
+      "family": "ufo",
+      "views_checked": 6,
+      "views_passing": 6,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0,
+      "cross_grid_views_would_pass": 0
+    },
+    "lpy_ufo_00002": {
+      "family": "ufo",
+      "views_checked": 6,
+      "views_passing": 6,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0,
+      "cross_grid_views_would_pass": 0
+    },
+    "lpy_ufo_00003": {
+      "family": "ufo",
+      "views_checked": 6,
+      "views_passing": 6,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0,
+      "cross_grid_views_would_pass": 0
+    }
+  },
+  "predictions": [
+    {
+      "id": "G0",
+      "prediction": "Every tree's grid-pass depth and mask reproduce the published matrix in every view.",
+      "clauses": [
+        {
+          "clause": "all 8 trees pass the registered gate in all 6 views",
+          "observed": {
+            "trees": {
+              "lpy_envy_00000": {
+                "family": "envy",
+                "views_checked": 6,
+                "views_passing": 6,
+                "recorded_ok": true,
+                "min_mask_iou": 1.0,
+                "min_within_1mm": 1.0,
+                "cross_grid_views_would_pass": 0
+              },
+              "lpy_envy_00003": {
+                "family": "envy",
+                "views_checked": 6,
+                "views_passing": 6,
+                "recorded_ok": true,
+                "min_mask_iou": 1.0,
+                "min_within_1mm": 1.0,
+                "cross_grid_views_would_pass": 0
+              },
+              "lpy_envy_00008": {
+                "family": "envy",
+                "views_checked": 6,
+                "views_passing": 6,
+                "recorded_ok": true,
+                "min_mask_iou": 1.0,
+                "min_within_1mm": 1.0,
+                "cross_grid_views_would_pass": 0
+              },
+              "lpy_envy_00012": {
+                "family": "envy",
+                "views_checked": 6,
+                "views_passing": 6,
+                "recorded_ok": true,
+                "min_mask_iou": 1.0,
+                "min_within_1mm": 1.0,
+                "cross_grid_views_would_pass": 0
+              },
+              "lpy_ufo_00000": {
+                "family": "ufo",
+                "views_checked": 6,
+                "views_passing": 6,
+                "recorded_ok": true,
+                "min_mask_iou": 1.0,
+                "min_within_1mm": 1.0,
+                "cross_grid_views_would_pass": 0
+              },
+              "lpy_ufo_00001": {
+                "family": "ufo",
+                "views_checked": 6,
+                "views_passing": 6,
+                "recorded_ok": true,
+                "min_mask_iou": 1.0,
+                "min_within_1mm": 1.0,
+                "cross_grid_views_would_pass": 0
+              },
+              "lpy_ufo_00002": {
+                "family": "ufo",
+                "views_checked": 6,
+                "views_passing": 6,
+                "recorded_ok": true,
+                "min_mask_iou": 1.0,
+                "min_within_1mm": 1.0,
+                "cross_grid_views_would_pass": 0
+              },
+              "lpy_ufo_00003": {
+                "family": "ufo",
+                "views_checked": 6,
+                "views_passing": 6,
+                "recorded_ok": true,
+                "min_mask_iou": 1.0,
+                "min_within_1mm": 1.0,
+                "cross_grid_views_would_pass": 0
+              }
+            },
+            "passing": [
+              "lpy_envy_00000",
+              "lpy_envy_00003",
+              "lpy_envy_00008",
+              "lpy_envy_00012",
+              "lpy_ufo_00000",
+              "lpy_ufo_00001",
+              "lpy_ufo_00002",
+              "lpy_ufo_00003"
+            ],
+            "failing": []
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the evaluation's recorded matched set equals the re-applied gate",
+          "observed": {
+            "recorded_matched": [
+              "lpy_envy_00000",
+              "lpy_envy_00003",
+              "lpy_envy_00008",
+              "lpy_envy_00012",
+              "lpy_ufo_00000",
+              "lpy_ufo_00001",
+              "lpy_ufo_00002",
+              "lpy_ufo_00003"
+            ],
+            "excluded": [],
+            "not_checked": []
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "G1",
+      "prediction": "On Matched, A's and B's source error is at least 0.85 x C's in at least 6 of 8 trees (the source gain is render-gap robustness).",
+      "clauses": [
+        {
+          "clause": "A >= 0.85 x C on Matched source in at least 6 of 8 trees",
+          "observed": {
+            "ratios": {
+              "lpy_envy_00000": 0.7974630021141649,
+              "lpy_envy_00003": 0.8345954563571144,
+              "lpy_envy_00008": 0.825609756097561,
+              "lpy_envy_00012": 0.8345509239363988,
+              "lpy_ufo_00000": 0.8680098684210527,
+              "lpy_ufo_00001": 0.8968524838832006,
+              "lpy_ufo_00002": 0.8655494933749026,
+              "lpy_ufo_00003": 0.879914224446033
+            },
+            "at_least_0.85": 4
+          },
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "B >= 0.85 x C on Matched source in at least 6 of 8 trees",
+          "observed": {
+            "ratios": {
+              "lpy_envy_00000": 0.8059196617336152,
+              "lpy_envy_00003": 0.8314069350338781,
+              "lpy_envy_00008": 0.8170731707317074,
+              "lpy_envy_00012": 0.8268156424581006,
+              "lpy_ufo_00000": 0.8441611842105263,
+              "lpy_ufo_00001": 0.875616230565036,
+              "lpy_ufo_00002": 0.8409976617303195,
+              "lpy_ufo_00003": 0.8413152251608291
+            },
+            "at_least_0.85": 1
+          },
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "values (measurement)",
+          "observed": {
+            "C": {
+              "lpy_envy_00000": 0.2365,
+              "lpy_envy_00003": 0.2509,
+              "lpy_envy_00008": 0.246,
+              "lpy_envy_00012": 0.2327,
+              "lpy_ufo_00000": 0.2432,
+              "lpy_ufo_00001": 0.2637,
+              "lpy_ufo_00002": 0.2566,
+              "lpy_ufo_00003": 0.2798
+            },
+            "A": {
+              "lpy_envy_00000": 0.1886,
+              "lpy_envy_00003": 0.2094,
+              "lpy_envy_00008": 0.2031,
+              "lpy_envy_00012": 0.1942,
+              "lpy_ufo_00000": 0.2111,
+              "lpy_ufo_00001": 0.2365,
+              "lpy_ufo_00002": 0.2221,
+              "lpy_ufo_00003": 0.2462
+            },
+            "A_over_C": {
+              "lpy_envy_00000": 0.7974630021141649,
+              "lpy_envy_00003": 0.8345954563571144,
+              "lpy_envy_00008": 0.825609756097561,
+              "lpy_envy_00012": 0.8345509239363988,
+              "lpy_ufo_00000": 0.8680098684210527,
+              "lpy_ufo_00001": 0.8968524838832006,
+              "lpy_ufo_00002": 0.8655494933749026,
+              "lpy_ufo_00003": 0.879914224446033
+            },
+            "B": {
+              "lpy_envy_00000": 0.1906,
+              "lpy_envy_00003": 0.2086,
+              "lpy_envy_00008": 0.201,
+              "lpy_envy_00012": 0.1924,
+              "lpy_ufo_00000": 0.2053,
+              "lpy_ufo_00001": 0.2309,
+              "lpy_ufo_00002": 0.2158,
+              "lpy_ufo_00003": 0.2354
+            },
+            "B_over_C": {
+              "lpy_envy_00000": 0.8059196617336152,
+              "lpy_envy_00003": 0.8314069350338781,
+              "lpy_envy_00008": 0.8170731707317074,
+              "lpy_envy_00012": 0.8268156424581006,
+              "lpy_ufo_00000": 0.8441611842105263,
+              "lpy_ufo_00001": 0.875616230565036,
+              "lpy_ufo_00002": 0.8409976617303195,
+              "lpy_ufo_00003": 0.8413152251608291
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "partly supported"
+    },
+    {
+      "id": "G2",
+      "prediction": "On Matched, B's evening error is at most 0.3 x C's in at least 3 of 4 Envy trees, and A's UFO evening error is at most 0.5 x J's in at least 3 of 4 UFO trees (the low-sun gain is lighting).",
+      "clauses": [
+        {
+          "clause": "B <= 0.3 x C on Matched evening in at least 3 of 4 Envy trees",
+          "observed": {
+            "B": {
+              "lpy_envy_00000": 0.07,
+              "lpy_envy_00003": 0.0765,
+              "lpy_envy_00008": 0.0671,
+              "lpy_envy_00012": 0.0638
+            },
+            "C": {
+              "lpy_envy_00000": 0.6285,
+              "lpy_envy_00003": 0.7072,
+              "lpy_envy_00008": 0.8536,
+              "lpy_envy_00012": 0.6529
+            },
+            "B_over_C": {
+              "lpy_envy_00000": 0.11137629276054099,
+              "lpy_envy_00003": 0.10817307692307691,
+              "lpy_envy_00008": 0.07860824742268042,
+              "lpy_envy_00012": 0.09771787410016847
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "A <= 0.5 x J on Matched evening in at least 3 of 4 UFO trees",
+          "observed": {
+            "A": {
+              "lpy_ufo_00000": 0.1038,
+              "lpy_ufo_00001": 0.1418,
+              "lpy_ufo_00002": 0.1222,
+              "lpy_ufo_00003": 0.1704
+            },
+            "J": {
+              "lpy_ufo_00000": 0.825,
+              "lpy_ufo_00001": 0.5961,
+              "lpy_ufo_00002": 0.5129,
+              "lpy_ufo_00003": 0.6599
+            },
+            "A_over_J": {
+              "lpy_ufo_00000": 0.12581818181818183,
+              "lpy_ufo_00001": 0.2378795504110049,
+              "lpy_ufo_00002": 0.23825307077403002,
+              "lpy_ufo_00003": 0.2582209425670556
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "G3",
+      "prediction": "F's source error on Matched is at most 0.85 x its error on the published matrix in at least 6 of 8 trees.",
+      "clauses": [
+        {
+          "clause": "F Matched / F published <= 0.85 on source in at least 6 of 8 trees",
+          "observed": {
+            "F_matched": {
+              "lpy_envy_00000": 0.2266,
+              "lpy_envy_00003": 0.2429,
+              "lpy_envy_00008": 0.2404,
+              "lpy_envy_00012": 0.2252,
+              "lpy_ufo_00000": 0.2415,
+              "lpy_ufo_00001": 0.2567,
+              "lpy_ufo_00002": 0.2509,
+              "lpy_ufo_00003": 0.2703
+            },
+            "F_published": {
+              "lpy_envy_00000": 0.1426,
+              "lpy_envy_00003": 0.1413,
+              "lpy_envy_00008": 0.1229,
+              "lpy_envy_00012": 0.1273,
+              "lpy_ufo_00000": 0.184,
+              "lpy_ufo_00001": 0.178,
+              "lpy_ufo_00002": 0.1672,
+              "lpy_ufo_00003": 0.2221
+            },
+            "ratio": {
+              "lpy_envy_00000": 1.5890603085553996,
+              "lpy_envy_00003": 1.719037508846426,
+              "lpy_envy_00008": 1.9560618388934095,
+              "lpy_envy_00012": 1.7690494893951298,
+              "lpy_ufo_00000": 1.3125,
+              "lpy_ufo_00001": 1.4421348314606741,
+              "lpy_ufo_00002": 1.5005980861244022,
+              "lpy_ufo_00003": 1.2170193606483566
+            }
+          },
+          "holds": false,
+          "refutes": true
+        }
+      ],
+      "verdict": "refuted"
+    }
+  ],
+  "native_vs_matched": {
+    "per_tree": {
+      "F evening": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.4044474168199298,
+          "lpy_envy_00003": 0.4623760993996928,
+          "lpy_envy_00008": 0.6239077669902913,
+          "lpy_envy_00012": 0.46956928838951306,
+          "lpy_ufo_00000": 0.6136707468023656,
+          "lpy_ufo_00001": 0.6347880127054275,
+          "lpy_ufo_00002": 0.5119134157176319,
+          "lpy_ufo_00003": 0.6690950646382402
+        },
+        "median_ratio": 0.5627920812599987
+      },
+      "F morning": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.19106317411402157,
+          "lpy_envy_00003": 0.17177914110429449,
+          "lpy_envy_00008": 0.16117783804726848,
+          "lpy_envy_00012": 0.14308553157474022,
+          "lpy_ufo_00000": 0.13814756671899528,
+          "lpy_ufo_00001": 0.17549284885968305,
+          "lpy_ufo_00002": 0.1387171561051005,
+          "lpy_ufo_00003": 0.1776483436476156
+        },
+        "median_ratio": 0.16647848957578149
+      },
+      "F noon": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.31305155596841616,
+          "lpy_envy_00003": 0.20616016427104725,
+          "lpy_envy_00008": 0.1492537313432836,
+          "lpy_envy_00012": 0.21863468634686348,
+          "lpy_ufo_00000": 0.23379923761118168,
+          "lpy_ufo_00001": 0.18370426254243682,
+          "lpy_ufo_00002": 0.17701612903225808,
+          "lpy_ufo_00003": 0.18213323065075088
+        },
+        "median_ratio": 0.19493221340674205
+      },
+      "F source": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.17519858781994704,
+          "lpy_envy_00003": 0.1457389872375463,
+          "lpy_envy_00008": 0.15557404326123128,
+          "lpy_envy_00012": 0.14031971580817051,
+          "lpy_ufo_00000": 0.16107660455486542,
+          "lpy_ufo_00001": 0.19711725749902612,
+          "lpy_ufo_00002": 0.14906337186129934,
+          "lpy_ufo_00003": 0.1701812800591935
+        },
+        "median_ratio": 0.15832532390804835
+      },
+      "J evening": {
+        "native_over_matched": {
+          "lpy_envy_00000": 1.1188858695652175,
+          "lpy_envy_00003": 0.8115853658536585,
+          "lpy_envy_00008": 0.34143426294820717,
+          "lpy_envy_00012": 0.909596662030598,
+          "lpy_ufo_00000": 0.21054545454545454,
+          "lpy_ufo_00001": 0.16456970306995472,
+          "lpy_ufo_00002": 0.16650419185026322,
+          "lpy_ufo_00003": 0.23064100621306258
+        },
+        "median_ratio": 0.28603763458063486
+      },
+      "J morning": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.14558472553699284,
+          "lpy_envy_00003": 0.16458196181698487,
+          "lpy_envy_00008": 0.17184265010351965,
+          "lpy_envy_00012": 0.14067278287461774,
+          "lpy_ufo_00000": 0.12747663551401867,
+          "lpy_ufo_00001": 0.16913946587537093,
+          "lpy_ufo_00002": 0.12161172161172161,
+          "lpy_ufo_00003": 0.17047026279391422
+        },
+        "median_ratio": 0.15508334367698884
+      },
+      "J noon": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.14132762312633834,
+          "lpy_envy_00003": 0.15669700910273082,
+          "lpy_envy_00008": 0.15595399188092018,
+          "lpy_envy_00012": 0.16826752045535395,
+          "lpy_ufo_00000": 0.21849018955769867,
+          "lpy_ufo_00001": 0.25515776699029125,
+          "lpy_ufo_00002": 0.2469215813350616,
+          "lpy_ufo_00003": 0.24984765386959173
+        },
+        "median_ratio": 0.1933788550065263
+      },
+      "J source": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.16188870151770657,
+          "lpy_envy_00003": 0.14839209608678808,
+          "lpy_envy_00008": 0.14365300437723835,
+          "lpy_envy_00012": 0.15091973244147158,
+          "lpy_ufo_00000": 0.16927396710790213,
+          "lpy_ufo_00001": 0.19970951343500365,
+          "lpy_ufo_00002": 0.1623867069486405,
+          "lpy_ufo_00003": 0.1840813464235624
+        },
+        "median_ratio": 0.16213770423317353
+      },
+      "C evening": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.4144789180588704,
+          "lpy_envy_00003": 0.48161764705882354,
+          "lpy_envy_00008": 0.5970009372071228,
+          "lpy_envy_00012": 0.48215653239393474,
+          "lpy_ufo_00000": 0.45655794587092297,
+          "lpy_ufo_00001": 0.5122390957631232,
+          "lpy_ufo_00002": 0.4310274916876165,
+          "lpy_ufo_00003": 0.5704315624554908
+        },
+        "median_ratio": 0.48188708972637917
+      },
+      "C morning": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.18848368522072936,
+          "lpy_envy_00003": 0.17039848197343455,
+          "lpy_envy_00008": 0.16763229045963693,
+          "lpy_envy_00012": 0.14848726114649682,
+          "lpy_ufo_00000": 0.13641802951735144,
+          "lpy_ufo_00001": 0.17534246575342466,
+          "lpy_ufo_00002": 0.12669507942657884,
+          "lpy_ufo_00003": 0.18217750628817825
+        },
+        "median_ratio": 0.16901538621653572
+      },
+      "C noon": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.26720647773279355,
+          "lpy_envy_00003": 0.1894184168012924,
+          "lpy_envy_00008": 0.1508921644685803,
+          "lpy_envy_00012": 0.20684931506849316,
+          "lpy_ufo_00000": 0.23827791986359761,
+          "lpy_ufo_00001": 0.2107843137254902,
+          "lpy_ufo_00002": 0.19730941704035876,
+          "lpy_ufo_00003": 0.20610399397136395
+        },
+        "median_ratio": 0.20647665451992855
+      },
+      "C source": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.15306553911205076,
+          "lpy_envy_00003": 0.14109206855320844,
+          "lpy_envy_00008": 0.13739837398373983,
+          "lpy_envy_00012": 0.14310270734851743,
+          "lpy_ufo_00000": 0.15995065789473684,
+          "lpy_ufo_00001": 0.20022753128555176,
+          "lpy_ufo_00002": 0.16796570537802027,
+          "lpy_ufo_00003": 0.18620443173695497
+        },
+        "median_ratio": 0.1565080985033938
+      },
+      "A evening": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.60932944606414,
+          "lpy_envy_00003": 0.45533498759305213,
+          "lpy_envy_00008": 0.6926174496644295,
+          "lpy_envy_00012": 0.3918367346938776,
+          "lpy_ufo_00000": 0.3998073217726397,
+          "lpy_ufo_00001": 0.3871650211565585,
+          "lpy_ufo_00002": 0.33633387888707034,
+          "lpy_ufo_00003": 0.4049295774647888
+        },
+        "median_ratio": 0.40236844961871426
+      },
+      "A morning": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.20520999468367893,
+          "lpy_envy_00003": 0.1844380403458213,
+          "lpy_envy_00008": 0.17497507477567298,
+          "lpy_envy_00012": 0.14693877551020407,
+          "lpy_ufo_00000": 0.20831195484864032,
+          "lpy_ufo_00001": 0.24298160696999033,
+          "lpy_ufo_00002": 0.18904244817374136,
+          "lpy_ufo_00003": 0.267515923566879
+        },
+        "median_ratio": 0.19712622142871014
+      },
+      "A noon": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.17554240631163706,
+          "lpy_envy_00003": 0.15296198054818744,
+          "lpy_envy_00008": 0.17204301075268819,
+          "lpy_envy_00012": 0.16447688564476884,
+          "lpy_ufo_00000": 0.23047619047619047,
+          "lpy_ufo_00001": 0.25619487610247793,
+          "lpy_ufo_00002": 0.2647058823529412,
+          "lpy_ufo_00003": 0.27533853098071404
+        },
+        "median_ratio": 0.20300929839391377
+      },
+      "A source": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.20784729586426298,
+          "lpy_envy_00003": 0.1776504297994269,
+          "lpy_envy_00008": 0.1831610044313146,
+          "lpy_envy_00012": 0.16941297631307928,
+          "lpy_ufo_00000": 0.22595926101373756,
+          "lpy_ufo_00001": 0.25200845665961946,
+          "lpy_ufo_00002": 0.225123818099955,
+          "lpy_ufo_00003": 0.24939073923639318
+        },
+        "median_ratio": 0.21648555698210897
+      },
+      "B evening": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.5642857142857143,
+          "lpy_envy_00003": 0.47058823529411764,
+          "lpy_envy_00008": 0.72876304023845,
+          "lpy_envy_00012": 0.4545454545454546,
+          "lpy_ufo_00000": 0.3968401486988848,
+          "lpy_ufo_00001": 0.4001382170006911,
+          "lpy_ufo_00002": 0.36104114189756503,
+          "lpy_ufo_00003": 0.40822235089751013
+        },
+        "median_ratio": 0.43138390272148236
+      },
+      "B morning": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.21133144475920682,
+          "lpy_envy_00003": 0.189769820971867,
+          "lpy_envy_00008": 0.1957894736842105,
+          "lpy_envy_00012": 0.15910364145658265,
+          "lpy_ufo_00000": 0.2165058949624866,
+          "lpy_ufo_00001": 0.2634170359428853,
+          "lpy_ufo_00002": 0.22522982635342187,
+          "lpy_ufo_00003": 0.29532710280373836
+        },
+        "median_ratio": 0.2139186698608467
+      },
+      "B noon": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.15996074582924433,
+          "lpy_envy_00003": 0.1657706093189964,
+          "lpy_envy_00008": 0.1846153846153846,
+          "lpy_envy_00012": 0.18048533872598585,
+          "lpy_ufo_00000": 0.25142045454545453,
+          "lpy_ufo_00001": 0.3019262981574539,
+          "lpy_ufo_00002": 0.3007830492860433,
+          "lpy_ufo_00003": 0.3168984407922461
+        },
+        "median_ratio": 0.21801791958041955
+      },
+      "B source": {
+        "native_over_matched": {
+          "lpy_envy_00000": 0.1862539349422875,
+          "lpy_envy_00003": 0.17114093959731544,
+          "lpy_envy_00008": 0.17860696517412936,
+          "lpy_envy_00012": 0.1683991683991684,
+          "lpy_ufo_00000": 0.23088163662932293,
+          "lpy_ufo_00001": 0.26808142052836725,
+          "lpy_ufo_00002": 0.24606116774791476,
+          "lpy_ufo_00003": 0.2727272727272727
+        },
+        "median_ratio": 0.2085677857858052
+      }
+    },
+    "family_means": {
+      "matched": [
+        {
+          "model": "da2_control",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.2415,
+          "ufo_mask_mae_m": 0.2608
+        },
+        {
+          "model": "da2_control",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.2585,
+          "ufo_mask_mae_m": 0.2607
+        },
+        {
+          "model": "da2_control",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.2367,
+          "ufo_mask_mae_m": 0.2526
+        },
+        {
+          "model": "da2_control",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.7106,
+          "ufo_mask_mae_m": 1.3801
+        },
+        {
+          "model": "da2_frozen",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.2337,
+          "ufo_mask_mae_m": 0.2548
+        },
+        {
+          "model": "da2_frozen",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.2572,
+          "ufo_mask_mae_m": 0.2618
+        },
+        {
+          "model": "da2_frozen",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.2342,
+          "ufo_mask_mae_m": 0.2522
+        },
+        {
+          "model": "da2_frozen",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.6948,
+          "ufo_mask_mae_m": 1.3852
+        },
+        {
+          "model": "da2_jitter",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.2465,
+          "ufo_mask_mae_m": 0.2687
+        },
+        {
+          "model": "da2_jitter",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.2953,
+          "ufo_mask_mae_m": 0.2748
+        },
+        {
+          "model": "da2_jitter",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.2911,
+          "ufo_mask_mae_m": 0.3168
+        },
+        {
+          "model": "da2_jitter",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.1765,
+          "ufo_mask_mae_m": 0.6485
+        },
+        {
+          "model": "da2_rendered_control",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.1982,
+          "ufo_mask_mae_m": 0.2219
+        },
+        {
+          "model": "da2_rendered_control",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.1851,
+          "ufo_mask_mae_m": 0.1999
+        },
+        {
+          "model": "da2_rendered_control",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.205,
+          "ufo_mask_mae_m": 0.2261
+        },
+        {
+          "model": "da2_rendered_control",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.0693,
+          "ufo_mask_mae_m": 0.136
+        },
+        {
+          "model": "da2_rendered_jitter",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.1988,
+          "ufo_mask_mae_m": 0.229
+        },
+        {
+          "model": "da2_rendered_jitter",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.1982,
+          "ufo_mask_mae_m": 0.206
+        },
+        {
+          "model": "da2_rendered_jitter",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.2098,
+          "ufo_mask_mae_m": 0.2273
+        },
+        {
+          "model": "da2_rendered_jitter",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.0743,
+          "ufo_mask_mae_m": 0.1345
+        }
+      ],
+      "native": [
+        {
+          "model": "da2_control",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.0347,
+          "ufo_mask_mae_m": 0.0467
+        },
+        {
+          "model": "da2_control",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.0437,
+          "ufo_mask_mae_m": 0.0406
+        },
+        {
+          "model": "da2_control",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.0476,
+          "ufo_mask_mae_m": 0.0537
+        },
+        {
+          "model": "da2_control",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.3564,
+          "ufo_mask_mae_m": 0.6823
+        },
+        {
+          "model": "da2_frozen",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.0361,
+          "ufo_mask_mae_m": 0.0432
+        },
+        {
+          "model": "da2_frozen",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.043,
+          "ufo_mask_mae_m": 0.0413
+        },
+        {
+          "model": "da2_frozen",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.051,
+          "ufo_mask_mae_m": 0.0488
+        },
+        {
+          "model": "da2_frozen",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.347,
+          "ufo_mask_mae_m": 0.8456
+        },
+        {
+          "model": "da2_jitter",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.0372,
+          "ufo_mask_mae_m": 0.0482
+        },
+        {
+          "model": "da2_jitter",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.046,
+          "ufo_mask_mae_m": 0.0406
+        },
+        {
+          "model": "da2_jitter",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.0453,
+          "ufo_mask_mae_m": 0.077
+        },
+        {
+          "model": "da2_jitter",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.1286,
+          "ufo_mask_mae_m": 0.1274
+        },
+        {
+          "model": "da2_rendered_control",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.0349,
+          "ufo_mask_mae_m": 0.0567
+        },
+        {
+          "model": "da2_rendered_control",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.035,
+          "ufo_mask_mae_m": 0.0503
+        },
+        {
+          "model": "da2_rendered_control",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.0353,
+          "ufo_mask_mae_m": 0.0664
+        },
+        {
+          "model": "da2_rendered_control",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.0383,
+          "ufo_mask_mae_m": 0.0535
+        },
+        {
+          "model": "da2_rendered_jitter",
+          "lighting": "source",
+          "envy_mask_mae_m": 0.0366,
+          "ufo_mask_mae_m": 0.0547
+        },
+        {
+          "model": "da2_rendered_jitter",
+          "lighting": "morning",
+          "envy_mask_mae_m": 0.0352,
+          "ufo_mask_mae_m": 0.047
+        },
+        {
+          "model": "da2_rendered_jitter",
+          "lighting": "noon",
+          "envy_mask_mae_m": 0.0348,
+          "ufo_mask_mae_m": 0.0585
+        },
+        {
+          "model": "da2_rendered_jitter",
+          "lighting": "evening",
+          "envy_mask_mae_m": 0.0397,
+          "ufo_mask_mae_m": 0.0516
+        }
+      ]
+    }
+  }
+}

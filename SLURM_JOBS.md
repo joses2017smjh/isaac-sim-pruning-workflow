@@ -608,7 +608,9 @@ submission.
 (RTX 8000, `cn-gpu5`–`cn-gpu7`), and the evaluation `21499599` COMPLETED in
 16m26s: about 70 of the 180 reserved GPU-minutes. Slurm states are not
 verdicts; G0–G3 are scored by a committed scorer. The published aggregation of
-both arms runs as CPU job `21501978` (`share`).
+both arms ran as CPU job `21501978` (`share`, 4m),
+[result](docs/EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md#result--october-1-2026): G0 and G2 supported, G1
+partly supported, G3 refuted.
 
 ### Jaw in the camera's view: P0 gate (CPU, October 1)
 
@@ -622,6 +624,8 @@ killer had also taken VS Code processes.
 | `21501940` | Preview of the uncommitted checker (not evidence) | All four checks passed |
 | `21501970` | Committed checker `f3442df` on those replays | **P0 passed**: [evidence](docs/evidence/jaw_in_view_p0_replay_2026-10-01.json) |
 | `21501971` | Foundation CI steps on a clean clone at `f3442df` (no recorded artifacts, as on GitHub) | COMPLETED: ruff check and format clean; 836 passed, 19 skipped; demo ran |
+| `21502003` | Preview of the hardened checker, after its adversarial review (not evidence) | All four checks passed |
+| `21502011` | Hardened checker `f16c8ca` on the same replays | **P0 passed**: [recheck evidence](docs/evidence/jaw_in_view_p0_replay_recheck_2026-10-01.json) |
 
 ### Jaw in the camera's view (submitted October 1)
 

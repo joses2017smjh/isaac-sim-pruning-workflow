@@ -8,19 +8,17 @@ and results in the [roadmap](ROADMAP.md).
 - **Jaw in the camera's view** (approved with the gate waiver, 270 GPU-min).
   - Its pre-submission replay check
     ([P0](evidence/jaw_in_view_p0_replay_2026-10-01.json)) passed on the
-    committed code.
-  - Batches A `21501983` → B `21501985` → C `21501986` are queued.
+    committed code. After an adversarial review the checker was hardened, and
+    it passes the same replays
+    ([recheck](evidence/jaw_in_view_p0_replay_recheck_2026-10-01.json)).
+  - Batches A `21501983` → B `21501985` → C `21501986`: A's first run started
+    at 15:38 on an RTX 8000.
   - P1–P8 in its [protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md) are scored
     by a committed scorer once the runs are graded.
 
-## Running or ready to score (CPU)
-
-- **Render-gap check.** Both GPU jobs finished (about 70 of 180 reserved
-  minutes). The published aggregation of the Matched and Native arms runs as
-  CPU job `21501978`. G0–G3 in its
-  [protocol](EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md) are scored next.
-
 Finished and published: the
+[render-gap check](EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md#result--october-1-2026)
+(G0 and G2 supported, G1 partly, G3 refuted), the
 [jaw-shadow counterfactual](EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026)
 (5 of 5 predictions supported), the
 [rendered-lighting training](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026)

@@ -105,3 +105,64 @@ How to read the outcome:
 - **Approval.** The user approved the check on September 30 at an initial
   estimate of about 60 minutes. This reservation is put to the user before
   submission because it exceeds that estimate.
+
+## Result — October 1, 2026
+
+All 8 trees rendered, with no stall, on RTX 8000 in about 70 of the 180
+reserved GPU-minutes. Both arms were scored: five checkpoints × 192 frames,
+with checkpoint hashes equal to the published ones.
+
+Evidence (code `2b683ed`):
+[verdicts](evidence/render_gap_verdicts_2026-10-01.json), the Matched
+[aggregate](evidence/render_gap_matched_matrix_2026-10-01.json) and
+[anchoring](evidence/render_gap_matched_anchoring_2026-10-01.json), the Native
+[aggregate](evidence/render_gap_native_matrix_2026-10-01.json) and
+[anchoring](evidence/render_gap_native_anchoring_2026-10-01.json), and the
+[frame measurement](evidence/render_gap_frame_stats_2026-10-01.json).
+
+| | Registered | Measured, per tree | Verdict |
+|---|---|---|---|
+| **G0** | every view: IoU ≥ 0.995 and ≥ 99.5% within 1 mm | 48 of 48 views: IoU 1.000, 100% within 1 mm | supported |
+| **G1** | A/C and B/C ≥ 0.85 on Matched source in ≥ 6 of 8 trees; refuted at ≤ 0.70 in ≥ 6 | A/C 0.80–0.90 (4 of 8 ≥ 0.85); B/C 0.81–0.88 (1 of 8); none ≤ 0.70 | partly supported |
+| **G2** | B/C Envy evening ≤ 0.3 in ≥ 3 of 4; A/J UFO evening ≤ 0.5 in ≥ 3 of 4 | B/C 0.08–0.11 (4 of 4); A/J 0.13–0.26 (4 of 4) | supported |
+| **G3** | F Matched / F published ≤ 0.85 on source in ≥ 6 of 8; refuted at ≥ 1.0 in ≥ 6 | 1.22–1.96 in 8 of 8 | **refuted** |
+
+**Reading.** G2 holds and G1 is neither held nor refuted, so the outcome lies
+between the protocol's first two readings.
+- **The low-sun gain is lighting.** It survives the renderer change: B's
+  evening error is about a tenth of C's on Matched (Envy) and on Native.
+- **The source gain is mostly renderer-dependent.** On the published matrix,
+  A/C and B/C were 0.49–0.69, a 35–45% gain. On Matched they are 0.80–0.90, a
+  10–20% gain. On Native, A and B have no source gain over C:
+  - Envy family means: B 0.035 m, C 0.035 m.
+  - UFO family means: B 0.057 m, C 0.047 m, so B is worse.
+
+**G3 failed the other way.** The frozen model's source error does not shrink
+on training-renderer frames: it grows by 22–96%. Every model does worse on
+the Matched frames than on the published matrix frames of the same views:
+- source family means rise 1.36–2.69×, the rendered-lighting models most;
+- morning and noon also rise for every model;
+- evening falls for F, C and J and rises for A and B.
+
+The frames themselves differ in one direction in every view. This is a
+measurement, not pre-registered. Against the same depth and mask:
+- the tree is darker in 192 of 192 frames (median grey 68 against 78 at
+  source light);
+- the image is sharper in 192 of 192 frames (Laplacian variance 1.7–2.2×);
+- grey correlation on the tree is 0.91–0.94.
+
+The matrix's 512×288, 16-sample denoised frames are therefore not a neutral
+stand-in for the training renderer at matrix resolution, and part of the
+published source gain belongs to them.
+
+**Native (measurement).** Against the new render's own 1920×1080 depth and
+mask, every model is far more accurate. Source family means are 0.035–0.037 m
+for Envy and 0.043–0.057 m for UFO, against 0.20–0.27 m on Matched. Native
+changes resolution, input filtering and ground truth together, so it does not
+say which of them matters.
+
+**Limits.**
+- 8 trees, one bark, Blender only, one render per frame.
+- The Isaac camera and Stage A are untouched.
+- The frame measurement shows how the frames differ, not which difference
+  (brightness, sharpness or denoising) moves the error.
