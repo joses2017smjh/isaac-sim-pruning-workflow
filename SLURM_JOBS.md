@@ -603,3 +603,22 @@ submission.
 | Batch | Jobs | Reserved |
 |---|---|---|
 | `render-gap-20260930` | render array `21499598` `0-7%1` (15 min each), evaluation `21499599` afterany (60 min) | 180 min |
+
+**Render-gap run (October 1).** All 8 render tasks COMPLETED in 6m19s–7m05s
+(RTX 8000, `cn-gpu5`–`cn-gpu7`), and the evaluation `21499599` COMPLETED in
+16m26s: about 70 of the 180 reserved GPU-minutes. Slurm states are not
+verdicts; G0–G3 are scored by a committed scorer. The published aggregation of
+both arms runs as CPU job `21501978` (`share`).
+
+### Jaw in the camera's view: P0 gate (CPU, October 1)
+
+These are CPU jobs on `share`, run outside the interactive session, which has
+only 6 GB. A checker run there had been killed for lack of memory, and the OOM
+killer had also taken VS Code processes.
+
+| Job | What | Outcome |
+|---|---|---|
+| `21501901` | The three replays (flags off, mask, mask + hold) of the 129 recorded runs, from a shared clone at the registration commit `a6e8266` | COMPLETED in 6m43s on `cn-b05`; all three exit 0 |
+| `21501940` | Preview of the uncommitted checker (not evidence) | All four checks passed |
+| `21501970` | Committed checker `f3442df` on those replays | **P0 passed**: [evidence](docs/evidence/jaw_in_view_p0_replay_2026-10-01.json) |
+| `21501971` | Foundation CI steps on a clean clone at `f3442df` | See below |

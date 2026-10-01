@@ -1,0 +1,1331 @@
+{
+ "schema_version": 1,
+ "scope": "P0 pre-submission gate of the jaw-in-view experiment: offline CPU replays of the 129 earlier recorded runs through the repository controller with both flags off, with the jaw self-mask, and with the mask and the closure hold, against the recordings and the offline study. Recorded images only; no frame here is a live outcome or a grade.",
+ "protocol": "docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md",
+ "code_revision": "f3442dffce5480088fc5dd268359d8ef270a73cd",
+ "code_tree_dirty": false,
+ "replay_code_revision": "a6e8266ed64b0589d98241954b036a3a529389ec",
+ "inputs_sha256": {
+  "replay_off": {
+   "path": "/nfs/hpc/share/sanchej7/pruning_work/jaw_in_view_20260930/p0_a6e8266/off.json",
+   "sha256": "cb4a909f385d00ca865276df969798ac4f1d57df19e026aacc761d07f401b70d"
+  },
+  "replay_mask": {
+   "path": "/nfs/hpc/share/sanchej7/pruning_work/jaw_in_view_20260930/p0_a6e8266/mask.json",
+   "sha256": "5debeea2918be944a7a8d7a943c0024b807b9a885d87eb068adeded2961bfc98"
+  },
+  "replay_mask_hold": {
+   "path": "/nfs/hpc/share/sanchej7/pruning_work/jaw_in_view_20260930/p0_a6e8266/mask_hold.json",
+   "sha256": "0ac6eafdadc3f8f89825f7868dd0180b6124280b504a17ef1d680ca45b50d949"
+  },
+  "study_outputs": {
+   "dir": "/nfs/hpc/share/sanchej7/pruning_work/offline_tracker_20260930/jawmask/out",
+   "files": 207,
+   "sha256": "d23864b816a25ab5b54c848b7bea20af33ae7a20c9ee16d726caedf13c7a6dac"
+  },
+  "recorded_frames_and_reports": {
+   "dir": "/nfs/hpc/share/sanchej7/pruning_work/jaw_in_view_20260930/p0_a6e8266/checker_src_f3442df/artifacts/vision_robustness",
+   "files": 258,
+   "sha256": "45e7f4375e64148fca6530df1212272abd8ce8667064e0d60a25d7889a5cf2f4"
+  }
+ },
+ "checks": [
+  {
+   "id": "provenance",
+   "statement": "The three replays have the expected flags, one revision, unchanged sources, and this checkout's sources.",
+   "passed": true,
+   "detail": {
+    "flags": {
+     "off": {
+      "jaw_self_mask": false,
+      "closure_hold": false
+     },
+     "mask": {
+      "jaw_self_mask": true,
+      "closure_hold": false
+     },
+     "mask_hold": {
+      "jaw_self_mask": true,
+      "closure_hold": true
+     }
+    },
+    "code_revision": [
+     "a6e8266ed64b0589d98241954b036a3a529389ec"
+    ],
+    "source_files_differ_from_revision": {
+     "off": false,
+     "mask": false,
+     "mask_hold": false
+    },
+    "source_sha256": {
+     "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py": "6e5dd0264b63411520728bd3109cd65903cee368254fc2874a8877b066d6e7d7",
+     "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py": "15cbe8ec64fd025beb7933242f8f9aea4120d531c6b008bfab88214583381f80",
+     "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py": "c3376f8bff0b8c0c0825d230ae5757e64ead93392748530c3906ae9fd54620e4",
+     "source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py": "902e3661863c89a2a0cfed6d25b9f359849ccd62066c88b49daf8d787c522d31",
+     "tools/replay_jaw_self_mask.py": "3d050f1aa9e808cb2f048796dcc7efcce0858ba5044d89527176d4488fb7fe65"
+    },
+    "sources_equal_this_checkout": true
+   }
+  },
+  {
+   "id": "flags_off_exact",
+   "statement": "With both flags off the replay reproduces all recorded runs through each recorded stop.",
+   "passed": true,
+   "detail": {
+    "totals": {
+     "runs_in_replay": 129,
+     "recorded_runs_with_frames": 129,
+     "frames_compared_through_stop": 10121,
+     "correlation_pairs": 5977,
+     "max_abs_correlation_difference": 4.172325134277344e-07,
+     "frames_after_stop_informational": 17079,
+     "after_stop_frames_differing_informational": 0,
+     "tool_reproduces_true": 129
+    },
+    "mismatches": [],
+    "mismatch_count": 0,
+    "per_run": [
+     [
+      "lighting-20260919/run_00_source_raw",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "lighting-20260919/run_01_source_clahe",
+      200,
+      null,
+      200,
+      1.7881393432617188e-07
+     ],
+     [
+      "lighting-20260919/run_02_morning_raw",
+      200,
+      null,
+      200,
+      1.7881393432617188e-07
+     ],
+     [
+      "lighting-20260919/run_03_morning_clahe",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "lighting-20260919/run_04_evening_raw",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "lighting-20260919/run_05_evening_clahe",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-both-tree0-20260926/run_00_source_tree0_v530_similarity_mount",
+      200,
+      60,
+      61,
+      2.980232238769531e-07
+     ],
+     [
+      "perc-both-tree0-20260926/run_01_source_tree0_v590_similarity_mount",
+      200,
+      62,
+      63,
+      2.980232238769531e-07
+     ],
+     [
+      "perc-both-tree0-20260926/run_02_source_tree0_v7524_similarity_mount",
+      200,
+      9,
+      10,
+      1.7881393432617188e-07
+     ],
+     [
+      "perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount",
+      200,
+      54,
+      55,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-both-tree0-20260926/run_06_source_tree0_v12142_similarity_mount",
+      200,
+      30,
+      31,
+      1.7881393432617188e-07
+     ],
+     [
+      "perc-both-tree0-20260926/run_07_source_tree0_v18669_similarity_mount",
+      200,
+      28,
+      29,
+      1.1920928955078125e-07
+     ],
+     [
+      "perc-both-tree0-20260926/run_08_source_tree0_v22988_similarity_mount",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "perc-both-tree1-20260926/run_00_source_tree1_v14884_similarity_mount",
+      200,
+      null,
+      200,
+      1.7881393432617188e-07
+     ],
+     [
+      "perc-both-tree1-20260926/run_01_source_tree1_v14944_similarity_mount",
+      200,
+      null,
+      200,
+      2.980232238769531e-07
+     ],
+     [
+      "perc-both-tree1-20260926/run_02_source_tree1_v15004_similarity_mount",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-both-tree1-20260926/run_04_source_tree1_v19264_similarity_mount",
+      200,
+      36,
+      37,
+      2.980232238769531e-07
+     ],
+     [
+      "perc-both-tree1-20260926/run_05_source_tree1_v19384_similarity_mount",
+      200,
+      44,
+      45,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-both-tree1-20260926/run_06_source_tree1_v19444_similarity_mount",
+      200,
+      44,
+      45,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-mount-flip-20260926/run_00_source_tree0_v8353_mount_side",
+      200,
+      73,
+      74,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-mount-flip-20260926/run_01_source_tree1_v19264_mount_side",
+      200,
+      36,
+      37,
+      2.980232238769531e-07
+     ],
+     [
+      "perc-similarity-tree0-20260926/run_00_source_tree0_v530_similarity_tracker",
+      200,
+      60,
+      61,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-similarity-tree0-20260926/run_01_source_tree0_v590_similarity_tracker",
+      200,
+      62,
+      63,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-similarity-tree0-20260926/run_02_source_tree0_v7524_similarity_tracker",
+      200,
+      9,
+      10,
+      1.1920928955078125e-07
+     ],
+     [
+      "perc-similarity-tree0-20260926/run_03_source_tree0_v8353_similarity_tracker",
+      200,
+      1,
+      2,
+      0.0
+     ],
+     [
+      "perc-similarity-tree0-20260926/run_06_source_tree0_v12142_similarity_tracker",
+      200,
+      30,
+      31,
+      1.7881393432617188e-07
+     ],
+     [
+      "perc-similarity-tree0-20260926/run_07_source_tree0_v18669_similarity_tracker",
+      200,
+      28,
+      29,
+      1.7881393432617188e-07
+     ],
+     [
+      "perc-similarity-tree0-20260926/run_08_source_tree0_v22988_similarity_tracker",
+      200,
+      22,
+      23,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-similarity-tree1-20260926/run_00_source_tree1_v14884_similarity_tracker",
+      200,
+      null,
+      200,
+      1.7881393432617188e-07
+     ],
+     [
+      "perc-similarity-tree1-20260926/run_01_source_tree1_v14944_similarity_tracker",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-similarity-tree1-20260926/run_02_source_tree1_v15004_similarity_tracker",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "perc-similarity-tree1-20260926/run_04_source_tree1_v19264_similarity_tracker",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "perc-similarity-tree1-20260926/run_05_source_tree1_v19384_similarity_tracker",
+      200,
+      44,
+      45,
+      3.5762786865234375e-07
+     ],
+     [
+      "perc-similarity-tree1-20260926/run_06_source_tree1_v19444_similarity_tracker",
+      200,
+      44,
+      45,
+      1.7881393432617188e-07
+     ],
+     [
+      "planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose",
+      200,
+      79,
+      80,
+      2.980232238769531e-07
+     ],
+     [
+      "planned-pose-gpu-r1-20260929/run_01_source_tree1_v19444_planned_pose",
+      200,
+      68,
+      69,
+      2.384185791015625e-07
+     ],
+     [
+      "planned-pose-gpu-r1-20260929/run_02_source_tree1_v14944_planned_pose",
+      200,
+      null,
+      200,
+      4.172325134277344e-07
+     ],
+     [
+      "planned-pose-gpu-r1-20260929/run_03_source_tree1_v15004_planned_pose",
+      200,
+      null,
+      200,
+      1.7881393432617188e-07
+     ],
+     [
+      "planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose",
+      200,
+      79,
+      80,
+      1.7881393432617188e-07
+     ],
+     [
+      "planned-pose-gpu-r2-20260929/run_01_source_tree1_v19444_planned_pose",
+      200,
+      68,
+      69,
+      2.384185791015625e-07
+     ],
+     [
+      "planned-pose-gpu-r2-20260929/run_02_source_tree1_v14944_planned_pose",
+      200,
+      null,
+      200,
+      1.7881393432617188e-07
+     ],
+     [
+      "planned-pose-gpu-r2-20260929/run_03_source_tree1_v15004_planned_pose",
+      200,
+      null,
+      200,
+      2.980232238769531e-07
+     ],
+     [
+      "planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose",
+      200,
+      79,
+      80,
+      2.384185791015625e-07
+     ],
+     [
+      "planned-pose-gpu-r3-20260929/run_01_source_tree1_v19444_planned_pose",
+      200,
+      70,
+      71,
+      2.384185791015625e-07
+     ],
+     [
+      "planned-pose-gpu-r3-20260929/run_02_source_tree1_v14944_planned_pose",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "planned-pose-gpu-r3-20260929/run_03_source_tree1_v15004_planned_pose",
+      200,
+      null,
+      200,
+      2.980232238769531e-07
+     ],
+     [
+      "strategy-fine-step-20260923/run_00_source_tree0_v530_fine_step",
+      400,
+      130,
+      131,
+      2.980232238769531e-07
+     ],
+     [
+      "strategy-fine-step-20260923/run_01_source_tree0_v590_fine_step",
+      400,
+      41,
+      42,
+      2.384185791015625e-07
+     ],
+     [
+      "strategy-fine-step-20260923/run_02_source_tree0_v7524_fine_step",
+      400,
+      50,
+      51,
+      2.384185791015625e-07
+     ],
+     [
+      "strategy-fine-step-20260923/run_03_source_tree0_v8353_fine_step",
+      400,
+      6,
+      7,
+      5.960464477539063e-08
+     ],
+     [
+      "strategy-fine-step-20260923/run_06_source_tree0_v12142_fine_step",
+      400,
+      59,
+      60,
+      1.7881393432617188e-07
+     ],
+     [
+      "strategy-fine-step-20260923/run_07_source_tree0_v18669_fine_step",
+      400,
+      55,
+      56,
+      2.384185791015625e-07
+     ],
+     [
+      "strategy-fine-step-20260923/run_08_source_tree0_v22988_fine_step",
+      400,
+      44,
+      45,
+      2.384185791015625e-07
+     ],
+     [
+      "strategy-horizontal-20260923/run_00_source_tree0_v530_horizontal_standoff",
+      200,
+      58,
+      59,
+      1.7881393432617188e-07
+     ],
+     [
+      "strategy-horizontal-20260923/run_01_source_tree0_v590_horizontal_standoff",
+      200,
+      16,
+      17,
+      1.7881393432617188e-07
+     ],
+     [
+      "strategy-horizontal-20260923/run_02_source_tree0_v7524_horizontal_standoff",
+      200,
+      10,
+      11,
+      1.1920928955078125e-07
+     ],
+     [
+      "strategy-horizontal-20260923/run_03_source_tree0_v8353_horizontal_standoff",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "strategy-horizontal-20260923/run_06_source_tree0_v12142_horizontal_standoff",
+      200,
+      30,
+      31,
+      2.384185791015625e-07
+     ],
+     [
+      "strategy-horizontal-20260923/run_07_source_tree0_v18669_horizontal_standoff",
+      200,
+      21,
+      22,
+      2.384185791015625e-07
+     ],
+     [
+      "strategy-horizontal-20260923/run_08_source_tree0_v22988_horizontal_standoff",
+      200,
+      21,
+      22,
+      2.384185791015625e-07
+     ],
+     [
+      "strategy-tool-axis-20260923/run_00_source_tree0_v530_tool_axis_standoff",
+      200,
+      60,
+      61,
+      2.980232238769531e-07
+     ],
+     [
+      "strategy-tool-axis-20260923/run_01_source_tree0_v590_tool_axis_standoff",
+      200,
+      20,
+      21,
+      2.384185791015625e-07
+     ],
+     [
+      "strategy-tool-axis-20260923/run_02_source_tree0_v7524_tool_axis_standoff",
+      200,
+      10,
+      11,
+      1.7881393432617188e-07
+     ],
+     [
+      "strategy-tool-axis-20260923/run_03_source_tree0_v8353_tool_axis_standoff",
+      200,
+      2,
+      3,
+      0.0
+     ],
+     [
+      "strategy-tool-axis-20260923/run_06_source_tree0_v12142_tool_axis_standoff",
+      200,
+      29,
+      30,
+      1.7881393432617188e-07
+     ],
+     [
+      "strategy-tool-axis-20260923/run_07_source_tree0_v18669_tool_axis_standoff",
+      200,
+      25,
+      26,
+      1.7881393432617188e-07
+     ],
+     [
+      "strategy-tool-axis-20260923/run_08_source_tree0_v22988_tool_axis_standoff",
+      200,
+      22,
+      23,
+      1.7881393432617188e-07
+     ],
+     [
+      "targets-morning-20260923/run_00_morning_tree0_v530",
+      200,
+      59,
+      60,
+      2.384185791015625e-07
+     ],
+     [
+      "targets-morning-20260923/run_01_morning_tree0_v590",
+      200,
+      12,
+      13,
+      1.1920928955078125e-07
+     ],
+     [
+      "targets-morning-20260923/run_02_morning_tree0_v7524",
+      200,
+      9,
+      10,
+      2.384185791015625e-07
+     ],
+     [
+      "targets-morning-20260923/run_03_morning_tree0_v8353",
+      200,
+      1,
+      2,
+      5.960464477539063e-08
+     ],
+     [
+      "targets-morning-20260923/run_06_morning_tree0_v12142",
+      200,
+      30,
+      31,
+      1.7881393432617188e-07
+     ],
+     [
+      "targets-morning-20260923/run_07_morning_tree0_v18669",
+      200,
+      27,
+      28,
+      1.7881393432617188e-07
+     ],
+     [
+      "targets-morning-20260923/run_08_morning_tree0_v22988",
+      200,
+      22,
+      23,
+      1.7881393432617188e-07
+     ],
+     [
+      "targets-source-20260923/run_00_source_tree0_v530",
+      200,
+      59,
+      60,
+      1.7881393432617188e-07
+     ],
+     [
+      "targets-source-20260923/run_01_source_tree0_v590",
+      200,
+      24,
+      25,
+      2.384185791015625e-07
+     ],
+     [
+      "targets-source-20260923/run_02_source_tree0_v7524",
+      200,
+      9,
+      10,
+      1.7881393432617188e-07
+     ],
+     [
+      "targets-source-20260923/run_03_source_tree0_v8353",
+      200,
+      1,
+      2,
+      1.1920928955078125e-07
+     ],
+     [
+      "targets-source-20260923/run_06_source_tree0_v12142",
+      200,
+      30,
+      31,
+      2.384185791015625e-07
+     ],
+     [
+      "targets-source-20260923/run_07_source_tree0_v18669",
+      200,
+      28,
+      29,
+      1.7881393432617188e-07
+     ],
+     [
+      "targets-source-20260923/run_08_source_tree0_v22988",
+      200,
+      22,
+      23,
+      2.980232238769531e-07
+     ],
+     [
+      "tree1-listed-baseline-20260923/run_00_source_tree1_v14884_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-baseline-20260923/run_01_source_tree1_v14944_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-baseline-20260923/run_02_source_tree1_v15004_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-baseline-20260923/run_04_source_tree1_v19264_baseline",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "tree1-listed-baseline-20260923/run_05_source_tree1_v19384_baseline",
+      200,
+      44,
+      45,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-baseline-20260923/run_06_source_tree1_v19444_baseline",
+      200,
+      43,
+      44,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-evening-20260926/run_00_evening_tree1_v14884_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline",
+      200,
+      67,
+      68,
+      2.980232238769531e-07
+     ],
+     [
+      "tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline",
+      200,
+      67,
+      68,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-evening-20260926/run_04_evening_tree1_v19264_baseline",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "tree1-listed-evening-20260926/run_05_evening_tree1_v19384_baseline",
+      200,
+      43,
+      44,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-evening-20260926/run_06_evening_tree1_v19444_baseline",
+      200,
+      43,
+      44,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-morning-20260926/run_00_morning_tree1_v14884_baseline",
+      200,
+      null,
+      200,
+      2.980232238769531e-07
+     ],
+     [
+      "tree1-listed-morning-20260926/run_01_morning_tree1_v14944_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline",
+      200,
+      75,
+      76,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-morning-20260926/run_04_morning_tree1_v19264_baseline",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "tree1-listed-morning-20260926/run_05_morning_tree1_v19384_baseline",
+      200,
+      43,
+      44,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-morning-20260926/run_06_morning_tree1_v19444_baseline",
+      200,
+      44,
+      45,
+      1.7881393432617188e-07
+     ],
+     [
+      "tree1-listed-repeat-r1-20260926/run_00_source_tree1_v14884_baseline",
+      200,
+      null,
+      200,
+      2.980232238769531e-07
+     ],
+     [
+      "tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-repeat-r1-20260926/run_02_source_tree1_v15004_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-repeat-r1-20260926/run_04_source_tree1_v19264_baseline",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "tree1-listed-repeat-r1-20260926/run_05_source_tree1_v19384_baseline",
+      200,
+      44,
+      45,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-repeat-r1-20260926/run_06_source_tree1_v19444_baseline",
+      200,
+      43,
+      44,
+      1.7881393432617188e-07
+     ],
+     [
+      "tree1-listed-repeat-r2-20260926/run_00_source_tree1_v14884_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-repeat-r2-20260926/run_01_source_tree1_v14944_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-repeat-r2-20260926/run_02_source_tree1_v15004_baseline",
+      200,
+      null,
+      200,
+      3.5762786865234375e-07
+     ],
+     [
+      "tree1-listed-repeat-r2-20260926/run_04_source_tree1_v19264_baseline",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "tree1-listed-repeat-r2-20260926/run_05_source_tree1_v19384_baseline",
+      200,
+      44,
+      45,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-repeat-r2-20260926/run_06_source_tree1_v19444_baseline",
+      200,
+      43,
+      44,
+      1.7881393432617188e-07
+     ],
+     [
+      "tree1-listed-repeat-r3-20260926/run_00_source_tree1_v14884_baseline",
+      200,
+      null,
+      200,
+      2.980232238769531e-07
+     ],
+     [
+      "tree1-listed-repeat-r3-20260926/run_01_source_tree1_v14944_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-repeat-r3-20260926/run_02_source_tree1_v15004_baseline",
+      200,
+      null,
+      200,
+      1.7881393432617188e-07
+     ],
+     [
+      "tree1-listed-repeat-r3-20260926/run_04_source_tree1_v19264_baseline",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "tree1-listed-repeat-r3-20260926/run_05_source_tree1_v19384_baseline",
+      200,
+      44,
+      45,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-listed-repeat-r3-20260926/run_06_source_tree1_v19444_baseline",
+      200,
+      43,
+      44,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-seeded-ten-20260926/run_05_source_tree1_v15599_baseline",
+      200,
+      65,
+      66,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-seeded-ten-20260926/run_08_source_tree1_v37023_baseline",
+      200,
+      16,
+      17,
+      1.7881393432617188e-07
+     ],
+     [
+      "tree1-seeded-ten-20260926/run_09_source_tree1_v37796_baseline",
+      200,
+      3,
+      4,
+      1.1920928955078125e-07
+     ],
+     [
+      "tree1-seeded30-20260926/run_05_source_tree1_v3493_baseline",
+      200,
+      64,
+      65,
+      2.980232238769531e-07
+     ],
+     [
+      "tree1-seeded30-20260926/run_12_source_tree1_v10737_baseline",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "tree1-seeded30-20260926/run_13_source_tree1_v11094_baseline",
+      200,
+      38,
+      39,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-seeded30-20260926/run_15_source_tree1_v14944_baseline",
+      200,
+      null,
+      200,
+      2.384185791015625e-07
+     ],
+     [
+      "tree1-seeded30-20260926/run_16_source_tree1_v17723_baseline",
+      200,
+      1,
+      2,
+      5.960464477539063e-08
+     ],
+     [
+      "tree1-seeded30-20260926/run_17_source_tree1_v19504_baseline",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "tree1-seeded30-20260926/run_23_source_tree1_v30283_baseline",
+      200,
+      43,
+      44,
+      1.7881393432617188e-07
+     ],
+     [
+      "tree1-seeded30-20260926/run_24_source_tree1_v31828_baseline",
+      200,
+      0,
+      1,
+      0.0
+     ],
+     [
+      "tree1-seeded30-20260926/run_25_source_tree1_v32536_baseline",
+      200,
+      5,
+      6,
+      1.1920928955078125e-07
+     ]
+    ]
+   }
+  },
+  {
+   "id": "mask_reproduces_study",
+   "statement": "With the mask on the replay reproduces the study's per-frame outputs, including 19444 r3 frame 67 at 139.",
+   "passed": true,
+   "detail": {
+    "totals": {
+     "runs": 129,
+     "frames_compared": 10121,
+     "study_divergent_frames": 1892,
+     "replay_divergent_frames": 1892,
+     "key_rows_compared": 149,
+     "frames_rendered_with_other_progress_through_stop": 9,
+     "unchanged_frames_with_masked_patch_elements_informational": 0
+    },
+    "19444_r3_frame_67": {
+     "frame": 67,
+     "kept_elements": 139,
+     "state": "jaw_mask_occluded"
+    },
+    "cut_decision_differs_from_study_informational": [],
+    "mismatches": [],
+    "mismatch_count": 0
+   }
+  },
+  {
+   "id": "hold_only_530",
+   "statement": "The hold applies only in the three 530 runs, at 76-79 through the recorded stop and after it only on frames that are not evaluable; held frames carry the closure reference's target and their labels.",
+   "passed": true,
+   "detail": {
+    "runs_with_holds": {
+     "planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose": [
+      76,
+      77,
+      78,
+      79,
+      80
+     ],
+     "planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose": [
+      76,
+      77,
+      78,
+      79,
+      80
+     ],
+     "planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose": [
+      76,
+      77,
+      78,
+      79,
+      80
+     ]
+    },
+    "per_530": {
+     "planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose": {
+      "recorded_stop": [
+       79,
+       "gate_lost_during_closure"
+      ],
+      "closure_start_frame": 74,
+      "held_through_recorded_stop": [
+       76,
+       77,
+       78,
+       79
+      ],
+      "held_after_recorded_stop": [
+       80
+      ],
+      "evaluable_held_frames": [],
+      "cut_without_hold_stop": [
+       76,
+       "vision_invalid"
+      ],
+      "cut_decision_differs_from_mask_run_through_stop": [
+       76,
+       77,
+       78,
+       79
+      ],
+      "held_ages_s": [
+       0.20000000000000018,
+       0.2999999999999998,
+       0.40000000000000036,
+       0.5,
+       0.5999999999999996
+      ],
+      "explanations": {
+       "76": "too_few_unmasked_patch_pixels",
+       "77": "latched_by_held_jaw_loss",
+       "78": "latched_by_held_jaw_loss",
+       "79": "latched_by_held_jaw_loss",
+       "80": "latched_by_held_jaw_loss"
+      },
+      "mouth_distance_mm_held": [
+       2.522561624666252,
+       2.522561624666252,
+       2.522561624666252,
+       2.522561624666252,
+       2.522561624666252
+      ],
+      "max_tool_motion_held": [
+       0.002021511540664628,
+       0.00017145339430111808
+      ],
+      "held_target_instrumented": [
+       {
+        "frame": 76,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 77,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 78,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 79,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 80,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       }
+      ]
+     },
+     "planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose": {
+      "recorded_stop": [
+       79,
+       "gate_lost_during_closure"
+      ],
+      "closure_start_frame": 74,
+      "held_through_recorded_stop": [
+       76,
+       77,
+       78,
+       79
+      ],
+      "held_after_recorded_stop": [
+       80
+      ],
+      "evaluable_held_frames": [
+       76,
+       77,
+       78,
+       79
+      ],
+      "cut_without_hold_stop": [
+       76,
+       "vision_invalid"
+      ],
+      "cut_decision_differs_from_mask_run_through_stop": [
+       76,
+       77,
+       78,
+       79
+      ],
+      "held_ages_s": [
+       0.20000000000000018,
+       0.2999999999999998,
+       0.40000000000000036,
+       0.5,
+       0.5999999999999996
+      ],
+      "explanations": {
+       "76": "too_few_unmasked_patch_pixels",
+       "77": "latched_by_held_jaw_loss",
+       "78": "latched_by_held_jaw_loss",
+       "79": "latched_by_held_jaw_loss",
+       "80": "latched_by_held_jaw_loss"
+      },
+      "mouth_distance_mm_held": [
+       2.6803361683104563,
+       2.6803361683104563,
+       2.6803361683104563,
+       2.6803361683104563,
+       2.6803361683104563
+      ],
+      "max_tool_motion_held": [
+       0.002046619023488688,
+       0.00017759723203646856
+      ],
+      "held_target_instrumented": [
+       {
+        "frame": 76,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 77,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 78,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 79,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 80,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       }
+      ]
+     },
+     "planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose": {
+      "recorded_stop": [
+       79,
+       "gate_lost_during_closure"
+      ],
+      "closure_start_frame": 74,
+      "held_through_recorded_stop": [
+       76,
+       77,
+       78,
+       79
+      ],
+      "held_after_recorded_stop": [
+       80
+      ],
+      "evaluable_held_frames": [
+       76,
+       77,
+       78,
+       79
+      ],
+      "cut_without_hold_stop": [
+       76,
+       "vision_invalid"
+      ],
+      "cut_decision_differs_from_mask_run_through_stop": [
+       76,
+       77,
+       78,
+       79
+      ],
+      "held_ages_s": [
+       0.20000000000000018,
+       0.2999999999999998,
+       0.40000000000000036,
+       0.5,
+       0.5999999999999996
+      ],
+      "explanations": {
+       "76": "too_few_unmasked_patch_pixels",
+       "77": "latched_by_held_jaw_loss",
+       "78": "latched_by_held_jaw_loss",
+       "79": "latched_by_held_jaw_loss",
+       "80": "latched_by_held_jaw_loss"
+      },
+      "mouth_distance_mm_held": [
+       2.94580935195383,
+       2.94580935195383,
+       2.94580935195383,
+       2.94580935195383,
+       2.94580935195383
+      ],
+      "max_tool_motion_held": [
+       0.0017060365416242732,
+       0.00016052760986427753
+      ],
+      "held_target_instrumented": [
+       {
+        "frame": 76,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 77,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 78,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 79,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       },
+       {
+        "frame": 80,
+        "sent_target_is_reference": true,
+        "reference_is_closure_start_frame": true,
+        "held_timestamp_is_reference": true,
+        "sent_vision_source": "closure_hold"
+       }
+      ]
+     }
+    },
+    "problems": [],
+    "problem_count": 0
+   }
+  }
+ ],
+ "passed": true
+}
