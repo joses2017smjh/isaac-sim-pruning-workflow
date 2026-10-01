@@ -5,25 +5,26 @@ and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-Nothing is queued. The rendered-lighting training and the known-map approach
-finished on September 30 and are published:
+- **Jaw-shadow counterfactual** (approved, 540 GPU-min): 8 chained batches,
+  `21491132` → … → `21491149`. J1–J5 in its
+  [protocol](EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md).
+
+The rendered-lighting training and the known-map approach finished on
+September 30 and are published:
 [lighting result](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026) ·
 [approach result](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
 
-## Needs a decision (GPU)
+## In preparation (approved September 30)
 
-- **Jaw in the camera's view.** Both remaining approach stops are the robot's
-  own jaw: during closure the tracker follows it (530), and on the final leg
-  it covers the tracked patch (19444). The candidates are a jaw self-mask, an
-  ego-motion consistency filter, the mirrored camera side, and holding the
-  aligned target through closure. The last one changes what the cut gate sees,
-  so it needs registration. About 270 GPU-min for one variant on both targets.
-- **Jaw-shadow counterfactual.** Rerun the low-sun stops with the jaw casting
-  no shadow: 12 runs, 540 GPU-min reserved. It tests the
-  [low-sun diagnosis](EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc).
-- **Render gap vs lighting.** Score the rendered-lighting arms on
-  companion-resolution renders of the matrix trees. This separates robustness
-  to the evaluation renderer from robustness to light.
+- **Jaw in the camera's view** (270 GPU-min): offline replay of a jaw
+  self-mask on the recorded 530 and 19444 frames decides the design, then a
+  protocol, then submission.
+- **Render-gap check**: re-render the matrix trees with the training
+  renderer's settings and score all five depth models on them. The exact
+  reservation is stated in its protocol before submission.
+- **Depth-aware appearance check** (the user's suggestion): an offline replay
+  of every recorded run with an appearance decision that also uses depth.
+  CPU only.
 
 ## Needs a decision (no GPU)
 

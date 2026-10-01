@@ -564,3 +564,24 @@ and 60 of 60 frames now pass the geometry check. The earlier manifest is kept as
   the grader has 530 and 19444 at 9/17 and the controls at 17/17. A GIF, MP4,
   poster and frame JSON were composed for all 12 runs (51 MB, local).
   [Result](docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
+
+### Jaw-shadow counterfactual (submitted September 30)
+
+Approved by the user on September 30 (540 GPU-minutes reserved). Code revision
+`28489db`, which committed the protocol, the target registers and the
+`jaw_no_shadow` scene option before submission:
+[protocol](docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md). One `afterany` chain,
+one task at a time, on `gpu,ampere` with the constraint `a40|rtx8000` and
+45-minute tasks. Share usage at submission was 1.674 TB, over the soft quota
+and under the 2 TiB hard limit.
+
+| Batch | Arm | Light, targets | Array job |
+|---|---|---|---|
+| `jaw-shadow-eve-a-r1-20260930` | A (baseline) | evening, 14944 + 15004 | `21491132` |
+| `jaw-shadow-eve-b-r1-20260930` | B (no jaw shadow) | evening, 14944 + 15004 | `21491134` |
+| `jaw-shadow-mor-a-r1-20260930` | A | morning, 15004 | `21491136` |
+| `jaw-shadow-mor-b-r1-20260930` | B | morning, 15004 | `21491137` |
+| `jaw-shadow-eve-a-r2-20260930` | A | evening, 14944 + 15004 | `21491145` |
+| `jaw-shadow-eve-b-r2-20260930` | B | evening, 14944 + 15004 | `21491147` |
+| `jaw-shadow-mor-a-r2-20260930` | A | morning, 15004 | `21491148` |
+| `jaw-shadow-mor-b-r2-20260930` | B | morning, 15004 | `21491149` |
