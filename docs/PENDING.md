@@ -5,14 +5,20 @@ and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-- **Render-gap check** (approved, 180 GPU-min): render array `21499598` →
-  evaluation `21499599`, G0–G3 in its
-  [protocol](EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md). Held until the October 1
-  maintenance window ends.
-- **Jaw in the camera's view** (approved with the gate waiver, 270 GPU-min):
-  [protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md) registered. It is
-  submitted once its pre-submission replay check (P0) passes on the committed
-  code.
+- **Jaw in the camera's view** (approved with the gate waiver, 270 GPU-min).
+  - Its pre-submission replay check
+    ([P0](evidence/jaw_in_view_p0_replay_2026-10-01.json)) passed on the
+    committed code.
+  - Batches A `21501983` → B `21501985` → C `21501986` are queued.
+  - P1–P8 in its [protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md) are scored
+    by a committed scorer once the runs are graded.
+
+## Running or ready to score (CPU)
+
+- **Render-gap check.** Both GPU jobs finished (about 70 of 180 reserved
+  minutes). The published aggregation of the Matched and Native arms runs as
+  CPU job `21501978`. G0–G3 in its
+  [protocol](EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md) are scored next.
 
 Finished and published: the
 [jaw-shadow counterfactual](EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026)

@@ -621,4 +621,28 @@ killer had also taken VS Code processes.
 | `21501901` | The three replays (flags off, mask, mask + hold) of the 129 recorded runs, from a shared clone at the registration commit `a6e8266` | COMPLETED in 6m43s on `cn-b05`; all three exit 0 |
 | `21501940` | Preview of the uncommitted checker (not evidence) | All four checks passed |
 | `21501970` | Committed checker `f3442df` on those replays | **P0 passed**: [evidence](docs/evidence/jaw_in_view_p0_replay_2026-10-01.json) |
-| `21501971` | Foundation CI steps on a clean clone at `f3442df` | See below |
+| `21501971` | Foundation CI steps on a clean clone at `f3442df` (no recorded artifacts, as on GitHub) | COMPLETED: ruff check and format clean; 836 passed, 19 skipped; demo ran |
+
+### Jaw in the camera's view (submitted October 1)
+
+The user approved 270 GPU-minutes on September 30. On October 1, after the gate
+waiver was put to them explicitly, they chose "hold + waiver, with controls".
+Submitted after P0 passed, from code revision `3c6a211`, which contains the P0
+evidence; the [protocol](docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md) was
+committed at `a6e8266`.
+- Strategy: `planned_pose_jaw_hold`, with `PRUNING_JAW_SELF_MASK=1` and
+  `PRUNING_CLOSURE_HOLD=1`.
+- Source light, `afterany`-chained batches, one task at a time, on
+  `gpu,ampere` with the constraint `a40|rtx8000` and 45-minute tasks.
+- Share usage at submission was 1.692 TB, over the soft quota and under the
+  2 TiB hard limit.
+
+| Batch | Register | Targets | Array job |
+|---|---|---|---|
+| `jaw-hold-a-20261001` | [a](docs/evidence/eval_targets_jaw_hold_a_2026-09-30.json) | 530, 19444 | `21501983` |
+| `jaw-hold-b-20261001` | [b](docs/evidence/eval_targets_jaw_hold_b_2026-09-30.json) | 530, 14944 | `21501985` (afterany `21501983`) |
+| `jaw-hold-c-20261001` | [c](docs/evidence/eval_targets_jaw_hold_c_2026-09-30.json) | 530, 15004 | `21501986` (afterany `21501985`) |
+
+Every result carries the label *known-map plan; jaw self-mask; closure hold
+with freshness and frame-reuse checks waived on held frames*. It is reported
+apart from every unchanged-gate result and never pooled.
