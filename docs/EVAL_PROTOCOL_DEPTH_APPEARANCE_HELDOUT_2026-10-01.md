@@ -96,3 +96,32 @@ generalize, and no GPU test is proposed.
   modelled here.
 - **Same-depth occluders are untested.** Ties, leaves, or a wire touching the
   spur were never recorded.
+
+## Implementation notes fixed before the run (October 1)
+
+An adversarial review of `tools/replay_depth_appearance.py` found no defect in
+the variant's arithmetic. The details this text leaves open are fixed here,
+before any held-out recording is replayed, and the tool records each one in
+its output.
+- **Depth sampling.** The 3×3 median rule (median of the valid samples, invalid
+  below 75% valid, with no spread or centre check) gives both the current
+  depth and the previous patch's optical-Z. This is the study's median3 path.
+- **Denominators.** The verified fraction (condition 1) is over the
+  same-surface elements, those within 25 mm of the tracked depth. The nearer
+  fraction (3), the median (4) and the agreement fraction are over the
+  verified elements.
+- **J.** "Touches" means any pixel of the committed 2.0 px mask in the
+  tracker's `getRectSubPix` footprint of the previous patch (previous frame's
+  mask) or the propagated patch (current mask), or at a rounded reprojected
+  same-surface element (current mask). J fails closed when the silhouette is
+  undefined. This is slightly stricter than the study's undilated window
+  guard, and it touches none of the three earlier low-sun events.
+- **Missing values.** A condition that has no value (no tracked depth, or
+  nothing verified) is reported as not evaluated, and the event is rejected.
+- **Strict confidence.** It is computed on every accepted event, and is the
+  confidence a continuing strict result reports. H2 is judged on
+  `strict_confidence`, together with the gate that ended the update.
+- **Data.** The held-out set is exactly the 12 `jaw-shadow-*-20260930`
+  recordings. The regression set is exactly the 129 earlier runs, excluding
+  `jaw-shadow-*` and `jaw-hold-*`. A run still recording, or one recorded with
+  the jaw arms, is never replayed.
