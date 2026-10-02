@@ -1,0 +1,2281 @@
+{
+ "schema_version": 1,
+ "scope": "C0 pre-submission gate of the depth-aware appearance closed-loop test: offline CPU replays of the 12 held-out and 129 earlier recordings through the moved D_strict + J implementation and through the repository controller, against the published held-out replay. Recorded images only.",
+ "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md",
+ "code_revision": "2938ede1084eb167c2d0026a76d0801cc4b4b6ed",
+ "code_tree_dirty": false,
+ "inputs_sha256": {
+  "docs/evidence/depth_heldout_replay_2026-10-01.json": "db16ecbe421777277c0618cef54fdb72d490d4df534ef97606139b7e65c35be6",
+  "docs/evidence/depth_regression_replay_2026-10-01.json": "5371650a2e782582b34398363bdc0f0d411e602e112d8d5a014d8420c57b9a80"
+ },
+ "float_tolerance": 1e-06,
+ "max_float_difference_accepted": 0.0,
+ "checks": [
+  {
+   "id": "A_tool_reproduces_published",
+   "statement": "The moved implementation reproduces the published held-out and regression replays run for run.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "runs": 141
+   }
+  },
+  {
+   "id": "B_controller_off_exact",
+   "statement": "The controller with every arm off reproduces all 141 recordings through each recorded stop.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "runs": 141
+   }
+  },
+  {
+   "id": "C_D_controller_depth_equals_strict_arm",
+   "statement": "The controller with depth_appearance on measures exactly what the published strict arm measured, and changes a cut decision only in runs where that arm diverged.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "runs": {
+     "jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [
+       67
+      ],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       67,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       67,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {
+       "67": {
+        "accept": true,
+        "decision": "stops_downstream",
+        "strict_confidence": 0.02545136120170355
+       }
+      }
+     },
+     "jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [
+       67
+      ],
+      "cut_decision_divergence_frames": [
+       67
+      ],
+      "recorded_stop": [
+       67,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {
+       "67": {
+        "accept": true,
+        "decision": "continues",
+        "strict_confidence": 0.19176079332828522
+       }
+      }
+     },
+     "jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [
+       67
+      ],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       67,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       67,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {
+       "67": {
+        "accept": true,
+        "decision": "stops_downstream",
+        "strict_confidence": 0.0
+       }
+      }
+     },
+     "jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [
+       67
+      ],
+      "cut_decision_divergence_frames": [
+       67
+      ],
+      "recorded_stop": [
+       67,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {
+       "67": {
+        "accept": true,
+        "decision": "continues",
+        "strict_confidence": 0.2036670446395874
+       }
+      }
+     },
+     "jaw-shadow-eve-b-r1-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "jaw-shadow-eve-b-r1-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "jaw-shadow-eve-b-r2-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "jaw-shadow-eve-b-r2-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [
+       75
+      ],
+      "cut_decision_divergence_frames": [
+       75
+      ],
+      "recorded_stop": [
+       75,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {
+       "75": {
+        "accept": true,
+        "decision": "continues",
+        "strict_confidence": 0.18858363798686434
+       }
+      }
+     },
+     "jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [
+       75
+      ],
+      "cut_decision_divergence_frames": [
+       75
+      ],
+      "recorded_stop": [
+       75,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {
+       "75": {
+        "accept": true,
+        "decision": "continues",
+        "strict_confidence": 0.2648719648520152
+       }
+      }
+     },
+     "jaw-shadow-mor-b-r1-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "jaw-shadow-mor-b-r2-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+      "selection": "heldout",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "lighting-20260919/run_00_source_raw": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "lighting-20260919/run_01_source_clahe": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "lighting-20260919/run_02_morning_raw": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "lighting-20260919/run_03_morning_clahe": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "lighting-20260919/run_04_evening_raw": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "lighting-20260919/run_05_evening_clahe": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 76,
+      "events": {}
+     },
+     "perc-both-tree0-20260926/run_00_source_tree0_v530_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       60,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       60,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-both-tree0-20260926/run_01_source_tree0_v590_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       62,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       62,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-both-tree0-20260926/run_02_source_tree0_v7524_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       9,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       9,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       54,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       54,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-both-tree0-20260926/run_06_source_tree0_v12142_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-both-tree0-20260926/run_07_source_tree0_v18669_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       28,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       28,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-both-tree0-20260926/run_08_source_tree0_v22988_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       0,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-both-tree1-20260926/run_00_source_tree1_v14884_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "perc-both-tree1-20260926/run_01_source_tree1_v14944_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "perc-both-tree1-20260926/run_02_source_tree1_v15004_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "perc-both-tree1-20260926/run_04_source_tree1_v19264_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       36,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       36,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-both-tree1-20260926/run_05_source_tree1_v19384_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-both-tree1-20260926/run_06_source_tree1_v19444_similarity_mount": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-mount-flip-20260926/run_00_source_tree0_v8353_mount_side": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       73,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       73,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-mount-flip-20260926/run_01_source_tree1_v19264_mount_side": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       36,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       36,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree0-20260926/run_00_source_tree0_v530_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       60,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       60,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree0-20260926/run_01_source_tree0_v590_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       62,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       62,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree0-20260926/run_02_source_tree0_v7524_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       9,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       9,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree0-20260926/run_03_source_tree0_v8353_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       1,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       1,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree0-20260926/run_06_source_tree0_v12142_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree0-20260926/run_07_source_tree0_v18669_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       28,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       28,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree0-20260926/run_08_source_tree0_v22988_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       22,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       22,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree1-20260926/run_00_source_tree1_v14884_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "perc-similarity-tree1-20260926/run_01_source_tree1_v14944_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "perc-similarity-tree1-20260926/run_02_source_tree1_v15004_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "perc-similarity-tree1-20260926/run_04_source_tree1_v19264_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree1-20260926/run_05_source_tree1_v19384_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "perc-similarity-tree1-20260926/run_06_source_tree1_v19444_similarity_tracker": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       79,
+       "gate_lost_during_closure"
+      ],
+      "replay_stop": [
+       79,
+       "gate_lost_during_closure"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "planned-pose-gpu-r1-20260929/run_01_source_tree1_v19444_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       68,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       68,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {
+       "68": {
+        "accept": false,
+        "decision": "loss_stands",
+        "strict_confidence": null
+       }
+      }
+     },
+     "planned-pose-gpu-r1-20260929/run_02_source_tree1_v14944_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "planned-pose-gpu-r1-20260929/run_03_source_tree1_v15004_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       79,
+       "gate_lost_during_closure"
+      ],
+      "replay_stop": [
+       79,
+       "gate_lost_during_closure"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "planned-pose-gpu-r2-20260929/run_01_source_tree1_v19444_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       68,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       68,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {
+       "68": {
+        "accept": false,
+        "decision": "loss_stands",
+        "strict_confidence": null
+       }
+      }
+     },
+     "planned-pose-gpu-r2-20260929/run_02_source_tree1_v14944_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "planned-pose-gpu-r2-20260929/run_03_source_tree1_v15004_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       79,
+       "gate_lost_during_closure"
+      ],
+      "replay_stop": [
+       79,
+       "gate_lost_during_closure"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "planned-pose-gpu-r3-20260929/run_01_source_tree1_v19444_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       70,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       70,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {
+       "70": {
+        "accept": false,
+        "decision": "loss_stands",
+        "strict_confidence": null
+       }
+      }
+     },
+     "planned-pose-gpu-r3-20260929/run_02_source_tree1_v14944_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "planned-pose-gpu-r3-20260929/run_03_source_tree1_v15004_planned_pose": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "strategy-fine-step-20260923/run_00_source_tree0_v530_fine_step": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       130,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       130,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-fine-step-20260923/run_01_source_tree0_v590_fine_step": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       41,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       41,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-fine-step-20260923/run_02_source_tree0_v7524_fine_step": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       50,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       50,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-fine-step-20260923/run_03_source_tree0_v8353_fine_step": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       6,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       6,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-fine-step-20260923/run_06_source_tree0_v12142_fine_step": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       59,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       59,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-fine-step-20260923/run_07_source_tree0_v18669_fine_step": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       55,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       55,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-fine-step-20260923/run_08_source_tree0_v22988_fine_step": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       44,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-horizontal-20260923/run_00_source_tree0_v530_horizontal_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       58,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       58,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-horizontal-20260923/run_01_source_tree0_v590_horizontal_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       16,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       16,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-horizontal-20260923/run_02_source_tree0_v7524_horizontal_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       10,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       10,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-horizontal-20260923/run_03_source_tree0_v8353_horizontal_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       0,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-horizontal-20260923/run_06_source_tree0_v12142_horizontal_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-horizontal-20260923/run_07_source_tree0_v18669_horizontal_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       21,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       21,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-horizontal-20260923/run_08_source_tree0_v22988_horizontal_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       21,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       21,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-tool-axis-20260923/run_00_source_tree0_v530_tool_axis_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       60,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       60,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-tool-axis-20260923/run_01_source_tree0_v590_tool_axis_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       20,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       20,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-tool-axis-20260923/run_02_source_tree0_v7524_tool_axis_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       10,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       10,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-tool-axis-20260923/run_03_source_tree0_v8353_tool_axis_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       2,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       2,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-tool-axis-20260923/run_06_source_tree0_v12142_tool_axis_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       29,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       29,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {
+       "29": {
+        "accept": false,
+        "decision": "loss_stands",
+        "strict_confidence": null
+       }
+      }
+     },
+     "strategy-tool-axis-20260923/run_07_source_tree0_v18669_tool_axis_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       25,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       25,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "strategy-tool-axis-20260923/run_08_source_tree0_v22988_tool_axis_standoff": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       22,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       22,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-morning-20260923/run_00_morning_tree0_v530": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       59,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       59,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-morning-20260923/run_01_morning_tree0_v590": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       12,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       12,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-morning-20260923/run_02_morning_tree0_v7524": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       9,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       9,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-morning-20260923/run_03_morning_tree0_v8353": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       1,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       1,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-morning-20260923/run_06_morning_tree0_v12142": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-morning-20260923/run_07_morning_tree0_v18669": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       27,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       27,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-morning-20260923/run_08_morning_tree0_v22988": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       22,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       22,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-source-20260923/run_00_source_tree0_v530": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       59,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       59,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-source-20260923/run_01_source_tree0_v590": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       24,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       24,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-source-20260923/run_02_source_tree0_v7524": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       9,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       9,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-source-20260923/run_03_source_tree0_v8353": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       1,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       1,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-source-20260923/run_06_source_tree0_v12142": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       30,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-source-20260923/run_07_source_tree0_v18669": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       28,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       28,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "targets-source-20260923/run_08_source_tree0_v22988": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       22,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       22,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-baseline-20260923/run_00_source_tree1_v14884_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-baseline-20260923/run_01_source_tree1_v14944_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-baseline-20260923/run_02_source_tree1_v15004_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-baseline-20260923/run_04_source_tree1_v19264_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-baseline-20260923/run_05_source_tree1_v19384_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-baseline-20260923/run_06_source_tree1_v19444_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-evening-20260926/run_00_evening_tree1_v14884_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [
+       67
+      ],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       67,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       67,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {
+       "67": {
+        "accept": true,
+        "decision": "stops_downstream",
+        "strict_confidence": 0.038501864299178123
+       }
+      }
+     },
+     "tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [
+       67
+      ],
+      "cut_decision_divergence_frames": [
+       67
+      ],
+      "recorded_stop": [
+       67,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {
+       "67": {
+        "accept": true,
+        "decision": "continues",
+        "strict_confidence": 0.29721927642822266
+       }
+      }
+     },
+     "tree1-listed-evening-20260926/run_04_evening_tree1_v19264_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-evening-20260926/run_05_evening_tree1_v19384_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-evening-20260926/run_06_evening_tree1_v19444_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-morning-20260926/run_00_morning_tree1_v14884_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {
+       "78": {
+        "accept": false,
+        "decision": "loss_stands",
+        "strict_confidence": null
+       }
+      }
+     },
+     "tree1-listed-morning-20260926/run_01_morning_tree1_v14944_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [
+       75
+      ],
+      "cut_decision_divergence_frames": [
+       75
+      ],
+      "recorded_stop": [
+       75,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {
+       "75": {
+        "accept": true,
+        "decision": "continues",
+        "strict_confidence": 0.2139971341405596
+       }
+      }
+     },
+     "tree1-listed-morning-20260926/run_04_morning_tree1_v19264_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-morning-20260926/run_05_morning_tree1_v19384_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-morning-20260926/run_06_morning_tree1_v19444_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-repeat-r1-20260926/run_00_source_tree1_v14884_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-repeat-r1-20260926/run_02_source_tree1_v15004_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-repeat-r1-20260926/run_04_source_tree1_v19264_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-repeat-r1-20260926/run_05_source_tree1_v19384_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-repeat-r1-20260926/run_06_source_tree1_v19444_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-repeat-r2-20260926/run_00_source_tree1_v14884_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-repeat-r2-20260926/run_01_source_tree1_v14944_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-repeat-r2-20260926/run_02_source_tree1_v15004_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-repeat-r2-20260926/run_04_source_tree1_v19264_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-repeat-r2-20260926/run_05_source_tree1_v19384_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-repeat-r2-20260926/run_06_source_tree1_v19444_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-repeat-r3-20260926/run_00_source_tree1_v14884_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 76,
+      "events": {}
+     },
+     "tree1-listed-repeat-r3-20260926/run_01_source_tree1_v14944_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-repeat-r3-20260926/run_02_source_tree1_v15004_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-listed-repeat-r3-20260926/run_04_source_tree1_v19264_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-repeat-r3-20260926/run_05_source_tree1_v19384_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       44,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-listed-repeat-r3-20260926/run_06_source_tree1_v19444_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       43,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded-ten-20260926/run_05_source_tree1_v15599_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       65,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       65,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded-ten-20260926/run_08_source_tree1_v37023_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       16,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       16,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded-ten-20260926/run_09_source_tree1_v37796_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       3,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       3,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded30-20260926/run_05_source_tree1_v3493_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       64,
+       "tof_minimum_clearance"
+      ],
+      "replay_stop": [
+       64,
+       "tof_minimum_clearance"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded30-20260926/run_12_source_tree1_v10737_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_stop": [
+       0,
+       "initial_target_not_visible"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded30-20260926/run_13_source_tree1_v11094_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       38,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       38,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded30-20260926/run_15_source_tree1_v14944_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       null,
+       null
+      ],
+      "replay_stop": [
+       null,
+       null
+      ],
+      "replay_detach_frame": 77,
+      "events": {}
+     },
+     "tree1-seeded30-20260926/run_16_source_tree1_v17723_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       1,
+       "hazard_contact"
+      ],
+      "replay_stop": [
+       1,
+       "hazard_contact"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded30-20260926/run_17_source_tree1_v19504_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       0,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded30-20260926/run_23_source_tree1_v30283_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       43,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       43,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded30-20260926/run_24_source_tree1_v31828_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       0,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       0,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     },
+     "tree1-seeded30-20260926/run_25_source_tree1_v32536_baseline": {
+      "selection": "regression",
+      "measurement_divergence_frames": [],
+      "cut_decision_divergence_frames": [],
+      "recorded_stop": [
+       5,
+       "vision_invalid"
+      ],
+      "replay_stop": [
+       5,
+       "vision_invalid"
+      ],
+      "replay_detach_frame": null,
+      "events": {}
+     }
+    },
+    "runs_with_cut_decision_changes": [
+     "jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline",
+     "jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline",
+     "jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline",
+     "jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline",
+     "tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline",
+     "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline"
+    ]
+   }
+  }
+ ],
+ "passed": true
+}

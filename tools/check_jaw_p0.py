@@ -56,7 +56,7 @@ VISION_ROBUSTNESS = ROOT / "artifacts/vision_robustness"
 #: The commit that registered the protocol; P0's replays are regenerated from it.
 REGISTRATION_COMMIT = "a6e8266ed64b0589d98241954b036a3a529389ec"
 #: Batches recorded after the study (the counterfactual and the live experiment); P0 covers the earlier runs.
-EXCLUDED_BATCH_PREFIXES = ("jaw-shadow-", "jaw-hold-")
+EXCLUDED_BATCH_PREFIXES = ("jaw-shadow-", "jaw-hold-", "depth-loop-")
 EXPECTED_RUNS = 129
 TOLERANCE = 1e-6
 #: The four checks the protocol lets a held frame waive.
