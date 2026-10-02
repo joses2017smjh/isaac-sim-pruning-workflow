@@ -409,8 +409,9 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       real occlusion and keeps all 22 jaw, wire and mixed-surface stops.
       D_strict + J would have continued past 4 of the 6 held-out stops.
       [Result](EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026).
-- [ ] Closed-loop test of D_strict + J (GPU; its own protocol and the user's
-      approval of a budget).
+- [ ] Closed-loop test of D_strict + J: registered, C0 replay gate passed on
+      141 recordings, 10 runs queued (450 GPU-min approved).
+      [Protocol](EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md).
 - [ ] Repeat any single-run class change on a target near a tracker floor: the
       RGB render differs run to run (0 of 69 same-scene frame-0 pairs identical;
       depth and pose identical in all), and 22988 flipped class on it.

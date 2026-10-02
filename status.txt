@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-10-01 15:40 PDT — JAW-IN-VIEW P0 PASSED AND SUBMITTED (A 21501983 -> B 21501985 -> C 21501986); RENDER-GAP GPU DONE, AGGREGATING (CPU 21501978); DEPTH HELD-OUT TOOL UNDER REVIEW
+CURRENT CHECKPOINT — 2026-10-01 17:15 PDT — JAW-HOLD B RUNNING; DEPTH CLOSED LOOP REGISTERED, C0 PASSED, 7 BATCHES QUEUED (21502510..21502539); RENDER GAP AND DEPTH HELD-OUT PUBLISHED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -7,28 +7,23 @@ WHERE THIS IS
   CPU environment: /nfs/hpc/share/sanchej7/miniforge3/envs/depth-env/bin/python
   (Python 3.10.19, numpy 2.2.6, opencv 4.11.0.86, ruff 0.16.5). No repo venv exists.
 
-LATEST — 2026-10-01 AFTERNOON (read this first)
-  MEMORY: the Claude session runs inside interactive job 21498946 (cn-e09, 2 CPUs, 6 GB, ends ~21:36).
-    The desktop + VS Code use ~3.5 GB; a replay/checker run there OOM-killed VS Code processes and
-    dropped the session twice. Heavy CPU work now goes to small sbatch jobs on `share` (from shared
-    git clones at a fixed commit, artifacts symlinked, SLURM_* stripped, --export=NONE); every local
-    python is prefixed with `ulimit -d 1500000` so it fails with MemoryError instead of an OOM kill.
-  JAW IN VIEW: P0 PASSED. Replays of the 129 runs from a clone at the registration commit a6e8266
-    (CPU job 21501901), checked by tools/check_jaw_p0.py at f3442df (job 21501970):
-    docs/evidence/jaw_in_view_p0_replay_2026-10-01.json. CI on a clean clone at f3442df (21501971):
-    ruff clean, 836 passed / 19 skipped, demo ran. Submitted from 3c6a211: jaw-hold-a/b/c-20261001
-    = 21501983 -> 21501985 -> 21501986 (afterany, %1, gpu,ampere a40|rtx8000, 45 min; 270 GPU-min
-    approved). NEXT: grade each batch with aggregate_eval.py --protocol; write tools/score_jaw_in_view.py
-    (P1-P8) before reading the runs.
-  RENDER GAP: 21499598 (8 x ~6.5 min) and 21499599 (16 min) COMPLETED on RTX 8000. Published
-    aggregation of both arms runs as CPU job 21501978 (work dir pruning_work/render_gap_20260930/
-    agg_f3442df). NEXT: committed scorer tools/score_render_gap.py for G0-G3 (metric = per-tree
-    mask_mae_m, 4-dp lighting_effect means, as the published scorer), then publish.
-  DEPTH HELD-OUT: tools/replay_depth_appearance.py (written by an agent, untracked) and
-    tests/test_replay_depth_appearance.py (7 pass) are under adversarial review; nothing has been
-    run on the held-out data. NEXT: fix review findings, pin the regression set to the 129 earlier
-    runs (exclude jaw-shadow-* and jaw-hold-*), commit, run --regression and --heldout as a CPU
-    job from a clone, score H1-H4 with a committed scorer, publish.
+LATEST — 2026-10-01 EVENING (read this first)
+  MEMORY: the Claude session runs in interactive job 21498946 (cn-e09, 2 CPUs, 6 GB, ends ~21:36) beside the
+    desktop + VS Code. Heavy CPU work goes to small sbatch jobs on `share` from shared clones at a fixed commit
+    (artifacts symlinked, SLURM_* stripped, --export=NONE); local python runs under `ulimit -d 1500000`.
+  JAW IN VIEW: P0 passed (3c6a211, recheck f16c8ca). Batches A 21501983 (done) -> B 21501985 (running) -> C
+    21501986. Scorer tools/score_jaw_in_view.py (P1-P8) is UNTRACKED and under independent review; it must be
+    tested and committed BEFORE any jaw-hold run is aggregated or read. Disclosure owed in its evidence: while
+    the scorer was being written, a mapping agent read A run 0 (530) mid-recording at 81 frames (frame 75:
+    closing, tracking, not held), and the runner log showed phase=retreat from frame 101.
+  DEPTH CLOSED LOOP: protocol docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md (2938ede), arm
+    VisionPruningDemo(depth_appearance=True) / PRUNING_DEPTH_APPEARANCE, three *_depth_appearance strategies.
+    C0 passed (21502409; docs/evidence/depth_loop_c0_2026-10-01.json). Scorer tools/score_depth_loop.py
+    committed (1bd1ea1) before submission. 7 batches chained after 21501986: 21502510, 21502520, 21502533,
+    21502536, 21502537, 21502538, 21502539 (450 GPU-min approved). NEXT: grade each batch with
+    aggregate_eval.py --protocol into docs/evidence/depth_loop_2026-10-01/, then score_depth_loop.py.
+  PUBLISHED TODAY: render gap (G0, G2 supported; G1 partly; G3 refuted), depth held-out (H1-H4 supported),
+    jaw-shadow counterfactual (J1-J5 supported).
 
 SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
   Phase 0 audit ...... DONE (plan delivered in chat)

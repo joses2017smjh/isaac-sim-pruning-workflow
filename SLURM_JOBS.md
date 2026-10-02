@@ -633,6 +633,36 @@ killer had also taken VS Code processes.
 |---|---|---|
 | `21502037` | `--regression` (129 runs) and `--heldout` (12 runs), from a shared clone at `ff363c9` | COMPLETED in 3 min on `cn-b05`; base exact on 141 of 141. [H1–H4 supported](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026) |
 
+### Depth-aware appearance check in closed loop (submitted October 1)
+
+The user approved 450 GPU-minutes on October 1.
+- **Protocol** registered at `2938ede`:
+  [protocol](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md).
+- **C0 gate** (CPU job `21502409`, `cn-b11`, 12 min): passed on 141 of 141
+  recordings, with a largest float difference of 0.0.
+  [Evidence](docs/evidence/depth_loop_c0_2026-10-01.json).
+- **CI** on a clean clone at `2938ede` (`21502410`): green.
+- **Submission** from `1bd1ea1`, after the C0 evidence and the C1–C6 scorer
+  were committed:
+  - `afterany`-chained behind jaw-hold C, one task at a time;
+  - `gpu,ampere`, constraint `a40|rtx8000`, 45-minute tasks;
+  - share usage at submission 1.694 TB, over the soft quota and under the
+    2 TiB hard limit.
+
+| Batch | Light | Targets | Strategy | Array job |
+|---|---|---|---|---|
+| `depth-loop-eve-r1-20261001` | evening | 14944, 15004 | `baseline_depth_appearance` | `21502510` (afterany `21501986`) |
+| `depth-loop-mor-r1-20261001` | morning | 15004 | `baseline_depth_appearance` | `21502520` |
+| `depth-loop-eve-r2-20261001` | evening | 14944, 15004 | `baseline_depth_appearance` | `21502533` |
+| `depth-loop-mor-r2-20261001` | morning | 15004 | `baseline_depth_appearance` | `21502536` |
+| `depth-loop-src-20261001` | source | 14944, 15004 | `baseline_depth_appearance` | `21502537` |
+| `depth-loop-ctl-19444-20261001` | source | 19444 | `planned_pose_depth_appearance` | `21502538` |
+| `depth-loop-ctl-12142-20261001` | source | 12142 | `tool_axis_standoff_depth_appearance` | `21502539` |
+
+Every result carries the label *depth-aware appearance check D_strict + J;
+changes the 0.35 appearance gate's rule; simulator depth*. It is never pooled
+with unchanged-gate runs.
+
 ### Jaw in the camera's view (submitted October 1)
 
 The user approved 270 GPU-minutes on September 30. On October 1, after the gate

@@ -11,10 +11,18 @@ and results in the [roadmap](ROADMAP.md).
     committed code. After an adversarial review the checker was hardened, and
     it passes the same replays
     ([recheck](evidence/jaw_in_view_p0_replay_recheck_2026-10-01.json)).
-  - Batches A `21501983` → B `21501985` → C `21501986`: A's first run started
-    at 15:38 on an RTX 8000.
+  - Batches A `21501983` → B `21501985` → C `21501986`: A has finished and B
+    is running.
   - P1–P8 in its [protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md) are scored
     by a committed scorer once the runs are graded.
+
+- **Depth-aware appearance check in closed loop** (approved, 450 GPU-min).
+  - [Protocol](EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md)
+    registered with predictions C0–C6.
+  - Its C0 replay gate ([evidence](evidence/depth_loop_c0_2026-10-01.json))
+    passed on 141 recordings.
+  - 7 batches are queued behind jaw-hold C (`21502510` … `21502539`).
+  - The C1–C6 scorer was committed before submission.
 
 Finished and published: the
 [depth-aware appearance held-out replay](EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026)
@@ -26,17 +34,6 @@ Finished and published: the
 [rendered-lighting training](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026)
 and the
 [known-map approach](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
-
-## Needs a decision (GPU)
-
-- **Depth-aware appearance check, closed loop.** The held-out replay supports
-  [all four predictions](EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026):
-  - every shadow event is accepted;
-  - no real occlusion is accepted across 141 recordings;
-  - D_strict would have continued past 4 of 6 held-out stops.
-
-  As registered, the next step is a closed-loop GPU test of D_strict + J. It
-  needs its own protocol and the user's approval of a budget.
 
 ## Needs a decision (no GPU)
 
