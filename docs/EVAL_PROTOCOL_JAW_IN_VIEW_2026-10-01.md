@@ -250,6 +250,13 @@ also made before any grade was opened, changed two rules:
   band would have read P1 as supported.
 - **P7** has a gap rule. It had no effect here: no window frame was a gap.
 
+None of the scorer's other open interpretation choices decided anything on
+these runs:
+- **P5's population** holds all three 530 runs under either reading.
+- **P7's two anchors** agree in every run.
+- **Control refusals:** no control was ungraded or refused.
+- **Jaw roll:** the controller's and renderer's are identical.
+
 **Limits.**
 - Simulator renders of a two-box jaw surrogate with exact poses and commanded
   closure.
