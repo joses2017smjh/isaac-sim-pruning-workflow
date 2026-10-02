@@ -254,7 +254,7 @@ simulator surrogate with exact poses.
 [Protocol and result](docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026)
 · [verdicts](docs/evidence/jaw_in_view_verdicts_2026-10-02.json)
 
-| Before (September 30): known-map plan only | After (October 2): plus jaw self-mask and closure hold |
+| Before (run September 30): known-map plan only | After (run October 1): plus jaw self-mask and closure hold |
 |---|---|
 | [![Contact target 530 under the known-map plan alone: the tracker follows the closing jaw and the gate trips during closure](docs/demo/isaac_tree0_v530_planned_pose_closure_failure.gif)](docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026) | [![Contact target 530 with the jaw self-mask and closure hold: held through closure, detached and retreated](docs/demo/isaac_tree0_v530_jaw_hold_pass.gif)](docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026) |
 | The tracker follows the closing jaw, and the cut gate trips during closure (frame 79). | Explained loss at frame 76, held for frames 76–80, detached at 80. All 17 checks pass. |
@@ -269,7 +269,7 @@ The depth is simulator ground truth.
 [Protocol and result](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md#result--october-2-2026)
 · [verdicts](docs/evidence/depth_loop_verdicts_2026-10-02.json)
 
-| Before (September 26): unchanged appearance gate, evening light | After (October 1): depth-aware check D_strict + J, evening light |
+| Before (run September 27): unchanged appearance gate, evening light | After (run October 1): depth-aware check D_strict + J, evening light |
 |---|---|
 | [![Tree1 spur 15004 at evening under the unchanged gate: it stops when the jaw's low-sun shadow crosses the tracked patch](docs/demo/isaac_tree1_v15004_evening_appearance_stop.gif)](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc) | [![Tree1 spur 15004 at evening with the depth-aware check: the shadow event is accepted and the run passes](docs/demo/isaac_tree1_v15004_evening_depth_check_pass.gif)](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md#result--october-2-2026) |
 | Stops at frame 67, as the jaw's low-sun shadow crosses the tracked patch. | The depth test accepts the shadow event at frame 67 (the surface did not move), and the run passes 17/17. |

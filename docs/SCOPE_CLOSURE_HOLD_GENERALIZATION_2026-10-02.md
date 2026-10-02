@@ -75,7 +75,9 @@ describe what it did:
    - **The re-orientation result.** Among the seven diagnosed targets, it
      finds clear re-oriented paths for exactly 530 (55.5°) and 19444 (83.6°).
    - **The committed predictions.** It reproduces the 40 per-target calls in
-     the tree1 swept-path predictions.
+     the tree1 swept-path predictions. The exceptions are 35837, 35957 and
+     36017: each is marginal at home, within 0.1 mm of a trellis wire, and
+     may take either class.
 
    A rebuild that misses any item selects nothing.
 2. **Search for candidates.** Search the jaw-fit-screened pool (444 spurs: 185
