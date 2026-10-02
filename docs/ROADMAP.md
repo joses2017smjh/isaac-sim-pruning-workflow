@@ -384,8 +384,8 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       - P2–P6 and P8 supported;
       - P7 partly supported: the replayed baseline drifted in one run and lost
         tracking in two;
-      - P1 refuted, by one pixel on the jaw's outline (float32 render edge) on
-        130 of 1,200 frames.
+      - P1 refuted, by one pixel on the jaw's outline (its centre within
+        1.5e-5 px of it) on 130 of 1,200 frames.
 
       Label: *known-map plan; jaw self-mask; closure hold with freshness and
       frame-reuse checks waived on held frames*.

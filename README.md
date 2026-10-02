@@ -246,8 +246,8 @@ closure it holds the aligned target while the tool and spur stay still:
 Both controls pass, and 19444 stops explicitly when its open jaw reaches the
 patch, as predicted. Six of eight predictions are supported and one is
 partly supported. One is refuted: on 130 of 1,200 frames, a single pixel on
-the jaw's outline shows depth beyond the analytic box, an effect of the
-renderer's float32 jaw edge. The label is *known-map plan; jaw self-mask;
+the jaw's outline (its centre within 1.5e-5 px of it) shows depth beyond
+the analytic box. The label is *known-map plan; jaw self-mask;
 closure hold with freshness and frame-reuse checks waived on held frames*.
 These passes are never pooled with unchanged-gate results. The jaw is a
 simulator surrogate with exact poses.

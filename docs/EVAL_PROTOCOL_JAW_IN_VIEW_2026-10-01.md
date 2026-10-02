@@ -226,11 +226,13 @@ per-batch [grades](evidence/jaw_in_view_2026-10-01/).
 - **P1 is refuted by one pixel.** The controller's mask is exact: count, roll
   and bounding box are equal on all 1,200 frames, and the corners agree within
   5e-13 px. The depth clause fails at one pixel of 19444, (242, 155), on frames
-  22, 39 and 72–199. Its centre lies within 1.5e-5 px of the jaw's outline. The
-  renderer's float32 jaw does not cover it, so it shows what lies behind the
-  jaw: 57 mm to 18.8 m beyond the box, or no finite depth (frame 22). Every
-  such violation in the earlier planned-pose runs was likewise a single 19444
-  pixel at the outline. The evidence also reports a sensitivity that decides
+  22, 39 and 72–199. Its centre lies within 1.5e-5 px of the jaw's outline,
+  and its recorded depth lies 57 mm to 18.8 m beyond the box, or is not finite
+  (frame 22): the render shows what lies behind the jaw there. The likely
+  cause, not measured here, is that the renderer poses the jaw in float32 while
+  the analytic box is float64, and the two can disagree that close to an edge.
+  Every such violation in the earlier planned-pose runs was likewise a single
+  19444 pixel at the outline. The evidence also reports a sensitivity that decides
   nothing: with pixels within 0.01 px of the outline left out, no violation
   remains. As registered ("Refuted by any mismatch"), P1 is refuted. Amending
   it is the user's decision and would need a newly labelled registration.

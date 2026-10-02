@@ -11,8 +11,8 @@ LATEST — 2026-10-02 MORNING (read this first)
   JAW IN VIEW (P1-P8): 530 PASSED 17/17 IN 3 OF 3, the first pass of a contact target, under the label
     "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames".
     P2-P6, P8 supported; P7 partly supported (baseline drifted in A, lost tracking at k+2 in B and C); P1
-    REFUTED by one 19444 pixel on the jaw's outline (|sd| <= 1.5e-5 px, float32 render edge) on 130 of 1,200
-    frames; the 0.01 px band sensitivity would not refute but decides nothing (the user's sign-off on that band
+    REFUTED by one 19444 pixel on the jaw's outline (|sd| <= 1.5e-5 px; a float32-vs-float64 edge is the likely,
+    unmeasured cause) on 130 of 1,200 frames; the 0.01 px band sensitivity would not refute but decides nothing (the user's sign-off on that band
     was never given). Evidence docs/evidence/jaw_in_view_verdicts_2026-10-02.json (scorer 3ac43cb, run at
     45763d0, job 21507188). Result in docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md.
   DEPTH CLOSED LOOP (C1-C6): ALL SUPPORTED. 4 of 4 low-sun 15004 runs pass (strict confidence 0.18-0.20);
