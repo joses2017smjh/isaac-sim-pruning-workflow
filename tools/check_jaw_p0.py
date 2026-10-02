@@ -2,16 +2,19 @@
 """Check the jaw-in-view P0 gate (protocol of October 1) on three replays of every recorded run.
 
 The replays are ``tools/replay_jaw_self_mask.py --all`` with both flags off, with the jaw self-mask, and with
-the mask and the closure hold, all from the registration commit with its replayed sources unchanged. Each must
-cover exactly the 129 recorded runs found here. Every recorded value is read here from the run's own
-``frames.json`` and ``report.json`` (the files of this checkout's inventory, which must be the files the replay
-read), never from the replay's copies.
+the mask and the closure hold, all from the registration commit with its replayed sources unchanged: the hash of
+every replayed source must equal that file as committed at the registration commit (``git show``), so the check
+can be re-run at any later commit. Each replay must cover exactly the 129 recorded runs found here. Every
+recorded value is read here from the run's own ``frames.json`` and ``report.json`` (the files of this
+checkout's inventory, which must be the files the replay read), never from the replay's copies.
 
 1. Flags off. Through each run's recorded stop the replay equals the recording: state, reason and pixel
    exactly, correlation within 1e-6, cut phase, stop reason and detach event exactly, plus the seed
    initialization and the preview state. Frames after a recorded stop show a stopped robot; their differences
    are counted, not judged. For the runs whose seed the runner's visibility check rejected, the replay takes
-   that rejection from the report, so their initialization agrees by construction.
+   that rejection from the report, so their initialization agrees by construction. Where the replay recorded
+   the preview's pixel and correlation, they are compared with the report here, independently of the replay's
+   own match flag.
 2. Mask on. The offline study's stored outputs (arm M) are reproduced: the frames that differ from the
    recording are the study's frames, with the study's values and cut decision on them; each run's stop and
    detach equal the study's; and all 149 key rows of the 6 key runs match, including 19444 r3 frame 67 at
@@ -24,6 +27,9 @@ read), never from the replay's copies.
      other frame is ``live`` and waives nothing; no new stop reason occurs.
    - The measurements equal the mask-only replay, and so do the cut decisions outside 530. The shadow
      cutter's stop equals the mask-only replay's stop.
+   - Outside 530, a run whose replayed measurements equal the recording through its stop makes the recorded
+     cut decisions; and morning 15004 (the low-sun appearance stop during closure) stops at 75 as recorded in
+     both the mask-only and the mask-and-hold replay, without a hold.
    - The target and timestamp each held frame sent are read by re-running the three 530 replays with a
      recording subclass of the controller, which passes every value through unchanged, and are compared with
      the closure-start frame's own measurement and time.
@@ -67,6 +73,9 @@ PROTOCOL_WAIVED_CHECKS = [
     "vision_frame_reused_during_closure",
 ]
 NEW_STOPS = {"closure_hold_outside_closing", "closure_hold_target_mismatch", "invalid_vision_source"}
+#: The low-sun control the verifier named: its appearance stop during closure must stand, without a hold.
+MORNING_15004 = "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline"
+MORNING_15004_STOP = [75, "vision_invalid"]
 RUNS_530 = tuple(f"planned-pose-gpu-r{r}-20260929/run_00_source_tree0_v530_planned_pose" for r in (1, 2, 3))
 CLOSURE_START_530 = 74
 RECORDED_STOP_530 = [79, "gate_lost_during_closure"]
@@ -159,17 +168,34 @@ def index_problem(run, frames):
     return None
 
 
+def registered_sources(paths):
+    """sha256 of each path as committed at the registration commit (None where git cannot show it)."""
+    hashes = {}
+    for path in paths:
+        try:
+            data = subprocess.check_output(
+                ["git", "-C", str(ROOT), "show", f"{REGISTRATION_COMMIT}:{path}"], stderr=subprocess.DEVNULL
+            )
+        except (OSError, subprocess.CalledProcessError):
+            hashes[path] = None
+        else:
+            hashes[path] = hashlib.sha256(data).hexdigest()
+    return hashes
+
+
 def check_provenance(headers):
-    """All three replays from the registration commit, sources unchanged and equal to this checkout's."""
-    flags = {name: doc["flags"] for name, doc in headers.items()}
+    """All three replays from the registration commit, with the sources committed there, and complete."""
+    # Replays written before the depth arm existed carry no depth_appearance flag; it was off.
+    flags = {name: {"depth_appearance": False, **doc["flags"]} for name, doc in headers.items()}
     expected = {
-        "off": {"jaw_self_mask": False, "closure_hold": False},
-        "mask": {"jaw_self_mask": True, "closure_hold": False},
-        "mask_hold": {"jaw_self_mask": True, "closure_hold": True},
+        "off": {"jaw_self_mask": False, "closure_hold": False, "depth_appearance": False},
+        "mask": {"jaw_self_mask": True, "closure_hold": False, "depth_appearance": False},
+        "mask_hold": {"jaw_self_mask": True, "closure_hold": True, "depth_appearance": False},
     }
     revisions = {name: doc["code_revision"] for name, doc in headers.items()}
     hashes = [doc["source_sha256"] for doc in headers.values()]
-    current = {name: sha256(ROOT / name) for name in replay.SOURCE_FILES}
+    registered = registered_sources(sorted(hashes[0]))
+    current = {name: sha256(ROOT / name) for name in hashes[0] if (ROOT / name).is_file()}
     summaries = {
         name: {"runs": doc["summary"]["runs"], "errors": doc["summary"]["errors"]} for name, doc in headers.items()
     }
@@ -178,13 +204,13 @@ def check_provenance(headers):
         and set(revisions.values()) == {REGISTRATION_COMMIT}
         and all(doc["source_files_differ_from_revision"] is False for doc in headers.values())
         and all(h == hashes[0] for h in hashes)
-        and hashes[0] == current
+        and hashes[0] == registered
         and all(s["runs"] == EXPECTED_RUNS and not s["errors"] for s in summaries.values())
     )
     return check(
         "provenance",
-        "The three replays have the expected flags, come from the registration commit with unchanged sources equal "
-        "to this checkout's, and each replayed 129 runs without an error.",
+        "The three replays have the expected flags, come from the registration commit with its committed sources "
+        "unchanged, and each replayed 129 runs without an error.",
         passed,
         {
             "flags": flags,
@@ -194,7 +220,8 @@ def check_provenance(headers):
                 n: d["source_files_differ_from_revision"] for n, d in headers.items()
             },
             "source_sha256": hashes[0],
-            "sources_equal_this_checkout": hashes[0] == current,
+            "sources_equal_registration_commit": hashes[0] == registered,
+            "sources_equal_this_checkout_informational": hashes[0] == current,
             "summaries": summaries,
         },
     )
@@ -203,7 +230,7 @@ def check_provenance(headers):
 def check_flags_off(document, inventory):
     """P0 part 1: the flags-off replay equals every recording through its recorded stop."""
     mismatches = run_set_problems(document, inventory)
-    frames_compared = correlation_pairs = after_frames = after_mismatch = 0
+    frames_compared = correlation_pairs = after_frames = after_mismatch = preview_pixels_compared = 0
     max_dcorr = 0.0
     per_run = []
     for run in document["runs"]:
@@ -251,13 +278,20 @@ def check_flags_off(document, inventory):
         ):
             mismatches.append({"run": run["run"], "kind": "initialization"})
         preview = report.get("initial_live_vision") or {}
+        recorded_preview = preview.get("measurement") or {}
         if not (
-            run["preview"]["state"] == (preview.get("measurement") or {}).get("state")
-            and run["preview"]["reason"] == (preview.get("measurement") or {}).get("reason")
+            run["preview"]["state"] == recorded_preview.get("state")
+            and run["preview"]["reason"] == recorded_preview.get("reason")
             and run["preview"]["cut_phase"] == (preview.get("cut") or {}).get("phase")
             and run["preview"]["matches_recording"]
         ):
             mismatches.append({"run": run["run"], "kind": "preview"})
+        if "pixel_xy" in run["preview"]:
+            preview_pixels_compared += 1
+            if run["preview"]["pixel_xy"] != recorded_preview.get("pixel_xy") or not correlation_close(
+                run["preview"].get("patch_correlation"), recorded_preview.get("patch_correlation")
+            ):
+                mismatches.append({"run": run["run"], "kind": "preview_pixel_or_correlation"})
         if last != run["compared_through_frame"]:
             mismatches.append(
                 {"run": run["run"], "kind": "compared_through", "detail": [last, run["compared_through_frame"]]}
@@ -274,6 +308,8 @@ def check_flags_off(document, inventory):
         "frames_after_stop_informational": after_frames,
         "after_stop_frames_differing_informational": after_mismatch,
         "tool_reproduces_true": document["summary"]["reproduce_recording_through_recorded_stop"],
+        # Replays written before the tool recorded the preview's pixel and correlation compare only its state.
+        "preview_pixel_and_correlation_compared": preview_pixels_compared,
     }
     return check(
         "flags_off_exact",
@@ -625,6 +661,7 @@ def check_hold(mask_hold, mask_runs, held, inventory):
         problems.append({"kind": "waived_checks_constant", "code": list(CLOSURE_HOLD_WAIVED_CHECKS)})
     holds = {}
     per_530 = {}
+    morning_15004 = None
     for run in mask_hold["runs"]:
         name = run["run"]
         if "error" in run:
@@ -681,19 +718,48 @@ def check_hold(mask_hold, mask_runs, held, inventory):
                 problems.append({"run": name, "kind": "hold_outside_530", "frames": held_frames})
             if decided:
                 problems.append({"run": name, "kind": "cut_decision_differs_outside_530", "frames": decided[:20]})
+            unchanged = all(rows[i]["measurement_matches_recording"] for i in range(min(last + 1, len(rows))))
+            if unchanged and run["comparison_through_recorded_stop"]["cut_mismatch_frames"]:
+                problems.append(
+                    {
+                        "run": name,
+                        "kind": "recorded_measurements_but_other_cut_decisions",
+                        "frames": run["comparison_through_recorded_stop"]["cut_mismatch_frames"][:20],
+                    }
+                )
+            if name == MORNING_15004:
+                stop = recorded_stop(frames)
+                recorded = [stop, None if stop is None else frames[stop]["live_vision"]["cut"]["stopped_reason"]]
+                replayed = [run["replay"]["stop_frame"], run["replay"]["stop_reason"]]
+                morning_15004 = {
+                    "recorded_stop": recorded,
+                    "mask_hold_stop": replayed,
+                    "mask_only_stop": other["stop"],
+                    "held_frames": held_frames,
+                }
+                if not (recorded == replayed == other["stop"] == MORNING_15004_STOP and not held_frames):
+                    problems.append({"run": name, "kind": "morning_15004_stop", "detail": morning_15004})
             continue
         per_530[name] = _check_530(name, run, rows, frames, held_frames, held.get(name) or {}, problems)
         per_530[name]["cut_decision_differs_from_mask_run_through_stop"] = decided
     missing = [name for name in RUNS_530 if name not in per_530]
     if missing:
         problems.append({"kind": "530_runs_missing", "runs": missing})
+    if morning_15004 is None and MORNING_15004 in inventory:
+        problems.append({"run": MORNING_15004, "kind": "morning_15004_missing"})
     return check(
         "hold_only_530",
         "The hold applies only in the three 530 runs, at 76-79 through the recorded stop (still closing at 79) and "
         "at the deadline frame 80 after it (not evaluable); held frames carry the closure-start target and time "
         "and the protocol's labels.",
         not problems and sorted(holds) == sorted(RUNS_530),
-        {"runs_with_holds": holds, "per_530": per_530, "problems": problems[:100], "problem_count": len(problems)},
+        {
+            "runs_with_holds": holds,
+            "per_530": per_530,
+            "morning_15004": morning_15004,
+            "problems": problems[:100],
+            "problem_count": len(problems),
+        },
     )
 
 

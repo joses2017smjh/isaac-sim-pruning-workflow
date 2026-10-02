@@ -83,6 +83,7 @@ def _row(frame, **overrides):
         "waived_checks": [],
         "held_target_age_s": None,
         "cut_without_hold": {"phase": cut["phase"], "stopped_reason": cut["stopped_reason"]},
+        "measurement_matches_recording": True,
         "evaluable": True,
         "mouth_distance_m": 0.003,
     }
@@ -97,6 +98,7 @@ def _replay_run(run, rows, last, name=NAME, recorded_closure_start=None, **repla
         "recorded": {"closure_start_frame": recorded_closure_start},
         "frames_detail": rows,
         "compared_through_frame": last,
+        "comparison_through_recorded_stop": {"cut_mismatch_frames": []},
         "initialization": {"replayed_state": "initialized", "replayed_feature_count": 13},
         "preview": {"state": "tracking", "reason": None, "cut_phase": "approach", "matches_recording": True},
         "replay": {
@@ -150,8 +152,9 @@ def test_flags_off_fails_when_a_recorded_run_is_missing_or_errored(checker, tmp_
     assert not checker.check_flags_off(errored, {NAME: run})["passed"]
 
 
-def test_provenance_requires_the_registration_commit_unchanged_sources_and_complete_replays(checker):
-    current = {name: checker.sha256(ROOT / name) for name in checker.replay.SOURCE_FILES}
+def test_provenance_requires_the_registration_commits_sources_and_complete_replays(checker, monkeypatch):
+    registered = {"tools/replay_jaw_self_mask.py": "a" * 64, "source/x.py": "b" * 64}
+    monkeypatch.setattr(checker, "registered_sources", lambda paths: {p: registered.get(p) for p in paths})
     flags = {
         "off": {"jaw_self_mask": False, "closure_hold": False},
         "mask": {"jaw_self_mask": True, "closure_hold": False},
@@ -162,19 +165,23 @@ def test_provenance_requires_the_registration_commit_unchanged_sources_and_compl
         base = {
             "code_revision": checker.REGISTRATION_COMMIT,
             "source_files_differ_from_revision": False,
-            "source_sha256": current,
+            "source_sha256": dict(registered),
             "summary": {"runs": checker.EXPECTED_RUNS, "errors": []},
         }
         return {name: {**base, "flags": flags[name], **changes.get(name, {})} for name in flags}
 
     assert checker.check_provenance(headers())["passed"]
+    # A replay written after the depth arm existed records it; off is the only accepted value.
+    with_depth = {name: {"flags": {**flags[name], "depth_appearance": False}} for name in flags}
+    assert checker.check_provenance(headers(**with_depth))["passed"]
+    assert not checker.check_provenance(headers(off={"flags": {**flags["off"], "depth_appearance": True}}))["passed"]
     later = {name: {"code_revision": "0" * 40} for name in flags}
     assert not checker.check_provenance(headers(**later))["passed"]
     assert not checker.check_provenance(headers(off={"source_files_differ_from_revision": True}))["passed"]
     assert not checker.check_provenance(headers(mask_hold={"flags": flags["mask"]}))["passed"]
     assert not checker.check_provenance(headers(mask={"summary": {"runs": 3, "errors": []}}))["passed"]
-    other = {**current, next(iter(current)): "0" * 64}
-    assert not checker.check_provenance(headers(off={"source_sha256": other}))["passed"]
+    edited = {name: {"source_sha256": {**registered, "source/x.py": "c" * 64}} for name in flags}
+    assert not checker.check_provenance(headers(**edited))["passed"]
 
 
 def _study(tmp_path, divergences, last, key_rows=(), name=NAME):
@@ -369,3 +376,48 @@ def test_held_frames_of_a_recorded_530_run_carry_the_closure_start_target_and_ti
         for h in run["held"]
     )
     assert checker.replay.VisionPruningDemo.__name__ == "VisionPruningDemo"
+
+
+def test_outside_530_unchanged_measurements_must_keep_the_recorded_cut_decisions(checker, tmp_path, monkeypatch):
+    run, document, mask_runs = _hold_case(checker, tmp_path, monkeypatch)
+    monkeypatch.setattr(checker, "RUNS_530", ("batch-z/run_00_elsewhere",))
+    no_hold = json.loads(json.dumps(document))
+    for row in no_hold["runs"][0]["frames_detail"]:
+        row.update(closure_hold={"held": False}, vision_source="live", waived_checks=[], held_target_age_s=None)
+    no_hold["runs"][0]["replay"]["held_frames"] = []
+    no_hold["runs"][0]["comparison_through_recorded_stop"]["cut_mismatch_frames"] = [3]
+    kinds = {p["kind"] for p in checker.check_hold(no_hold, mask_runs, {}, {NAME: run})["detail"]["problems"]}
+    assert "recorded_measurements_but_other_cut_decisions" in kinds
+
+
+def test_the_named_morning_15004_control_must_stop_at_75_without_a_hold(checker, tmp_path, monkeypatch):
+    monkeypatch.setattr(checker, "RUNS_530", ())
+    name = "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline"
+    monkeypatch.setattr(checker, "MORNING_15004", name)
+    monkeypatch.setattr(checker, "MORNING_15004_STOP", [1, "vision_invalid"])
+    run, frames = _recording(tmp_path, ["approach", "stopped"], name=name)
+    rows = [_row(f) for f in frames]
+    shadow = {"cut_without_hold_stop_frame": 1, "cut_without_hold_stop_reason": "vision_invalid"}
+    replayed = _replay_run(run, rows, 1, name=name, stop_frame=1, stop_reason="vision_invalid", **shadow)
+    mask_runs = checker.compact_mask_runs(_document(replayed))
+    result = checker.check_hold(_document(replayed), mask_runs, {}, {name: run})
+    assert result["detail"]["problems"] == [], result["detail"]["problems"]
+    assert result["passed"] and result["detail"]["morning_15004"]["mask_hold_stop"] == [1, "vision_invalid"]
+    moved = _replay_run(run, rows, 1, name=name, stop_frame=None, stop_reason=None, **shadow)
+    result = checker.check_hold(_document(moved), mask_runs, {}, {name: run})
+    assert "morning_15004_stop" in {p["kind"] for p in result["detail"]["problems"]}
+    missing = checker.check_hold(_document(), {}, {}, {name: run})
+    assert "morning_15004_missing" in {p["kind"] for p in missing["detail"]["problems"]}
+
+
+def test_a_recorded_preview_pixel_or_correlation_is_compared_with_the_report(checker, tmp_path):
+    run, frames = _recording(tmp_path, ["approach", "approach"])
+    report = json.loads((run / "report.json").read_text())
+    report["initial_live_vision"]["measurement"].update(pixel_xy=[10.0, 20.0], patch_correlation=0.9)
+    (run / "report.json").write_text(json.dumps(report))
+    replayed = _replay_run(run, [_row(f) for f in frames], 1)
+    replayed["preview"].update(pixel_xy=[10.0, 20.0], patch_correlation=0.9 + 5e-7)
+    result = checker.check_flags_off(_document(replayed), {NAME: run})
+    assert result["passed"] and result["detail"]["totals"]["preview_pixel_and_correlation_compared"] == 1
+    replayed["preview"]["pixel_xy"] = [10.0, 21.0]
+    assert not checker.check_flags_off(_document(replayed), {NAME: run})["passed"]
