@@ -395,9 +395,11 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       three 530 recordings it then passed on, so the October 2 runs confirm it
       in closed loop but do not test it on an unseen contact target. That
       needs a registered protocol and a GPU budget.
-- [ ] Decide whether to register an amended mask-fidelity check for future
-      runs, one that does not judge pixels within 0.01 px of the jaw's
-      outline. The registered P1 stays refuted. This is the user's decision.
+- [x] Amended mask-fidelity check for future runs: pixels within 0.01 px of
+      the jaw's outline are not judged. The user approved it on October 2,
+      and it is registered in the
+      [protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#registered-for-future-runs--october-2-2026).
+      The October 2 P1 verdict stays refuted.
 - [x] Tracker drift and camera side, as labelled experiments (similarity
       motion model, mirrored mount when end-on): 590's drift and 8353's and
       19264's perception failures are gone, each exposing a contact or ToF stop

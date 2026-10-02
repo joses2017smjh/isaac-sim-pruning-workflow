@@ -266,3 +266,33 @@ these runs:
 - The hold was designed on the same three 530 recordings, so this is a
   closed-loop confirmation, not a generalization test.
 - Three repeats of one contact target on one GPU model.
+
+## Registered for future runs — October 2, 2026
+
+The user approved this amendment on October 2, after reading the result
+above. It applies only to experiments registered after that date that use
+the jaw self-mask. The October 2 verdict on P1 is unaffected and stays
+refuted.
+
+- **P1 (mask fidelity), amended.** A predicted jaw pixel is a pixel that
+  meets both conditions:
+  - its centre ray (u + 0.5, v + 0.5) hits either jaw box, by a slab test in
+    the optical frame;
+  - its centre lies at least 0.01 px inside the undilated silhouette: the
+    signed distance to either box's float32 projected hull is ≤ −0.01 px, in
+    pixel-index coordinates (as `jaw_signed_distance_px` computes it).
+
+  Hits within the 0.01 px band are listed with their signed distance and
+  depths, and do not refute. Everything else in P1 is unchanged:
+  - the count clause;
+  - the violation rule: recorded depth strictly more than 1 mm beyond the box,
+    or not finite;
+  - every recorded frame counts;
+  - "Refuted by any mismatch" outside the band.
+- **Why 0.01 px.** On every planned-pose 19444 recording so far, each depth
+  violation was a single pixel within 3.4e-5 px of the outline (October 2:
+  within 1.5e-5 px). 0.01 px is about 300 times that, and 200 times smaller
+  than the 2.0 px mask margin. The number and the coordinate convention are
+  fixed here, before any run that will use them.
+- **Label.** A protocol that uses the amendment says so: *P1 amended October
+  2 (0.01 px outline band)*.

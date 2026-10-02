@@ -30,19 +30,19 @@ Finished and published:
   running (about four weeks left).
 - **Repository housekeeping.** Decide what to do with the uncommitted
   `studio/src` prototype and add repository topics.
-- **P1's outline pixels.** The registered mask-fidelity check counts every
-  pixel whose centre ray hits the jaw. It was refuted by one pixel lying
-  within 1.5e-5 px of the jaw's outline. Leaving out pixels within 0.01 px of
-  the outline would need a newly labelled registration for future runs. The
-  October 2 verdict stays refuted either way.
 
-## Proposals (need approval and a GPU budget)
+## Approved follow-ups (October 2): CPU scoping first, GPU budget asked later
 
+- **P1 with a 0.01 px outline band**, for future runs. Registered in the
+  [jaw-in-view protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#registered-for-future-runs--october-2-2026).
+  The October 2 verdict stays refuted.
 - **Generalize the closure hold.** It passed on the three 530 recordings it
-  was designed on. An unseen contact target would test it.
+  was designed on, and an unseen contact target would test it. No other
+  recorded target reaches closure with the jaw over its tracked patch, so
+  candidates must first be found offline.
 - **Evening 14944.** It still stops with the depth-aware check, because the
-  shadow leaves almost no correlation (0.0005–0.045). Passing it needs
-  another input.
+  shadow leaves almost no correlation (0.0005–0.045). An offline design study
+  comes first.
 
 ## Stretch goals
 
