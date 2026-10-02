@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-10-02",
+  "scope": "Task success rate over spur geometry, axis orientation and local occlusion at a canonicalized approach pose, from pre-registered targets. Not a field success rate, not a reachability study, and not outdoor or sensor-calibrated robustness.",
+  "protocol": "docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md",
+  "batches": [
+    {
+      "condition": "a-20261001",
+      "batch_dir": "artifacts/vision_robustness/jaw-hold-a-20261001",
+      "planned_runs_kept": 2
+    }
+  ],
+  "grader": "tools/validate_vision_sequence.py:grade_sequence",
+  "aggregation": "DuckDB over sql/*.sql; every reported number is produced by those queries",
+  "queries": [
+    {
+      "file": "01_runs.sql",
+      "sha256": "22c1488e869e7d5fcb21f5fb358296ce36e99161d1a3d7522083c0413c65e66f"
+    },
+    {
+      "file": "02_success_rate.sql",
+      "sha256": "f58b3ff5a42031cabd63c59122f85621e18ce7e4036d25f6a2b823faaea8ad7c"
+    },
+    {
+      "file": "03_failure_taxonomy.sql",
+      "sha256": "ef4b59e94cdad336bab27125b7721a9fc07c0b6cca6a32b951de041b66d67096"
+    },
+    {
+      "file": "04_per_condition.sql",
+      "sha256": "dada1f7b0287e3be2bd6772b6ecb7cf091983e54e6aef5aa03372409f9816434"
+    },
+    {
+      "file": "05_tracking_coverage.sql",
+      "sha256": "42d17c3276b36262782273f0a33b184a095d1de1c929de4df36849ff1ec911e2"
+    },
+    {
+      "file": "06_rate_excluding_infrastructure.sql",
+      "sha256": "9720c9d54b21efeb7920a55c15d5f1beeec60094cb74e45af7ecc9007bb41bf5"
+    },
+    {
+      "file": "07_per_target_by_strategy.sql",
+      "sha256": "497e74070aa5d3668aeb3573955b7da342da564c96e15094723c172d2366a157"
+    }
+  ],
+  "success_rate": {
+    "successes": 1,
+    "attempts": 2,
+    "rate": 0.5,
+    "wilson_lower": 0.09453120573423074,
+    "wilson_upper": 0.9054687942657693
+  },
+  "per_condition": [
+    {
+      "condition": "a-20261001",
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "attempts": 2,
+      "successes": 1,
+      "rate": 0.5
+    }
+  ],
+  "failure_taxonomy": [
+    {
+      "outcome": "stopped_vision_invalid",
+      "runs": 1,
+      "mean_applied_commands": 68.0,
+      "min_applied_commands": 68,
+      "max_applied_commands": 68,
+      "run_directories": [
+        "run_01_source_tree1_v19444_planned_pose_jaw_hold"
+      ]
+    }
+  ],
+  "rate_by_exclusion": [
+    {
+      "level": "inclusive (headline)",
+      "successes": 1,
+      "attempts": 2,
+      "rate": 0.5,
+      "wilson_lower": 0.09453120573423068,
+      "wilson_upper": 0.9054687942657693
+    },
+    {
+      "level": "presented (excludes infrastructure)",
+      "successes": 1,
+      "attempts": 2,
+      "rate": 0.5,
+      "wilson_lower": 0.09453120573423068,
+      "wilson_upper": 0.9054687942657693
+    },
+    {
+      "level": "recorded (excludes infrastructure and layout rejection)",
+      "successes": 1,
+      "attempts": 2,
+      "rate": 0.5,
+      "wilson_lower": 0.09453120573423068,
+      "wilson_upper": 0.9054687942657693
+    }
+  ],
+  "tracking_coverage": [
+    {
+      "run_directory": "run_00_source_tree0_v530_planned_pose_jaw_hold",
+      "outcome": "pass",
+      "passed": true,
+      "tracking_frames": 76,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.38,
+      "tracked_feature_count_min": 12,
+      "tracked_confidence_min": 0.7766383171081543,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    },
+    {
+      "run_directory": "run_01_source_tree1_v19444_planned_pose_jaw_hold",
+      "outcome": "stopped_vision_invalid",
+      "passed": false,
+      "tracking_frames": 67,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.335,
+      "tracked_feature_count_min": 9,
+      "tracked_confidence_min": 0.7461861670017242,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    }
+  ],
+  "per_target_by_strategy": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 530,
+      "strategy": "planned_pose_jaw_hold",
+      "condition": "a-20261001",
+      "outcome": "pass",
+      "stop_frame": null,
+      "final_phase_frame": 56,
+      "checks_passed": 17,
+      "checks_total": 17,
+      "failed_checks": null,
+      "applied_commands": 71
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "strategy": "planned_pose_jaw_hold",
+      "condition": "a-20261001",
+      "outcome": "stopped_vision_invalid",
+      "stop_frame": 68,
+      "final_phase_frame": 63,
+      "checks_passed": 9,
+      "checks_total": 17,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "applied_commands": 68
+    }
+  ],
+  "runs": [
+    {
+      "condition": "a-20261001",
+      "run_directory": "run_00_source_tree0_v530_planned_pose_jaw_hold",
+      "target_tree_index": 0,
+      "component_first_vertex": 530,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "planned_pose_jaw_hold",
+      "stop_frame": null,
+      "final_phase_frame": 56,
+      "failed_checks": null,
+      "status": "graded",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "applied_commands": 71,
+      "stop_reason": null,
+      "tracking_frames": 76,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 12,
+      "tracked_confidence_min": 0.7766383171081543,
+      "centroid_error_m": null,
+      "passed": true,
+      "outcome": "pass"
+    },
+    {
+      "condition": "a-20261001",
+      "run_directory": "run_01_source_tree1_v19444_planned_pose_jaw_hold",
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "planned_pose_jaw_hold",
+      "stop_frame": 68,
+      "final_phase_frame": 63,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "status": "graded",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "applied_commands": 68,
+      "stop_reason": "vision_invalid",
+      "tracking_frames": 67,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 9,
+      "tracked_confidence_min": 0.7461861670017242,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_vision_invalid"
+    }
+  ],
+  "target_register": {
+    "path": "docs/evidence/eval_targets_jaw_hold_a_2026-09-30.json",
+    "sha256": "71ecc9af478670b01d9258920211a292dd5597010d94de930fe4040db116c67b",
+    "seed": null,
+    "target_count": 2,
+    "selection_rule": "Entries copied unchanged (including each planned_final_tool_quat_wxyz) from the planned-pose register; 530 in every batch, then one of 19444, 14944, 15004."
+  }
+}
