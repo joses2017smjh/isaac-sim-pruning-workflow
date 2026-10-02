@@ -696,6 +696,7 @@ supported, [result](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.m
 | `21507188` | At `45763d0`: the jaw-in-view scorer (committed blind at `3ac43cb`) on the grades committed unopened at `45763d0` | COMPLETED in 1m46s (`cn-a10`, 0.5 GB): [verdicts](docs/evidence/jaw_in_view_verdicts_2026-10-02.json) |
 | `21507189` | At `45763d0`, afterany `21507188`: the depth closed-loop scorer, notes corrected | COMPLETED in 32s: [verdicts](docs/evidence/depth_loop_verdicts_2026-10-02.json), C1–C6 supported |
 | `21507190` | At `45763d0`: foundation CI on a clone without recordings | COMPLETED in 1m56s: ruff clean, 950 passed and 19 skipped, demo ran |
+| `21516610` | At `1386e63`: a GIF, MP4 and poster for every run of the jaw-in-view and depth closed-loop batches (`tools/compose_batch_media.py`) | COMPLETED in 16m48s: 16 of 16 composed (about 72 MB, local). Four before-and-after GIFs are in the README: 530 with and without the jaw hold, and evening 15004 with and without the depth check |
 
 ### Jaw in the camera's view (submitted October 1)
 

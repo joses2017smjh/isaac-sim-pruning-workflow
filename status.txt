@@ -24,6 +24,11 @@ LATEST — 2026-10-02 MORNING (read this first)
     capture complete + grader 17/17 + configuration_matches). Both scorers' disclosures now say which
     predictions that revealed (3ac43cb); the old depth-loop scoring output (job 21506428) was never opened.
   CI at 45763d0 (job 21507190): ruff clean, 950 passed, 19 skipped, demo ran.
+  README MEDIA: before-and-after GIFs in docs/demo/:
+    530 without and with the jaw hold (isaac_tree0_v530_planned_pose_closure_failure.gif,
+    isaac_tree0_v530_jaw_hold_pass.gif); evening 15004 without and with the depth check
+    (isaac_tree1_v15004_evening_appearance_stop.gif, isaac_tree1_v15004_evening_depth_check_pass.gif).
+    All 16 new runs have local media (job 21516610).
   FOLLOW-UPS (user approved in principle 2026-10-02; budgets still to be approved as numbers):
     P1 with a 0.01 px outline band registered for future runs (1386e63). Scopes committed:
     docs/SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md (evening 14944: design study first, then 6 runs,
