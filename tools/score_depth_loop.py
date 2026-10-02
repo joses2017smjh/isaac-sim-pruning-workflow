@@ -72,6 +72,8 @@ FROZEN_EXTRA = (
     "hpc/inner/render_pruning_workflow.py",
     "tools/check_depth_loop_c0.py",
 )
+#: This scorer was amended after the batches were frozen, so it is the one repository module not compared.
+SELF = "tools/score_depth_loop.py"
 CONSTRUCTION_NOTES = [
     "The scorer was committed at 1bd1ea1 before any depth-loop run was submitted.",
     "It was amended after an independent blind review (15 confirmed findings), before any depth-loop grade file, "
@@ -81,13 +83,14 @@ CONSTRUCTION_NOTES = [
     "state is not a grade: a run that stops exits nonzero.",
 ]
 INTERPRETATIONS = [
-    "The grade files must be exactly the 7 registered batches, each graded under this protocol by "
-    "tools/validate_vision_sequence.py with 17 checks, holding the registered targets, light and strategy in plan "
-    "order (10 runs in all); otherwise nothing is scored.",
-    "A run is scored when it was graded (status 'graded', 17 checks), its report and frames exist, and its report "
-    "shows the arm on with the registered constants and the jaw self-mask and closure hold off (and "
-    "configuration_matches, where the runner recorded it). Any other run is listed in every table and is untested "
-    "in every prediction: it is neither a pass nor a failure.",
+    "The grade files must be exactly the 7 registered batches (any other depth-loop grade file refuses), each "
+    "graded under this protocol by tools/validate_vision_sequence.py with 17 checks, holding the registered "
+    "targets, light and strategy in plan order under their registered run directories (10 runs in all); otherwise "
+    "nothing is scored.",
+    "A run is scored when it was graded (status 'graded', 17 checks), its capture completed (report stage "
+    "'complete', and the runner's experiment_result.json with configuration_matches true), and its report shows "
+    "the arm on with the registered constants and the jaw self-mask and closure hold off. Any other run is listed "
+    "in every table and contributes nothing: it is neither a pass nor a failure.",
     "A grey-check failure is a frame whose live measurement carries a depth_appearance event (the tracker attaches "
     "one exactly when the grey NCC fails 0.35). A run's stop is its first frame whose recorded cut phase is "
     "'stopped'; the grade files' stop_frame is the next frame (the first 'stopped_failure' command) and is not "
@@ -108,13 +111,14 @@ INTERPRETATIONS = [
     "reaches the patch, 12142 at the wire) are one clause per control that can only hold: the event at the stop "
     "is rejected naming J_jaw_silhouette (19444) or 3_near_fraction (12142). The recorded stop frames are context, "
     "not thresholds.",
-    "C5 is refuted only by a scored source run that fails a check; an unscored run leaves it untested.",
+    "C5 is refuted only by a scored source run that fails a check. An unscored run contributes nothing: one "
+    "unscored run leaves C5 at most partly supported, and two leave it untested.",
     "C6 compares each scored run whose recording is complete with the offline strict arm on its own frames, "
     "through its stop: the strict arm must equal the recording (state, reason and pixel exactly; pixels are "
     "float32 in both trackers, so any cross-CPU difference exceeds 1e-6 anyway; correlation within 1e-6), and the "
     "live and offline depth events, preview included, must have the same frames, the same keys and equal values "
-    "(floats within 1e-6, as the C0 gate). A run the offline tool cannot replay (stage not complete, the jaw arms "
-    "on, frame indexes not contiguous, a preview or frame file missing) is not comparable: listed, and C6 cannot "
+    "(floats within 1e-6, as the C0 gate). A run the offline tool cannot replay (an unscored run, frame indexes "
+    "not contiguous, a preview or frame file missing) is not comparable: listed, and C6 cannot "
     "be supported, but it is not refuted. Any other replay error aborts the scorer.",
     "A prediction is 'untested' when no run contributed evidence to any of its clauses, 'refuted' when any clause "
     "refutes, 'supported' when every clause holds, and 'partly supported' otherwise.",
@@ -192,6 +196,8 @@ def configuration(run, report):
     result_path = Path(run) / "experiment_result.json"
     matches = json.loads(result_path.read_text()).get("configuration_matches") if result_path.is_file() else None
     checks = {
+        "capture_complete": report.get("stage") == "complete",
+        "experiment_result_recorded": result_path.is_file(),
         "enabled": block.get("enabled") is True,
         "constants_registered": block.get("constants") == registered,
         "jaw_arms_off": all(
@@ -200,7 +206,11 @@ def configuration(run, report):
         "configuration_matches": matches,
     }
     checks["ok"] = (
-        checks["enabled"] and checks["constants_registered"] and checks["jaw_arms_off"] and matches is not False
+        checks["capture_complete"]
+        and checks["enabled"]
+        and checks["constants_registered"]
+        and checks["jaw_arms_off"]
+        and matches is True
     )
     return checks
 
@@ -270,16 +280,37 @@ def run_record(root, batch, row):
             "frames_sha256": sha256(frames_path),
         }
     )
-    record["scored"] = record["configuration"]["ok"]
-    if not record["scored"]:
+    checks = record["configuration"]
+    record["scored"] = checks["ok"]
+    if not checks["capture_complete"] or not checks["experiment_result_recorded"]:
+        record["unscored_reason"] = "capture incomplete (killed or crashed before the runner finished)"
+    elif not record["scored"]:
         record["unscored_reason"] = "configuration refused"
     return record
 
 
+def expected_run_directory(index, row, strategy):
+    """run_vision_experiment.run_label for a registered row."""
+    return (
+        f"run_{index:02d}_{row['daylight']}_tree{row['target_tree_index']}_v{row['component_first_vertex']}_{strategy}"
+    )
+
+
 def load(root):
     """The registered grade files, checked, and one record per registered run; refuses anything else."""
-    root = Path(root)
+    try:
+        return _load(Path(root))
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        if isinstance(error, InputError):
+            raise
+        raise InputError(f"malformed grade input: {error!r}") from error
+
+
+def _load(root):
     records, files = [], {}
+    extra = sorted(path.name for path in (root / EVIDENCE_DIR).glob("depth-loop-*.json") if path.stem not in REGISTRY)
+    if extra:
+        raise InputError(f"{EVIDENCE_DIR}: grade files outside the registered batches: {extra}")
     for batch, (kind, strategy, targets) in REGISTRY.items():
         path = root / EVIDENCE_DIR / f"{batch}.json"
         if not path.is_file():
@@ -297,14 +328,16 @@ def load(root):
         ):
             raise InputError(f"{path}: schema_version, protocol or grader is not the registered one")
         batches = document.get("batches") or []
-        if len(batches) != 1 or Path(batches[0]["batch_dir"]).name != batch:
-            raise InputError(f"{path}: must grade exactly the batch {batch}")
+        if len(batches) != 1 or str(batches[0]["batch_dir"]).rstrip("/") != f"{VISION_ROBUSTNESS}/{batch}":
+            raise InputError(f"{path}: must grade exactly {VISION_ROBUSTNESS}/{batch}")
         rows = document.get("runs") or []
         wanted = [(target, DAYLIGHT[kind], strategy) for target in targets]
         found = [(int(r["component_first_vertex"]), r.get("daylight"), r.get("strategy")) for r in rows]
         if found != wanted:
             raise InputError(f"{path}: rows {found} are not the registered {wanted}")
-        for row in rows:
+        for index, row in enumerate(rows):
+            if row["run_directory"] != expected_run_directory(index, row, strategy):
+                raise InputError(f"{path}: run directory {row['run_directory']} is not the registered run {index}")
             if row.get("status") == "graded" and row.get("checks_total") != CHECKS:
                 raise InputError(f"{path}: {row['run_directory']} was graded with {row.get('checks_total')} checks")
         records += [run_record(root, batch, row) for row in rows]
@@ -314,13 +347,39 @@ def load(root):
 
 
 def check_frozen_sources(root):
-    """The code C6 executes must equal the code every batch was frozen with (plan.json source_sha256)."""
+    """The code C6 executes must equal the code every batch was frozen with (plan.json source_sha256).
+
+    Covers the depth tool's SOURCE_FILES, the live controller and runner, and every repository module that the
+    replay imports (found in sys.modules after importing it), except this scorer itself.
+    """
+    import check_depth_loop_c0  # noqa: F401 - imported for its module set
     import replay_depth_appearance as depth_tool
 
-    paths = (*depth_tool.SOURCE_FILES, *FROZEN_EXTRA)
-    current = {path: sha256(Path(root) / path) for path in paths}
+    root = Path(root).resolve()
+    imported = set()
+    for module in list(sys.modules.values()):
+        file = getattr(module, "__file__", None)
+        if not file or not Path(file).is_absolute():
+            continue  # extension and namespace modules carry relative or no file names
+        try:
+            relative = Path(file).resolve().relative_to(root).as_posix()
+        except ValueError:
+            continue
+        if (
+            relative.endswith(".py")
+            and relative.split("/")[0] in ("source", "tools", "hpc")
+            and relative != SELF
+            and (root / relative).is_file()
+        ):
+            imported.add(relative)
+    paths = sorted(set(depth_tool.SOURCE_FILES) | set(FROZEN_EXTRA) | imported)
+    current = {path: sha256(root / path) for path in paths}
     for batch in REGISTRY:
-        plan = json.loads((Path(root) / VISION_ROBUSTNESS / batch / "plan.json").read_text())
+        plan_path = root / VISION_ROBUSTNESS / batch / "plan.json"
+        try:
+            plan = json.loads(plan_path.read_text())
+        except (OSError, ValueError) as error:
+            raise InputError(f"{plan_path}: unreadable ({error!r})") from error
         frozen = plan.get("source_sha256") or {}
         differing = sorted(path for path in paths if frozen.get(path) != current[path])
         if differing:
@@ -622,6 +681,7 @@ def offline_comparison(record):
         "problems": problems,
         "replayed_through_frame": result["replayed_through_frame"],
         "recording_sha256": result["source_sha256"],
+        "max_strict_correlation_difference": strict["max_abs_patch_correlation_difference"],
     }
 
 
@@ -703,7 +763,10 @@ def main(argv=None):
         "frozen_sources_sha256": frozen,
         "offline_tool_provenance": depth_tool._provenance(),
         "float_tolerance": c0.FLOAT_TOLERANCE,
-        "max_float_difference_accepted": c0.COMPARE.max_float_difference,
+        "max_event_float_difference_accepted": c0.COMPARE.max_float_difference,
+        "max_strict_correlation_difference": max(
+            (c.get("max_strict_correlation_difference") or 0.0 for c in comparisons.values()), default=0.0
+        ),
         "interpretations": INTERPRETATIONS,
         "runs": [run_summary(record) for record in records],
         "c6_comparisons": comparisons,

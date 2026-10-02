@@ -203,13 +203,15 @@ def test_c4_refutations_and_mechanism_expectations(scorer):
     assert scorer.score_c4(records)["verdict"] == "untested"  # controls that never ran keep no stop
 
 
-def test_c5_unscored_is_untested_and_a_failed_check_refutes(scorer):
+def test_c5_a_failed_check_refutes_and_unscored_runs_contribute_nothing(scorer):
     records = _expected()
     records[6].update(outcome="stopped_vision_invalid")
     assert scorer.score_c5(records)["verdict"] == "refuted"
     records = _expected()
     records[6].update(scored=False, unscored_reason="not graded", outcome="infrastructure")
     assert scorer.score_c5(records)["verdict"] == "partly supported"
+    records[7].update(scored=False, unscored_reason="not graded", outcome="infrastructure")
+    assert scorer.score_c5(records)["verdict"] == "untested"
 
 
 def test_c6_refutes_only_on_a_difference(scorer):
@@ -241,12 +243,13 @@ def _grade_files(scorer, root, status="incomplete", checks_total=0, edit=None):
     for batch, (kind, strategy, targets) in scorer.REGISTRY.items():
         rows = [
             {
-                "run_directory": f"run_{i:02d}_{scorer.DAYLIGHT[kind]}_v{t}",
+                "run_directory": f"run_{i:02d}_{scorer.DAYLIGHT[kind]}_tree{0 if t == 12142 else 1}_v{t}_{strategy}",
                 "status": status,
                 "outcome": status,
                 "checks_passed": 0,
                 "checks_total": checks_total,
                 "daylight": scorer.DAYLIGHT[kind],
+                "target_tree_index": 0 if t == 12142 else 1,
                 "component_first_vertex": t,
                 "strategy": strategy,
             }
@@ -282,6 +285,9 @@ def test_load_keeps_ungraded_runs_and_scores_them_untested(scorer, tmp_path):
         lambda batch, doc: doc.update(grader="other"),
         lambda batch, doc: doc["batches"].append(dict(doc["batches"][0])),
         lambda batch, doc: doc["batches"][0].update(batch_dir="artifacts/vision_robustness/elsewhere/"),
+        lambda batch, doc: doc["batches"][0].update(batch_dir=f"/some/other/checkout/{batch}"),
+        lambda batch, doc: doc["runs"][-1].update(run_directory=doc["runs"][0]["run_directory"]),
+        lambda batch, doc: doc["runs"][0].pop("component_first_vertex"),
         lambda batch, doc: doc["runs"].reverse() if len(doc["runs"]) > 1 else None,
         lambda batch, doc: doc["runs"][0].update(strategy="baseline"),
     ],
@@ -292,15 +298,19 @@ def test_load_refuses_a_grade_file_that_is_not_the_registered_batch(scorer, tmp_
         scorer.load(tmp_path)
 
 
-def test_load_refuses_a_missing_file_and_a_grade_with_another_check_count(scorer, tmp_path):
+def test_load_refuses_a_missing_file_another_check_count_and_an_unregistered_file(scorer, tmp_path):
     with pytest.raises(scorer.InputError, match="missing"):
         scorer.load(tmp_path)
     _grade_files(scorer, tmp_path, status="graded", checks_total=16)
     with pytest.raises(scorer.InputError, match="16 checks"):
         scorer.load(tmp_path)
+    _grade_files(scorer, tmp_path)
+    (tmp_path / scorer.EVIDENCE_DIR / "depth-loop-eve-r1-20261001-regrade.json").write_text("{}")
+    with pytest.raises(scorer.InputError, match="outside the registered"):
+        scorer.load(tmp_path)
 
 
-def _captured_run(root, scorer, batch, run_directory, enabled=True, accept=True, stage="complete"):
+def _captured_run(root, scorer, batch, run_directory, enabled=True, accept=True, stage="complete", result=True):
     run = root / scorer.VISION_ROBUSTNESS / batch / run_directory
     (run / "frames").mkdir(parents=True)
     from isaaclab_pruning.perception.depth_appearance import registered_depth_appearance
@@ -322,6 +332,8 @@ def _captured_run(root, scorer, batch, run_directory, enabled=True, accept=True,
         },
     }
     (run / "frames.json").write_text(json.dumps({"frames": [frame]}))
+    if result is not None:
+        (run / "experiment_result.json").write_text(json.dumps({"configuration_matches": result}))
     return run
 
 
@@ -343,6 +355,10 @@ def test_a_capture_without_the_registered_arm_is_refused_and_accept_must_be_bool
     (run / "preview_wrist.png").write_bytes(b"")
     (run / "preview_depth.npy").write_bytes(b"")
     assert "frame files missing" in scorer.comparability(record)
-    incomplete = _captured_run(tmp_path, scorer, batch, "run_03_killed", stage="record")
-    record = scorer.run_record(tmp_path, batch, {**row, "run_directory": incomplete.name})
-    assert "not complete" in scorer.comparability(record)
+    killed = _captured_run(tmp_path, scorer, batch, "run_03_killed", stage="record", result=None)
+    record = scorer.run_record(tmp_path, batch, {**row, "run_directory": killed.name})
+    assert not record["scored"] and "capture incomplete" in record["unscored_reason"]
+    assert "capture incomplete" in scorer.comparability(record)
+    unmatched = _captured_run(tmp_path, scorer, batch, "run_04_unmatched", result=False)
+    record = scorer.run_record(tmp_path, batch, {**row, "run_directory": unmatched.name})
+    assert not record["scored"] and record["unscored_reason"] == "configuration refused"
