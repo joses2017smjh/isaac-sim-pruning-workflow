@@ -663,6 +663,31 @@ Every result carries the label *depth-aware appearance check D_strict + J;
 changes the 0.35 appearance gate's rule; simulator depth*. It is never pooled
 with unchanged-gate runs.
 
+**Depth closed-loop runs (October 1).** All 10 tasks ran on `cn-gpu5` (RTX
+8000) and used 256 of the 450 reserved GPU-minutes. Slurm states are not grades.
+
+| Task | Run | Slurm state | Elapsed |
+|---|---|---|---|
+| `21502510_0` | evening 14944 r1 | FAILED (exit 1) | 23m57s |
+| `21502510_1` | evening 15004 r1 | COMPLETED | 26m36s |
+| `21502520_0` | morning 15004 r1 | COMPLETED | 26m46s |
+| `21502533_0` | evening 14944 r2 | FAILED (exit 1) | 23m50s |
+| `21502533_1` | evening 15004 r2 | COMPLETED | 26m38s |
+| `21502536_0` | morning 15004 r2 | COMPLETED | 26m58s |
+| `21502537_0` | source 14944 | COMPLETED | 27m02s |
+| `21502537_1` | source 15004 | COMPLETED | 26m13s |
+| `21502538_0` | control 19444 | FAILED (exit 1) | 25m01s |
+| `21502539_0` | control 12142 | FAILED (exit 1) | 22m59s |
+
+Grading: CPU job `21505683` (`share`, October 2), `aggregate_eval.py` at
+`6920d21`, seven batches, all exit 0.
+
+### Follow-ups (CPU, October 2)
+
+| Job | What | Outcome |
+|---|---|---|
+| `21505806` | At `9b0e062`: foundation CI on a clone without recordings; the tests that need recordings; the revised render-gap scorer; the P0 recheck | COMPLETED in 2m54s: ruff clean, 886 passed and 19 skipped, demo ran; 23 passed; [render-gap verdicts](docs/evidence/render_gap_verdicts_2026-10-02.json) unchanged; [P0 recheck](docs/evidence/jaw_in_view_p0_replay_recheck_2026-10-02.json) passed |
+
 ### Jaw in the camera's view (submitted October 1)
 
 The user approved 270 GPU-minutes on September 30. On October 1, after the gate
@@ -686,3 +711,19 @@ committed at `a6e8266`.
 Every result carries the label *known-map plan; jaw self-mask; closure hold
 with freshness and frame-reuse checks waived on held frames*. It is reported
 apart from every unchanged-gate result and never pooled.
+
+**Jaw-in-view runs (October 1).** All 6 tasks ran on `cn-gpu5` (RTX 8000) and
+used 181.5 of the 270 reserved GPU-minutes. Slurm states are not grades: a run
+that stops exits nonzero.
+
+| Task | Target | Slurm state | Elapsed |
+|---|---|---|---|
+| `21501983_0` | 530 | COMPLETED | 36m28s |
+| `21501983_1` | 19444 | FAILED (exit 1) | 24m45s |
+| `21501985_0` | 530 | COMPLETED | 33m18s |
+| `21501985_1` | 14944 | COMPLETED | 27m13s |
+| `21501986_0` | 530 | COMPLETED | 33m23s |
+| `21501986_1` | 15004 | COMPLETED | 26m19s |
+
+Grading: CPU job `21505682` (`share`, October 2), `aggregate_eval.py` at
+`6920d21`, three batches, all exit 0.

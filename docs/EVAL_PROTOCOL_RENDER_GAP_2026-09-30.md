@@ -161,6 +161,23 @@ for Envy and 0.043–0.057 m for UFO, against 0.20–0.27 m on Matched. Native
 changes resolution, input filtering and ground truth together, so it does not
 say which of them matters.
 
+**Revised scorer (October 2).** An adversarial review of the scorer
+suggested integrity checks and fuller tables. These are now in
+`tools/score_render_gap.py` (`9b0e062`):
+- seven refusals before any prediction: the published pins, the plan, the
+  gate thresholds, every evaluation's provenance, the aggregates' links back
+  to them, the tree set of each arm, and the Matched ground truth;
+- incomplete cells unscore their tree;
+- unrounded ratios with rounding-sensitive trees;
+- per-tree tables for all three arms;
+- affine ceilings, and Matched against published.
+
+On the real inputs every check passes, no tree is rounding-sensitive, and the
+verdicts are unchanged
+([revised verdicts](evidence/render_gap_verdicts_2026-10-02.json)). The
+protocol names no reading for "G1 partly supported, G2 supported", so the
+evidence records none.
+
 **Limits.**
 - 8 trees, one bark, Blender only, one render per frame.
 - The Isaac camera and Stage A are untouched.

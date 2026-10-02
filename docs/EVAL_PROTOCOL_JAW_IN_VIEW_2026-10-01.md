@@ -105,7 +105,11 @@ All runs use source light and 200 frames, on `gpu,ampere` with the constraint
   recorded stop; that frame is not evaluable. *Any mismatch blocks submission.*
   Evidence:
   [P0](evidence/jaw_in_view_p0_replay_2026-10-01.json), regenerated from the
-  registration commit.
+  registration commit. Rechecks by the hardened checker:
+  [October 1](evidence/jaw_in_view_p0_replay_recheck_2026-10-01.json) and
+  [October 2](evidence/jaw_in_view_p0_replay_recheck_2026-10-02.json). The
+  October 2 recheck compares sources with the registration commit's own
+  files, and adds the named morning-15004 check; both passed.
 - **P1 (mask fidelity).** On every frame of all six runs, the recorded mask
   pixel count equals an offline reconstruction from the recorded pose,
   progress and camera. No predicted jaw pixel shows recorded depth more than

@@ -1,0 +1,4989 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the render-gap check (G0-G3): the 8 matrix trees re-rendered with the training renderer, five checkpoints scored by the frozen depth_generalization.py on Matched (512x288 area-downsampled RGB against the published matrix depth and mask) and Native (1920x1080 against the new render's own depth and mask). Blender only, one bark, one render per frame; the Isaac camera is not touched.",
+  "protocol": "docs/EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md",
+  "code_revision": "9b0e0629b7a5d32e9a78737f575214dcbc57e5b4",
+  "code_tree_dirty": false,
+  "models": {
+    "F": "da2_frozen",
+    "J": "da2_jitter",
+    "C": "da2_control",
+    "A": "da2_rendered_jitter",
+    "B": "da2_rendered_control"
+  },
+  "interpretations": [
+    "Per-tree errors are the published lighting_effect values (sql/family/03: the mean tree-mask MAE over 6 views, 4 dp), as R3-R5 used them. Ratios are of those values. Unrounded means are recorded and never decide.",
+    "'At least' is >= and 'at most' is <=. G3's 'at least as large' is a ratio >= 1.0.",
+    "G1 is one clause per arm (A/C and B/C), as R5 scored \"A's and B's\". The protocol's 'A or B' refutation means any refuting clause refutes.",
+    "A ratio between a hold threshold and a refutation threshold counts toward neither. A prediction that neither holds nor is refuted is 'partly supported'.",
+    "G2 states a refutation for its Envy clause only. The UFO clause (A/J <= 0.5) cannot refute, as R5's third clause could not.",
+    "Counts are absolute over the registered trees (6 of 8; 3 of a family's 4). An unscored tree counts toward neither and is listed with its reason; a clause with fewer scored trees than it needs is not decidable.",
+    "G0 is scored from the gate's own record (pose_identity.json, job 21499599, training_lighting.agreement). The registered thresholds are re-applied to every view, and a view without values fails. A disagreement between the record and the re-applied gate is an input error, not a verdict.",
+    "A registered tree the gate never checked (not_checked) counts as not passing G0, as prepare_render_gap_evaluation.py records it.",
+    "The 1920x1080 point-sampled geometry is a measurement and never gates.",
+    "G3's denominator is F's source lighting_effect value in finetune_rendered_family_matrix_2026-09-30.json.",
+    "Native against Matched is Native / Matched of the per-tree values and of the family means. It confounds resolution, input filtering and ground truth, and is not attributed to any one of them.",
+    "Matched against published, for every model and preset, is a measurement. Only F at source is registered (G3)."
+  ],
+  "inputs_sha256": {
+    "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/generalization/family-matrix-20260923/eval/plan.json": "8bef6a1582d653d74197b531b60bfb1ec8b074a1201e04e02c06fb93cf1c366b",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/matched/A/evaluation.json": "b7c452a5bf800695bdc1d0581b3b78695c1b8e23f98386d0e0fd16b48186f9ff",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/matched/B/evaluation.json": "078ccf4b872f6fa2434819c2fb770e63c87cfc88501bf61e38d8b7a22197853c",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/matched/C/evaluation.json": "0fad9d412c27b43169de32d216efb646983186709e5602b0cc20b70a4291d4b0",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/matched/F/evaluation.json": "4dc8972c49125a38b8da5e81c845cea2a926dfa63a0b2bdf1aaa4609f1a7bc26",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/matched/J/evaluation.json": "06efcc67b52bd329524611d44eecd4b3bb1715df9e24d0f6fff9af783fd7c594",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/matched/plan.json": "c748117bf7d370b19dec449ce023fc9a8dc222f874c8f33f14390842c13ede1c",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/matched/status.json": "bf06c898de489e99363a0d801f46a038fb8a8f511f875e148cd611fa8a72f7ad",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/native/A/evaluation.json": "d19e4a13ab7e3fd369b850ffd3a36bb6535cf0818a68470a064bb2ad12f802a7",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/native/B/evaluation.json": "8295be4f210ccf6349712b8a4da7fb054b1150808cf9458d3e80b0a56877a744",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/native/C/evaluation.json": "d33485b428bd6e29a5bb33cdc7c27ce3b9ae7c75411ae6ea8814c7cdae31867b",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/native/F/evaluation.json": "36d573230b5ac7005e79f1cf5d6a7bf19768d3240decc3fc30c8672658a8b775",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/native/J/evaluation.json": "7cdac2f70b316deb98b12cce7e0c941f089a8405c692d8a9e382bcca980cc9b8",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/native/plan.json": "777eabd7960c897c45d5c34b12c6d158d13ce8df88fc7731f6db7c0795c6ac5a",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/native/status.json": "0f2ec55f17543202f8a5add482d5f7ee9f2868ce6119282411e3bd2792e9004e",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/pose_identity.json": "ddcfae7d7b0cc2ee0a0dd0e9f8ed388eea134709f8fd0bafb6d6163742f5ca99",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/eval/render_status.json": "a6bef8d3fb882d3a0b79817df7c09e0e5973c249c4f66233db3637b35e16a0ca",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/plan.json": "b2657603573edb4f4e40540790acf11466fcc852b996573a7d0f71dcad34caa9",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/render/lpy_envy_00000/render_manifest.json": "5451a9f2218342c302126ee5af38d4205234637883d1e165ed5c0a17d9247896",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/render/lpy_envy_00003/render_manifest.json": "fa0a44de686b2e1f6dd44b23e9368ca9fa4339440bf1d6e2e0d2aff8920fc493",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/render/lpy_envy_00008/render_manifest.json": "a3ad3276c6ae37e88a1356b234e61c0b4557fa4588b73bd53db9a61be7950206",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/render/lpy_envy_00012/render_manifest.json": "32dafd9108dafb8c415d4843a5ce40371312a4b572967efe285c06adc0cde802",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/render/lpy_ufo_00000/render_manifest.json": "da2c8586ac1a8137073eb03cd197c0bf76a3340ae6b69402e450ce99d7abffd0",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/render/lpy_ufo_00001/render_manifest.json": "a18f30fabd695ccc0ef16a43228dff91929476edf476d3576b40667e2b9797fd",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/render/lpy_ufo_00002/render_manifest.json": "ebe57ed538a22bbe7ca56be13041125463fe5e38bf58e5184117fb9ed8ae4b31",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/render/lpy_ufo_00003/render_manifest.json": "240cfe1364d80b48c32f411843538746f24340c2a9b5f19866a19c94c70f7ec7",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/submission_receipt_eval.json": "f134c66bb5723b70fd31a592efaea9dc221f9cba3e32c0129d4b9111d7aaeeb7",
+    "/nfs/hpc/share/sanchej7/pruning_work/followups_9b0e062/src/artifacts/generalization/render-gap-20260930/submission_receipt_render.json": "ef30a5e8821b09457e83a13af04ab698e830842f5dd7a6bdc449b8833fca5cb5",
+    "docs/EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md": "28a00dd2b3f8bed344222a010696e226397e91bd3853e1192186fd60fcd519c0",
+    "docs/evidence/finetune_rendered_anchoring_2026-09-30.json": "d24032af5ebd16e2a8df7119e8d1350b979dd80a76d8ebb7fe9bf7b8a44f4ff4",
+    "docs/evidence/finetune_rendered_family_matrix_2026-09-30.json": "e34a744987fc0b867d20f0a6477f711563c54ca657913e378144a923c323d0f0",
+    "docs/evidence/render_gap_matched_anchoring_2026-10-01.json": "b90dc39acb3fcb11f183300eda7245c2c523b6e855837f635eb36086a3458e10",
+    "docs/evidence/render_gap_matched_matrix_2026-10-01.json": "e83db65932144fd5187c8f1298d616db6b8891579521ec2af61263b7a6b2ace2",
+    "docs/evidence/render_gap_native_anchoring_2026-10-01.json": "21ae665328eb9145a4b413f199dd208949a710922daf0d0c1d494ae1de26b5e0",
+    "docs/evidence/render_gap_native_matrix_2026-10-01.json": "0ab46ee609ba3e78bda45f9df4a3742eb0df09a536560b40b17ba07e63a377ae"
+  },
+  "batch": {
+    "dir": "artifacts/generalization/render-gap-20260930",
+    "plan_code_revision": "a6e8266ed64b0589d98241954b036a3a529389ec",
+    "render_job": "21499598",
+    "evaluation_job": "21499599",
+    "aggregation": {
+      "job": "21501978",
+      "partition": "share",
+      "clone_revision": "f3442dffce5480088fc5dd268359d8ef270a73cd",
+      "recomputed_from_saved_predictions": {
+        "matched": true,
+        "native": true
+      }
+    }
+  },
+  "checkpoints_sha256": {
+    "matched": {
+      "da2_frozen": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+      "da2_jitter": "658c3c77af789a001b3825f5b2599686de0f5e29b4c00e313f6c6a82fb8e9984",
+      "da2_control": "d56917128db213efb4f250053c20e761095dc0926c381c052a0a17da1ad5af47",
+      "da2_rendered_jitter": "c98b37eacfdf67767a51d0da03ee81092a161c26aeae7476fa542a7bdff3358b",
+      "da2_rendered_control": "cb9659ef863a3a5c621b2ffef806957e526be41493e9381f9714eda47fba3356"
+    },
+    "native": {
+      "da2_frozen": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+      "da2_jitter": "658c3c77af789a001b3825f5b2599686de0f5e29b4c00e313f6c6a82fb8e9984",
+      "da2_control": "d56917128db213efb4f250053c20e761095dc0926c381c052a0a17da1ad5af47",
+      "da2_rendered_jitter": "c98b37eacfdf67767a51d0da03ee81092a161c26aeae7476fa542a7bdff3358b",
+      "da2_rendered_control": "cb9659ef863a3a5c621b2ffef806957e526be41493e9381f9714eda47fba3356"
+    },
+    "published": {
+      "da2_frozen": "5ecc5182a2717e14f65dbb9d2d400aac6927435f6e92e87b7e891fb8f7a82834",
+      "da2_jitter": "658c3c77af789a001b3825f5b2599686de0f5e29b4c00e313f6c6a82fb8e9984",
+      "da2_control": "d56917128db213efb4f250053c20e761095dc0926c381c052a0a17da1ad5af47",
+      "da2_rendered_jitter": "c98b37eacfdf67767a51d0da03ee81092a161c26aeae7476fa542a7bdff3358b",
+      "da2_rendered_control": "cb9659ef863a3a5c621b2ffef806957e526be41493e9381f9714eda47fba3356"
+    }
+  },
+  "render_status": {
+    "registered": 8,
+    "native": 8,
+    "matched": 8
+  },
+  "render_ok_trees": [
+    "lpy_envy_00000",
+    "lpy_envy_00003",
+    "lpy_envy_00008",
+    "lpy_envy_00012",
+    "lpy_ufo_00000",
+    "lpy_ufo_00001",
+    "lpy_ufo_00002",
+    "lpy_ufo_00003"
+  ],
+  "matched_trees": [
+    "lpy_envy_00000",
+    "lpy_envy_00003",
+    "lpy_envy_00008",
+    "lpy_envy_00012",
+    "lpy_ufo_00000",
+    "lpy_ufo_00001",
+    "lpy_ufo_00002",
+    "lpy_ufo_00003"
+  ],
+  "g0_geometry": {
+    "lpy_envy_00000": {
+      "family": "envy",
+      "views_checked": 6,
+      "views_passing": 6,
+      "failing_views": {},
+      "complete": true,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0
+    },
+    "lpy_envy_00003": {
+      "family": "envy",
+      "views_checked": 6,
+      "views_passing": 6,
+      "failing_views": {},
+      "complete": true,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0
+    },
+    "lpy_envy_00008": {
+      "family": "envy",
+      "views_checked": 6,
+      "views_passing": 6,
+      "failing_views": {},
+      "complete": true,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0
+    },
+    "lpy_envy_00012": {
+      "family": "envy",
+      "views_checked": 6,
+      "views_passing": 6,
+      "failing_views": {},
+      "complete": true,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0
+    },
+    "lpy_ufo_00000": {
+      "family": "ufo",
+      "views_checked": 6,
+      "views_passing": 6,
+      "failing_views": {},
+      "complete": true,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0
+    },
+    "lpy_ufo_00001": {
+      "family": "ufo",
+      "views_checked": 6,
+      "views_passing": 6,
+      "failing_views": {},
+      "complete": true,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0
+    },
+    "lpy_ufo_00002": {
+      "family": "ufo",
+      "views_checked": 6,
+      "views_passing": 6,
+      "failing_views": {},
+      "complete": true,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0
+    },
+    "lpy_ufo_00003": {
+      "family": "ufo",
+      "views_checked": 6,
+      "views_passing": 6,
+      "failing_views": {},
+      "complete": true,
+      "recorded_ok": true,
+      "min_mask_iou": 1.0,
+      "min_within_1mm": 1.0
+    }
+  },
+  "g0_recomputed": false,
+  "cross_grid_measurement": {
+    "label": "1920x1080 geometry point-sampled at matrix pixel centres; measurement, never gates",
+    "views_would_pass": "0 of 48",
+    "per_tree_min_max": {
+      "lpy_envy_00000": {
+        "mask_iou": [
+          0.9397523150730782,
+          0.9466931216931217
+        ],
+        "tree_depth_within_tolerance": [
+          0.8961614747404036,
+          0.9062034739454095
+        ],
+        "interior_within_tolerance": [
+          0.973826714801444,
+          0.9826002899951668
+        ],
+        "median_abs_on_matrix_tree_m": [
+          0.000217437744140625,
+          0.0002307891845703125
+        ],
+        "diagnostics": {
+          "geometry_sha256_equal": true,
+          "camera_poses_equal_within_1e-6": true,
+          "tree_transform_max_abs_diff": 0.0,
+          "scope": "Recorded beside the gate; never gates."
+        }
+      },
+      "lpy_envy_00003": {
+        "mask_iou": [
+          0.9397844683924008,
+          0.9463143254520167
+        ],
+        "tree_depth_within_tolerance": [
+          0.9025899610359844,
+          0.908407121774731
+        ],
+        "interior_within_tolerance": [
+          0.9814462416745956,
+          0.9858812074001947
+        ],
+        "median_abs_on_matrix_tree_m": [
+          0.000217437744140625,
+          0.00022602081298828125
+        ],
+        "diagnostics": {
+          "geometry_sha256_equal": true,
+          "camera_poses_equal_within_1e-6": true,
+          "tree_transform_max_abs_diff": 0.0,
+          "scope": "Recorded beside the gate; never gates."
+        }
+      },
+      "lpy_envy_00008": {
+        "mask_iou": [
+          0.9425863991081382,
+          0.9481659821555021
+        ],
+        "tree_depth_within_tolerance": [
+          0.9059147579008409,
+          0.911911145155113
+        ],
+        "interior_within_tolerance": [
+          0.9756410256410256,
+          0.9846437346437347
+        ],
+        "median_abs_on_matrix_tree_m": [
+          0.0002346038818359375,
+          0.00024366378784179688
+        ],
+        "diagnostics": {
+          "geometry_sha256_equal": true,
+          "camera_poses_equal_within_1e-6": true,
+          "tree_transform_max_abs_diff": 0.0,
+          "scope": "Recorded beside the gate; never gates."
+        }
+      },
+      "lpy_envy_00012": {
+        "mask_iou": [
+          0.9442289688377692,
+          0.9497357472169122
+        ],
+        "tree_depth_within_tolerance": [
+          0.9125292256911016,
+          0.9175055241836484
+        ],
+        "interior_within_tolerance": [
+          0.9840546697038725,
+          0.9932584269662922
+        ],
+        "median_abs_on_matrix_tree_m": [
+          0.0002002716064453125,
+          0.00021076202392578125
+        ],
+        "diagnostics": {
+          "geometry_sha256_equal": true,
+          "camera_poses_equal_within_1e-6": true,
+          "tree_transform_max_abs_diff": 0.0,
+          "scope": "Recorded beside the gate; never gates."
+        }
+      },
+      "lpy_ufo_00000": {
+        "mask_iou": [
+          0.95275,
+          0.96
+        ],
+        "tree_depth_within_tolerance": [
+          0.8961636828644501,
+          0.9170731707317074
+        ],
+        "interior_within_tolerance": [
+          0.9839119390347163,
+          0.9917627677100495
+        ],
+        "median_abs_on_matrix_tree_m": [
+          0.00021648406982421875,
+          0.000225067138671875
+        ],
+        "diagnostics": {
+          "geometry_sha256_equal": true,
+          "camera_poses_equal_within_1e-6": true,
+          "tree_transform_max_abs_diff": 0.0,
+          "scope": "Recorded beside the gate; never gates."
+        }
+      },
+      "lpy_ufo_00001": {
+        "mask_iou": [
+          0.953187250996016,
+          0.9590929301911961
+        ],
+        "tree_depth_within_tolerance": [
+          0.905786350148368,
+          0.9171203871748337
+        ],
+        "interior_within_tolerance": [
+          0.9900306748466258,
+          0.9939759036144579
+        ],
+        "median_abs_on_matrix_tree_m": [
+          0.00023555755615234375,
+          0.00025177001953125
+        ],
+        "diagnostics": {
+          "geometry_sha256_equal": true,
+          "camera_poses_equal_within_1e-6": true,
+          "tree_transform_max_abs_diff": 0.0,
+          "scope": "Recorded beside the gate; never gates."
+        }
+      },
+      "lpy_ufo_00002": {
+        "mask_iou": [
+          0.9521276595744681,
+          0.960285132382892
+        ],
+        "tree_depth_within_tolerance": [
+          0.9019776440240757,
+          0.921509608705719
+        ],
+        "interior_within_tolerance": [
+          0.9873303167420815,
+          0.9924764890282132
+        ],
+        "median_abs_on_matrix_tree_m": [
+          0.000232696533203125,
+          0.0002422332763671875
+        ],
+        "diagnostics": {
+          "geometry_sha256_equal": true,
+          "camera_poses_equal_within_1e-6": true,
+          "tree_transform_max_abs_diff": 0.0,
+          "scope": "Recorded beside the gate; never gates."
+        }
+      },
+      "lpy_ufo_00003": {
+        "mask_iou": [
+          0.9451357466063348,
+          0.9610488798370672
+        ],
+        "tree_depth_within_tolerance": [
+          0.8991060025542784,
+          0.917943391326928
+        ],
+        "interior_within_tolerance": [
+          0.9819819819819819,
+          0.9901639344262295
+        ],
+        "median_abs_on_matrix_tree_m": [
+          0.00023174285888671875,
+          0.0002536773681640625
+        ],
+        "diagnostics": {
+          "geometry_sha256_equal": true,
+          "camera_poses_equal_within_1e-6": true,
+          "tree_transform_max_abs_diff": 0.0,
+          "scope": "Recorded beside the gate; never gates."
+        }
+      }
+    }
+  },
+  "per_tree_mask_mae_m": {
+    "published": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": 0.1426,
+          "lpy_envy_00003": 0.1413,
+          "lpy_envy_00008": 0.1229,
+          "lpy_envy_00012": 0.1273,
+          "lpy_ufo_00000": 0.184,
+          "lpy_ufo_00001": 0.178,
+          "lpy_ufo_00002": 0.1672,
+          "lpy_ufo_00003": 0.2221
+        },
+        "morning": {
+          "lpy_envy_00000": 0.196,
+          "lpy_envy_00003": 0.1832,
+          "lpy_envy_00008": 0.1601,
+          "lpy_envy_00012": 0.1694,
+          "lpy_ufo_00000": 0.3022,
+          "lpy_ufo_00001": 0.2514,
+          "lpy_ufo_00002": 0.2247,
+          "lpy_ufo_00003": 0.2975
+        },
+        "noon": {
+          "lpy_envy_00000": 0.1593,
+          "lpy_envy_00003": 0.1476,
+          "lpy_envy_00008": 0.1689,
+          "lpy_envy_00012": 0.1326,
+          "lpy_ufo_00000": 0.246,
+          "lpy_ufo_00001": 0.2302,
+          "lpy_ufo_00002": 0.2128,
+          "lpy_ufo_00003": 0.2514
+        },
+        "evening": {
+          "lpy_envy_00000": 0.8639,
+          "lpy_envy_00003": 0.9452,
+          "lpy_envy_00008": 0.9777,
+          "lpy_envy_00012": 0.8366,
+          "lpy_ufo_00000": 1.4487,
+          "lpy_ufo_00001": 1.4651,
+          "lpy_ufo_00002": 1.4089,
+          "lpy_ufo_00003": 1.4797
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": 0.1553,
+          "lpy_envy_00003": 0.1621,
+          "lpy_envy_00008": 0.1427,
+          "lpy_envy_00012": 0.1512,
+          "lpy_ufo_00000": 0.1903,
+          "lpy_ufo_00001": 0.1883,
+          "lpy_ufo_00002": 0.1764,
+          "lpy_ufo_00003": 0.2275
+        },
+        "morning": {
+          "lpy_envy_00000": 0.2362,
+          "lpy_envy_00003": 0.233,
+          "lpy_envy_00008": 0.1998,
+          "lpy_envy_00012": 0.2246,
+          "lpy_ufo_00000": 0.3264,
+          "lpy_ufo_00001": 0.2454,
+          "lpy_ufo_00002": 0.2378,
+          "lpy_ufo_00003": 0.306
+        },
+        "noon": {
+          "lpy_envy_00000": 0.2164,
+          "lpy_envy_00003": 0.2185,
+          "lpy_envy_00008": 0.2082,
+          "lpy_envy_00012": 0.1998,
+          "lpy_ufo_00000": 0.28,
+          "lpy_ufo_00001": 0.2698,
+          "lpy_ufo_00002": 0.2495,
+          "lpy_ufo_00003": 0.3005
+        },
+        "evening": {
+          "lpy_envy_00000": 0.3422,
+          "lpy_envy_00003": 0.297,
+          "lpy_envy_00008": 0.4195,
+          "lpy_envy_00012": 0.2276,
+          "lpy_ufo_00000": 1.3436,
+          "lpy_ufo_00001": 1.2419,
+          "lpy_ufo_00002": 1.1924,
+          "lpy_ufo_00003": 1.2117
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": 0.1463,
+          "lpy_envy_00003": 0.1447,
+          "lpy_envy_00008": 0.1241,
+          "lpy_envy_00012": 0.1316,
+          "lpy_ufo_00000": 0.1796,
+          "lpy_ufo_00001": 0.1762,
+          "lpy_ufo_00002": 0.1639,
+          "lpy_ufo_00003": 0.2225
+        },
+        "morning": {
+          "lpy_envy_00000": 0.1908,
+          "lpy_envy_00003": 0.1837,
+          "lpy_envy_00008": 0.1557,
+          "lpy_envy_00012": 0.169,
+          "lpy_ufo_00000": 0.244,
+          "lpy_ufo_00001": 0.221,
+          "lpy_ufo_00002": 0.2023,
+          "lpy_ufo_00003": 0.272
+        },
+        "noon": {
+          "lpy_envy_00000": 0.1416,
+          "lpy_envy_00003": 0.1403,
+          "lpy_envy_00008": 0.1568,
+          "lpy_envy_00012": 0.1243,
+          "lpy_ufo_00000": 0.187,
+          "lpy_ufo_00001": 0.1979,
+          "lpy_ufo_00002": 0.1724,
+          "lpy_ufo_00003": 0.2224
+        },
+        "evening": {
+          "lpy_envy_00000": 0.8435,
+          "lpy_envy_00003": 0.8924,
+          "lpy_envy_00008": 0.98,
+          "lpy_envy_00012": 0.8179,
+          "lpy_ufo_00000": 1.4471,
+          "lpy_ufo_00001": 1.4567,
+          "lpy_ufo_00002": 1.3943,
+          "lpy_ufo_00003": 1.4706
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": 0.0841,
+          "lpy_envy_00003": 0.0968,
+          "lpy_envy_00008": 0.0776,
+          "lpy_envy_00012": 0.0856,
+          "lpy_ufo_00000": 0.1029,
+          "lpy_ufo_00001": 0.121,
+          "lpy_ufo_00002": 0.0986,
+          "lpy_ufo_00003": 0.1455
+        },
+        "morning": {
+          "lpy_envy_00000": 0.0938,
+          "lpy_envy_00003": 0.1114,
+          "lpy_envy_00008": 0.0859,
+          "lpy_envy_00012": 0.0989,
+          "lpy_ufo_00000": 0.1026,
+          "lpy_ufo_00001": 0.1135,
+          "lpy_ufo_00002": 0.0988,
+          "lpy_ufo_00003": 0.1417
+        },
+        "noon": {
+          "lpy_envy_00000": 0.0917,
+          "lpy_envy_00003": 0.1079,
+          "lpy_envy_00008": 0.0829,
+          "lpy_envy_00012": 0.0913,
+          "lpy_ufo_00000": 0.1091,
+          "lpy_ufo_00001": 0.1356,
+          "lpy_ufo_00002": 0.1042,
+          "lpy_ufo_00003": 0.1501
+        },
+        "evening": {
+          "lpy_envy_00000": 0.0498,
+          "lpy_envy_00003": 0.0514,
+          "lpy_envy_00008": 0.0519,
+          "lpy_envy_00012": 0.039,
+          "lpy_ufo_00000": 0.0681,
+          "lpy_ufo_00001": 0.1013,
+          "lpy_ufo_00002": 0.0729,
+          "lpy_ufo_00003": 0.1391
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": 0.0753,
+          "lpy_envy_00003": 0.0836,
+          "lpy_envy_00008": 0.0642,
+          "lpy_envy_00012": 0.0719,
+          "lpy_ufo_00000": 0.0882,
+          "lpy_ufo_00001": 0.106,
+          "lpy_ufo_00002": 0.0839,
+          "lpy_ufo_00003": 0.1236
+        },
+        "morning": {
+          "lpy_envy_00000": 0.0677,
+          "lpy_envy_00003": 0.0853,
+          "lpy_envy_00008": 0.0649,
+          "lpy_envy_00012": 0.0667,
+          "lpy_ufo_00000": 0.0779,
+          "lpy_ufo_00001": 0.0933,
+          "lpy_ufo_00002": 0.0799,
+          "lpy_ufo_00003": 0.1173
+        },
+        "noon": {
+          "lpy_envy_00000": 0.076,
+          "lpy_envy_00003": 0.0881,
+          "lpy_envy_00008": 0.0634,
+          "lpy_envy_00012": 0.0694,
+          "lpy_ufo_00000": 0.0995,
+          "lpy_ufo_00001": 0.1266,
+          "lpy_ufo_00002": 0.097,
+          "lpy_ufo_00003": 0.132
+        },
+        "evening": {
+          "lpy_envy_00000": 0.054,
+          "lpy_envy_00003": 0.0454,
+          "lpy_envy_00008": 0.0564,
+          "lpy_envy_00012": 0.0376,
+          "lpy_ufo_00000": 0.0639,
+          "lpy_ufo_00001": 0.0912,
+          "lpy_ufo_00002": 0.0629,
+          "lpy_ufo_00003": 0.126
+        }
+      }
+    },
+    "matched": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": 0.2266,
+          "lpy_envy_00003": 0.2429,
+          "lpy_envy_00008": 0.2404,
+          "lpy_envy_00012": 0.2252,
+          "lpy_ufo_00000": 0.2415,
+          "lpy_ufo_00001": 0.2567,
+          "lpy_ufo_00002": 0.2509,
+          "lpy_ufo_00003": 0.2703
+        },
+        "morning": {
+          "lpy_envy_00000": 0.2596,
+          "lpy_envy_00003": 0.2608,
+          "lpy_envy_00008": 0.2581,
+          "lpy_envy_00012": 0.2502,
+          "lpy_ufo_00000": 0.2548,
+          "lpy_ufo_00001": 0.2587,
+          "lpy_ufo_00002": 0.2588,
+          "lpy_ufo_00003": 0.2747
+        },
+        "noon": {
+          "lpy_envy_00000": 0.2153,
+          "lpy_envy_00003": 0.2435,
+          "lpy_envy_00008": 0.2613,
+          "lpy_envy_00012": 0.2168,
+          "lpy_ufo_00000": 0.2361,
+          "lpy_ufo_00001": 0.2651,
+          "lpy_ufo_00002": 0.248,
+          "lpy_ufo_00003": 0.2597
+        },
+        "evening": {
+          "lpy_envy_00000": 0.5981,
+          "lpy_envy_00003": 0.7163,
+          "lpy_envy_00008": 0.824,
+          "lpy_envy_00012": 0.6408,
+          "lpy_ufo_00000": 1.4542,
+          "lpy_ufo_00001": 1.4482,
+          "lpy_ufo_00002": 1.2381,
+          "lpy_ufo_00003": 1.4001
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": 0.2372,
+          "lpy_envy_00003": 0.2581,
+          "lpy_envy_00008": 0.2513,
+          "lpy_envy_00012": 0.2392,
+          "lpy_ufo_00000": 0.2493,
+          "lpy_ufo_00001": 0.2754,
+          "lpy_ufo_00002": 0.2648,
+          "lpy_ufo_00003": 0.2852
+        },
+        "morning": {
+          "lpy_envy_00000": 0.2933,
+          "lpy_envy_00003": 0.3038,
+          "lpy_envy_00008": 0.2898,
+          "lpy_envy_00012": 0.2943,
+          "lpy_ufo_00000": 0.2675,
+          "lpy_ufo_00001": 0.2696,
+          "lpy_ufo_00002": 0.273,
+          "lpy_ufo_00003": 0.2892
+        },
+        "noon": {
+          "lpy_envy_00000": 0.2802,
+          "lpy_envy_00003": 0.3076,
+          "lpy_envy_00008": 0.2956,
+          "lpy_envy_00012": 0.2811,
+          "lpy_ufo_00000": 0.3007,
+          "lpy_ufo_00001": 0.3296,
+          "lpy_ufo_00002": 0.3086,
+          "lpy_ufo_00003": 0.3282
+        },
+        "evening": {
+          "lpy_envy_00000": 0.1472,
+          "lpy_envy_00003": 0.164,
+          "lpy_envy_00008": 0.251,
+          "lpy_envy_00012": 0.1438,
+          "lpy_ufo_00000": 0.825,
+          "lpy_ufo_00001": 0.5961,
+          "lpy_ufo_00002": 0.5129,
+          "lpy_ufo_00003": 0.6599
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": 0.2365,
+          "lpy_envy_00003": 0.2509,
+          "lpy_envy_00008": 0.246,
+          "lpy_envy_00012": 0.2327,
+          "lpy_ufo_00000": 0.2432,
+          "lpy_ufo_00001": 0.2637,
+          "lpy_ufo_00002": 0.2566,
+          "lpy_ufo_00003": 0.2798
+        },
+        "morning": {
+          "lpy_envy_00000": 0.2605,
+          "lpy_envy_00003": 0.2635,
+          "lpy_envy_00008": 0.2589,
+          "lpy_envy_00012": 0.2512,
+          "lpy_ufo_00000": 0.2507,
+          "lpy_ufo_00001": 0.2555,
+          "lpy_ufo_00002": 0.2581,
+          "lpy_ufo_00003": 0.2783
+        },
+        "noon": {
+          "lpy_envy_00000": 0.2223,
+          "lpy_envy_00003": 0.2476,
+          "lpy_envy_00008": 0.2578,
+          "lpy_envy_00012": 0.219,
+          "lpy_ufo_00000": 0.2346,
+          "lpy_ufo_00001": 0.2652,
+          "lpy_ufo_00002": 0.2453,
+          "lpy_ufo_00003": 0.2654
+        },
+        "evening": {
+          "lpy_envy_00000": 0.6285,
+          "lpy_envy_00003": 0.7072,
+          "lpy_envy_00008": 0.8536,
+          "lpy_envy_00012": 0.6529,
+          "lpy_ufo_00000": 1.441,
+          "lpy_ufo_00001": 1.4421,
+          "lpy_ufo_00002": 1.2331,
+          "lpy_ufo_00003": 1.4042
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": 0.1886,
+          "lpy_envy_00003": 0.2094,
+          "lpy_envy_00008": 0.2031,
+          "lpy_envy_00012": 0.1942,
+          "lpy_ufo_00000": 0.2111,
+          "lpy_ufo_00001": 0.2365,
+          "lpy_ufo_00002": 0.2221,
+          "lpy_ufo_00003": 0.2462
+        },
+        "morning": {
+          "lpy_envy_00000": 0.1881,
+          "lpy_envy_00003": 0.2082,
+          "lpy_envy_00008": 0.2006,
+          "lpy_envy_00012": 0.196,
+          "lpy_ufo_00000": 0.1949,
+          "lpy_ufo_00001": 0.2066,
+          "lpy_ufo_00002": 0.2026,
+          "lpy_ufo_00003": 0.2198
+        },
+        "noon": {
+          "lpy_envy_00000": 0.2028,
+          "lpy_envy_00003": 0.2262,
+          "lpy_envy_00008": 0.2046,
+          "lpy_envy_00012": 0.2055,
+          "lpy_ufo_00000": 0.21,
+          "lpy_ufo_00001": 0.2381,
+          "lpy_ufo_00002": 0.2176,
+          "lpy_ufo_00003": 0.2437
+        },
+        "evening": {
+          "lpy_envy_00000": 0.0686,
+          "lpy_envy_00003": 0.0806,
+          "lpy_envy_00008": 0.0745,
+          "lpy_envy_00012": 0.0735,
+          "lpy_ufo_00000": 0.1038,
+          "lpy_ufo_00001": 0.1418,
+          "lpy_ufo_00002": 0.1222,
+          "lpy_ufo_00003": 0.1704
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": 0.1906,
+          "lpy_envy_00003": 0.2086,
+          "lpy_envy_00008": 0.201,
+          "lpy_envy_00012": 0.1924,
+          "lpy_ufo_00000": 0.2053,
+          "lpy_ufo_00001": 0.2309,
+          "lpy_ufo_00002": 0.2158,
+          "lpy_ufo_00003": 0.2354
+        },
+        "morning": {
+          "lpy_envy_00000": 0.1765,
+          "lpy_envy_00003": 0.1955,
+          "lpy_envy_00008": 0.19,
+          "lpy_envy_00012": 0.1785,
+          "lpy_ufo_00000": 0.1866,
+          "lpy_ufo_00001": 0.2031,
+          "lpy_ufo_00002": 0.1958,
+          "lpy_ufo_00003": 0.214
+        },
+        "noon": {
+          "lpy_envy_00000": 0.2038,
+          "lpy_envy_00003": 0.2232,
+          "lpy_envy_00008": 0.195,
+          "lpy_envy_00012": 0.1978,
+          "lpy_ufo_00000": 0.2112,
+          "lpy_ufo_00001": 0.2388,
+          "lpy_ufo_00002": 0.2171,
+          "lpy_ufo_00003": 0.2373
+        },
+        "evening": {
+          "lpy_envy_00000": 0.07,
+          "lpy_envy_00003": 0.0765,
+          "lpy_envy_00008": 0.0671,
+          "lpy_envy_00012": 0.0638,
+          "lpy_ufo_00000": 0.1076,
+          "lpy_ufo_00001": 0.1447,
+          "lpy_ufo_00002": 0.1191,
+          "lpy_ufo_00003": 0.1727
+        }
+      }
+    },
+    "native": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": 0.0397,
+          "lpy_envy_00003": 0.0354,
+          "lpy_envy_00008": 0.0374,
+          "lpy_envy_00012": 0.0316,
+          "lpy_ufo_00000": 0.0389,
+          "lpy_ufo_00001": 0.0506,
+          "lpy_ufo_00002": 0.0374,
+          "lpy_ufo_00003": 0.046
+        },
+        "morning": {
+          "lpy_envy_00000": 0.0496,
+          "lpy_envy_00003": 0.0448,
+          "lpy_envy_00008": 0.0416,
+          "lpy_envy_00012": 0.0358,
+          "lpy_ufo_00000": 0.0352,
+          "lpy_ufo_00001": 0.0454,
+          "lpy_ufo_00002": 0.0359,
+          "lpy_ufo_00003": 0.0488
+        },
+        "noon": {
+          "lpy_envy_00000": 0.0674,
+          "lpy_envy_00003": 0.0502,
+          "lpy_envy_00008": 0.039,
+          "lpy_envy_00012": 0.0474,
+          "lpy_ufo_00000": 0.0552,
+          "lpy_ufo_00001": 0.0487,
+          "lpy_ufo_00002": 0.0439,
+          "lpy_ufo_00003": 0.0473
+        },
+        "evening": {
+          "lpy_envy_00000": 0.2419,
+          "lpy_envy_00003": 0.3312,
+          "lpy_envy_00008": 0.5141,
+          "lpy_envy_00012": 0.3009,
+          "lpy_ufo_00000": 0.8924,
+          "lpy_ufo_00001": 0.9193,
+          "lpy_ufo_00002": 0.6338,
+          "lpy_ufo_00003": 0.9368
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": 0.0384,
+          "lpy_envy_00003": 0.0383,
+          "lpy_envy_00008": 0.0361,
+          "lpy_envy_00012": 0.0361,
+          "lpy_ufo_00000": 0.0422,
+          "lpy_ufo_00001": 0.055,
+          "lpy_ufo_00002": 0.043,
+          "lpy_ufo_00003": 0.0525
+        },
+        "morning": {
+          "lpy_envy_00000": 0.0427,
+          "lpy_envy_00003": 0.05,
+          "lpy_envy_00008": 0.0498,
+          "lpy_envy_00012": 0.0414,
+          "lpy_ufo_00000": 0.0341,
+          "lpy_ufo_00001": 0.0456,
+          "lpy_ufo_00002": 0.0332,
+          "lpy_ufo_00003": 0.0493
+        },
+        "noon": {
+          "lpy_envy_00000": 0.0396,
+          "lpy_envy_00003": 0.0482,
+          "lpy_envy_00008": 0.0461,
+          "lpy_envy_00012": 0.0473,
+          "lpy_ufo_00000": 0.0657,
+          "lpy_ufo_00001": 0.0841,
+          "lpy_ufo_00002": 0.0762,
+          "lpy_ufo_00003": 0.082
+        },
+        "evening": {
+          "lpy_envy_00000": 0.1647,
+          "lpy_envy_00003": 0.1331,
+          "lpy_envy_00008": 0.0857,
+          "lpy_envy_00012": 0.1308,
+          "lpy_ufo_00000": 0.1737,
+          "lpy_ufo_00001": 0.0981,
+          "lpy_ufo_00002": 0.0854,
+          "lpy_ufo_00003": 0.1522
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": 0.0362,
+          "lpy_envy_00003": 0.0354,
+          "lpy_envy_00008": 0.0338,
+          "lpy_envy_00012": 0.0333,
+          "lpy_ufo_00000": 0.0389,
+          "lpy_ufo_00001": 0.0528,
+          "lpy_ufo_00002": 0.0431,
+          "lpy_ufo_00003": 0.0521
+        },
+        "morning": {
+          "lpy_envy_00000": 0.0491,
+          "lpy_envy_00003": 0.0449,
+          "lpy_envy_00008": 0.0434,
+          "lpy_envy_00012": 0.0373,
+          "lpy_ufo_00000": 0.0342,
+          "lpy_ufo_00001": 0.0448,
+          "lpy_ufo_00002": 0.0327,
+          "lpy_ufo_00003": 0.0507
+        },
+        "noon": {
+          "lpy_envy_00000": 0.0594,
+          "lpy_envy_00003": 0.0469,
+          "lpy_envy_00008": 0.0389,
+          "lpy_envy_00012": 0.0453,
+          "lpy_ufo_00000": 0.0559,
+          "lpy_ufo_00001": 0.0559,
+          "lpy_ufo_00002": 0.0484,
+          "lpy_ufo_00003": 0.0547
+        },
+        "evening": {
+          "lpy_envy_00000": 0.2605,
+          "lpy_envy_00003": 0.3406,
+          "lpy_envy_00008": 0.5096,
+          "lpy_envy_00012": 0.3148,
+          "lpy_ufo_00000": 0.6579,
+          "lpy_ufo_00001": 0.7387,
+          "lpy_ufo_00002": 0.5315,
+          "lpy_ufo_00003": 0.801
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": 0.0392,
+          "lpy_envy_00003": 0.0372,
+          "lpy_envy_00008": 0.0372,
+          "lpy_envy_00012": 0.0329,
+          "lpy_ufo_00000": 0.0477,
+          "lpy_ufo_00001": 0.0596,
+          "lpy_ufo_00002": 0.05,
+          "lpy_ufo_00003": 0.0614
+        },
+        "morning": {
+          "lpy_envy_00000": 0.0386,
+          "lpy_envy_00003": 0.0384,
+          "lpy_envy_00008": 0.0351,
+          "lpy_envy_00012": 0.0288,
+          "lpy_ufo_00000": 0.0406,
+          "lpy_ufo_00001": 0.0502,
+          "lpy_ufo_00002": 0.0383,
+          "lpy_ufo_00003": 0.0588
+        },
+        "noon": {
+          "lpy_envy_00000": 0.0356,
+          "lpy_envy_00003": 0.0346,
+          "lpy_envy_00008": 0.0352,
+          "lpy_envy_00012": 0.0338,
+          "lpy_ufo_00000": 0.0484,
+          "lpy_ufo_00001": 0.061,
+          "lpy_ufo_00002": 0.0576,
+          "lpy_ufo_00003": 0.0671
+        },
+        "evening": {
+          "lpy_envy_00000": 0.0418,
+          "lpy_envy_00003": 0.0367,
+          "lpy_envy_00008": 0.0516,
+          "lpy_envy_00012": 0.0288,
+          "lpy_ufo_00000": 0.0415,
+          "lpy_ufo_00001": 0.0549,
+          "lpy_ufo_00002": 0.0411,
+          "lpy_ufo_00003": 0.069
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": 0.0355,
+          "lpy_envy_00003": 0.0357,
+          "lpy_envy_00008": 0.0359,
+          "lpy_envy_00012": 0.0324,
+          "lpy_ufo_00000": 0.0474,
+          "lpy_ufo_00001": 0.0619,
+          "lpy_ufo_00002": 0.0531,
+          "lpy_ufo_00003": 0.0642
+        },
+        "morning": {
+          "lpy_envy_00000": 0.0373,
+          "lpy_envy_00003": 0.0371,
+          "lpy_envy_00008": 0.0372,
+          "lpy_envy_00012": 0.0284,
+          "lpy_ufo_00000": 0.0404,
+          "lpy_ufo_00001": 0.0535,
+          "lpy_ufo_00002": 0.0441,
+          "lpy_ufo_00003": 0.0632
+        },
+        "noon": {
+          "lpy_envy_00000": 0.0326,
+          "lpy_envy_00003": 0.037,
+          "lpy_envy_00008": 0.036,
+          "lpy_envy_00012": 0.0357,
+          "lpy_ufo_00000": 0.0531,
+          "lpy_ufo_00001": 0.0721,
+          "lpy_ufo_00002": 0.0653,
+          "lpy_ufo_00003": 0.0752
+        },
+        "evening": {
+          "lpy_envy_00000": 0.0395,
+          "lpy_envy_00003": 0.036,
+          "lpy_envy_00008": 0.0489,
+          "lpy_envy_00012": 0.029,
+          "lpy_ufo_00000": 0.0427,
+          "lpy_ufo_00001": 0.0579,
+          "lpy_ufo_00002": 0.043,
+          "lpy_ufo_00003": 0.0705
+        }
+      }
+    }
+  },
+  "per_tree_mask_mae_unrounded_m": {
+    "published": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": 0.14264365546782956,
+          "lpy_envy_00003": 0.14126517036802874,
+          "lpy_envy_00008": 0.12286537742962887,
+          "lpy_envy_00012": 0.12734646030740135,
+          "lpy_ufo_00000": 0.18396701678247188,
+          "lpy_ufo_00001": 0.17799231189954845,
+          "lpy_ufo_00002": 0.16720324939709744,
+          "lpy_ufo_00003": 0.22207338882039793
+        },
+        "morning": {
+          "lpy_envy_00000": 0.19598335627840424,
+          "lpy_envy_00003": 0.183227480577566,
+          "lpy_envy_00008": 0.16007752246625936,
+          "lpy_envy_00012": 0.16940671297827006,
+          "lpy_ufo_00000": 0.3022264303315207,
+          "lpy_ufo_00001": 0.25144123176035454,
+          "lpy_ufo_00002": 0.2247411927431566,
+          "lpy_ufo_00003": 0.2975087841483028
+        },
+        "noon": {
+          "lpy_envy_00000": 0.159312353938288,
+          "lpy_envy_00003": 0.14756311225872332,
+          "lpy_envy_00008": 0.16885301558707375,
+          "lpy_envy_00012": 0.13258246852140534,
+          "lpy_ufo_00000": 0.24596845296273773,
+          "lpy_ufo_00001": 0.23019048972304135,
+          "lpy_ufo_00002": 0.21276841959176004,
+          "lpy_ufo_00003": 0.2514160701313443
+        },
+        "evening": {
+          "lpy_envy_00000": 0.8639462678950195,
+          "lpy_envy_00003": 0.945233900694899,
+          "lpy_envy_00008": 0.9777301021481174,
+          "lpy_envy_00012": 0.8365628502276804,
+          "lpy_ufo_00000": 1.4487405253965129,
+          "lpy_ufo_00001": 1.4650738317066379,
+          "lpy_ufo_00002": 1.4089345574404912,
+          "lpy_ufo_00003": 1.4796552660506876
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": 0.155337135102116,
+          "lpy_envy_00003": 0.16211694168998877,
+          "lpy_envy_00008": 0.1427428004636756,
+          "lpy_envy_00012": 0.15115026983209848,
+          "lpy_ufo_00000": 0.19032886608037383,
+          "lpy_ufo_00001": 0.18826817205878635,
+          "lpy_ufo_00002": 0.176382469524309,
+          "lpy_ufo_00003": 0.22754629449172814
+        },
+        "morning": {
+          "lpy_envy_00000": 0.23615530367478654,
+          "lpy_envy_00003": 0.2330175488669998,
+          "lpy_envy_00008": 0.19977458355838806,
+          "lpy_envy_00012": 0.2246489752773824,
+          "lpy_ufo_00000": 0.3263705771281704,
+          "lpy_ufo_00001": 0.245362842792012,
+          "lpy_ufo_00002": 0.2378041257363459,
+          "lpy_ufo_00003": 0.3059988719777627
+        },
+        "noon": {
+          "lpy_envy_00000": 0.21637618525858696,
+          "lpy_envy_00003": 0.21853327913217777,
+          "lpy_envy_00008": 0.20824140841516858,
+          "lpy_envy_00012": 0.19981369866679907,
+          "lpy_ufo_00000": 0.27996969687929923,
+          "lpy_ufo_00001": 0.26981171126548936,
+          "lpy_ufo_00002": 0.24951395045381,
+          "lpy_ufo_00003": 0.30046637360587836
+        },
+        "evening": {
+          "lpy_envy_00000": 0.34223783893773013,
+          "lpy_envy_00003": 0.2970493631863209,
+          "lpy_envy_00008": 0.4195233090436264,
+          "lpy_envy_00012": 0.2275723078997499,
+          "lpy_ufo_00000": 1.3435666234432924,
+          "lpy_ufo_00001": 1.2419203862210502,
+          "lpy_ufo_00002": 1.1924028803530895,
+          "lpy_ufo_00003": 1.211716245614125
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": 0.14634442452148366,
+          "lpy_envy_00003": 0.14470649620097173,
+          "lpy_envy_00008": 0.12406785028573326,
+          "lpy_envy_00012": 0.1315927622209216,
+          "lpy_ufo_00000": 0.1796066257331216,
+          "lpy_ufo_00001": 0.17621511210746724,
+          "lpy_ufo_00002": 0.1638730497533571,
+          "lpy_ufo_00003": 0.2224693362739062
+        },
+        "morning": {
+          "lpy_envy_00000": 0.19077607652516373,
+          "lpy_envy_00003": 0.18372684541988593,
+          "lpy_envy_00008": 0.15567911024066555,
+          "lpy_envy_00012": 0.16898510275382686,
+          "lpy_ufo_00000": 0.24395177559956369,
+          "lpy_ufo_00001": 0.22104170280122992,
+          "lpy_ufo_00002": 0.20227182407805167,
+          "lpy_ufo_00003": 0.271958195896064
+        },
+        "noon": {
+          "lpy_envy_00000": 0.14155449849630433,
+          "lpy_envy_00003": 0.14026478701338996,
+          "lpy_envy_00008": 0.15680066806274295,
+          "lpy_envy_00012": 0.12433876297545711,
+          "lpy_ufo_00000": 0.18702059766708792,
+          "lpy_ufo_00001": 0.19792336754383236,
+          "lpy_ufo_00002": 0.17237282463892348,
+          "lpy_ufo_00003": 0.2224494029173035
+        },
+        "evening": {
+          "lpy_envy_00000": 0.8434880202852,
+          "lpy_envy_00003": 0.8924109315494487,
+          "lpy_envy_00008": 0.9800459468442915,
+          "lpy_envy_00012": 0.8179091140206,
+          "lpy_ufo_00000": 1.447133825917023,
+          "lpy_ufo_00001": 1.456660599085141,
+          "lpy_ufo_00002": 1.394338718777,
+          "lpy_ufo_00003": 1.4706095046973695
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": 0.08406795115354598,
+          "lpy_envy_00003": 0.09682445988735995,
+          "lpy_envy_00008": 0.07759650303364672,
+          "lpy_envy_00012": 0.08564694614416812,
+          "lpy_ufo_00000": 0.10291838979325417,
+          "lpy_ufo_00001": 0.12103141401291588,
+          "lpy_ufo_00002": 0.0986437491253823,
+          "lpy_ufo_00003": 0.145510731697801
+        },
+        "morning": {
+          "lpy_envy_00000": 0.09376151197389297,
+          "lpy_envy_00003": 0.11137307638882232,
+          "lpy_envy_00008": 0.08591419866456544,
+          "lpy_envy_00012": 0.09886258404600527,
+          "lpy_ufo_00000": 0.10258878777346779,
+          "lpy_ufo_00001": 0.11347179199065875,
+          "lpy_ufo_00002": 0.09880513644131604,
+          "lpy_ufo_00003": 0.14172169328690307
+        },
+        "noon": {
+          "lpy_envy_00000": 0.09171698945186703,
+          "lpy_envy_00003": 0.10785950509820201,
+          "lpy_envy_00008": 0.08285448062703153,
+          "lpy_envy_00012": 0.09126139702056352,
+          "lpy_ufo_00000": 0.10909104004423324,
+          "lpy_ufo_00001": 0.13563833055922733,
+          "lpy_ufo_00002": 0.10416138665765806,
+          "lpy_ufo_00003": 0.15010512098562662
+        },
+        "evening": {
+          "lpy_envy_00000": 0.04979755984180575,
+          "lpy_envy_00003": 0.05139599459218338,
+          "lpy_envy_00008": 0.05188123854291856,
+          "lpy_envy_00012": 0.03896641405079988,
+          "lpy_ufo_00000": 0.06814479220957012,
+          "lpy_ufo_00001": 0.10130793693574926,
+          "lpy_ufo_00002": 0.07293244002716263,
+          "lpy_ufo_00003": 0.1390869832080744
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": 0.07532200445465459,
+          "lpy_envy_00003": 0.08356314501599998,
+          "lpy_envy_00008": 0.06421559956674006,
+          "lpy_envy_00012": 0.07190106588563884,
+          "lpy_ufo_00000": 0.08820750383449649,
+          "lpy_ufo_00001": 0.106001278522645,
+          "lpy_ufo_00002": 0.08387479891850498,
+          "lpy_ufo_00003": 0.1236050170879036
+        },
+        "morning": {
+          "lpy_envy_00000": 0.06770886121504785,
+          "lpy_envy_00003": 0.08531340355148674,
+          "lpy_envy_00008": 0.06489206155479287,
+          "lpy_envy_00012": 0.06672005869936402,
+          "lpy_ufo_00000": 0.07792486460460471,
+          "lpy_ufo_00001": 0.09334318670183196,
+          "lpy_ufo_00002": 0.07985260270077067,
+          "lpy_ufo_00003": 0.11732574358584062
+        },
+        "noon": {
+          "lpy_envy_00000": 0.07602927943626048,
+          "lpy_envy_00003": 0.08809514203561275,
+          "lpy_envy_00008": 0.06342427100795267,
+          "lpy_envy_00012": 0.06937226544710208,
+          "lpy_ufo_00000": 0.09951355816203528,
+          "lpy_ufo_00001": 0.1266332810705101,
+          "lpy_ufo_00002": 0.09704589747910437,
+          "lpy_ufo_00003": 0.13202259262889612
+        },
+        "evening": {
+          "lpy_envy_00000": 0.053975074879317686,
+          "lpy_envy_00003": 0.0454455330724771,
+          "lpy_envy_00008": 0.05637964888422345,
+          "lpy_envy_00012": 0.03757735430263947,
+          "lpy_ufo_00000": 0.0638572009259588,
+          "lpy_ufo_00001": 0.09119116145610828,
+          "lpy_ufo_00002": 0.06287750581738837,
+          "lpy_ufo_00003": 0.12602808835295504
+        }
+      }
+    },
+    "matched": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": 0.22657303309528998,
+          "lpy_envy_00003": 0.2428508624697363,
+          "lpy_envy_00008": 0.24037794968680126,
+          "lpy_envy_00012": 0.22516890381692942,
+          "lpy_ufo_00000": 0.24150053992809914,
+          "lpy_ufo_00001": 0.2567279040467605,
+          "lpy_ufo_00002": 0.2508694555161653,
+          "lpy_ufo_00003": 0.2702772869868531
+        },
+        "morning": {
+          "lpy_envy_00000": 0.25960435958318057,
+          "lpy_envy_00003": 0.2607610746066815,
+          "lpy_envy_00008": 0.2581409027353148,
+          "lpy_envy_00012": 0.25018667945625334,
+          "lpy_ufo_00000": 0.2548153699809583,
+          "lpy_ufo_00001": 0.2587401301130537,
+          "lpy_ufo_00002": 0.2587947606634478,
+          "lpy_ufo_00003": 0.27470190050744864
+        },
+        "noon": {
+          "lpy_envy_00000": 0.2153059026156022,
+          "lpy_envy_00003": 0.24353708363276358,
+          "lpy_envy_00008": 0.2613290140407997,
+          "lpy_envy_00012": 0.2167706451250744,
+          "lpy_ufo_00000": 0.23605362386980341,
+          "lpy_ufo_00001": 0.2651413256027581,
+          "lpy_ufo_00002": 0.24795654965534605,
+          "lpy_ufo_00003": 0.25970647738877295
+        },
+        "evening": {
+          "lpy_envy_00000": 0.5980951891394549,
+          "lpy_envy_00003": 0.7162601684116918,
+          "lpy_envy_00008": 0.8240463531609232,
+          "lpy_envy_00012": 0.6408170219875008,
+          "lpy_ufo_00000": 1.454230589358643,
+          "lpy_ufo_00001": 1.448172592382093,
+          "lpy_ufo_00002": 1.2381052569430937,
+          "lpy_ufo_00003": 1.4001332343248445
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": 0.23723809598887383,
+          "lpy_envy_00003": 0.2581189457929905,
+          "lpy_envy_00008": 0.25134243581136284,
+          "lpy_envy_00012": 0.23915061884271763,
+          "lpy_ufo_00000": 0.24929793597246971,
+          "lpy_ufo_00001": 0.2753897574141316,
+          "lpy_ufo_00002": 0.26475130624853027,
+          "lpy_ufo_00003": 0.28524327207989536
+        },
+        "morning": {
+          "lpy_envy_00000": 0.2932646833075381,
+          "lpy_envy_00003": 0.30383294585454906,
+          "lpy_envy_00008": 0.2897902546326463,
+          "lpy_envy_00012": 0.2942966418600919,
+          "lpy_ufo_00000": 0.26750417213218514,
+          "lpy_ufo_00001": 0.2696301786235414,
+          "lpy_ufo_00002": 0.2730055743497363,
+          "lpy_ufo_00003": 0.28915048697374207
+        },
+        "noon": {
+          "lpy_envy_00000": 0.280204739694403,
+          "lpy_envy_00003": 0.30757799385278306,
+          "lpy_envy_00008": 0.295599037772001,
+          "lpy_envy_00012": 0.28106480944936063,
+          "lpy_ufo_00000": 0.3007093393531793,
+          "lpy_ufo_00001": 0.3295645934847883,
+          "lpy_ufo_00002": 0.30859796358667807,
+          "lpy_ufo_00003": 0.32816304745617986
+        },
+        "evening": {
+          "lpy_envy_00000": 0.14719660383471567,
+          "lpy_envy_00003": 0.1639979768721951,
+          "lpy_envy_00008": 0.25102162809658624,
+          "lpy_envy_00012": 0.14381922008814976,
+          "lpy_ufo_00000": 0.8250247505399745,
+          "lpy_ufo_00001": 0.5961199127184446,
+          "lpy_ufo_00002": 0.5128650279945605,
+          "lpy_ufo_00003": 0.6599138163224948
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": 0.23648126093840696,
+          "lpy_envy_00003": 0.25094085961806595,
+          "lpy_envy_00008": 0.24603394009748947,
+          "lpy_envy_00012": 0.23271219181762293,
+          "lpy_ufo_00000": 0.2431570878504257,
+          "lpy_ufo_00001": 0.26372333874284165,
+          "lpy_ufo_00002": 0.2565982143123623,
+          "lpy_ufo_00003": 0.27979023036136735
+        },
+        "morning": {
+          "lpy_envy_00000": 0.2604731164751662,
+          "lpy_envy_00003": 0.2634864153997085,
+          "lpy_envy_00008": 0.2589139457087859,
+          "lpy_envy_00012": 0.25117226466764453,
+          "lpy_ufo_00000": 0.2507287855278186,
+          "lpy_ufo_00001": 0.2555337315972355,
+          "lpy_ufo_00002": 0.25806536212488324,
+          "lpy_ufo_00003": 0.27833133286445966
+        },
+        "noon": {
+          "lpy_envy_00000": 0.2223371133954983,
+          "lpy_envy_00003": 0.24756706056779967,
+          "lpy_envy_00008": 0.25784141786042664,
+          "lpy_envy_00012": 0.2189967273782352,
+          "lpy_ufo_00000": 0.2346282018419156,
+          "lpy_ufo_00001": 0.26522366878091447,
+          "lpy_ufo_00002": 0.24525486124956242,
+          "lpy_ufo_00003": 0.2654101967364855
+        },
+        "evening": {
+          "lpy_envy_00000": 0.6285400935653113,
+          "lpy_envy_00003": 0.7072465489048051,
+          "lpy_envy_00008": 0.8535557682609799,
+          "lpy_envy_00012": 0.6529459186753518,
+          "lpy_ufo_00000": 1.4409885326133232,
+          "lpy_ufo_00001": 1.4420665528255858,
+          "lpy_ufo_00002": 1.2330837558227936,
+          "lpy_ufo_00003": 1.4042024292323427
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": 0.18857342897590043,
+          "lpy_envy_00003": 0.2093612215974022,
+          "lpy_envy_00008": 0.20310823354177035,
+          "lpy_envy_00012": 0.1942424274742043,
+          "lpy_ufo_00000": 0.21107612349552074,
+          "lpy_ufo_00001": 0.2364859451737212,
+          "lpy_ufo_00002": 0.22212352855926729,
+          "lpy_ufo_00003": 0.24623490540489823
+        },
+        "morning": {
+          "lpy_envy_00000": 0.18812478863280221,
+          "lpy_envy_00003": 0.20818661253531898,
+          "lpy_envy_00008": 0.20058766222199753,
+          "lpy_envy_00012": 0.19596076706767726,
+          "lpy_ufo_00000": 0.1949249707297499,
+          "lpy_ufo_00001": 0.20664302288414016,
+          "lpy_ufo_00002": 0.20256420707631675,
+          "lpy_ufo_00003": 0.21983736493981498
+        },
+        "noon": {
+          "lpy_envy_00000": 0.20281941235640458,
+          "lpy_envy_00003": 0.22617654614018637,
+          "lpy_envy_00008": 0.2045594035752952,
+          "lpy_envy_00012": 0.20549164938020484,
+          "lpy_ufo_00000": 0.20995808054782406,
+          "lpy_ufo_00001": 0.23813861268805395,
+          "lpy_ufo_00002": 0.21756322892110638,
+          "lpy_ufo_00003": 0.24366288678211492
+        },
+        "evening": {
+          "lpy_envy_00000": 0.06857338944939516,
+          "lpy_envy_00003": 0.08057516492543516,
+          "lpy_envy_00008": 0.07452606143474035,
+          "lpy_envy_00012": 0.07352629290234959,
+          "lpy_ufo_00000": 0.10380395718779017,
+          "lpy_ufo_00001": 0.14178728929381884,
+          "lpy_ufo_00002": 0.12215437858216398,
+          "lpy_ufo_00003": 0.17041580514941437
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": 0.1906304836756828,
+          "lpy_envy_00003": 0.20860846348485432,
+          "lpy_envy_00008": 0.20095267547303494,
+          "lpy_envy_00012": 0.1924441109949846,
+          "lpy_ufo_00000": 0.20531240605357767,
+          "lpy_ufo_00001": 0.2309312097345608,
+          "lpy_ufo_00002": 0.21575781769363478,
+          "lpy_ufo_00003": 0.2354249008602738
+        },
+        "morning": {
+          "lpy_envy_00000": 0.17648009270093248,
+          "lpy_envy_00003": 0.1955147351220269,
+          "lpy_envy_00008": 0.19000193854402128,
+          "lpy_envy_00012": 0.1784507718865457,
+          "lpy_ufo_00000": 0.18659974584856118,
+          "lpy_ufo_00001": 0.20307627593194236,
+          "lpy_ufo_00002": 0.1957861982624374,
+          "lpy_ufo_00003": 0.21403284721617588
+        },
+        "noon": {
+          "lpy_envy_00000": 0.20381387479405402,
+          "lpy_envy_00003": 0.22320988424435984,
+          "lpy_envy_00008": 0.19499451409871918,
+          "lpy_envy_00012": 0.19780008977767502,
+          "lpy_ufo_00000": 0.21116261420780105,
+          "lpy_ufo_00001": 0.23881696384853943,
+          "lpy_ufo_00002": 0.21710165027850428,
+          "lpy_ufo_00003": 0.23733951288436286
+        },
+        "evening": {
+          "lpy_envy_00000": 0.06997293697735729,
+          "lpy_envy_00003": 0.07650499525055325,
+          "lpy_envy_00008": 0.06705208259608907,
+          "lpy_envy_00012": 0.06377935802826251,
+          "lpy_ufo_00000": 0.10764829081331899,
+          "lpy_ufo_00001": 0.14466847919856854,
+          "lpy_ufo_00002": 0.1190655935613248,
+          "lpy_ufo_00003": 0.172681518825199
+        }
+      }
+    },
+    "native": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": 0.039703617119737473,
+          "lpy_envy_00003": 0.0354140071113687,
+          "lpy_envy_00008": 0.03744591776341175,
+          "lpy_envy_00012": 0.03164097000287334,
+          "lpy_ufo_00000": 0.03885394228215568,
+          "lpy_ufo_00001": 0.05063290145409217,
+          "lpy_ufo_00002": 0.037422598281907776,
+          "lpy_ufo_00003": 0.0459549163065771
+        },
+        "morning": {
+          "lpy_envy_00000": 0.04958914415684296,
+          "lpy_envy_00003": 0.04479255236858293,
+          "lpy_envy_00008": 0.041635569233982955,
+          "lpy_envy_00012": 0.035838082610557716,
+          "lpy_ufo_00000": 0.03522026418690496,
+          "lpy_ufo_00001": 0.0453558124904096,
+          "lpy_ufo_00002": 0.03594707534679387,
+          "lpy_ufo_00003": 0.048804741743507775
+        },
+        "noon": {
+          "lpy_envy_00000": 0.06743187593677231,
+          "lpy_envy_00003": 0.05015406779633794,
+          "lpy_envy_00008": 0.03896797282630246,
+          "lpy_envy_00012": 0.04740496356583109,
+          "lpy_ufo_00000": 0.0551663197626567,
+          "lpy_ufo_00001": 0.048745882513686195,
+          "lpy_ufo_00002": 0.04389584436447147,
+          "lpy_ufo_00003": 0.04725754648547394
+        },
+        "evening": {
+          "lpy_envy_00000": 0.24188206864928397,
+          "lpy_envy_00003": 0.33123947714818197,
+          "lpy_envy_00008": 0.5141240696177246,
+          "lpy_envy_00012": 0.30089904382707194,
+          "lpy_ufo_00000": 0.8924066368401465,
+          "lpy_ufo_00001": 0.9192836920322972,
+          "lpy_ufo_00002": 0.6337709842350965,
+          "lpy_ufo_00003": 0.936783760528262
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": 0.03843376350817245,
+          "lpy_envy_00003": 0.038340853054650854,
+          "lpy_envy_00008": 0.036086462188637605,
+          "lpy_envy_00012": 0.036123607839257464,
+          "lpy_ufo_00000": 0.0422113980759688,
+          "lpy_ufo_00001": 0.054989454988439886,
+          "lpy_ufo_00002": 0.042996048228691214,
+          "lpy_ufo_00003": 0.05254714678141472
+        },
+        "morning": {
+          "lpy_envy_00000": 0.042708410805896234,
+          "lpy_envy_00003": 0.05004987900989077,
+          "lpy_envy_00008": 0.04976345877655527,
+          "lpy_envy_00012": 0.04138446695794513,
+          "lpy_ufo_00000": 0.03412159463425353,
+          "lpy_ufo_00001": 0.04559467877537251,
+          "lpy_ufo_00002": 0.03319832395029903,
+          "lpy_ufo_00003": 0.04931810297965152
+        },
+        "noon": {
+          "lpy_envy_00000": 0.03958600866110696,
+          "lpy_envy_00003": 0.048166558122297025,
+          "lpy_envy_00008": 0.046075418083705605,
+          "lpy_envy_00012": 0.047310026551598876,
+          "lpy_ufo_00000": 0.06572596291288328,
+          "lpy_ufo_00001": 0.08411506953933424,
+          "lpy_ufo_00002": 0.07622967358572842,
+          "lpy_ufo_00003": 0.08196360340049519
+        },
+        "evening": {
+          "lpy_envy_00000": 0.16474335085214076,
+          "lpy_envy_00003": 0.13306835735176084,
+          "lpy_envy_00008": 0.08568184151056853,
+          "lpy_envy_00012": 0.13076753650632603,
+          "lpy_ufo_00000": 0.17367138464318888,
+          "lpy_ufo_00001": 0.09812217968216323,
+          "lpy_ufo_00002": 0.08544635689049714,
+          "lpy_ufo_00003": 0.1521968043356434
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": 0.0361510256660657,
+          "lpy_envy_00003": 0.03538099714119793,
+          "lpy_envy_00008": 0.03376769442448933,
+          "lpy_envy_00012": 0.03332427472192243,
+          "lpy_ufo_00000": 0.038901979602720994,
+          "lpy_ufo_00001": 0.05282502024601821,
+          "lpy_ufo_00002": 0.04306159458889306,
+          "lpy_ufo_00003": 0.052091081066215884
+        },
+        "morning": {
+          "lpy_envy_00000": 0.04914510845944711,
+          "lpy_envy_00003": 0.0449323699653685,
+          "lpy_envy_00008": 0.04339523595834044,
+          "lpy_envy_00012": 0.03726367685477603,
+          "lpy_ufo_00000": 0.03416677129440548,
+          "lpy_ufo_00001": 0.04476881938097161,
+          "lpy_ufo_00002": 0.03272564160475936,
+          "lpy_ufo_00003": 0.05065043590480491
+        },
+        "noon": {
+          "lpy_envy_00000": 0.059358893806902686,
+          "lpy_envy_00003": 0.04690708936210534,
+          "lpy_envy_00008": 0.038894494753599566,
+          "lpy_envy_00012": 0.04533332261752882,
+          "lpy_ufo_00000": 0.0559221403803307,
+          "lpy_ufo_00001": 0.0558715992982523,
+          "lpy_ufo_00002": 0.04839304715984525,
+          "lpy_ufo_00003": 0.05468366718758039
+        },
+        "evening": {
+          "lpy_envy_00000": 0.26049397620538756,
+          "lpy_envy_00003": 0.3405659912167968,
+          "lpy_envy_00008": 0.5096424932145969,
+          "lpy_envy_00012": 0.31476930817099086,
+          "lpy_ufo_00000": 0.6579064274038757,
+          "lpy_ufo_00001": 0.7386956936049468,
+          "lpy_ufo_00002": 0.5314788632476674,
+          "lpy_ufo_00003": 0.800997119811547
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": 0.039198169498186386,
+          "lpy_envy_00003": 0.03719209156609995,
+          "lpy_envy_00008": 0.037231851969549486,
+          "lpy_envy_00012": 0.03292364538447895,
+          "lpy_ufo_00000": 0.047661496275748484,
+          "lpy_ufo_00001": 0.059644543970560036,
+          "lpy_ufo_00002": 0.04996705097755296,
+          "lpy_ufo_00003": 0.06139265872398645
+        },
+        "morning": {
+          "lpy_envy_00000": 0.03855116079638899,
+          "lpy_envy_00003": 0.03844944258380044,
+          "lpy_envy_00008": 0.03509833222942451,
+          "lpy_envy_00012": 0.02877468467785201,
+          "lpy_ufo_00000": 0.04055230920881594,
+          "lpy_ufo_00001": 0.050244845172300066,
+          "lpy_ufo_00002": 0.03828531753357564,
+          "lpy_ufo_00003": 0.05883237078666833
+        },
+        "noon": {
+          "lpy_envy_00000": 0.035558234306789206,
+          "lpy_envy_00003": 0.03462738469652496,
+          "lpy_envy_00008": 0.03520229453981871,
+          "lpy_envy_00012": 0.03382970349648453,
+          "lpy_ufo_00000": 0.04842301486117998,
+          "lpy_ufo_00001": 0.0610196913541441,
+          "lpy_ufo_00002": 0.05756074938543327,
+          "lpy_ufo_00003": 0.06711221717257819
+        },
+        "evening": {
+          "lpy_envy_00000": 0.04177019181269662,
+          "lpy_envy_00003": 0.0366754711936584,
+          "lpy_envy_00008": 0.05161368738339184,
+          "lpy_envy_00012": 0.028821320583143826,
+          "lpy_ufo_00000": 0.04153923094764841,
+          "lpy_ufo_00001": 0.054877031984494756,
+          "lpy_ufo_00002": 0.041076769516856536,
+          "lpy_ufo_00003": 0.06898127903220687
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": 0.03548706954829346,
+          "lpy_envy_00003": 0.035659245030830754,
+          "lpy_envy_00008": 0.03586223132447033,
+          "lpy_envy_00012": 0.032420070872518976,
+          "lpy_ufo_00000": 0.0474364729064593,
+          "lpy_ufo_00001": 0.06190953811686317,
+          "lpy_ufo_00002": 0.05309938363313308,
+          "lpy_ufo_00003": 0.064174259434051
+        },
+        "morning": {
+          "lpy_envy_00000": 0.037294438823635694,
+          "lpy_envy_00003": 0.03713745771624428,
+          "lpy_envy_00008": 0.037238523101549674,
+          "lpy_envy_00012": 0.028417008785394302,
+          "lpy_ufo_00000": 0.040428662174174686,
+          "lpy_ufo_00001": 0.05352749726277453,
+          "lpy_ufo_00002": 0.04406694489735343,
+          "lpy_ufo_00003": 0.06318134838539635
+        },
+        "noon": {
+          "lpy_envy_00000": 0.0325956277874764,
+          "lpy_envy_00003": 0.03703185445585449,
+          "lpy_envy_00008": 0.03600560489301749,
+          "lpy_envy_00012": 0.03570733849993223,
+          "lpy_ufo_00000": 0.053117580573429385,
+          "lpy_ufo_00001": 0.07211488387546329,
+          "lpy_ufo_00002": 0.06526847768868536,
+          "lpy_ufo_00003": 0.07517335890943692
+        },
+        "evening": {
+          "lpy_envy_00000": 0.0395019084405524,
+          "lpy_envy_00003": 0.03596618348569229,
+          "lpy_envy_00008": 0.048873543242734845,
+          "lpy_envy_00012": 0.028999215460156793,
+          "lpy_ufo_00000": 0.04267327105750005,
+          "lpy_ufo_00001": 0.0579308674639464,
+          "lpy_ufo_00002": 0.04299196453786521,
+          "lpy_ufo_00003": 0.07053960119093183
+        }
+      }
+    }
+  },
+  "cell_views": {
+    "published": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      }
+    },
+    "matched": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      }
+    },
+    "native": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "morning": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "noon": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        },
+        "evening": {
+          "lpy_envy_00000": 6,
+          "lpy_envy_00003": 6,
+          "lpy_envy_00008": 6,
+          "lpy_envy_00012": 6,
+          "lpy_ufo_00000": 6,
+          "lpy_ufo_00001": 6,
+          "lpy_ufo_00002": 6,
+          "lpy_ufo_00003": 6
+        }
+      }
+    }
+  },
+  "family_means": {
+    "published": {
+      "F": {
+        "envy_source": 0.1335,
+        "ufo_source": 0.1878,
+        "envy_morning": 0.1772,
+        "ufo_morning": 0.269,
+        "envy_noon": 0.1521,
+        "ufo_noon": 0.2351,
+        "envy_evening": 0.9059,
+        "ufo_evening": 1.4506
+      },
+      "J": {
+        "envy_source": 0.1528,
+        "ufo_source": 0.1956,
+        "envy_morning": 0.2234,
+        "ufo_morning": 0.2789,
+        "envy_noon": 0.2107,
+        "ufo_noon": 0.2749,
+        "envy_evening": 0.3216,
+        "ufo_evening": 1.2474
+      },
+      "C": {
+        "envy_source": 0.1367,
+        "ufo_source": 0.1855,
+        "envy_morning": 0.1748,
+        "ufo_morning": 0.2348,
+        "envy_noon": 0.1407,
+        "ufo_noon": 0.1949,
+        "envy_evening": 0.8835,
+        "ufo_evening": 1.4422
+      },
+      "A": {
+        "envy_source": 0.086,
+        "ufo_source": 0.117,
+        "envy_morning": 0.0975,
+        "ufo_morning": 0.1141,
+        "envy_noon": 0.0934,
+        "ufo_noon": 0.1247,
+        "envy_evening": 0.048,
+        "ufo_evening": 0.0954
+      },
+      "B": {
+        "envy_source": 0.0738,
+        "ufo_source": 0.1004,
+        "envy_morning": 0.0712,
+        "ufo_morning": 0.0921,
+        "envy_noon": 0.0742,
+        "ufo_noon": 0.1138,
+        "envy_evening": 0.0483,
+        "ufo_evening": 0.086
+      }
+    },
+    "matched": {
+      "F": {
+        "envy_source": 0.2337,
+        "ufo_source": 0.2548,
+        "envy_morning": 0.2572,
+        "ufo_morning": 0.2618,
+        "envy_noon": 0.2342,
+        "ufo_noon": 0.2522,
+        "envy_evening": 0.6948,
+        "ufo_evening": 1.3852
+      },
+      "J": {
+        "envy_source": 0.2465,
+        "ufo_source": 0.2687,
+        "envy_morning": 0.2953,
+        "ufo_morning": 0.2748,
+        "envy_noon": 0.2911,
+        "ufo_noon": 0.3168,
+        "envy_evening": 0.1765,
+        "ufo_evening": 0.6485
+      },
+      "C": {
+        "envy_source": 0.2415,
+        "ufo_source": 0.2608,
+        "envy_morning": 0.2585,
+        "ufo_morning": 0.2607,
+        "envy_noon": 0.2367,
+        "ufo_noon": 0.2526,
+        "envy_evening": 0.7106,
+        "ufo_evening": 1.3801
+      },
+      "A": {
+        "envy_source": 0.1988,
+        "ufo_source": 0.229,
+        "envy_morning": 0.1982,
+        "ufo_morning": 0.206,
+        "envy_noon": 0.2098,
+        "ufo_noon": 0.2273,
+        "envy_evening": 0.0743,
+        "ufo_evening": 0.1345
+      },
+      "B": {
+        "envy_source": 0.1982,
+        "ufo_source": 0.2219,
+        "envy_morning": 0.1851,
+        "ufo_morning": 0.1999,
+        "envy_noon": 0.205,
+        "ufo_noon": 0.2261,
+        "envy_evening": 0.0693,
+        "ufo_evening": 0.136
+      }
+    },
+    "native": {
+      "F": {
+        "envy_source": 0.0361,
+        "ufo_source": 0.0432,
+        "envy_morning": 0.043,
+        "ufo_morning": 0.0413,
+        "envy_noon": 0.051,
+        "ufo_noon": 0.0488,
+        "envy_evening": 0.347,
+        "ufo_evening": 0.8456
+      },
+      "J": {
+        "envy_source": 0.0372,
+        "ufo_source": 0.0482,
+        "envy_morning": 0.046,
+        "ufo_morning": 0.0406,
+        "envy_noon": 0.0453,
+        "ufo_noon": 0.077,
+        "envy_evening": 0.1286,
+        "ufo_evening": 0.1274
+      },
+      "C": {
+        "envy_source": 0.0347,
+        "ufo_source": 0.0467,
+        "envy_morning": 0.0437,
+        "ufo_morning": 0.0406,
+        "envy_noon": 0.0476,
+        "ufo_noon": 0.0537,
+        "envy_evening": 0.3564,
+        "ufo_evening": 0.6823
+      },
+      "A": {
+        "envy_source": 0.0366,
+        "ufo_source": 0.0547,
+        "envy_morning": 0.0352,
+        "ufo_morning": 0.047,
+        "envy_noon": 0.0348,
+        "ufo_noon": 0.0585,
+        "envy_evening": 0.0397,
+        "ufo_evening": 0.0516
+      },
+      "B": {
+        "envy_source": 0.0349,
+        "ufo_source": 0.0567,
+        "envy_morning": 0.035,
+        "ufo_morning": 0.0503,
+        "envy_noon": 0.0353,
+        "ufo_noon": 0.0664,
+        "envy_evening": 0.0383,
+        "ufo_evening": 0.0535
+      }
+    }
+  },
+  "native_vs_matched": {
+    "label": "measurement, not predicted: Native differs from Matched in resolution, input filtering and ground truth at once",
+    "per_tree": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": {
+            "matched": 0.2266,
+            "native": 0.0397,
+            "native_over_matched": 0.17519858781994704
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2429,
+            "native": 0.0354,
+            "native_over_matched": 0.1457389872375463
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2404,
+            "native": 0.0374,
+            "native_over_matched": 0.15557404326123128
+          },
+          "lpy_envy_00012": {
+            "matched": 0.2252,
+            "native": 0.0316,
+            "native_over_matched": 0.14031971580817051
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2415,
+            "native": 0.0389,
+            "native_over_matched": 0.16107660455486542
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2567,
+            "native": 0.0506,
+            "native_over_matched": 0.19711725749902612
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2509,
+            "native": 0.0374,
+            "native_over_matched": 0.14906337186129934
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2703,
+            "native": 0.046,
+            "native_over_matched": 0.1701812800591935
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "matched": 0.2596,
+            "native": 0.0496,
+            "native_over_matched": 0.19106317411402157
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2608,
+            "native": 0.0448,
+            "native_over_matched": 0.17177914110429449
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2581,
+            "native": 0.0416,
+            "native_over_matched": 0.16117783804726848
+          },
+          "lpy_envy_00012": {
+            "matched": 0.2502,
+            "native": 0.0358,
+            "native_over_matched": 0.14308553157474022
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2548,
+            "native": 0.0352,
+            "native_over_matched": 0.13814756671899528
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2587,
+            "native": 0.0454,
+            "native_over_matched": 0.17549284885968305
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2588,
+            "native": 0.0359,
+            "native_over_matched": 0.1387171561051005
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2747,
+            "native": 0.0488,
+            "native_over_matched": 0.1776483436476156
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "matched": 0.2153,
+            "native": 0.0674,
+            "native_over_matched": 0.31305155596841616
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2435,
+            "native": 0.0502,
+            "native_over_matched": 0.20616016427104725
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2613,
+            "native": 0.039,
+            "native_over_matched": 0.1492537313432836
+          },
+          "lpy_envy_00012": {
+            "matched": 0.2168,
+            "native": 0.0474,
+            "native_over_matched": 0.21863468634686348
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2361,
+            "native": 0.0552,
+            "native_over_matched": 0.23379923761118168
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2651,
+            "native": 0.0487,
+            "native_over_matched": 0.18370426254243682
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.248,
+            "native": 0.0439,
+            "native_over_matched": 0.17701612903225808
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2597,
+            "native": 0.0473,
+            "native_over_matched": 0.18213323065075088
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "matched": 0.5981,
+            "native": 0.2419,
+            "native_over_matched": 0.4044474168199298
+          },
+          "lpy_envy_00003": {
+            "matched": 0.7163,
+            "native": 0.3312,
+            "native_over_matched": 0.4623760993996928
+          },
+          "lpy_envy_00008": {
+            "matched": 0.824,
+            "native": 0.5141,
+            "native_over_matched": 0.6239077669902913
+          },
+          "lpy_envy_00012": {
+            "matched": 0.6408,
+            "native": 0.3009,
+            "native_over_matched": 0.46956928838951306
+          },
+          "lpy_ufo_00000": {
+            "matched": 1.4542,
+            "native": 0.8924,
+            "native_over_matched": 0.6136707468023656
+          },
+          "lpy_ufo_00001": {
+            "matched": 1.4482,
+            "native": 0.9193,
+            "native_over_matched": 0.6347880127054275
+          },
+          "lpy_ufo_00002": {
+            "matched": 1.2381,
+            "native": 0.6338,
+            "native_over_matched": 0.5119134157176319
+          },
+          "lpy_ufo_00003": {
+            "matched": 1.4001,
+            "native": 0.9368,
+            "native_over_matched": 0.6690950646382402
+          }
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": {
+            "matched": 0.2372,
+            "native": 0.0384,
+            "native_over_matched": 0.16188870151770657
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2581,
+            "native": 0.0383,
+            "native_over_matched": 0.14839209608678808
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2513,
+            "native": 0.0361,
+            "native_over_matched": 0.14365300437723835
+          },
+          "lpy_envy_00012": {
+            "matched": 0.2392,
+            "native": 0.0361,
+            "native_over_matched": 0.15091973244147158
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2493,
+            "native": 0.0422,
+            "native_over_matched": 0.16927396710790213
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2754,
+            "native": 0.055,
+            "native_over_matched": 0.19970951343500365
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2648,
+            "native": 0.043,
+            "native_over_matched": 0.1623867069486405
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2852,
+            "native": 0.0525,
+            "native_over_matched": 0.1840813464235624
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "matched": 0.2933,
+            "native": 0.0427,
+            "native_over_matched": 0.14558472553699284
+          },
+          "lpy_envy_00003": {
+            "matched": 0.3038,
+            "native": 0.05,
+            "native_over_matched": 0.16458196181698487
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2898,
+            "native": 0.0498,
+            "native_over_matched": 0.17184265010351965
+          },
+          "lpy_envy_00012": {
+            "matched": 0.2943,
+            "native": 0.0414,
+            "native_over_matched": 0.14067278287461774
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2675,
+            "native": 0.0341,
+            "native_over_matched": 0.12747663551401867
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2696,
+            "native": 0.0456,
+            "native_over_matched": 0.16913946587537093
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.273,
+            "native": 0.0332,
+            "native_over_matched": 0.12161172161172161
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2892,
+            "native": 0.0493,
+            "native_over_matched": 0.17047026279391422
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "matched": 0.2802,
+            "native": 0.0396,
+            "native_over_matched": 0.14132762312633834
+          },
+          "lpy_envy_00003": {
+            "matched": 0.3076,
+            "native": 0.0482,
+            "native_over_matched": 0.15669700910273082
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2956,
+            "native": 0.0461,
+            "native_over_matched": 0.15595399188092018
+          },
+          "lpy_envy_00012": {
+            "matched": 0.2811,
+            "native": 0.0473,
+            "native_over_matched": 0.16826752045535395
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.3007,
+            "native": 0.0657,
+            "native_over_matched": 0.21849018955769867
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.3296,
+            "native": 0.0841,
+            "native_over_matched": 0.25515776699029125
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.3086,
+            "native": 0.0762,
+            "native_over_matched": 0.2469215813350616
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.3282,
+            "native": 0.082,
+            "native_over_matched": 0.24984765386959173
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "matched": 0.1472,
+            "native": 0.1647,
+            "native_over_matched": 1.1188858695652175
+          },
+          "lpy_envy_00003": {
+            "matched": 0.164,
+            "native": 0.1331,
+            "native_over_matched": 0.8115853658536585
+          },
+          "lpy_envy_00008": {
+            "matched": 0.251,
+            "native": 0.0857,
+            "native_over_matched": 0.34143426294820717
+          },
+          "lpy_envy_00012": {
+            "matched": 0.1438,
+            "native": 0.1308,
+            "native_over_matched": 0.909596662030598
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.825,
+            "native": 0.1737,
+            "native_over_matched": 0.21054545454545454
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.5961,
+            "native": 0.0981,
+            "native_over_matched": 0.16456970306995472
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.5129,
+            "native": 0.0854,
+            "native_over_matched": 0.16650419185026322
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.6599,
+            "native": 0.1522,
+            "native_over_matched": 0.23064100621306258
+          }
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": {
+            "matched": 0.2365,
+            "native": 0.0362,
+            "native_over_matched": 0.15306553911205076
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2509,
+            "native": 0.0354,
+            "native_over_matched": 0.14109206855320844
+          },
+          "lpy_envy_00008": {
+            "matched": 0.246,
+            "native": 0.0338,
+            "native_over_matched": 0.13739837398373983
+          },
+          "lpy_envy_00012": {
+            "matched": 0.2327,
+            "native": 0.0333,
+            "native_over_matched": 0.14310270734851743
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2432,
+            "native": 0.0389,
+            "native_over_matched": 0.15995065789473684
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2637,
+            "native": 0.0528,
+            "native_over_matched": 0.20022753128555176
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2566,
+            "native": 0.0431,
+            "native_over_matched": 0.16796570537802027
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2798,
+            "native": 0.0521,
+            "native_over_matched": 0.18620443173695497
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "matched": 0.2605,
+            "native": 0.0491,
+            "native_over_matched": 0.18848368522072936
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2635,
+            "native": 0.0449,
+            "native_over_matched": 0.17039848197343455
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2589,
+            "native": 0.0434,
+            "native_over_matched": 0.16763229045963693
+          },
+          "lpy_envy_00012": {
+            "matched": 0.2512,
+            "native": 0.0373,
+            "native_over_matched": 0.14848726114649682
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2507,
+            "native": 0.0342,
+            "native_over_matched": 0.13641802951735144
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2555,
+            "native": 0.0448,
+            "native_over_matched": 0.17534246575342466
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2581,
+            "native": 0.0327,
+            "native_over_matched": 0.12669507942657884
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2783,
+            "native": 0.0507,
+            "native_over_matched": 0.18217750628817825
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "matched": 0.2223,
+            "native": 0.0594,
+            "native_over_matched": 0.26720647773279355
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2476,
+            "native": 0.0469,
+            "native_over_matched": 0.1894184168012924
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2578,
+            "native": 0.0389,
+            "native_over_matched": 0.1508921644685803
+          },
+          "lpy_envy_00012": {
+            "matched": 0.219,
+            "native": 0.0453,
+            "native_over_matched": 0.20684931506849316
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2346,
+            "native": 0.0559,
+            "native_over_matched": 0.23827791986359761
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2652,
+            "native": 0.0559,
+            "native_over_matched": 0.2107843137254902
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2453,
+            "native": 0.0484,
+            "native_over_matched": 0.19730941704035876
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2654,
+            "native": 0.0547,
+            "native_over_matched": 0.20610399397136395
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "matched": 0.6285,
+            "native": 0.2605,
+            "native_over_matched": 0.4144789180588704
+          },
+          "lpy_envy_00003": {
+            "matched": 0.7072,
+            "native": 0.3406,
+            "native_over_matched": 0.48161764705882354
+          },
+          "lpy_envy_00008": {
+            "matched": 0.8536,
+            "native": 0.5096,
+            "native_over_matched": 0.5970009372071228
+          },
+          "lpy_envy_00012": {
+            "matched": 0.6529,
+            "native": 0.3148,
+            "native_over_matched": 0.48215653239393474
+          },
+          "lpy_ufo_00000": {
+            "matched": 1.441,
+            "native": 0.6579,
+            "native_over_matched": 0.45655794587092297
+          },
+          "lpy_ufo_00001": {
+            "matched": 1.4421,
+            "native": 0.7387,
+            "native_over_matched": 0.5122390957631232
+          },
+          "lpy_ufo_00002": {
+            "matched": 1.2331,
+            "native": 0.5315,
+            "native_over_matched": 0.4310274916876165
+          },
+          "lpy_ufo_00003": {
+            "matched": 1.4042,
+            "native": 0.801,
+            "native_over_matched": 0.5704315624554908
+          }
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": {
+            "matched": 0.1886,
+            "native": 0.0392,
+            "native_over_matched": 0.20784729586426298
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2094,
+            "native": 0.0372,
+            "native_over_matched": 0.1776504297994269
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2031,
+            "native": 0.0372,
+            "native_over_matched": 0.1831610044313146
+          },
+          "lpy_envy_00012": {
+            "matched": 0.1942,
+            "native": 0.0329,
+            "native_over_matched": 0.16941297631307928
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2111,
+            "native": 0.0477,
+            "native_over_matched": 0.22595926101373756
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2365,
+            "native": 0.0596,
+            "native_over_matched": 0.25200845665961946
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2221,
+            "native": 0.05,
+            "native_over_matched": 0.225123818099955
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2462,
+            "native": 0.0614,
+            "native_over_matched": 0.24939073923639318
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "matched": 0.1881,
+            "native": 0.0386,
+            "native_over_matched": 0.20520999468367893
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2082,
+            "native": 0.0384,
+            "native_over_matched": 0.1844380403458213
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2006,
+            "native": 0.0351,
+            "native_over_matched": 0.17497507477567298
+          },
+          "lpy_envy_00012": {
+            "matched": 0.196,
+            "native": 0.0288,
+            "native_over_matched": 0.14693877551020407
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.1949,
+            "native": 0.0406,
+            "native_over_matched": 0.20831195484864032
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2066,
+            "native": 0.0502,
+            "native_over_matched": 0.24298160696999033
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2026,
+            "native": 0.0383,
+            "native_over_matched": 0.18904244817374136
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2198,
+            "native": 0.0588,
+            "native_over_matched": 0.267515923566879
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "matched": 0.2028,
+            "native": 0.0356,
+            "native_over_matched": 0.17554240631163706
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2262,
+            "native": 0.0346,
+            "native_over_matched": 0.15296198054818744
+          },
+          "lpy_envy_00008": {
+            "matched": 0.2046,
+            "native": 0.0352,
+            "native_over_matched": 0.17204301075268819
+          },
+          "lpy_envy_00012": {
+            "matched": 0.2055,
+            "native": 0.0338,
+            "native_over_matched": 0.16447688564476884
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.21,
+            "native": 0.0484,
+            "native_over_matched": 0.23047619047619047
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2381,
+            "native": 0.061,
+            "native_over_matched": 0.25619487610247793
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2176,
+            "native": 0.0576,
+            "native_over_matched": 0.2647058823529412
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2437,
+            "native": 0.0671,
+            "native_over_matched": 0.27533853098071404
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "matched": 0.0686,
+            "native": 0.0418,
+            "native_over_matched": 0.60932944606414
+          },
+          "lpy_envy_00003": {
+            "matched": 0.0806,
+            "native": 0.0367,
+            "native_over_matched": 0.45533498759305213
+          },
+          "lpy_envy_00008": {
+            "matched": 0.0745,
+            "native": 0.0516,
+            "native_over_matched": 0.6926174496644295
+          },
+          "lpy_envy_00012": {
+            "matched": 0.0735,
+            "native": 0.0288,
+            "native_over_matched": 0.3918367346938776
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.1038,
+            "native": 0.0415,
+            "native_over_matched": 0.3998073217726397
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.1418,
+            "native": 0.0549,
+            "native_over_matched": 0.3871650211565585
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.1222,
+            "native": 0.0411,
+            "native_over_matched": 0.33633387888707034
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.1704,
+            "native": 0.069,
+            "native_over_matched": 0.4049295774647888
+          }
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": {
+            "matched": 0.1906,
+            "native": 0.0355,
+            "native_over_matched": 0.1862539349422875
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2086,
+            "native": 0.0357,
+            "native_over_matched": 0.17114093959731544
+          },
+          "lpy_envy_00008": {
+            "matched": 0.201,
+            "native": 0.0359,
+            "native_over_matched": 0.17860696517412936
+          },
+          "lpy_envy_00012": {
+            "matched": 0.1924,
+            "native": 0.0324,
+            "native_over_matched": 0.1683991683991684
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2053,
+            "native": 0.0474,
+            "native_over_matched": 0.23088163662932293
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2309,
+            "native": 0.0619,
+            "native_over_matched": 0.26808142052836725
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2158,
+            "native": 0.0531,
+            "native_over_matched": 0.24606116774791476
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2354,
+            "native": 0.0642,
+            "native_over_matched": 0.2727272727272727
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "matched": 0.1765,
+            "native": 0.0373,
+            "native_over_matched": 0.21133144475920682
+          },
+          "lpy_envy_00003": {
+            "matched": 0.1955,
+            "native": 0.0371,
+            "native_over_matched": 0.189769820971867
+          },
+          "lpy_envy_00008": {
+            "matched": 0.19,
+            "native": 0.0372,
+            "native_over_matched": 0.1957894736842105
+          },
+          "lpy_envy_00012": {
+            "matched": 0.1785,
+            "native": 0.0284,
+            "native_over_matched": 0.15910364145658265
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.1866,
+            "native": 0.0404,
+            "native_over_matched": 0.2165058949624866
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2031,
+            "native": 0.0535,
+            "native_over_matched": 0.2634170359428853
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.1958,
+            "native": 0.0441,
+            "native_over_matched": 0.22522982635342187
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.214,
+            "native": 0.0632,
+            "native_over_matched": 0.29532710280373836
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "matched": 0.2038,
+            "native": 0.0326,
+            "native_over_matched": 0.15996074582924433
+          },
+          "lpy_envy_00003": {
+            "matched": 0.2232,
+            "native": 0.037,
+            "native_over_matched": 0.1657706093189964
+          },
+          "lpy_envy_00008": {
+            "matched": 0.195,
+            "native": 0.036,
+            "native_over_matched": 0.1846153846153846
+          },
+          "lpy_envy_00012": {
+            "matched": 0.1978,
+            "native": 0.0357,
+            "native_over_matched": 0.18048533872598585
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.2112,
+            "native": 0.0531,
+            "native_over_matched": 0.25142045454545453
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.2388,
+            "native": 0.0721,
+            "native_over_matched": 0.3019262981574539
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.2171,
+            "native": 0.0653,
+            "native_over_matched": 0.3007830492860433
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.2373,
+            "native": 0.0752,
+            "native_over_matched": 0.3168984407922461
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "matched": 0.07,
+            "native": 0.0395,
+            "native_over_matched": 0.5642857142857143
+          },
+          "lpy_envy_00003": {
+            "matched": 0.0765,
+            "native": 0.036,
+            "native_over_matched": 0.47058823529411764
+          },
+          "lpy_envy_00008": {
+            "matched": 0.0671,
+            "native": 0.0489,
+            "native_over_matched": 0.72876304023845
+          },
+          "lpy_envy_00012": {
+            "matched": 0.0638,
+            "native": 0.029,
+            "native_over_matched": 0.4545454545454546
+          },
+          "lpy_ufo_00000": {
+            "matched": 0.1076,
+            "native": 0.0427,
+            "native_over_matched": 0.3968401486988848
+          },
+          "lpy_ufo_00001": {
+            "matched": 0.1447,
+            "native": 0.0579,
+            "native_over_matched": 0.4001382170006911
+          },
+          "lpy_ufo_00002": {
+            "matched": 0.1191,
+            "native": 0.043,
+            "native_over_matched": 0.36104114189756503
+          },
+          "lpy_ufo_00003": {
+            "matched": 0.1727,
+            "native": 0.0705,
+            "native_over_matched": 0.40822235089751013
+          }
+        }
+      }
+    },
+    "family": {
+      "F": {
+        "source": {
+          "envy": {
+            "matched": 0.2337,
+            "native": 0.0361,
+            "native_over_matched": 0.15447154471544716
+          },
+          "ufo": {
+            "matched": 0.2548,
+            "native": 0.0432,
+            "native_over_matched": 0.1695447409733124
+          }
+        },
+        "morning": {
+          "envy": {
+            "matched": 0.2572,
+            "native": 0.043,
+            "native_over_matched": 0.1671850699844479
+          },
+          "ufo": {
+            "matched": 0.2618,
+            "native": 0.0413,
+            "native_over_matched": 0.15775401069518719
+          }
+        },
+        "noon": {
+          "envy": {
+            "matched": 0.2342,
+            "native": 0.051,
+            "native_over_matched": 0.21776259607173357
+          },
+          "ufo": {
+            "matched": 0.2522,
+            "native": 0.0488,
+            "native_over_matched": 0.1934972244250595
+          }
+        },
+        "evening": {
+          "envy": {
+            "matched": 0.6948,
+            "native": 0.347,
+            "native_over_matched": 0.4994242947610823
+          },
+          "ufo": {
+            "matched": 1.3852,
+            "native": 0.8456,
+            "native_over_matched": 0.610453364135143
+          }
+        }
+      },
+      "J": {
+        "source": {
+          "envy": {
+            "matched": 0.2465,
+            "native": 0.0372,
+            "native_over_matched": 0.1509127789046653
+          },
+          "ufo": {
+            "matched": 0.2687,
+            "native": 0.0482,
+            "native_over_matched": 0.17938221064384072
+          }
+        },
+        "morning": {
+          "envy": {
+            "matched": 0.2953,
+            "native": 0.046,
+            "native_over_matched": 0.15577378936674569
+          },
+          "ufo": {
+            "matched": 0.2748,
+            "native": 0.0406,
+            "native_over_matched": 0.1477438136826783
+          }
+        },
+        "noon": {
+          "envy": {
+            "matched": 0.2911,
+            "native": 0.0453,
+            "native_over_matched": 0.1556166265888011
+          },
+          "ufo": {
+            "matched": 0.3168,
+            "native": 0.077,
+            "native_over_matched": 0.24305555555555552
+          }
+        },
+        "evening": {
+          "envy": {
+            "matched": 0.1765,
+            "native": 0.1286,
+            "native_over_matched": 0.7286118980169972
+          },
+          "ufo": {
+            "matched": 0.6485,
+            "native": 0.1274,
+            "native_over_matched": 0.19645335389360064
+          }
+        }
+      },
+      "C": {
+        "source": {
+          "envy": {
+            "matched": 0.2415,
+            "native": 0.0347,
+            "native_over_matched": 0.14368530020703935
+          },
+          "ufo": {
+            "matched": 0.2608,
+            "native": 0.0467,
+            "native_over_matched": 0.17906441717791413
+          }
+        },
+        "morning": {
+          "envy": {
+            "matched": 0.2585,
+            "native": 0.0437,
+            "native_over_matched": 0.16905222437137332
+          },
+          "ufo": {
+            "matched": 0.2607,
+            "native": 0.0406,
+            "native_over_matched": 0.15573456079785195
+          }
+        },
+        "noon": {
+          "envy": {
+            "matched": 0.2367,
+            "native": 0.0476,
+            "native_over_matched": 0.20109843683988174
+          },
+          "ufo": {
+            "matched": 0.2526,
+            "native": 0.0537,
+            "native_over_matched": 0.21258907363420426
+          }
+        },
+        "evening": {
+          "envy": {
+            "matched": 0.7106,
+            "native": 0.3564,
+            "native_over_matched": 0.5015479876160991
+          },
+          "ufo": {
+            "matched": 1.3801,
+            "native": 0.6823,
+            "native_over_matched": 0.49438446489384824
+          }
+        }
+      },
+      "A": {
+        "source": {
+          "envy": {
+            "matched": 0.1988,
+            "native": 0.0366,
+            "native_over_matched": 0.1841046277665996
+          },
+          "ufo": {
+            "matched": 0.229,
+            "native": 0.0547,
+            "native_over_matched": 0.23886462882096068
+          }
+        },
+        "morning": {
+          "envy": {
+            "matched": 0.1982,
+            "native": 0.0352,
+            "native_over_matched": 0.17759838546922302
+          },
+          "ufo": {
+            "matched": 0.206,
+            "native": 0.047,
+            "native_over_matched": 0.22815533980582525
+          }
+        },
+        "noon": {
+          "envy": {
+            "matched": 0.2098,
+            "native": 0.0348,
+            "native_over_matched": 0.16587225929456625
+          },
+          "ufo": {
+            "matched": 0.2273,
+            "native": 0.0585,
+            "native_over_matched": 0.25736911570611526
+          }
+        },
+        "evening": {
+          "envy": {
+            "matched": 0.0743,
+            "native": 0.0397,
+            "native_over_matched": 0.5343203230148048
+          },
+          "ufo": {
+            "matched": 0.1345,
+            "native": 0.0516,
+            "native_over_matched": 0.3836431226765799
+          }
+        }
+      },
+      "B": {
+        "source": {
+          "envy": {
+            "matched": 0.1982,
+            "native": 0.0349,
+            "native_over_matched": 0.17608476286579214
+          },
+          "ufo": {
+            "matched": 0.2219,
+            "native": 0.0567,
+            "native_over_matched": 0.2555205047318612
+          }
+        },
+        "morning": {
+          "envy": {
+            "matched": 0.1851,
+            "native": 0.035,
+            "native_over_matched": 0.189086980010805
+          },
+          "ufo": {
+            "matched": 0.1999,
+            "native": 0.0503,
+            "native_over_matched": 0.2516258129064532
+          }
+        },
+        "noon": {
+          "envy": {
+            "matched": 0.205,
+            "native": 0.0353,
+            "native_over_matched": 0.17219512195121953
+          },
+          "ufo": {
+            "matched": 0.2261,
+            "native": 0.0664,
+            "native_over_matched": 0.2936753648827952
+          }
+        },
+        "evening": {
+          "envy": {
+            "matched": 0.0693,
+            "native": 0.0383,
+            "native_over_matched": 0.5526695526695526
+          },
+          "ufo": {
+            "matched": 0.136,
+            "native": 0.0535,
+            "native_over_matched": 0.39338235294117646
+          }
+        }
+      }
+    },
+    "mask_pixels_mean": {
+      "matched": {
+        "envy": 7889.291666666667,
+        "ufo": 3984.9583333333335
+      },
+      "native": {
+        "envy": 111071.45833333333,
+        "ufo": 55975.291666666664
+      }
+    },
+    "affine_ceiling": {
+      "label": "diagnostic ceiling, never a result",
+      "published": {
+        "F": {
+          "envy": {
+            "source": 0.0532,
+            "morning": 0.0595,
+            "noon": 0.0521,
+            "evening": 0.1283
+          },
+          "ufo": {
+            "source": 0.0392,
+            "morning": 0.0484,
+            "noon": 0.0349,
+            "evening": 0.1011
+          }
+        },
+        "J": {
+          "envy": {
+            "source": 0.0595,
+            "morning": 0.0641,
+            "noon": 0.0569,
+            "evening": 0.1156
+          },
+          "ufo": {
+            "source": 0.0418,
+            "morning": 0.0482,
+            "noon": 0.0376,
+            "evening": 0.1081
+          }
+        },
+        "C": {
+          "envy": {
+            "source": 0.0528,
+            "morning": 0.0595,
+            "noon": 0.051,
+            "evening": 0.1274
+          },
+          "ufo": {
+            "source": 0.0393,
+            "morning": 0.0484,
+            "noon": 0.0363,
+            "evening": 0.1027
+          }
+        },
+        "A": {
+          "envy": {
+            "source": 0.0484,
+            "morning": 0.0503,
+            "noon": 0.0462,
+            "evening": 0.0434
+          },
+          "ufo": {
+            "source": 0.0432,
+            "morning": 0.0426,
+            "noon": 0.0416,
+            "evening": 0.047
+          }
+        },
+        "B": {
+          "envy": {
+            "source": 0.0469,
+            "morning": 0.0472,
+            "noon": 0.0433,
+            "evening": 0.0426
+          },
+          "ufo": {
+            "source": 0.0446,
+            "morning": 0.0458,
+            "noon": 0.0448,
+            "evening": 0.0485
+          }
+        }
+      },
+      "matched": {
+        "F": {
+          "envy": {
+            "source": 0.0545,
+            "morning": 0.0563,
+            "noon": 0.0537,
+            "evening": 0.107
+          },
+          "ufo": {
+            "source": 0.0363,
+            "morning": 0.0346,
+            "noon": 0.0347,
+            "evening": 0.0994
+          }
+        },
+        "J": {
+          "envy": {
+            "source": 0.0567,
+            "morning": 0.059,
+            "noon": 0.0559,
+            "evening": 0.0888
+          },
+          "ufo": {
+            "source": 0.0378,
+            "morning": 0.0362,
+            "noon": 0.0359,
+            "evening": 0.0676
+          }
+        },
+        "C": {
+          "envy": {
+            "source": 0.0535,
+            "morning": 0.0568,
+            "noon": 0.0521,
+            "evening": 0.1095
+          },
+          "ufo": {
+            "source": 0.0353,
+            "morning": 0.035,
+            "noon": 0.0339,
+            "evening": 0.0989
+          }
+        },
+        "A": {
+          "envy": {
+            "source": 0.0474,
+            "morning": 0.0479,
+            "noon": 0.0453,
+            "evening": 0.04
+          },
+          "ufo": {
+            "source": 0.0377,
+            "morning": 0.0353,
+            "noon": 0.0368,
+            "evening": 0.0475
+          }
+        },
+        "B": {
+          "envy": {
+            "source": 0.048,
+            "morning": 0.0472,
+            "noon": 0.0443,
+            "evening": 0.0414
+          },
+          "ufo": {
+            "source": 0.0388,
+            "morning": 0.0381,
+            "noon": 0.0391,
+            "evening": 0.0498
+          }
+        }
+      },
+      "native": {
+        "F": {
+          "envy": {
+            "source": 0.0265,
+            "morning": 0.0378,
+            "noon": 0.0313,
+            "evening": 0.0884
+          },
+          "ufo": {
+            "source": 0.0334,
+            "morning": 0.0344,
+            "noon": 0.0316,
+            "evening": 0.0768
+          }
+        },
+        "J": {
+          "envy": {
+            "source": 0.0263,
+            "morning": 0.038,
+            "noon": 0.0284,
+            "evening": 0.0743
+          },
+          "ufo": {
+            "source": 0.0345,
+            "morning": 0.0354,
+            "noon": 0.0348,
+            "evening": 0.0606
+          }
+        },
+        "C": {
+          "envy": {
+            "source": 0.027,
+            "morning": 0.04,
+            "noon": 0.0313,
+            "evening": 0.0878
+          },
+          "ufo": {
+            "source": 0.0332,
+            "morning": 0.0353,
+            "noon": 0.032,
+            "evening": 0.0676
+          }
+        },
+        "A": {
+          "envy": {
+            "source": 0.0264,
+            "morning": 0.0294,
+            "noon": 0.026,
+            "evening": 0.0327
+          },
+          "ufo": {
+            "source": 0.0369,
+            "morning": 0.0359,
+            "noon": 0.0372,
+            "evening": 0.0409
+          }
+        },
+        "B": {
+          "envy": {
+            "source": 0.0269,
+            "morning": 0.0298,
+            "noon": 0.0271,
+            "evening": 0.0332
+          },
+          "ufo": {
+            "source": 0.0374,
+            "morning": 0.0373,
+            "noon": 0.04,
+            "evening": 0.0423
+          }
+        }
+      }
+    }
+  },
+  "matched_vs_published": {
+    "label": "measurement, not registered",
+    "per_tree": {
+      "F": {
+        "source": {
+          "lpy_envy_00000": {
+            "published": 0.1426,
+            "matched": 0.2266,
+            "matched_over_published": 1.5890603085553996
+          },
+          "lpy_envy_00003": {
+            "published": 0.1413,
+            "matched": 0.2429,
+            "matched_over_published": 1.719037508846426
+          },
+          "lpy_envy_00008": {
+            "published": 0.1229,
+            "matched": 0.2404,
+            "matched_over_published": 1.9560618388934095
+          },
+          "lpy_envy_00012": {
+            "published": 0.1273,
+            "matched": 0.2252,
+            "matched_over_published": 1.7690494893951298
+          },
+          "lpy_ufo_00000": {
+            "published": 0.184,
+            "matched": 0.2415,
+            "matched_over_published": 1.3125
+          },
+          "lpy_ufo_00001": {
+            "published": 0.178,
+            "matched": 0.2567,
+            "matched_over_published": 1.4421348314606741
+          },
+          "lpy_ufo_00002": {
+            "published": 0.1672,
+            "matched": 0.2509,
+            "matched_over_published": 1.5005980861244022
+          },
+          "lpy_ufo_00003": {
+            "published": 0.2221,
+            "matched": 0.2703,
+            "matched_over_published": 1.2170193606483566
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "published": 0.196,
+            "matched": 0.2596,
+            "matched_over_published": 1.3244897959183672
+          },
+          "lpy_envy_00003": {
+            "published": 0.1832,
+            "matched": 0.2608,
+            "matched_over_published": 1.4235807860262006
+          },
+          "lpy_envy_00008": {
+            "published": 0.1601,
+            "matched": 0.2581,
+            "matched_over_published": 1.6121174266083698
+          },
+          "lpy_envy_00012": {
+            "published": 0.1694,
+            "matched": 0.2502,
+            "matched_over_published": 1.4769775678866588
+          },
+          "lpy_ufo_00000": {
+            "published": 0.3022,
+            "matched": 0.2548,
+            "matched_over_published": 0.8431502316346791
+          },
+          "lpy_ufo_00001": {
+            "published": 0.2514,
+            "matched": 0.2587,
+            "matched_over_published": 1.0290373906125696
+          },
+          "lpy_ufo_00002": {
+            "published": 0.2247,
+            "matched": 0.2588,
+            "matched_over_published": 1.1517578994214506
+          },
+          "lpy_ufo_00003": {
+            "published": 0.2975,
+            "matched": 0.2747,
+            "matched_over_published": 0.9233613445378152
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "published": 0.1593,
+            "matched": 0.2153,
+            "matched_over_published": 1.3515379786566226
+          },
+          "lpy_envy_00003": {
+            "published": 0.1476,
+            "matched": 0.2435,
+            "matched_over_published": 1.6497289972899727
+          },
+          "lpy_envy_00008": {
+            "published": 0.1689,
+            "matched": 0.2613,
+            "matched_over_published": 1.547069271758437
+          },
+          "lpy_envy_00012": {
+            "published": 0.1326,
+            "matched": 0.2168,
+            "matched_over_published": 1.6349924585218703
+          },
+          "lpy_ufo_00000": {
+            "published": 0.246,
+            "matched": 0.2361,
+            "matched_over_published": 0.9597560975609757
+          },
+          "lpy_ufo_00001": {
+            "published": 0.2302,
+            "matched": 0.2651,
+            "matched_over_published": 1.1516072980017378
+          },
+          "lpy_ufo_00002": {
+            "published": 0.2128,
+            "matched": 0.248,
+            "matched_over_published": 1.1654135338345866
+          },
+          "lpy_ufo_00003": {
+            "published": 0.2514,
+            "matched": 0.2597,
+            "matched_over_published": 1.0330151153540175
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "published": 0.8639,
+            "matched": 0.5981,
+            "matched_over_published": 0.6923255006366478
+          },
+          "lpy_envy_00003": {
+            "published": 0.9452,
+            "matched": 0.7163,
+            "matched_over_published": 0.7578290308929327
+          },
+          "lpy_envy_00008": {
+            "published": 0.9777,
+            "matched": 0.824,
+            "matched_over_published": 0.8427943131840032
+          },
+          "lpy_envy_00012": {
+            "published": 0.8366,
+            "matched": 0.6408,
+            "matched_over_published": 0.7659574468085106
+          },
+          "lpy_ufo_00000": {
+            "published": 1.4487,
+            "matched": 1.4542,
+            "matched_over_published": 1.0037965072133637
+          },
+          "lpy_ufo_00001": {
+            "published": 1.4651,
+            "matched": 1.4482,
+            "matched_over_published": 0.9884649511978704
+          },
+          "lpy_ufo_00002": {
+            "published": 1.4089,
+            "matched": 1.2381,
+            "matched_over_published": 0.8787706721555824
+          },
+          "lpy_ufo_00003": {
+            "published": 1.4797,
+            "matched": 1.4001,
+            "matched_over_published": 0.9462053118875446
+          }
+        }
+      },
+      "J": {
+        "source": {
+          "lpy_envy_00000": {
+            "published": 0.1553,
+            "matched": 0.2372,
+            "matched_over_published": 1.527366387636832
+          },
+          "lpy_envy_00003": {
+            "published": 0.1621,
+            "matched": 0.2581,
+            "matched_over_published": 1.592227020357804
+          },
+          "lpy_envy_00008": {
+            "published": 0.1427,
+            "matched": 0.2513,
+            "matched_over_published": 1.7610371408549408
+          },
+          "lpy_envy_00012": {
+            "published": 0.1512,
+            "matched": 0.2392,
+            "matched_over_published": 1.5820105820105819
+          },
+          "lpy_ufo_00000": {
+            "published": 0.1903,
+            "matched": 0.2493,
+            "matched_over_published": 1.3100367840252234
+          },
+          "lpy_ufo_00001": {
+            "published": 0.1883,
+            "matched": 0.2754,
+            "matched_over_published": 1.462559745087626
+          },
+          "lpy_ufo_00002": {
+            "published": 0.1764,
+            "matched": 0.2648,
+            "matched_over_published": 1.5011337868480725
+          },
+          "lpy_ufo_00003": {
+            "published": 0.2275,
+            "matched": 0.2852,
+            "matched_over_published": 1.2536263736263735
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "published": 0.2362,
+            "matched": 0.2933,
+            "matched_over_published": 1.2417442845046571
+          },
+          "lpy_envy_00003": {
+            "published": 0.233,
+            "matched": 0.3038,
+            "matched_over_published": 1.303862660944206
+          },
+          "lpy_envy_00008": {
+            "published": 0.1998,
+            "matched": 0.2898,
+            "matched_over_published": 1.4504504504504505
+          },
+          "lpy_envy_00012": {
+            "published": 0.2246,
+            "matched": 0.2943,
+            "matched_over_published": 1.3103294746215495
+          },
+          "lpy_ufo_00000": {
+            "published": 0.3264,
+            "matched": 0.2675,
+            "matched_over_published": 0.819546568627451
+          },
+          "lpy_ufo_00001": {
+            "published": 0.2454,
+            "matched": 0.2696,
+            "matched_over_published": 1.0986145069274653
+          },
+          "lpy_ufo_00002": {
+            "published": 0.2378,
+            "matched": 0.273,
+            "matched_over_published": 1.1480235492010094
+          },
+          "lpy_ufo_00003": {
+            "published": 0.306,
+            "matched": 0.2892,
+            "matched_over_published": 0.9450980392156864
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "published": 0.2164,
+            "matched": 0.2802,
+            "matched_over_published": 1.2948243992606285
+          },
+          "lpy_envy_00003": {
+            "published": 0.2185,
+            "matched": 0.3076,
+            "matched_over_published": 1.4077803203661328
+          },
+          "lpy_envy_00008": {
+            "published": 0.2082,
+            "matched": 0.2956,
+            "matched_over_published": 1.419788664745437
+          },
+          "lpy_envy_00012": {
+            "published": 0.1998,
+            "matched": 0.2811,
+            "matched_over_published": 1.406906906906907
+          },
+          "lpy_ufo_00000": {
+            "published": 0.28,
+            "matched": 0.3007,
+            "matched_over_published": 1.0739285714285713
+          },
+          "lpy_ufo_00001": {
+            "published": 0.2698,
+            "matched": 0.3296,
+            "matched_over_published": 1.2216456634544108
+          },
+          "lpy_ufo_00002": {
+            "published": 0.2495,
+            "matched": 0.3086,
+            "matched_over_published": 1.23687374749499
+          },
+          "lpy_ufo_00003": {
+            "published": 0.3005,
+            "matched": 0.3282,
+            "matched_over_published": 1.092179700499168
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "published": 0.3422,
+            "matched": 0.1472,
+            "matched_over_published": 0.43015780245470486
+          },
+          "lpy_envy_00003": {
+            "published": 0.297,
+            "matched": 0.164,
+            "matched_over_published": 0.5521885521885522
+          },
+          "lpy_envy_00008": {
+            "published": 0.4195,
+            "matched": 0.251,
+            "matched_over_published": 0.5983313468414779
+          },
+          "lpy_envy_00012": {
+            "published": 0.2276,
+            "matched": 0.1438,
+            "matched_over_published": 0.6318101933216169
+          },
+          "lpy_ufo_00000": {
+            "published": 1.3436,
+            "matched": 0.825,
+            "matched_over_published": 0.6140220303661804
+          },
+          "lpy_ufo_00001": {
+            "published": 1.2419,
+            "matched": 0.5961,
+            "matched_over_published": 0.47999033738626296
+          },
+          "lpy_ufo_00002": {
+            "published": 1.1924,
+            "matched": 0.5129,
+            "matched_over_published": 0.43014089231801417
+          },
+          "lpy_ufo_00003": {
+            "published": 1.2117,
+            "matched": 0.6599,
+            "matched_over_published": 0.544606750845919
+          }
+        }
+      },
+      "C": {
+        "source": {
+          "lpy_envy_00000": {
+            "published": 0.1463,
+            "matched": 0.2365,
+            "matched_over_published": 1.6165413533834585
+          },
+          "lpy_envy_00003": {
+            "published": 0.1447,
+            "matched": 0.2509,
+            "matched_over_published": 1.7339322736696614
+          },
+          "lpy_envy_00008": {
+            "published": 0.1241,
+            "matched": 0.246,
+            "matched_over_published": 1.9822723609991941
+          },
+          "lpy_envy_00012": {
+            "published": 0.1316,
+            "matched": 0.2327,
+            "matched_over_published": 1.7682370820668694
+          },
+          "lpy_ufo_00000": {
+            "published": 0.1796,
+            "matched": 0.2432,
+            "matched_over_published": 1.354120267260579
+          },
+          "lpy_ufo_00001": {
+            "published": 0.1762,
+            "matched": 0.2637,
+            "matched_over_published": 1.4965947786606129
+          },
+          "lpy_ufo_00002": {
+            "published": 0.1639,
+            "matched": 0.2566,
+            "matched_over_published": 1.565588773642465
+          },
+          "lpy_ufo_00003": {
+            "published": 0.2225,
+            "matched": 0.2798,
+            "matched_over_published": 1.2575280898876404
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "published": 0.1908,
+            "matched": 0.2605,
+            "matched_over_published": 1.3653039832285117
+          },
+          "lpy_envy_00003": {
+            "published": 0.1837,
+            "matched": 0.2635,
+            "matched_over_published": 1.4344039194338596
+          },
+          "lpy_envy_00008": {
+            "published": 0.1557,
+            "matched": 0.2589,
+            "matched_over_published": 1.6628131021194605
+          },
+          "lpy_envy_00012": {
+            "published": 0.169,
+            "matched": 0.2512,
+            "matched_over_published": 1.4863905325443785
+          },
+          "lpy_ufo_00000": {
+            "published": 0.244,
+            "matched": 0.2507,
+            "matched_over_published": 1.0274590163934425
+          },
+          "lpy_ufo_00001": {
+            "published": 0.221,
+            "matched": 0.2555,
+            "matched_over_published": 1.156108597285068
+          },
+          "lpy_ufo_00002": {
+            "published": 0.2023,
+            "matched": 0.2581,
+            "matched_over_published": 1.2758279782501236
+          },
+          "lpy_ufo_00003": {
+            "published": 0.272,
+            "matched": 0.2783,
+            "matched_over_published": 1.0231617647058822
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "published": 0.1416,
+            "matched": 0.2223,
+            "matched_over_published": 1.569915254237288
+          },
+          "lpy_envy_00003": {
+            "published": 0.1403,
+            "matched": 0.2476,
+            "matched_over_published": 1.7647897362794012
+          },
+          "lpy_envy_00008": {
+            "published": 0.1568,
+            "matched": 0.2578,
+            "matched_over_published": 1.6441326530612244
+          },
+          "lpy_envy_00012": {
+            "published": 0.1243,
+            "matched": 0.219,
+            "matched_over_published": 1.761866452131939
+          },
+          "lpy_ufo_00000": {
+            "published": 0.187,
+            "matched": 0.2346,
+            "matched_over_published": 1.2545454545454546
+          },
+          "lpy_ufo_00001": {
+            "published": 0.1979,
+            "matched": 0.2652,
+            "matched_over_published": 1.3400707427993936
+          },
+          "lpy_ufo_00002": {
+            "published": 0.1724,
+            "matched": 0.2453,
+            "matched_over_published": 1.4228538283062644
+          },
+          "lpy_ufo_00003": {
+            "published": 0.2224,
+            "matched": 0.2654,
+            "matched_over_published": 1.1933453237410074
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "published": 0.8435,
+            "matched": 0.6285,
+            "matched_over_published": 0.7451096621221102
+          },
+          "lpy_envy_00003": {
+            "published": 0.8924,
+            "matched": 0.7072,
+            "matched_over_published": 0.7924697445091888
+          },
+          "lpy_envy_00008": {
+            "published": 0.98,
+            "matched": 0.8536,
+            "matched_over_published": 0.8710204081632653
+          },
+          "lpy_envy_00012": {
+            "published": 0.8179,
+            "matched": 0.6529,
+            "matched_over_published": 0.7982638464359947
+          },
+          "lpy_ufo_00000": {
+            "published": 1.4471,
+            "matched": 1.441,
+            "matched_over_published": 0.9957846727938636
+          },
+          "lpy_ufo_00001": {
+            "published": 1.4567,
+            "matched": 1.4421,
+            "matched_over_published": 0.9899773460561542
+          },
+          "lpy_ufo_00002": {
+            "published": 1.3943,
+            "matched": 1.2331,
+            "matched_over_published": 0.8843864304669009
+          },
+          "lpy_ufo_00003": {
+            "published": 1.4706,
+            "matched": 1.4042,
+            "matched_over_published": 0.9548483612131102
+          }
+        }
+      },
+      "A": {
+        "source": {
+          "lpy_envy_00000": {
+            "published": 0.0841,
+            "matched": 0.1886,
+            "matched_over_published": 2.24256837098692
+          },
+          "lpy_envy_00003": {
+            "published": 0.0968,
+            "matched": 0.2094,
+            "matched_over_published": 2.1632231404958677
+          },
+          "lpy_envy_00008": {
+            "published": 0.0776,
+            "matched": 0.2031,
+            "matched_over_published": 2.6172680412371134
+          },
+          "lpy_envy_00012": {
+            "published": 0.0856,
+            "matched": 0.1942,
+            "matched_over_published": 2.268691588785047
+          },
+          "lpy_ufo_00000": {
+            "published": 0.1029,
+            "matched": 0.2111,
+            "matched_over_published": 2.0515063168124392
+          },
+          "lpy_ufo_00001": {
+            "published": 0.121,
+            "matched": 0.2365,
+            "matched_over_published": 1.9545454545454546
+          },
+          "lpy_ufo_00002": {
+            "published": 0.0986,
+            "matched": 0.2221,
+            "matched_over_published": 2.2525354969574036
+          },
+          "lpy_ufo_00003": {
+            "published": 0.1455,
+            "matched": 0.2462,
+            "matched_over_published": 1.6920962199312717
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "published": 0.0938,
+            "matched": 0.1881,
+            "matched_over_published": 2.0053304904051172
+          },
+          "lpy_envy_00003": {
+            "published": 0.1114,
+            "matched": 0.2082,
+            "matched_over_published": 1.8689407540394973
+          },
+          "lpy_envy_00008": {
+            "published": 0.0859,
+            "matched": 0.2006,
+            "matched_over_published": 2.3352735739231663
+          },
+          "lpy_envy_00012": {
+            "published": 0.0989,
+            "matched": 0.196,
+            "matched_over_published": 1.9817997977755308
+          },
+          "lpy_ufo_00000": {
+            "published": 0.1026,
+            "matched": 0.1949,
+            "matched_over_published": 1.8996101364522417
+          },
+          "lpy_ufo_00001": {
+            "published": 0.1135,
+            "matched": 0.2066,
+            "matched_over_published": 1.8202643171806168
+          },
+          "lpy_ufo_00002": {
+            "published": 0.0988,
+            "matched": 0.2026,
+            "matched_over_published": 2.0506072874493926
+          },
+          "lpy_ufo_00003": {
+            "published": 0.1417,
+            "matched": 0.2198,
+            "matched_over_published": 1.5511644318983768
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "published": 0.0917,
+            "matched": 0.2028,
+            "matched_over_published": 2.2115594329334787
+          },
+          "lpy_envy_00003": {
+            "published": 0.1079,
+            "matched": 0.2262,
+            "matched_over_published": 2.096385542168675
+          },
+          "lpy_envy_00008": {
+            "published": 0.0829,
+            "matched": 0.2046,
+            "matched_over_published": 2.4680337756332933
+          },
+          "lpy_envy_00012": {
+            "published": 0.0913,
+            "matched": 0.2055,
+            "matched_over_published": 2.250821467688937
+          },
+          "lpy_ufo_00000": {
+            "published": 0.1091,
+            "matched": 0.21,
+            "matched_over_published": 1.924839596700275
+          },
+          "lpy_ufo_00001": {
+            "published": 0.1356,
+            "matched": 0.2381,
+            "matched_over_published": 1.7558997050147493
+          },
+          "lpy_ufo_00002": {
+            "published": 0.1042,
+            "matched": 0.2176,
+            "matched_over_published": 2.0882917466410746
+          },
+          "lpy_ufo_00003": {
+            "published": 0.1501,
+            "matched": 0.2437,
+            "matched_over_published": 1.6235842771485676
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "published": 0.0498,
+            "matched": 0.0686,
+            "matched_over_published": 1.3775100401606426
+          },
+          "lpy_envy_00003": {
+            "published": 0.0514,
+            "matched": 0.0806,
+            "matched_over_published": 1.5680933852140078
+          },
+          "lpy_envy_00008": {
+            "published": 0.0519,
+            "matched": 0.0745,
+            "matched_over_published": 1.4354527938342967
+          },
+          "lpy_envy_00012": {
+            "published": 0.039,
+            "matched": 0.0735,
+            "matched_over_published": 1.8846153846153846
+          },
+          "lpy_ufo_00000": {
+            "published": 0.0681,
+            "matched": 0.1038,
+            "matched_over_published": 1.524229074889868
+          },
+          "lpy_ufo_00001": {
+            "published": 0.1013,
+            "matched": 0.1418,
+            "matched_over_published": 1.3998025666337612
+          },
+          "lpy_ufo_00002": {
+            "published": 0.0729,
+            "matched": 0.1222,
+            "matched_over_published": 1.6762688614540466
+          },
+          "lpy_ufo_00003": {
+            "published": 0.1391,
+            "matched": 0.1704,
+            "matched_over_published": 1.225017972681524
+          }
+        }
+      },
+      "B": {
+        "source": {
+          "lpy_envy_00000": {
+            "published": 0.0753,
+            "matched": 0.1906,
+            "matched_over_published": 2.531208499335989
+          },
+          "lpy_envy_00003": {
+            "published": 0.0836,
+            "matched": 0.2086,
+            "matched_over_published": 2.495215311004785
+          },
+          "lpy_envy_00008": {
+            "published": 0.0642,
+            "matched": 0.201,
+            "matched_over_published": 3.130841121495328
+          },
+          "lpy_envy_00012": {
+            "published": 0.0719,
+            "matched": 0.1924,
+            "matched_over_published": 2.6759388038942973
+          },
+          "lpy_ufo_00000": {
+            "published": 0.0882,
+            "matched": 0.2053,
+            "matched_over_published": 2.3276643990929706
+          },
+          "lpy_ufo_00001": {
+            "published": 0.106,
+            "matched": 0.2309,
+            "matched_over_published": 2.1783018867924526
+          },
+          "lpy_ufo_00002": {
+            "published": 0.0839,
+            "matched": 0.2158,
+            "matched_over_published": 2.572109654350417
+          },
+          "lpy_ufo_00003": {
+            "published": 0.1236,
+            "matched": 0.2354,
+            "matched_over_published": 1.9045307443365695
+          }
+        },
+        "morning": {
+          "lpy_envy_00000": {
+            "published": 0.0677,
+            "matched": 0.1765,
+            "matched_over_published": 2.6070901033973413
+          },
+          "lpy_envy_00003": {
+            "published": 0.0853,
+            "matched": 0.1955,
+            "matched_over_published": 2.2919109026963658
+          },
+          "lpy_envy_00008": {
+            "published": 0.0649,
+            "matched": 0.19,
+            "matched_over_published": 2.9275808936825887
+          },
+          "lpy_envy_00012": {
+            "published": 0.0667,
+            "matched": 0.1785,
+            "matched_over_published": 2.6761619190404797
+          },
+          "lpy_ufo_00000": {
+            "published": 0.0779,
+            "matched": 0.1866,
+            "matched_over_published": 2.3953786906290113
+          },
+          "lpy_ufo_00001": {
+            "published": 0.0933,
+            "matched": 0.2031,
+            "matched_over_published": 2.176848874598071
+          },
+          "lpy_ufo_00002": {
+            "published": 0.0799,
+            "matched": 0.1958,
+            "matched_over_published": 2.4505632040050065
+          },
+          "lpy_ufo_00003": {
+            "published": 0.1173,
+            "matched": 0.214,
+            "matched_over_published": 1.824381926683717
+          }
+        },
+        "noon": {
+          "lpy_envy_00000": {
+            "published": 0.076,
+            "matched": 0.2038,
+            "matched_over_published": 2.681578947368421
+          },
+          "lpy_envy_00003": {
+            "published": 0.0881,
+            "matched": 0.2232,
+            "matched_over_published": 2.533484676503973
+          },
+          "lpy_envy_00008": {
+            "published": 0.0634,
+            "matched": 0.195,
+            "matched_over_published": 3.075709779179811
+          },
+          "lpy_envy_00012": {
+            "published": 0.0694,
+            "matched": 0.1978,
+            "matched_over_published": 2.85014409221902
+          },
+          "lpy_ufo_00000": {
+            "published": 0.0995,
+            "matched": 0.2112,
+            "matched_over_published": 2.122613065326633
+          },
+          "lpy_ufo_00001": {
+            "published": 0.1266,
+            "matched": 0.2388,
+            "matched_over_published": 1.8862559241706163
+          },
+          "lpy_ufo_00002": {
+            "published": 0.097,
+            "matched": 0.2171,
+            "matched_over_published": 2.238144329896907
+          },
+          "lpy_ufo_00003": {
+            "published": 0.132,
+            "matched": 0.2373,
+            "matched_over_published": 1.7977272727272726
+          }
+        },
+        "evening": {
+          "lpy_envy_00000": {
+            "published": 0.054,
+            "matched": 0.07,
+            "matched_over_published": 1.2962962962962965
+          },
+          "lpy_envy_00003": {
+            "published": 0.0454,
+            "matched": 0.0765,
+            "matched_over_published": 1.685022026431718
+          },
+          "lpy_envy_00008": {
+            "published": 0.0564,
+            "matched": 0.0671,
+            "matched_over_published": 1.1897163120567378
+          },
+          "lpy_envy_00012": {
+            "published": 0.0376,
+            "matched": 0.0638,
+            "matched_over_published": 1.6968085106382977
+          },
+          "lpy_ufo_00000": {
+            "published": 0.0639,
+            "matched": 0.1076,
+            "matched_over_published": 1.6838810641627544
+          },
+          "lpy_ufo_00001": {
+            "published": 0.0912,
+            "matched": 0.1447,
+            "matched_over_published": 1.5866228070175437
+          },
+          "lpy_ufo_00002": {
+            "published": 0.0629,
+            "matched": 0.1191,
+            "matched_over_published": 1.8934817170111289
+          },
+          "lpy_ufo_00003": {
+            "published": 0.126,
+            "matched": 0.1727,
+            "matched_over_published": 1.3706349206349207
+          }
+        }
+      }
+    }
+  },
+  "predictions": [
+    {
+      "id": "G0",
+      "prediction": "Every tree's grid-pass depth and mask reproduce the published matrix in every view.",
+      "clauses": [
+        {
+          "clause": "all 8 registered trees pass the registered gate in all 6 views (>= 99.5% of tree-mask pixels within 1 mm, mask IoU >= 0.995)",
+          "observed": {
+            "passing": "8 of 8",
+            "views_passing": "48 of 48",
+            "failing": {},
+            "min_mask_iou": 1.0,
+            "min_within_1mm": 1.0
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "G1",
+      "prediction": "On Matched, A's and B's source error is at least 0.85 x C's in at least 6 of 8 trees (the source gain is render-gap robustness).",
+      "clauses": [
+        {
+          "clause": "A >= 0.85 x C on Matched source in at least 6 of 8 trees",
+          "observed": {
+            "numerator": {
+              "lpy_envy_00000": 0.1886,
+              "lpy_envy_00003": 0.2094,
+              "lpy_envy_00008": 0.2031,
+              "lpy_envy_00012": 0.1942,
+              "lpy_ufo_00000": 0.2111,
+              "lpy_ufo_00001": 0.2365,
+              "lpy_ufo_00002": 0.2221,
+              "lpy_ufo_00003": 0.2462
+            },
+            "denominator": {
+              "lpy_envy_00000": 0.2365,
+              "lpy_envy_00003": 0.2509,
+              "lpy_envy_00008": 0.246,
+              "lpy_envy_00012": 0.2327,
+              "lpy_ufo_00000": 0.2432,
+              "lpy_ufo_00001": 0.2637,
+              "lpy_ufo_00002": 0.2566,
+              "lpy_ufo_00003": 0.2798
+            },
+            "ratios": {
+              "lpy_envy_00000": 0.7974630021141649,
+              "lpy_envy_00003": 0.8345954563571144,
+              "lpy_envy_00008": 0.825609756097561,
+              "lpy_envy_00012": 0.8345509239363988,
+              "lpy_ufo_00000": 0.8680098684210527,
+              "lpy_ufo_00001": 0.8968524838832006,
+              "lpy_ufo_00002": 0.8655494933749026,
+              "lpy_ufo_00003": 0.879914224446033
+            },
+            "meets_hold": [
+              "lpy_ufo_00000",
+              "lpy_ufo_00001",
+              "lpy_ufo_00002",
+              "lpy_ufo_00003"
+            ],
+            "meets_refutation": [],
+            "scored": 8,
+            "of": 8,
+            "needed": 6,
+            "decidable": true,
+            "unscored": {},
+            "unrounded_ratio": {
+              "lpy_envy_00000": 0.7974138340924001,
+              "lpy_envy_00003": 0.8343050307393212,
+              "lpy_envy_00008": 0.8255293292514436,
+              "lpy_envy_00012": 0.8346895190881642,
+              "lpy_ufo_00000": 0.8680648602987092,
+              "lpy_ufo_00001": 0.8967198212378169,
+              "lpy_ufo_00002": 0.8656472109695655,
+              "lpy_ufo_00003": 0.8800697046743546
+            },
+            "rounding_sensitive": []
+          },
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "B >= 0.85 x C on Matched source in at least 6 of 8 trees",
+          "observed": {
+            "numerator": {
+              "lpy_envy_00000": 0.1906,
+              "lpy_envy_00003": 0.2086,
+              "lpy_envy_00008": 0.201,
+              "lpy_envy_00012": 0.1924,
+              "lpy_ufo_00000": 0.2053,
+              "lpy_ufo_00001": 0.2309,
+              "lpy_ufo_00002": 0.2158,
+              "lpy_ufo_00003": 0.2354
+            },
+            "denominator": {
+              "lpy_envy_00000": 0.2365,
+              "lpy_envy_00003": 0.2509,
+              "lpy_envy_00008": 0.246,
+              "lpy_envy_00012": 0.2327,
+              "lpy_ufo_00000": 0.2432,
+              "lpy_ufo_00001": 0.2637,
+              "lpy_ufo_00002": 0.2566,
+              "lpy_ufo_00003": 0.2798
+            },
+            "ratios": {
+              "lpy_envy_00000": 0.8059196617336152,
+              "lpy_envy_00003": 0.8314069350338781,
+              "lpy_envy_00008": 0.8170731707317074,
+              "lpy_envy_00012": 0.8268156424581006,
+              "lpy_ufo_00000": 0.8441611842105263,
+              "lpy_ufo_00001": 0.875616230565036,
+              "lpy_ufo_00002": 0.8409976617303195,
+              "lpy_ufo_00003": 0.8413152251608291
+            },
+            "meets_hold": [
+              "lpy_ufo_00001"
+            ],
+            "meets_refutation": [],
+            "scored": 8,
+            "of": 8,
+            "needed": 6,
+            "decidable": true,
+            "unscored": {},
+            "unrounded_ratio": {
+              "lpy_envy_00000": 0.8061124290323102,
+              "lpy_envy_00003": 0.8313052876377252,
+              "lpy_envy_00008": 0.8167681068449688,
+              "lpy_envy_00012": 0.8269618772092675,
+              "lpy_ufo_00000": 0.8443611817718116,
+              "lpy_ufo_00001": 0.875657083803809,
+              "lpy_ufo_00002": 0.8408391238100681,
+              "lpy_ufo_00003": 0.8414336002947893
+            },
+            "rounding_sensitive": []
+          },
+          "holds": false,
+          "refutes": false
+        }
+      ],
+      "verdict": "partly supported"
+    },
+    {
+      "id": "G2",
+      "prediction": "On Matched, B's evening error is at most 0.3 x C's in at least 3 of 4 Envy trees, and A's UFO evening error is at most 0.5 x J's in at least 3 of 4 UFO trees (the low-sun gain is lighting).",
+      "clauses": [
+        {
+          "clause": "B <= 0.3 x C on Matched evening in at least 3 of 4 Envy trees",
+          "observed": {
+            "numerator": {
+              "lpy_envy_00000": 0.07,
+              "lpy_envy_00003": 0.0765,
+              "lpy_envy_00008": 0.0671,
+              "lpy_envy_00012": 0.0638
+            },
+            "denominator": {
+              "lpy_envy_00000": 0.6285,
+              "lpy_envy_00003": 0.7072,
+              "lpy_envy_00008": 0.8536,
+              "lpy_envy_00012": 0.6529
+            },
+            "B_over_C": {
+              "lpy_envy_00000": 0.11137629276054099,
+              "lpy_envy_00003": 0.10817307692307691,
+              "lpy_envy_00008": 0.07860824742268042,
+              "lpy_envy_00012": 0.09771787410016847
+            },
+            "meets_hold": [
+              "lpy_envy_00000",
+              "lpy_envy_00003",
+              "lpy_envy_00008",
+              "lpy_envy_00012"
+            ],
+            "meets_refutation": [],
+            "scored": 4,
+            "of": 4,
+            "needed": 3,
+            "decidable": true,
+            "unscored": {},
+            "unrounded_ratio": {
+              "lpy_envy_00000": 0.11132613129012181,
+              "lpy_envy_00003": 0.10817302024170183,
+              "lpy_envy_00008": 0.07855618237189099,
+              "lpy_envy_00012": 0.09767938845173171
+            },
+            "rounding_sensitive": []
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "A <= 0.5 x J on Matched evening in at least 3 of 4 UFO trees (no refutation registered)",
+          "observed": {
+            "numerator": {
+              "lpy_ufo_00000": 0.1038,
+              "lpy_ufo_00001": 0.1418,
+              "lpy_ufo_00002": 0.1222,
+              "lpy_ufo_00003": 0.1704
+            },
+            "denominator": {
+              "lpy_ufo_00000": 0.825,
+              "lpy_ufo_00001": 0.5961,
+              "lpy_ufo_00002": 0.5129,
+              "lpy_ufo_00003": 0.6599
+            },
+            "A_over_J": {
+              "lpy_ufo_00000": 0.12581818181818183,
+              "lpy_ufo_00001": 0.2378795504110049,
+              "lpy_ufo_00002": 0.23825307077403002,
+              "lpy_ufo_00003": 0.2582209425670556
+            },
+            "meets_hold": [
+              "lpy_ufo_00000",
+              "lpy_ufo_00001",
+              "lpy_ufo_00002",
+              "lpy_ufo_00003"
+            ],
+            "meets_refutation": [],
+            "scored": 4,
+            "of": 4,
+            "needed": 3,
+            "decidable": true,
+            "unscored": {},
+            "unrounded_ratio": {
+              "lpy_ufo_00000": 0.1258192037509796,
+              "lpy_ufo_00001": 0.2378502819126374,
+              "lpy_ufo_00002": 0.23818036308660057,
+              "lpy_ufo_00003": 0.25823948663340834
+            },
+            "rounding_sensitive": []
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "G3",
+      "prediction": "F's source error on Matched is at most 0.85 x its error on the published matrix in at least 6 of 8 trees.",
+      "clauses": [
+        {
+          "clause": "F Matched / F published <= 0.85 on source in at least 6 of 8 trees",
+          "observed": {
+            "numerator": {
+              "lpy_envy_00000": 0.2266,
+              "lpy_envy_00003": 0.2429,
+              "lpy_envy_00008": 0.2404,
+              "lpy_envy_00012": 0.2252,
+              "lpy_ufo_00000": 0.2415,
+              "lpy_ufo_00001": 0.2567,
+              "lpy_ufo_00002": 0.2509,
+              "lpy_ufo_00003": 0.2703
+            },
+            "denominator": {
+              "lpy_envy_00000": 0.1426,
+              "lpy_envy_00003": 0.1413,
+              "lpy_envy_00008": 0.1229,
+              "lpy_envy_00012": 0.1273,
+              "lpy_ufo_00000": 0.184,
+              "lpy_ufo_00001": 0.178,
+              "lpy_ufo_00002": 0.1672,
+              "lpy_ufo_00003": 0.2221
+            },
+            "ratio": {
+              "lpy_envy_00000": 1.5890603085553996,
+              "lpy_envy_00003": 1.719037508846426,
+              "lpy_envy_00008": 1.9560618388934095,
+              "lpy_envy_00012": 1.7690494893951298,
+              "lpy_ufo_00000": 1.3125,
+              "lpy_ufo_00001": 1.4421348314606741,
+              "lpy_ufo_00002": 1.5005980861244022,
+              "lpy_ufo_00003": 1.2170193606483566
+            },
+            "meets_hold": [],
+            "meets_refutation": [
+              "lpy_envy_00000",
+              "lpy_envy_00003",
+              "lpy_envy_00008",
+              "lpy_envy_00012",
+              "lpy_ufo_00000",
+              "lpy_ufo_00001",
+              "lpy_ufo_00002",
+              "lpy_ufo_00003"
+            ],
+            "scored": 8,
+            "of": 8,
+            "needed": 6,
+            "decidable": true,
+            "unscored": {},
+            "unrounded_ratio": {
+              "lpy_envy_00000": 1.5883849327346284,
+              "lpy_envy_00003": 1.7191135071515018,
+              "lpy_envy_00008": 1.9564335756383258,
+              "lpy_envy_00012": 1.7681598944595294,
+              "lpy_ufo_00000": 1.3127382514097983,
+              "lpy_ufo_00001": 1.4423538933054996,
+              "lpy_ufo_00002": 1.5003862450087064,
+              "lpy_ufo_00003": 1.2170629197064224
+            },
+            "rounding_sensitive": []
+          },
+          "holds": false,
+          "refutes": true
+        }
+      ],
+      "verdict": "refuted"
+    }
+  ],
+  "reading": {
+    "g1": "partly supported",
+    "g2": "supported",
+    "text": null,
+    "note": "The protocol names no reading for this combination of verdicts."
+  }
+}
