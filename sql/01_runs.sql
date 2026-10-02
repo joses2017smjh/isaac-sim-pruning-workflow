@@ -2,8 +2,9 @@
 -- from, so anything missing here is missing from the result.
 --
 -- A run is a PASS only when the independent grader passed every one of its
--- checks. Slurm state is deliberately absent: COMPLETED (0:0) is accounting,
--- never evidence of task success.
+-- checks. Slurm state is deliberately absent: it is never evidence here. It is
+-- not blind, though: the vision runner exits 0 only when the grader passed
+-- every check and the configuration matched, so COMPLETED (0:0) reveals a pass.
 CREATE OR REPLACE VIEW runs AS
 SELECT
     condition,

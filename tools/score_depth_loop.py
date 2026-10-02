@@ -78,9 +78,23 @@ CONSTRUCTION_NOTES = [
     "The scorer was committed at 1bd1ea1 before any depth-loop run was submitted.",
     "It was amended after an independent blind review (15 confirmed findings), before any depth-loop grade file, "
     "run directory or log was opened by anyone; the amendment is in this file's history and code_revision.",
-    "Before the amendment the main session and the reviewer had seen only the runs' final Slurm states and elapsed "
-    "times (four FAILED exit 1: evening 14944 r1 and r2 and both controls; six COMPLETED; all on cn-gpu5). A Slurm "
-    "state is not a grade: a run that stops exits nonzero.",
+    "It was amended a second time (8acbf19) to close five gaps the amendment's blind verifier found, again before "
+    "any grade file, run directory or log was opened.",
+    "Before the amendments the main session and the reviewer had seen only the runs' final Slurm states and elapsed "
+    "times (four FAILED exit 1: evening 14944 r1 and r2 and both controls; six COMPLETED; all on cn-gpu5).",
+    "Those states disclosed outcomes. Each task ran tools/run_vision_experiment.py, whose execute() exits 0 only when "
+    "the capture completed, the unchanged grader passed all 17 checks (grade_sequence ok) and configuration_matches "
+    "is true. So COMPLETED meant that the four 15004 low-sun runs and both source-light runs passed 17/17 with "
+    "configuration_matches true, and exit 1 meant that the two evening 14944 runs and both controls did not. An "
+    "earlier version of this note said 'A Slurm state is not a grade', which understated this; the correction "
+    "changed no scoring code. Outcomes here are still read only from the per-batch grade files.",
+    "What the states bear on. They revealed C2's pass count (4 of 4) and that no 15004 run stopped anywhere, so none "
+    "stopped on appearance in its window; C5's outcome (both source runs passed); C4's pass clause (neither control "
+    "passed); and that neither evening 14944 run passed, which C3 predicts, without saying where or why it stopped. "
+    "A rejected grey failure in a shadow window would most likely have stopped a 15004 run, so the four passes also "
+    "suggest that any grey failure in those runs' windows was accepted (C1 for 4 of its 6 runs). They did not reveal "
+    "C3's stop frame or reason, C4's depth clause, C1 for the evening 14944 runs, or C6. No clause reads any of "
+    "this.",
 ]
 INTERPRETATIONS = [
     "The grade files must be exactly the 7 registered batches (any other depth-loop grade file refuses), each "

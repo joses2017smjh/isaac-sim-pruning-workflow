@@ -362,3 +362,20 @@ def test_a_capture_without_the_registered_arm_is_refused_and_accept_must_be_bool
     unmatched = _captured_run(tmp_path, scorer, batch, "run_04_unmatched", result=False)
     record = scorer.run_record(tmp_path, batch, {**row, "run_directory": unmatched.name})
     assert not record["scored"] and record["unscored_reason"] == "configuration refused"
+
+
+def test_the_construction_notes_say_what_the_slurm_states_revealed(scorer):
+    text = " ".join(scorer.CONSTRUCTION_NOTES)
+    for fact in (
+        "committed at 1bd1ea1 before any depth-loop run was submitted",
+        "amended a second time (8acbf19)",
+        "four FAILED exit 1: evening 14944 r1 and r2 and both controls; six COMPLETED",
+        "exits 0 only when the capture completed, the unchanged grader passed all 17 checks",
+        "said 'A Slurm state is not a grade', which understated this",
+        "C2's pass count (4 of 4)",
+        "C5's outcome",
+        "C4's pass clause",
+        "C1 for 4 of its 6 runs",
+        "No clause reads any of this.",
+    ):
+        assert fact in text
