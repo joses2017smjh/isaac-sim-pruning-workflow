@@ -36,13 +36,23 @@ Finished and published:
 - **P1 with a 0.01 px outline band**, for future runs. Registered in the
   [jaw-in-view protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#registered-for-future-runs--october-2-2026).
   The October 2 verdict stays refuted.
-- **Generalize the closure hold.** It passed on the three 530 recordings it
-  was designed on, and an unseen contact target would test it. No other
-  recorded target reaches closure with the jaw over its tracked patch, so
-  candidates must first be found offline.
-- **Evening 14944.** It still stops with the depth-aware check, because the
-  shadow leaves almost no correlation (0.0005–0.045). An offline design study
-  comes first.
+- **Generalize the closure hold**
+  ([scope](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md)). It passed on the
+  three 530 recordings it was designed on, and an unseen contact target would
+  test it.
+  - No other recorded run gives the hold anything to do.
+  - The planner that found 530's path was never committed, so its rebuild
+    comes first. That needs a go-ahead.
+  - The GPU guide is 630 GPU-minutes, depending on how many candidates
+    qualify.
+- **Evening 14944: the registered agreement arm in closed loop**
+  ([scope](SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md)).
+  - At the shadow event, flow still tracks and the depth test accepts; only the
+    appearance score collapses.
+  - The arm, registered October 1, replaces that score with the depth
+    agreement on accepted frames.
+  - Order: an offline design study first, then 6 runs (270 GPU-minutes) for
+    approval.
 
 ## Stretch goals
 

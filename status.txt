@@ -5,7 +5,8 @@ WHERE THIS IS
   Branch develop, pushed. User asked for updates to be pushed; never force-push.
   CPU environment: /nfs/hpc/share/sanchej7/miniforge3/envs/depth-env/bin/python
   (Python 3.10.19, numpy 2.2.6, opencv 4.11.0.86); CI-pinned ruff /nfs/hpc/share/sanchej7/ruff01410/bin/ruff.
-  Share usage 1.542 TiB (over the 1.5 TiB soft quota, under the 2 TiB hard limit).
+  Share project quota (lfs quota -p 30762): 1.504 TiB used, over the 1.5 TiB soft quota, under the 2 TiB hard
+  limit, grace 3w4d left on 2026-10-02.
 
 LATEST — 2026-10-02 MORNING (read this first)
   JAW IN VIEW (P1-P8): 530 PASSED 17/17 IN 3 OF 3, the first pass of a contact target, under the label
@@ -23,9 +24,11 @@ LATEST — 2026-10-02 MORNING (read this first)
     capture complete + grader 17/17 + configuration_matches). Both scorers' disclosures now say which
     predictions that revealed (3ac43cb); the old depth-loop scoring output (job 21506428) was never opened.
   CI at 45763d0 (job 21507190): ruff clean, 950 passed, 19 skipped, demo ran.
-  NEEDS THE USER: (1) whether to register an amended P1 mask-fidelity check (edge band) for future runs;
-    (2) proposals needing GPU approval: generalize the closure hold to an unseen contact target; a different
-    input for evening 14944. See docs/PENDING.md.
+  FOLLOW-UPS (user approved in principle 2026-10-02; budgets still to be approved as numbers):
+    P1 with a 0.01 px outline band registered for future runs (1386e63). Scopes committed:
+    docs/SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md (evening 14944: design study first, then 6 runs,
+    270 GPU-min) and docs/SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md (planner rebuild needs a go-ahead;
+    GPU guide 630). Both were checked by a 39-agent verification workflow; its corrections are applied.
   SESSION: interactive job 21505616 on cn-gpu3 (6 GB cgroup with VS Code); heavy CPU work as sbatch on share.
 
 SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
