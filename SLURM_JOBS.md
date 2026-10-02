@@ -664,7 +664,11 @@ changes the 0.35 appearance gate's rule; simulator depth*. It is never pooled
 with unchanged-gate runs.
 
 **Depth closed-loop runs (October 1).** All 10 tasks ran on `cn-gpu5` (RTX
-8000) and used 256 of the 450 reserved GPU-minutes. Slurm states are not grades.
+8000) and used 256 of the 450 reserved GPU-minutes. These states reveal each
+run's pass or fail: `run_vision_experiment.py` exits 0 only when the capture
+completed, the grader passed all 17 checks and the configuration matched. They
+were seen before the scorer was finished, and the scorer discloses this. The
+grades themselves come only from the grade files.
 
 | Task | Run | Slurm state | Elapsed |
 |---|---|---|---|
@@ -680,13 +684,18 @@ with unchanged-gate runs.
 | `21502539_0` | control 12142 | FAILED (exit 1) | 22m59s |
 
 Grading: CPU job `21505683` (`share`, October 2), `aggregate_eval.py` at
-`6920d21`, seven batches, all exit 0.
+`6920d21`, seven batches, all exit 0. Scored by CPU job `21507189`: C1–C6
+supported, [result](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md#result--october-2-2026).
 
 ### Follow-ups (CPU, October 2)
 
 | Job | What | Outcome |
 |---|---|---|
 | `21505806` | At `9b0e062`: foundation CI on a clone without recordings; the tests that need recordings; the revised render-gap scorer; the P0 recheck | COMPLETED in 2m54s: ruff clean, 886 passed and 19 skipped, demo ran; 23 passed; [render-gap verdicts](docs/evidence/render_gap_verdicts_2026-10-02.json) unchanged; [P0 recheck](docs/evidence/jaw_in_view_p0_replay_recheck_2026-10-02.json) passed |
+| `21506428` | At `0282145`: the depth closed-loop scorer, whose notes still said "a Slurm state is not a grade" | COMPLETED in 41s; its output was never opened and is superseded by `21507189` |
+| `21507188` | At `45763d0`: the jaw-in-view scorer (committed blind at `3ac43cb`) on the grades committed unopened at `45763d0` | COMPLETED in 1m46s (`cn-a10`, 0.5 GB): [verdicts](docs/evidence/jaw_in_view_verdicts_2026-10-02.json) |
+| `21507189` | At `45763d0`, afterany `21507188`: the depth closed-loop scorer, notes corrected | COMPLETED in 32s: [verdicts](docs/evidence/depth_loop_verdicts_2026-10-02.json), C1–C6 supported |
+| `21507190` | At `45763d0`: foundation CI on a clone without recordings | COMPLETED in 1m56s: ruff clean, 950 passed and 19 skipped, demo ran |
 
 ### Jaw in the camera's view (submitted October 1)
 
@@ -713,8 +722,10 @@ with freshness and frame-reuse checks waived on held frames*. It is reported
 apart from every unchanged-gate result and never pooled.
 
 **Jaw-in-view runs (October 1).** All 6 tasks ran on `cn-gpu5` (RTX 8000) and
-used 181.5 of the 270 reserved GPU-minutes. Slurm states are not grades: a run
-that stops exits nonzero.
+used 181.5 of the 270 reserved GPU-minutes. As above, these states reveal pass
+or fail (exit 0 only on a complete capture, 17/17 and a matching
+configuration). They were seen before the scorer was finished, and the scorer
+discloses this.
 
 | Task | Target | Slurm state | Elapsed |
 |---|---|---|---|
@@ -726,4 +737,9 @@ that stops exits nonzero.
 | `21501986_1` | 15004 | COMPLETED | 26m19s |
 
 Grading: CPU job `21505682` (`share`, October 2), `aggregate_eval.py` at
-`6920d21`, three batches, all exit 0.
+`6920d21`, three batches, all exit 0. Scored by CPU job `21507188`.
+- 530 passed 17/17 in 3 of 3 runs.
+- P2–P6 and P8 supported; P7 partly supported.
+- P1 refuted, by one pixel on the jaw's outline.
+
+[Result](docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026).

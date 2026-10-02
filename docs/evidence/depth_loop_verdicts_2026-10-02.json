@@ -1,0 +1,1057 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the depth-aware appearance check's closed-loop test (C1-C6): 10 simulator runs with D_strict + J in the live controller, the jaw surrogate casting its shadow. Simulator renders and depth; two targets and two low suns; results never pooled with unchanged-gate runs.",
+  "label": "depth-aware appearance check D_strict + J; changes the 0.35 appearance gate's rule; simulator depth (RTX optical-Z ground truth, noise-free, perfectly registered); not a sensor",
+  "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md",
+  "code_revision": "45763d015313a844bc8f587c84c5d9fd53910348",
+  "code_tree_dirty": false,
+  "construction_notes": [
+    "The scorer was committed at 1bd1ea1 before any depth-loop run was submitted.",
+    "It was amended after an independent blind review (15 confirmed findings), before any depth-loop grade file, run directory or log was opened by anyone; the amendment is in this file's history and code_revision.",
+    "It was amended a second time (8acbf19) to close five gaps the amendment's blind verifier found, again before any grade file, run directory or log was opened.",
+    "Before the amendments the main session and the reviewer had seen only the runs' final Slurm states and elapsed times (four FAILED exit 1: evening 14944 r1 and r2 and both controls; six COMPLETED; all on cn-gpu5).",
+    "Those states disclosed outcomes. Each task ran tools/run_vision_experiment.py, whose execute() exits 0 only when the capture completed, the unchanged grader passed all 17 checks (grade_sequence ok) and configuration_matches is true. So COMPLETED meant that the four 15004 low-sun runs and both source-light runs passed 17/17 with configuration_matches true, and exit 1 meant that the two evening 14944 runs and both controls did not. An earlier version of this note said 'A Slurm state is not a grade', which understated this; the correction changed no scoring code. Outcomes here are still read only from the per-batch grade files.",
+    "What the states bear on. They revealed C2's pass count (4 of 4) and that no 15004 run stopped anywhere, so none stopped on appearance in its window; C5's outcome (both source runs passed); C4's pass clause (neither control passed); and that neither evening 14944 run passed, which C3 predicts, without saying where or why it stopped. A rejected grey failure in a shadow window would most likely have stopped a 15004 run, so the four passes also suggest that any grey failure in those runs' windows was accepted (C1 for 4 of its 6 runs). They did not reveal C3's stop frame or reason, C4's depth clause, C1 for the evening 14944 runs, or C6. No clause reads any of this."
+  ],
+  "grade_files": {
+    "docs/evidence/depth_loop_2026-10-01/depth-loop-eve-r1-20261001.json": {
+      "sha256": "457611140a1d9317932e0509265eca6960492a059052a7501a9658246882acb9",
+      "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/depth_loop_2026-10-01/depth-loop-mor-r1-20261001.json": {
+      "sha256": "631620b685a4db1e10e52f57b0d753a9290d17c4af3956f02d78afc1e897d726",
+      "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/depth_loop_2026-10-01/depth-loop-eve-r2-20261001.json": {
+      "sha256": "1cd582b58a9c1fe41c0baf37dd3f6e8f3aed9b0c3d2f038b858004a34e6a26ad",
+      "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/depth_loop_2026-10-01/depth-loop-mor-r2-20261001.json": {
+      "sha256": "05a547e6d7ccf5ebd677e8bb1a34be7a4d955f581f962c838185bde9dee9d7a0",
+      "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/depth_loop_2026-10-01/depth-loop-src-20261001.json": {
+      "sha256": "6db1c5ca83edf8eb569d9a053afcc187333712cb89b0082d703b1211d4938b57",
+      "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/depth_loop_2026-10-01/depth-loop-ctl-19444-20261001.json": {
+      "sha256": "d67125c6aa9b3a34b1e571698d3db28dcb7c9d48f81aa77bda8e49f3ca2cdba6",
+      "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/depth_loop_2026-10-01/depth-loop-ctl-12142-20261001.json": {
+      "sha256": "4a4ec12bc38212d9a6e1903b77179bd0c577a6339cf28776af51b9f40ff63810",
+      "protocol": "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    }
+  },
+  "frozen_sources_sha256": {
+    "hpc/inner/render_pruning_workflow.py": "26a486acf8483f917415db611da97a9889b567e450a6ab740c2e801239e46622",
+    "source/isaaclab_pruning/isaaclab_pruning/__init__.py": "5896a80e1371b283db63353421c8718239a6b776dd239e31b168b9710e9d1da6",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/__init__.py": "85ac258cb869e6807a45656a31214c1a84a4a84662c472d64953fd4b898d4fe2",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/cut_point.py": "1221034d9ce65c465e08f37ecb745a45ffb3fd98b5e266cab05ecf8e6d562978",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/cutter.py": "52425d792610c1be8d2dddd855c76d48707a393c261240e5b7a133c69297fbe7",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/cylinders.py": "e0f71b8ea3dc52d90f77bcb64a14f182a38863bb5acfbc80623c886fea0fc939",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/wood.py": "da52972f4063de71749182774fcb90f37711db38d05b149d756bcb7d5ffcc8cc",
+    "source/isaaclab_pruning/isaaclab_pruning/ladder/__init__.py": "29952be591df0cb62351864c490c40e98b55189607876fab6892c02cc8d96a2f",
+    "source/isaaclab_pruning/isaaclab_pruning/ladder/axes.py": "64162226f632ebd0fd195b86b830da3d870b579b3657994a75a4eea63ed823ba",
+    "source/isaaclab_pruning/isaaclab_pruning/perception/__init__.py": "89b987088d09087395095b34ae4569d725242a9945d178fbbce74001243c7d0c",
+    "source/isaaclab_pruning/isaaclab_pruning/perception/depth_appearance.py": "bc663e5377824d35c59eb08939f6ed87abf2ae91318743a35fecc3a633a36758",
+    "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py": "15cbe8ec64fd025beb7933242f8f9aea4120d531c6b008bfab88214583381f80",
+    "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py": "6e5dd0264b63411520728bd3109cd65903cee368254fc2874a8877b066d6e7d7",
+    "source/isaaclab_pruning/isaaclab_pruning/sim/__init__.py": "bdea7d66c3cbe5af839a6ed565cf8de989c61cea82c69bbc3ff98540ae3abdfa",
+    "source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py": "930b5f8baa6c638cc96d93a5ad93ce183e6c2a52aad964779efc7733b490c20c",
+    "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py": "9c494cc71b49e7853a9dbf672a313294eeb938e4458fe900ab4a0823c90c0fed",
+    "source/isaaclab_pruning/isaaclab_pruning/task/__init__.py": "4ba0b7ebe1f9ca04b66106c5b72c41d2407f26e4034af0497ede11535fde3c66",
+    "source/isaaclab_pruning/isaaclab_pruning/task/curriculum.py": "40222cc9ac7cb8b82b858c9a13af7bf2a77236fa59f0c33b4c6a45f3ce3ea224",
+    "source/isaaclab_pruning/isaaclab_pruning/task/loop.py": "6e9a4b9a9a272ea9e85c8aba0a15fb236952b39c6148f4fe5f799639f91d6317",
+    "source/isaaclab_pruning/isaaclab_pruning/task/reward.py": "c0b181f897b0e357c7cca5b127273206216f37bc2dfc8965f1423e623c89fe32",
+    "source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py": "902e3661863c89a2a0cfed6d25b9f359849ccd62066c88b49daf8d787c522d31",
+    "source/isaaclab_pruning/isaaclab_pruning/task/success.py": "3b14a58a09bf8a1009cee4a78a4ec5981a9f496b1f9b1adc3aa266820916ddcd",
+    "tools/check_depth_loop_c0.py": "71bcdc906b306b77c3d5760acbdcf7be1d79f5a2c5cefb643dc5ad04f3cc4896",
+    "tools/replay_depth_appearance.py": "f2432fd4501052ba136f8388d8abdcb87ae12b819c0780d291893329f2971ad1",
+    "tools/replay_jaw_self_mask.py": "a85e639404a1201fc49fd42fde37511b909b57233a33e63ee26f90a93914a717",
+    "tools/score_perception_round.py": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+    "tools/score_planned_approach.py": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c"
+  },
+  "offline_tool_provenance": {
+    "code_revision": "45763d015313a844bc8f587c84c5d9fd53910348",
+    "source_files_status_porcelain": "",
+    "source_sha256": {
+      "source/isaaclab_pruning/isaaclab_pruning/perception/depth_appearance.py": "bc663e5377824d35c59eb08939f6ed87abf2ae91318743a35fecc3a633a36758",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py": "6e5dd0264b63411520728bd3109cd65903cee368254fc2874a8877b066d6e7d7",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py": "15cbe8ec64fd025beb7933242f8f9aea4120d531c6b008bfab88214583381f80",
+      "source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py": "902e3661863c89a2a0cfed6d25b9f359849ccd62066c88b49daf8d787c522d31",
+      "tools/replay_depth_appearance.py": "f2432fd4501052ba136f8388d8abdcb87ae12b819c0780d291893329f2971ad1"
+    }
+  },
+  "float_tolerance": 1e-06,
+  "max_event_float_difference_accepted": 6.48200511932373e-07,
+  "max_strict_correlation_difference": 6.48200511932373e-07,
+  "interpretations": [
+    "The grade files must be exactly the 7 registered batches (any other depth-loop grade file refuses), each graded under this protocol by tools/validate_vision_sequence.py with 17 checks, holding the registered targets, light and strategy in plan order under their registered run directories (10 runs in all); otherwise nothing is scored.",
+    "A run is scored when it was graded (status 'graded', 17 checks), its capture completed (report stage 'complete', and the runner's experiment_result.json with configuration_matches true), and its report shows the arm on with the registered constants and the jaw self-mask and closure hold off. Any other run is listed in every table and contributes nothing: it is neither a pass nor a failure.",
+    "A grey-check failure is a frame whose live measurement carries a depth_appearance event (the tracker attaches one exactly when the grey NCC fails 0.35). A run's stop is its first frame whose recorded cut phase is 'stopped'; the grade files' stop_frame is the next frame (the first 'stopped_failure' command) and is not used. 'In the shadow window' means the frame index lies in the registered inclusive window.",
+    "Only grey failures up to and including the stop are judged (the frames C6 verifies); later ones are listed as post_stop and never decide a clause.",
+    "C1 judges the first grey failure inside each low-sun run's window. It is supported only when all 6 runs have one and every one is accepted; a run without one is untested.",
+    "C2 counts a pass only from the grader's class 'pass' (all 17 checks). It is supported when all 4 runs are scored, at least 3 pass and none stops on appearance in its window. It is refuted when at least 2 stop in the window for any reason, or when even counting every unscored run as a pass fewer than 2 would pass.",
+    "C3 judges the first grey failure in each evening 14944 run's window. Accepted, then a stop at that frame on low_confidence with strict confidence below 0.15, holds; accepted and no stop at or before it refutes ('continued past the event'); rejected with the stop at that frame refutes; any other case is labelled and neither holds nor refutes.",
+    "C4 judges each scored control: a graded pass refutes; any accepted grey failure refutes; a control without a grey failure leaves the second clause untested. The registered expectations (19444 stops when the open jaw reaches the patch, 12142 at the wire) are one clause per control that can only hold: the event at the stop is rejected naming J_jaw_silhouette (19444) or 3_near_fraction (12142). The recorded stop frames are context, not thresholds.",
+    "C5 is refuted only by a scored source run that fails a check. An unscored run contributes nothing: one unscored run leaves C5 at most partly supported, and two leave it untested.",
+    "C6 compares each scored run whose recording is complete with the offline strict arm on its own frames, through its stop: the strict arm must equal the recording (state, reason and pixel exactly; pixels are float32 in both trackers, so any cross-CPU difference exceeds 1e-6 anyway; correlation within 1e-6), and the live and offline depth events, preview included, must have the same frames, the same keys and equal values (floats within 1e-6, as the C0 gate). A run the offline tool cannot replay (an unscored run, frame indexes not contiguous, a preview or frame file missing) is not comparable: listed, and C6 cannot be supported, but it is not refuted. Any other replay error aborts the scorer.",
+    "A prediction is 'untested' when no run contributed evidence to any of its clauses, 'refuted' when any clause refutes, 'supported' when every clause holds, and 'partly supported' otherwise."
+  ],
+  "runs": [
+    {
+      "batch": "depth-loop-eve-r1-20261001",
+      "kind": "evening",
+      "run_directory": "run_00_evening_tree1_v14944_baseline_depth_appearance",
+      "target": 14944,
+      "daylight": "evening",
+      "status": "graded",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": {
+        "frame": 67,
+        "stopped_reason": "vision_invalid",
+        "tracker_reason": "low_confidence"
+      },
+      "grey_failures": [
+        67
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "67": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.0004812343104276806,
+          "decision": "stops_downstream",
+          "ended_by": [
+            "tracking_lost",
+            "low_confidence"
+          ],
+          "ncc": 0.001283291494473815
+        }
+      },
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "96ca8fdb732377037e86876db62db653d883165b2982b6a062b5642cdd7d3103",
+      "frames_sha256": "af30b086d432ff7dd99ea01ae4c7886b78357e40e8a8b2cb47dfeb97a1893cdc"
+    },
+    {
+      "batch": "depth-loop-eve-r1-20261001",
+      "kind": "evening",
+      "run_directory": "run_01_evening_tree1_v15004_baseline_depth_appearance",
+      "target": 15004,
+      "daylight": "evening",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [
+        67
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "67": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.19621329009532928,
+          "decision": "continues",
+          "ended_by": null,
+          "ncc": 0.19621329009532928
+        }
+      },
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "4dc7944b89fe97f7248a0e752e8bd6941c1d51fd200c40f02dbde04b4adfacc2",
+      "frames_sha256": "90468da9a0ae7486910a69343ec73a6ab30b50e5446021ed9ed2c88aa6c41b57"
+    },
+    {
+      "batch": "depth-loop-mor-r1-20261001",
+      "kind": "morning",
+      "run_directory": "run_00_morning_tree1_v15004_baseline_depth_appearance",
+      "target": 15004,
+      "daylight": "morning",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [
+        75
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "75": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.18195735556738718,
+          "decision": "continues",
+          "ended_by": null,
+          "ncc": 0.25474029779434204
+        }
+      },
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "df960748876a9679cce6505f6122278d6179927d04e7bb1091216c53e6c96011",
+      "frames_sha256": "9d722e1743eb584b7091ecd9fe85ea417039748819528328309a8d2721f74a7b"
+    },
+    {
+      "batch": "depth-loop-eve-r2-20261001",
+      "kind": "evening",
+      "run_directory": "run_00_evening_tree1_v14944_baseline_depth_appearance",
+      "target": 14944,
+      "daylight": "evening",
+      "status": "graded",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": {
+        "frame": 67,
+        "stopped_reason": "vision_invalid",
+        "tracker_reason": "low_confidence"
+      },
+      "grey_failures": [
+        67
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "67": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.04524746537208557,
+          "decision": "stops_downstream",
+          "ended_by": [
+            "tracking_lost",
+            "low_confidence"
+          ],
+          "ncc": 0.09049493074417114
+        }
+      },
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "b18a44fcfb7bbd20f4bdae9497993a8fb5abf1dee2ac7a6b068e47a5e66071b8",
+      "frames_sha256": "3ff936c912f5cbef64ffcab2ec50741655cab989614aa367553466c09fbe7005"
+    },
+    {
+      "batch": "depth-loop-eve-r2-20261001",
+      "kind": "evening",
+      "run_directory": "run_01_evening_tree1_v15004_baseline_depth_appearance",
+      "target": 15004,
+      "daylight": "evening",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [
+        67
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "67": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.19965383410453796,
+          "decision": "continues",
+          "ended_by": null,
+          "ncc": 0.19965383410453796
+        }
+      },
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "006de16cc26deecf414e3423ef2fc6e770722201edad95ce236202107979c574",
+      "frames_sha256": "a414ff2f092f6c3d485d71b4cb8ec3741fdc0141f52cbce1777d75eaabe4a3a8"
+    },
+    {
+      "batch": "depth-loop-mor-r2-20261001",
+      "kind": "morning",
+      "run_directory": "run_00_morning_tree1_v15004_baseline_depth_appearance",
+      "target": 15004,
+      "daylight": "morning",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [
+        75
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "75": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.18252659979320707,
+          "decision": "continues",
+          "ended_by": null,
+          "ncc": 0.2395661622285843
+        }
+      },
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "540de9b29686384e002177df2ef8a55f70894f44e6e5d7927df4b3d10b67f2c6",
+      "frames_sha256": "a030711e42be9b1fc85d50abd71e2314ee2ec03264b2e93553a5f881409d1563"
+    },
+    {
+      "batch": "depth-loop-src-20261001",
+      "kind": "source",
+      "run_directory": "run_00_source_tree1_v14944_baseline_depth_appearance",
+      "target": 14944,
+      "daylight": "source",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [],
+      "post_stop_grey_failures": [],
+      "events": {},
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "d1950be0022ea8549c37b54ed028527258732afc0b0d80caa00c0baa8721f847",
+      "frames_sha256": "f5fc525eca26284af86376e3beaf2bdc77ad85a970cb1ee6c0220afff3f1c26b"
+    },
+    {
+      "batch": "depth-loop-src-20261001",
+      "kind": "source",
+      "run_directory": "run_01_source_tree1_v15004_baseline_depth_appearance",
+      "target": 15004,
+      "daylight": "source",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [],
+      "post_stop_grey_failures": [],
+      "events": {},
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "5ccb6a946a02bfaff757f46aa44f387e2d76839909c35c384adaf78221f9f6a1",
+      "frames_sha256": "34871e5a51f488ebb29f7cb05371db18113c63bba0159d4ff73bc70a005160c3"
+    },
+    {
+      "batch": "depth-loop-ctl-19444-20261001",
+      "kind": "control",
+      "run_directory": "run_00_source_tree1_v19444_planned_pose_depth_appearance",
+      "target": 19444,
+      "daylight": "source",
+      "status": "graded",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": {
+        "frame": 70,
+        "stopped_reason": "vision_invalid",
+        "tracker_reason": "appearance_changed_or_occluded"
+      },
+      "grey_failures": [
+        70
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "70": {
+          "accept": false,
+          "failed_conditions": [
+            "4_median_abs",
+            "J_jaw_silhouette"
+          ],
+          "not_evaluated_conditions": [],
+          "reasons": [
+            "surface_moved_or_wrong_surface",
+            "jaw_silhouette_touches_patch"
+          ],
+          "strict_confidence": null,
+          "decision": "loss_stands",
+          "ended_by": null,
+          "ncc": 0.0818507969379425
+        }
+      },
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "3cc40a814e4d91e7f7f60dc3474004e898f621f787bfbe9825edc215df3b3e69",
+      "frames_sha256": "364c6cbaf2fc3e3faca9e0c84cb2ea9ab44a7b48ad0492ca8b1ba3ae2c692850"
+    },
+    {
+      "batch": "depth-loop-ctl-12142-20261001",
+      "kind": "control",
+      "run_directory": "run_00_source_tree0_v12142_tool_axis_standoff_depth_appearance",
+      "target": 12142,
+      "daylight": "source",
+      "status": "graded",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "enabled": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": {
+        "frame": 29,
+        "stopped_reason": "vision_invalid",
+        "tracker_reason": "appearance_changed_or_occluded"
+      },
+      "grey_failures": [
+        29
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "29": {
+          "accept": false,
+          "failed_conditions": [
+            "3_near_fraction",
+            "4_median_abs"
+          ],
+          "not_evaluated_conditions": [],
+          "reasons": [
+            "occluder_nearer_than_predicted",
+            "surface_moved_or_wrong_surface"
+          ],
+          "strict_confidence": null,
+          "decision": "loss_stands",
+          "ended_by": null,
+          "ncc": 0.1901823729276657
+        }
+      },
+      "post_stop_events": {},
+      "preview_event": null,
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "report_sha256": "8950913bbe0b858d050fd08ac3cd1201ab46c38109f23dd2af3830f205646599",
+      "frames_sha256": "3daf4e7546943e98a226e2e9fc176577861bad6500a51d560c612aaed17d708f"
+    }
+  ],
+  "c6_comparisons": {
+    "depth-loop-eve-r1-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 67,
+      "recording_sha256": {
+        "report.json": "96ca8fdb732377037e86876db62db653d883165b2982b6a062b5642cdd7d3103",
+        "frames.json": "af30b086d432ff7dd99ea01ae4c7886b78357e40e8a8b2cb47dfeb97a1893cdc"
+      },
+      "max_strict_correlation_difference": 2.980232238769531e-07
+    },
+    "depth-loop-eve-r1-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "4dc7944b89fe97f7248a0e752e8bd6941c1d51fd200c40f02dbde04b4adfacc2",
+        "frames.json": "90468da9a0ae7486910a69343ec73a6ab30b50e5446021ed9ed2c88aa6c41b57"
+      },
+      "max_strict_correlation_difference": 2.384185791015625e-07
+    },
+    "depth-loop-mor-r1-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "df960748876a9679cce6505f6122278d6179927d04e7bb1091216c53e6c96011",
+        "frames.json": "9d722e1743eb584b7091ecd9fe85ea417039748819528328309a8d2721f74a7b"
+      },
+      "max_strict_correlation_difference": 2.384185791015625e-07
+    },
+    "depth-loop-eve-r2-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 67,
+      "recording_sha256": {
+        "report.json": "b18a44fcfb7bbd20f4bdae9497993a8fb5abf1dee2ac7a6b068e47a5e66071b8",
+        "frames.json": "3ff936c912f5cbef64ffcab2ec50741655cab989614aa367553466c09fbe7005"
+      },
+      "max_strict_correlation_difference": 1.7881393432617188e-07
+    },
+    "depth-loop-eve-r2-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "006de16cc26deecf414e3423ef2fc6e770722201edad95ce236202107979c574",
+        "frames.json": "a414ff2f092f6c3d485d71b4cb8ec3741fdc0141f52cbce1777d75eaabe4a3a8"
+      },
+      "max_strict_correlation_difference": 1.7881393432617188e-07
+    },
+    "depth-loop-mor-r2-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "540de9b29686384e002177df2ef8a55f70894f44e6e5d7927df4b3d10b67f2c6",
+        "frames.json": "a030711e42be9b1fc85d50abd71e2314ee2ec03264b2e93553a5f881409d1563"
+      },
+      "max_strict_correlation_difference": 1.7881393432617188e-07
+    },
+    "depth-loop-src-20261001/run_00_source_tree1_v14944_baseline_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "d1950be0022ea8549c37b54ed028527258732afc0b0d80caa00c0baa8721f847",
+        "frames.json": "f5fc525eca26284af86376e3beaf2bdc77ad85a970cb1ee6c0220afff3f1c26b"
+      },
+      "max_strict_correlation_difference": 2.384185791015625e-07
+    },
+    "depth-loop-src-20261001/run_01_source_tree1_v15004_baseline_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "5ccb6a946a02bfaff757f46aa44f387e2d76839909c35c384adaf78221f9f6a1",
+        "frames.json": "34871e5a51f488ebb29f7cb05371db18113c63bba0159d4ff73bc70a005160c3"
+      },
+      "max_strict_correlation_difference": 2.980232238769531e-07
+    },
+    "depth-loop-ctl-19444-20261001/run_00_source_tree1_v19444_planned_pose_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 70,
+      "recording_sha256": {
+        "report.json": "3cc40a814e4d91e7f7f60dc3474004e898f621f787bfbe9825edc215df3b3e69",
+        "frames.json": "364c6cbaf2fc3e3faca9e0c84cb2ea9ab44a7b48ad0492ca8b1ba3ae2c692850"
+      },
+      "max_strict_correlation_difference": 6.48200511932373e-07
+    },
+    "depth-loop-ctl-12142-20261001/run_00_source_tree0_v12142_tool_axis_standoff_depth_appearance": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 29,
+      "recording_sha256": {
+        "report.json": "8950913bbe0b858d050fd08ac3cd1201ab46c38109f23dd2af3830f205646599",
+        "frames.json": "3daf4e7546943e98a226e2e9fc176577861bad6500a51d560c612aaed17d708f"
+      },
+      "max_strict_correlation_difference": 1.1920928955078125e-07
+    }
+  },
+  "predictions": [
+    {
+      "id": "C1",
+      "prediction": "In each of the 6 low-sun runs the depth test accepts the first grey-check failure inside the shadow window.",
+      "clauses": [
+        {
+          "clause": "the first in-window grey failure is accepted in all 6 low-sun runs",
+          "observed": {
+            "first_in_window": {
+              "depth-loop-eve-r1-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+                "frame": 67,
+                "accept": true,
+                "failed_conditions": [],
+                "not_evaluated_conditions": [],
+                "reasons": [],
+                "strict_confidence": 0.0004812343104276806,
+                "decision": "stops_downstream",
+                "ended_by": [
+                  "tracking_lost",
+                  "low_confidence"
+                ],
+                "ncc": 0.001283291494473815,
+                "stop": {
+                  "frame": 67,
+                  "stopped_reason": "vision_invalid",
+                  "tracker_reason": "low_confidence"
+                }
+              },
+              "depth-loop-eve-r1-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+                "frame": 67,
+                "accept": true,
+                "failed_conditions": [],
+                "not_evaluated_conditions": [],
+                "reasons": [],
+                "strict_confidence": 0.19621329009532928,
+                "decision": "continues",
+                "ended_by": null,
+                "ncc": 0.19621329009532928,
+                "stop": null
+              },
+              "depth-loop-mor-r1-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+                "frame": 75,
+                "accept": true,
+                "failed_conditions": [],
+                "not_evaluated_conditions": [],
+                "reasons": [],
+                "strict_confidence": 0.18195735556738718,
+                "decision": "continues",
+                "ended_by": null,
+                "ncc": 0.25474029779434204,
+                "stop": null
+              },
+              "depth-loop-eve-r2-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+                "frame": 67,
+                "accept": true,
+                "failed_conditions": [],
+                "not_evaluated_conditions": [],
+                "reasons": [],
+                "strict_confidence": 0.04524746537208557,
+                "decision": "stops_downstream",
+                "ended_by": [
+                  "tracking_lost",
+                  "low_confidence"
+                ],
+                "ncc": 0.09049493074417114,
+                "stop": {
+                  "frame": 67,
+                  "stopped_reason": "vision_invalid",
+                  "tracker_reason": "low_confidence"
+                }
+              },
+              "depth-loop-eve-r2-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+                "frame": 67,
+                "accept": true,
+                "failed_conditions": [],
+                "not_evaluated_conditions": [],
+                "reasons": [],
+                "strict_confidence": 0.19965383410453796,
+                "decision": "continues",
+                "ended_by": null,
+                "ncc": 0.19965383410453796,
+                "stop": null
+              },
+              "depth-loop-mor-r2-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+                "frame": 75,
+                "accept": true,
+                "failed_conditions": [],
+                "not_evaluated_conditions": [],
+                "reasons": [],
+                "strict_confidence": 0.18252659979320707,
+                "decision": "continues",
+                "ended_by": null,
+                "ncc": 0.2395661622285843,
+                "stop": null
+              }
+            },
+            "rejected": [],
+            "untested": []
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 6
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "C2",
+      "prediction": "At least 3 of the 4 15004 runs pass all 17 checks, and none stops on appearance in its shadow window.",
+      "clauses": [
+        {
+          "clause": "15004: passes, and stops in the shadow window",
+          "observed": {
+            "runs": {
+              "depth-loop-eve-r1-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "stop": null
+              },
+              "depth-loop-mor-r1-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "stop": null
+              },
+              "depth-loop-eve-r2-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "stop": null
+              },
+              "depth-loop-mor-r2-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "stop": null
+              }
+            },
+            "passes": "4 of 4",
+            "stops_in_window": [],
+            "appearance_stops_in_window": [],
+            "unscored": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 4
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "C3",
+      "prediction": "Both evening 14944 runs stop at the accepted shadow event on low_confidence (strict confidence below 0.15).",
+      "clauses": [
+        {
+          "clause": "evening 14944: low-confidence stop at the accepted event",
+          "observed": {
+            "depth-loop-eve-r1-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+              "first_in_window": 67,
+              "accept": true,
+              "strict_confidence": 0.0004812343104276806,
+              "stop": {
+                "frame": 67,
+                "stopped_reason": "vision_invalid",
+                "tracker_reason": "low_confidence"
+              },
+              "case": "low-confidence stop at the event"
+            },
+            "depth-loop-eve-r2-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+              "first_in_window": 67,
+              "accept": true,
+              "strict_confidence": 0.04524746537208557,
+              "stop": {
+                "frame": 67,
+                "stopped_reason": "vision_invalid",
+                "tracker_reason": "low_confidence"
+              },
+              "case": "low-confidence stop at the event"
+            }
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 2
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "C4",
+      "prediction": "Neither control passes, and the depth test rejects every grey-check failure in both.",
+      "clauses": [
+        {
+          "clause": "neither control passes",
+          "observed": {
+            "runs": {
+              "depth-loop-ctl-19444-20261001/run_00_source_tree1_v19444_planned_pose_depth_appearance": {
+                "outcome": "stopped_vision_invalid",
+                "stop": {
+                  "frame": 70,
+                  "stopped_reason": "vision_invalid",
+                  "tracker_reason": "appearance_changed_or_occluded"
+                },
+                "grey_failures": {
+                  "70": {
+                    "accept": false,
+                    "failed_conditions": [
+                      "4_median_abs",
+                      "J_jaw_silhouette"
+                    ],
+                    "not_evaluated_conditions": [],
+                    "reasons": [
+                      "surface_moved_or_wrong_surface",
+                      "jaw_silhouette_touches_patch"
+                    ],
+                    "strict_confidence": null,
+                    "decision": "loss_stands",
+                    "ended_by": null,
+                    "ncc": 0.0818507969379425
+                  }
+                },
+                "post_stop": {}
+              },
+              "depth-loop-ctl-12142-20261001/run_00_source_tree0_v12142_tool_axis_standoff_depth_appearance": {
+                "outcome": "stopped_vision_invalid",
+                "stop": {
+                  "frame": 29,
+                  "stopped_reason": "vision_invalid",
+                  "tracker_reason": "appearance_changed_or_occluded"
+                },
+                "grey_failures": {
+                  "29": {
+                    "accept": false,
+                    "failed_conditions": [
+                      "3_near_fraction",
+                      "4_median_abs"
+                    ],
+                    "not_evaluated_conditions": [],
+                    "reasons": [
+                      "occluder_nearer_than_predicted",
+                      "surface_moved_or_wrong_surface"
+                    ],
+                    "strict_confidence": null,
+                    "decision": "loss_stands",
+                    "ended_by": null,
+                    "ncc": 0.1901823729276657
+                  }
+                },
+                "post_stop": {}
+              }
+            },
+            "passed": [],
+            "unscored": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 2
+        },
+        {
+          "clause": "the depth test rejects every grey failure in both controls",
+          "observed": {
+            "accepted": {},
+            "untested_no_grey_failure": [],
+            "unscored": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 2
+        },
+        {
+          "clause": "19444: the event at its stop is rejected naming J_jaw_silhouette (expectation; cannot refute)",
+          "observed": {
+            "context": "19444 should stop when the open jaw reaches the patch (recorded 68 / 68 / 70)",
+            "stop": {
+              "frame": 70,
+              "stopped_reason": "vision_invalid",
+              "tracker_reason": "appearance_changed_or_occluded"
+            },
+            "event_at_stop": {
+              "accept": false,
+              "failed_conditions": [
+                "4_median_abs",
+                "J_jaw_silhouette"
+              ],
+              "not_evaluated_conditions": [],
+              "reasons": [
+                "surface_moved_or_wrong_surface",
+                "jaw_silhouette_touches_patch"
+              ],
+              "strict_confidence": null,
+              "decision": "loss_stands",
+              "ended_by": null,
+              "ncc": 0.0818507969379425
+            },
+            "unscored": null
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 1
+        },
+        {
+          "clause": "12142: the event at its stop is rejected naming 3_near_fraction (expectation; cannot refute)",
+          "observed": {
+            "context": "12142 should stop at the wire (recorded 29)",
+            "stop": {
+              "frame": 29,
+              "stopped_reason": "vision_invalid",
+              "tracker_reason": "appearance_changed_or_occluded"
+            },
+            "event_at_stop": {
+              "accept": false,
+              "failed_conditions": [
+                "3_near_fraction",
+                "4_median_abs"
+              ],
+              "not_evaluated_conditions": [],
+              "reasons": [
+                "occluder_nearer_than_predicted",
+                "surface_moved_or_wrong_surface"
+              ],
+              "strict_confidence": null,
+              "decision": "loss_stands",
+              "ended_by": null,
+              "ncc": 0.1901823729276657
+            },
+            "unscored": null
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 1
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "C5",
+      "prediction": "Source-light 14944 and 15004 both pass 17/17.",
+      "clauses": [
+        {
+          "clause": "both source-light runs pass all 17 checks",
+          "observed": {
+            "runs": {
+              "depth-loop-src-20261001/run_00_source_tree1_v14944_baseline_depth_appearance": {
+                "outcome": "pass",
+                "checks": "17/17"
+              },
+              "depth-loop-src-20261001/run_01_source_tree1_v15004_baseline_depth_appearance": {
+                "outcome": "pass",
+                "checks": "17/17"
+              }
+            },
+            "unscored": {},
+            "grey_failures_reported": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 2
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "C6",
+      "prediction": "Every live run equals the offline strict arm replayed on its own frames, event for event.",
+      "clauses": [
+        {
+          "clause": "live = offline in every run",
+          "observed": {
+            "runs_compared": 10,
+            "mismatches": {},
+            "not_comparable": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 10
+        }
+      ],
+      "verdict": "supported"
+    }
+  ]
+}

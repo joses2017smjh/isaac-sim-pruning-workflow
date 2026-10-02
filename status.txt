@@ -1,30 +1,32 @@
-CURRENT CHECKPOINT — 2026-10-02 02:35 PDT — ALL 16 GPU TASKS DONE AND GRADED (NOT YET OPENED); SCORERS BEING FINISHED BLIND; SUGGESTIONS APPLIED
+CURRENT CHECKPOINT — 2026-10-02 05:00 PDT — BOTH GPU EXPERIMENTS SCORED AND PUBLISHED; NOTHING QUEUED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
-  Branch develop. Local history now CONTAINS origin/develop 8edb3d7 (merged clean).
-  Pushed through 3c6a211 (plus this checkpoint). User asked for updates to be pushed; never force-push.
+  Branch develop, pushed. User asked for updates to be pushed; never force-push.
   CPU environment: /nfs/hpc/share/sanchej7/miniforge3/envs/depth-env/bin/python
-  (Python 3.10.19, numpy 2.2.6, opencv 4.11.0.86, ruff 0.16.5). No repo venv exists.
+  (Python 3.10.19, numpy 2.2.6, opencv 4.11.0.86); CI-pinned ruff /nfs/hpc/share/sanchej7/ruff01410/bin/ruff.
+  Share usage 1.542 TiB (over the 1.5 TiB soft quota, under the 2 TiB hard limit).
 
-LATEST — 2026-10-02 EARLY MORNING (read this first)
-  SESSION: interactive job 21505616 on cn-gpu3 (2 CPUs, 6 GB cgroup, ends ~09:38), beside the desktop and VS
-    Code (~4.3 GB anon). One workflow at a time; heavy CPU work as small sbatch jobs on `share`.
-  GPU WORK DONE: jaw-in-view 6 tasks (181.5 of 270 GPU-min) and depth closed loop 10 tasks (256 of 450), all on
-    cn-gpu5. Grade files written by CPU jobs 21505682 (jaw-hold) and 21505683 (depth-loop) at 6920d21 into
-    /nfs/hpc/share/sanchej7/pruning_work/grading/{jaw_hold,depth_loop}_6920d21/ — NOT OPENED YET.
-  RULE IN FORCE: each experiment's scorer is reviewed blind and committed before its grade files are copied into
-    docs/evidence/ or read. Exposure so far (to be disclosed in the scorers' output): final Slurm states and
-    elapsed times of all 16 tasks; jaw-hold A0 mid-recording at 81 frames (frame 75 records) and its progress log.
-  DEPTH LOOP: scorer amended after a blind review (15 confirmed findings) at 0e6d92a; a blind verifier is checking
-    the amendment (workflow depth-loop-amendment-verify). NEXT: copy the 7 grade files into
-    docs/evidence/depth_loop_2026-10-01/, commit, run pruning_work/grading/score.sbatch <commit>
-    tools/score_depth_loop.py <out>, publish.
-  JAW IN VIEW: scorer tools/score_jaw_in_view.py (untracked) under blind review/fix/test (workflow
-    jaw-in-view-scorer-finish, resumed). NEXT: commit it, copy the 3 grade files into
-    docs/evidence/jaw_in_view_2026-10-01/, commit, score on share, publish.
-  APPLIED SUGGESTIONS (9b0e062, published 919a932): P0 checker F6/F7/P12 (recheck passed at 9b0e062);
-    render-gap scorer D2-D7 (integrity checks I1-I8, tables; verdicts unchanged). CI at 9b0e062 green.
+LATEST — 2026-10-02 MORNING (read this first)
+  JAW IN VIEW (P1-P8): 530 PASSED 17/17 IN 3 OF 3, the first pass of a contact target, under the label
+    "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames".
+    P2-P6, P8 supported; P7 partly supported (baseline drifted in A, lost tracking at k+2 in B and C); P1
+    REFUTED by one 19444 pixel on the jaw's outline (|sd| <= 1.5e-5 px, float32 render edge) on 130 of 1,200
+    frames; the 0.01 px band sensitivity would not refute but decides nothing (the user's sign-off on that band
+    was never given). Evidence docs/evidence/jaw_in_view_verdicts_2026-10-02.json (scorer 3ac43cb, run at
+    45763d0, job 21507188). Result in docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md.
+  DEPTH CLOSED LOOP (C1-C6): ALL SUPPORTED. 4 of 4 low-sun 15004 runs pass (strict confidence 0.18-0.20);
+    evening 14944 still stops at 67 on low confidence (0.0005, 0.045); controls rejected (J_jaw_silhouette,
+    3_near_fraction); source unchanged; live = offline in 10 of 10. Evidence
+    docs/evidence/depth_loop_verdicts_2026-10-02.json (job 21507189). Result in the protocol.
+  EXPOSURE CORRECTION: a Slurm COMPLETED/FAILED state reveals pass/fail (run_vision_experiment exits 0 only on
+    capture complete + grader 17/17 + configuration_matches). Both scorers' disclosures now say which
+    predictions that revealed (3ac43cb); the old depth-loop scoring output (job 21506428) was never opened.
+  CI at 45763d0 (job 21507190): ruff clean, 950 passed, 19 skipped, demo ran.
+  NEEDS THE USER: (1) whether to register an amended P1 mask-fidelity check (edge band) for future runs;
+    (2) proposals needing GPU approval: generalize the closure hold to an unseen contact target; a different
+    input for evening 14944. See docs/PENDING.md.
+  SESSION: interactive job 21505616 on cn-gpu3 (6 GB cgroup with VS Code); heavy CPU work as sbatch on share.
 
 SIX-PHASE PLAN IN PROGRESS (user prompt of 2026-09-22)
   Phase 0 audit ...... DONE (plan delivered in chat)

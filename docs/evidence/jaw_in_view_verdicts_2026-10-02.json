@@ -1,0 +1,3981 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the jaw-in-view experiment (P1-P8): six simulator runs of planned_pose_jaw_hold in three batches (530 three times, 19444 once, controls 14944 and 15004 once each). Every result is labelled 'known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames' and is reported apart from every unchanged-gate result, never pooled. Outcomes are the grader's, read from the per-batch evidence and never re-graded here. Simulator renders of a two-box jaw surrogate with exact poses and commanded closure; not a field result. What was seen of the live runs before this scorer was finished is listed in construction_exposure.",
+  "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+  "protocol": "docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md",
+  "construction_exposure": [
+    "The predictions scored here are P1-P8 of docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md, registered before the six runs were submitted; this scorer implements them, and every detail it fixes is listed in 'interpretations'.",
+    "While the draft of this scorer was being written, a mapping agent read jaw-hold-a-20261001 run_00 (target 530) mid-recording, at 81 frames, and printed frame 75's records: closure_hold eligible true, stationary true, explained false, held false, measurement_state tracking; cut_without_hold phase closing; jaw_self_mask closure_progress_used 0.0, mask_pixel_count 5793.",
+    "The runner's progress log of that run showed 'phase=retreat' at frames 101-121.",
+    "The main session saw Slurm states and elapsed times: first A run 0 COMPLETED, A run 1 FAILED and B run 0 COMPLETED; then, on October 2 and before this scorer was committed, the final states of all six tasks: A run 0 COMPLETED 36m28s; A run 1 FAILED exit 1 24m45s; B run 0 COMPLETED 33m18s; B run 1 COMPLETED 27m13s; C run 0 COMPLETED 33m23s; C run 1 COMPLETED 26m19s; all on cn-gpu5, an RTX 8000.",
+    "Those Slurm states disclosed outcomes. Each task ran tools/run_vision_experiment.py, whose execute() exits 0 only when the capture completed, the unchanged grader passed all 17 checks (grade_sequence ok) and configuration_matches is true. So COMPLETED meant that A run 0, B runs 0 and 1 and C runs 0 and 1 each passed 17/17 with configuration_matches true, and A run 1's exit 1 meant that 19444's capture, grade or configuration check failed. An earlier draft of this disclosure said 'a Slurm state is not a grade', which understated this. Outcomes here are still read only from the per-batch evidence written by tools/aggregate_eval.py (the grader's classes).",
+    "The per-batch grade files are produced by a CPU job before this scorer is committed and are not opened until it is committed.",
+    "Apart from these items, no jaw-hold run output was read by anyone while this scorer was written, reviewed and amended; of the jaw-hold batches, its final amendment read only the three plan.json files and the frozen code snapshot.",
+    "What these items bear on. The Slurm states revealed, before this scorer was committed, the outcome P6 counts (all three 530 runs passed 17/17), P2's pass clause (both controls passed 17/17), that five runs have complete 200-frame captures (P1 coverage) and that none of those five was refused (configuration_matches true). For 19444 (P3) they revealed only that the run did not pass: had it passed, P3's predicted stop could not have occurred; its exit 1 left P3's verdict open. The run 0 records and progress log bear on P4, P5, P6, P7 and P8 for that run: the retreat line means it detached, which puts it in P8's population and, if it held, in P7's.",
+    "No clause reads or uses any of these items. The interpretations they could bear on (P4's premise rule, P5's population, P7's window, gap rule and anchor, P8's window) were fixed after them and are justified in 'interpretations' from the protocol text alone. The final amendment, made from a blind checker's report before any grade file was opened, decides P1 on the registered literal reading (the 0.01 px edge band is reported as a sensitivity only) and lets a P7 run refute only when the baseline measured the target on every frame of the window."
+  ],
+  "code_revision": "45763d015313a844bc8f587c84c5d9fd53910348",
+  "code_tree_dirty": false,
+  "scored_code": {
+    "imported_from": "the snapshot <batch>/code the runs executed (run_vision_experiment sets PRUNING_ROOT to it and verify_snapshot checked it against plan.source_sha256 before each run)",
+    "imported_tree": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/jaw-hold-a-20261001/code",
+    "modules": {
+      "isaaclab_pruning.perception.jaw_self_mask": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/jaw-hold-a-20261001/code/source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py",
+      "isaaclab_pruning.task.simulated_cut": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/jaw-hold-a-20261001/code/source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py",
+      "replay_jaw_self_mask": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/jaw-hold-a-20261001/code/tools/replay_jaw_self_mask.py"
+    },
+    "loaded_files_sha256_equal_plan": {
+      "source/isaaclab_pruning/isaaclab_pruning/__init__.py": "5896a80e1371b283db63353421c8718239a6b776dd239e31b168b9710e9d1da6",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/__init__.py": "85ac258cb869e6807a45656a31214c1a84a4a84662c472d64953fd4b898d4fe2",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/cut_point.py": "1221034d9ce65c465e08f37ecb745a45ffb3fd98b5e266cab05ecf8e6d562978",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/cutter.py": "52425d792610c1be8d2dddd855c76d48707a393c261240e5b7a133c69297fbe7",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/cylinders.py": "e0f71b8ea3dc52d90f77bcb64a14f182a38863bb5acfbc80623c886fea0fc939",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/wood.py": "da52972f4063de71749182774fcb90f37711db38d05b149d756bcb7d5ffcc8cc",
+      "source/isaaclab_pruning/isaaclab_pruning/ladder/__init__.py": "29952be591df0cb62351864c490c40e98b55189607876fab6892c02cc8d96a2f",
+      "source/isaaclab_pruning/isaaclab_pruning/ladder/axes.py": "64162226f632ebd0fd195b86b830da3d870b579b3657994a75a4eea63ed823ba",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/__init__.py": "89b987088d09087395095b34ae4569d725242a9945d178fbbce74001243c7d0c",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py": "15cbe8ec64fd025beb7933242f8f9aea4120d531c6b008bfab88214583381f80",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py": "6e5dd0264b63411520728bd3109cd65903cee368254fc2874a8877b066d6e7d7",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/__init__.py": "bdea7d66c3cbe5af839a6ed565cf8de989c61cea82c69bbc3ff98540ae3abdfa",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py": "930b5f8baa6c638cc96d93a5ad93ce183e6c2a52aad964779efc7733b490c20c",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py": "c3376f8bff0b8c0c0825d230ae5757e64ead93392748530c3906ae9fd54620e4",
+      "source/isaaclab_pruning/isaaclab_pruning/task/__init__.py": "4ba0b7ebe1f9ca04b66106c5b72c41d2407f26e4034af0497ede11535fde3c66",
+      "source/isaaclab_pruning/isaaclab_pruning/task/curriculum.py": "40222cc9ac7cb8b82b858c9a13af7bf2a77236fa59f0c33b4c6a45f3ce3ea224",
+      "source/isaaclab_pruning/isaaclab_pruning/task/loop.py": "6e9a4b9a9a272ea9e85c8aba0a15fb236952b39c6148f4fe5f799639f91d6317",
+      "source/isaaclab_pruning/isaaclab_pruning/task/reward.py": "c0b181f897b0e357c7cca5b127273206216f37bc2dfc8965f1423e623c89fe32",
+      "source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py": "902e3661863c89a2a0cfed6d25b9f359849ccd62066c88b49daf8d787c522d31",
+      "source/isaaclab_pruning/isaaclab_pruning/task/success.py": "3b14a58a09bf8a1009cee4a78a4ec5981a9f496b1f9b1adc3aa266820916ddcd",
+      "tools/replay_jaw_self_mask.py": "3d050f1aa9e808cb2f048796dcc7efcce0858ba5044d89527176d4488fb7fe65"
+    },
+    "plan_code_revision": "3c6a2115e4e2d1744ce64498f5fa91ceb7689502",
+    "scored_sources_equal_plan_in_every_snapshot": {
+      "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py": "15cbe8ec64fd025beb7933242f8f9aea4120d531c6b008bfab88214583381f80",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py": "6e5dd0264b63411520728bd3109cd65903cee368254fc2874a8877b066d6e7d7",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py": "c3376f8bff0b8c0c0825d230ae5757e64ead93392748530c3906ae9fd54620e4",
+      "source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py": "902e3661863c89a2a0cfed6d25b9f359849ccd62066c88b49daf8d787c522d31",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/blender_demo_scene.py": "cdcc1c2733ed61d2475a21615eb527e1dc1a3625abc3c9bbe66297217ba6c1a5",
+      "hpc/inner/render_pruning_workflow.py": "b35e352c6dc08e576925a623bb98cca0013fe700908efe64c85f403d99558586",
+      "tools/replay_jaw_self_mask.py": "3d050f1aa9e808cb2f048796dcc7efcce0858ba5044d89527176d4488fb7fe65",
+      "tools/validate_vision_sequence.py": "7414c505a6b2907ecf12f145313037449d7a81335f53c71a93d55d0d1934391f"
+    },
+    "checkout": {
+      "note": "not imported; the scorer imports the batch snapshot",
+      "files_differing_from_plan": {
+        "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py": {
+          "plan": "c3376f8bff0b8c0c0825d230ae5757e64ead93392748530c3906ae9fd54620e4",
+          "checkout": "9c494cc71b49e7853a9dbf672a313294eeb938e4458fe900ab4a0823c90c0fed"
+        },
+        "hpc/inner/render_pruning_workflow.py": {
+          "plan": "b35e352c6dc08e576925a623bb98cca0013fe700908efe64c85f403d99558586",
+          "checkout": "26a486acf8483f917415db611da97a9889b567e450a6ab740c2e801239e46622"
+        },
+        "tools/replay_jaw_self_mask.py": {
+          "plan": "3d050f1aa9e808cb2f048796dcc7efcce0858ba5044d89527176d4488fb7fe65",
+          "checkout": "a85e639404a1201fc49fd42fde37511b909b57233a33e63ee26f90a93914a717"
+        }
+      },
+      "git_diff_stat_plan_to_head": " hpc/inner/render_pruning_workflow.py               | 15 ++++++\n .../isaaclab_pruning/sim/vision_demo_controller.py | 57 +++++++++++++++-------\n tools/replay_jaw_self_mask.py                      | 33 ++++++++++---\n 3 files changed, 80 insertions(+), 25 deletions(-)\n"
+    }
+  },
+  "plans": {
+    "jaw-hold-a-20261001": {
+      "code_revision": "3c6a2115e4e2d1744ce64498f5fa91ceb7689502",
+      "protocol": "docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md",
+      "frames": 200,
+      "fps": 10,
+      "strategy": "planned_pose_jaw_hold",
+      "targets": [
+        530,
+        19444
+      ]
+    },
+    "jaw-hold-b-20261001": {
+      "code_revision": "3c6a2115e4e2d1744ce64498f5fa91ceb7689502",
+      "protocol": "docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md",
+      "frames": 200,
+      "fps": 10,
+      "strategy": "planned_pose_jaw_hold",
+      "targets": [
+        530,
+        14944
+      ]
+    },
+    "jaw-hold-c-20261001": {
+      "code_revision": "3c6a2115e4e2d1744ce64498f5fa91ceb7689502",
+      "protocol": "docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md",
+      "frames": 200,
+      "fps": 10,
+      "strategy": "planned_pose_jaw_hold",
+      "targets": [
+        530,
+        15004
+      ]
+    }
+  },
+  "inputs_sha256": {
+    "docs/evidence/jaw_in_view_2026-10-01/jaw-hold-a-20261001.json": "e8c1d9a9ba2f3da72ffe8557811ff3c7c2d45ba4fb4224b1bd25bfd4f7a088d9",
+    "artifacts/vision_robustness/jaw-hold-a-20261001/plan.json": "7afc51096361aabb9476017372c9745b6ab8efa9318e294cb7fa737154f79e3a",
+    "docs/evidence/jaw_in_view_2026-10-01/jaw-hold-b-20261001.json": "398a87b43e4a582ae267c2afdd15bdf5d93f072a4e4abdb4ad04a709fddf1e9f",
+    "artifacts/vision_robustness/jaw-hold-b-20261001/plan.json": "05864e51a56232194db3d803c2dc2737c3c837a955e7b4719c48f9913af8415a",
+    "docs/evidence/jaw_in_view_2026-10-01/jaw-hold-c-20261001.json": "17d66ae95f2f4e99ee6321a482429a3e5756b59fe20a25de16a7a63a9fb61f9c",
+    "artifacts/vision_robustness/jaw-hold-c-20261001/plan.json": "d5b172f28f8b206ed32e38b93bbf91df1f94bc4bbe01373b083a971f1176f8f2",
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/experiment_result.json": "14d4d3864df9ba22956eadd5d39174d62aebc590d2b8b15a0d862d650a3bdcf4",
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/report.json": "6e75acc2f191807bc8d9b48827a8c2c7b3b4d49ae8cee8e12231465a41d0d5b4",
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/frames.json": "ee3646ce9170be85beacadc08d4d28cbc82e375986f8096bb5507c9dd6f001d8",
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "871061a96e630b7415cb413fe48a9e70fc04e69adbac79f6c02db4d6d30d7dcb",
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_01_source_tree1_v19444_planned_pose_jaw_hold/experiment_result.json": "40a5c4c1ac99c22d054242f1c10430fac5c1c5bea6481a876915870c98e38f3c",
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_01_source_tree1_v19444_planned_pose_jaw_hold/report.json": "617c66b6f743b787f2372495246e6ada2a07c29e1620ec2ce2af09877a9eef40",
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_01_source_tree1_v19444_planned_pose_jaw_hold/frames.json": "2031abbf42e29c249966195b1dbd80f7d1a339a93f03000764e0da4800fe2d8e",
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_01_source_tree1_v19444_planned_pose_jaw_hold/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "9bf38f39c2481d06f5630c44a8f4f558d11d7a46a3923c29a41bb2bca70598c8",
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/experiment_result.json": "31220aa71cd9cb355dd1a0d9aea1cbc85420211388f249ff76f98c8c0fcd34b1",
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/report.json": "4efd1b8d248ff6cd3c05ef6e90f437136789d10f2e16630271d5c911e8663b4a",
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/frames.json": "4f7dc4568c804ed2f7a9889aa943fb4e7259c5bc5540108cda4c7810439b7526",
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "73f1b4d669e32da164d46bec8ecfcbd59bc589f680dca289b63726f3fccbf603",
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold/experiment_result.json": "e8def3afa270fcd826df6cc1c8ad023155191b338dfa170c5d49424cb30b1bdf",
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold/report.json": "203a91b24ceb14e67523d650208ff800ee771c68e7a659209a0ef9c5a19bfaf7",
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold/frames.json": "b70267c6c9dea9e4adbf7c01633d7a2b3c645e75b7d12139cf7875e464e30257",
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "6225252ef96658531542656eef5cfffed013768a1e8ffc6428241f20eaf17d2f",
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/experiment_result.json": "cd17e532e4831c76b9ac67b2390005619204b74b1c8af6e63d0f8f20d0af147d",
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/report.json": "1e8596d076d866982ce5a37e83a9a28b8e0e91ea87e5fb6057b61a857b3074ba",
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/frames.json": "6262a56d29baf1b517bcb0d28d0711d0edda812fb5562d3b6e17abcedbdc349c",
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "0b1c8589502e23aefb63c1b316666453f9c59ac989f04cbc5dce5356fd53cb31",
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_01_source_tree1_v15004_planned_pose_jaw_hold/experiment_result.json": "80b87be4c870c617448e9e717b01dff046de878b33e368e7812b6a3a0cced0ef",
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_01_source_tree1_v15004_planned_pose_jaw_hold/report.json": "476867c72f8ade0ea2badf089a646d486a0546264b9eb355c67cdee63ca2e9eb",
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_01_source_tree1_v15004_planned_pose_jaw_hold/frames.json": "d075c7a275c4dbb365ca3f5ed1eb20ac201a53911b13e0d24a718134edbe3167",
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_01_source_tree1_v15004_planned_pose_jaw_hold/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "7388d0d7f041547857446213eb7bad02099a8529e258ee8dbac08d142d2814f9"
+  },
+  "grader_checks": [
+    "capture_complete_and_nonblank",
+    "ordered_contiguous_frame_indexes",
+    "strictly_increasing_capture_times",
+    "causal_previous_frame_commands",
+    "one_matching_detach_event_and_request",
+    "detach_has_completed_certified_closure",
+    "detached_state_consistent_with_event",
+    "selected_piece_pose_evidence_complete",
+    "piece_stationary_before_release",
+    "piece_dropped_after_release",
+    "robot_position_evidence_complete",
+    "post_detach_retreat_toward_home",
+    "returned_home_and_final_phase_complete",
+    "vision_commands_applied_and_counted",
+    "captured_contact_within_limit",
+    "no_recorded_stops",
+    "capture_did_not_advance_physics"
+  ],
+  "interpretations": [
+    "Outcomes are the runs[] rows of the three per-batch evidence files written by tools/aggregate_eval.py (the grader's classes); nothing is re-graded here. A pass is outcome 'pass' (graded, checks_passed == checks_total == 17). An incomplete, rejected or refused run is not a pass, and every planned run stays in every table.",
+    "Run set: the scorer refuses to score unless the evidence holds exactly the registered six runs: one batch per file, its batch_dir named as the file, planned_runs_kept equal to the plan's runs and to the evidence rows, every evidence row matched to its plan row by run_directory with the same tree, target, light, photometric mode and strategy, batch A = 530 and 19444, B = 530 and 14944, C = 530 and 15004, and plans registered for this protocol with 200 frames at 10 fps, source light and both arms on. aggregate_eval never drops a planned run (a missing capture is 'incomplete'), so valid evidence always passes these checks.",
+    "Scored code: jaw_self_mask and simulated_cut, and through tools/replay_jaw_self_mask the controller and the tracker, are imported from jaw-hold-a's snapshot <batch>/code, the code the runs executed (run_vision_experiment points PRUNING_ROOT at it and verify_snapshot checked it before each run). Every batch's snapshot must equal its plan for the eight scored sources, the three plans must freeze identical sources, and every module the import loads from the snapshot must hash to the plan; otherwise nothing is scored. The checkout is not imported: since the plan revision 3c6a211 one commit (2938ede, the default-off depth_appearance arm) changed the controller, the runner and the replay tool there, and the checkout's controller imports perception/depth_appearance.py, which no plan froze; scored_code.checkout reports both. The runner, the scene and the grader are never run here; the scorer's own helpers (score_perception_round, score_planned_approach) come from the checkout and equal the snapshot's copies.",
+    "Refused captures: configuration_matches (experiment_result.json) true makes a run of the arm, and the scorer's own report checks, reported beside it, cannot override it; false on a complete capture (report frame_count == 200) refuses it. When the flag is absent, or false on an incomplete capture (the frozen check requires the plan's 200 frames, so a capture that died mid-recording fails it for that alone), the report decides: it is refused when it shows an arm not enabled, constants, thresholds or waived checks other than the registered ones, a tracker minimum other than 140, or another target, light, photometric mode or approach than the plan's. A refused run is no pass (P2, P6), is excluded from every P1-P5, P7 and P8 judgment, and is listed in a clause that holds false and cannot refute. An incomplete run that ran the arm keeps its recorded frames as evidence.",
+    "Coverage: a run is outside a prediction's condition (reported; such a clause holds and cannot refute) only when its recording settles it: all 200 frames recorded, or the cut already stopped or detached (nothing closes, holds or detaches after that). A refused or unrecorded run, and one whose recording ends with the cut still live, is listed in a clause that holds false and cannot refute, so a prediction over every such run cannot be supported while one of them might fall inside it.",
+    "Verdicts: refuted when any clause meets its registered refutation; otherwise 'untested' when the condition a prediction needs never arose in a judgeable run (named in untested_reason; such a clause holds false, refutes false and carries observed.vacuous); otherwise supported when every clause holds and partly supported when one does not.",
+    "Frame numbers are 0-based frames.json indices. Closure start k is the first frame whose cut phase is 'closing'; the closure deadline is k + 6 (0.6 s at 10 fps); the detach frame d is the frame whose cut carries detach_event; the cut-stop decision frame s is the first frame whose cut phase is 'stopped' (the evidence's stop_frame, the runner's first 'stopped_failure' frame, is s + 1). P3-P5 frame numbers are cut-decision frames.",
+    "P1 reconstructs each frame's mask with the frozen jaw_self_mask module (jaw_boxes, jaw_mask: 2.0 px margin, pixel centre 0.5) from the renderer-side inputs: report.blender_scene.visual_proxy_roll_rad and target.radius_m, the frame's visual_jaw_closure_progress, tool_pose_wxyz and wrist camera pose (world from optical), and report.camera's intrinsics and resolution. A reconstruction that fails counts as a mismatch. The controller's mask record must name the rendered jaw: its roll_rad must equal the renderer's within 1e-12 rad (the controller's roll is a twice-normalized copy of the scene's closing axis, so the two can differ by an ulp; the largest difference is reported); otherwise the mask was built for another jaw and P1 cannot be supported, though this cannot refute. Its closure_progress_used is a recording echo, equal by construction (both fields are demo.cut_step.closure_progress read before observe), and bbox and corners are reported; the rendered jaw itself is judged only by the depth clause.",
+    "P1's predicted jaw pixels are the pixels whose centre ray (u + 0.5, v + 0.5) hits either box, found by a slab test in the optical frame, where the entry parameter is optical Z; a violation is recorded depth that is non-finite or strictly more than 1 mm beyond the box depth, and any violation refutes (the registered reading: 'Refuted by any mismatch'). A sensitivity is reported beside it and decides nothing: the count that leaves out hits whose centre lies within 0.01 px of the undilated silhouette edge (signed distance to either box's float32 hull > -0.01 px at index coordinates), with each such pixel beyond 1 mm listed with its signed distance and depths. It is reported because the renderer poses the jaw in float32 against the float64 analytic box: on the twelve earlier planned-pose runs (not the scored runs) every violation was one pixel whose centre lay within 3.4e-5 px of the silhouette edge (seven frames, all 19444, each seeing past the jaw). Deciding P1 on the sensitivity would narrow a registered refutation condition; that needs the user's sign-off and a separately labelled amendment, and none was given before scoring. The 1 mm tolerance is unchanged. Pixels with something nearer than the jaw, and hits outside the dilated mask, are reported, not judged. Every recorded frame counts, including frames after a stop, after detach and during retreat.",
+    "P1 coverage: a run with fewer than 200 recorded frames, a frame without a mask record or a readable depth file, and a refused or unrecorded planned run are listed in a coverage clause that cannot refute but keeps P1 from being supported. The preview and initialization masks are not recorded frames and their camera pose is not recorded (it is rebuilt as the replay does); they are reported for information only.",
+    "P2: 'before detach' is frames 0..d inclusive (every image captured before release); 0..d-1 is reported as a sensitivity; a run without a detach is judged on all its frames, and that window is complete only when all 200 frames are recorded. A masked patch element is jaw_mask_patch_unmasked < 169 (elements unmasked in both the previous and the current patch); feature drops by the mask (jaw_mask_dropped_valid, jaw_mask_in_mask_any) are reported, not judged. A hold is any frame with closure_hold.held true or a certificate vision_source of 'closure_hold'. The pass clause is refuted only by an unrefused control the grader graded with a failed check (the registered refutation names a failed check); a control that was never graded failed no check, and a refused control is not a run of the arm, so either keeps the clause from holding without refuting it, and a refused control's frames are not judged.",
+    "P3: pixel_xy is taken in pixel-index coordinates (as the tracker's rint and getRectSubPix use it); pixel_xy - 0.5 is a reported sensitivity. Inside the silhouette means a signed distance <= 0 to either undilated jaw hull (jaw_signed_distance_px), judged on every frame whose state is tracking; on an incomplete recording that clause cannot hold, since it is about every frame.",
+    "P3: the jaw first touches the patch on the first frame whose previous or current patch has a masked element (jaw_mask_patch_masked_prev + jaw_mask_patch_masked_cur > 0); where that telemetry is absent, the 13 x 13 getRectSubPix footprint of the reconstructed mask at the recorded pixel decides. From that frame on (inclusive) P3 is refuted by a stop whose measurement is a loss (not tracking) that closure_hold_explanation(measurement, latched_by_jaw=False) does not explain, or by a cut phase of align or closing; a stop while the tracker still reports tracking is not a loss.",
+    "P3: the stop is mask-attributable when closure_hold_explanation(measurement, latched_by_jaw=False) explains it. It is on the final leg when the stop frame's visual_servo_decision.approach_phase is 'final', or, when that decision carries no approach_phase (the controller omits it while it holds for alignment or closure), when the controller's own live approach_phase of the previous frame is 'final' (the leg the robot was on when the command was issued); the source used is recorded. jaw_mask_occluded at frames 67-68 is an expectation clause, not a refutation condition. P3 is untested when the cut stops before the first touch, when the jaw never touches the patch, or when 19444 was refused or not recorded; when 19444 neither stops nor touches, the predicted stop did not occur but no registered refutation condition applies, and untested_reason says so.",
+    "P4 is predicted for 530 runs whose gate mouth distance at closure start (cut.certificate.mouth_distance_m at k) is at most 4 mm, inclusive; runs above 4 mm, and runs whose settled recording has no closure start, are reported. The first closure loss L is the first frame in k+1..k+6 whose honest measurement (live_vision.measurement, never the held observation) is not tracking. A run with L = k+1 is judged (its first loss comes at another frame). Otherwise, when the cut phase recorded at k+1 is not 'closing' (the cut left closing at k+1 for a non-vision reason while the tracker still tracked, so k+2 was rendered with the jaw open), P4's premise, a first frame rendered closing at k+2, never arose: the run is listed as untested for P4 with the cut's stop frame and reason, in a clause that holds false and cannot refute. A run that tracks through k+3 is judged even when its recording ends later in the window (tracking then continues at k+3); a run whose recording ends before k+3 without a loss is not evaluable. Mask-attributable means closure_hold_explanation(measurement, latched_by_jaw=False) returns too_few_unmasked_patch_pixels or flow_failed_only_after_mask_drop. The shadow stop and the render check (k+1 rendered open, k+2 closing) are registered claims that cannot refute. The recorded closure_hold record at L is a recording-consistency echo (nothing is held before L, so it equals the recomputed attribution by construction) and is informational.",
+    "P5's population is the 530 runs where P4's loss occurs: the first closure loss is at k+2 and mask-attributable, with the cut still closing after k+1 (so k+2 is the first frame rendered closing), whatever the closure-start distance. 'P4's loss' names the event P4 describes; P4's 4 mm bound limits where P4 predicts that event, not what the event is, so a run above 4 mm where it occurs is in the population. Every other 530 run is reported, not predicted, with its first loss, attribution, held frames, detach and cut stop. A broader reading (any mask-attributable first loss) would let runs outside P5's stated condition refute or support it. This reading was fixed after the items in construction_exposure, from the text alone. The hold must cover exactly k+2..k+6 (the deadline frame is held). The tool motion is recomputed with pose_change from the closure-start pose over k+1..k+6 with strict <; held mouth distances must stay within 0.05 mm (inclusive) of the value at k. A held frame that stops refutes; detachment at another frame refutes, and so does no detachment once frame k+6 is recorded or the cut stopped by k+6. Coverage, tool and mouth are registered claims that cannot refute. The label clause (vision_source closure_hold, the four waived checks and a held-target age of (i - k)/10 s) cannot refute and holds only when every held frame carries the label, because the label is the protocol's definition of a held frame; the hold's own stop reasons are informational (a held frame that triggers one already stops). A run in the population whose recording ends before k+6 with neither refutation established is not evaluable.",
+    "P6 counts 530 rows with outcome 'pass' whose capture was not refused; a graded row with other than 17 checks stops the scorer. configuration_matches and the report's arm checks are reported per run. The grader never reads vision_source: a certificate on a held frame has no reasons (the waived checks are listed, not appended), so a detach certified on a held frame passes detach_has_completed_certified_closure.",
+    "P7 replays each 530 run that held through the frozen tools/replay_jaw_self_mask.replay_run with both flags off: the baseline tracker on the run's own recorded RGB, depth and camera. Its tracker output does not depend on cut decisions (the tracker updates on every frame), so the replay's evaluable and exact_counterfactual flags are not used, and reproduces_recording_through_recorded_stop is false by design (the live run used the mask). The anchor is the baseline's own target at the live closure-start frame k: P7 is about the baseline tracker's drift while tool and spur are still, and the live closure reference comes from another (masked) tracker whose offset from the baseline at k is not drift. The shift from the live closure reference is reported for every frame, and a disagreement of the two anchors about the 3 mm threshold is flagged without changing the verdict. 'Before the deadline' is k+1..k+5 (k+6 is reported).",
+    "P7: the baseline's window ends only at a latched loss (tracking_lost for any reason, or jaw_mask_occluded); invalid_depth and invalid_calibration do not latch (the tracker can track again on the next frame), so they are listed as gaps and measuring continues, and a tracking row without a target is a gap too. A run supports P7 when a tracking frame in k+1..k+5 before any latched loss is at least 3 mm (inclusive) from the anchor. It refutes P7 only when every frame k+1..k+5 tracks with a target and each is within 3 mm: 'stays within 3 mm' needs the target measured on every frame before the deadline, and on an unmeasured frame the unchanged gate stops, so the hold was not unnecessary there. Otherwise, with no 3 mm move, a run is indeterminate when a latched loss or a gap falls in k+1..k+5, and untested when a frame of k+1..k+5 is missing from the replay. A run whose baseline is not tracking at k or whose replay fails is untested. 530 runs that never held are reported. P7 is untested when no 530 run held, or when no held run's baseline either moved or stayed within (each untested or indeterminate).",
+    "P8's window is closure start k through detach d, inclusive. The spur is the selected piece's PhysX pose origin (selected_piece_pose_wxyz); the mouth is tool_mouth_geometry with the frame's recorded mouth offset and closing axis. 'Changes by' is the largest deviation from the value at k (the net change is reported) and both limits are strict. frames.json target_position_m and target_distance_m are constants of the initial target and are not used. 530 runs that never detached are reported; P8 is untested when no 530 run detaches.",
+    "construction_exposure lists what was seen of the live runs before this scorer was finished; no clause reads any of it, the runs table carries each run's entry, and the per-run views of P4-P8 point to it for the one run whose records were seen.",
+    "Each run is labelled with its GPU model from report.node (score_planned_approach.gpu_model)."
+  ],
+  "runs": [
+    {
+      "batch": "jaw-hold-a-20261001",
+      "run_index": 0,
+      "run_directory": "run_00_source_tree0_v530_planned_pose_jaw_hold",
+      "target": 530,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "pass",
+      "status": "graded",
+      "checks": "17/17",
+      "failed_checks": [],
+      "stop_reason": null,
+      "evidence_stop_frame": null,
+      "configuration_matches": true,
+      "refused": false,
+      "refused_reasons": [],
+      "configuration_problems_in_report": [],
+      "not_recorded_reason": null,
+      "frames_recorded": 200,
+      "frames_planned": 200,
+      "recording_complete": true,
+      "cut_stop_decision_frame": null,
+      "cut_stop_reason": null,
+      "closure_start_frame": 74,
+      "detach_frame": 80,
+      "held_frames": [
+        76,
+        77,
+        78,
+        79,
+        80
+      ],
+      "shadow_stop": [
+        76,
+        "vision_invalid"
+      ],
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "seen_before_scoring": "records read mid-recording at 81 frames (frame 75 printed); progress log showed phase=retreat at frames 101-121; Slurm COMPLETED 36m28s (exit 0: capture complete, grader ok (17/17) and configuration_matches true)",
+      "report": {
+        "jaw_self_mask_enabled": true,
+        "closure_hold_enabled": true,
+        "registered_constants_recorded": true,
+        "min_unmasked_patch_elements": 140,
+        "target_id": "tree0_SPUR_component_530",
+        "daylight": "source",
+        "stage": "complete",
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "frame_count": 200,
+        "stopped_reason": null,
+        "error": null,
+        "initial_tracker": {
+          "state": "initialized",
+          "feature_count": 15,
+          "jaw_mask_roi_pixels": 0
+        },
+        "visual_proxy_roll_rad": 0.9459624163870479
+      }
+    },
+    {
+      "batch": "jaw-hold-a-20261001",
+      "run_index": 1,
+      "run_directory": "run_01_source_tree1_v19444_planned_pose_jaw_hold",
+      "target": 19444,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_vision_invalid",
+      "status": "graded",
+      "checks": "9/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete"
+      ],
+      "stop_reason": "vision_invalid",
+      "evidence_stop_frame": 68,
+      "configuration_matches": true,
+      "refused": false,
+      "refused_reasons": [],
+      "configuration_problems_in_report": [],
+      "not_recorded_reason": null,
+      "frames_recorded": 200,
+      "frames_planned": 200,
+      "recording_complete": true,
+      "cut_stop_decision_frame": 67,
+      "cut_stop_reason": "vision_invalid",
+      "closure_start_frame": null,
+      "detach_frame": null,
+      "held_frames": [],
+      "shadow_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "seen_before_scoring": "Slurm FAILED 24m45s (exit 1: the capture, the grader's ok or configuration_matches was false)",
+      "report": {
+        "jaw_self_mask_enabled": true,
+        "closure_hold_enabled": true,
+        "registered_constants_recorded": true,
+        "min_unmasked_patch_elements": 140,
+        "target_id": "tree1_SPUR_component_19444",
+        "daylight": "source",
+        "stage": "complete",
+        "task_outcome": "vision_stopped_failure",
+        "frame_count": 200,
+        "stopped_reason": "vision_invalid",
+        "error": null,
+        "initial_tracker": {
+          "state": "initialized",
+          "feature_count": 12,
+          "jaw_mask_roi_pixels": 0
+        },
+        "visual_proxy_roll_rad": -0.5362510833514214
+      }
+    },
+    {
+      "batch": "jaw-hold-b-20261001",
+      "run_index": 0,
+      "run_directory": "run_00_source_tree0_v530_planned_pose_jaw_hold",
+      "target": 530,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "pass",
+      "status": "graded",
+      "checks": "17/17",
+      "failed_checks": [],
+      "stop_reason": null,
+      "evidence_stop_frame": null,
+      "configuration_matches": true,
+      "refused": false,
+      "refused_reasons": [],
+      "configuration_problems_in_report": [],
+      "not_recorded_reason": null,
+      "frames_recorded": 200,
+      "frames_planned": 200,
+      "recording_complete": true,
+      "cut_stop_decision_frame": null,
+      "cut_stop_reason": null,
+      "closure_start_frame": 74,
+      "detach_frame": 80,
+      "held_frames": [
+        76,
+        77,
+        78,
+        79,
+        80
+      ],
+      "shadow_stop": [
+        76,
+        "vision_invalid"
+      ],
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "seen_before_scoring": "Slurm COMPLETED 33m18s (exit 0: capture complete, grader ok (17/17) and configuration_matches true)",
+      "report": {
+        "jaw_self_mask_enabled": true,
+        "closure_hold_enabled": true,
+        "registered_constants_recorded": true,
+        "min_unmasked_patch_elements": 140,
+        "target_id": "tree0_SPUR_component_530",
+        "daylight": "source",
+        "stage": "complete",
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "frame_count": 200,
+        "stopped_reason": null,
+        "error": null,
+        "initial_tracker": {
+          "state": "initialized",
+          "feature_count": 19,
+          "jaw_mask_roi_pixels": 0
+        },
+        "visual_proxy_roll_rad": 0.9459624163870479
+      }
+    },
+    {
+      "batch": "jaw-hold-b-20261001",
+      "run_index": 1,
+      "run_directory": "run_01_source_tree1_v14944_planned_pose_jaw_hold",
+      "target": 14944,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "pass",
+      "status": "graded",
+      "checks": "17/17",
+      "failed_checks": [],
+      "stop_reason": null,
+      "evidence_stop_frame": null,
+      "configuration_matches": true,
+      "refused": false,
+      "refused_reasons": [],
+      "configuration_problems_in_report": [],
+      "not_recorded_reason": null,
+      "frames_recorded": 200,
+      "frames_planned": 200,
+      "recording_complete": true,
+      "cut_stop_decision_frame": null,
+      "cut_stop_reason": null,
+      "closure_start_frame": 71,
+      "detach_frame": 77,
+      "held_frames": [],
+      "shadow_stop": [
+        null,
+        null
+      ],
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "seen_before_scoring": "Slurm COMPLETED 27m13s (exit 0: capture complete, grader ok (17/17) and configuration_matches true)",
+      "report": {
+        "jaw_self_mask_enabled": true,
+        "closure_hold_enabled": true,
+        "registered_constants_recorded": true,
+        "min_unmasked_patch_elements": 140,
+        "target_id": "tree1_SPUR_component_14944",
+        "daylight": "source",
+        "stage": "complete",
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "frame_count": 200,
+        "stopped_reason": null,
+        "error": null,
+        "initial_tracker": {
+          "state": "initialized",
+          "feature_count": 11,
+          "jaw_mask_roi_pixels": 0
+        },
+        "visual_proxy_roll_rad": 0.8448811022114912
+      }
+    },
+    {
+      "batch": "jaw-hold-c-20261001",
+      "run_index": 0,
+      "run_directory": "run_00_source_tree0_v530_planned_pose_jaw_hold",
+      "target": 530,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "pass",
+      "status": "graded",
+      "checks": "17/17",
+      "failed_checks": [],
+      "stop_reason": null,
+      "evidence_stop_frame": null,
+      "configuration_matches": true,
+      "refused": false,
+      "refused_reasons": [],
+      "configuration_problems_in_report": [],
+      "not_recorded_reason": null,
+      "frames_recorded": 200,
+      "frames_planned": 200,
+      "recording_complete": true,
+      "cut_stop_decision_frame": null,
+      "cut_stop_reason": null,
+      "closure_start_frame": 74,
+      "detach_frame": 80,
+      "held_frames": [
+        76,
+        77,
+        78,
+        79,
+        80
+      ],
+      "shadow_stop": [
+        76,
+        "vision_invalid"
+      ],
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "seen_before_scoring": "Slurm COMPLETED 33m23s (exit 0: capture complete, grader ok (17/17) and configuration_matches true)",
+      "report": {
+        "jaw_self_mask_enabled": true,
+        "closure_hold_enabled": true,
+        "registered_constants_recorded": true,
+        "min_unmasked_patch_elements": 140,
+        "target_id": "tree0_SPUR_component_530",
+        "daylight": "source",
+        "stage": "complete",
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "frame_count": 200,
+        "stopped_reason": null,
+        "error": null,
+        "initial_tracker": {
+          "state": "initialized",
+          "feature_count": 17,
+          "jaw_mask_roi_pixels": 0
+        },
+        "visual_proxy_roll_rad": 0.9459624163870479
+      }
+    },
+    {
+      "batch": "jaw-hold-c-20261001",
+      "run_index": 1,
+      "run_directory": "run_01_source_tree1_v15004_planned_pose_jaw_hold",
+      "target": 15004,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "pass",
+      "status": "graded",
+      "checks": "17/17",
+      "failed_checks": [],
+      "stop_reason": null,
+      "evidence_stop_frame": null,
+      "configuration_matches": true,
+      "refused": false,
+      "refused_reasons": [],
+      "configuration_problems_in_report": [],
+      "not_recorded_reason": null,
+      "frames_recorded": 200,
+      "frames_planned": 200,
+      "recording_complete": true,
+      "cut_stop_decision_frame": null,
+      "cut_stop_reason": null,
+      "closure_start_frame": 71,
+      "detach_frame": 77,
+      "held_frames": [],
+      "shadow_stop": [
+        null,
+        null
+      ],
+      "node": "cn-gpu5",
+      "gpu_model": "RTX 8000",
+      "seen_before_scoring": "Slurm COMPLETED 26m19s (exit 0: capture complete, grader ok (17/17) and configuration_matches true)",
+      "report": {
+        "jaw_self_mask_enabled": true,
+        "closure_hold_enabled": true,
+        "registered_constants_recorded": true,
+        "min_unmasked_patch_elements": 140,
+        "target_id": "tree1_SPUR_component_15004",
+        "daylight": "source",
+        "stage": "complete",
+        "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+        "frame_count": 200,
+        "stopped_reason": null,
+        "error": null,
+        "initial_tracker": {
+          "state": "initialized",
+          "feature_count": 23,
+          "jaw_mask_roi_pixels": 0
+        },
+        "visual_proxy_roll_rad": -2.721568619727091
+      }
+    }
+  ],
+  "predictions": [
+    {
+      "id": "P1",
+      "prediction": "(mask fidelity) On every frame of all six runs, the recorded mask pixel count equals an offline reconstruction from the recorded pose, progress and camera. No predicted jaw pixel shows recorded depth more than 1 mm beyond the analytic box depth. Refuted by any mismatch.",
+      "clauses": [
+        {
+          "clause": "the recorded mask pixel count equals the offline reconstruction on every recorded frame",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5793
+                ],
+                "0.166667": [
+                  5796
+                ],
+                "0.333333": [
+                  5806
+                ],
+                "0.500000": [
+                  5752
+                ],
+                "0.666667": [
+                  5588
+                ],
+                "0.833333": [
+                  5348
+                ],
+                "1.000000": [
+                  5024
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5793,
+                "preview_observation_mask_pixel_count": 5793,
+                "reconstructed_with_rebuilt_camera": 5793,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "jaw-hold-a-20261001 19444": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  6540
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 6540,
+                "preview_observation_mask_pixel_count": 6540,
+                "reconstructed_with_rebuilt_camera": 6540,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "jaw-hold-b-20261001 530": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5793
+                ],
+                "0.166667": [
+                  5796
+                ],
+                "0.333333": [
+                  5806
+                ],
+                "0.500000": [
+                  5752
+                ],
+                "0.666667": [
+                  5588
+                ],
+                "0.833333": [
+                  5348
+                ],
+                "1.000000": [
+                  5024
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5793,
+                "preview_observation_mask_pixel_count": 5793,
+                "reconstructed_with_rebuilt_camera": 5793,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "jaw-hold-b-20261001 14944": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  3524
+                ],
+                "0.166667": [
+                  3458
+                ],
+                "0.333333": [
+                  3393
+                ],
+                "0.500000": [
+                  3341
+                ],
+                "0.666667": [
+                  3277
+                ],
+                "0.833333": [
+                  3222
+                ],
+                "1.000000": [
+                  3157
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 3524,
+                "preview_observation_mask_pixel_count": 3524,
+                "reconstructed_with_rebuilt_camera": 3524,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "jaw-hold-c-20261001 530": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5793
+                ],
+                "0.166667": [
+                  5796
+                ],
+                "0.333333": [
+                  5806
+                ],
+                "0.500000": [
+                  5752
+                ],
+                "0.666667": [
+                  5588
+                ],
+                "0.833333": [
+                  5348
+                ],
+                "1.000000": [
+                  5024
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5793,
+                "preview_observation_mask_pixel_count": 5793,
+                "reconstructed_with_rebuilt_camera": 5793,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "jaw-hold-c-20261001 15004": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  3459
+                ],
+                "0.166667": [
+                  3400
+                ],
+                "0.333333": [
+                  3339
+                ],
+                "0.500000": [
+                  3278
+                ],
+                "0.666667": [
+                  3226
+                ],
+                "0.833333": [
+                  3169
+                ],
+                "1.000000": [
+                  3103
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 3459,
+                "preview_observation_mask_pixel_count": 3459,
+                "reconstructed_with_rebuilt_camera": 3459,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "no predicted jaw pixel (any pixel whose centre ray hits either box) shows recorded depth more than 1 mm beyond the analytic box depth",
+          "observed": {
+            "runs": {
+              "jaw-hold-a-20261001 530": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 721,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.955564408969941e-05,
+                "hit_pixels_min_max": [
+                  4424,
+                  4969
+                ],
+                "nearer_pixels_min_max": [
+                  1096,
+                  2081
+                ],
+                "hit_outside_mask": 0
+              },
+              "jaw-hold-a-20261001 19444": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 130,
+                "violation_frames": [
+                  {
+                    "index": 22,
+                    "violations": 1,
+                    "nonfinite_hits": 1,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 9.06377837228689e-05
+                  },
+                  {
+                    "index": 39,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 18752.951076675803
+                  },
+                  {
+                    "index": 72,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 73,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 74,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 75,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 76,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 77,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 78,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 79,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 80,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 81,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 82,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 83,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 84,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 85,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 86,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 87,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 88,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 89,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 90,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 91,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 92,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 93,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 94,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 95,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 96,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 97,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 98,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 99,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 100,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 101,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 102,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 103,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 104,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 105,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 106,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 107,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 108,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 109,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 110,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 111,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 112,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 113,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 114,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 115,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 116,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 117,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 118,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 119,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 120,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 121,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 122,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 123,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 124,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 125,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 126,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 127,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 128,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 129,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 130,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 131,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 132,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 133,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 134,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 135,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 136,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 137,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 138,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 139,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 140,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 141,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 142,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 143,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 144,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 145,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 146,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 147,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 148,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 149,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 150,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 151,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 152,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 153,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 154,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 155,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 156,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 157,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 158,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 159,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 160,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 161,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 162,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 163,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 164,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 165,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 166,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 167,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 168,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 169,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 170,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 171,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 172,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 173,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 174,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 175,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 176,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 177,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 178,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 179,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 180,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 181,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 182,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 183,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 184,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 185,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 186,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 187,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 188,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 189,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 190,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 191,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 192,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 193,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 194,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 195,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 196,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 197,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 198,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  },
+                  {
+                    "index": 199,
+                    "violations": 1,
+                    "nonfinite_hits": 0,
+                    "within_edge_band": 1,
+                    "max_excess_mm": 57.08384968643113
+                  }
+                ],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 336,
+                  "edge_band_beyond": [
+                    {
+                      "index": 22,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -1.5152615233983874e-05,
+                      "box_z_m": 0.13964613325119116,
+                      "recorded_m": null,
+                      "excess_m": null
+                    },
+                    {
+                      "index": 39,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -4.282239189933035e-06,
+                      "box_z_m": 0.13964612181052355,
+                      "recorded_m": 18.892597198486328,
+                      "excess_m": 18.752951076675803
+                    },
+                    {
+                      "index": 72,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 73,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 74,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 75,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 76,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 77,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 78,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 79,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 80,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 81,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 82,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 83,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 84,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 85,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 86,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 87,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 88,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 89,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 90,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 91,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 92,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 93,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 94,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 95,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 96,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 97,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 98,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 99,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 100,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 101,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 102,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 103,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 104,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 105,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 106,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 107,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 108,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 109,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 110,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 111,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 112,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 113,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 114,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 115,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 116,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 117,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 118,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 119,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 120,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 121,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 122,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 123,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 124,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 125,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 126,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 127,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 128,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 129,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 130,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 131,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 132,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 133,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 134,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 135,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 136,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 137,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 138,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 139,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 140,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 141,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 142,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 143,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 144,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 145,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 146,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 147,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 148,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 149,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 150,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 151,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 152,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 153,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 154,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 155,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 156,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 157,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 158,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 159,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 160,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 161,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 162,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 163,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 164,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 165,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 166,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 167,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 168,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 169,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 170,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 171,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 172,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 173,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 174,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 175,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 176,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 177,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 178,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 179,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 180,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 181,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 182,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 183,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 184,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 185,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 186,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 187,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 188,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 189,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 190,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 191,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 192,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 193,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 194,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 195,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 196,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 197,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 198,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    },
+                    {
+                      "index": 199,
+                      "v": 242,
+                      "u": 155,
+                      "signed_distance_px": -7.233511338412162e-06,
+                      "box_z_m": 0.13964612327213363,
+                      "recorded_m": 0.19672997295856476,
+                      "excess_m": 0.057083849686431126
+                    }
+                  ]
+                },
+                "max_excess_mm": 18752.951076675803,
+                "hit_pixels_min_max": [
+                  5812,
+                  5813
+                ],
+                "nearer_pixels_min_max": [
+                  354,
+                  354
+                ],
+                "hit_outside_mask": 0
+              },
+              "jaw-hold-b-20261001 530": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 721,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.955564408969941e-05,
+                "hit_pixels_min_max": [
+                  4424,
+                  4969
+                ],
+                "nearer_pixels_min_max": [
+                  1096,
+                  2069
+                ],
+                "hit_outside_mask": 0
+              },
+              "jaw-hold-b-20261001 14944": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1656,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 0.0009001336621350386,
+                "hit_pixels_min_max": [
+                  2379,
+                  2731
+                ],
+                "nearer_pixels_min_max": [
+                  0,
+                  61
+                ],
+                "hit_outside_mask": 0
+              },
+              "jaw-hold-c-20261001 530": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 721,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 0.00010046403486896338,
+                "hit_pixels_min_max": [
+                  4424,
+                  4969
+                ],
+                "nearer_pixels_min_max": [
+                  1096,
+                  2080
+                ],
+                "hit_outside_mask": 0
+              },
+              "jaw-hold-c-20261001 15004": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 486,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 0.0006243370059555442,
+                "hit_pixels_min_max": [
+                  2329,
+                  2673
+                ],
+                "nearer_pixels_min_max": [
+                  491,
+                  867
+                ],
+                "hit_outside_mask": 0
+              }
+            },
+            "runs_with_violations": [
+              "jaw-hold-a-20261001 19444"
+            ],
+            "violations": 130,
+            "edge_band_sensitivity": {
+              "note": "not the registered reading and never a verdict: the count leaving out hits whose centre lies within 0.01 px of the undilated silhouette edge",
+              "edge_band_px": 0.01,
+              "runs_with_violations_outside_edge_band": [],
+              "violations_outside_edge_band": 0,
+              "would_refute": false
+            }
+          },
+          "holds": false,
+          "refutes": true
+        },
+        {
+          "clause": "the controller's mask record names the rendered jaw: its roll equals the renderer's within 1e-12 rad (its progress is a recording echo; bbox and corners reported; not a refutation condition)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "roll_mismatch_frames": [],
+              "roll_max_abs_difference_rad": 0.0,
+              "progress_echo_mismatch_frames": [],
+              "bbox_mismatch_frames": [],
+              "corner_max_abs_px": 3.410605131648481e-13
+            },
+            "jaw-hold-a-20261001 19444": {
+              "roll_mismatch_frames": [],
+              "roll_max_abs_difference_rad": 0.0,
+              "progress_echo_mismatch_frames": [],
+              "bbox_mismatch_frames": [],
+              "corner_max_abs_px": 2.2737367544323206e-13
+            },
+            "jaw-hold-b-20261001 530": {
+              "roll_mismatch_frames": [],
+              "roll_max_abs_difference_rad": 0.0,
+              "progress_echo_mismatch_frames": [],
+              "bbox_mismatch_frames": [],
+              "corner_max_abs_px": 3.410605131648481e-13
+            },
+            "jaw-hold-b-20261001 14944": {
+              "roll_mismatch_frames": [],
+              "roll_max_abs_difference_rad": 0.0,
+              "progress_echo_mismatch_frames": [],
+              "bbox_mismatch_frames": [],
+              "corner_max_abs_px": 2.2737367544323206e-13
+            },
+            "jaw-hold-c-20261001 530": {
+              "roll_mismatch_frames": [],
+              "roll_max_abs_difference_rad": 0.0,
+              "progress_echo_mismatch_frames": [],
+              "bbox_mismatch_frames": [],
+              "corner_max_abs_px": 5.115907697472721e-13
+            },
+            "jaw-hold-c-20261001 15004": {
+              "roll_mismatch_frames": [],
+              "roll_max_abs_difference_rad": 0.0,
+              "progress_echo_mismatch_frames": [],
+              "bbox_mismatch_frames": [],
+              "corner_max_abs_px": 3.126388037344441e-13
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "every frame of all six planned runs was recorded and checked (coverage; not a refutation condition)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "judged": true,
+              "frames_recorded": 200,
+              "frames_planned": 200,
+              "frame_count_reported": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "jaw-hold-a-20261001 19444": {
+              "judged": true,
+              "frames_recorded": 200,
+              "frames_planned": 200,
+              "frame_count_reported": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "jaw-hold-b-20261001 530": {
+              "judged": true,
+              "frames_recorded": 200,
+              "frames_planned": 200,
+              "frame_count_reported": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "jaw-hold-b-20261001 14944": {
+              "judged": true,
+              "frames_recorded": 200,
+              "frames_planned": 200,
+              "frame_count_reported": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "jaw-hold-c-20261001 530": {
+              "judged": true,
+              "frames_recorded": 200,
+              "frames_planned": 200,
+              "frame_count_reported": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "jaw-hold-c-20261001 15004": {
+              "judged": true,
+              "frames_recorded": 200,
+              "frames_planned": 200,
+              "frame_count_reported": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "planned_runs": {
+              "expected": 6,
+              "present": 6
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "refuted"
+    },
+    {
+      "id": "P2",
+      "prediction": "(controls, no harm) 14944 and 15004 pass 17/17. The mask removes no patch element before detach, the tracker reports tracking on every frame before detach, and the hold never applies. Refuted if either fails a check, loses tracking before detach, masks a patch element before detach, or holds.",
+      "clauses": [
+        {
+          "clause": "14944 and 15004 pass 17/17",
+          "observed": {
+            "jaw-hold-b-20261001 14944": {
+              "outcome": "pass",
+              "status": "graded",
+              "checks": "17/17",
+              "failed_checks": [],
+              "gpu_model": "RTX 8000",
+              "refused": false
+            },
+            "jaw-hold-c-20261001 15004": {
+              "outcome": "pass",
+              "status": "graded",
+              "checks": "17/17",
+              "failed_checks": [],
+              "gpu_model": "RTX 8000",
+              "refused": false
+            },
+            "graded_with_a_failed_check": []
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the tracker reports tracking on every frame before detach (0..d inclusive; 0..d-1 reported)",
+          "observed": {
+            "jaw-hold-b-20261001 14944": {
+              "detach_frame": 77,
+              "detach_frames": [
+                77
+              ],
+              "detach_requested_frames": [
+                77
+              ],
+              "window": [
+                0,
+                77
+              ],
+              "window_complete": true,
+              "not_tracking": []
+            },
+            "jaw-hold-c-20261001 15004": {
+              "detach_frame": 77,
+              "detach_frames": [
+                77
+              ],
+              "detach_requested_frames": [
+                77
+              ],
+              "window": [
+                0,
+                77
+              ],
+              "window_complete": true,
+              "not_tracking": []
+            },
+            "strict_window_not_tracking": {
+              "jaw-hold-b-20261001 14944": [],
+              "jaw-hold-c-20261001 15004": []
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the mask removes no patch element before detach (jaw_mask_patch_unmasked == 169)",
+          "observed": {
+            "jaw-hold-b-20261001 14944": {
+              "masked": [],
+              "masked_strict_frames": [],
+              "patch_telemetry_missing_while_tracking": [],
+              "feature_drops_not_judged": {
+                "frames_with_dropped_valid": [],
+                "max_in_mask_any": 0
+              }
+            },
+            "jaw-hold-c-20261001 15004": {
+              "masked": [],
+              "masked_strict_frames": [],
+              "patch_telemetry_missing_while_tracking": [],
+              "feature_drops_not_judged": {
+                "frames_with_dropped_valid": [],
+                "max_in_mask_any": 1
+              }
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the hold never applies",
+          "observed": {
+            "jaw-hold-b-20261001 14944": {
+              "held_frames": []
+            },
+            "jaw-hold-c-20261001 15004": {
+              "held_frames": []
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P3",
+      "prediction": "(19444, explicit stop before the jaw is measured) 19444 stops on the final leg with a mask-attributable state (jaw_mask_occluded expected at frames 67-68). No frame reports tracking with the tracked pixel inside the jaw silhouette. Refuted if such a frame occurs, or if, after the jaw first touches the patch, it stops on a loss the mask does not explain or continues to align. A stop before the jaw reaches the patch leaves P3 untested.",
+      "clauses": [
+        {
+          "clause": "19444 stops on the final leg with a mask-attributable state",
+          "observed": {
+            "run": "jaw-hold-a-20261001 19444",
+            "outcome": "stopped_vision_invalid",
+            "gpu_model": "RTX 8000",
+            "stop_decision_frame": 67,
+            "evidence_stop_frame": 68,
+            "stopped_reason": "vision_invalid",
+            "leg": "final",
+            "leg_source": "visual_servo_decision of the stop frame",
+            "live_leg_at_stop": "final",
+            "state": "jaw_mask_occluded",
+            "reason": "too_few_unmasked_patch_pixels",
+            "kept_patch_elements": 97,
+            "jaw_mask_dropped_valid": 1,
+            "jaw_mask_unmasked_flow_would_pass": true,
+            "mask_explanation": "too_few_unmasked_patch_pixels",
+            "recording_complete": true
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the stop state is jaw_mask_occluded at frame 67 or 68 (an expectation, not a refutation condition)",
+          "observed": {
+            "stop_decision_frame": 67,
+            "state": "jaw_mask_occluded"
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "no frame reports tracking with the tracked pixel inside the jaw silhouette",
+          "observed": {
+            "tracking_frames_checked": 67,
+            "tracking_frames_without_pixel_geometry": [],
+            "inside_frames": [],
+            "min_signed_distance_px": 7.346525370428942,
+            "sensitivity_pixel_minus_half": {
+              "inside_frames": [],
+              "min_signed_distance_px": 7.17913794315753
+            },
+            "telemetry_cross_check_inconsistent_frames": [],
+            "recording_complete": true
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "from the jaw's first touch of the patch on, no stop on a loss the mask does not explain and no align",
+          "observed": {
+            "first_touch": {
+              "frame": 66,
+              "source": "telemetry",
+              "masked_prev_cur": [
+                0,
+                18
+              ],
+              "kept": 151
+            },
+            "unexplained_loss_stop": false,
+            "align_or_closing_frames": []
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P4",
+      "prediction": "(530 mechanism) Predicted only for runs whose closure starts with a gate mouth distance of at most 4 mm (recorded 2.69-3.05 mm). The first closure loss comes at closure start + 2, the first frame rendered with the jaw closing, and is mask-attributable. The shadow controller (cut_without_hold) stops there with vision_invalid. Refuted if, in such a run, tracking continues at closure start + 3, or the first loss comes at another frame or is not mask-attributable. Runs that start closure above 4 mm are reported, not predicted.",
+      "clauses": [
+        {
+          "clause": "the first closure loss comes at closure start + 2",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "closure_start_frame": 74,
+              "mouth_distance_at_start_mm": 2.881242748249262,
+              "first_loss_frame": 76,
+              "first_loss_offset": 2,
+              "records_seen_before_scoring": "see construction_exposure"
+            },
+            "jaw-hold-b-20261001 530": {
+              "closure_start_frame": 74,
+              "mouth_distance_at_start_mm": 3.2258666406574688,
+              "first_loss_frame": 76,
+              "first_loss_offset": 2
+            },
+            "jaw-hold-c-20261001 530": {
+              "closure_start_frame": 74,
+              "mouth_distance_at_start_mm": 3.005847957883072,
+              "first_loss_frame": 76,
+              "first_loss_offset": 2
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "tracking does not continue at closure start + 3",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "state_at_k_plus_3": "tracking_lost",
+              "frame_k_plus_3_recorded": true
+            },
+            "jaw-hold-b-20261001 530": {
+              "state_at_k_plus_3": "tracking_lost",
+              "frame_k_plus_3_recorded": true
+            },
+            "jaw-hold-c-20261001 530": {
+              "state_at_k_plus_3": "tracking_lost",
+              "frame_k_plus_3_recorded": true
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the first closure loss is mask-attributable (too_few_unmasked_patch_pixels or flow_failed_only_after_mask_drop)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "state_at_loss": "jaw_mask_occluded",
+              "reason_at_loss": "too_few_unmasked_patch_pixels",
+              "mask_explanation": "too_few_unmasked_patch_pixels",
+              "attributable": true
+            },
+            "jaw-hold-b-20261001 530": {
+              "state_at_loss": "jaw_mask_occluded",
+              "reason_at_loss": "too_few_unmasked_patch_pixels",
+              "mask_explanation": "too_few_unmasked_patch_pixels",
+              "attributable": true
+            },
+            "jaw-hold-c-20261001 530": {
+              "state_at_loss": "jaw_mask_occluded",
+              "reason_at_loss": "too_few_unmasked_patch_pixels",
+              "mask_explanation": "too_few_unmasked_patch_pixels",
+              "attributable": true
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the shadow controller (cut_without_hold) stops at the loss with vision_invalid (not a refutation condition)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "first_loss_frame": 76,
+              "shadow_stop_frame": 76,
+              "shadow_stop_reason": "vision_invalid"
+            },
+            "jaw-hold-b-20261001 530": {
+              "first_loss_frame": 76,
+              "shadow_stop_frame": 76,
+              "shadow_stop_reason": "vision_invalid"
+            },
+            "jaw-hold-c-20261001 530": {
+              "first_loss_frame": 76,
+              "shadow_stop_frame": 76,
+              "shadow_stop_reason": "vision_invalid"
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "frame k+1 is rendered with the jaw open and k+2 is the first frame rendered closing (not a refutation condition)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "rendered_progress_k_plus_1_2": [
+                0.0,
+                0.16666666666666607
+              ]
+            },
+            "jaw-hold-b-20261001 530": {
+              "rendered_progress_k_plus_1_2": [
+                0.0,
+                0.16666666666666607
+              ]
+            },
+            "jaw-hold-c-20261001 530": {
+              "rendered_progress_k_plus_1_2": [
+                0.0,
+                0.16666666666666607
+              ]
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "recording consistency, informational: the live closure_hold record at the loss equals closure_hold_explanation(recorded measurement, latched_by_jaw=False), equal by construction since nothing is held before the loss",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "recorded_hold_at_loss": {
+                "eligible": true,
+                "stationary": true,
+                "explained": true,
+                "explanation": "too_few_unmasked_patch_pixels",
+                "held": true
+              },
+              "consistent": true
+            },
+            "jaw-hold-b-20261001 530": {
+              "recorded_hold_at_loss": {
+                "eligible": true,
+                "stationary": true,
+                "explained": true,
+                "explanation": "too_few_unmasked_patch_pixels",
+                "held": true
+              },
+              "consistent": true
+            },
+            "jaw-hold-c-20261001 530": {
+              "recorded_hold_at_loss": {
+                "eligible": true,
+                "stationary": true,
+                "explained": true,
+                "explanation": "too_few_unmasked_patch_pixels",
+                "held": true
+              },
+              "consistent": true
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "reported, not predicted: 530 runs whose closure started above 4 mm or, in a settled recording, never started",
+          "observed": {
+            "none": true
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P5",
+      "prediction": "(530 hold to detachment) In every 530 run where P4's loss occurs, the hold covers every frame from it to the closure deadline. The tool stays within 0.5 mm and 0.25 deg. The gate's mouth distance on held frames equals its closure-start value within 0.05 mm, and detachment comes at closure start + 6. Refuted if any held frame stops or detachment comes at another frame.",
+      "clauses": [
+        {
+          "clause": "the hold covers every frame from P4's loss (k+2) to the closure deadline (not a refutation condition)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "first_loss_frame": 76,
+              "held_frames": [
+                76,
+                77,
+                78,
+                79,
+                80
+              ],
+              "expected_held_frames": [
+                76,
+                77,
+                78,
+                79,
+                80
+              ],
+              "recorded_through_deadline": true,
+              "records_seen_before_scoring": "see construction_exposure"
+            },
+            "jaw-hold-b-20261001 530": {
+              "first_loss_frame": 76,
+              "held_frames": [
+                76,
+                77,
+                78,
+                79,
+                80
+              ],
+              "expected_held_frames": [
+                76,
+                77,
+                78,
+                79,
+                80
+              ],
+              "recorded_through_deadline": true
+            },
+            "jaw-hold-c-20261001 530": {
+              "first_loss_frame": 76,
+              "held_frames": [
+                76,
+                77,
+                78,
+                79,
+                80
+              ],
+              "expected_held_frames": [
+                76,
+                77,
+                78,
+                79,
+                80
+              ],
+              "recorded_through_deadline": true
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the tool stays within 0.5 mm and 0.25 deg of its closure-start pose over k+1..k+6 (not a refutation condition)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "tool_frames_checked": 6,
+              "tool_max_translation_mm": 0.0019956432631949433,
+              "tool_max_rotation_deg": 0.0001683558502322043,
+              "recorded_dt_mm_dr_deg_max": [
+                0.0019956432631949433,
+                0.00016836017987127027
+              ]
+            },
+            "jaw-hold-b-20261001 530": {
+              "tool_frames_checked": 6,
+              "tool_max_translation_mm": 0.0019842618109842903,
+              "tool_max_rotation_deg": 0.00017898321425955264,
+              "recorded_dt_mm_dr_deg_max": [
+                0.0019842618109842903,
+                0.00017898321425955264
+              ]
+            },
+            "jaw-hold-c-20261001 530": {
+              "tool_frames_checked": 6,
+              "tool_max_translation_mm": 0.002489876577163389,
+              "tool_max_rotation_deg": 0.00021098057996906912,
+              "recorded_dt_mm_dr_deg_max": [
+                0.002489876577163389,
+                0.00021097712498090095
+              ]
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the gate's mouth distance on held frames equals its closure-start value within 0.05 mm (not a refutation condition)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "mouth_distance_at_start_mm": 2.881242748249262,
+              "held_mouth_max_deviation_mm": 0.0005148401246391973
+            },
+            "jaw-hold-b-20261001 530": {
+              "mouth_distance_at_start_mm": 3.2258666406574688,
+              "held_mouth_max_deviation_mm": 0.0007232490532812531
+            },
+            "jaw-hold-c-20261001 530": {
+              "mouth_distance_at_start_mm": 3.005847957883072,
+              "held_mouth_max_deviation_mm": 0.0006225822572025579
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "detachment comes at closure start + 6",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "closure_start_frame": 74,
+              "detach_frame": 80,
+              "cut_stop": [
+                null,
+                null
+              ],
+              "recorded_through_deadline": true
+            },
+            "jaw-hold-b-20261001 530": {
+              "closure_start_frame": 74,
+              "detach_frame": 80,
+              "cut_stop": [
+                null,
+                null
+              ],
+              "recorded_through_deadline": true
+            },
+            "jaw-hold-c-20261001 530": {
+              "closure_start_frame": 74,
+              "detach_frame": 80,
+              "cut_stop": [
+                null,
+                null
+              ],
+              "recorded_through_deadline": true
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "no held frame stops",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "held_stop_frames": [],
+              "cut_stop": [
+                null,
+                null
+              ]
+            },
+            "jaw-hold-b-20261001 530": {
+              "held_stop_frames": [],
+              "cut_stop": [
+                null,
+                null
+              ]
+            },
+            "jaw-hold-c-20261001 530": {
+              "held_stop_frames": [],
+              "cut_stop": [
+                null,
+                null
+              ]
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "every held frame carries the protocol's definition of a held frame: vision_source closure_hold, the four waived checks and a held target age of (i - k) / 10 s (not a refutation condition)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "mislabelled_held_frames": []
+            },
+            "jaw-hold-b-20261001 530": {
+              "mislabelled_held_frames": []
+            },
+            "jaw-hold-c-20261001 530": {
+              "mislabelled_held_frames": []
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "informational: the hold's own stop reasons (closure_hold_outside_closing, closure_hold_target_mismatch, invalid_vision_source); a held frame that triggers one is already a held frame that stops",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "hold_failure_stops": []
+            },
+            "jaw-hold-b-20261001 530": {
+              "hold_failure_stops": []
+            },
+            "jaw-hold-c-20261001 530": {
+              "hold_failure_stops": []
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "reported, not predicted: 530 runs where P4's loss did not occur",
+          "observed": {
+            "none": true
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P6",
+      "prediction": "(530 outcome under the label) At least one of the three 530 runs passes all 17 checks of the unchanged grader. Refuted if none does. Every failed check is reported per run.",
+      "clauses": [
+        {
+          "clause": "at least one of the three 530 runs passes all 17 checks of the unchanged grader",
+          "observed": {
+            "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+            "passes": [
+              "jaw-hold-a-20261001 530",
+              "jaw-hold-b-20261001 530",
+              "jaw-hold-c-20261001 530"
+            ],
+            "refused_passes_not_counted": [],
+            "runs": {
+              "jaw-hold-a-20261001 530": {
+                "outcome": "pass",
+                "status": "graded",
+                "checks": "17/17",
+                "failed_checks": [],
+                "stop_reason": null,
+                "evidence_stop_frame": null,
+                "gpu_model": "RTX 8000",
+                "configuration_matches": true,
+                "refused": false,
+                "configuration_problems_in_report": [],
+                "records_seen_before_scoring": "see construction_exposure"
+              },
+              "jaw-hold-b-20261001 530": {
+                "outcome": "pass",
+                "status": "graded",
+                "checks": "17/17",
+                "failed_checks": [],
+                "stop_reason": null,
+                "evidence_stop_frame": null,
+                "gpu_model": "RTX 8000",
+                "configuration_matches": true,
+                "refused": false,
+                "configuration_problems_in_report": []
+              },
+              "jaw-hold-c-20261001 530": {
+                "outcome": "pass",
+                "status": "graded",
+                "checks": "17/17",
+                "failed_checks": [],
+                "stop_reason": null,
+                "evidence_stop_frame": null,
+                "gpu_model": "RTX 8000",
+                "configuration_matches": true,
+                "refused": false,
+                "configuration_problems_in_report": []
+              }
+            },
+            "missing_runs": 0,
+            "grader_note": "The grader never reads vision_source: a certificate on a held frame has no reasons (the waived checks are listed, not appended), so a detach certified on a held frame passes detach_has_completed_certified_closure."
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "P7",
+      "prediction": "(the hold covered a real drift) In each 530 run that holds, the baseline tracker replayed on that run's own live frames moves its measured target at least 3 mm from the closure-start target before the deadline. Refuted if it stays within 3 mm; the hold was then unnecessary in that run.",
+      "clauses": [
+        {
+          "clause": "the baseline tracker moves its measured target at least 3 mm from the closure-start target before the deadline (k+1..k+5)",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "outcome": "pass",
+              "gpu_model": "RTX 8000",
+              "closure_start_frame": 74,
+              "held_frames": [
+                76,
+                77,
+                78,
+                79,
+                80
+              ],
+              "live_initial_tracker": {
+                "state": "initialized",
+                "feature_count": 15,
+                "jaw_mask_roi_pixels": 0
+              },
+              "records_seen_before_scoring": "see construction_exposure",
+              "replay_module": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/jaw-hold-a-20261001/code/tools/replay_jaw_self_mask.py",
+              "replay_flags": {
+                "jaw_self_mask": false,
+                "closure_hold": false
+              },
+              "replay_initialization": {
+                "replayed_state": "initialized",
+                "recorded_state": "initialized",
+                "replayed_feature_count": 15,
+                "recorded_feature_count": 15,
+                "matches": true
+              },
+              "replay_closure_start_frame": 74,
+              "replay_reproduces_recording": false,
+              "status": "moved",
+              "shift_mm_from_baseline_target_at_k": {
+                "75": 0.007555019572851858,
+                "76": 2.6631519421453147,
+                "77": 5.329042730010773,
+                "78": 7.956450874761125,
+                "79": 10.498939402612088
+              },
+              "shift_mm_from_live_closure_reference": {
+                "75": 0.2823783106710847,
+                "76": 2.7928695715641605,
+                "77": 5.45169513885531,
+                "78": 8.075176589971889,
+                "79": 10.6181544851855
+              },
+              "anchor_difference_mm": 0.27511081176638824,
+              "status_against_live_closure_reference": "moved",
+              "anchors_disagree": false,
+              "max_shift_before_deadline_mm": 10.498939402612088,
+              "shift_at_deadline_mm": null,
+              "gap_frames": [],
+              "missing_frames": [],
+              "first_latched_loss": {
+                "frame": 80,
+                "state": "tracking_lost",
+                "reason": "appearance_changed_or_occluded"
+              }
+            },
+            "jaw-hold-b-20261001 530": {
+              "outcome": "pass",
+              "gpu_model": "RTX 8000",
+              "closure_start_frame": 74,
+              "held_frames": [
+                76,
+                77,
+                78,
+                79,
+                80
+              ],
+              "live_initial_tracker": {
+                "state": "initialized",
+                "feature_count": 19,
+                "jaw_mask_roi_pixels": 0
+              },
+              "replay_module": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/jaw-hold-a-20261001/code/tools/replay_jaw_self_mask.py",
+              "replay_flags": {
+                "jaw_self_mask": false,
+                "closure_hold": false
+              },
+              "replay_initialization": {
+                "replayed_state": "initialized",
+                "recorded_state": "initialized",
+                "replayed_feature_count": 19,
+                "recorded_feature_count": 19,
+                "matches": true
+              },
+              "replay_closure_start_frame": 74,
+              "replay_reproduces_recording": false,
+              "status": "indeterminate",
+              "shift_mm_from_baseline_target_at_k": {
+                "75": 0.006765352733690522
+              },
+              "shift_mm_from_live_closure_reference": {
+                "75": 0.15996192573776177
+              },
+              "anchor_difference_mm": 0.16455346157201212,
+              "status_against_live_closure_reference": "indeterminate",
+              "anchors_disagree": false,
+              "max_shift_before_deadline_mm": 0.006765352733690522,
+              "shift_at_deadline_mm": null,
+              "gap_frames": [],
+              "missing_frames": [],
+              "first_latched_loss": {
+                "frame": 76,
+                "state": "tracking_lost",
+                "reason": "appearance_changed_or_occluded"
+              },
+              "why": "the baseline latched tracking_lost at frame 76 before moving 3 mm"
+            },
+            "jaw-hold-c-20261001 530": {
+              "outcome": "pass",
+              "gpu_model": "RTX 8000",
+              "closure_start_frame": 74,
+              "held_frames": [
+                76,
+                77,
+                78,
+                79,
+                80
+              ],
+              "live_initial_tracker": {
+                "state": "initialized",
+                "feature_count": 17,
+                "jaw_mask_roi_pixels": 0
+              },
+              "replay_module": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/jaw-hold-a-20261001/code/tools/replay_jaw_self_mask.py",
+              "replay_flags": {
+                "jaw_self_mask": false,
+                "closure_hold": false
+              },
+              "replay_initialization": {
+                "replayed_state": "initialized",
+                "recorded_state": "initialized",
+                "replayed_feature_count": 17,
+                "recorded_feature_count": 17,
+                "matches": true
+              },
+              "replay_closure_start_frame": 74,
+              "replay_reproduces_recording": false,
+              "status": "indeterminate",
+              "shift_mm_from_baseline_target_at_k": {
+                "75": 0.005764700232223958
+              },
+              "shift_mm_from_live_closure_reference": {
+                "75": 0.03394833001655082
+              },
+              "anchor_difference_mm": 0.02824506910386197,
+              "status_against_live_closure_reference": "indeterminate",
+              "anchors_disagree": false,
+              "max_shift_before_deadline_mm": 0.005764700232223958,
+              "shift_at_deadline_mm": null,
+              "gap_frames": [],
+              "missing_frames": [],
+              "first_latched_loss": {
+                "frame": 76,
+                "state": "tracking_lost",
+                "reason": "appearance_changed_or_occluded"
+              },
+              "why": "the baseline latched tracking_lost at frame 76 before moving 3 mm"
+            }
+          },
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "reported, not predicted: 530 runs that never held",
+          "observed": {
+            "none": true
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "partly supported"
+    },
+    {
+      "id": "P8",
+      "prediction": "(the static-branch premise, evaluation only) In every 530 run that detaches, the selected piece moves less than 0.1 mm, and the true mouth-to-spur distance changes by less than 0.1 mm, between closure start and detach. Refuted otherwise.",
+      "clauses": [
+        {
+          "clause": "the selected piece moves less than 0.1 mm between closure start and detach",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "window": [
+                74,
+                80
+              ],
+              "piece_motion_max_mm": 0.0,
+              "piece_rotation_max_deg": 0.0,
+              "records_seen_before_scoring": "see construction_exposure"
+            },
+            "jaw-hold-b-20261001 530": {
+              "window": [
+                74,
+                80
+              ],
+              "piece_motion_max_mm": 0.0,
+              "piece_rotation_max_deg": 0.0
+            },
+            "jaw-hold-c-20261001 530": {
+              "window": [
+                74,
+                80
+              ],
+              "piece_motion_max_mm": 0.0,
+              "piece_rotation_max_deg": 0.0
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "the true mouth-to-spur distance changes by less than 0.1 mm between closure start and detach",
+          "observed": {
+            "jaw-hold-a-20261001 530": {
+              "window": [
+                74,
+                80
+              ],
+              "true_distance_at_start_mm": 6.603894133723251,
+              "true_distance_at_detach_mm": 6.6040522094286125,
+              "true_distance_change_max_mm": 0.0001580757053622206,
+              "true_distance_change_net_mm": 0.0001580757053622206
+            },
+            "jaw-hold-b-20261001 530": {
+              "window": [
+                74,
+                80
+              ],
+              "true_distance_at_start_mm": 6.763173848111137,
+              "true_distance_at_detach_mm": 6.763181015327276,
+              "true_distance_change_max_mm": 7.167216139157551e-06,
+              "true_distance_change_net_mm": 7.167216139157551e-06
+            },
+            "jaw-hold-c-20261001 530": {
+              "window": [
+                74,
+                80
+              ],
+              "true_distance_at_start_mm": 6.850677678554019,
+              "true_distance_at_detach_mm": 6.851110384735277,
+              "true_distance_change_max_mm": 0.00043270618125743066,
+              "true_distance_change_net_mm": 0.00043270618125743066
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "reported, not predicted: 530 runs that never detached",
+          "observed": {
+            "none": true
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    }
+  ]
+}

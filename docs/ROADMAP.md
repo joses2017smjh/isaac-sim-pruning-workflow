@@ -375,15 +375,29 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       remaining stops are the robot's own jaw in its camera's view.
       [Diagnosis](evidence/contact_diagnosis_2026-09-27.json) ·
       [result](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
-- [ ] Jaw in the camera's view (proposed, not registered). During closure the
-      tracker follows the closing jaw (530); on the final leg the open jaw
-      covers the patch (19444). Candidates, each a labelled perception
-      variant: a jaw self-mask from known kinematics, an ego-motion
-      consistency filter, and the mirrored camera side at the planned pose.
-      A pass on 530 also needs the controller to hold the aligned target
-      through closure while the camera is still. That changes what the cut
-      gate sees, so it must be a registered experiment (about 270 GPU-min for
-      both targets).
+- [x] Jaw in the camera's view, run as a registered experiment with a jaw
+      self-mask from known kinematics and a closure hold. Contact target 530
+      passed 17/17 in 3 of 3 runs, the first pass of any contact target, by
+      the registered mechanism: an explained loss at the jaw's first closing
+      frame, then a hold of 0.5 s to detachment. 19444 stops explicitly on the
+      final leg, and both controls pass. Verdicts:
+      - P2–P6 and P8 supported;
+      - P7 partly supported: the replayed baseline drifted in one run and lost
+        tracking in two;
+      - P1 refuted, by one pixel on the jaw's outline (float32 render edge) on
+        130 of 1,200 frames.
+
+      Label: *known-map plan; jaw self-mask; closure hold with freshness and
+      frame-reuse checks waived on held frames*.
+      [Result](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026) ·
+      [verdicts](evidence/jaw_in_view_verdicts_2026-10-02.json).
+- [ ] Test the closure hold for generalization. It was designed on the same
+      three 530 recordings it then passed on, so the October 2 runs confirm it
+      in closed loop but do not test it on an unseen contact target. That
+      needs a registered protocol and a GPU budget.
+- [ ] Decide whether to register an amended mask-fidelity check for future
+      runs, one that does not judge pixels within 0.01 px of the jaw's
+      outline. The registered P1 stays refuted. This is the user's decision.
 - [x] Tracker drift and camera side, as labelled experiments (similarity
       motion model, mirrored mount when end-on): 590's drift and 8353's and
       19264's perception failures are gone, each exposing a contact or ToF stop
@@ -409,9 +423,21 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       real occlusion and keeps all 22 jaw, wire and mixed-surface stops.
       D_strict + J would have continued past 4 of the 6 held-out stops.
       [Result](EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026).
-- [ ] Closed-loop test of D_strict + J: registered, C0 replay gate passed on
-      141 recordings, 10 runs queued (450 GPU-min approved).
-      [Protocol](EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md).
+- [x] Closed-loop test of D_strict + J: C0–C6 all hold (C0 passed, C1–C6
+      supported).
+      - 4 of 4 low-sun 15004 runs pass where the unchanged gate stopped.
+      - Evening 14944 still stops on low confidence, as predicted.
+      - The jaw and wire controls are rejected and stop.
+      - Source light is unchanged.
+      - Live equals offline in all 10 runs.
+
+      Label: *depth-aware appearance check D_strict + J; changes the 0.35
+      appearance gate's rule; simulator depth*.
+      [Result](EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md#result--october-2-2026) ·
+      [verdicts](evidence/depth_loop_verdicts_2026-10-02.json).
+- [ ] Evening 14944 under D_strict + J: the depth test accepts its shadow
+      event, but the strict confidence at it is 0.0005–0.045, so it still
+      stops. Passing it needs another input, not this check.
 - [ ] Repeat any single-run class change on a target near a tracker floor: the
       RGB render differs run to run (0 of 69 same-scene frame-0 pairs identical;
       depth and pose identical in all), and 22988 flipped class on it.

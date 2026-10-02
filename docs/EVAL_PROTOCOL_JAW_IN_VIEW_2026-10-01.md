@@ -170,3 +170,90 @@ All runs use source light and 200 frames, on `gpu,ampere` with the constraint
 
 6 runs of 200 frames, 45 minutes reserved each, one task at a time: **270
 GPU-minutes reserved** (approved). About 2.7 GB of captures on the hpc-share.
+
+## Result — October 2, 2026
+
+All 6 runs recorded 200 frames on RTX 8000 (`cn-gpu5`) and used 181.5 of the
+270 reserved GPU-minutes. `tools/validate_vision_sequence.py` graded them,
+through `aggregate_eval.py`. `tools/score_jaw_in_view.py` scored them: it was
+committed before any grade file was opened (`3ac43cb`) and ran from a clean
+clone at `45763d0`.
+
+Evidence: [verdicts](evidence/jaw_in_view_verdicts_2026-10-02.json) and the
+per-batch [grades](evidence/jaw_in_view_2026-10-01/).
+
+| Run | Grader's outcome |
+|---|---|
+| 530, batches A, B and C | pass 17/17, three times |
+| 19444 | stopped on `vision_invalid` (decided at frame 67), 9/17 |
+| 14944 and 15004 (controls) | pass 17/17 each |
+
+| | Registered | Measured | Verdict |
+|---|---|---|---|
+| **P1** | the mask count equals the reconstruction on every frame; no predicted jaw pixel shows depth more than 1 mm beyond the box | counts equal on 1,200 of 1,200 frames; one 19444 pixel on the jaw's outline is beyond the box on 130 frames | **refuted** |
+| **P2** | the controls pass 17/17, track every frame before detach, mask no patch element and never hold | both 17/17; tracking on frames 0–77 (detach at 77); no element masked; no hold | supported |
+| **P3** | 19444 stops on the final leg with a mask-attributable state and never tracks inside the jaw | stops at frame 67 on the final leg, `jaw_mask_occluded` (97 of 169 patch elements left); the jaw first touched the patch at 66; the nearest tracking pixel was 7.3 px outside the jaw | supported |
+| **P4** | in 530, the first closure loss comes at k+2 and is mask-attributable; the shadow cutter stops there | closure starts at frame 74 with the gate mouth at 2.88–3.23 mm; first loss at 76 in 3 of 3, `jaw_mask_occluded`; the shadow cutter stops at 76 on `vision_invalid` | supported |
+| **P5** | the hold covers k+2 to the deadline; tool within 0.5 mm and 0.25°; mouth within 0.05 mm; detach at k+6 | held 76–80; tool ≤ 0.0025 mm and ≤ 0.0002°; mouth within 0.0007 mm; detach at 80 in 3 of 3 | supported |
+| **P6** | at least one 530 run passes 17/17 | 3 of 3 | supported |
+| **P7** | in each run that holds, the replayed baseline drifts at least 3 mm before the deadline | A: 2.7 mm at 76, 5.3 mm at 77; B and C: tracking lost at 76 before any 3 mm move (indeterminate) | partly supported |
+| **P8** | the piece moves less than 0.1 mm and the true mouth-to-spur distance changes less than 0.1 mm | piece 0.0 mm; distance at most 0.0004 mm | supported |
+
+**Reading.**
+- **The first contact-target pass.** 530 passed in 3 of 3 runs under the
+  label *known-map plan; jaw self-mask; closure hold with freshness and
+  frame-reuse checks waived on held frames*. It is reported apart from every
+  unchanged-gate result and never pooled. Each pass followed the registered
+  mechanism:
+  - the jaw's first rendered closing frame (76) became an explicit loss that
+    the mask explains;
+  - the hold carried the closure-start target over frames 76–80 while tool and
+    spur stayed still;
+  - the cut detached on time.
+
+  Without the hold, the shadow controller stopped all three runs at frame 76.
+- **What the hold covered (P7).** With both flags off, the replayed tracker in
+  run A followed the closing jaw. That is the drift seen on September 30: 2.7,
+  5.3, 8.0 and 10.5 mm at frames 76–79. In runs B and C it lost tracking at
+  frame 76 instead. RGB renders differ from run to run, so the three repeats
+  are not identical frames. The unchanged gate stops there in every case. P7
+  cannot say whether B and C would have drifted, so it is partly supported. No
+  run stayed within 3 mm.
+- **19444 stops where it should.** It stopped explicitly at frame 67, the
+  registered expectation, one frame after the jaw first touched the patch. It
+  never tracked the jaw. It does not pass, and nothing here predicted that it
+  would.
+- **P1 is refuted by one pixel.** The controller's mask is exact: count, roll
+  and bounding box are equal on all 1,200 frames, and the corners agree within
+  5e-13 px. The depth clause fails at one pixel of 19444, (242, 155), on frames
+  22, 39 and 72–199. Its centre lies within 1.5e-5 px of the jaw's outline. The
+  renderer's float32 jaw does not cover it, so it shows what lies behind the
+  jaw: 57 mm to 18.8 m beyond the box, or no finite depth (frame 22). Every
+  such violation in the earlier planned-pose runs was likewise a single 19444
+  pixel at the outline. The evidence also reports a sensitivity that decides
+  nothing: with pixels within 0.01 px of the outline left out, no violation
+  remains. As registered ("Refuted by any mismatch"), P1 is refuted. Amending
+  it is the user's decision and would need a newly labelled registration.
+
+**Seen before scoring.** The Slurm states of all six runs were seen before
+the scorer was committed. The runner exits 0 only on a 17/17 pass with a
+matching configuration, so those states revealed:
+- P6's outcome;
+- P2's pass clause;
+- P1's coverage of five runs;
+- that 19444 did not pass.
+
+Run A's records at frame 75 and its progress log were seen too. The verdicts
+list all of it under `construction_exposure`. The scorer's last amendment,
+also made before any grade was opened, changed two rules:
+- **P1** is decided on the registered literal reading. The draft's 0.01 px
+  band would have read P1 as supported.
+- **P7** has a gap rule. It had no effect here: no window frame was a gap.
+
+**Limits.**
+- Simulator renders of a two-box jaw surrogate with exact poses and commanded
+  closure.
+- The hold assumes a still branch, and P8 checks that only in simulation.
+- The hold was designed on the same three 530 recordings, so this is a
+  closed-loop confirmation, not a generalization test.
+- Three repeats of one contact target on one GPU model.

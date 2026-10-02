@@ -1,39 +1,28 @@
 # Pending work and stretch goals
 
-Updated October 1, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
+Updated October 2, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
 and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-- **Jaw in the camera's view** (approved with the gate waiver, 270 GPU-min).
-  - Its pre-submission replay check
-    ([P0](evidence/jaw_in_view_p0_replay_2026-10-01.json)) passed on the
-    committed code. After an adversarial review the checker was hardened, and
-    it passes the same replays
-    ([recheck](evidence/jaw_in_view_p0_replay_recheck_2026-10-01.json)).
-  - Batches A `21501983` → B `21501985` → C `21501986`: A has finished and B
-    is running.
-  - P1–P8 in its [protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md) are scored
-    by a committed scorer once the runs are graded.
+Nothing is queued or running. Both approved GPU experiments are finished,
+graded, scored and published (below).
 
-- **Depth-aware appearance check in closed loop** (approved, 450 GPU-min).
-  - [Protocol](EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md)
-    registered with predictions C0–C6.
-  - Its C0 replay gate ([evidence](evidence/depth_loop_c0_2026-10-01.json))
-    passed on 141 recordings.
-  - 7 batches are queued behind jaw-hold C (`21502510` … `21502539`).
-  - The C1–C6 scorer was committed before submission.
-
-Finished and published: the
-[depth-aware appearance held-out replay](EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026)
-(H1–H4 supported), the
-[render-gap check](EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md#result--october-1-2026)
-(G0 and G2 supported, G1 partly, G3 refuted), the
-[jaw-shadow counterfactual](EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026)
-(5 of 5 predictions supported), the
-[rendered-lighting training](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026)
-and the
-[known-map approach](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
+Finished and published:
+- [jaw in the camera's view](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026):
+  530 passed 17/17 in 3 of 3 runs, the first pass of a contact target.
+  - P2–P6 and P8 supported, P7 partly supported.
+  - P1 refuted, by one pixel on the jaw's outline.
+- [depth-aware appearance check in closed loop](EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md#result--october-2-2026):
+  C1–C6 supported. 4 of 4 low-sun 15004 runs pass.
+- [depth-aware appearance held-out replay](EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026):
+  H1–H4 supported.
+- [render-gap check](EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md#result--october-1-2026):
+  G0 and G2 supported, G1 partly supported, G3 refuted.
+- [jaw-shadow counterfactual](EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026):
+  5 of 5 predictions supported.
+- [rendered-lighting training](EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026).
+- [known-map approach](EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026).
 
 ## Needs a decision (no GPU)
 
@@ -41,15 +30,29 @@ and the
   running (about four weeks left).
 - **Repository housekeeping.** Decide what to do with the uncommitted
   `studio/src` prototype and add repository topics.
+- **P1's outline pixels.** The registered mask-fidelity check counts every
+  pixel whose centre ray hits the jaw. It was refuted by one pixel lying
+  within 1.5e-5 px of the jaw's outline. Leaving out pixels within 0.01 px of
+  the outline would need a newly labelled registration for future runs. The
+  October 2 verdict stays refuted either way.
+
+## Proposals (need approval and a GPU budget)
+
+- **Generalize the closure hold.** It passed on the three 530 recordings it
+  was designed on. An unseen contact target would test it.
+- **Evening 14944.** It still stops with the depth-aware check, because the
+  shadow leaves almost no correlation (0.0005–0.045). Passing it needs
+  another input.
 
 ## Stretch goals
 
 - **Approach planning from sensors.** The known-map experiment used the
   scene map, so it is an upper bound. The next step is a planner that sees the
   arm-side obstacles from its own sensors.
-- **Appearance check robust to cast shadows.** A labelled tracker variant, only
-  after the counterfactual confirms the cause. Pair it with real jaw geometry
-  in place of the visual surrogate.
+- **Appearance check robust to cast shadows.** Done as a labelled variant
+  (D_strict + J, October 2) on simulator depth. Next, pair it with real jaw
+  geometry and a real depth sensor's noise in place of the visual surrogate
+  and ground-truth depth.
 - **Repeatable renders.** The RGB render differs run to run, while depth and
   pose do not. Seeding the path tracer would make single-run comparisons
   meaningful; until then, a class change near a tracker floor counts only if

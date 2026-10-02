@@ -234,6 +234,36 @@ closing jaw (530), and on the final leg the open jaw covers the tracked patch
 (19444). Both controls pass 3 of 3 on A40 and RTX 8000.
 [Protocol and result](docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026)
 · [verdicts](docs/evidence/planned_approach_verdicts_2026-09-30.json)
+
+**Jaw in the camera's view (October 2).** Contact target 530 passed all 17
+checks in 3 of 3 runs, the first pass of any contact target. The controller
+knows where its own jaw is. It masks the jaw out of the tracker, and during
+closure it holds the aligned target while the tool and spur stay still:
+- the jaw's first closing frame becomes an explicit, explained loss;
+- the hold carries the target for the 0.5 s to detachment;
+- without the hold, all three runs stop at that frame.
+
+Both controls pass, and 19444 stops explicitly when its open jaw reaches the
+patch, as predicted. Six of eight predictions are supported and one is
+partly supported. One is refuted: on 130 of 1,200 frames, a single pixel on
+the jaw's outline shows depth beyond the analytic box, an effect of the
+renderer's float32 jaw edge. The label is *known-map plan; jaw self-mask;
+closure hold with freshness and frame-reuse checks waived on held frames*.
+These passes are never pooled with unchanged-gate results. The jaw is a
+simulator surrogate with exact poses.
+[Protocol and result](docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026)
+· [verdicts](docs/evidence/jaw_in_view_verdicts_2026-10-02.json)
+
+**Depth-aware appearance check in closed loop (October 2).** Run live, the
+depth test turned the low-sun shadow stops of 15004 into passes in 4 of 4
+runs. It kept every real stop: the jaw and the wire are still rejected. It
+changed nothing at source light. Evening 14944 still stops, as predicted,
+because the shadow leaves almost no correlation to track. The live decisions
+equal the offline replay in all 10 runs. All six predictions are supported.
+The depth is simulator ground truth.
+[Protocol and result](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md#result--october-2-2026)
+· [verdicts](docs/evidence/depth_loop_verdicts_2026-10-02.json)
+
 [Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
 · [evidence](docs/evidence/generalization_controls_2026-09-23.json)
 [Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)
