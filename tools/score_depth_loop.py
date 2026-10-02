@@ -2,17 +2,23 @@
 """Score the depth-aware appearance closed-loop test (protocol of October 1) against C1-C6.
 
 Outcomes come from the per-batch evidence that ``aggregate_eval.py`` wrote (the grader's classes, never
-re-graded here); failed and incomplete runs stay in every table. Everything a clause names comes from each run's
-own records:
+re-graded here). Each file must be the registered batch's grade under this protocol, and the 10 registered runs
+must all be present; otherwise nothing is scored. Failed, ungraded and refused runs stay in every table.
+
+Everything a clause names comes from each run's own records:
 - the depth event the live tracker attached to every grey-check failure
   (``live_vision.measurement.depth_appearance``);
-- the recorded stop, and the tracker's reason at it.
+- the run's stop: the first frame whose cut phase is 'stopped';
+- the tracker's reason at that stop;
+- the arm's readback in the report.
 
-C6 replays each run's own frames offline through the strict arm of ``tools/replay_depth_appearance.py``. Each run
-is labelled with its GPU model.
+C6 replays each comparable run's own frames offline through the strict arm of ``tools/replay_depth_appearance.py``,
+after checking that the replay code equals the code the runs were frozen with. Each run is labelled with its GPU
+model.
 
-Where the protocol leaves a detail open it is fixed in ``INTERPRETATIONS`` and recorded in the output. Results of
-this arm change the 0.35 appearance gate's rule and are never pooled with unchanged-gate results.
+Where the protocol leaves a detail open it is fixed in ``INTERPRETATIONS`` and recorded in the output, with the
+scorer's construction notes. Results of this arm change the 0.35 appearance gate's rule and are never pooled with
+unchanged-gate results.
 """
 
 from __future__ import annotations
@@ -25,58 +31,121 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from score_perception_round import clause, prediction  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "source/isaaclab_pruning"))
 from score_planned_approach import gpu_model  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md"
 EVIDENCE_DIR = "docs/evidence/depth_loop_2026-10-01"
+VISION_ROBUSTNESS = "artifacts/vision_robustness"
+GRADER = "tools/validate_vision_sequence.py:grade_sequence"
+CHECKS = 17
 LABEL = (
     "depth-aware appearance check D_strict + J; changes the 0.35 appearance gate's rule; simulator depth (RTX "
     "optical-Z ground truth, noise-free, perfectly registered); not a sensor"
 )
+#: The registered batches (protocol, Runs): scene kind, strategy and targets in plan order.
+REGISTRY = {
+    "depth-loop-eve-r1-20261001": ("evening", "baseline_depth_appearance", (14944, 15004)),
+    "depth-loop-mor-r1-20261001": ("morning", "baseline_depth_appearance", (15004,)),
+    "depth-loop-eve-r2-20261001": ("evening", "baseline_depth_appearance", (14944, 15004)),
+    "depth-loop-mor-r2-20261001": ("morning", "baseline_depth_appearance", (15004,)),
+    "depth-loop-src-20261001": ("source", "baseline_depth_appearance", (14944, 15004)),
+    "depth-loop-ctl-19444-20261001": ("control", "planned_pose_depth_appearance", (19444,)),
+    "depth-loop-ctl-12142-20261001": ("control", "tool_axis_standoff_depth_appearance", (12142,)),
+}
+DAYLIGHT = {"evening": "evening", "morning": "morning", "source": "source", "control": "source"}
+EXPECTED_RUNS = 10
 #: Registered shadow windows (inclusive frame indexes) of the low-sun scenes.
 SHADOW_WINDOW = {"evening": (56, 67), "morning": (72, 75)}
 MIN_CONFIDENCE = 0.15
 APPEARANCE_LOSS = "appearance_changed_or_occluded"
 LOW_CONFIDENCE = "low_confidence"
-CONTROL_PREFIX = "depth-loop-ctl-"
-SOURCE_BATCH_PREFIX = "depth-loop-src-"
-EXPECTED_RUNS = 10
-INTERPRETATIONS = [
-    "a grey-check failure is a frame whose live measurement carries a depth_appearance event (the tracker attaches "
-    "one exactly when the grey NCC fails 0.35); the preview update is not a frame and is reported separately",
-    "a run's stop is its first frame whose recorded cut phase is 'stopped'; 'in the shadow window' means that "
-    "frame index lies in the registered inclusive window",
-    "C1 is supported only when all 6 low-sun runs have a grey failure in their window and every first one is "
-    "accepted; a run without one is untested and makes C1 partly supported",
-    "C2 counts a pass only from the grader's class 'pass' (all 17 checks); 'stops in the shadow window' counts a "
-    "stop for any reason, 'stops on appearance' only a stop whose tracker reason is appearance_changed_or_occluded",
-    "C3 judges the first accepted grey failure in each evening 14944 run's window; a run with no grey failure "
-    "there is untested",
-    "C4's second clause is untested for a control with no grey failure; any accepted grey failure in a control "
-    "refutes it",
-    "C5 counts a failed check as any grader class other than 'pass'",
-    "C6 compares the live run with the offline strict arm on its own frames: the strict arm must equal the "
-    "recording (state, reason and pixel exactly, correlation within 1e-6) through the run's stop, and every live "
-    "depth event must equal the offline event field for field (floats within 1e-6, as the C0 gate). The offline "
-    "base tracker diverges by construction wherever the live arm continued, so it is not judged",
+#: C4's registered stop mechanisms: the condition a rejecting event at the control's stop names.
+CONTROL_MECHANISM = {
+    19444: ("J_jaw_silhouette", "19444 should stop when the open jaw reaches the patch (recorded 68 / 68 / 70)"),
+    12142: ("3_near_fraction", "12142 should stop at the wire (recorded 29)"),
+}
+#: Code the runs were frozen with that C6 executes (besides the depth tool's own SOURCE_FILES).
+FROZEN_EXTRA = (
+    "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py",
+    "hpc/inner/render_pruning_workflow.py",
+    "tools/check_depth_loop_c0.py",
+)
+CONSTRUCTION_NOTES = [
+    "The scorer was committed at 1bd1ea1 before any depth-loop run was submitted.",
+    "It was amended after an independent blind review (15 confirmed findings), before any depth-loop grade file, "
+    "run directory or log was opened by anyone; the amendment is in this file's history and code_revision.",
+    "Before the amendment the main session and the reviewer had seen only the runs' final Slurm states and elapsed "
+    "times (four FAILED exit 1: evening 14944 r1 and r2 and both controls; six COMPLETED; all on cn-gpu5). A Slurm "
+    "state is not a grade: a run that stops exits nonzero.",
 ]
+INTERPRETATIONS = [
+    "The grade files must be exactly the 7 registered batches, each graded under this protocol by "
+    "tools/validate_vision_sequence.py with 17 checks, holding the registered targets, light and strategy in plan "
+    "order (10 runs in all); otherwise nothing is scored.",
+    "A run is scored when it was graded (status 'graded', 17 checks), its report and frames exist, and its report "
+    "shows the arm on with the registered constants and the jaw self-mask and closure hold off (and "
+    "configuration_matches, where the runner recorded it). Any other run is listed in every table and is untested "
+    "in every prediction: it is neither a pass nor a failure.",
+    "A grey-check failure is a frame whose live measurement carries a depth_appearance event (the tracker attaches "
+    "one exactly when the grey NCC fails 0.35). A run's stop is its first frame whose recorded cut phase is "
+    "'stopped'; the grade files' stop_frame is the next frame (the first 'stopped_failure' command) and is not "
+    "used. 'In the shadow window' means the frame index lies in the registered inclusive window.",
+    "Only grey failures up to and including the stop are judged (the frames C6 verifies); later ones are listed as "
+    "post_stop and never decide a clause.",
+    "C1 judges the first grey failure inside each low-sun run's window. It is supported only when all 6 runs have "
+    "one and every one is accepted; a run without one is untested.",
+    "C2 counts a pass only from the grader's class 'pass' (all 17 checks). It is supported when all 4 runs are "
+    "scored, at least 3 pass and none stops on appearance in its window. It is refuted when at least 2 stop in "
+    "the window for any reason, or when even counting every unscored run as a pass fewer than 2 would pass.",
+    "C3 judges the first grey failure in each evening 14944 run's window. Accepted, then a stop at that frame on "
+    "low_confidence with strict confidence below 0.15, holds; accepted and no stop at or before it refutes "
+    "('continued past the event'); rejected with the stop at that frame refutes; any other case is labelled and "
+    "neither holds nor refutes.",
+    "C4 judges each scored control: a graded pass refutes; any accepted grey failure refutes; a control without a "
+    "grey failure leaves the second clause untested. The registered expectations (19444 stops when the open jaw "
+    "reaches the patch, 12142 at the wire) are one clause per control that can only hold: the event at the stop "
+    "is rejected naming J_jaw_silhouette (19444) or 3_near_fraction (12142). The recorded stop frames are context, "
+    "not thresholds.",
+    "C5 is refuted only by a scored source run that fails a check; an unscored run leaves it untested.",
+    "C6 compares each scored run whose recording is complete with the offline strict arm on its own frames, "
+    "through its stop: the strict arm must equal the recording (state, reason and pixel exactly; pixels are "
+    "float32 in both trackers, so any cross-CPU difference exceeds 1e-6 anyway; correlation within 1e-6), and the "
+    "live and offline depth events, preview included, must have the same frames, the same keys and equal values "
+    "(floats within 1e-6, as the C0 gate). A run the offline tool cannot replay (stage not complete, the jaw arms "
+    "on, frame indexes not contiguous, a preview or frame file missing) is not comparable: listed, and C6 cannot "
+    "be supported, but it is not refuted. Any other replay error aborts the scorer.",
+    "A prediction is 'untested' when no run contributed evidence to any of its clauses, 'refuted' when any clause "
+    "refutes, 'supported' when every clause holds, and 'partly supported' otherwise.",
+]
+
+
+class InputError(ValueError):
+    """An input this scorer refuses (the file and field are in the message)."""
 
 
 def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def kind(batch):
-    """The scene a batch registered: evening, morning, source or control."""
-    if batch.startswith(CONTROL_PREFIX):
-        return "control"
-    if batch.startswith(SOURCE_BATCH_PREFIX):
-        return "source"
-    return "evening" if "-eve-" in batch else "morning"
+def judged(text, observed, holds, refutes, tested):
+    return {"clause": text, "observed": observed, "holds": bool(holds), "refutes": bool(refutes), "tested": tested}
 
 
+def verdict(clauses):
+    if any(c["refutes"] for c in clauses):
+        return "refuted"
+    if not any(c["tested"] for c in clauses):
+        return "untested"
+    return "supported" if all(c["holds"] for c in clauses) else "partly supported"
+
+
+def prediction(pid, text, clauses):
+    return {"id": pid, "prediction": text, "clauses": clauses, "verdict": verdict(clauses)}
+
+
+# ------------------------------------------------------------------------------------------------ inputs
 def frame_facts(frames):
     """Per frame: index, cut phase, stop reason, the tracker's state and reason, and the depth event if any."""
     facts = []
@@ -85,6 +154,8 @@ def frame_facts(frames):
         measurement = live.get("measurement") or {}
         cut = live.get("cut") or {}
         event = measurement.get("depth_appearance")
+        if event is not None and not isinstance(event.get("accept"), bool):
+            raise InputError(f"frame {frame.get('index')}: depth event accept is not a boolean")
         facts.append(
             {
                 "index": frame["index"],
@@ -112,48 +183,158 @@ def frame_facts(frames):
     return facts
 
 
-def run_record(root, batch_dir, row):
-    """The fields C1-C6 need for one run, from its own records."""
-    run = root / batch_dir / row["run_directory"]
-    report = json.loads((run / "report.json").read_text())
-    frames = json.loads((run / "frames.json").read_text())["frames"]
-    facts = frame_facts(frames)
-    stop = next((f for f in facts if f["cut_phase"] == "stopped"), None)
-    batch = batch_dir.split("/")[-1]
-    preview_event = ((report.get("initial_live_vision") or {}).get("measurement") or {}).get("depth_appearance")
-    return {
+def configuration(run, report):
+    """Whether the capture ran the registered arm: readback, constants, the jaw arms off, configuration_matches."""
+    from isaaclab_pruning.perception.depth_appearance import registered_depth_appearance
+
+    block = report.get("depth_appearance") or {}
+    registered = json.loads(json.dumps(registered_depth_appearance()))
+    result_path = Path(run) / "experiment_result.json"
+    matches = json.loads(result_path.read_text()).get("configuration_matches") if result_path.is_file() else None
+    checks = {
+        "enabled": block.get("enabled") is True,
+        "constants_registered": block.get("constants") == registered,
+        "jaw_arms_off": all(
+            (report.get(arm) or {}).get("enabled") is not True for arm in ("jaw_self_mask", "closure_hold")
+        ),
+        "configuration_matches": matches,
+    }
+    checks["ok"] = (
+        checks["enabled"] and checks["constants_registered"] and checks["jaw_arms_off"] and matches is not False
+    )
+    return checks
+
+
+def run_record(root, batch, row):
+    """The fields C1-C6 need for one run, from its own records; an unscored run keeps its grade row."""
+    kind, _, _ = REGISTRY[batch]
+    run = Path(root) / VISION_ROBUSTNESS / batch / row["run_directory"]
+    graded = row.get("status") == "graded" and row.get("checks_total") == CHECKS
+    record = {
         "batch": batch,
-        "kind": kind(batch),
+        "kind": kind,
         "run_directory": row["run_directory"],
         "target": int(row["component_first_vertex"]),
         "daylight": row["daylight"],
+        "status": row.get("status"),
         "outcome": row["outcome"],
-        "checks": f"{row['checks_passed']}/{row['checks_total']}",
-        "node": report.get("node"),
-        "gpu_model": gpu_model(report.get("node")),
-        "arm_readback": (report.get("depth_appearance") or {}).get("enabled"),
-        "stop": None
-        if stop is None
-        else {"frame": stop["index"], "stopped_reason": stop["stopped_reason"], "tracker_reason": stop["reason"]},
-        "grey_failures": [f["index"] for f in facts if f["event"] is not None],
-        "events": {f["index"]: f["event"] for f in facts if f["event"] is not None},
-        "facts": facts,
-        "preview_event": None if preview_event is None else {"accept": preview_event.get("accept")},
+        "checks": f"{row.get('checks_passed')}/{row.get('checks_total')}",
+        "graded": graded,
+        "captured": False,
+        "configuration": None,
+        "scored": False,
+        "unscored_reason": None,
+        "stop": None,
+        "grey_failures": [],
+        "post_stop_grey_failures": [],
+        "events": {},
+        "post_stop_events": {},
+        "preview_event": None,
+        "node": None,
+        "gpu_model": None,
+        "report_sha256": None,
+        "frames_sha256": None,
         "path": str(run),
     }
+    if not graded:
+        record["unscored_reason"] = f"not graded ({row.get('status')}, checks {record['checks']})"
+        return record
+    report_path, frames_path = run / "report.json", run / "frames.json"
+    if not (report_path.is_file() and frames_path.is_file()):
+        record["unscored_reason"] = "graded but its report or frames are missing"
+        return record
+    report = json.loads(report_path.read_text())
+    frames = json.loads(frames_path.read_text())["frames"]
+    facts = frame_facts(frames)
+    stop = next((f for f in facts if f["cut_phase"] == "stopped"), None)
+    stop_frame = None if stop is None else stop["index"]
+    events = {f["index"]: f["event"] for f in facts if f["event"] is not None}
+    through = [i for i in sorted(events) if stop_frame is None or i <= stop_frame]
+    after = [i for i in sorted(events) if stop_frame is not None and i > stop_frame]
+    preview = ((report.get("initial_live_vision") or {}).get("measurement") or {}).get("depth_appearance")
+    record.update(
+        {
+            "captured": True,
+            "configuration": configuration(run, report),
+            "stop": None
+            if stop is None
+            else {"frame": stop["index"], "stopped_reason": stop["stopped_reason"], "tracker_reason": stop["reason"]},
+            "grey_failures": through,
+            "post_stop_grey_failures": after,
+            "events": {i: events[i] for i in through},
+            "post_stop_events": {i: events[i] for i in after},
+            "preview_event": None if preview is None else {"accept": preview.get("accept")},
+            "node": report.get("node"),
+            "gpu_model": gpu_model(report.get("node")),
+            "report_sha256": sha256(report_path),
+            "frames_sha256": sha256(frames_path),
+        }
+    )
+    record["scored"] = record["configuration"]["ok"]
+    if not record["scored"]:
+        record["unscored_reason"] = "configuration refused"
+    return record
 
 
 def load(root):
-    records = []
-    for path in sorted((root / EVIDENCE_DIR).glob("depth-loop-*.json")):
+    """The registered grade files, checked, and one record per registered run; refuses anything else."""
+    root = Path(root)
+    records, files = [], {}
+    for batch, (kind, strategy, targets) in REGISTRY.items():
+        path = root / EVIDENCE_DIR / f"{batch}.json"
+        if not path.is_file():
+            raise InputError(f"{path}: the registered batch's grade file is missing")
         document = json.loads(path.read_text())
-        batch_dir = document["batches"][0]["batch_dir"]
-        records += [run_record(root, batch_dir, row) for row in document["runs"]]
-    return records
+        files[str(path.relative_to(root))] = {
+            "sha256": sha256(path),
+            "protocol": document.get("protocol"),
+            "grader": document.get("grader"),
+        }
+        if (
+            document.get("schema_version") != 1
+            or document.get("protocol") != PROTOCOL
+            or document.get("grader") != GRADER
+        ):
+            raise InputError(f"{path}: schema_version, protocol or grader is not the registered one")
+        batches = document.get("batches") or []
+        if len(batches) != 1 or Path(batches[0]["batch_dir"]).name != batch:
+            raise InputError(f"{path}: must grade exactly the batch {batch}")
+        rows = document.get("runs") or []
+        wanted = [(target, DAYLIGHT[kind], strategy) for target in targets]
+        found = [(int(r["component_first_vertex"]), r.get("daylight"), r.get("strategy")) for r in rows]
+        if found != wanted:
+            raise InputError(f"{path}: rows {found} are not the registered {wanted}")
+        for row in rows:
+            if row.get("status") == "graded" and row.get("checks_total") != CHECKS:
+                raise InputError(f"{path}: {row['run_directory']} was graded with {row.get('checks_total')} checks")
+        records += [run_record(root, batch, row) for row in rows]
+    if len(records) != EXPECTED_RUNS:
+        raise InputError(f"{len(records)} runs, registered {EXPECTED_RUNS}")
+    return records, files
+
+
+def check_frozen_sources(root):
+    """The code C6 executes must equal the code every batch was frozen with (plan.json source_sha256)."""
+    import replay_depth_appearance as depth_tool
+
+    paths = (*depth_tool.SOURCE_FILES, *FROZEN_EXTRA)
+    current = {path: sha256(Path(root) / path) for path in paths}
+    for batch in REGISTRY:
+        plan = json.loads((Path(root) / VISION_ROBUSTNESS / batch / "plan.json").read_text())
+        frozen = plan.get("source_sha256") or {}
+        differing = sorted(path for path in paths if frozen.get(path) != current[path])
+        if differing:
+            raise InputError(f"{batch}/plan.json: the checkout differs from the frozen code in {differing}")
+    return current
+
+
+# ------------------------------------------------------------------------------------------------ predictions
+def name(record):
+    return f"{record['batch']}/{record['run_directory']}"
 
 
 def first_in_window(record):
-    """The first grey failure inside the run's registered shadow window, as (frame, event), or None."""
+    """The first judged grey failure inside the run's registered shadow window, as (frame, event), or None."""
     first, last = SHADOW_WINDOW[record["kind"]]
     frame = next((index for index in record["grey_failures"] if first <= index <= last), None)
     return None if frame is None else (frame, record["events"][frame])
@@ -164,25 +345,38 @@ def stops_in_window(record):
     return record["stop"] is not None and first <= record["stop"]["frame"] <= last
 
 
-def name(record):
-    return f"{record['batch']}/{record['run_directory']}"
+def unscored(runs):
+    return {name(r): r["unscored_reason"] for r in runs if not r["scored"]}
 
 
 def score_c1(records):
     low_sun = [r for r in records if r["kind"] in SHADOW_WINDOW]
-    firsts = {name(r): first_in_window(r) for r in low_sun}
-    observed = {key: None if value is None else {"frame": value[0], **value[1]} for key, value in firsts.items()}
-    rejected = [key for key, value in firsts.items() if value is not None and not value[1]["accept"]]
-    untested = [key for key, value in firsts.items() if value is None]
+    observed, rejected, untested, tested = {}, [], [], 0
+    for record in low_sun:
+        if not record["scored"]:
+            untested.append(name(record))
+            observed[name(record)] = {"untested": record["unscored_reason"]}
+            continue
+        first = first_in_window(record)
+        if first is None:
+            untested.append(name(record))
+            observed[name(record)] = {"untested": "no grey failure in the window", "stop": record["stop"]}
+            continue
+        tested += 1
+        frame, event = first
+        observed[name(record)] = {"frame": frame, **event, "stop": record["stop"]}
+        if event["accept"] is False:
+            rejected.append(name(record))
     return prediction(
         "C1",
         "In each of the 6 low-sun runs the depth test accepts the first grey-check failure inside the shadow window.",
         [
-            clause(
+            judged(
                 "the first in-window grey failure is accepted in all 6 low-sun runs",
-                {"first_in_window": observed, "rejected": rejected, "untested_no_grey_failure": untested},
-                len(low_sun) == 6 and not rejected and not untested,
-                refutes=bool(rejected),
+                {"first_in_window": observed, "rejected": rejected, "untested": untested},
+                len(low_sun) == 6 and tested == 6 and not rejected,
+                bool(rejected),
+                tested,
             )
         ],
     )
@@ -190,25 +384,29 @@ def score_c1(records):
 
 def score_c2(records):
     runs = [r for r in records if r["kind"] in SHADOW_WINDOW and r["target"] == 15004]
-    passes = sum(r["outcome"] == "pass" for r in runs)
-    in_window = [name(r) for r in runs if stops_in_window(r)]
-    on_appearance = [name(r) for r in runs if stops_in_window(r) and r["stop"]["tracker_reason"] == APPEARANCE_LOSS]
+    scored = [r for r in runs if r["scored"]]
+    passes = sum(r["outcome"] == "pass" for r in scored)
+    not_scored = len(runs) - len(scored)
+    in_window = [name(r) for r in scored if stops_in_window(r)]
+    on_appearance = [name(r) for r in scored if stops_in_window(r) and r["stop"]["tracker_reason"] == APPEARANCE_LOSS]
     return prediction(
         "C2",
         "At least 3 of the 4 15004 runs pass all 17 checks, and none stops on appearance in its shadow window.",
         [
-            clause(
+            judged(
                 "15004: passes, and stops in the shadow window",
                 {
                     "runs": {
-                        name(r): {"outcome": r["outcome"], "checks": r["checks"], "stop": r["stop"]} for r in runs
+                        name(r): {"outcome": r["outcome"], "checks": r["checks"], "stop": r["stop"]} for r in scored
                     },
                     "passes": f"{passes} of {len(runs)}",
                     "stops_in_window": in_window,
                     "appearance_stops_in_window": on_appearance,
+                    "unscored": unscored(runs),
                 },
-                len(runs) == 4 and passes >= 3 and not on_appearance,
-                refutes=len(in_window) >= 2 or passes < 2,
+                len(runs) == 4 and len(scored) == 4 and passes >= 3 and not on_appearance,
+                len(in_window) >= 2 or passes + not_scored < 2,
+                len(scored),
             )
         ],
     )
@@ -216,93 +414,177 @@ def score_c2(records):
 
 def score_c3(records):
     runs = [r for r in records if r["kind"] == "evening" and r["target"] == 14944]
-    observed, holds, refutes = {}, len(runs) == 2, False
+    observed, held, refutes, tested = {}, 0, False, 0
     for record in runs:
-        accepted = next(
-            (
-                (frame, record["events"][frame])
-                for frame in record["grey_failures"]
-                if SHADOW_WINDOW["evening"][0] <= frame <= SHADOW_WINDOW["evening"][1]
-                and record["events"][frame]["accept"]
-            ),
-            None,
-        )
-        first = first_in_window(record)
-        stop = record["stop"]
-        entry = {"first_in_window": None if first is None else first[0], "stop": stop}
-        if accepted is None:
-            if first is not None and stop is not None and stop["frame"] == first[0]:
-                refutes = True  # it stopped there with the depth test rejecting
-                entry["verdict"] = "stopped at the event with the depth test rejecting"
+        if not record["scored"]:
+            observed[name(record)] = {"untested": record["unscored_reason"]}
+            continue
+        first, stop = first_in_window(record), record["stop"]
+        if first is None:
+            observed[name(record)] = {"untested": "no grey failure in the window", "stop": stop}
+            continue
+        tested += 1
+        frame, event = first
+        entry = {"first_in_window": frame, "accept": event["accept"], "strict_confidence": event["strict_confidence"]}
+        entry["stop"] = stop
+        if event["accept"] is False:
+            if stop is not None and stop["frame"] == frame:
+                refutes = True
+                entry["case"] = "stopped at the event with the depth test rejecting"
             else:
-                entry["verdict"] = "untested: no accepted grey failure in the window"
-            holds = False
-        else:
-            frame, event = accepted
-            entry.update({"accepted_frame": frame, "strict_confidence": event["strict_confidence"]})
-            stopped_there = stop is not None and stop["frame"] == frame and stop["tracker_reason"] == LOW_CONFIDENCE
+                entry["case"] = "rejected without a stop at the event"
+        elif stop is None or stop["frame"] > frame:
+            refutes = True
+            entry["case"] = "continued past the event"
+        elif stop["frame"] == frame:
             low = event["strict_confidence"] is not None and event["strict_confidence"] < MIN_CONFIDENCE
-            entry["verdict"] = "low-confidence stop at the event" if stopped_there and low else "other"
-            holds = holds and stopped_there and low
-            if stop is None or stop["frame"] > frame:
-                refutes = True  # it continued past the event
+            if stop["tracker_reason"] == LOW_CONFIDENCE and low:
+                held += 1
+                entry["case"] = "low-confidence stop at the event"
+            else:
+                entry["case"] = f"stopped at the event on {stop['tracker_reason']}"
+        else:
+            entry["case"] = "stopped before the event"
         observed[name(record)] = entry
     return prediction(
         "C3",
         "Both evening 14944 runs stop at the accepted shadow event on low_confidence (strict confidence below 0.15).",
-        [clause("evening 14944: low-confidence stop at the accepted event", observed, holds, refutes=refutes)],
-    )
-
-
-def score_c4(records):
-    controls = [r for r in records if r["kind"] == "control"]
-    passed = [name(r) for r in controls if r["outcome"] == "pass"]
-    accepted = {name(r): [f for f in r["grey_failures"] if r["events"][f]["accept"]] for r in controls}
-    accepted = {key: value for key, value in accepted.items() if value}
-    untested = [name(r) for r in controls if not r["grey_failures"]]
-    table = {name(r): {"outcome": r["outcome"], "stop": r["stop"], "grey_failures": r["events"]} for r in controls}
-    return prediction(
-        "C4",
-        "Neither control passes, and the depth test rejects every grey-check failure in both.",
         [
-            clause(
-                "neither control passes",
-                {"runs": table, "passed": passed},
-                len(controls) == 2 and not passed,
-                refutes=bool(passed),
-            ),
-            clause(
-                "the depth test rejects every grey failure in both controls",
-                {"accepted": accepted, "untested_no_grey_failure": untested},
-                len(controls) == 2 and not accepted and not untested,
-                refutes=bool(accepted),
-            ),
-        ],
-    )
-
-
-def score_c5(records):
-    runs = [r for r in records if r["kind"] == "source"]
-    failed = [name(r) for r in runs if r["outcome"] != "pass"]
-    return prediction(
-        "C5",
-        "Source-light 14944 and 15004 both pass 17/17.",
-        [
-            clause(
-                "both source-light runs pass all 17 checks",
-                {
-                    "runs": {name(r): {"outcome": r["outcome"], "checks": r["checks"]} for r in runs},
-                    "grey_failures_reported": {name(r): r["grey_failures"] for r in runs if r["grey_failures"]},
-                },
-                len(runs) == 2 and not failed,
-                refutes=bool(failed),
+            judged(
+                "evening 14944: low-confidence stop at the accepted event",
+                observed,
+                len(runs) == 2 and held == 2,
+                refutes,
+                tested,
             )
         ],
     )
 
 
+def score_c4(records):
+    controls = [r for r in records if r["kind"] == "control"]
+    scored = [r for r in controls if r["scored"]]
+    passed = [name(r) for r in scored if r["outcome"] == "pass"]
+    accepted = {name(r): [f for f in r["grey_failures"] if r["events"][f]["accept"] is True] for r in scored}
+    accepted = {key: value for key, value in accepted.items() if value}
+    with_failures = [r for r in scored if r["grey_failures"]]
+    table = {
+        name(r): {
+            "outcome": r["outcome"],
+            "stop": r["stop"],
+            "grey_failures": r["events"],
+            "post_stop": r["post_stop_events"],
+        }
+        for r in scored
+    }
+    clauses = [
+        judged(
+            "neither control passes",
+            {"runs": table, "passed": passed, "unscored": unscored(controls)},
+            len(controls) == 2 and len(scored) == 2 and not passed,
+            bool(passed),
+            len(scored),
+        ),
+        judged(
+            "the depth test rejects every grey failure in both controls",
+            {
+                "accepted": accepted,
+                "untested_no_grey_failure": [name(r) for r in scored if not r["grey_failures"]],
+                "unscored": unscored(controls),
+            },
+            len(controls) == 2 and len(with_failures) == 2 and not accepted,
+            bool(accepted),
+            len(with_failures),
+        ),
+    ]
+    for target, (condition, context) in CONTROL_MECHANISM.items():
+        record = next((r for r in controls if r["target"] == target), None)
+        event = None
+        if record is not None and record["scored"] and record["stop"] is not None:
+            event = record["events"].get(record["stop"]["frame"])
+        holds = event is not None and event["accept"] is False and condition in (event.get("failed_conditions") or [])
+        clauses.append(
+            judged(
+                f"{target}: the event at its stop is rejected naming {condition} (expectation; cannot refute)",
+                {
+                    "context": context,
+                    "stop": None if record is None else record["stop"],
+                    "event_at_stop": event,
+                    "unscored": None if record is None else record["unscored_reason"],
+                },
+                holds,
+                False,
+                int(event is not None),
+            )
+        )
+    return prediction(
+        "C4", "Neither control passes, and the depth test rejects every grey-check failure in both.", clauses
+    )
+
+
+def score_c5(records):
+    runs = [r for r in records if r["kind"] == "source"]
+    scored = [r for r in runs if r["scored"]]
+    failed = [name(r) for r in scored if r["outcome"] != "pass"]
+    return prediction(
+        "C5",
+        "Source-light 14944 and 15004 both pass 17/17.",
+        [
+            judged(
+                "both source-light runs pass all 17 checks",
+                {
+                    "runs": {name(r): {"outcome": r["outcome"], "checks": r["checks"]} for r in scored},
+                    "unscored": unscored(runs),
+                    "grey_failures_reported": {
+                        name(r): {**r["events"], **{f"post_stop_{k}": v for k, v in r["post_stop_events"].items()}}
+                        for r in scored
+                        if r["events"] or r["post_stop_events"]
+                    },
+                },
+                len(runs) == 2 and len(scored) == 2 and not failed,
+                bool(failed),
+                len(scored),
+            )
+        ],
+    )
+
+
+# ------------------------------------------------------------------------------------------------ C6
+def comparability(record):
+    """Why the offline tool cannot replay this run, or None (checked here, never by catching its errors)."""
+    if not record["scored"]:
+        return record["unscored_reason"]
+    run = Path(record["path"])
+    report = json.loads((run / "report.json").read_text())
+    if report.get("stage") != "complete":
+        return f"recording not complete (stage {report.get('stage')!r})"
+    frames = json.loads((run / "frames.json").read_text())["frames"]
+    if [f["index"] for f in frames] != list(range(len(frames))):
+        return "frame indexes are not contiguous"
+    if not ((run / "preview_wrist.png").is_file() and (run / "preview_depth.npy").is_file()):
+        return "preview files missing"
+    last = record["stop"]["frame"] if record["stop"] is not None else len(frames) - 1
+    missing = [
+        i
+        for i in range(last + 1)
+        if not ((run / f"frames/wrist_{i:05d}.png").is_file() and (run / f"frames/depth_{i:05d}.npy").is_file())
+    ]
+    return f"frame files missing: {missing[:5]}" if missing else None
+
+
+def event_differences(offline, live, compare, context):
+    """Keys present on one side only, and keys whose values differ, ignoring the offline record's context."""
+    if live is None:
+        return ["no live event"]
+    offline_keys, live_keys = set(offline) - set(context), set(live) - set(context)
+    problems = [f"offline only: {k}" for k in sorted(offline_keys - live_keys)]
+    problems += [f"live only: {k}" for k in sorted(live_keys - offline_keys)]
+    problems += [k for k in sorted(offline_keys & live_keys) if not compare.equal(live[k], offline[k])]
+    return problems
+
+
 def offline_comparison(record):
-    """C6 for one run: the offline strict arm on the run's own frames against the live record."""
+    """C6 for one comparable run: the offline strict arm on the run's own frames against the live record."""
     import check_depth_loop_c0 as c0
     import replay_depth_appearance as depth_tool
 
@@ -317,33 +599,46 @@ def offline_comparison(record):
                 "preview_fields": strict["preview_mismatch_fields"],
             }
         )
-    frames = json.loads((Path(record["path"]) / "frames.json").read_text())["frames"]
+    run = Path(record["path"])
+    report = json.loads((run / "report.json").read_text())
+    frames = json.loads((run / "frames.json").read_text())["frames"]
     live = {
         str(f["index"]): c0.flat_event(((f.get("live_vision") or {}).get("measurement") or {}).get("depth_appearance"))
         for f in frames[: result["replayed_through_frame"] + 1]
     }
+    live["preview"] = c0.flat_event(
+        ((report.get("initial_live_vision") or {}).get("measurement") or {}).get("depth_appearance")
+    )
     live = {frame: event for frame, event in live.items() if event is not None}
-    offline = {str(event["frame"]): event for event in result["events"]["strict"] if event["frame"] != "preview"}
+    offline = {str(event["frame"]): event for event in result["events"]["strict"]}
     if sorted(live) != sorted(offline):
         problems.append({"kind": "event_frames", "live": sorted(live), "offline": sorted(offline)})
     for frame, event in offline.items():
-        differing = c0.event_problems(event, live.get(frame))
+        differing = event_differences(event, live.get(frame), c0.COMPARE, c0.EVENT_CONTEXT)
         if differing:
             problems.append({"kind": "event", "frame": frame, "fields": differing})
-    return problems
+    return {
+        "status": "mismatch" if problems else "equal",
+        "problems": problems,
+        "replayed_through_frame": result["replayed_through_frame"],
+        "recording_sha256": result["source_sha256"],
+    }
 
 
 def score_c6(records, comparisons):
-    mismatched = {key: value for key, value in comparisons.items() if value}
+    mismatched = {key: value for key, value in comparisons.items() if value["status"] == "mismatch"}
+    not_comparable = {key: value["why"] for key, value in comparisons.items() if value["status"] == "not_comparable"}
+    compared = sum(value["status"] in ("equal", "mismatch") for value in comparisons.values())
     return prediction(
         "C6",
         "Every live run equals the offline strict arm replayed on its own frames, event for event.",
         [
-            clause(
+            judged(
                 "live = offline in every run",
-                {"runs_compared": len(comparisons), "mismatches": mismatched},
-                len(comparisons) == len(records) == EXPECTED_RUNS and not mismatched,
-                refutes=bool(mismatched),
+                {"runs_compared": compared, "mismatches": mismatched, "not_comparable": not_comparable},
+                len(records) == EXPECTED_RUNS and compared == EXPECTED_RUNS and not mismatched,
+                bool(mismatched),
+                compared,
             )
         ],
     )
@@ -361,7 +656,7 @@ def score(records, comparisons):
 
 
 def run_summary(record):
-    return {key: value for key, value in record.items() if key not in ("facts", "path")}
+    return {key: value for key, value in record.items() if key != "path"}
 
 
 def main(argv=None):
@@ -374,18 +669,24 @@ def main(argv=None):
     import cv2
 
     cv2.setNumThreads(1)
-    records = load(args.root)
+    try:
+        records, files = load(args.root)
+        frozen = check_frozen_sources(args.root)
+    except InputError as error:
+        parser.error(str(error))
+    import check_depth_loop_c0 as c0
+    import replay_depth_appearance as depth_tool
+
     comparisons = {}
     for record in records:
-        try:
-            comparisons[name(record)] = offline_comparison(record)
-        except Exception as error:  # noqa: BLE001 - a run that cannot be replayed is a mismatch, never dropped
-            comparisons[name(record)] = [{"kind": "replay_error", "error": repr(error)}]
+        why = comparability(record)
+        comparisons[name(record)] = (
+            {"status": "not_comparable", "why": why} if why is not None else offline_comparison(record)
+        )
     head = subprocess.check_output(["git", "-C", str(args.root), "rev-parse", "HEAD"], text=True).strip()
     dirty = bool(
         subprocess.check_output(["git", "-C", str(args.root), "status", "--porcelain", "--untracked-files=no"])
     )
-    evidence = sorted((args.root / EVIDENCE_DIR).glob("depth-loop-*.json"))
     document = {
         "schema_version": 1,
         "scope": (
@@ -397,9 +698,15 @@ def main(argv=None):
         "protocol": PROTOCOL,
         "code_revision": head,
         "code_tree_dirty": dirty,
-        "inputs_sha256": {str(p.relative_to(args.root)): sha256(p) for p in evidence},
+        "construction_notes": CONSTRUCTION_NOTES,
+        "grade_files": files,
+        "frozen_sources_sha256": frozen,
+        "offline_tool_provenance": depth_tool._provenance(),
+        "float_tolerance": c0.FLOAT_TOLERANCE,
+        "max_float_difference_accepted": c0.COMPARE.max_float_difference,
         "interpretations": INTERPRETATIONS,
         "runs": [run_summary(record) for record in records],
+        "c6_comparisons": comparisons,
         "predictions": score(records, comparisons),
     }
     serialized = json.dumps(document, indent=2, allow_nan=False, default=str) + "\n"
