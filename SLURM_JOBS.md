@@ -744,3 +744,43 @@ Grading: CPU job `21505682` (`share`, October 2), `aggregate_eval.py` at
 - P1 refuted, by one pixel on the jaw's outline.
 
 [Result](docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026).
+
+### Agreement arm in closed loop (submitted October 3)
+
+The user approved 270 GPU-minutes on October 3, on the condition that the
+runs were submitted only after three things passed:
+- the design study;
+- the C0 gate;
+- a blind-reviewed scorer.
+
+All three were in place first:
+- **The design study.** Its evidence is in
+  [replay](docs/evidence/agreement_design_replay_2026-10-03.json) and
+  [shadow](docs/evidence/agreement_design_closure_shadow_2026-10-03.json),
+  from CPU jobs `21531565` and `21531637`.
+- **The C0 gate.** It passed checks A–G, together with CI, in CPU job
+  `21531480`: [evidence](docs/evidence/agreement_c0_2026-10-03.json).
+- **The scorer.** `tools/score_agreement_loop.py` was reviewed blind,
+  amended, and committed with the
+  [protocol](docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md) at
+  `e3204cf`.
+
+Submitted from `e3204cf`. Each batch is one run, `afterany`-chained, one
+task at a time, on `gpu,ampere` with the constraint `a40|rtx8000` and
+45-minute tasks. The share's project usage was 1.673 TB (over the 1.5 TiB
+soft quota, under the 2 TiB hard limit).
+
+| Batch | Light | Target | Strategy | Array job |
+|---|---|---|---|---|
+| `agree-eve-r1-20261003` | evening | 14944 | `baseline_depth_agreement` | `21532163` |
+| `agree-eve-r2-20261003` | evening | 14944 | `baseline_depth_agreement` | `21532164` (afterany `21532163`) |
+| `agree-eve-r3-20261003` | evening | 14944 | `baseline_depth_agreement` | `21532166` (afterany `21532164`) |
+| `agree-eve-r4-20261003` | evening | 14944 | `baseline_depth_agreement` | `21532167` (afterany `21532166`) |
+| `agree-ctl-19444-20261003` | source | 19444 | `planned_pose_depth_agreement` | `21532169` (afterany `21532167`) |
+| `agree-ctl-12142-20261003` | source | 12142 | `tool_axis_standoff_depth_agreement` | `21532170` (afterany `21532169`) |
+
+Every result carries the label *agreement arm of the depth-aware appearance
+check (+ J); changes the confidence gate's input; simulator depth*. It is
+reported apart from D_strict + J and every unchanged-gate result, and never
+pooled. The scorer was committed before submission, so Slurm states, which
+reveal pass or fail, cannot shape it.

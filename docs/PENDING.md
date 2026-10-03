@@ -1,12 +1,20 @@
 # Pending work and stretch goals
 
-Updated October 2, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
+Updated October 3, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
 and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-Nothing is queued or running. Both approved GPU experiments are finished,
-graded, scored and published (below).
+- **The agreement arm in closed loop** (approved October 3, 270 GPU-min).
+  - Registered in its
+    [protocol](EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md) with
+    predictions A0–A5.
+  - Its design study, its C0 gate (passed) and a blind-reviewed scorer were
+    committed before submission.
+  - Six chained batches, `21532163` … `21532170`: 4 × evening 14944, plus the
+    jaw and wire controls.
+  - Next, the known-map planner rebuild for the closure-hold generalization
+    (approved to start after this study).
 
 Finished and published:
 - [jaw in the camera's view](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026):
@@ -46,13 +54,8 @@ Finished and published:
   - The GPU guide is 630 GPU-minutes, depending on how many candidates
     qualify.
 - **Evening 14944: the registered agreement arm in closed loop**
-  ([scope](SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md)).
-  - At the shadow event, flow still tracks and the depth test accepts; only the
-    appearance score collapses.
-  - The arm, registered October 1, replaces that score with the depth
-    agreement on accepted frames.
-  - Order: an offline design study first, then 6 runs (270 GPU-minutes) for
-    approval.
+  ([scope](SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md)): submitted October
+  3 (see Queued).
 
 ## Stretch goals
 

@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-10-02 05:00 PDT — BOTH GPU EXPERIMENTS SCORED AND PUBLISHED; NOTHING QUEUED
+CURRENT CHECKPOINT — 2026-10-03 11:10 PDT — AGREEMENT-ARM CLOSED LOOP SUBMITTED (270 GPU-MIN, APPROVED)
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -8,7 +8,19 @@ WHERE THIS IS
   Share project quota (lfs quota -p 30762): 1.504 TiB used, over the 1.5 TiB soft quota, under the 2 TiB hard
   limit, grace 3w4d left on 2026-10-02.
 
-LATEST — 2026-10-02 MORNING (read this first)
+LATEST — 2026-10-03 (read this first)
+  AGREEMENT ARM (evening 14944): user approved 270 GPU-min on 2026-10-03, to be submitted after the design study,
+    the C0 gate and a blind-reviewed scorer. All three done:
+    - design study: docs/evidence/agreement_design_{replay,closure_shadow}_2026-10-03.json (tracks 67-72 in 5/5;
+      the closing jaw's shadow is predicted on the patch at 73-75);
+    - C0 gate A-G passed: docs/evidence/agreement_c0_2026-10-03.json;
+    - tools/score_agreement_loop.py, blind-reviewed and amended, committed with the protocol at e3204cf.
+    Submitted from e3204cf: 21532163 -> 64 -> 66 -> 67 (4 x evening 14944), 21532169 (19444), 21532170 (12142).
+    NEXT: when the chain finishes, grade with aggregate_eval --protocol per batch, copy the grade files into
+    docs/evidence/agreement_loop_2026-10-03/, commit, then run score.sbatch <commit> tools/score_agreement_loop.py.
+    After that, start the known-map planner rebuild (approved after this study).
+
+PREVIOUS — 2026-10-02 MORNING
   JAW IN VIEW (P1-P8): 530 PASSED 17/17 IN 3 OF 3, the first pass of a contact target, under the label
     "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames".
     P2-P6, P8 supported; P7 partly supported (baseline drifted in A, lost tracking at k+2 in B and C); P1

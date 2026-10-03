@@ -437,9 +437,17 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       appearance gate's rule; simulator depth*.
       [Result](EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md#result--october-2-2026) ·
       [verdicts](evidence/depth_loop_verdicts_2026-10-02.json).
-- [ ] Evening 14944 under D_strict + J: the depth test accepts its shadow
-      event, but the strict confidence at it is 0.0005–0.045, so it still
-      stops. Passing it needs another input, not this check.
+- [ ] Evening 14944 under the registered agreement arm, in closed loop. Under
+      D_strict + J the depth test accepts its shadow event, but the strict
+      confidence there is 0.0005–0.045, so it stops. Flow still tracks at
+      that event, so the fix is the confidence rule, not a new input.
+      - Registered with A0–A5.
+      - The design study shows it tracking through frame 72 offline, and
+        predicts the jaw's shadow on the patch during closure.
+      - The C0 gate passed.
+      - Submitted October 3: 6 runs, 270 GPU-min.
+
+      [Protocol](EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md).
 - [ ] Repeat any single-run class change on a target near a tracker floor: the
       RGB render differs run to run (0 of 69 same-scene frame-0 pairs identical;
       depth and pose identical in all), and 22988 flipped class on it.
