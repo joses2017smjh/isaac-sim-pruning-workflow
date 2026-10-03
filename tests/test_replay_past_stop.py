@@ -422,3 +422,14 @@ def test_recorded_inputs_match_the_committed_evidence(tool):
         committed = tool.committed_hashes(spec, evidence)
         assert committed["report.json"] == tool.sha256(RUNS / spec["run"] / "report.json"), spec["run"]
         assert committed["frames.json"] == tool.sha256(RUNS / spec["run"] / "frames.json"), spec["run"]
+
+
+def test_provenance_ignores_a_module_with_a_relative_file(tool, monkeypatch):
+    import sys
+    import types
+
+    module = types.ModuleType("_classes")
+    module.__file__ = "_classes.py"  # as some extension modules report it; resolves against the working directory
+    monkeypatch.setitem(sys.modules, "_classes", module)
+    monkeypatch.chdir(tool.ROOT)
+    assert "_classes.py" not in tool.provenance()["loaded_repository_modules_sha256"]

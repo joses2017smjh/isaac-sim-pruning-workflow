@@ -344,7 +344,12 @@ def provenance():
         {
             str(Path(module.__file__).resolve().relative_to(root))
             for module in list(sys.modules.values())
-            if getattr(module, "__file__", None) and root in Path(module.__file__).resolve().parents
+            # A relative __file__ (some extension modules report a bare name) resolves against the working
+            # directory and names no repository file; only absolute paths to existing files count.
+            if getattr(module, "__file__", None)
+            and Path(module.__file__).is_absolute()
+            and Path(module.__file__).is_file()
+            and root in Path(module.__file__).resolve().parents
         }
     )
     try:
