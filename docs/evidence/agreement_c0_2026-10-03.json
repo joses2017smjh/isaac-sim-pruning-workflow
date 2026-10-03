@@ -1,0 +1,4337 @@
+{
+ "schema_version": 1,
+ "scope": "C0 pre-submission gate of the agreement-arm closed-loop test: offline CPU replays of the 12 held-out and 129 earlier recordings, the 10 live depth closed-loop recordings and the 6 live jaw-in-view recordings through the repository's offline tool and controller, against the published replays and the recordings themselves. Recorded images only; nothing here is a live outcome or a grade.",
+ "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+ "code_revision": "f3db81a416fce218c0316bad43c14d91fe812e43",
+ "code_tree_dirty": false,
+ "inputs_sha256": {
+  "docs/evidence/depth_heldout_replay_2026-10-01.json": "db16ecbe421777277c0618cef54fdb72d490d4df534ef97606139b7e65c35be6",
+  "docs/evidence/depth_regression_replay_2026-10-01.json": "5371650a2e782582b34398363bdc0f0d411e602e112d8d5a014d8420c57b9a80",
+  "depth-loop-eve-r1-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance/frames.json": "af30b086d432ff7dd99ea01ae4c7886b78357e40e8a8b2cb47dfeb97a1893cdc",
+  "depth-loop-eve-r1-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance/report.json": "96ca8fdb732377037e86876db62db653d883165b2982b6a062b5642cdd7d3103",
+  "depth-loop-eve-r1-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance/frames.json": "90468da9a0ae7486910a69343ec73a6ab30b50e5446021ed9ed2c88aa6c41b57",
+  "depth-loop-eve-r1-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance/report.json": "4dc7944b89fe97f7248a0e752e8bd6941c1d51fd200c40f02dbde04b4adfacc2",
+  "depth-loop-mor-r1-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance/frames.json": "9d722e1743eb584b7091ecd9fe85ea417039748819528328309a8d2721f74a7b",
+  "depth-loop-mor-r1-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance/report.json": "df960748876a9679cce6505f6122278d6179927d04e7bb1091216c53e6c96011",
+  "depth-loop-eve-r2-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance/frames.json": "3ff936c912f5cbef64ffcab2ec50741655cab989614aa367553466c09fbe7005",
+  "depth-loop-eve-r2-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance/report.json": "b18a44fcfb7bbd20f4bdae9497993a8fb5abf1dee2ac7a6b068e47a5e66071b8",
+  "depth-loop-eve-r2-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance/frames.json": "a414ff2f092f6c3d485d71b4cb8ec3741fdc0141f52cbce1777d75eaabe4a3a8",
+  "depth-loop-eve-r2-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance/report.json": "006de16cc26deecf414e3423ef2fc6e770722201edad95ce236202107979c574",
+  "depth-loop-mor-r2-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance/frames.json": "a030711e42be9b1fc85d50abd71e2314ee2ec03264b2e93553a5f881409d1563",
+  "depth-loop-mor-r2-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance/report.json": "540de9b29686384e002177df2ef8a55f70894f44e6e5d7927df4b3d10b67f2c6",
+  "depth-loop-src-20261001/run_00_source_tree1_v14944_baseline_depth_appearance/frames.json": "f5fc525eca26284af86376e3beaf2bdc77ad85a970cb1ee6c0220afff3f1c26b",
+  "depth-loop-src-20261001/run_00_source_tree1_v14944_baseline_depth_appearance/report.json": "d1950be0022ea8549c37b54ed028527258732afc0b0d80caa00c0baa8721f847",
+  "depth-loop-src-20261001/run_01_source_tree1_v15004_baseline_depth_appearance/frames.json": "34871e5a51f488ebb29f7cb05371db18113c63bba0159d4ff73bc70a005160c3",
+  "depth-loop-src-20261001/run_01_source_tree1_v15004_baseline_depth_appearance/report.json": "5ccb6a946a02bfaff757f46aa44f387e2d76839909c35c384adaf78221f9f6a1",
+  "depth-loop-ctl-19444-20261001/run_00_source_tree1_v19444_planned_pose_depth_appearance/frames.json": "364c6cbaf2fc3e3faca9e0c84cb2ea9ab44a7b48ad0492ca8b1ba3ae2c692850",
+  "depth-loop-ctl-19444-20261001/run_00_source_tree1_v19444_planned_pose_depth_appearance/report.json": "3cc40a814e4d91e7f7f60dc3474004e898f621f787bfbe9825edc215df3b3e69",
+  "depth-loop-ctl-12142-20261001/run_00_source_tree0_v12142_tool_axis_standoff_depth_appearance/frames.json": "3daf4e7546943e98a226e2e9fc176577861bad6500a51d560c612aaed17d708f",
+  "depth-loop-ctl-12142-20261001/run_00_source_tree0_v12142_tool_axis_standoff_depth_appearance/report.json": "8950913bbe0b858d050fd08ac3cd1201ab46c38109f23dd2af3830f205646599",
+  "jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/frames.json": "ee3646ce9170be85beacadc08d4d28cbc82e375986f8096bb5507c9dd6f001d8",
+  "jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/report.json": "6e75acc2f191807bc8d9b48827a8c2c7b3b4d49ae8cee8e12231465a41d0d5b4",
+  "jaw-hold-a-20261001/run_01_source_tree1_v19444_planned_pose_jaw_hold/frames.json": "2031abbf42e29c249966195b1dbd80f7d1a339a93f03000764e0da4800fe2d8e",
+  "jaw-hold-a-20261001/run_01_source_tree1_v19444_planned_pose_jaw_hold/report.json": "617c66b6f743b787f2372495246e6ada2a07c29e1620ec2ce2af09877a9eef40",
+  "jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/frames.json": "4f7dc4568c804ed2f7a9889aa943fb4e7259c5bc5540108cda4c7810439b7526",
+  "jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/report.json": "4efd1b8d248ff6cd3c05ef6e90f437136789d10f2e16630271d5c911e8663b4a",
+  "jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold/frames.json": "b70267c6c9dea9e4adbf7c01633d7a2b3c645e75b7d12139cf7875e464e30257",
+  "jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold/report.json": "203a91b24ceb14e67523d650208ff800ee771c68e7a659209a0ef9c5a19bfaf7",
+  "jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/frames.json": "6262a56d29baf1b517bcb0d28d0711d0edda812fb5562d3b6e17abcedbdc349c",
+  "jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold/report.json": "1e8596d076d866982ce5a37e83a9a28b8e0e91ea87e5fb6057b61a857b3074ba",
+  "jaw-hold-c-20261001/run_01_source_tree1_v15004_planned_pose_jaw_hold/frames.json": "d075c7a275c4dbb365ca3f5ed1eb20ac201a53911b13e0d24a718134edbe3167",
+  "jaw-hold-c-20261001/run_01_source_tree1_v15004_planned_pose_jaw_hold/report.json": "476867c72f8ade0ea2badf089a646d486a0546264b9eb355c67cdee63ca2e9eb"
+ },
+ "float_tolerance": 1e-06,
+ "max_float_difference_accepted": 6.48200511932373e-07,
+ "checks": [
+  {
+   "id": "A",
+   "statement": "The offline tool reproduces the published held-out and regression replays run for run.",
+   "passed": true,
+   "problems": [],
+   "detail": {}
+  },
+  {
+   "id": "B",
+   "statement": "The controller with every arm off reproduces all 141 recordings through each recorded stop.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-b-r1-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-b-r1-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-b-r2-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-b-r2-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-mor-b-r1-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-mor-b-r2-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_00_source_raw": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_01_source_clahe": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_02_morning_raw": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_03_morning_clahe": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_04_evening_raw": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_05_evening_clahe": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_00_source_tree0_v530_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_01_source_tree0_v590_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_02_source_tree0_v7524_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_06_source_tree0_v12142_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_07_source_tree0_v18669_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_08_source_tree0_v22988_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_00_source_tree1_v14884_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_01_source_tree1_v14944_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_02_source_tree1_v15004_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_04_source_tree1_v19264_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_05_source_tree1_v19384_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_06_source_tree1_v19444_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-mount-flip-20260926/run_00_source_tree0_v8353_mount_side": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-mount-flip-20260926/run_01_source_tree1_v19264_mount_side": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_00_source_tree0_v530_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_01_source_tree0_v590_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_02_source_tree0_v7524_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_03_source_tree0_v8353_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_06_source_tree0_v12142_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_07_source_tree0_v18669_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_08_source_tree0_v22988_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_00_source_tree1_v14884_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_01_source_tree1_v14944_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_02_source_tree1_v15004_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_04_source_tree1_v19264_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_05_source_tree1_v19384_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_06_source_tree1_v19444_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r1-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r1-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r1-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r2-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r2-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r2-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r3-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r3-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r3-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_00_source_tree0_v530_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_01_source_tree0_v590_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_02_source_tree0_v7524_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_03_source_tree0_v8353_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_06_source_tree0_v12142_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_07_source_tree0_v18669_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_08_source_tree0_v22988_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_00_source_tree0_v530_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_01_source_tree0_v590_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_02_source_tree0_v7524_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_03_source_tree0_v8353_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_06_source_tree0_v12142_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_07_source_tree0_v18669_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_08_source_tree0_v22988_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_00_source_tree0_v530_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_01_source_tree0_v590_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_02_source_tree0_v7524_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_03_source_tree0_v8353_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_06_source_tree0_v12142_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_07_source_tree0_v18669_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_08_source_tree0_v22988_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_00_morning_tree0_v530": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_01_morning_tree0_v590": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_02_morning_tree0_v7524": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_03_morning_tree0_v8353": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_06_morning_tree0_v12142": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_07_morning_tree0_v18669": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_08_morning_tree0_v22988": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_00_source_tree0_v530": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_01_source_tree0_v590": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_02_source_tree0_v7524": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_03_source_tree0_v8353": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_06_source_tree0_v12142": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_07_source_tree0_v18669": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_08_source_tree0_v22988": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_00_source_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_01_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_02_source_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_04_source_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_05_source_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_06_source_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_00_evening_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_04_evening_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_05_evening_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_06_evening_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_00_morning_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_01_morning_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_04_morning_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_05_morning_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_06_morning_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_00_source_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_02_source_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_04_source_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_05_source_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_06_source_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_00_source_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_01_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_02_source_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_04_source_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_05_source_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_06_source_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_00_source_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_01_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_02_source_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_04_source_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_05_source_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_06_source_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded-ten-20260926/run_05_source_tree1_v15599_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded-ten-20260926/run_08_source_tree1_v37023_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded-ten-20260926/run_09_source_tree1_v37796_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_05_source_tree1_v3493_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_12_source_tree1_v10737_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_13_source_tree1_v11094_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_15_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_16_source_tree1_v17723_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_17_source_tree1_v19504_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_23_source_tree1_v30283_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_24_source_tree1_v31828_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_25_source_tree1_v32536_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    }
+   }
+  },
+  {
+   "id": "C",
+   "statement": "The controller with the strict arm measures exactly what the published strict arm measured, and changes a cut decision only in runs where that arm diverged.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      67,
+      "vision_invalid"
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "stops_downstream",
+       "strict_confidence": 0.02545136120170355,
+       "agreement_confidence": 0.375
+      }
+     }
+    },
+    "jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.19176079332828522,
+       "agreement_confidence": 1.0
+      }
+     }
+    },
+    "jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      67,
+      "vision_invalid"
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "stops_downstream",
+       "strict_confidence": 0.0,
+       "agreement_confidence": 0.375
+      }
+     }
+    },
+    "jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.2036670446395874,
+       "agreement_confidence": 1.0
+      }
+     }
+    },
+    "jaw-shadow-eve-b-r1-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-eve-b-r1-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-eve-b-r2-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-eve-b-r2-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      75
+     ],
+     "cut_decision_divergence_frames": [
+      75
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "75": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.18858363798686434,
+       "agreement_confidence": 0.8571428571428571
+      }
+     }
+    },
+    "jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      75
+     ],
+     "cut_decision_divergence_frames": [
+      75
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "75": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.2648719648520152,
+       "agreement_confidence": 0.8095238095238095
+      }
+     }
+    },
+    "jaw-shadow-mor-b-r1-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-mor-b-r2-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_00_source_raw": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_01_source_clahe": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_02_morning_raw": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_03_morning_clahe": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_04_evening_raw": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_05_evening_clahe": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_00_source_tree0_v530_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      60,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_01_source_tree0_v590_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      62,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_02_source_tree0_v7524_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      9,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      54,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_06_source_tree0_v12142_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_07_source_tree0_v18669_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      28,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_08_source_tree0_v22988_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_00_source_tree1_v14884_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_01_source_tree1_v14944_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_02_source_tree1_v15004_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_04_source_tree1_v19264_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      36,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_05_source_tree1_v19384_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_06_source_tree1_v19444_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-mount-flip-20260926/run_00_source_tree0_v8353_mount_side": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      73,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-mount-flip-20260926/run_01_source_tree1_v19264_mount_side": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      36,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_00_source_tree0_v530_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      60,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_01_source_tree0_v590_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      62,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_02_source_tree0_v7524_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      9,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_03_source_tree0_v8353_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      1,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_06_source_tree0_v12142_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_07_source_tree0_v18669_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      28,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_08_source_tree0_v22988_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      22,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_00_source_tree1_v14884_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_01_source_tree1_v14944_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_02_source_tree1_v15004_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_04_source_tree1_v19264_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_05_source_tree1_v19384_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_06_source_tree1_v19444_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      79,
+      "gate_lost_during_closure"
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r1-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      68,
+      "vision_invalid"
+     ],
+     "events": {
+      "68": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "planned-pose-gpu-r1-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r1-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      79,
+      "gate_lost_during_closure"
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r2-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      68,
+      "vision_invalid"
+     ],
+     "events": {
+      "68": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "planned-pose-gpu-r2-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r2-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      79,
+      "gate_lost_during_closure"
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r3-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      70,
+      "vision_invalid"
+     ],
+     "events": {
+      "70": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "planned-pose-gpu-r3-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r3-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_00_source_tree0_v530_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      130,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_01_source_tree0_v590_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      41,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_02_source_tree0_v7524_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      50,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_03_source_tree0_v8353_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      6,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_06_source_tree0_v12142_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      59,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_07_source_tree0_v18669_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      55,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_08_source_tree0_v22988_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_00_source_tree0_v530_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      58,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_01_source_tree0_v590_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      16,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_02_source_tree0_v7524_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      10,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_03_source_tree0_v8353_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_06_source_tree0_v12142_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_07_source_tree0_v18669_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      21,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_08_source_tree0_v22988_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      21,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_00_source_tree0_v530_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      60,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_01_source_tree0_v590_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      20,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_02_source_tree0_v7524_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      10,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_03_source_tree0_v8353_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      2,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_06_source_tree0_v12142_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      29,
+      "vision_invalid"
+     ],
+     "events": {
+      "29": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "strategy-tool-axis-20260923/run_07_source_tree0_v18669_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      25,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_08_source_tree0_v22988_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      22,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_00_morning_tree0_v530": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      59,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_01_morning_tree0_v590": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      12,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_02_morning_tree0_v7524": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      9,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_03_morning_tree0_v8353": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      1,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_06_morning_tree0_v12142": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_07_morning_tree0_v18669": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      27,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_08_morning_tree0_v22988": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      22,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_00_source_tree0_v530": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      59,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_01_source_tree0_v590": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      24,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_02_source_tree0_v7524": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      9,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_03_source_tree0_v8353": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      1,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_06_source_tree0_v12142": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_07_source_tree0_v18669": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      28,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_08_source_tree0_v22988": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      22,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_00_source_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_01_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_02_source_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_04_source_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_05_source_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_06_source_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-evening-20260926/run_00_evening_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      67,
+      "vision_invalid"
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "stops_downstream",
+       "strict_confidence": 0.038501864299178123,
+       "agreement_confidence": 0.375
+      }
+     }
+    },
+    "tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.29721927642822266,
+       "agreement_confidence": 1.0
+      }
+     }
+    },
+    "tree1-listed-evening-20260926/run_04_evening_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-evening-20260926/run_05_evening_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-evening-20260926/run_06_evening_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-morning-20260926/run_00_morning_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "78": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "tree1-listed-morning-20260926/run_01_morning_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [
+      75
+     ],
+     "cut_decision_divergence_frames": [
+      75
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "75": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.2139971341405596,
+       "agreement_confidence": 0.8095238095238095
+      }
+     }
+    },
+    "tree1-listed-morning-20260926/run_04_morning_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-morning-20260926/run_05_morning_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-morning-20260926/run_06_morning_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_00_source_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_02_source_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_04_source_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_05_source_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_06_source_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_00_source_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_01_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_02_source_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_04_source_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_05_source_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_06_source_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_00_source_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_01_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_02_source_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_04_source_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_05_source_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_06_source_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-seeded-ten-20260926/run_05_source_tree1_v15599_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      65,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "tree1-seeded-ten-20260926/run_08_source_tree1_v37023_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      16,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-seeded-ten-20260926/run_09_source_tree1_v37796_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      3,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_05_source_tree1_v3493_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      64,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_12_source_tree1_v10737_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_13_source_tree1_v11094_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      38,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_15_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_16_source_tree1_v17723_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      1,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_17_source_tree1_v19504_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_23_source_tree1_v30283_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_24_source_tree1_v31828_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_25_source_tree1_v32536_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      5,
+      "vision_invalid"
+     ],
+     "events": {}
+    }
+   }
+  },
+  {
+   "id": "D",
+   "statement": "The controller with the agreement arm measures exactly what the published agreement arm measured, and changes a cut decision only in runs where that arm diverged.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.02545136120170355,
+       "agreement_confidence": 0.375
+      }
+     }
+    },
+    "jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.19176079332828522,
+       "agreement_confidence": 1.0
+      }
+     }
+    },
+    "jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.0,
+       "agreement_confidence": 0.375
+      }
+     }
+    },
+    "jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.2036670446395874,
+       "agreement_confidence": 1.0
+      }
+     }
+    },
+    "jaw-shadow-eve-b-r1-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-eve-b-r1-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-eve-b-r2-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-eve-b-r2-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      75
+     ],
+     "cut_decision_divergence_frames": [
+      75
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "75": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.18858363798686434,
+       "agreement_confidence": 0.8571428571428571
+      }
+     }
+    },
+    "jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [
+      75
+     ],
+     "cut_decision_divergence_frames": [
+      75
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "75": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.2648719648520152,
+       "agreement_confidence": 0.8095238095238095
+      }
+     }
+    },
+    "jaw-shadow-mor-b-r1-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "jaw-shadow-mor-b-r2-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+     "selection": "heldout",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_00_source_raw": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_01_source_clahe": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_02_morning_raw": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_03_morning_clahe": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_04_evening_raw": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "lighting-20260919/run_05_evening_clahe": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_00_source_tree0_v530_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      60,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_01_source_tree0_v590_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      62,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_02_source_tree0_v7524_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      9,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      54,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_06_source_tree0_v12142_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_07_source_tree0_v18669_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      28,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-both-tree0-20260926/run_08_source_tree0_v22988_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_00_source_tree1_v14884_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_01_source_tree1_v14944_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_02_source_tree1_v15004_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_04_source_tree1_v19264_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      36,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_05_source_tree1_v19384_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-both-tree1-20260926/run_06_source_tree1_v19444_similarity_mount": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-mount-flip-20260926/run_00_source_tree0_v8353_mount_side": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      73,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-mount-flip-20260926/run_01_source_tree1_v19264_mount_side": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      36,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_00_source_tree0_v530_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      60,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_01_source_tree0_v590_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      62,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_02_source_tree0_v7524_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      9,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_03_source_tree0_v8353_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      1,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_06_source_tree0_v12142_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_07_source_tree0_v18669_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      28,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree0-20260926/run_08_source_tree0_v22988_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      22,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_00_source_tree1_v14884_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_01_source_tree1_v14944_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_02_source_tree1_v15004_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_04_source_tree1_v19264_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_05_source_tree1_v19384_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "perc-similarity-tree1-20260926/run_06_source_tree1_v19444_similarity_tracker": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      79,
+      "gate_lost_during_closure"
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r1-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      68,
+      "vision_invalid"
+     ],
+     "events": {
+      "68": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "planned-pose-gpu-r1-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r1-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      79,
+      "gate_lost_during_closure"
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r2-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      68,
+      "vision_invalid"
+     ],
+     "events": {
+      "68": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "planned-pose-gpu-r2-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r2-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      79,
+      "gate_lost_during_closure"
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r3-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      70,
+      "vision_invalid"
+     ],
+     "events": {
+      "70": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "planned-pose-gpu-r3-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "planned-pose-gpu-r3-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_00_source_tree0_v530_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      130,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_01_source_tree0_v590_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      41,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_02_source_tree0_v7524_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      50,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_03_source_tree0_v8353_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      6,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_06_source_tree0_v12142_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      59,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_07_source_tree0_v18669_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      55,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "strategy-fine-step-20260923/run_08_source_tree0_v22988_fine_step": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_00_source_tree0_v530_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      58,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_01_source_tree0_v590_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      16,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_02_source_tree0_v7524_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      10,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_03_source_tree0_v8353_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_06_source_tree0_v12142_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_07_source_tree0_v18669_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      21,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-horizontal-20260923/run_08_source_tree0_v22988_horizontal_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      21,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_00_source_tree0_v530_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      60,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_01_source_tree0_v590_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      20,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_02_source_tree0_v7524_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      10,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_03_source_tree0_v8353_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      2,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_06_source_tree0_v12142_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      29,
+      "vision_invalid"
+     ],
+     "events": {
+      "29": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "strategy-tool-axis-20260923/run_07_source_tree0_v18669_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      25,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "strategy-tool-axis-20260923/run_08_source_tree0_v22988_tool_axis_standoff": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      22,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_00_morning_tree0_v530": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      59,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_01_morning_tree0_v590": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      12,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_02_morning_tree0_v7524": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      9,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_03_morning_tree0_v8353": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      1,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_06_morning_tree0_v12142": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_07_morning_tree0_v18669": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      27,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "targets-morning-20260923/run_08_morning_tree0_v22988": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      22,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_00_source_tree0_v530": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      59,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_01_source_tree0_v590": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      24,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_02_source_tree0_v7524": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      9,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_03_source_tree0_v8353": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      1,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_06_source_tree0_v12142": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      30,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_07_source_tree0_v18669": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      28,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "targets-source-20260923/run_08_source_tree0_v22988": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      22,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_00_source_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_01_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_02_source_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_04_source_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_05_source_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-baseline-20260923/run_06_source_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-evening-20260926/run_00_evening_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.038501864299178123,
+       "agreement_confidence": 0.375
+      }
+     }
+    },
+    "tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "67": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.29721927642822266,
+       "agreement_confidence": 1.0
+      }
+     }
+    },
+    "tree1-listed-evening-20260926/run_04_evening_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-evening-20260926/run_05_evening_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-evening-20260926/run_06_evening_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-morning-20260926/run_00_morning_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "78": {
+       "accept": false,
+       "decision": "loss_stands",
+       "strict_confidence": null,
+       "agreement_confidence": null
+      }
+     }
+    },
+    "tree1-listed-morning-20260926/run_01_morning_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [
+      75
+     ],
+     "cut_decision_divergence_frames": [
+      75
+     ],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {
+      "75": {
+       "accept": true,
+       "decision": "continues",
+       "strict_confidence": 0.2139971341405596,
+       "agreement_confidence": 0.8095238095238095
+      }
+     }
+    },
+    "tree1-listed-morning-20260926/run_04_morning_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-morning-20260926/run_05_morning_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-morning-20260926/run_06_morning_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_00_source_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_02_source_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_04_source_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_05_source_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r1-20260926/run_06_source_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_00_source_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_01_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_02_source_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_04_source_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_05_source_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r2-20260926/run_06_source_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_00_source_tree1_v14884_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_01_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_02_source_tree1_v15004_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_04_source_tree1_v19264_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_05_source_tree1_v19384_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      44,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-listed-repeat-r3-20260926/run_06_source_tree1_v19444_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-seeded-ten-20260926/run_05_source_tree1_v15599_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      65,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "tree1-seeded-ten-20260926/run_08_source_tree1_v37023_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      16,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-seeded-ten-20260926/run_09_source_tree1_v37796_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      3,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_05_source_tree1_v3493_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      64,
+      "tof_minimum_clearance"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_12_source_tree1_v10737_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "initial_target_not_visible"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_13_source_tree1_v11094_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      38,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_15_source_tree1_v14944_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      null,
+      null
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_16_source_tree1_v17723_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      1,
+      "hazard_contact"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_17_source_tree1_v19504_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_23_source_tree1_v30283_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      43,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_24_source_tree1_v31828_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      0,
+      "vision_invalid"
+     ],
+     "events": {}
+    },
+    "tree1-seeded30-20260926/run_25_source_tree1_v32536_baseline": {
+     "selection": "regression",
+     "measurement_divergence_frames": [],
+     "cut_decision_divergence_frames": [],
+     "replay_stop": [
+      5,
+      "vision_invalid"
+     ],
+     "events": {}
+    }
+   }
+  },
+  {
+   "id": "E",
+   "statement": "The controller with the strict arm reproduces the 10 live depth closed-loop recordings through each recorded stop.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "depth-loop-eve-r1-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      67,
+      "vision_invalid"
+     ],
+     "held_frames": []
+    },
+    "depth-loop-eve-r1-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    },
+    "depth-loop-mor-r1-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    },
+    "depth-loop-eve-r2-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      67,
+      "vision_invalid"
+     ],
+     "held_frames": []
+    },
+    "depth-loop-eve-r2-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    },
+    "depth-loop-mor-r2-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    },
+    "depth-loop-src-20261001/run_00_source_tree1_v14944_baseline_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    },
+    "depth-loop-src-20261001/run_01_source_tree1_v15004_baseline_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    },
+    "depth-loop-ctl-19444-20261001/run_00_source_tree1_v19444_planned_pose_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      70,
+      "vision_invalid"
+     ],
+     "held_frames": []
+    },
+    "depth-loop-ctl-12142-20261001/run_00_source_tree0_v12142_tool_axis_standoff_depth_appearance": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      29,
+      "vision_invalid"
+     ],
+     "held_frames": []
+    }
+   }
+  },
+  {
+   "id": "F",
+   "statement": "On the 10 live depth closed-loop recordings the agreement arm departs from the recording exactly where an accepted event ended in a low-confidence stop, continues there, and its depth test equals the live one at every grey-check failure.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "depth-loop-eve-r1-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+     "departure_frames": [
+      67
+     ],
+     "expected_departure_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "compared_through_frame": 67,
+     "replay_stop": [
+      null,
+      null
+     ]
+    },
+    "depth-loop-eve-r1-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+     "departure_frames": [],
+     "expected_departure_frames": [],
+     "cut_decision_divergence_frames": [],
+     "compared_through_frame": 199,
+     "replay_stop": [
+      null,
+      null
+     ]
+    },
+    "depth-loop-mor-r1-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+     "departure_frames": [],
+     "expected_departure_frames": [],
+     "cut_decision_divergence_frames": [],
+     "compared_through_frame": 199,
+     "replay_stop": [
+      null,
+      null
+     ]
+    },
+    "depth-loop-eve-r2-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+     "departure_frames": [
+      67
+     ],
+     "expected_departure_frames": [
+      67
+     ],
+     "cut_decision_divergence_frames": [
+      67
+     ],
+     "compared_through_frame": 67,
+     "replay_stop": [
+      null,
+      null
+     ]
+    },
+    "depth-loop-eve-r2-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+     "departure_frames": [],
+     "expected_departure_frames": [],
+     "cut_decision_divergence_frames": [],
+     "compared_through_frame": 199,
+     "replay_stop": [
+      null,
+      null
+     ]
+    },
+    "depth-loop-mor-r2-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+     "departure_frames": [],
+     "expected_departure_frames": [],
+     "cut_decision_divergence_frames": [],
+     "compared_through_frame": 199,
+     "replay_stop": [
+      null,
+      null
+     ]
+    },
+    "depth-loop-src-20261001/run_00_source_tree1_v14944_baseline_depth_appearance": {
+     "departure_frames": [],
+     "expected_departure_frames": [],
+     "cut_decision_divergence_frames": [],
+     "compared_through_frame": 199,
+     "replay_stop": [
+      null,
+      null
+     ]
+    },
+    "depth-loop-src-20261001/run_01_source_tree1_v15004_baseline_depth_appearance": {
+     "departure_frames": [],
+     "expected_departure_frames": [],
+     "cut_decision_divergence_frames": [],
+     "compared_through_frame": 199,
+     "replay_stop": [
+      null,
+      null
+     ]
+    },
+    "depth-loop-ctl-19444-20261001/run_00_source_tree1_v19444_planned_pose_depth_appearance": {
+     "departure_frames": [],
+     "expected_departure_frames": [],
+     "cut_decision_divergence_frames": [],
+     "compared_through_frame": 70,
+     "replay_stop": [
+      70,
+      "vision_invalid"
+     ]
+    },
+    "depth-loop-ctl-12142-20261001/run_00_source_tree0_v12142_tool_axis_standoff_depth_appearance": {
+     "departure_frames": [],
+     "expected_departure_frames": [],
+     "cut_decision_divergence_frames": [],
+     "compared_through_frame": 29,
+     "replay_stop": [
+      29,
+      "vision_invalid"
+     ]
+    }
+   }
+  },
+  {
+   "id": "G",
+   "statement": "The controller with the jaw self-mask and the closure hold reproduces the 6 live jaw-in-view recordings through each recorded stop.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": [
+      76,
+      77,
+      78,
+      79,
+      80
+     ]
+    },
+    "jaw-hold-a-20261001/run_01_source_tree1_v19444_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      67,
+      "vision_invalid"
+     ],
+     "held_frames": []
+    },
+    "jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": [
+      76,
+      77,
+      78,
+      79,
+      80
+     ]
+    },
+    "jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    },
+    "jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": [
+      76,
+      77,
+      78,
+      79,
+      80
+     ]
+    },
+    "jaw-hold-c-20261001/run_01_source_tree1_v15004_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    }
+   }
+  }
+ ],
+ "passed": true
+}
