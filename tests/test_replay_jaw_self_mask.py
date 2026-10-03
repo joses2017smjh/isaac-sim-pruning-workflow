@@ -141,3 +141,16 @@ def test_rebuilt_tracker_config_must_match_every_recorded_option_and_default_the
     assert not replay.tracker_config_matches(replay.build_demo(report, False, False), report)
     report["tracker_config"] = {**older, "motion_model": "similarity"}
     assert replay.tracker_config_matches(replay.build_demo(report, False, False), report)
+
+
+def test_flags_name_the_depth_arm_only_with_the_check_on_and_the_cli_refuses_an_arm_alone(replay, tmp_path):
+    assert replay._flags(False, False, False, "strict") == {
+        "jaw_self_mask": False,
+        "closure_hold": False,
+        "depth_appearance": False,
+    }
+    assert replay._flags(False, False, True, "agreement")["depth_appearance_arm"] == "agreement"
+    with pytest.raises(SystemExit):
+        replay.main(
+            ["--run-dir", str(tmp_path), "--output", str(tmp_path / "out.json"), "--depth-appearance-arm", "agreement"]
+        )

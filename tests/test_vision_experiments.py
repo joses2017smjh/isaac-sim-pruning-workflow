@@ -586,6 +586,11 @@ DEPTH_STRATEGIES = {
     "planned_pose_depth_appearance": "planned_pose_standoff",
     "tool_axis_standoff_depth_appearance": "tool_axis_standoff",
 }
+AGREEMENT_STRATEGIES = {
+    "baseline_depth_agreement": "straight",
+    "planned_pose_depth_agreement": "planned_pose_standoff",
+    "tool_axis_standoff_depth_agreement": "tool_axis_standoff",
+}
 
 
 def _depth_report(block, mode="straight", standoff=0.0):
@@ -616,7 +621,7 @@ def test_depth_strategies_forward_only_their_flag_and_the_capture_must_show_the_
         assert not {"PRUNING_JAW_SELF_MASK", "PRUNING_CLOSURE_HOLD", "PRUNING_JAW_CASTS_SHADOW"} & set(env)
         assert run.run_label(0, row) == f"run_00_evening_tree1_v14944_{name}"
     for name in launcher.STRATEGIES:
-        if name not in DEPTH_STRATEGIES:
+        if name not in DEPTH_STRATEGIES and name not in AGREEMENT_STRATEGIES:
             other = launcher.experiment_plan(targets, "evening", "raw", name)
             assert "PRUNING_DEPTH_APPEARANCE" not in run.run_environment(
                 other, other["runs"][0], tmp_path, tmp_path, {}
@@ -637,6 +642,57 @@ def test_depth_strategies_forward_only_their_flag_and_the_capture_must_show_the_
     assert run.configuration_matches(_depth_report(None), baseline["runs"][0], baseline)
     assert run.configuration_matches(_depth_report({**good, "enabled": False}), baseline["runs"][0], baseline)
     assert not run.configuration_matches(_depth_report(good), baseline["runs"][0], baseline)
+
+
+def test_agreement_strategies_launch_the_agreement_arm_and_the_capture_must_show_its_constants(tmp_path, scripts):
+    from isaaclab_pruning.perception.depth_appearance import registered_depth_appearance
+
+    launcher, run = scripts
+    targets = [{"target_tree_index": 1, "component_first_vertex": 14944, "planned_final_tool_quat_wxyz": None}]
+    for name, mode in AGREEMENT_STRATEGIES.items():
+        assert launcher.STRATEGY_PROTOCOLS[name] == "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md"
+        plan = launcher.experiment_plan(targets, "evening", "raw", name)
+        row = plan["runs"][0]
+        strategy = row["strategy"]
+        assert strategy["depth_appearance"] is True and strategy["depth_appearance_arm"] == "agreement"
+        assert strategy["mode"] == mode
+        env = run.run_environment(plan, row, tmp_path, tmp_path / "out", {"PRUNING_DEPTH_APPEARANCE": "1"})
+        assert env["PRUNING_DEPTH_APPEARANCE"] == "agreement"
+        assert not {"PRUNING_JAW_SELF_MASK", "PRUNING_CLOSURE_HOLD", "PRUNING_JAW_CASTS_SHADOW"} & set(env)
+    plan = launcher.experiment_plan(targets, "evening", "raw", "baseline_depth_agreement")
+    row = plan["runs"][0]
+    agreement = {"enabled": True, "constants": registered_depth_appearance("agreement")}
+    strict = {"enabled": True, "constants": registered_depth_appearance()}
+    assert run.configuration_matches(_depth_report(agreement), row, plan)
+    assert not run.configuration_matches(_depth_report(strict), row, plan)  # a strict capture is refused
+    strict_plan = launcher.experiment_plan(targets, "evening", "raw", "baseline_depth_appearance")
+    assert run.configuration_matches(_depth_report(strict), strict_plan["runs"][0], strict_plan)
+    assert not run.configuration_matches(_depth_report(agreement), strict_plan["runs"][0], strict_plan)
+    off = {**row, "strategy": {**row["strategy"], "depth_appearance": False}}
+    assert run.run_environment(plan, off, tmp_path, tmp_path / "out", {})["PRUNING_DEPTH_APPEARANCE"] == "0"
+    unknown = {**row, "strategy": {**row["strategy"], "depth_appearance_arm": "lenient"}}
+    with pytest.raises(ValueError, match="depth_appearance_arm"):
+        run.run_environment(plan, unknown, tmp_path, tmp_path / "out", {})
+
+
+def test_agreement_registers_copy_their_sources_unchanged(scripts):
+    launcher, _ = scripts
+    evidence = Path(__file__).resolve().parents[1] / "docs/evidence"
+    expected = {
+        "14944": ("eval_targets_tree1_listed_2026-09-23.json", "baseline_depth_agreement"),
+        "19444": ("eval_targets_planned_pose_2026-09-27.json", "planned_pose_depth_agreement"),
+        "12142": ("eval_targets_tree0_2026-09-23.json", "tool_axis_standoff_depth_agreement"),
+    }
+    for name, (source, strategy) in expected.items():
+        path = evidence / f"eval_targets_agreement_{name}_2026-10-03.json"
+        targets, _ = launcher.load_targets(path)
+        by_vertex = {t["component_first_vertex"]: t for t in json.loads((evidence / source).read_text())["targets"]}
+        assert [t["component_first_vertex"] for t in targets] == [int(name)]
+        assert targets[0] == by_vertex[int(name)]
+        derived = json.loads(path.read_text())["derived_from"][0]
+        assert derived["sha256"] == hashlib.sha256((evidence / source).read_bytes()).hexdigest()
+        plan = launcher.experiment_plan(targets, "evening" if name == "14944" else "source", "raw", strategy)
+        assert all(r["strategy"]["depth_appearance_arm"] == "agreement" for r in plan["runs"])
 
 
 def test_depth_loop_registers_copy_their_sources_unchanged(scripts):

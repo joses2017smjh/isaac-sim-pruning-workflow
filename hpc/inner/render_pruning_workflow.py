@@ -156,7 +156,11 @@ def _json_safe(value):
 def main() -> int:  # noqa: C901 - the simulator is imported only after AppLauncher.
     from dataclasses import asdict
 
-    from isaaclab_pruning.perception.depth_appearance import SIMULATOR_DEPTH_LABEL, registered_depth_appearance
+    from isaaclab_pruning.perception.depth_appearance import (
+        ARM_LABELS,
+        SIMULATOR_DEPTH_LABEL,
+        registered_depth_appearance,
+    )
     from isaaclab_pruning.perception.jaw_self_mask import (
         CLOSURE_HOLD_EXPLAINED_BRANCHES,
         MODEL_LABEL,
@@ -189,12 +193,15 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         raise ValueError("PRUNING_CLOSURE_HOLD must be 0 or 1")
     if not blender_mode and "1" in (jaw_self_mask, closure_hold):
         raise ValueError("PRUNING_JAW_SELF_MASK and PRUNING_CLOSURE_HOLD need PRUNING_RENDER_MODE=blender_vision")
-    # Labelled arm, default off: D_strict + J in front of the tracker's appearance gate (a gate-rule change).
+    # Labelled arm, default off: the depth-aware check in front of the tracker's appearance gate (a gate-rule
+    # change). "1" is D_strict + J; "agreement" is the registered agreement arm, which also changes the
+    # confidence gate's input on accepted frames.
     depth_appearance = os.environ.get("PRUNING_DEPTH_APPEARANCE", "0")
-    if depth_appearance not in ("0", "1"):
-        raise ValueError("PRUNING_DEPTH_APPEARANCE must be 0 or 1")
-    if depth_appearance == "1" and (not blender_mode or "1" in (jaw_self_mask, closure_hold)):
+    if depth_appearance not in ("0", "1", "agreement"):
+        raise ValueError("PRUNING_DEPTH_APPEARANCE must be 0, 1 or agreement")
+    if depth_appearance != "0" and (not blender_mode or "1" in (jaw_self_mask, closure_hold)):
         raise ValueError("PRUNING_DEPTH_APPEARANCE needs blender_vision and runs without the jaw self-mask or hold")
+    depth_appearance_arm = "agreement" if depth_appearance == "agreement" else "strict"
     planned_quat = os.environ.get("PRUNING_PLANNED_TOOL_QUAT")
     approach = ApproachStrategy(
         mode=os.environ.get("PRUNING_APPROACH_MODE", "straight"),
@@ -284,9 +291,11 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             "scope": "Robot self-model, never evidence; simulator-exact, so a real jaw needs a re-measured margin",
         }
         report["depth_appearance"] = {
-            "enabled": depth_appearance == "1",
-            "constants": registered_depth_appearance(),
-            "label": SIMULATOR_DEPTH_LABEL,
+            "enabled": depth_appearance != "0",
+            "constants": registered_depth_appearance(depth_appearance_arm),
+            "label": SIMULATOR_DEPTH_LABEL
+            if depth_appearance_arm == "strict"
+            else f"{SIMULATOR_DEPTH_LABEL} {ARM_LABELS[depth_appearance_arm]}",
             "jaw_silhouette_source": "the jaw self-mask's model: rendered tool pose and progress, roll, scene radius",
             "scope": "Changes the 0.35 appearance gate's rule; results are never pooled with unchanged-gate runs",
         }
@@ -699,7 +708,8 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 motion_model=motion_model,
                 jaw_self_mask=jaw_self_mask == "1",
                 closure_hold=closure_hold == "1",
-                depth_appearance=depth_appearance == "1",
+                depth_appearance=depth_appearance != "0",
+                depth_appearance_arm=depth_appearance_arm,
             )
             report["tracker_config"] = demo.evidence()["tracker_config"]
             report["blender_scene"] = env.blender_scene.evidence

@@ -198,10 +198,42 @@ STRATEGIES = {
         "depth_appearance": True,
         "frames": 200,
     },
+    # The registered agreement arm of the same check: on an accepted frame the depth-agreement fraction replaces
+    # the NCC in the confidence, which also changes the confidence gate's input. Reported apart from D_strict + J
+    # and from every unchanged-gate run, never pooled.
+    "baseline_depth_agreement": {
+        "name": "baseline_depth_agreement",
+        "mode": "straight",
+        "standoff_m": 0.0,
+        "max_step_m": 0.004,
+        "depth_appearance": True,
+        "depth_appearance_arm": "agreement",
+        "frames": 200,
+    },
+    "planned_pose_depth_agreement": {
+        "name": "planned_pose_depth_agreement",
+        "mode": "planned_pose_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "max_rotation_deg": 1.5,
+        "depth_appearance": True,
+        "depth_appearance_arm": "agreement",
+        "frames": 200,
+    },
+    "tool_axis_standoff_depth_agreement": {
+        "name": "tool_axis_standoff_depth_agreement",
+        "mode": "tool_axis_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "depth_appearance": True,
+        "depth_appearance_arm": "agreement",
+        "frames": 200,
+    },
 }
 
 #: The protocol that registered a strategy, where it is not the September 23 strategies protocol.
 DEPTH_LOOP_PROTOCOL = "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md"
+AGREEMENT_LOOP_PROTOCOL = "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md"
 STRATEGY_PROTOCOLS = {
     "planned_pose": "docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md",
     "jaw_no_shadow": "docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md",
@@ -209,6 +241,9 @@ STRATEGY_PROTOCOLS = {
     "baseline_depth_appearance": DEPTH_LOOP_PROTOCOL,
     "planned_pose_depth_appearance": DEPTH_LOOP_PROTOCOL,
     "tool_axis_standoff_depth_appearance": DEPTH_LOOP_PROTOCOL,
+    "baseline_depth_agreement": AGREEMENT_LOOP_PROTOCOL,
+    "planned_pose_depth_agreement": AGREEMENT_LOOP_PROTOCOL,
+    "tool_axis_standoff_depth_agreement": AGREEMENT_LOOP_PROTOCOL,
 }
 
 #: Keys a strategy row may carry and their baseline values; a row that omits

@@ -133,7 +133,7 @@ def genuine_external_stops(report, frames):
     return stops
 
 
-def build_demo(report, jaw_self_mask, closure_hold, depth_appearance=False):
+def build_demo(report, jaw_self_mask, closure_hold, depth_appearance=False, depth_appearance_arm="strict"):
     """The controller exactly as the runner constructed it, plus the requested arms."""
     target = report["blender_scene"]["target"]
     initial = report["initial_live_vision"]
@@ -151,6 +151,7 @@ def build_demo(report, jaw_self_mask, closure_hold, depth_appearance=False):
         jaw_self_mask=jaw_self_mask,
         closure_hold=closure_hold,
         depth_appearance=depth_appearance,
+        depth_appearance_arm=depth_appearance_arm,
     )
 
 
@@ -290,7 +291,7 @@ def _comparison(rows):
     }
 
 
-def replay_run(path, *, jaw_self_mask=False, closure_hold=False, depth_appearance=False):
+def replay_run(path, *, jaw_self_mask=False, closure_hold=False, depth_appearance=False, depth_appearance_arm="strict"):
     """Replay one recorded run; returns the per-run summary with its per-frame rows."""
     path = Path(path)
     report = json.loads((path / "report.json").read_text())
@@ -301,7 +302,7 @@ def replay_run(path, *, jaw_self_mask=False, closure_hold=False, depth_appearanc
     camera_matrix = np.asarray(report["camera"]["wrist_intrinsics"], dtype=float)
     initial_pose = np.asarray(report["initial_tool_pose_wxyz"][0], dtype=float)
     stops = genuine_external_stops(report, frames)
-    demo = build_demo(report, jaw_self_mask, closure_hold, depth_appearance)
+    demo = build_demo(report, jaw_self_mask, closure_hold, depth_appearance, depth_appearance_arm)
 
     # Seed and preview, in the runner's order: visibility stop, initialize, preview observe at t = 0.
     preview_rgb = _rgb(path / "preview_wrist.png")
@@ -415,7 +416,7 @@ def replay_run(path, *, jaw_self_mask=False, closure_hold=False, depth_appearanc
         "run": f"{path.parent.name}/{path.name}",
         "path": str(path),
         "frames": len(frames),
-        "flags": {"jaw_self_mask": jaw_self_mask, "closure_hold": closure_hold, "depth_appearance": depth_appearance},
+        "flags": _flags(jaw_self_mask, closure_hold, depth_appearance, depth_appearance_arm),
         "tracker_config_matches_recording": tracker_config_matches(demo, report),
         "external_stops_injected": {str(key): value for key, value in sorted(stops.items())},
         "contact_force_missing_frames": missing_contact,
@@ -478,6 +479,14 @@ def replay_run(path, *, jaw_self_mask=False, closure_hold=False, depth_appearanc
     }
 
 
+def _flags(jaw_self_mask, closure_hold, depth_appearance, depth_appearance_arm):
+    """The replay's flags; the depth-aware check's arm is named only when the check is on."""
+    flags = {"jaw_self_mask": jaw_self_mask, "closure_hold": closure_hold, "depth_appearance": depth_appearance}
+    if depth_appearance:
+        flags["depth_appearance_arm"] = depth_appearance_arm
+    return flags
+
+
 def _provenance():
     hashes = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in SOURCE_FILES}
     try:
@@ -498,8 +507,16 @@ def main(argv=None):
     parser.add_argument("--output", type=Path, required=True, help="New JSON file outside the repository")
     parser.add_argument("--jaw-self-mask", action="store_true", help="Enable the jaw self-mask arm")
     parser.add_argument("--closure-hold", action="store_true", help="Enable the closure-hold arm")
-    parser.add_argument("--depth-appearance", action="store_true", help="Enable the D_strict + J arm")
+    parser.add_argument("--depth-appearance", action="store_true", help="Enable the depth-aware check (D_strict + J)")
+    parser.add_argument(
+        "--depth-appearance-arm",
+        choices=("strict", "agreement"),
+        default="strict",
+        help="The depth-aware check's registered arm (needs --depth-appearance); default strict",
+    )
     args = parser.parse_args(argv)
+    if args.depth_appearance_arm != "strict" and not args.depth_appearance:
+        parser.error("--depth-appearance-arm needs --depth-appearance")
     refusal = output_refusal(args.output)
     if refusal:
         parser.error(refusal)
@@ -515,6 +532,7 @@ def main(argv=None):
                 jaw_self_mask=args.jaw_self_mask,
                 closure_hold=args.closure_hold,
                 depth_appearance=args.depth_appearance,
+                depth_appearance_arm=args.depth_appearance_arm,
             )
         except Exception as error:  # noqa: BLE001 - a failed replay is recorded, never dropped
             result = {"run": f"{Path(path).parent.name}/{Path(path).name}", "path": str(path), "error": repr(error)}
@@ -538,11 +556,7 @@ def main(argv=None):
     document = {
         "schema_version": 1,
         "tool": "tools/replay_jaw_self_mask.py",
-        "flags": {
-            "jaw_self_mask": args.jaw_self_mask,
-            "closure_hold": args.closure_hold,
-            "depth_appearance": args.depth_appearance,
-        },
+        "flags": _flags(args.jaw_self_mask, args.closure_hold, args.depth_appearance, args.depth_appearance_arm),
         **_provenance(),
         "criterion": (
             "Through each run's recorded stop (the first frame whose recorded cut phase is 'stopped'; every frame "

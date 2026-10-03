@@ -450,10 +450,12 @@ def frame_jaw_boxes(tool_pose_wxyz, roll_rad, closure_progress, radius_m):
         return None
 
 
-def registered_depth_appearance():
-    """The registered constants, JSON-native; a capture's report must show exactly these."""
+def registered_depth_appearance(arm="strict"):
+    """The registered constants of one arm, JSON-native; a capture's report must show exactly these."""
+    if arm not in ARMS:
+        raise ValueError(f"arm must be one of {ARMS}")
     return {
-        "arm": "strict",
+        "arm": arm,
         "min_verified_fraction": MIN_VERIFIED_FRACTION,
         "min_same_surface_px": MIN_SAME_SURFACE_PX,
         "near_tolerance_m": NEAR_TOLERANCE_M,

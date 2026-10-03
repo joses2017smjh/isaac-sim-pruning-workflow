@@ -64,7 +64,13 @@ def run_environment(plan, row, batch, output, inherited):
         if "closure_hold" in strategy:
             env["PRUNING_CLOSURE_HOLD"] = "1" if strategy["closure_hold"] else "0"
         if "depth_appearance" in strategy:
-            env["PRUNING_DEPTH_APPEARANCE"] = "1" if strategy["depth_appearance"] else "0"
+            arm = strategy.get("depth_appearance_arm", "strict")
+            if arm not in ("strict", "agreement"):
+                raise ValueError(f"unknown depth_appearance_arm {arm!r}")
+            # "1" selects D_strict + J, as it did before the agreement arm existed.
+            env["PRUNING_DEPTH_APPEARANCE"] = (
+                ("agreement" if arm == "agreement" else "1") if strategy["depth_appearance"] else "0"
+            )
     return env
 
 
@@ -77,7 +83,7 @@ def run_label(index, row):
     return f"run_{index:02d}_{row['daylight']}_{row['photometric_normalization']}" + suffix
 
 
-def _registered_jaw_arms():
+def _registered_jaw_arms(depth_appearance_arm="strict"):
     """The labelled arms' registered constants from the frozen source, JSON-normalized like a report."""
     try:
         from isaaclab_pruning.perception.depth_appearance import registered_depth_appearance
@@ -91,7 +97,7 @@ def _registered_jaw_arms():
             {
                 "jaw_self_mask": registered_jaw_self_mask(),
                 "closure_hold": registered_closure_hold(),
-                "depth_appearance": registered_depth_appearance(),
+                "depth_appearance": registered_depth_appearance(depth_appearance_arm),
             }
         )
     )
@@ -139,7 +145,8 @@ def configuration_matches(report, row, plan):
                 matches = matches and block.get("enabled") is bool(wanted[flag])
                 if wanted[flag]:
                     # The capture must also show the registered constants, not merely the flag.
-                    matches = matches and block.get(registered) == _registered_jaw_arms()[flag]
+                    arms = _registered_jaw_arms(wanted.get("depth_appearance_arm", "strict"))
+                    matches = matches and block.get(registered) == arms[flag]
             else:
                 # A row that does not ask for the arm must not have run with it.
                 matches = matches and (report.get(flag) or {}).get("enabled") is not True

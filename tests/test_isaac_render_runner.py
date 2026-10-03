@@ -391,8 +391,8 @@ def test_renderer_reads_the_depth_flag_strictly_and_refuses_it_with_the_jaw_arms
         for index, node in enumerate(body)
         if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "depth_appearance" for t in node.targets)
     )
-    nodes = body[start : start + 3]
-    assert [type(node).__name__ for node in nodes] == ["Assign", "If", "If"]
+    nodes = body[start : start + 4]
+    assert [type(node).__name__ for node in nodes] == ["Assign", "If", "If", "Assign"]
 
     def read(environ, blender_mode=True, jaw=("0", "0")):
         namespace = {
@@ -402,25 +402,32 @@ def test_renderer_reads_the_depth_flag_strictly_and_refuses_it_with_the_jaw_arms
             "closure_hold": jaw[1],
         }
         _execute_capture_nodes(nodes, namespace)
-        return namespace["depth_appearance"]
+        return namespace["depth_appearance"], namespace["depth_appearance_arm"]
 
-    assert read({}) == "0" and read({}, blender_mode=False) == "0"
-    assert read({"PRUNING_DEPTH_APPEARANCE": "1"}) == "1"
-    for bad in ({"PRUNING_DEPTH_APPEARANCE": "true"}, {"PRUNING_DEPTH_APPEARANCE": ""}):
+    assert read({}) == ("0", "strict") and read({}, blender_mode=False) == ("0", "strict")
+    assert read({"PRUNING_DEPTH_APPEARANCE": "1"}) == ("1", "strict")
+    assert read({"PRUNING_DEPTH_APPEARANCE": "agreement"}) == ("agreement", "agreement")
+    for bad in (
+        {"PRUNING_DEPTH_APPEARANCE": "true"},
+        {"PRUNING_DEPTH_APPEARANCE": ""},
+        {"PRUNING_DEPTH_APPEARANCE": "2"},
+    ):
         with pytest.raises(ValueError):
             read(bad)
-    with pytest.raises(ValueError, match="blender_vision"):
-        read({"PRUNING_DEPTH_APPEARANCE": "1"}, blender_mode=False)
-    for jaw in (("1", "0"), ("0", "1")):
-        with pytest.raises(ValueError):
-            read({"PRUNING_DEPTH_APPEARANCE": "1"}, jaw=jaw)
+    for value in ("1", "agreement"):
+        with pytest.raises(ValueError, match="blender_vision"):
+            read({"PRUNING_DEPTH_APPEARANCE": value}, blender_mode=False)
+        for jaw in (("1", "0"), ("0", "1")):
+            with pytest.raises(ValueError):
+                read({"PRUNING_DEPTH_APPEARANCE": value}, jaw=jaw)
     calls = [node for node in ast.walk(ast.parse(inspect.getsource(_runner().main))) if isinstance(node, ast.Call)]
     demo_call = next(call for call in calls if getattr(call.func, "id", None) == "VisionPruningDemo")
     keywords = {keyword.arg: ast.unparse(keyword.value) for keyword in demo_call.keywords}
-    assert keywords["depth_appearance"] == "depth_appearance == '1'"
+    assert keywords["depth_appearance"] == "depth_appearance != '0'"
+    assert keywords["depth_appearance_arm"] == "depth_appearance_arm"
 
 
-@pytest.mark.parametrize("flag", ["0", "1"])
+@pytest.mark.parametrize("flag", ["0", "1", "agreement"])
 def test_renderer_reports_the_depth_arm_with_its_registered_constants(flag):
     from isaaclab_pruning.perception import depth_appearance as da
 
@@ -430,14 +437,20 @@ def test_renderer_reports_the_depth_arm_with_its_registered_constants(flag):
         if isinstance(node, ast.Assign) and any(ast.unparse(t) == "report['depth_appearance']" for t in node.targets)
     ]
     assert len(blocks) == 1
+    arm = "agreement" if flag == "agreement" else "strict"
     namespace = {
         "report": {},
         "depth_appearance": flag,
+        "depth_appearance_arm": arm,
         "registered_depth_appearance": da.registered_depth_appearance,
         "SIMULATOR_DEPTH_LABEL": da.SIMULATOR_DEPTH_LABEL,
+        "ARM_LABELS": da.ARM_LABELS,
     }
     _execute_capture_nodes(blocks, namespace)
     block = namespace["report"]["depth_appearance"]
-    assert block["enabled"] is (flag == "1") and block["constants"] == da.registered_depth_appearance()
+    assert block["enabled"] is (flag != "0") and block["constants"] == da.registered_depth_appearance(arm)
     assert "0.35" in block["label"] and "never pooled" in block["scope"]
+    # The strict arm's label is what the depth closed-loop reports recorded; the agreement arm adds its own.
+    assert (block["label"] == da.SIMULATOR_DEPTH_LABEL) is (arm == "strict")
+    assert ("confidence gate's input" in block["label"]) is (arm == "agreement")
     json.dumps(namespace["report"], allow_nan=False)

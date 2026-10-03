@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "scope": "Closed-loop test of the registered agreement arm of the depth-aware appearance check (docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md). On an accepted frame the depth-agreement fraction replaces the NCC in the confidence, which changes the confidence gate's input; results are reported apart from D_strict + J and from every unchanged-gate run, never pooled. Control: tree1 spur 19444 with the known-map planned pose under source light (the open jaw reaches the patch on the final leg).",
+  "selection_rule": "Entry copied unchanged from eval_targets_planned_pose_2026-09-27.json.",
+  "seed": null,
+  "derived_from": [
+    {
+      "path": "docs/evidence/eval_targets_planned_pose_2026-09-27.json",
+      "sha256": "9ceb188111cc3a6c827be52571d63758e22929530c4715ac66b0cffb01c5ec3e"
+    }
+  ],
+  "target_count": 1,
+  "targets": [
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 19444,
+      "max_radius_m": 0.0065845966327450186,
+      "length_m": 0.04983170404144062,
+      "axis": [
+        0.9242986618931908,
+        0.14376344104247185,
+        -0.3535591275049827
+      ],
+      "source_center_m": [
+        1.9533766766389211,
+        -0.44862578855868157,
+        1.4090135081002644
+      ],
+      "planned_final_tool_quat_wxyz": [
+        0.6103972623744174,
+        -0.36409836702248577,
+        -0.5967973233700069,
+        -0.37239832979723625
+      ]
+    }
+  ]
+}

@@ -10,8 +10,10 @@ Three labelled, default-off arms change what the demo measures or certifies:
 explains is replaced by the closure-start target, recorded as such) and
 ``depth_appearance`` (D_strict + J: when the grey appearance check fails, a
 static-world depth test and the jaw silhouette decide whether the 0.35 gate
-passes). With all off, every call, input and output is what it was before they
-existed.
+passes). ``depth_appearance_arm`` picks that check's registered arm: ``strict``
+(the default; the raw NCC stays in the confidence) or ``agreement`` (on an
+accepted frame the depth-agreement fraction replaces it). With all off, every
+call, input and output is what it was before they existed.
 """
 
 from __future__ import annotations
@@ -20,6 +22,7 @@ from dataclasses import asdict, dataclass, replace
 
 import numpy as np
 
+from isaaclab_pruning.perception.depth_appearance import ARMS as DEPTH_APPEARANCE_ARMS
 from isaaclab_pruning.perception.depth_appearance import DepthAppearanceTracker, frame_jaw_boxes
 from isaaclab_pruning.perception.jaw_self_mask import (
     HOLD_MAX_ROTATION_DEG,
@@ -172,9 +175,14 @@ class VisionPruningDemo:
         jaw_self_mask=False,
         closure_hold=False,
         depth_appearance=False,
+        depth_appearance_arm="strict",
     ):
         if not all(isinstance(flag, bool) for flag in (jaw_self_mask, closure_hold, depth_appearance)):
             raise ValueError("jaw_self_mask, closure_hold and depth_appearance must be bool")
+        if depth_appearance_arm not in DEPTH_APPEARANCE_ARMS:
+            raise ValueError(f"depth_appearance_arm must be one of {DEPTH_APPEARANCE_ARMS}")
+        if depth_appearance_arm != "strict" and not depth_appearance:
+            raise ValueError("depth_appearance_arm other than strict needs depth_appearance")
         if depth_appearance and (jaw_self_mask or closure_hold):
             # The registered depth variant runs on the unmasked tracker; the arms are never combined.
             raise ValueError("depth_appearance is registered without the jaw self-mask and the closure hold")
@@ -206,7 +214,7 @@ class VisionPruningDemo:
             min_unmasked_patch_elements=MIN_UNMASKED_PATCH_ELEMENTS,
         )
         self.tracker = (
-            DepthAppearanceTracker(tracker_config, arm="strict")
+            DepthAppearanceTracker(tracker_config, arm=depth_appearance_arm)
             if depth_appearance
             else VisualServoTracker(tracker_config)
         )
@@ -231,6 +239,7 @@ class VisionPruningDemo:
         self.jaw_self_mask = jaw_self_mask
         self.closure_hold = closure_hold
         self.depth_appearance = depth_appearance
+        self.depth_appearance_arm = depth_appearance_arm if depth_appearance else None
         self.jaw_roll_rad = proxy_roll_rad(self.closing_axis_tool) if (jaw_self_mask or depth_appearance) else None
         self.jaw_record = None
         self.depth_record = None

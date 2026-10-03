@@ -783,6 +783,16 @@ def test_depth_appearance_runs_the_strict_depth_tracker_alone_with_the_rendered_
             VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, depth_appearance=True, **other)
     with pytest.raises(ValueError, match="bool"):
         VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, depth_appearance=1)
+    assert real.depth_appearance_arm == "strict" and plain.depth_appearance_arm is None
+    agreement = VisionPruningDemo(
+        "branch_7", (0, 0, 1), 0.004, POSE, depth_appearance=True, depth_appearance_arm="agreement"
+    )
+    assert type(agreement.tracker) is DepthAppearanceTracker and agreement.tracker.arm == "agreement"
+    assert agreement.tracker.config == plain.tracker.config and agreement.depth_appearance_arm == "agreement"
+    with pytest.raises(ValueError, match="needs depth_appearance"):
+        VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, depth_appearance_arm="agreement")
+    with pytest.raises(ValueError, match="depth_appearance_arm"):
+        VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, depth_appearance=True, depth_appearance_arm="lenient")
 
     controller = VisionPruningDemo("branch_7", (0, 0, 1), 0.004, POSE, depth_appearance=True)
     controller.tracker = DepthRecordingTracker([tracking(MOUTH)] * 8, controller.tracker.config)
