@@ -1,290 +1,51 @@
-# Robotic pruning
+# Vision-Guided Pruning in Isaac Sim
 
-Closed-loop RGB-D control, sensor gating and independent task grading for a simulated UR5e pruning workflow.
+Closed-loop RGB-D control for a simulated UR5e: track a selected spur, gate motion and release with dual ToF and contact checks, then independently grade the recorded sequence.
 
-**[Open the replay studio](https://joses2017smjh.github.io/isaac-sim-pruning-workflow/)** — scrub three
-recorded runs frame by frame: camera, tracker confidence and features, both 8x8 time-of-flight grids with
-validity, gate states and proposed against applied commands. Every value is read from a capture file.
+[![UR5e approach, surrogate spur release, fall and return in Isaac Sim](docs/demo/isaac_two_trees_vision_sequence.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4)
 
-[![Two-tree Isaac Sim sequence: approach, surrogate release, measured fall and return](docs/demo/isaac_two_trees_vision_sequence.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4)
+*Selected 20-second simulation: one known target, 17/17 sequence checks. Release is a discrete rigid-piece surrogate; the jaws do not model wood fracture.*
 
-[Watch the 20-second demo](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4)
-· [Wrist-camera video](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence_wrist.mp4)
-· [Measured results](docs/evidence/two_tree_summary_2026-09-14.json)
-· [Capture guide](docs/ISAAC_RENDER.md)
-· [Pending work and stretch goals](docs/PENDING.md)
+[Replay studio](https://joses2017smjh.github.io/isaac-sim-pruning-workflow/) · [Case study](https://jose-sanchez-portfolio-com.vercel.app/projects/isaac-pruning-workflow/) · [Wrist view](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence_wrist.mp4)
 
-## Problem
+## Problem and contribution
 
-A pruning arm has to approach a thin branch from wrist RGB-D and dual ToF,
-then release only when tracking and geometry still agree. Jaw occlusion can
-wipe out image features at the worst moment. A finished recording is not a
-finished cut.
+Thin branches are hard to track near a closing tool: the jaw can occlude the target, and its low-sun shadow can trigger an appearance gate even when the branch stays still. I built the live RGB-D controller, sensor and release gates, captured telemetry, independent sequence grader, and controlled failure studies.
 
-## Solution
+Robot and orchard assets are pinned upstream inputs. Initial branch identity, axis, and radius come from mesh metadata; subsequent positions use classical Lucas–Kanade tracking and simulator optical-Z depth. This is not learned branch recognition or a physical pruning result. [Asset provenance](NOTICE.md).
 
-Isaac Sim 6.0 / Lab 3 drives the original UR5e and mock pruner among both
-source Blender trees. Seeded pyramidal Lucas–Kanade tracking back-projects RTX
-optical-Z depth into bounded Cartesian commands. Dual 8×8 ray-cast ToF,
-contact, and geometry gates must pass before a visual-jaw surrogate releases
-one rigid spur. An independent grader scores the saved capture; it does not
-trust the renderer’s success label.
+## Results and limits
 
-Branch identity, axis, and radius come from mesh metadata. Subsequent positions
-come from image tracking and simulator depth, not learned recognition. This is
-a discrete rigid-piece release, **not wood fracture**.
+- **Selected baseline sequence:** 68 vision commands, release at 7.8 s, 809.49 mm fall, and <0.001 mm final home error; 17/17 independent checks. [Evidence](docs/evidence/two_tree_summary_2026-09-14.json).
+- **Registered population study:** 0/40 planned trials completed; 20 trials had invalid tree1 registrations. The remaining tree0 trials stopped or were refused by vision, contact, ToF, or layout checks. A later valid seven-target tree1 study passed 2/7; a separate seeded 30-target draw passed 1/30. These populations are not pooled. [Original sweep](docs/EVAL_PROTOCOL_2026-09-23.md) · [Listed targets](docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md) · [Seeded population](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md).
+- **October 2, depth-aware appearance:** target 15004 completed 4/4 targeted morning/evening trials with 17/17 checks. Genuine jaw and wire occlusions remained rejected; live and offline decisions agreed across all 10 runs. Depth is simulator ground truth. [Protocol](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md) · [Receipt](docs/evidence/depth_loop_verdicts_2026-10-02.json).
+- **October 2, jaw-aware closure:** a known-map plan, jaw self-mask, and closure hold completed contact target 530 in 3/3 repeats. This variant waives freshness and frame-reuse checks on held frames and uses exact simulated jaw poses; it is reported separately from unchanged-gate results. [Protocol](docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md) · [Receipt](docs/evidence/jaw_in_view_verdicts_2026-10-02.json).
+- **ROS 2 software-in-the-loop:** 199/199 recorded decision states reproduced; maximum command delta 1.995 mm. A C++17 ToF-deprojection port is checked against Python on 232 recorded zones at 1e-9 m tolerance. Recorded simulation replay, not hardware-in-the-loop. [Method and evidence](docs/ROS2_SIL.md).
 
-**Engineering contribution:** integrating the robot and orchard assets with
-camera-based control, fresh-observation and geometry checks, recorded telemetry,
-and a separate sequence grader. The [environment](source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py),
-[grader](tools/validate_vision_sequence.py) and [asset provenance](NOTICE.md)
-make the implementation and its upstream dependencies inspectable.
+These are targeted diagnostics and narrow populations. They establish inspectable simulator behavior, not orchard-wide reliability, continuous contact safety, or deployed hardware performance.
 
-## Result
+## Latest visual comparison
 
-Job `21328323` applies **68 vision commands**, releases one selected spur at
-**7.8 s**, measures **809.49 mm of fall**, and returns within **0.001 mm** of
-home. All **17 independent sequence checks** pass. That is one known target,
-not pruning both trees or a measured success rate.
+[![Evening trial with the depth-aware appearance check](docs/demo/isaac_tree1_v15004_evening_depth_check_pass.gif)](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md)
 
-The contrasting [closure failure](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_closure_failure.mp4)
-preserves a stopped attempt:
-tracking confidence falls below 0.15 at 7.7 seconds; motion stops without
-release. [Failure GIF](docs/demo/isaac_two_trees_closure_failure.gif).
-Tracking loss *after* a completed release is allowed during home-directed
-retreat; the success dashboard preserves that state instead of hiding it.
+*Same target and lighting as the [earlier appearance-stop recording](docs/demo/isaac_tree1_v15004_evening_appearance_stop.gif). The depth check accepts the shadow event; real occlusion controls still stop. This is one of four targeted passes.*
 
-The **20-second success video** includes approach, release at **7.8 seconds**,
-the measured fall and the return. The wrist view shows the same sequence.
+## How it works
 
-**Lighting pilot (array `21360571`, six sequences).** Raw and CLAHE contrast
-normalization, each under source, morning and evening light, on that same spur.
-All six pass 17/17 independent checks. **CLAHE is dropped**: it changed no task
-outcome and no tracking continuity, so it fails the pre-registered comparison and
-is recorded as a rejected diagnostic. The pilot did find a margin: under morning
-light the raw tracker fell to **4 surviving features against its own floor of 4**,
-completing the task with nothing to spare. Six trials on one target are a paired
-pilot, not a success rate.
-[Decision and table](docs/RESEARCH_EXPERIMENTS_2026-09-19.md#decision-on-the-clahe-candidate)
-· [pilot results](docs/evidence/lighting_pilot_results_2026-09-23.json)
-· [job ledger](SLURM_JOBS.md)
+Wrist RGB-D → seeded pyramidal LK tracking and backprojection → bounded Cartesian commands → IK / joint drives. Dual 8×8 ray-cast ToF, contact, freshness, and geometric gates condition approach and surrogate release. Camera frames and telemetry feed a separate grader that checks ordering, causal commands, closure, piece motion, retreat, and return.
 
-**Success-rate sweep (arrays `21400715` / `21400716`, 40 trials).** Twenty spurs
-drawn with a fixed seed from 444 that pass the jaw-fit screen, each run under
-source and morning light, registered before submission.
-**0 of 40 completed (Wilson 95%: 0–8.8%).** The single success above does not
-generalize. Every run that recorded was stopped by a gate: hazard contact (6),
-invalid vision (6) or time-of-flight clearance (2); six more were refused before
-motion because the canonical pose put the tree into the robot. Each target ended
-the same way under both lights. **Half the trials measured nothing:** the ten
-tree1 targets were outside the renderer's accepted candidates, an error in the
-target register that is disclosed, kept in the denominator, and now caught on CPU
-before submission. This sweep speaks for tree0 only.
-[Protocol and result](docs/EVAL_PROTOCOL_2026-09-23.md#result--september-23-2026)
-· [evidence](docs/evidence/eval_2026-09-23.json)
-· [typical stop](docs/demo/eval_failure_hazard_contact.png)
+[Environment](source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py) · [Controller](source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py) · [Capture](hpc/inner/render_pruning_workflow.py) · [Independent grader](tools/validate_vision_sequence.py) · [Depth check](source/isaaclab_pruning/isaaclab_pruning/perception/depth_appearance.py) · [Jaw model](source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py).
 
-**Learned depth across trees and lighting.** A separate question from the
-controller, whose tracker is not learned. The Envy-trained metric-depth model
-(DA2) run on Isaac frames of the original tree fails every pre-registered gate:
-0 of 234 target frames within 20 mm, a systematic **+0.4 to +0.6 m**
-overestimate. A pre-registered eight-tree matrix on Blender renders (4 Envy,
-4 UFO, four lighting presets) then found: **evening light raises the error
-6–8× in all 8 trees**; **UFO is consistently worse than Envy under every light**
-(+5–9 cm in daylight, +54 cm at evening, no overlap between families), yet with
-each frame's own offset removed UFO is no worse — the model reads UFO trees as
-further away, not as a different shape. A six-view DINO refiner adds nothing at
-2.2 s. All gates fail, as predicted before submission. Envy cannot be an
-unseen-tree test, since every Envy tree was in the model's training or
-validation split. A zero-GPU follow-up asked whether **one metric range from
-the rig** fixes it: for UFO daylight, yes (0.19 → 0.06 m from a single anchor at
-the target); for Envy, no — the spur's error differs from the tree's — though a
-many-point fit would (ceiling 0.04–0.06 m). Evening and the Isaac working
-distance are not scale problems; no anchor helps them.
-[Anchoring result](docs/EVAL_PROTOCOL_DEPTH_ANCHORING_2026-09-23.md#result--september-23-2026)
-· [evidence](docs/evidence/depth_anchoring_2026-09-23.json)
-The *why* is registered as a single-axis controls batch: evening brightness
-against shadow structure (a ×2.6 evening and a ÷2.6 overcast at matched luma,
-plus four fixed test-time normalizations), the Isaac wrist camera model, close
-and upward-pitched rigs at the Isaac working distance, a distance sweep, and
-the public relative DA2 head scored through an all-GT disparity fit, with seven
-predictions written before submission. Result (688/688 frames, 32 GPU-min):
-brightening evening by its full luma ratio recovers nothing (still 6–8×), while
-darkening a diffuse scene to the same luma costs only 2–3×, so low-sun shading
-is the larger factor; no test-time curve fixes it (best, gamma, 4.8×). The
-close-range failure reproduces in Cycles from range alone (predictions floor at
-0.6–0.9 m below 0.4 m in 8/8 trees; camera model and pitch add ≤ 0.03 m), yet
-the model's *shape* there is right (affine ceiling 0.01–0.04 m). The
-re-rendered baseline cells matched the matrix within 0.001 m. An exploratory
-8×8-zone fit (ground-truth ranges, no sensor model) then reaches the affine
-ceiling everywhere in Blender and cuts the close-range target error from
-0.4–0.55 m to 0.006–0.02 m; on Isaac it stops at the shape ceiling (0.16 m). Rendering the original
-orchard tree in Cycles at the recorded Isaac wrist poses (mapping verified to
-1e-6 m) reproduces the Isaac over-estimate from pose and tree alone, under
-either bark. Scored on the tree pixels both renders share (corrected September
-27; the first comparison set Isaac's full frame, tool jaws included, against
-Cycles' tree mask), the renderer costs 5–6 cm of affine ceiling in daylight
-and none at evening; the poor shape at those poses is mostly the tree and the
-upward view, which Cycles shares.
-[Replay result and correction](docs/EVAL_PROTOCOL_TREE0_REPLAY_2026-09-23.md#correction--september-27-2026)
-A warm-start re-fine-tune with photometric jitter, against a control arm
-trained identically without it, cuts Envy evening error to a third (0.906 →
-0.322 m) and fixes the darkness cell in both families, but helps the unseen
-UFO trees at evening by only 14–18% and leaves the evening shape ceiling
-where it was: brightness is learnable from a curve, low-sun shading is not.
-[Fine-tune result](docs/EVAL_PROTOCOL_FINETUNE_2026-09-23.md#result--september-24-2026)
+## Engineering decisions and studies
 
-**Approach strategies and the first recorded passes (September 24).** Three
-labelled changes to how the mouth travels (a 60 mm standoff along the tool
-axis, an 80 mm horizontal standoff, a 2 mm step), with no gate, threshold or
-grader touched, were run on the ten registered tree0 targets: **0 of 40**, and
-every target failed the way it did before. The body or arm hits wood on the way
-in, the tracker's depth gate trips at the spur edge, or the layout is refused
-at startup; the path of the mouth is not the problem. On a different
-population, the seven tree1 spurs the export manifest itself lists, the
-baseline passed **2 of 7** (Wilson 0.08–0.64), the first passes on any
-registered target, and a third reached closure and failed only the drop check.
-[Protocol and result](docs/EVAL_PROTOCOL_STRATEGIES_2026-09-23.md#result--september-24-2026)
-· [strategies evidence](docs/evidence/strategies_2026-09-24.json)
-· [tree1 evidence](docs/evidence/tree1_listed_2026-09-24.json)
-· [pass, tree1 spur 14944 (GIF)](docs/demo/isaac_tree1_v14944_baseline_pass.gif)
-· [failure, tree0 spur 530 under the tool-axis standoff, hazard contact (GIF)](docs/demo/isaac_tree0_v530_tool_axis_standoff_hazard_contact.gif).
-Every other recorded run has its own GIF, MP4 and poster beside its capture
-(`artifacts/vision_robustness/<batch>/<run>/media/`, local only).
+- **Keep failed attempts:** tracking and closure failures preserve their stop reasons and raw telemetry; a renderer's success label cannot substitute for the grader.
+- **Use depth to test surface consistency:** distinguish lighting changes from displaced surfaces while retaining correlation and jaw-occlusion checks. This currently depends on privileged simulator depth.
+- **Separate variants:** known-map plans and closure holds change available information and gate behavior. Their passes are never added to baseline counts.
+- **Test the depth model independently:** rendered-lighting training reduced evening target error from 0.88 to 0.05 m on Envy validation trees and 1.44 to 0.09 m on unseen UFO trees. Isaac wrist-camera error remained >0.5 m. [Lighting study](docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md). A [renderer control](docs/EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md) showed that the original source-light matrix overstated accuracy; learned depth does not drive the live controller.
 
-**Perception fixes, light and the tree1 population (September 28, 111 runs).**
-Two labelled tracker changes (a similarity motion model, and mirroring the
-wrist camera when it sees the spur end-on) removed the three perception
-failures they were built for. Each target then stopped on a contact or
-time-of-flight gate instead, so **no pass count rose**: tree0 is still 0/10.
-Tree1's seven listed spurs pass **2/7 in all five source-light batches**, but
-**evening light stops both passes** on the last approach frame through the
-tracker's appearance check, and morning light stops one during closure. These
-are the first light-dependent outcomes on registered targets. A post hoc
-diagnosis traces all three to the low-sun shadow of the visual jaw surrogate
-crossing the tracker's appearance patch: the tracker compares the right bark.
-An intervention then confirmed it: with only that shadow removed, 6 of 6 of
-those low-sun stops became passes, and with it kept, 6 of 6 recurred at the
-same frames
-([counterfactual](docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md#result--october-1-2026))
-([diagnosis](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc)). The first seeded
-draws of tree1 give 0/10 and 1/30, dominated by layout refusals, as predicted.
-Physics repeats bit for bit, but the RGB render does not: 0 of 69 same-scene
-frame-0 pairs are identical, and one tree0 target changed class on that noise
-alone. Six of eight pre-registered predictions are supported and two are
-refuted, both on the record.
-[Protocol and result](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#result--september-28-2026)
-· [verdicts](docs/evidence/perception_round_verdicts_2026-09-28.json)
-· [per-batch evidence](docs/evidence/perception_round_2026-09-28/)
-· [evening failure, tree1 spur 14944 (GIF)](docs/demo/isaac_tree1_v14944_evening_vision_invalid.gif)
-beside the [source-light pass of the same spur](docs/demo/isaac_tree1_v14944_baseline_pass.gif).
+## Run locally
 
-**Rendered lighting in training (September 30).** Relighting the depth
-model's own training frames under seeded suns, sky and colour, kept at least
-15° from every test preset, cut evening error from 0.88 to 0.05 m on the Envy
-validation trees and from 1.44 to 0.09 m on the unseen UFO family. The
-evening shape ceiling fell 60%. All 11 pre-registered predictions are
-supported. Two findings were not predicted, and they limit the claim. Source
-error fell 35–45% too, so part of the gain is not specific to low sun. The
-companion's own validation score did not move, so part may be robustness to
-the evaluation renderer. The Isaac camera is barely helped: target error
-there stays above half a metre.
-[Protocol and result](docs/EVAL_PROTOCOL_LIGHTING_TRAINING_2026-09-27.md#result--september-30-2026)
-· [verdicts](docs/evidence/lighting_training_verdicts_2026-09-30.json)
-
-**Render gap or lighting? (October 1).** The 8 evaluation trees were
-re-rendered with the training renderer at the same poses, and the geometry
-matched exactly. This separated the two gains:
-- **The low-sun gain is lighting.** On the training-like frames the
-  rendered-lighting model's evening error is still about a tenth of the
-  control's.
-- **Most of the source gain is not.** It shrinks from 35–45% to 10–20% at
-  matrix resolution, and at full resolution it is gone.
-- **Not predicted.** Every model does worse on training-renderer frames
-  shrunk to matrix size than on the matrix's own frames of the same views:
-  source error is 1.4–2.7 times higher, and the trees are darker and sharper in
-  192 of 192 frames. The published matrix therefore flatters source-light
-  accuracy.
-
-Two predictions are supported, one partly and one refuted.
-[Protocol and result](docs/EVAL_PROTOCOL_RENDER_GAP_2026-09-30.md#result--october-1-2026)
-· [verdicts](docs/evidence/render_gap_verdicts_2026-10-01.json)
-
-**Depth-aware appearance check, held-out replay (October 1).** The user
-suggested giving the tracker more inputs, so lighting would not stop it. A
-depth test was designed on the earlier recordings: when the patch's
-brightness check fails, it asks whether the surface itself stayed put. It was
-then replayed on 12 new recordings it had never seen.
-- It accepts all 6 low-sun shadow events, where the surface stayed within
-  0.07 mm of the static-world prediction.
-- Across 141 recordings it accepts no real occlusion or wrong surface: the
-  jaw, the wire and 14 mixed-surface stops are all kept.
-- The strict variant would have continued past 4 of the 6 held-out stops.
-
-All four pre-registered predictions are supported. The depth is simulator
-ground truth, and the test is offline, not a closed loop.
-[Protocol and result](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_HELDOUT_2026-10-01.md#result--october-1-2026)
-· [verdicts](docs/evidence/depth_heldout_verdicts_2026-10-01.json)
-
-**Known-map re-oriented approach (September 30).** Re-orienting the tool to a
-pose planned on the scene map let contact target 530 reach alignment with
-0 N of contact in 3 of 3 repeats, a first for any contact target. Neither
-planned target passes, though. During closure the tracker follows the
-closing jaw (530), and on the final leg the open jaw covers the tracked patch
-(19444). Both controls pass 3 of 3 on A40 and RTX 8000.
-[Protocol and result](docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026)
-· [verdicts](docs/evidence/planned_approach_verdicts_2026-09-30.json)
-
-**Jaw in the camera's view (October 2).** Contact target 530 passed all 17
-checks in 3 of 3 runs, the first pass of any contact target. The controller
-knows where its own jaw is. It masks the jaw out of the tracker, and during
-closure it holds the aligned target while the tool and spur stay still:
-- the jaw's first closing frame becomes an explicit, explained loss;
-- the hold carries the target for the 0.5 s to detachment;
-- without the hold, all three runs stop at that frame.
-
-Both controls pass, and 19444 stops explicitly when its open jaw reaches the
-patch, as predicted. Six of eight predictions are supported and one is
-partly supported. One is refuted: on 130 of 1,200 frames, a single pixel on
-the jaw's outline (its centre within 1.5e-5 px of it) shows depth beyond
-the analytic box. The label is *known-map plan; jaw self-mask;
-closure hold with freshness and frame-reuse checks waived on held frames*.
-These passes are never pooled with unchanged-gate results. The jaw is a
-simulator surrogate with exact poses.
-[Protocol and result](docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026)
-· [verdicts](docs/evidence/jaw_in_view_verdicts_2026-10-02.json)
-
-| Before (run September 30): known-map plan only | After (run October 1): plus jaw self-mask and closure hold |
-|---|---|
-| [![Contact target 530 under the known-map plan alone: the tracker follows the closing jaw and the gate trips during closure](docs/demo/isaac_tree0_v530_planned_pose_closure_failure.gif)](docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md#result--september-30-2026) | [![Contact target 530 with the jaw self-mask and closure hold: held through closure, detached and retreated](docs/demo/isaac_tree0_v530_jaw_hold_pass.gif)](docs/EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026) |
-| The tracker follows the closing jaw, and the cut gate trips during closure (frame 79). | Explained loss at frame 76, held for frames 76–80, detached at 80. All 17 checks pass. |
-
-**Depth-aware appearance check in closed loop (October 2).** Run live, the
-depth test turned the low-sun shadow stops of 15004 into passes in 4 of 4
-runs. It kept every real stop: the jaw and the wire are still rejected. It
-changed nothing at source light. Evening 14944 still stops, as predicted,
-because the shadow leaves almost no correlation to track. The live decisions
-equal the offline replay in all 10 runs. All six predictions are supported.
-The depth is simulator ground truth.
-[Protocol and result](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md#result--october-2-2026)
-· [verdicts](docs/evidence/depth_loop_verdicts_2026-10-02.json)
-
-| Before (run September 27): unchanged appearance gate, evening light | After (run October 1): depth-aware check D_strict + J, evening light |
-|---|---|
-| [![Tree1 spur 15004 at evening under the unchanged gate: it stops when the jaw's low-sun shadow crosses the tracked patch](docs/demo/isaac_tree1_v15004_evening_appearance_stop.gif)](docs/EVAL_PROTOCOL_PERCEPTION_2026-09-26.md#corrections-and-diagnosis-of-the-light-dependent-stops--september-28-2026-post-hoc) | [![Tree1 spur 15004 at evening with the depth-aware check: the shadow event is accepted and the run passes](docs/demo/isaac_tree1_v15004_evening_depth_check_pass.gif)](docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md#result--october-2-2026) |
-| Stops at frame 67, as the jaw's low-sun shadow crosses the tracked patch. | The depth test accepts the shadow event at frame 67 (the surface did not move), and the run passes 17/17. |
-
-[Controls protocol and result](docs/EVAL_PROTOCOL_GENERALIZATION_CONTROLS_2026-09-23.md#result--september-23-2026)
-· [evidence](docs/evidence/generalization_controls_2026-09-23.json)
-[Protocol and result](docs/EVAL_PROTOCOL_FAMILY_LIGHTING_2026-09-23.md#result--september-23-2026)
-· [matrix evidence](docs/evidence/family_matrix_depth_2026-09-23.json)
-· [Stage A](docs/evidence/stage_a_depth_2026-09-23.json)
-
-## Quickstart
-
-The CPU demo requires Git and Python 3.10+ with `venv` on Linux or macOS.
-It reproduces approach, sensor blackout and blocked-cut geometry. It does
-**not** render the Isaac video above. Four commands:
+CPU demo: Git, Python 3.10+ with `venv`, Linux or macOS. It uses ideal tool motion and synthetic sensors; it does not render the Isaac footage.
 
 ```bash
 git clone --branch develop https://github.com/joses2017smjh/isaac-sim-pruning-workflow.git pruning
@@ -293,99 +54,18 @@ pruning/.venv/bin/python -m pip install --extra-index-url https://download.pytor
 pruning/.venv/bin/python pruning/tools/run_pruning_demo.py --output-dir pruning/demo-output
 ```
 
-Open `pruning/demo-output/pruning_demo.html`. It contains an 18-second GIF and
-sensor-frame scrubber. [CPU capture instructions](docs/DEMO.md).
-From `pruning/`, test with `.venv/bin/python -m pytest -q -m 'not isaacsim_ci'`.
+Open `pruning/demo-output/pruning_demo.html` for the demo and sensor scrubber. From `pruning/`, run:
 
-The [Isaac path](docs/ISAAC_RENDER.md) requires the pinned GPU stack and external
-robot/orchard assets. CI verifies the CPU path, not a clean-machine GPU installation.
-
-## Architecture
-
-```mermaid
-flowchart LR
-    A[Robot USD + two Blender trees] --> P[Isaac / PhysX]
-    P --> R[RTX wrist RGB + optical-Z depth]
-    R --> V[Seeded LK tracking + backprojection]
-    P --> T[Dual ToF + contact state]
-    V --> G[Fresh vision + geometry + hazard gates]
-    T --> G
-    G --> C[Bounded IK / joint drives]
-    C --> P
-    G --> X[Gated rigid-piece release]
-    X --> P
-    P --> D[Camera frames + telemetry]
-    D --> E[Independent grading + demo video]
+```bash
+.venv/bin/python -m pytest -q -m 'not isaacsim_ci'
 ```
 
-[Environment](source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py)
-→ [capture](hpc/inner/render_pruning_workflow.py)
-→ [sequence grader](tools/validate_vision_sequence.py)
-→ [compositor](tools/compose_isaac_workflow.py).
+[CPU instructions](docs/DEMO.md) · [CI configuration](.github/workflows/foundation.yml). Isaac captures require the pinned GPU stack and external robot/orchard assets: [capture guide](docs/ISAAC_RENDER.md), [stack](docs/ISAAC_STACK.md), and [HPC operations](docs/HPC.md). CPU CI does not certify a fresh GPU installation.
 
-The scene comes from `.blend` → USD, not PLY. Farneback flow is an offline
-diagnostic. Same-depth feature maintenance runs only while tracking is valid;
-new corners must pass the next frame's tracking gates.
+## Stack and next work
 
-## Evidence
+Python · OpenCV · NumPy · PyTorch for offline depth studies · Isaac Sim 6.0.0.1 · Isaac Lab 3.0.0b2 · USD / PhysX · Blender · ROS 2 Humble · C++17 · Slurm / Apptainer · pytest / GitHub Actions.
 
-| Check | Result | Limit |
-|---|---|---|
-| Two-tree sequence, `21328323` | 200 frames / 20 s; 68 applied vision commands; 262.94 mm tool displacement | One selected spur; visual jaw proxy, no physical blade actuation |
-| Independent task grade | 17/17 checks; release at 7.8 s; 809.49 mm post-release drop; <0.001 mm final home error | Capture-rate evidence, not continuous contact safety |
-| Two-tree tracking failure, `21316823` | Stops at 6.3 s after 63 commands | No closure, release or return |
-| Two-tree closure failure, `21317409` | Confidence 0.14165 < 0.15 at 7.7 s; closure 2/3 | No release; failed recording preserved |
-| Earlier one-tree approach, `21247873` | 60 commands / 6 s; 230.08 mm movement | Ended 35.01 mm from target at the mouth; no release |
-| Earlier control smoke | 0.360 mm final error for a 5 mm command | Six-step hold; earlier floor-contact fixture drifted 20.12 mm and failed |
-| CPU clear / blackout / blocked geometry | Accepted at 42 frames / stopped at 20 / rejected at 35 | Ideal tool motion |
-| CPU range fusion | Nominal RMSE 6.08 → 5.49 mm; blackout 8.15 → 9.57 mm | Synthetic metric estimates; blackout coverage differs |
-| Local CPU suite, September 23 | Tracked scope: 547 passed; 9 skipped; 1 simulator test deselected | The 9 skips need USD, absent from the CPU interpreter |
-| ROS 2 SIL parity, `21328323` | 199/199 recorded decision states reproduced; command deltas within 2 mm (median 0.07 mm) | Replay of one capture; software-in-the-loop, no hardware ([notes](docs/ROS2_SIL.md)) |
-| ROS 2 negative controls | RGB blackout and depth dropout each hold 39/39 frames | Neither ever authorizes approach or release |
-| GitHub CI, checkpoint `68e37c5` | 451 passed; 9 skipped; 1 deselected | Clean runner without external runtime assets |
+Next: evaluate these variants on newly registered targets, improve layout and collision planning, and validate sensor calibration and gate assumptions on a physical rig. Blade actuation and cutting mechanics remain outside the demonstrated system. [Current work](docs/PENDING.md).
 
-[Aggregate evidence](docs/evidence/two_tree_summary_2026-09-14.json)
-· [Success and failure videos](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/tag/isaac-vision-2026-09-13)
-· [HPC ledger](SLURM_JOBS.md).
-
-RTX path tracing and OptiX denoising replace the older grainy capture settings.
-No compositor median filter is applied. Ground relief is visual over a flat
-collider; material/lighting conversion is not Blender Cycles parity.
-[Morning/evening presets](docs/ISAAC_RENDER.md#daylight-variants) change the
-simulated sun, not the source scene.
-
-The six-run lighting/tracker pilot is summarized under [Result](#result) and
-decided in full in the [protocol](docs/RESEARCH_EXPERIMENTS_2026-09-19.md#decision-on-the-clahe-candidate).
-All six use the same original `tree0` spur and RTX depth, so neither a CLAHE
-advantage nor population robustness is established. Two earlier full daylight
-runs also pass and are listed separately, outside the pre-registered array.
-[Earlier audit](docs/evidence/repository_audit_2026-09-20.json) · [job ledger](SLURM_JOBS.md).
-
-The [September 20 research audit](docs/RESEARCH_AUDIT_2026-09-20.md) verifies
-100 Envy + 100 UFO assets and lists the pending checkpoint-provenance, learned-depth,
-paired-lighting and eight-clip work. None of those new experiments is queued.
-Remaining: a controller that completes more than the one known spur (the
-registered sweep passed 0 of 40); a tree1 evaluation under a new registration;
-ROS 2 hardware-in-the-loop, which needs the physical rig; an executed CuRobo
-plan, blocked on the pinned stack ([probe](docs/evidence/curobo_feasibility_2026-09-23.json));
-learned perception; PPO baselines; physical camera calibration; and actuated
-blades and cutting mechanics.
-The [replay studio](https://joses2017smjh.github.io/isaac-sim-pruning-workflow/)
-plays recorded runs only; there is no trained policy to run in the browser.
-[ROS 2 software-in-the-loop](docs/ROS2_SIL.md) replays recorded sensors through
-the same controller.
-[Implementation gates](docs/ROADMAP.md) · [Reviewer gaps](docs/REVIEWER_NOTES.md).
-
-## Stack
-
-- Python, PyTorch, NumPy, PyYAML
-- Isaac Sim 6.0.0.1, Isaac Lab 3.0.0b2, USD, Warp, PhysX
-- Blender 4.2.19 LTS, UsdPreviewSurface
-- OpenCV, Pillow, Matplotlib, ffmpeg
-- Slurm, Apptainer, pytest, Ruff, GitHub Actions
-
-Jose Sanchez · Oregon State University · [Provenance and licensing](NOTICE.md)
-
-## Authorized research execution (2026-09-20)
-
-Implementation and jobs are now in progress; the preceding audit-only snapshot is historical. Frozen DA2 offline evaluation job **21370005** submitted, no dependencies. The one-frame CPU accuracy gate failed; learned control remains conditional. Checkpoint-specific leakage corrections, current job/result states and storage are tracked in the [execution record](docs/RESEARCH_EXECUTION_2026-09-20.md) and `docs/evidence/research_execution_2026-09-20.json`.
+Jose Sanchez · [Portfolio](https://jose-sanchez-portfolio-com.vercel.app/) · [GitHub](https://github.com/joses2017smjh)
