@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "scope": "Closure-hold generalization test (docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md): the jaw self-mask and closure hold on targets the rebuilt known-map planner selected, those with no checked jaw-free plan. Results carry the label 'known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames' and are never pooled with unchanged-gate runs. Strategy planned_pose_jaw_hold_gen (60 mm standoff); three repeat batches.",
+  "selection_rule": "From docs/evidence/search_known_map_planner_2026-10-04.json: the qualifying targets with no checked jaw-free clear plan (tree0 3721, tree1 18143, tree1 36196), chosen by the user on 2026-10-04. Geometry entries copied unchanged from the committed enumerator's full screened pools; planned orientation is the search's qualifying variant.",
+  "seed": null,
+  "derived_from": [
+    {
+      "path": "docs/evidence/search_known_map_planner_2026-10-04.json",
+      "sha256": "a1d7a3e55fdd538b8a801fdbd31ed6f434edf423dbe54635fb37d95afea24d7d"
+    },
+    {
+      "path": "docs/evidence/screened_pool_tree0_2026-10-04.json",
+      "sha256": "3e4b6f3e7e99c7599819e68877b75c03228ff0049874e0b2e7561ee49282fc4d"
+    },
+    {
+      "path": "docs/evidence/screened_pool_tree1_2026-10-04.json",
+      "sha256": "eaf0bec789ec175867bfdfcbc39f40ddad8b18b3ef84a15fac2efcfe9da51298"
+    }
+  ],
+  "planned_orientation_notes": {
+    "3721": "38.3 deg total re-orientation from home; standoff 60 mm; approach keeps at least 162 of 169 patch elements, closure at progress 1/6 keeps 125",
+    "36196": "38.3 deg total re-orientation from home; standoff 60 mm; approach keeps at least 148 of 169 patch elements, closure at progress 1/6 keeps 77"
+  },
+  "target_count": 2,
+  "targets": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 3721,
+      "max_radius_m": 0.0049720749929025405,
+      "length_m": 0.050013840903881404,
+      "axis": [
+        0.8157066751720982,
+        0.5085741478546213,
+        -0.27563554961874365
+      ],
+      "source_center_m": [
+        0.0615216663107276,
+        0.30393882921786836,
+        0.5157815521141489
+      ],
+      "planned_final_tool_quat_wxyz": [
+        -0.4820997058990949,
+        0.05816757737420268,
+        0.6579259327176701,
+        0.5756126072038436
+      ]
+    },
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 36196,
+      "max_radius_m": 0.004064747110457731,
+      "length_m": 0.049959478428003294,
+      "axis": [
+        0.3491993443654207,
+        -0.03067833914422172,
+        0.936546132020261
+      ],
+      "source_center_m": [
+        0.299300000568231,
+        -1.1440272013521333,
+        3.363467809234804
+      ],
+      "planned_final_tool_quat_wxyz": [
+        -0.4820997058990949,
+        0.05816757737420268,
+        0.6579259327176701,
+        0.5756126072038436
+      ]
+    }
+  ]
+}

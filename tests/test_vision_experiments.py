@@ -505,6 +505,29 @@ def _jaw_hold_report(target_id, quat, jaw_block, hold_block, tracker_minimum=140
     return json.loads(json.dumps(report))
 
 
+HOLD_GEN_STRATEGIES = {"planned_pose_jaw_hold_gen": 0.06, "planned_pose_jaw_hold_gen_s100": 0.10}
+
+
+def test_hold_generalization_strategies_are_the_jaw_hold_arm_under_their_own_protocol(tmp_path, scripts):
+    launcher, run = scripts
+    quat = [-0.4821, 0.0582, 0.6579, 0.5756]
+    targets = [{"target_tree_index": 0, "component_first_vertex": 3721, "planned_final_tool_quat_wxyz": quat}]
+    reference = {k: v for k, v in launcher.STRATEGIES["planned_pose_jaw_hold"].items() if k != "name"}
+    for name, standoff in HOLD_GEN_STRATEGIES.items():
+        assert launcher.STRATEGY_PROTOCOLS[name] == "docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md"
+        strategy = {k: v for k, v in launcher.STRATEGIES[name].items() if k != "name"}
+        assert strategy == {**reference, "standoff_m": standoff}  # only the standoff may differ
+        plan = launcher.experiment_plan(targets, "source", "raw", name)
+        row = plan["runs"][0]
+        assert plan["protocol"] == "docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md"
+        assert row["strategy"]["planned_tool_quat_wxyz"] == quat
+        env = run.run_environment(plan, row, tmp_path, tmp_path / "out", {})
+        assert env["PRUNING_JAW_SELF_MASK"] == "1" and env["PRUNING_CLOSURE_HOLD"] == "1"
+        assert env["PRUNING_APPROACH_MODE"] == "planned_pose_standoff"
+        assert float(env["PRUNING_STANDOFF_M"]) == standoff
+        assert run.run_label(0, row) == f"run_00_source_tree0_v3721_{name}"
+
+
 def test_jaw_hold_strategy_forwards_both_flags_and_the_capture_must_show_them(tmp_path, scripts):
     from isaaclab_pruning.perception.jaw_self_mask import registered_closure_hold, registered_jaw_self_mask
 
@@ -525,7 +548,7 @@ def test_jaw_hold_strategy_forwards_both_flags_and_the_capture_must_show_them(tm
     assert run.run_label(0, row) == "run_00_source_tree0_v530_planned_pose_jaw_hold"
     # Every earlier strategy forwards neither flag, so the renderer keeps its default (off).
     for name in launcher.STRATEGIES:
-        if name == "planned_pose_jaw_hold":
+        if name in ("planned_pose_jaw_hold", *HOLD_GEN_STRATEGIES):
             continue
         other = launcher.experiment_plan(targets, "source", "raw", name)
         other_env = run.run_environment(other, other["runs"][0], tmp_path, tmp_path, {})
