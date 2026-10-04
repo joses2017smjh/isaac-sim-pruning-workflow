@@ -398,9 +398,11 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
         (October 4).
       - 34 targets qualify. Only 3 of them (tree0 3721, tree1 18143, tree1
         36196) have no checked plan that keeps the jaw out of view.
-      - Needs a registered protocol and a GPU budget.
+      - Registered October 4 with H0–H7 on the 3 targets. P0 passed and the
+        blind-reviewed scorer was committed. Submitted: 11 runs, 495 GPU-min.
 
-      [Scope and results](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md#steps-1-and-2--october-4-2026).
+      [Scope and results](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md#steps-1-and-2--october-4-2026) ·
+      [protocol](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md).
 - [x] Amended mask-fidelity check for future runs: pixels within 0.01 px of
       the jaw's outline are not judged. The user approved it on October 2,
       and it is registered in the

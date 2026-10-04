@@ -5,7 +5,14 @@ and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-Nothing is queued or running.
+- **Closure hold on unseen contact targets** (approved October 4, 495
+  GPU-min).
+  - Registered in its
+    [protocol](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md) with H0–H7.
+  - The P0 gate passed, and a blind-reviewed scorer was committed before
+    submission.
+  - Seven chained batches, `21546371` … `21546379`: tree0 3721, tree1 36196
+    and tree1 18143 ×3 each, plus controls 530 and 14944.
 
 Finished and published:
 - [agreement arm in closed loop](EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md#result--october-4-2026):
@@ -38,13 +45,8 @@ Finished and published:
   [jaw-in-view protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#registered-for-future-runs--october-2-2026).
   The October 2 verdict stays refuted.
 - **Generalize the closure hold**
-  ([scope](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md#steps-1-and-2--october-4-2026)).
-  - The rebuilt planner passed its acceptance test, and 34 targets qualify.
-  - 31 of the 34 also have a clear plan that keeps the jaw out of view, so
-    there the occlusion comes from the chosen pose.
-  - 3 targets (tree0 3721, tree1 18143, tree1 36196) have no checked
-    jaw-free plan.
-  - Needs the user's choice of target set and a GPU budget.
+  ([scope](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md#steps-1-and-2--october-4-2026)):
+  submitted October 4 (see Queued).
 - **Evening 14944: the registered agreement arm in closed loop**
   ([scope](SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md)): done October 4,
   4 of 4 passes (see Finished).

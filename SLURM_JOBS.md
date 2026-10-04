@@ -813,3 +813,34 @@ All 38 jobs COMPLETED. The acceptance test passed every item
 ([evidence](docs/evidence/acceptance_known_map_planner_2026-10-04.json)),
 and the search found 34 qualifying targets
 ([evidence](docs/evidence/search_known_map_planner_2026-10-04.json)).
+
+### Closure-hold generalization (submitted October 4)
+
+The user approved 495 GPU-minutes on October 4 and chose the three targets
+with no checked jaw-free plan. Before submission:
+- the P0 gate passed checks A–D
+  ([evidence](docs/evidence/hold_gen_p0_2026-10-04.json), CPU job
+  `21545819`);
+- the H1–H7 scorer was reviewed blind, amended, and committed with the
+  [protocol](docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md) at
+  `22e3918`;
+- CI was green there (CPU job `21546363`: ruff clean, 1,105 passed, demo ran).
+
+All seven batches were submitted from `22e3918` and froze identical code. They
+are `afterany`-chained, one task at a time, on `gpu,ampere` with the
+constraint `a40|rtx8000` and 45-minute tasks. The share's project usage was
+1.697 TB.
+
+| Batch | Targets | Strategy | Array job |
+|---|---|---|---|
+| `hold-gen-a-r1-20261004` | 3721, 36196 | `planned_pose_jaw_hold_gen` | `21546371` |
+| `hold-gen-a-r2-20261004` | 3721, 36196 | `planned_pose_jaw_hold_gen` | `21546373` |
+| `hold-gen-a-r3-20261004` | 3721, 36196 | `planned_pose_jaw_hold_gen` | `21546374` |
+| `hold-gen-18143-r1-20261004` | 18143 | `planned_pose_jaw_hold_gen_s100` | `21546375` |
+| `hold-gen-18143-r2-20261004` | 18143 | `planned_pose_jaw_hold_gen_s100` | `21546376` |
+| `hold-gen-18143-r3-20261004` | 18143 | `planned_pose_jaw_hold_gen_s100` | `21546378` |
+| `hold-gen-ctl-20261004` | 530, 14944 | `planned_pose_jaw_hold_gen` | `21546379` |
+
+Every result carries the label *known-map plan; jaw self-mask; closure hold
+with freshness and frame-reuse checks waived on held frames*, and is never
+pooled with unchanged-gate runs.
