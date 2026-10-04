@@ -1,0 +1,1548 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the agreement-arm closed-loop test (A1-A5): 6 simulator runs with the agreement arm of the depth-aware appearance check (+ J) in the live controller, the jaw surrogate casting its shadow: four repeats of evening 14944 and two source-light controls (19444, 12142). Simulator renders and depth; one target in one light; reported apart from D_strict + J and every unchanged-gate result, never pooled.",
+  "label": "agreement arm of the depth-aware appearance check (+ J): on acceptance the 0.35 gate passes and the depth-agreement fraction replaces the NCC in the confidence, which changes the confidence gate's input; simulator depth (RTX optical-Z ground truth, noise-free, perfectly registered); not a sensor",
+  "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+  "code_revision": "25c4da24d1e8ca1687053549ff3a34b4e51293ee",
+  "code_tree_dirty": false,
+  "scorer_sha256": "c5385a18e7f24d7b9531ffef46f5cba94a8f2f38c50a4c6e88b101ba69335f4d",
+  "frozen_scorer": {
+    "path": "tools/score_agreement_loop.py",
+    "current_sha256": "c5385a18e7f24d7b9531ffef46f5cba94a8f2f38c50a4c6e88b101ba69335f4d",
+    "batches": {
+      "agree-eve-r1-20261003": {
+        "frozen_sha256": "c5385a18e7f24d7b9531ffef46f5cba94a8f2f38c50a4c6e88b101ba69335f4d",
+        "amended_since_freeze": false
+      },
+      "agree-eve-r2-20261003": {
+        "frozen_sha256": "c5385a18e7f24d7b9531ffef46f5cba94a8f2f38c50a4c6e88b101ba69335f4d",
+        "amended_since_freeze": false
+      },
+      "agree-eve-r3-20261003": {
+        "frozen_sha256": "c5385a18e7f24d7b9531ffef46f5cba94a8f2f38c50a4c6e88b101ba69335f4d",
+        "amended_since_freeze": false
+      },
+      "agree-eve-r4-20261003": {
+        "frozen_sha256": "c5385a18e7f24d7b9531ffef46f5cba94a8f2f38c50a4c6e88b101ba69335f4d",
+        "amended_since_freeze": false
+      },
+      "agree-ctl-19444-20261003": {
+        "frozen_sha256": "c5385a18e7f24d7b9531ffef46f5cba94a8f2f38c50a4c6e88b101ba69335f4d",
+        "amended_since_freeze": false
+      },
+      "agree-ctl-12142-20261003": {
+        "frozen_sha256": "c5385a18e7f24d7b9531ffef46f5cba94a8f2f38c50a4c6e88b101ba69335f4d",
+        "amended_since_freeze": false
+      }
+    }
+  },
+  "construction_notes": [
+    "This scorer was first written, and is committed before submission: before any agreement-loop run was submitted. When it was first written the checkout held no agreement-loop batch directory under artifacts/vision_robustness, no grade file under docs/evidence/agreement_loop_2026-10-03, no log of this experiment, and no design-study or C0 evidence in docs/evidence; its author did not query Slurm: it is written blind, and no outcome of this experiment could shape it.",
+    "It was amended after commits 6cd4e75 and 2cbdd93, following an independent blind review (pruning_work/scorer_review_20261003: 68 one-line mutations of the first version, 26 surviving its tests, 16 of them judged real). No agreement-loop run, batch directory, grade file or log existed. The amendment adds self-verification (the scorer must be tracked and equal to HEAD, its hash is in the output, and every batch's frozen code must contain it, with any post-freeze amendment reported), refuses another --root, turns a hashing error into a refusal, runs the git calls before any replay, supports A3 only when all 4 evening runs reached closure, gives a runner result without a configuration check its own unscored reason, and adds tests that kill the 16 real survivors. The amendment is in this file's history and code_revision.",
+    "To check the A5 code path, its author replayed one depth closed-loop recording (depth-loop-ctl-12142-20261001, strict arm) through offline_comparison; it reported the one expected difference, the event's arm. No agreement-loop record was read or replayed.",
+    "To learn the record schema its author read the depth closed-loop experiment's published records: the 10 depth-loop-*-20261001 recordings (cut phases, measurements and depth events of frames.json), their grade files, docs/evidence/depth_loop_verdicts_2026-10-02.json and tools/score_depth_loop.py, whose structure this scorer keeps. Those are another experiment's results, already cited by this protocol.",
+    "The design-study evidence (docs/evidence/agreement_design_replay_2026-10-03.json, docs/evidence/agreement_design_closure_shadow_2026-10-03.json) and the C0 gate (A0: tools/check_agreement_c0.py, docs/evidence/agreement_c0_2026-10-03.json) are inputs to the protocol. No clause reads them. The scorer's author did not open the three evidence files, neither when first writing the scorer (none was in docs/evidence) nor when amending it after commits 6cd4e75 and 2cbdd93 added them, and did not read those two commits' messages, which summarize them. It read the committed code of tools/check_agreement_c0.py for its comparison rules. A0 is a pre-submission gate and is not scored here.",
+    "The runner (tools/run_vision_experiment.py execute) exits 0 only when the capture completed, the unchanged grader passed all 17 checks (grade_sequence ok) and configuration_matches is true, so each task's Slurm state reveals whether that run passed 17/17 with a matching configuration: A2's pass count and A4's pass clause. Because this scorer is committed before submission, nothing seen afterwards, Slurm states included, can shape it. Any amendment made after submission must be added here with everything that had been seen by then."
+  ],
+  "grade_files": {
+    "docs/evidence/agreement_loop_2026-10-03/agree-eve-r1-20261003.json": {
+      "sha256": "4dc2e6c255e9efdad6768c526f974acfd96a85991a1ebab8a6758e7695605e21",
+      "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/agreement_loop_2026-10-03/agree-eve-r2-20261003.json": {
+      "sha256": "0788c5847171d7bb6262e78b86950cd4401b2c34403d13f16085c05477445b30",
+      "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/agreement_loop_2026-10-03/agree-eve-r3-20261003.json": {
+      "sha256": "bd670e9913652e7fad43389ce814f46192ad39a7fc425785d31d9934acda1b95",
+      "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/agreement_loop_2026-10-03/agree-eve-r4-20261003.json": {
+      "sha256": "3d1bbff84755645dd2d47677c29250d422d4396959f3ed28740574676e62cf1c",
+      "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/agreement_loop_2026-10-03/agree-ctl-19444-20261003.json": {
+      "sha256": "ac53354aa7a55d1492deef5c7940586166530fe2819200bbc0241b8ffbc0050e",
+      "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    },
+    "docs/evidence/agreement_loop_2026-10-03/agree-ctl-12142-20261003.json": {
+      "sha256": "43a8db5899a80621fbc081619f11685ba16a4efd55594b9defbe840fcfb21c71",
+      "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+      "grader": "tools/validate_vision_sequence.py:grade_sequence"
+    }
+  },
+  "frozen_sources_sha256": {
+    "hpc/inner/render_pruning_workflow.py": "b2d2475bc42ee536d8bc5b1e1a903175b8170ac482a804dc4b45028eedd8d404",
+    "source/isaaclab_pruning/isaaclab_pruning/__init__.py": "5896a80e1371b283db63353421c8718239a6b776dd239e31b168b9710e9d1da6",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/__init__.py": "85ac258cb869e6807a45656a31214c1a84a4a84662c472d64953fd4b898d4fe2",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/cut_point.py": "1221034d9ce65c465e08f37ecb745a45ffb3fd98b5e266cab05ecf8e6d562978",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/cutter.py": "52425d792610c1be8d2dddd855c76d48707a393c261240e5b7a133c69297fbe7",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/cylinders.py": "e0f71b8ea3dc52d90f77bcb64a14f182a38863bb5acfbc80623c886fea0fc939",
+    "source/isaaclab_pruning/isaaclab_pruning/geometry/wood.py": "da52972f4063de71749182774fcb90f37711db38d05b149d756bcb7d5ffcc8cc",
+    "source/isaaclab_pruning/isaaclab_pruning/ladder/__init__.py": "29952be591df0cb62351864c490c40e98b55189607876fab6892c02cc8d96a2f",
+    "source/isaaclab_pruning/isaaclab_pruning/ladder/axes.py": "64162226f632ebd0fd195b86b830da3d870b579b3657994a75a4eea63ed823ba",
+    "source/isaaclab_pruning/isaaclab_pruning/perception/__init__.py": "89b987088d09087395095b34ae4569d725242a9945d178fbbce74001243c7d0c",
+    "source/isaaclab_pruning/isaaclab_pruning/perception/depth_appearance.py": "eb660b85a60a45ada1c152eddaf7c8ce0403feb09876350db9f65772bb09e883",
+    "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py": "15cbe8ec64fd025beb7933242f8f9aea4120d531c6b008bfab88214583381f80",
+    "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py": "6e5dd0264b63411520728bd3109cd65903cee368254fc2874a8877b066d6e7d7",
+    "source/isaaclab_pruning/isaaclab_pruning/sim/__init__.py": "bdea7d66c3cbe5af839a6ed565cf8de989c61cea82c69bbc3ff98540ae3abdfa",
+    "source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py": "930b5f8baa6c638cc96d93a5ad93ce183e6c2a52aad964779efc7733b490c20c",
+    "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py": "0d20e14873abad9451bb9f89247a3b891fddec286cd679e4a8bfbcca49eec11a",
+    "source/isaaclab_pruning/isaaclab_pruning/task/__init__.py": "4ba0b7ebe1f9ca04b66106c5b72c41d2407f26e4034af0497ede11535fde3c66",
+    "source/isaaclab_pruning/isaaclab_pruning/task/curriculum.py": "40222cc9ac7cb8b82b858c9a13af7bf2a77236fa59f0c33b4c6a45f3ce3ea224",
+    "source/isaaclab_pruning/isaaclab_pruning/task/loop.py": "6e9a4b9a9a272ea9e85c8aba0a15fb236952b39c6148f4fe5f799639f91d6317",
+    "source/isaaclab_pruning/isaaclab_pruning/task/reward.py": "c0b181f897b0e357c7cca5b127273206216f37bc2dfc8965f1423e623c89fe32",
+    "source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py": "902e3661863c89a2a0cfed6d25b9f359849ccd62066c88b49daf8d787c522d31",
+    "source/isaaclab_pruning/isaaclab_pruning/task/success.py": "3b14a58a09bf8a1009cee4a78a4ec5981a9f496b1f9b1adc3aa266820916ddcd",
+    "tools/check_depth_loop_c0.py": "71bcdc906b306b77c3d5760acbdcf7be1d79f5a2c5cefb643dc5ad04f3cc4896",
+    "tools/replay_depth_appearance.py": "f2432fd4501052ba136f8388d8abdcb87ae12b819c0780d291893329f2971ad1",
+    "tools/replay_jaw_self_mask.py": "e27c7055a7c874fbe30ac8788bce95a635fa05c39f909220ad505f9fe1d3af5c",
+    "tools/run_vision_experiment.py": "1d9e38d0bb9709d42991434717bff6fe506678e636aaacf1cbc502feaca1546e",
+    "tools/score_perception_round.py": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+    "tools/score_planned_approach.py": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c",
+    "tools/validate_vision_sequence.py": "7414c505a6b2907ecf12f145313037449d7a81335f53c71a93d55d0d1934391f",
+    "tools/vision_experiment_assets.py": "20be122a01b59e17562f0eafe28fdc9b39256fccbed9519cb8985ad6964bc056"
+  },
+  "offline_tool_provenance": {
+    "code_revision": "25c4da24d1e8ca1687053549ff3a34b4e51293ee",
+    "source_files_status_porcelain": "",
+    "source_sha256": {
+      "source/isaaclab_pruning/isaaclab_pruning/perception/depth_appearance.py": "eb660b85a60a45ada1c152eddaf7c8ce0403feb09876350db9f65772bb09e883",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py": "6e5dd0264b63411520728bd3109cd65903cee368254fc2874a8877b066d6e7d7",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py": "15cbe8ec64fd025beb7933242f8f9aea4120d531c6b008bfab88214583381f80",
+      "source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py": "902e3661863c89a2a0cfed6d25b9f359849ccd62066c88b49daf8d787c522d31",
+      "tools/replay_depth_appearance.py": "f2432fd4501052ba136f8388d8abdcb87ae12b819c0780d291893329f2971ad1"
+    }
+  },
+  "float_tolerance": 1e-06,
+  "max_event_float_difference_accepted": 3.725290298461914e-09,
+  "max_agreement_correlation_difference": 2.384185791015625e-07,
+  "interpretations": [
+    "The grade files must be exactly the 6 registered batches (any other JSON file in docs/evidence/agreement_loop_2026-10-03 refuses), each graded under this protocol by tools/validate_vision_sequence.py with 17 checks and naming exactly artifacts/vision_robustness/<batch>, holding one row with the registered target, light and strategy under the registered run directory (equal to tools/run_vision_experiment.run_label of that row, run 0); otherwise nothing is scored. The scorer scores only its own checkout (--root must be it), only when it is tracked and equal to HEAD, and only when every batch's plan.json froze it and the code the replay executes.",
+    "A run is scored when it was graded (status 'graded', 17 checks), its capture completed (report stage 'complete', and the runner's experiment_result.json with configuration_matches true), and its report shows the depth-aware check on with exactly registered_depth_appearance('agreement') (arm 'agreement') and the jaw self-mask and closure hold off. A capture with the strict arm's constants, or with the check off, is 'configuration refused'; a runner result without configuration_matches (the runner failed before checking) is 'runner error: no configuration check'. Any other run is listed in every table and contributes nothing: it is neither a pass nor a failure.",
+    "A grey-check failure is a frame whose live measurement carries a depth_appearance event (the tracker attaches one exactly when the grey NCC fails 0.35). A run's stop is its first frame whose recorded cut phase is 'stopped'; the tracker state and reason at the stop are that frame's live measurement. The grade files' stop_frame is the next frame (the first 'stopped_failure' command) and is not used. 'In frames 56-67' means the frame index lies in that inclusive window.",
+    "Only grey failures up to and including the stop are judged (the frames A5 verifies); later ones are listed as post_stop and never decide a clause.",
+    "An accepted event ends in a low-confidence stop when its ended_by or result_reason names low_confidence, or the frame's tracker reason is low_confidence. A rejected event never does (its loss stands on appearance).",
+    "A1 is one clause judged per evening 14944 run. The first grey failure in frames 56-67 is judged: accepted, the run is tested and holds; rejected refutes. Any accepted event through the stop, in any frame, that ends in a low-confidence stop refutes. A run without a grey failure in 56-67 is untested (listed). A stop at an accepted event on another gate is listed and counts against A2, not A1. A1 is supported only when all 4 runs are scored and all 4 have an accepted first in-window failure, with nothing refuting; untested when no scored run has an in-window grey failure and nothing refutes; partly supported otherwise.",
+    "A2 counts a pass only from the grader's class 'pass' (all 17 checks). A stop on appearance in frames 56-67 is a stop inside the window whose tracker reason is appearance_changed_or_occluded, or low_confidence at an accepted depth event on the stop frame. A2 is supported when all 4 evening runs are scored, at least 3 pass and none stops on appearance in the window; refuted when at least 2 stop on appearance in the window, or when even counting every unscored run as a pass fewer than 2 would pass; partly supported otherwise. Each failed run is listed with its stop frame, tracker state and reason, depth events and the grader's failed checks.",
+    "A3 is an expectation and cannot refute. A frame is during closure when its recorded cut phase is 'closing' or the previous frame's is: the cutter was closing when the frame's measurement was taken or consumed. This keeps a stop during closure (whose own cut phase is 'stopped') and the frame that completes closure (cut phase 'retreat'), the protocol's 'frames 73-77 (closure)'. Every grey failure during closure through the stop of a scored evening run is listed with its frame, depth-test decision, failed conditions, J's condition and both confidences; every closure frame's patch_correlation is listed. A run is tested when it reached closure through its stop. The expectation holds only when all 4 evening runs are scored, all 4 reached closure, and every such failure is accepted with J passed; a run that reached closure without a grey failure is reported as such and keeps it holding. With no run in closure A3 is untested.",
+    "A4 judges each scored control: a graded pass refutes; any accepted grey failure refutes; a control without a grey failure leaves the second clause untested. The registered expectations (19444 stops when the open jaw reaches the patch, 12142 at the wire) are one clause per control that can only hold: the event at the stop is rejected naming J_jaw_silhouette (19444) or 3_near_fraction (12142).",
+    "A5 compares each scored run whose recording is complete with the offline agreement arm on its own frames, through its stop: the agreement arm must equal the recording (state, reason and pixel exactly; pixels are float32 in both trackers, so any cross-CPU difference exceeds 1e-6 anyway; correlation within 1e-6), and the live and offline depth events, preview included, must have the same frames, the same keys and equal values (floats within 1e-6, as the C0 gate). The strict arm, replayed in lockstep, is not compared. A run the offline tool cannot replay (an unscored run, frame indexes not contiguous, a preview or frame file missing) is not comparable: listed, and A5 cannot be supported, but it is not refuted. Any other replay error aborts the scorer.",
+    "A prediction is 'untested' when no run contributed evidence to any of its clauses, 'refuted' when any clause refutes, 'supported' when every clause holds, and 'partly supported' otherwise."
+  ],
+  "runs": [
+    {
+      "batch": "agree-eve-r1-20261003",
+      "kind": "evening",
+      "run_directory": "run_00_evening_tree1_v14944_baseline_depth_agreement",
+      "target": 14944,
+      "daylight": "evening",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "failed_checks": null,
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "configuration_checked": true,
+        "enabled": true,
+        "arm_agreement": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [
+        67
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "67": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.0,
+          "agreement_confidence": 0.4375,
+          "appearance_gate_value": 1.0,
+          "decision": "continues",
+          "ended_by": null,
+          "result_state": "tracking",
+          "result_reason": null,
+          "arm": "agreement",
+          "ncc": -0.017162345349788666,
+          "jaw_condition": {
+            "value": null,
+            "limit": null,
+            "evaluated": true,
+            "passed": true
+          },
+          "at_frame": {
+            "tracker_state": "tracking",
+            "tracker_reason": null,
+            "cut_phase": "align"
+          }
+        }
+      },
+      "post_stop_events": {},
+      "closure_frames": [
+        {
+          "frame": 71,
+          "cut_phase": "closing",
+          "previous_cut_phase": "align",
+          "closure_progress": 0.0,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.9946005344390869
+        },
+        {
+          "frame": 72,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.0,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.9935587048530579
+        },
+        {
+          "frame": 73,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.16666666666666607,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.6964280605316162
+        },
+        {
+          "frame": 74,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.33333333333333365,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.8191131353378296
+        },
+        {
+          "frame": 75,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.4999999999999997,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.5636569857597351
+        },
+        {
+          "frame": 76,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.6666666666666659,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.49841365218162537
+        },
+        {
+          "frame": 77,
+          "cut_phase": "retreat",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.8333333333333334,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.8948739171028137
+        }
+      ],
+      "preview_event": null,
+      "node": "cn-s-1",
+      "gpu_model": "A40",
+      "report_sha256": "d33d0dbd844963762823f4e6f8acb82471f9ee218921bbae787d0ee2721a222e",
+      "frames_sha256": "1ddcd25c516032b6cc927e9b961114342319a2b8933850fb302c54c9025e66e1"
+    },
+    {
+      "batch": "agree-eve-r2-20261003",
+      "kind": "evening",
+      "run_directory": "run_00_evening_tree1_v14944_baseline_depth_agreement",
+      "target": 14944,
+      "daylight": "evening",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "failed_checks": null,
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "configuration_checked": true,
+        "enabled": true,
+        "arm_agreement": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [
+        67
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "67": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.0,
+          "agreement_confidence": 0.4375,
+          "appearance_gate_value": 1.0,
+          "decision": "continues",
+          "ended_by": null,
+          "result_state": "tracking",
+          "result_reason": null,
+          "arm": "agreement",
+          "ncc": -0.03611751273274422,
+          "jaw_condition": {
+            "value": null,
+            "limit": null,
+            "evaluated": true,
+            "passed": true
+          },
+          "at_frame": {
+            "tracker_state": "tracking",
+            "tracker_reason": null,
+            "cut_phase": "align"
+          }
+        }
+      },
+      "post_stop_events": {},
+      "closure_frames": [
+        {
+          "frame": 71,
+          "cut_phase": "closing",
+          "previous_cut_phase": "align",
+          "closure_progress": 0.0,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.9968202710151672
+        },
+        {
+          "frame": 72,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.0,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.9982436299324036
+        },
+        {
+          "frame": 73,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.16666666666666607,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.7942670583724976
+        },
+        {
+          "frame": 74,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.33333333333333365,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.7856384515762329
+        },
+        {
+          "frame": 75,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.4999999999999997,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.5707356929779053
+        },
+        {
+          "frame": 76,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.6666666666666659,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.5599672198295593
+        },
+        {
+          "frame": 77,
+          "cut_phase": "retreat",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.8333333333333334,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.8926324248313904
+        }
+      ],
+      "preview_event": null,
+      "node": "cn-s-1",
+      "gpu_model": "A40",
+      "report_sha256": "e491b4821dd7e7bc019e9ff230b0490c1c48cb1043e77c0c4a73bcd5480a0e30",
+      "frames_sha256": "b7f399c8a2846b588b2f52335f5c90055e8d7b9415a47fa5366cd33c1e0fa48c"
+    },
+    {
+      "batch": "agree-eve-r3-20261003",
+      "kind": "evening",
+      "run_directory": "run_00_evening_tree1_v14944_baseline_depth_agreement",
+      "target": 14944,
+      "daylight": "evening",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "failed_checks": null,
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "configuration_checked": true,
+        "enabled": true,
+        "arm_agreement": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [
+        67
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "67": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.0,
+          "agreement_confidence": 0.4375,
+          "appearance_gate_value": 1.0,
+          "decision": "continues",
+          "ended_by": null,
+          "result_state": "tracking",
+          "result_reason": null,
+          "arm": "agreement",
+          "ncc": -0.043746016919612885,
+          "jaw_condition": {
+            "value": null,
+            "limit": null,
+            "evaluated": true,
+            "passed": true
+          },
+          "at_frame": {
+            "tracker_state": "tracking",
+            "tracker_reason": null,
+            "cut_phase": "align"
+          }
+        }
+      },
+      "post_stop_events": {},
+      "closure_frames": [
+        {
+          "frame": 71,
+          "cut_phase": "closing",
+          "previous_cut_phase": "align",
+          "closure_progress": 0.0,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.9975912570953369
+        },
+        {
+          "frame": 72,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.0,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.9986379146575928
+        },
+        {
+          "frame": 73,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.16666666666666607,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.8345177173614502
+        },
+        {
+          "frame": 74,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.33333333333333365,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.7464675307273865
+        },
+        {
+          "frame": 75,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.4999999999999997,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.5662815570831299
+        },
+        {
+          "frame": 76,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.6666666666666659,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.623032808303833
+        },
+        {
+          "frame": 77,
+          "cut_phase": "retreat",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.8333333333333334,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.9342459440231323
+        }
+      ],
+      "preview_event": null,
+      "node": "cn-s-1",
+      "gpu_model": "A40",
+      "report_sha256": "da20be6223d02ec0bd11582bb1d9210c0efdd0d9af2b3f11d65669887af65a33",
+      "frames_sha256": "e9e327196a8304a62e6bc6ec2ea0fc5362d476fba9226ff1174b2953985a1621"
+    },
+    {
+      "batch": "agree-eve-r4-20261003",
+      "kind": "evening",
+      "run_directory": "run_00_evening_tree1_v14944_baseline_depth_agreement",
+      "target": 14944,
+      "daylight": "evening",
+      "status": "graded",
+      "outcome": "pass",
+      "checks": "17/17",
+      "failed_checks": null,
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "configuration_checked": true,
+        "enabled": true,
+        "arm_agreement": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": null,
+      "grey_failures": [
+        67
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "67": {
+          "accept": true,
+          "failed_conditions": [],
+          "not_evaluated_conditions": [],
+          "reasons": [],
+          "strict_confidence": 0.06966665387153625,
+          "agreement_confidence": 0.5,
+          "appearance_gate_value": 1.0,
+          "decision": "continues",
+          "ended_by": null,
+          "result_state": "tracking",
+          "result_reason": null,
+          "arm": "agreement",
+          "ncc": 0.1393333077430725,
+          "jaw_condition": {
+            "value": null,
+            "limit": null,
+            "evaluated": true,
+            "passed": true
+          },
+          "at_frame": {
+            "tracker_state": "tracking",
+            "tracker_reason": null,
+            "cut_phase": "align"
+          }
+        }
+      },
+      "post_stop_events": {},
+      "closure_frames": [
+        {
+          "frame": 71,
+          "cut_phase": "closing",
+          "previous_cut_phase": "align",
+          "closure_progress": 0.0,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.9976353049278259
+        },
+        {
+          "frame": 72,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.0,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.9995852112770081
+        },
+        {
+          "frame": 73,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.16666666666666607,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.8713477253913879
+        },
+        {
+          "frame": 74,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.33333333333333365,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.754727303981781
+        },
+        {
+          "frame": 75,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.4999999999999997,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.5285749435424805
+        },
+        {
+          "frame": 76,
+          "cut_phase": "closing",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.6666666666666659,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.654373824596405
+        },
+        {
+          "frame": 77,
+          "cut_phase": "retreat",
+          "previous_cut_phase": "closing",
+          "closure_progress": 0.8333333333333334,
+          "tracker_state": "tracking",
+          "tracker_reason": null,
+          "patch_correlation": 0.8474806547164917
+        }
+      ],
+      "preview_event": null,
+      "node": "cn-s-1",
+      "gpu_model": "A40",
+      "report_sha256": "029f86ec511e3e93d0b9e7043cbbe6ec1158fce360ce616b15b790af1330ac29",
+      "frames_sha256": "bc1d3c07be792e4ad4c4f72478e6f160eec81867d1de2d6ed46593546f126ac0"
+    },
+    {
+      "batch": "agree-ctl-19444-20261003",
+      "kind": "control",
+      "run_directory": "run_00_source_tree1_v19444_planned_pose_depth_agreement",
+      "target": 19444,
+      "daylight": "source",
+      "status": "graded",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete"
+      ],
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "configuration_checked": true,
+        "enabled": true,
+        "arm_agreement": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": {
+        "frame": 67,
+        "stopped_reason": "vision_invalid",
+        "tracker_state": "tracking_lost",
+        "tracker_reason": "appearance_changed_or_occluded"
+      },
+      "grey_failures": [
+        67
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "67": {
+          "accept": false,
+          "failed_conditions": [
+            "3_near_fraction",
+            "J_jaw_silhouette"
+          ],
+          "not_evaluated_conditions": [],
+          "reasons": [
+            "occluder_nearer_than_predicted",
+            "jaw_silhouette_touches_patch"
+          ],
+          "strict_confidence": null,
+          "agreement_confidence": null,
+          "appearance_gate_value": null,
+          "decision": "loss_stands",
+          "ended_by": null,
+          "result_state": null,
+          "result_reason": null,
+          "arm": "agreement",
+          "ncc": 0.1939660906791687,
+          "jaw_condition": {
+            "value": "jaw_silhouette_touches_patch",
+            "limit": null,
+            "evaluated": true,
+            "passed": false
+          },
+          "at_frame": {
+            "tracker_state": "tracking_lost",
+            "tracker_reason": "appearance_changed_or_occluded",
+            "cut_phase": "stopped"
+          }
+        }
+      },
+      "post_stop_events": {},
+      "closure_frames": [],
+      "preview_event": null,
+      "node": "cn-s-1",
+      "gpu_model": "A40",
+      "report_sha256": "c85ac059cd473e3c00b1325a2c6e9a878d804ffa7a3adceba2361fec59fc0521",
+      "frames_sha256": "79e13777e44e565b5e780739850acbfe41f22a14d539fecd30984a252cf285c1"
+    },
+    {
+      "batch": "agree-ctl-12142-20261003",
+      "kind": "control",
+      "run_directory": "run_00_source_tree0_v12142_tool_axis_standoff_depth_agreement",
+      "target": 12142,
+      "daylight": "source",
+      "status": "graded",
+      "outcome": "stopped_vision_invalid",
+      "checks": "9/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete"
+      ],
+      "graded": true,
+      "captured": true,
+      "configuration": {
+        "capture_complete": true,
+        "experiment_result_recorded": true,
+        "configuration_checked": true,
+        "enabled": true,
+        "arm_agreement": true,
+        "constants_registered": true,
+        "jaw_arms_off": true,
+        "configuration_matches": true,
+        "ok": true
+      },
+      "scored": true,
+      "unscored_reason": null,
+      "stop": {
+        "frame": 29,
+        "stopped_reason": "vision_invalid",
+        "tracker_state": "tracking_lost",
+        "tracker_reason": "appearance_changed_or_occluded"
+      },
+      "grey_failures": [
+        29
+      ],
+      "post_stop_grey_failures": [],
+      "events": {
+        "29": {
+          "accept": false,
+          "failed_conditions": [
+            "3_near_fraction",
+            "4_median_abs"
+          ],
+          "not_evaluated_conditions": [],
+          "reasons": [
+            "occluder_nearer_than_predicted",
+            "surface_moved_or_wrong_surface"
+          ],
+          "strict_confidence": null,
+          "agreement_confidence": null,
+          "appearance_gate_value": null,
+          "decision": "loss_stands",
+          "ended_by": null,
+          "result_state": null,
+          "result_reason": null,
+          "arm": "agreement",
+          "ncc": 0.17606040835380554,
+          "jaw_condition": {
+            "value": null,
+            "limit": null,
+            "evaluated": true,
+            "passed": true
+          },
+          "at_frame": {
+            "tracker_state": "tracking_lost",
+            "tracker_reason": "appearance_changed_or_occluded",
+            "cut_phase": "stopped"
+          }
+        }
+      },
+      "post_stop_events": {},
+      "closure_frames": [],
+      "preview_event": null,
+      "node": "cn-s-1",
+      "gpu_model": "A40",
+      "report_sha256": "da7fbd8108f7d4165bf223f7037936f1bd5169ce3dafb403a7662a20d356b0d6",
+      "frames_sha256": "6fe34ca81fd94dc3064033158d536842ac3ec6c3412104419535f554c4a89359"
+    }
+  ],
+  "a5_comparisons": {
+    "agree-eve-r1-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "d33d0dbd844963762823f4e6f8acb82471f9ee218921bbae787d0ee2721a222e",
+        "frames.json": "1ddcd25c516032b6cc927e9b961114342319a2b8933850fb302c54c9025e66e1"
+      },
+      "max_agreement_correlation_difference": 2.384185791015625e-07
+    },
+    "agree-eve-r2-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "e491b4821dd7e7bc019e9ff230b0490c1c48cb1043e77c0c4a73bcd5480a0e30",
+        "frames.json": "b7f399c8a2846b588b2f52335f5c90055e8d7b9415a47fa5366cd33c1e0fa48c"
+      },
+      "max_agreement_correlation_difference": 1.7881393432617188e-07
+    },
+    "agree-eve-r3-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "da20be6223d02ec0bd11582bb1d9210c0efdd0d9af2b3f11d65669887af65a33",
+        "frames.json": "e9e327196a8304a62e6bc6ec2ea0fc5362d476fba9226ff1174b2953985a1621"
+      },
+      "max_agreement_correlation_difference": 1.7881393432617188e-07
+    },
+    "agree-eve-r4-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 199,
+      "recording_sha256": {
+        "report.json": "029f86ec511e3e93d0b9e7043cbbe6ec1158fce360ce616b15b790af1330ac29",
+        "frames.json": "bc1d3c07be792e4ad4c4f72478e6f160eec81867d1de2d6ed46593546f126ac0"
+      },
+      "max_agreement_correlation_difference": 1.7881393432617188e-07
+    },
+    "agree-ctl-19444-20261003/run_00_source_tree1_v19444_planned_pose_depth_agreement": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 67,
+      "recording_sha256": {
+        "report.json": "c85ac059cd473e3c00b1325a2c6e9a878d804ffa7a3adceba2361fec59fc0521",
+        "frames.json": "79e13777e44e565b5e780739850acbfe41f22a14d539fecd30984a252cf285c1"
+      },
+      "max_agreement_correlation_difference": 1.1920928955078125e-07
+    },
+    "agree-ctl-12142-20261003/run_00_source_tree0_v12142_tool_axis_standoff_depth_agreement": {
+      "status": "equal",
+      "problems": [],
+      "replayed_through_frame": 29,
+      "recording_sha256": {
+        "report.json": "da7fbd8108f7d4165bf223f7037936f1bd5169ce3dafb403a7662a20d356b0d6",
+        "frames.json": "6fe34ca81fd94dc3064033158d536842ac3ec6c3412104419535f554c4a89359"
+      },
+      "max_agreement_correlation_difference": 1.7881393432617188e-07
+    }
+  },
+  "predictions": [
+    {
+      "id": "A1",
+      "prediction": "In each evening 14944 run the depth test accepts the first grey-check failure in frames 56-67, and no accepted event ends in a low-confidence stop.",
+      "clauses": [
+        {
+          "clause": "evening 14944: the first grey failure in frames 56-67 is accepted in all 4 runs, and no accepted event through the stop ends in a low-confidence stop",
+          "observed": {
+            "runs": {
+              "agree-eve-r1-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "stop": null,
+                "accepted_events_ending_low_confidence": [],
+                "first_in_window": {
+                  "frame": 67,
+                  "accept": true,
+                  "failed_conditions": [],
+                  "reasons": [],
+                  "strict_confidence": 0.0,
+                  "agreement_confidence": 0.4375,
+                  "decision": "continues",
+                  "ended_by": null
+                },
+                "case": "accepted and the tracker continued"
+              },
+              "agree-eve-r2-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "stop": null,
+                "accepted_events_ending_low_confidence": [],
+                "first_in_window": {
+                  "frame": 67,
+                  "accept": true,
+                  "failed_conditions": [],
+                  "reasons": [],
+                  "strict_confidence": 0.0,
+                  "agreement_confidence": 0.4375,
+                  "decision": "continues",
+                  "ended_by": null
+                },
+                "case": "accepted and the tracker continued"
+              },
+              "agree-eve-r3-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "stop": null,
+                "accepted_events_ending_low_confidence": [],
+                "first_in_window": {
+                  "frame": 67,
+                  "accept": true,
+                  "failed_conditions": [],
+                  "reasons": [],
+                  "strict_confidence": 0.0,
+                  "agreement_confidence": 0.4375,
+                  "decision": "continues",
+                  "ended_by": null
+                },
+                "case": "accepted and the tracker continued"
+              },
+              "agree-eve-r4-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "stop": null,
+                "accepted_events_ending_low_confidence": [],
+                "first_in_window": {
+                  "frame": 67,
+                  "accept": true,
+                  "failed_conditions": [],
+                  "reasons": [],
+                  "strict_confidence": 0.06966665387153625,
+                  "agreement_confidence": 0.5,
+                  "decision": "continues",
+                  "ended_by": null
+                },
+                "case": "accepted and the tracker continued"
+              }
+            },
+            "rejected_first_in_window": [],
+            "accepted_events_ending_low_confidence": {},
+            "stops_at_accepted_events_on_another_gate_counted_against_a2": {},
+            "untested": []
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 4
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "A2",
+      "prediction": "At least 3 of the 4 evening 14944 runs pass all 17 checks of the unchanged grader, and none stops on appearance in frames 56-67.",
+      "clauses": [
+        {
+          "clause": "evening 14944: passes, and stops on appearance in frames 56-67",
+          "observed": {
+            "runs": {
+              "agree-eve-r1-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "stop": null
+              },
+              "agree-eve-r2-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "stop": null
+              },
+              "agree-eve-r3-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "stop": null
+              },
+              "agree-eve-r4-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "stop": null
+              }
+            },
+            "passes": "4 of 4",
+            "stops_in_window": [],
+            "appearance_stops_in_window": [],
+            "failed_runs": {},
+            "unscored": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 4
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "A3",
+      "prediction": "Every grey-check failure during closure in the evening 14944 runs is reported; the expectation is that each is accepted with J clear.",
+      "clauses": [
+        {
+          "clause": "evening 14944: every grey failure during closure is accepted with J clear (expectation; cannot refute)",
+          "observed": {
+            "runs": {
+              "agree-eve-r1-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "stop": null,
+                "closure_frames": [
+                  {
+                    "frame": 71,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "align",
+                    "closure_progress": 0.0,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.9946005344390869
+                  },
+                  {
+                    "frame": 72,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.0,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.9935587048530579
+                  },
+                  {
+                    "frame": 73,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.16666666666666607,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.6964280605316162
+                  },
+                  {
+                    "frame": 74,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.33333333333333365,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.8191131353378296
+                  },
+                  {
+                    "frame": 75,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.4999999999999997,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.5636569857597351
+                  },
+                  {
+                    "frame": 76,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.6666666666666659,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.49841365218162537
+                  },
+                  {
+                    "frame": 77,
+                    "cut_phase": "retreat",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.8333333333333334,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.8948739171028137
+                  }
+                ],
+                "grey_failures_in_closure": "none: reached closure with no grey-check failure"
+              },
+              "agree-eve-r2-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "stop": null,
+                "closure_frames": [
+                  {
+                    "frame": 71,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "align",
+                    "closure_progress": 0.0,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.9968202710151672
+                  },
+                  {
+                    "frame": 72,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.0,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.9982436299324036
+                  },
+                  {
+                    "frame": 73,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.16666666666666607,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.7942670583724976
+                  },
+                  {
+                    "frame": 74,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.33333333333333365,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.7856384515762329
+                  },
+                  {
+                    "frame": 75,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.4999999999999997,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.5707356929779053
+                  },
+                  {
+                    "frame": 76,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.6666666666666659,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.5599672198295593
+                  },
+                  {
+                    "frame": 77,
+                    "cut_phase": "retreat",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.8333333333333334,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.8926324248313904
+                  }
+                ],
+                "grey_failures_in_closure": "none: reached closure with no grey-check failure"
+              },
+              "agree-eve-r3-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "stop": null,
+                "closure_frames": [
+                  {
+                    "frame": 71,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "align",
+                    "closure_progress": 0.0,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.9975912570953369
+                  },
+                  {
+                    "frame": 72,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.0,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.9986379146575928
+                  },
+                  {
+                    "frame": 73,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.16666666666666607,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.8345177173614502
+                  },
+                  {
+                    "frame": 74,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.33333333333333365,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.7464675307273865
+                  },
+                  {
+                    "frame": 75,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.4999999999999997,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.5662815570831299
+                  },
+                  {
+                    "frame": 76,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.6666666666666659,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.623032808303833
+                  },
+                  {
+                    "frame": 77,
+                    "cut_phase": "retreat",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.8333333333333334,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.9342459440231323
+                  }
+                ],
+                "grey_failures_in_closure": "none: reached closure with no grey-check failure"
+              },
+              "agree-eve-r4-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+                "stop": null,
+                "closure_frames": [
+                  {
+                    "frame": 71,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "align",
+                    "closure_progress": 0.0,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.9976353049278259
+                  },
+                  {
+                    "frame": 72,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.0,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.9995852112770081
+                  },
+                  {
+                    "frame": 73,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.16666666666666607,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.8713477253913879
+                  },
+                  {
+                    "frame": 74,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.33333333333333365,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.754727303981781
+                  },
+                  {
+                    "frame": 75,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.4999999999999997,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.5285749435424805
+                  },
+                  {
+                    "frame": 76,
+                    "cut_phase": "closing",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.6666666666666659,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.654373824596405
+                  },
+                  {
+                    "frame": 77,
+                    "cut_phase": "retreat",
+                    "previous_cut_phase": "closing",
+                    "closure_progress": 0.8333333333333334,
+                    "tracker_state": "tracking",
+                    "tracker_reason": null,
+                    "patch_correlation": 0.8474806547164917
+                  }
+                ],
+                "grey_failures_in_closure": "none: reached closure with no grey-check failure"
+              }
+            },
+            "runs_that_reached_closure": "4 of 4",
+            "grey_failures_in_closure": [],
+            "not_accepted_with_j_clear": [],
+            "unscored": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 4
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "A4",
+      "prediction": "Neither control passes, and the depth test rejects every grey-check failure in both.",
+      "clauses": [
+        {
+          "clause": "neither control passes",
+          "observed": {
+            "runs": {
+              "agree-ctl-19444-20261003/run_00_source_tree1_v19444_planned_pose_depth_agreement": {
+                "outcome": "stopped_vision_invalid",
+                "stop": {
+                  "frame": 67,
+                  "stopped_reason": "vision_invalid",
+                  "tracker_state": "tracking_lost",
+                  "tracker_reason": "appearance_changed_or_occluded"
+                },
+                "grey_failures": {
+                  "67": {
+                    "accept": false,
+                    "failed_conditions": [
+                      "3_near_fraction",
+                      "J_jaw_silhouette"
+                    ],
+                    "not_evaluated_conditions": [],
+                    "reasons": [
+                      "occluder_nearer_than_predicted",
+                      "jaw_silhouette_touches_patch"
+                    ],
+                    "strict_confidence": null,
+                    "agreement_confidence": null,
+                    "appearance_gate_value": null,
+                    "decision": "loss_stands",
+                    "ended_by": null,
+                    "result_state": null,
+                    "result_reason": null,
+                    "arm": "agreement",
+                    "ncc": 0.1939660906791687,
+                    "jaw_condition": {
+                      "value": "jaw_silhouette_touches_patch",
+                      "limit": null,
+                      "evaluated": true,
+                      "passed": false
+                    },
+                    "at_frame": {
+                      "tracker_state": "tracking_lost",
+                      "tracker_reason": "appearance_changed_or_occluded",
+                      "cut_phase": "stopped"
+                    }
+                  }
+                },
+                "post_stop": {}
+              },
+              "agree-ctl-12142-20261003/run_00_source_tree0_v12142_tool_axis_standoff_depth_agreement": {
+                "outcome": "stopped_vision_invalid",
+                "stop": {
+                  "frame": 29,
+                  "stopped_reason": "vision_invalid",
+                  "tracker_state": "tracking_lost",
+                  "tracker_reason": "appearance_changed_or_occluded"
+                },
+                "grey_failures": {
+                  "29": {
+                    "accept": false,
+                    "failed_conditions": [
+                      "3_near_fraction",
+                      "4_median_abs"
+                    ],
+                    "not_evaluated_conditions": [],
+                    "reasons": [
+                      "occluder_nearer_than_predicted",
+                      "surface_moved_or_wrong_surface"
+                    ],
+                    "strict_confidence": null,
+                    "agreement_confidence": null,
+                    "appearance_gate_value": null,
+                    "decision": "loss_stands",
+                    "ended_by": null,
+                    "result_state": null,
+                    "result_reason": null,
+                    "arm": "agreement",
+                    "ncc": 0.17606040835380554,
+                    "jaw_condition": {
+                      "value": null,
+                      "limit": null,
+                      "evaluated": true,
+                      "passed": true
+                    },
+                    "at_frame": {
+                      "tracker_state": "tracking_lost",
+                      "tracker_reason": "appearance_changed_or_occluded",
+                      "cut_phase": "stopped"
+                    }
+                  }
+                },
+                "post_stop": {}
+              }
+            },
+            "passed": [],
+            "unscored": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 2
+        },
+        {
+          "clause": "the depth test rejects every grey failure in both controls",
+          "observed": {
+            "accepted": {},
+            "untested_no_grey_failure": [],
+            "unscored": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 2
+        },
+        {
+          "clause": "19444: the event at its stop is rejected naming J_jaw_silhouette (expectation; cannot refute)",
+          "observed": {
+            "context": "19444 should stop when the open jaw reaches the patch",
+            "stop": {
+              "frame": 67,
+              "stopped_reason": "vision_invalid",
+              "tracker_state": "tracking_lost",
+              "tracker_reason": "appearance_changed_or_occluded"
+            },
+            "event_at_stop": {
+              "accept": false,
+              "failed_conditions": [
+                "3_near_fraction",
+                "J_jaw_silhouette"
+              ],
+              "not_evaluated_conditions": [],
+              "reasons": [
+                "occluder_nearer_than_predicted",
+                "jaw_silhouette_touches_patch"
+              ],
+              "strict_confidence": null,
+              "agreement_confidence": null,
+              "appearance_gate_value": null,
+              "decision": "loss_stands",
+              "ended_by": null,
+              "result_state": null,
+              "result_reason": null,
+              "arm": "agreement",
+              "ncc": 0.1939660906791687,
+              "jaw_condition": {
+                "value": "jaw_silhouette_touches_patch",
+                "limit": null,
+                "evaluated": true,
+                "passed": false
+              },
+              "at_frame": {
+                "tracker_state": "tracking_lost",
+                "tracker_reason": "appearance_changed_or_occluded",
+                "cut_phase": "stopped"
+              }
+            },
+            "unscored": null
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 1
+        },
+        {
+          "clause": "12142: the event at its stop is rejected naming 3_near_fraction (expectation; cannot refute)",
+          "observed": {
+            "context": "12142 should stop at the wire",
+            "stop": {
+              "frame": 29,
+              "stopped_reason": "vision_invalid",
+              "tracker_state": "tracking_lost",
+              "tracker_reason": "appearance_changed_or_occluded"
+            },
+            "event_at_stop": {
+              "accept": false,
+              "failed_conditions": [
+                "3_near_fraction",
+                "4_median_abs"
+              ],
+              "not_evaluated_conditions": [],
+              "reasons": [
+                "occluder_nearer_than_predicted",
+                "surface_moved_or_wrong_surface"
+              ],
+              "strict_confidence": null,
+              "agreement_confidence": null,
+              "appearance_gate_value": null,
+              "decision": "loss_stands",
+              "ended_by": null,
+              "result_state": null,
+              "result_reason": null,
+              "arm": "agreement",
+              "ncc": 0.17606040835380554,
+              "jaw_condition": {
+                "value": null,
+                "limit": null,
+                "evaluated": true,
+                "passed": true
+              },
+              "at_frame": {
+                "tracker_state": "tracking_lost",
+                "tracker_reason": "appearance_changed_or_occluded",
+                "cut_phase": "stopped"
+              }
+            },
+            "unscored": null
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 1
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "A5",
+      "prediction": "Every live run equals the offline agreement arm replayed on its own frames through its stop, with the same depth event at every grey failure.",
+      "clauses": [
+        {
+          "clause": "live = offline agreement arm in every run",
+          "observed": {
+            "runs_compared": 6,
+            "mismatches": {},
+            "not_comparable": {}
+          },
+          "holds": true,
+          "refutes": false,
+          "tested": 6
+        }
+      ],
+      "verdict": "supported"
+    }
+  ]
+}

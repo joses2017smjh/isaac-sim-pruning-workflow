@@ -1,22 +1,19 @@
 # Pending work and stretch goals
 
-Updated October 3, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
+Updated October 4, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
 and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-- **The agreement arm in closed loop** (approved October 3, 270 GPU-min).
-  - Registered in its
-    [protocol](EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md) with
-    predictions A0–A5.
-  - Its design study, its C0 gate (passed) and a blind-reviewed scorer were
-    committed before submission.
-  - Six chained batches, `21532163` … `21532170`: 4 × evening 14944, plus the
-    jaw and wire controls.
-  - Next, the known-map planner rebuild for the closure-hold generalization
-    (approved to start after this study).
+- **Known-map planner rebuild** (closure-hold generalization, step 1; CPU
+  only). The rebuilt tool (`tools/known_map_planner.py`) passed every
+  acceptance item in an exploratory run. Its acceptance test and the
+  candidate search are being re-run from a clean clone at its commit. If
+  candidates qualify, a GPU budget will be proposed.
 
 Finished and published:
+- [agreement arm in closed loop](EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md#result--october-4-2026):
+  evening 14944 passed 17/17 in 4 of 4 runs; A1–A5 supported.
 - [jaw in the camera's view](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026):
   530 passed 17/17 in 3 of 3 runs, the first pass of a contact target.
   - P2–P6 and P8 supported, P7 partly supported.
@@ -54,8 +51,8 @@ Finished and published:
   - The GPU guide is 630 GPU-minutes, depending on how many candidates
     qualify.
 - **Evening 14944: the registered agreement arm in closed loop**
-  ([scope](SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md)): submitted October
-  3 (see Queued).
+  ([scope](SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md)): done October 4,
+  4 of 4 passes (see Finished).
 
 ## Stretch goals
 

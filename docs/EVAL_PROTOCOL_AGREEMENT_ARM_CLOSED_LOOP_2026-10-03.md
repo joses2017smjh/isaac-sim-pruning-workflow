@@ -190,3 +190,60 @@ committed before submission, they are recorded as they arrive.
 GPU-minutes reserved** (approved October 3). About 3 GB of captures on the
 hpc-share, whose project quota is above the 1.5 TiB soft limit and below the
 2 TiB hard limit.
+
+## Result — October 4, 2026
+
+All 6 runs recorded 200 frames on an A40 (`cn-s-1`) and used 91 of the 270
+reserved GPU-minutes. `tools/validate_vision_sequence.py` graded them, through
+`aggregate_eval.py` (CPU job `21544527`). The scorer
+`tools/score_agreement_loop.py` ran from a clean clone at `25c4da2` (CPU job
+`21544534`). It is byte-identical to the copy frozen in every batch's plan, so
+it was not amended after submission.
+
+Evidence: [verdicts](evidence/agreement_loop_verdicts_2026-10-04.json) and the
+per-batch [grades](evidence/agreement_loop_2026-10-03/).
+
+| Run | Grader's outcome | Frame-67 shadow event |
+|---|---|---|
+| Evening 14944, r1–r4 | pass 17/17, four times | accepted in all 4; agreement confidence 0.44, 0.44, 0.44 and 0.50 (strict 0.00, 0.00, 0.00 and 0.07); continued |
+| 19444, planned pose | stopped at frame 67 on `vision_invalid` (the open jaw), 9/17 | rejected on `3_near_fraction` and `J_jaw_silhouette` |
+| 12142, tool-axis standoff | stopped at frame 29 on `vision_invalid` (the wire), 9/17 | rejected on `3_near_fraction` and `4_median_abs` |
+
+| | Registered | Measured | Verdict |
+|---|---|---|---|
+| **A0** | the C0 gate, before submission | [passed](evidence/agreement_c0_2026-10-03.json), checks A–G | passed |
+| **A1** | the first grey failure in 56–67 is accepted in every evening 14944 run, and no accepted event ends in a low-confidence stop | accepted at 67 in 4 of 4; no low-confidence stop | supported |
+| **A2** | at least 3 of 4 pass 17/17, and none stops on appearance in 56–67 | 4 of 4 pass; no stop | supported |
+| **A3** | every closure grey failure is accepted with J clear (an expectation) | no grey failure in closure: the patch correlation fell to 0.50–0.57 at frames 75–76 and stayed above the 0.35 gate | supported |
+| **A4** | neither control passes, and every grey failure in them is rejected | both stop; both events rejected, 19444 naming J, 12142 the near fraction | supported |
+| **A5** | live equals the offline agreement arm through each stop | 6 of 6 equal; floats within 2.4e-7 | supported |
+
+**Reading.** Every result carries the label *agreement arm of the depth-aware
+appearance check (+ J); changes the confidence gate's input; simulator depth*.
+It is reported apart from D_strict + J and every unchanged-gate result, and
+never pooled.
+- **Evening 14944 now passes, 4 of 4.** It stopped at frame 67 in every earlier
+  shadowed run: 5 of 5, under the unchanged gate and under D_strict + J. At
+  that frame the depth test accepted the shadow event, and the agreement arm
+  kept tracking where D_strict's confidence fell to 0.00–0.07.
+- **The design study held.** It predicted continued tracking through frame 72
+  and the closing jaw's shadow on the patch at frames 73–75. Live, the patch
+  correlation dropped at 73 and reached its lowest at 75–76 (0.50–0.57), as on
+  15004 in the same light. It never failed the 0.35 check, so the arm had
+  nothing more to accept.
+- **Real stops are kept.** The jaw and the wire were rejected by the depth test
+  and both controls stopped, as under D_strict + J.
+- **What the arm gave up was not tested here.** No recorded event put a real
+  occluder through the depth test, so the missing NCC backstop on accepted
+  frames was never exercised.
+
+**Seen before scoring.** The Slurm states of all six runs (four COMPLETED, two
+FAILED) were seen before the scorer ran. They reveal A2's pass count and A4's
+pass clause. The scorer was committed before submission and was not amended
+afterwards, so nothing seen could shape it.
+
+**Limits.**
+- One target in one light, four repeats, on simulator depth.
+- The arm removes the NCC backstop on accepted frames, and a real occluder at
+  the surface's own depth was never recorded.
+- A real depth sensor would need its own margins.

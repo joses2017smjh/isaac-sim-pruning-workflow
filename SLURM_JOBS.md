@@ -784,3 +784,27 @@ check (+ J); changes the confidence gate's input; simulator depth*. It is
 reported apart from D_strict + J and every unchanged-gate result, and never
 pooled. The scorer was committed before submission, so Slurm states, which
 reveal pass or fail, cannot shape it.
+
+**Agreement-arm runs (October 3).** All 6 tasks ran on an A40 (`cn-s-1`) and
+used 91 of the 270 reserved GPU-minutes: the evening runs took 15m42s–15m58s,
+the controls 13m17s and 14m14s. Slurm states: the four evening 14944 runs
+COMPLETED and both controls FAILED (exit 1). These states reveal pass or fail;
+the scorer was committed before submission.
+
+Grading: CPU job `21544527` (`share`, October 4), `aggregate_eval.py` at
+`7498eee`, six batches, all exit 0. The grades were committed unopened at
+`25c4da2`. Scored by CPU job `21544534` at `25c4da2`: A1–A5 supported, and
+evening 14944 passed 17/17 in 4 of 4,
+[result](docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md#result--october-4-2026).
+Media for all 6 runs (local): CPU job `21544591`.
+
+### Known-map planner rebuild (CPU, October 3–4)
+
+The rebuilt `tools/known_map_planner.py` was committed at `f1372ea`. Its
+acceptance test and candidate search run from a clean clone at that commit:
+- 12 acceptance parts plus an IK-sensitivity replay (`21544543`–`21544555`);
+- the acceptance assembly (`21544556`);
+- 24 search shards (`21544557`–`21544580`);
+- the search assembly (`21544581`).
+
+All are on `share` with constraint `el9`.
