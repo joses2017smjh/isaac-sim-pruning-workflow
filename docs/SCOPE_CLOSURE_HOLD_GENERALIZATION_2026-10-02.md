@@ -140,3 +140,48 @@ describe what it did:
 - **Tracking through the re-orientation is shown on two targets only.** The
   tracker held through 530's 55.5° in 6 of 6 runs and 19444's 83.6° in 5 of 5.
   A new target's view through its own re-orientation is untested.
+
+## Steps 1 and 2 — October 4, 2026
+
+**Step 1: the rebuild passes its acceptance test.** `tools/known_map_planner.py`
+was committed at `f1372ea` and run from a clean clone at that commit (CPU jobs
+`21544543`–`21544556`). Every acceptance item passes
+([evidence](evidence/acceptance_known_map_planner_2026-10-04.json)):
+- the recorded stops;
+- the recorded passes;
+- the refused layouts;
+- the re-orientation result: exactly 530 and 19444;
+- the 40 committed tree1 calls.
+
+The model's projection also agrees with the recorded jaw outcomes, though
+that is not an acceptance item. 530 keeps the patch on approach and loses it
+at closure (102 kept elements, against 98–100 recorded); 19444 loses it on
+the approach. An earlier exploratory run of the same file gave the same items
+to within 3e-7.
+
+**Step 2: 34 targets qualify**
+([evidence](evidence/search_known_map_planner_2026-10-04.json), CPU jobs
+`21544557`–`21544581`). Of the 442 screened spurs other than 530 and 19444:
+- 233 overlap the orchard at home;
+- 25 are not visible at home;
+- 15 have no reachable gate-clear final pose;
+- 135 have no checked orientation that meets (a)–(c) together;
+- 34 meet all three.
+
+**A caveat that bears on the experiment's design.** The planner checks up to
+three orientations per target, in order of increasing rotation, and keeps the
+first that meets (a)–(c). For 32 of the 34, that is the same world orientation:
+a tool axis about 5° from home's, rolled 45° about the axis (38.3° total).
+For 31 of the 34, a checked orientation also gives a clear path on which the
+jaw never covers the patch at closure, so a hold would not be needed there.
+For these targets the occlusion comes from choosing the rolled pose, not from
+the target itself. Only 3 have no such jaw-free plan among the orientations
+checked:
+
+| Target | Plan | Approach kept (min) | Closure kept | Tool clearance | ToF |
+|---|---|---|---|---|---|
+| tree0 3721 | 38.3°, 60 mm standoff | 162 | 125 | 7.6 mm | 89 mm |
+| tree1 18143 | 38.3°, 100 mm standoff | 163 | 130 | 14.2 mm | 89 mm |
+| tree1 36196 | 38.3°, 60 mm standoff | 148 | 77 | 10.7 mm | 73 mm |
+
+The GPU experiment (step 3) needs the user's choice of target set and budget.
