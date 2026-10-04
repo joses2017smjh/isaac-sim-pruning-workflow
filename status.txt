@@ -1,4 +1,4 @@
-CURRENT CHECKPOINT — 2026-10-04 11:45 PDT — AGREEMENT ARM PUBLISHED (4/4 PASSES); PLANNER ACCEPTANCE + SEARCH RE-RUNNING AT f1372ea
+CURRENT CHECKPOINT — 2026-10-04 12:45 PDT — AGREEMENT ARM PUBLISHED; PLANNER REBUILT AND ACCEPTED; NOTHING QUEUED
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
@@ -12,11 +12,10 @@ LATEST — 2026-10-04 (read this first)
   AGREEMENT ARM RESULT: evening 14944 passed 17/17 in 4 of 4 (5 of 5 earlier shadowed runs had stopped at 67);
     A1-A5 supported; the controls stopped; live = offline 6/6. 91 of 270 GPU-min. Evidence
     docs/evidence/agreement_loop_verdicts_2026-10-04.json (scorer unamended since the freeze).
-  PLANNER REBUILD: tools/known_map_planner.py committed f1372ea. An exploratory run passed all 5 acceptance items
-    (the agent hit a usage limit before assembling the search). Clean re-run chain:
-    parts 21544543-55 -> acceptance 21544556 -> shards 21544557-80 -> search 21544581, outputs in
-    pruning_work/planner_f1372ea/. NEXT: commit both JSONs as evidence. If candidates qualify, register an
-    experiment and ask the user for its GPU budget.
+  PLANNER REBUILD: tools/known_map_planner.py (f1372ea) passed all 5 acceptance items from a clean clone; the
+    search found 34 qualifying targets (docs/evidence/{acceptance,search}_known_map_planner_2026-10-04.json).
+    Caveat: 31 of the 34 also have a checked jaw-free clear plan; only tree0 3721, tree1 18143 and tree1 36196
+    have none. NEEDS THE USER: target set and GPU budget for the hold-generalization experiment.
 
 PREVIOUS — 2026-10-03
   AGREEMENT ARM (evening 14944): user approved 270 GPU-min on 2026-10-03, to be submitted after the design study,

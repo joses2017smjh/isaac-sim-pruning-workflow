@@ -5,11 +5,7 @@ and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-- **Known-map planner rebuild** (closure-hold generalization, step 1; CPU
-  only). The rebuilt tool (`tools/known_map_planner.py`) passed every
-  acceptance item in an exploratory run. Its acceptance test and the
-  candidate search are being re-run from a clean clone at its commit. If
-  candidates qualify, a GPU budget will be proposed.
+Nothing is queued or running.
 
 Finished and published:
 - [agreement arm in closed loop](EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md#result--october-4-2026):
@@ -42,14 +38,13 @@ Finished and published:
   [jaw-in-view protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#registered-for-future-runs--october-2-2026).
   The October 2 verdict stays refuted.
 - **Generalize the closure hold**
-  ([scope](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md)). It passed on the
-  three 530 recordings it was designed on, and an unseen contact target would
-  test it.
-  - No other recorded run gives the hold anything to do.
-  - The planner that found 530's path was never committed, so its rebuild
-    comes first. That needs a go-ahead.
-  - The GPU guide is 630 GPU-minutes, depending on how many candidates
-    qualify.
+  ([scope](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md#steps-1-and-2--october-4-2026)).
+  - The rebuilt planner passed its acceptance test, and 34 targets qualify.
+  - 31 of the 34 also have a clear plan that keeps the jaw out of view, so
+    there the occlusion comes from the chosen pose.
+  - 3 targets (tree0 3721, tree1 18143, tree1 36196) have no checked
+    jaw-free plan.
+  - Needs the user's choice of target set and a GPU budget.
 - **Evening 14944: the registered agreement arm in closed loop**
   ([scope](SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md)): done October 4,
   4 of 4 passes (see Finished).

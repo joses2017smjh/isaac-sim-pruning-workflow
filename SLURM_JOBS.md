@@ -808,3 +808,8 @@ acceptance test and candidate search run from a clean clone at that commit:
 - the search assembly (`21544581`).
 
 All are on `share` with constraint `el9`.
+
+All 38 jobs COMPLETED. The acceptance test passed every item
+([evidence](docs/evidence/acceptance_known_map_planner_2026-10-04.json)),
+and the search found 34 qualifying targets
+([evidence](docs/evidence/search_known_map_planner_2026-10-04.json)).

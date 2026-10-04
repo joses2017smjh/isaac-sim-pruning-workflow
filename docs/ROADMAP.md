@@ -393,8 +393,14 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       [verdicts](evidence/jaw_in_view_verdicts_2026-10-02.json).
 - [ ] Test the closure hold for generalization. It was designed on the same
       three 530 recordings it then passed on, so the October 2 runs confirm it
-      in closed loop but do not test it on an unseen contact target. That
-      needs a registered protocol and a GPU budget.
+      in closed loop but do not test it on an unseen contact target.
+      - The lost known-map planner is rebuilt and passed its acceptance test
+        (October 4).
+      - 34 targets qualify. Only 3 of them (tree0 3721, tree1 18143, tree1
+        36196) have no checked plan that keeps the jaw out of view.
+      - Needs a registered protocol and a GPU budget.
+
+      [Scope and results](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md#steps-1-and-2--october-4-2026).
 - [x] Amended mask-fidelity check for future runs: pixels within 0.01 px of
       the jaw's outline are not judged. The user approved it on October 2,
       and it is registered in the
