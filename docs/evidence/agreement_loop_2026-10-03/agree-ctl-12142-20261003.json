@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-10-04",
+  "scope": "Task success rate over spur geometry, axis orientation and local occlusion at a canonicalized approach pose, from pre-registered targets. Not a field success rate, not a reachability study, and not outdoor or sensor-calibrated robustness.",
+  "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+  "batches": [
+    {
+      "condition": "ctl-12142-20261003",
+      "batch_dir": "artifacts/vision_robustness/agree-ctl-12142-20261003",
+      "planned_runs_kept": 1
+    }
+  ],
+  "grader": "tools/validate_vision_sequence.py:grade_sequence",
+  "aggregation": "DuckDB over sql/*.sql; every reported number is produced by those queries",
+  "queries": [
+    {
+      "file": "01_runs.sql",
+      "sha256": "88c1942c92000942b7c1adafa6a580aa5928c84c6101fb89f0996d8edb3303f4"
+    },
+    {
+      "file": "02_success_rate.sql",
+      "sha256": "f58b3ff5a42031cabd63c59122f85621e18ce7e4036d25f6a2b823faaea8ad7c"
+    },
+    {
+      "file": "03_failure_taxonomy.sql",
+      "sha256": "ef4b59e94cdad336bab27125b7721a9fc07c0b6cca6a32b951de041b66d67096"
+    },
+    {
+      "file": "04_per_condition.sql",
+      "sha256": "dada1f7b0287e3be2bd6772b6ecb7cf091983e54e6aef5aa03372409f9816434"
+    },
+    {
+      "file": "05_tracking_coverage.sql",
+      "sha256": "42d17c3276b36262782273f0a33b184a095d1de1c929de4df36849ff1ec911e2"
+    },
+    {
+      "file": "06_rate_excluding_infrastructure.sql",
+      "sha256": "9720c9d54b21efeb7920a55c15d5f1beeec60094cb74e45af7ecc9007bb41bf5"
+    },
+    {
+      "file": "07_per_target_by_strategy.sql",
+      "sha256": "497e74070aa5d3668aeb3573955b7da342da564c96e15094723c172d2366a157"
+    }
+  ],
+  "success_rate": {
+    "successes": 0,
+    "attempts": 1,
+    "rate": 0.0,
+    "wilson_lower": 0.0,
+    "wilson_upper": 0.7934506856227626
+  },
+  "per_condition": [
+    {
+      "condition": "ctl-12142-20261003",
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "attempts": 1,
+      "successes": 0,
+      "rate": 0.0
+    }
+  ],
+  "failure_taxonomy": [
+    {
+      "outcome": "stopped_vision_invalid",
+      "runs": 1,
+      "mean_applied_commands": 30.0,
+      "min_applied_commands": 30,
+      "max_applied_commands": 30,
+      "run_directories": [
+        "run_00_source_tree0_v12142_tool_axis_standoff_depth_agreement"
+      ]
+    }
+  ],
+  "rate_by_exclusion": [
+    {
+      "level": "inclusive (headline)",
+      "successes": 0,
+      "attempts": 1,
+      "rate": 0.0,
+      "wilson_lower": 0.0,
+      "wilson_upper": 0.7934506856227627
+    },
+    {
+      "level": "presented (excludes infrastructure)",
+      "successes": 0,
+      "attempts": 1,
+      "rate": 0.0,
+      "wilson_lower": 0.0,
+      "wilson_upper": 0.7934506856227627
+    },
+    {
+      "level": "recorded (excludes infrastructure and layout rejection)",
+      "successes": 0,
+      "attempts": 1,
+      "rate": 0.0,
+      "wilson_lower": 0.0,
+      "wilson_upper": 0.7934506856227627
+    }
+  ],
+  "tracking_coverage": [
+    {
+      "run_directory": "run_00_source_tree0_v12142_tool_axis_standoff_depth_agreement",
+      "outcome": "stopped_vision_invalid",
+      "passed": false,
+      "tracking_frames": 29,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.145,
+      "tracked_feature_count_min": 8,
+      "tracked_confidence_min": 0.5152697861194611,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    }
+  ],
+  "per_target_by_strategy": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 12142,
+      "strategy": "tool_axis_standoff_depth_agreement",
+      "condition": "ctl-12142-20261003",
+      "outcome": "stopped_vision_invalid",
+      "stop_frame": 30,
+      "final_phase_frame": null,
+      "checks_passed": 9,
+      "checks_total": 17,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "applied_commands": 30
+    }
+  ],
+  "runs": [
+    {
+      "condition": "ctl-12142-20261003",
+      "run_directory": "run_00_source_tree0_v12142_tool_axis_standoff_depth_agreement",
+      "target_tree_index": 0,
+      "component_first_vertex": 12142,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "tool_axis_standoff_depth_agreement",
+      "stop_frame": 30,
+      "final_phase_frame": null,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "status": "graded",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "applied_commands": 30,
+      "stop_reason": "vision_invalid",
+      "tracking_frames": 29,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 8,
+      "tracked_confidence_min": 0.5152697861194611,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_vision_invalid"
+    }
+  ],
+  "target_register": {
+    "path": "docs/evidence/eval_targets_agreement_12142_2026-10-03.json",
+    "sha256": "c564b4ed4f52e4a44053ca653ed2202ad5fd44663681866992036564eeee7446",
+    "seed": null,
+    "target_count": 1,
+    "selection_rule": "Entry copied unchanged from eval_targets_tree0_2026-09-23.json."
+  }
+}

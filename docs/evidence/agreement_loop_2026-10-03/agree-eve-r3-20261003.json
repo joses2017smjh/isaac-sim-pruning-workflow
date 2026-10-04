@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-10-04",
+  "scope": "Task success rate over spur geometry, axis orientation and local occlusion at a canonicalized approach pose, from pre-registered targets. Not a field success rate, not a reachability study, and not outdoor or sensor-calibrated robustness.",
+  "protocol": "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md",
+  "batches": [
+    {
+      "condition": "eve-r3-20261003",
+      "batch_dir": "artifacts/vision_robustness/agree-eve-r3-20261003",
+      "planned_runs_kept": 1
+    }
+  ],
+  "grader": "tools/validate_vision_sequence.py:grade_sequence",
+  "aggregation": "DuckDB over sql/*.sql; every reported number is produced by those queries",
+  "queries": [
+    {
+      "file": "01_runs.sql",
+      "sha256": "88c1942c92000942b7c1adafa6a580aa5928c84c6101fb89f0996d8edb3303f4"
+    },
+    {
+      "file": "02_success_rate.sql",
+      "sha256": "f58b3ff5a42031cabd63c59122f85621e18ce7e4036d25f6a2b823faaea8ad7c"
+    },
+    {
+      "file": "03_failure_taxonomy.sql",
+      "sha256": "ef4b59e94cdad336bab27125b7721a9fc07c0b6cca6a32b951de041b66d67096"
+    },
+    {
+      "file": "04_per_condition.sql",
+      "sha256": "dada1f7b0287e3be2bd6772b6ecb7cf091983e54e6aef5aa03372409f9816434"
+    },
+    {
+      "file": "05_tracking_coverage.sql",
+      "sha256": "42d17c3276b36262782273f0a33b184a095d1de1c929de4df36849ff1ec911e2"
+    },
+    {
+      "file": "06_rate_excluding_infrastructure.sql",
+      "sha256": "9720c9d54b21efeb7920a55c15d5f1beeec60094cb74e45af7ecc9007bb41bf5"
+    },
+    {
+      "file": "07_per_target_by_strategy.sql",
+      "sha256": "497e74070aa5d3668aeb3573955b7da342da564c96e15094723c172d2366a157"
+    }
+  ],
+  "success_rate": {
+    "successes": 1,
+    "attempts": 1,
+    "rate": 1.0,
+    "wilson_lower": 0.20654931437723745,
+    "wilson_upper": 1.0
+  },
+  "per_condition": [
+    {
+      "condition": "eve-r3-20261003",
+      "daylight": "evening",
+      "photometric_normalization": "raw",
+      "attempts": 1,
+      "successes": 1,
+      "rate": 1.0
+    }
+  ],
+  "failure_taxonomy": [],
+  "rate_by_exclusion": [
+    {
+      "level": "inclusive (headline)",
+      "successes": 1,
+      "attempts": 1,
+      "rate": 1.0,
+      "wilson_lower": 0.20654931437723734,
+      "wilson_upper": 1.0
+    },
+    {
+      "level": "presented (excludes infrastructure)",
+      "successes": 1,
+      "attempts": 1,
+      "rate": 1.0,
+      "wilson_lower": 0.20654931437723734,
+      "wilson_upper": 1.0
+    },
+    {
+      "level": "recorded (excludes infrastructure and layout rejection)",
+      "successes": 1,
+      "attempts": 1,
+      "rate": 1.0,
+      "wilson_lower": 0.20654931437723734,
+      "wilson_upper": 1.0
+    }
+  ],
+  "tracking_coverage": [
+    {
+      "run_directory": "run_00_evening_tree1_v14944_baseline_depth_agreement",
+      "outcome": "pass",
+      "passed": true,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.39,
+      "tracked_feature_count_min": 6,
+      "tracked_confidence_min": 0.2836936488747597,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    }
+  ],
+  "per_target_by_strategy": [
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "strategy": "baseline_depth_agreement",
+      "condition": "eve-r3-20261003",
+      "outcome": "pass",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "checks_passed": 17,
+      "checks_total": 17,
+      "failed_checks": null,
+      "applied_commands": 68
+    }
+  ],
+  "runs": [
+    {
+      "condition": "eve-r3-20261003",
+      "run_directory": "run_00_evening_tree1_v14944_baseline_depth_agreement",
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "daylight": "evening",
+      "photometric_normalization": "raw",
+      "strategy": "baseline_depth_agreement",
+      "stop_frame": null,
+      "final_phase_frame": null,
+      "failed_checks": null,
+      "status": "graded",
+      "checks_passed": 17,
+      "checks_total": 17,
+      "applied_commands": 68,
+      "stop_reason": null,
+      "tracking_frames": 78,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 6,
+      "tracked_confidence_min": 0.2836936488747597,
+      "centroid_error_m": null,
+      "passed": true,
+      "outcome": "pass"
+    }
+  ],
+  "target_register": {
+    "path": "docs/evidence/eval_targets_agreement_14944_2026-10-03.json",
+    "sha256": "68bfd9d32afaf45a195499d7403cf13679df9b06eb992fd0687371f1f0e5b3b7",
+    "seed": null,
+    "target_count": 1,
+    "selection_rule": "Entry copied unchanged from eval_targets_tree1_listed_2026-09-23.json."
+  }
+}
