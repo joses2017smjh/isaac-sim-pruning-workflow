@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-10-04",
+  "scope": "Task success rate over spur geometry, axis orientation and local occlusion at a canonicalized approach pose, from pre-registered targets. Not a field success rate, not a reachability study, and not outdoor or sensor-calibrated robustness.",
+  "protocol": "docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md",
+  "batches": [
+    {
+      "condition": "18143-r1-20261004",
+      "batch_dir": "artifacts/vision_robustness/hold-gen-18143-r1-20261004",
+      "planned_runs_kept": 1
+    }
+  ],
+  "grader": "tools/validate_vision_sequence.py:grade_sequence",
+  "aggregation": "DuckDB over sql/*.sql; every reported number is produced by those queries",
+  "queries": [
+    {
+      "file": "01_runs.sql",
+      "sha256": "88c1942c92000942b7c1adafa6a580aa5928c84c6101fb89f0996d8edb3303f4"
+    },
+    {
+      "file": "02_success_rate.sql",
+      "sha256": "f58b3ff5a42031cabd63c59122f85621e18ce7e4036d25f6a2b823faaea8ad7c"
+    },
+    {
+      "file": "03_failure_taxonomy.sql",
+      "sha256": "ef4b59e94cdad336bab27125b7721a9fc07c0b6cca6a32b951de041b66d67096"
+    },
+    {
+      "file": "04_per_condition.sql",
+      "sha256": "dada1f7b0287e3be2bd6772b6ecb7cf091983e54e6aef5aa03372409f9816434"
+    },
+    {
+      "file": "05_tracking_coverage.sql",
+      "sha256": "42d17c3276b36262782273f0a33b184a095d1de1c929de4df36849ff1ec911e2"
+    },
+    {
+      "file": "06_rate_excluding_infrastructure.sql",
+      "sha256": "9720c9d54b21efeb7920a55c15d5f1beeec60094cb74e45af7ecc9007bb41bf5"
+    },
+    {
+      "file": "07_per_target_by_strategy.sql",
+      "sha256": "497e74070aa5d3668aeb3573955b7da342da564c96e15094723c172d2366a157"
+    }
+  ],
+  "success_rate": {
+    "successes": 0,
+    "attempts": 1,
+    "rate": 0.0,
+    "wilson_lower": 0.0,
+    "wilson_upper": 0.7934506856227626
+  },
+  "per_condition": [
+    {
+      "condition": "18143-r1-20261004",
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "attempts": 1,
+      "successes": 0,
+      "rate": 0.0
+    }
+  ],
+  "failure_taxonomy": [
+    {
+      "outcome": "stopped_vision_invalid",
+      "runs": 1,
+      "mean_applied_commands": 24.0,
+      "min_applied_commands": 24,
+      "max_applied_commands": 24,
+      "run_directories": [
+        "run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100"
+      ]
+    }
+  ],
+  "rate_by_exclusion": [
+    {
+      "level": "inclusive (headline)",
+      "successes": 0,
+      "attempts": 1,
+      "rate": 0.0,
+      "wilson_lower": 0.0,
+      "wilson_upper": 0.7934506856227627
+    },
+    {
+      "level": "presented (excludes infrastructure)",
+      "successes": 0,
+      "attempts": 1,
+      "rate": 0.0,
+      "wilson_lower": 0.0,
+      "wilson_upper": 0.7934506856227627
+    },
+    {
+      "level": "recorded (excludes infrastructure and layout rejection)",
+      "successes": 0,
+      "attempts": 1,
+      "rate": 0.0,
+      "wilson_lower": 0.0,
+      "wilson_upper": 0.7934506856227627
+    }
+  ],
+  "tracking_coverage": [
+    {
+      "run_directory": "run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100",
+      "outcome": "stopped_vision_invalid",
+      "passed": false,
+      "tracking_frames": 199,
+      "recorded_frames": 200,
+      "tracking_fraction": 0.995,
+      "tracked_feature_count_min": 6,
+      "tracked_confidence_min": 0.32504504173994064,
+      "centroid_error_m": null,
+      "touched_feature_floor": false,
+      "near_confidence_floor": false
+    }
+  ],
+  "per_target_by_strategy": [
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 18143,
+      "strategy": "planned_pose_jaw_hold_gen_s100",
+      "condition": "18143-r1-20261004",
+      "outcome": "stopped_vision_invalid",
+      "stop_frame": 24,
+      "final_phase_frame": null,
+      "checks_passed": 9,
+      "checks_total": 17,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "applied_commands": 24
+    }
+  ],
+  "runs": [
+    {
+      "condition": "18143-r1-20261004",
+      "run_directory": "run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100",
+      "target_tree_index": 1,
+      "component_first_vertex": 18143,
+      "daylight": "source",
+      "photometric_normalization": "raw",
+      "strategy": "planned_pose_jaw_hold_gen_s100",
+      "stop_frame": 24,
+      "final_phase_frame": null,
+      "failed_checks": "detach_has_completed_certified_closure,detached_state_consistent_with_event,no_recorded_stops,one_matching_detach_event_and_request,piece_dropped_after_release,piece_stationary_before_release,post_detach_retreat_toward_home,returned_home_and_final_phase_complete",
+      "status": "graded",
+      "checks_passed": 9,
+      "checks_total": 17,
+      "applied_commands": 24,
+      "stop_reason": "vision_invalid",
+      "tracking_frames": 199,
+      "recorded_frames": 200,
+      "tracked_feature_count_min": 6,
+      "tracked_confidence_min": 0.32504504173994064,
+      "centroid_error_m": null,
+      "passed": false,
+      "outcome": "stopped_vision_invalid"
+    }
+  ],
+  "target_register": {
+    "path": "docs/evidence/eval_targets_hold_gen_18143_2026-10-04.json",
+    "sha256": "65062362be13c5217804920ef237ea8e416ada744aed528a6b6ecb11b9747fd7",
+    "seed": null,
+    "target_count": 1,
+    "selection_rule": "From docs/evidence/search_known_map_planner_2026-10-04.json: the qualifying targets with no checked jaw-free clear plan (tree0 3721, tree1 18143, tree1 36196), chosen by the user on 2026-10-04. Geometry entries copied unchanged from the committed enumerator's full screened pools; planned orientation is the search's qualifying variant."
+  }
+}
