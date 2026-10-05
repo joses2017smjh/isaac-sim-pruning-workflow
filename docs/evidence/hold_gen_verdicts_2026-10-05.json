@@ -1,0 +1,2496 @@
+{
+  "schema_version": 1,
+  "scope": "Scoring of the closure-hold generalization experiment (H1-H7): eleven simulator runs of the jaw self-mask and closure hold in seven batches (tree0 3721, tree1 36196 and tree1 18143 three times each; controls 530 and 14944). Every result is labelled 'known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames' and is reported apart from every unchanged-gate result, never pooled. Outcomes are the grader's, read from the per-batch evidence. Simulator renders of a two-box jaw surrogate with exact poses; not a field result.",
+  "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+  "protocol": "docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md",
+  "code_revision": "81bcfc8734f7562eed31f1758d8019663e1091ee",
+  "code_tree_dirty": false,
+  "scorer_sha256": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+  "frozen_scorer": {
+    "path": "tools/score_hold_generalization.py",
+    "current_sha256": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+    "current_sha256_by_file": {
+      "tools/score_hold_generalization.py": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+      "tools/score_jaw_in_view.py": "fa95e2e7ec1423a915caa22a6cd28c1f3551d8103b95d1a5a264df37092457cb",
+      "tools/score_perception_round.py": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+      "tools/score_planned_approach.py": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c"
+    },
+    "batches": {
+      "hold-gen-a-r1-20261004": {
+        "tools/score_hold_generalization.py": {
+          "frozen_sha256": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+          "amended_since_freeze": false
+        },
+        "tools/score_jaw_in_view.py": {
+          "frozen_sha256": "fa95e2e7ec1423a915caa22a6cd28c1f3551d8103b95d1a5a264df37092457cb",
+          "amended_since_freeze": false
+        },
+        "tools/score_perception_round.py": {
+          "frozen_sha256": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+          "amended_since_freeze": false
+        },
+        "tools/score_planned_approach.py": {
+          "frozen_sha256": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c",
+          "amended_since_freeze": false
+        }
+      },
+      "hold-gen-a-r2-20261004": {
+        "tools/score_hold_generalization.py": {
+          "frozen_sha256": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+          "amended_since_freeze": false
+        },
+        "tools/score_jaw_in_view.py": {
+          "frozen_sha256": "fa95e2e7ec1423a915caa22a6cd28c1f3551d8103b95d1a5a264df37092457cb",
+          "amended_since_freeze": false
+        },
+        "tools/score_perception_round.py": {
+          "frozen_sha256": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+          "amended_since_freeze": false
+        },
+        "tools/score_planned_approach.py": {
+          "frozen_sha256": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c",
+          "amended_since_freeze": false
+        }
+      },
+      "hold-gen-a-r3-20261004": {
+        "tools/score_hold_generalization.py": {
+          "frozen_sha256": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+          "amended_since_freeze": false
+        },
+        "tools/score_jaw_in_view.py": {
+          "frozen_sha256": "fa95e2e7ec1423a915caa22a6cd28c1f3551d8103b95d1a5a264df37092457cb",
+          "amended_since_freeze": false
+        },
+        "tools/score_perception_round.py": {
+          "frozen_sha256": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+          "amended_since_freeze": false
+        },
+        "tools/score_planned_approach.py": {
+          "frozen_sha256": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c",
+          "amended_since_freeze": false
+        }
+      },
+      "hold-gen-18143-r1-20261004": {
+        "tools/score_hold_generalization.py": {
+          "frozen_sha256": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+          "amended_since_freeze": false
+        },
+        "tools/score_jaw_in_view.py": {
+          "frozen_sha256": "fa95e2e7ec1423a915caa22a6cd28c1f3551d8103b95d1a5a264df37092457cb",
+          "amended_since_freeze": false
+        },
+        "tools/score_perception_round.py": {
+          "frozen_sha256": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+          "amended_since_freeze": false
+        },
+        "tools/score_planned_approach.py": {
+          "frozen_sha256": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c",
+          "amended_since_freeze": false
+        }
+      },
+      "hold-gen-18143-r2-20261004": {
+        "tools/score_hold_generalization.py": {
+          "frozen_sha256": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+          "amended_since_freeze": false
+        },
+        "tools/score_jaw_in_view.py": {
+          "frozen_sha256": "fa95e2e7ec1423a915caa22a6cd28c1f3551d8103b95d1a5a264df37092457cb",
+          "amended_since_freeze": false
+        },
+        "tools/score_perception_round.py": {
+          "frozen_sha256": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+          "amended_since_freeze": false
+        },
+        "tools/score_planned_approach.py": {
+          "frozen_sha256": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c",
+          "amended_since_freeze": false
+        }
+      },
+      "hold-gen-18143-r3-20261004": {
+        "tools/score_hold_generalization.py": {
+          "frozen_sha256": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+          "amended_since_freeze": false
+        },
+        "tools/score_jaw_in_view.py": {
+          "frozen_sha256": "fa95e2e7ec1423a915caa22a6cd28c1f3551d8103b95d1a5a264df37092457cb",
+          "amended_since_freeze": false
+        },
+        "tools/score_perception_round.py": {
+          "frozen_sha256": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+          "amended_since_freeze": false
+        },
+        "tools/score_planned_approach.py": {
+          "frozen_sha256": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c",
+          "amended_since_freeze": false
+        }
+      },
+      "hold-gen-ctl-20261004": {
+        "tools/score_hold_generalization.py": {
+          "frozen_sha256": "edfb18a4823381a08eef59eed11d992055060aa66fc6d681756dd7c41e852a63",
+          "amended_since_freeze": false
+        },
+        "tools/score_jaw_in_view.py": {
+          "frozen_sha256": "fa95e2e7ec1423a915caa22a6cd28c1f3551d8103b95d1a5a264df37092457cb",
+          "amended_since_freeze": false
+        },
+        "tools/score_perception_round.py": {
+          "frozen_sha256": "e522f5e647d4fa3c19a127947067bd5ddfec838af86ca1c78bfb39b24f38ec8a",
+          "amended_since_freeze": false
+        },
+        "tools/score_planned_approach.py": {
+          "frozen_sha256": "0f334b90a07d9697894c31cfecf98950c1d33712220c402c24d36766b6c3274c",
+          "amended_since_freeze": false
+        }
+      }
+    }
+  },
+  "construction_notes": [
+    "This scorer is committed before submission: before any hold-generalization run was submitted. When it was written the checkout held no hold-gen batch directory, grade file or log; its author did not query Slurm for this experiment. It is written blind, and no outcome of this experiment could shape it.",
+    "It reuses the per-run logic of tools/score_jaw_in_view.py, the scorer committed blind for the jaw-in-view experiment and published with that experiment's verdicts; the clause logic here is adapted from that scorer's P2, P4, P5, P6 and P8 with the target sets of this protocol. The jaw-in-view recordings and verdicts are another experiment's published results.",
+    "Before it was committed it was reviewed blind by an independent reviewer (no run of this experiment existed). The review found the control batch's plan would have been refused (14944's planned orientation is None, the home orientation), that the imported jaw-in-view modules were not required to equal their frozen copies, that unscored runs of targets that already hold changed H1 and H4, and 28 surviving one-line mutations; all were fixed, and a re-run of the mapped mutations (pruning_work/hold_gen_review_20261004/rerun) killed 35 of 35.",
+    "The runner (tools/run_vision_experiment.py execute) exits 0 only on a 17/17 pass with configuration_matches true, so each task's Slurm state reveals that run's pass or fail (H4's and H7's pass clauses). Because this scorer is committed before submission, nothing seen afterwards can shape it."
+  ],
+  "scored_code": {
+    "imported_from": "the snapshot <batch>/code the runs executed (run_vision_experiment sets PRUNING_ROOT to it and verify_snapshot checked it against plan.source_sha256 before each run)",
+    "imported_tree": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/hold-gen-a-r1-20261004/code",
+    "modules": {
+      "isaaclab_pruning.perception.jaw_self_mask": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/hold-gen-a-r1-20261004/code/source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py",
+      "isaaclab_pruning.task.simulated_cut": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/hold-gen-a-r1-20261004/code/source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py",
+      "replay_jaw_self_mask": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/vision_robustness/hold-gen-a-r1-20261004/code/tools/replay_jaw_self_mask.py"
+    },
+    "loaded_files_sha256_equal_plan": {
+      "source/isaaclab_pruning/isaaclab_pruning/__init__.py": "5896a80e1371b283db63353421c8718239a6b776dd239e31b168b9710e9d1da6",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/__init__.py": "85ac258cb869e6807a45656a31214c1a84a4a84662c472d64953fd4b898d4fe2",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/cut_point.py": "1221034d9ce65c465e08f37ecb745a45ffb3fd98b5e266cab05ecf8e6d562978",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/cutter.py": "52425d792610c1be8d2dddd855c76d48707a393c261240e5b7a133c69297fbe7",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/cylinders.py": "e0f71b8ea3dc52d90f77bcb64a14f182a38863bb5acfbc80623c886fea0fc939",
+      "source/isaaclab_pruning/isaaclab_pruning/geometry/wood.py": "da52972f4063de71749182774fcb90f37711db38d05b149d756bcb7d5ffcc8cc",
+      "source/isaaclab_pruning/isaaclab_pruning/ladder/__init__.py": "29952be591df0cb62351864c490c40e98b55189607876fab6892c02cc8d96a2f",
+      "source/isaaclab_pruning/isaaclab_pruning/ladder/axes.py": "64162226f632ebd0fd195b86b830da3d870b579b3657994a75a4eea63ed823ba",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/__init__.py": "89b987088d09087395095b34ae4569d725242a9945d178fbbce74001243c7d0c",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/depth_appearance.py": "eb660b85a60a45ada1c152eddaf7c8ce0403feb09876350db9f65772bb09e883",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py": "15cbe8ec64fd025beb7933242f8f9aea4120d531c6b008bfab88214583381f80",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py": "6e5dd0264b63411520728bd3109cd65903cee368254fc2874a8877b066d6e7d7",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/__init__.py": "bdea7d66c3cbe5af839a6ed565cf8de989c61cea82c69bbc3ff98540ae3abdfa",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/pruning_env.py": "930b5f8baa6c638cc96d93a5ad93ce183e6c2a52aad964779efc7733b490c20c",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py": "0d20e14873abad9451bb9f89247a3b891fddec286cd679e4a8bfbcca49eec11a",
+      "source/isaaclab_pruning/isaaclab_pruning/task/__init__.py": "4ba0b7ebe1f9ca04b66106c5b72c41d2407f26e4034af0497ede11535fde3c66",
+      "source/isaaclab_pruning/isaaclab_pruning/task/curriculum.py": "40222cc9ac7cb8b82b858c9a13af7bf2a77236fa59f0c33b4c6a45f3ce3ea224",
+      "source/isaaclab_pruning/isaaclab_pruning/task/loop.py": "6e9a4b9a9a272ea9e85c8aba0a15fb236952b39c6148f4fe5f799639f91d6317",
+      "source/isaaclab_pruning/isaaclab_pruning/task/reward.py": "c0b181f897b0e357c7cca5b127273206216f37bc2dfc8965f1423e623c89fe32",
+      "source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py": "902e3661863c89a2a0cfed6d25b9f359849ccd62066c88b49daf8d787c522d31",
+      "source/isaaclab_pruning/isaaclab_pruning/task/success.py": "3b14a58a09bf8a1009cee4a78a4ec5981a9f496b1f9b1adc3aa266820916ddcd",
+      "tools/replay_jaw_self_mask.py": "e27c7055a7c874fbe30ac8788bce95a635fa05c39f909220ad505f9fe1d3af5c"
+    },
+    "plan_code_revision": "22e391898b9520527c8920a20cf9986252874ee9",
+    "scored_sources_equal_plan_in_every_snapshot": {
+      "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py": "15cbe8ec64fd025beb7933242f8f9aea4120d531c6b008bfab88214583381f80",
+      "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py": "6e5dd0264b63411520728bd3109cd65903cee368254fc2874a8877b066d6e7d7",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/vision_demo_controller.py": "0d20e14873abad9451bb9f89247a3b891fddec286cd679e4a8bfbcca49eec11a",
+      "source/isaaclab_pruning/isaaclab_pruning/task/simulated_cut.py": "902e3661863c89a2a0cfed6d25b9f359849ccd62066c88b49daf8d787c522d31",
+      "source/isaaclab_pruning/isaaclab_pruning/sim/blender_demo_scene.py": "cdcc1c2733ed61d2475a21615eb527e1dc1a3625abc3c9bbe66297217ba6c1a5",
+      "hpc/inner/render_pruning_workflow.py": "b2d2475bc42ee536d8bc5b1e1a903175b8170ac482a804dc4b45028eedd8d404",
+      "tools/replay_jaw_self_mask.py": "e27c7055a7c874fbe30ac8788bce95a635fa05c39f909220ad505f9fe1d3af5c",
+      "tools/validate_vision_sequence.py": "7414c505a6b2907ecf12f145313037449d7a81335f53c71a93d55d0d1934391f"
+    },
+    "checkout": {
+      "note": "not imported; the scorer imports the batch snapshot",
+      "files_differing_from_plan": {},
+      "git_diff_stat_plan_to_head": ""
+    }
+  },
+  "inputs_sha256": {
+    "docs/evidence/hold_gen_2026-10-04/hold-gen-a-r1-20261004.json": "14c5dd35a0b0f843b57025ec5ee28ccf2a5ac58a2ed2464bdfee119360049548",
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/plan.json": "50baeb1bc7c6af08d5a159b7c649be7e6acd22daf9af83b122b65932c969b9d1",
+    "docs/evidence/hold_gen_2026-10-04/hold-gen-a-r2-20261004.json": "0bde1c1e0ca1cdab4aadb5d4e80a7d4ebfd8405da92126c654c6a8a56aa5b520",
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/plan.json": "004e81616ae101a0764d9454c0716c2be1e8e997ac507d632abafe40b5e6cb01",
+    "docs/evidence/hold_gen_2026-10-04/hold-gen-a-r3-20261004.json": "9112127ea666bf15a2badddd11f75aeac04dd7b88740cddbf5d4cd29291f51b5",
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/plan.json": "b38663985bb98cc95bc9d530e64fc8516b3ae1322a8f7b7b84a8cfd98e4e833b",
+    "docs/evidence/hold_gen_2026-10-04/hold-gen-18143-r1-20261004.json": "ed3371770b62ee95aa8ca1619b2e29971cdd9ad5119412048ba7bc35dada9436",
+    "artifacts/vision_robustness/hold-gen-18143-r1-20261004/plan.json": "c2c7fc8e0c27673944bf3339b47a76835e45a74ba0342cd7aab9af2463bb6b68",
+    "docs/evidence/hold_gen_2026-10-04/hold-gen-18143-r2-20261004.json": "1d04c19f49f833bcb11a91d5a4fa59502d9ed4f9a08fbf61c96fecf88b39bc82",
+    "artifacts/vision_robustness/hold-gen-18143-r2-20261004/plan.json": "f6566a68c239af2598ede63b61fe6abe724e856169554db967f41c22999e19a1",
+    "docs/evidence/hold_gen_2026-10-04/hold-gen-18143-r3-20261004.json": "21e1dbb128220046dc3e1cbeb56dddfe2e972ac5c2bedab7baf6050275ef94dc",
+    "artifacts/vision_robustness/hold-gen-18143-r3-20261004/plan.json": "e9c60b6b6c6b28709b23a636d685ca709841f0b45a785b67ed6e5305c5293058",
+    "docs/evidence/hold_gen_2026-10-04/hold-gen-ctl-20261004.json": "a1eb89ac338b0b2ab9d3eeb8b235c225740f4d4b3b4a1e58d82c5c7f9086a0d9",
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/plan.json": "817a495488d87dfe4f1c11e708e919134fa506f14071f1c53644066ae757cae2",
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/experiment_result.json": "01f0c7a5a6fde997c77077259f09cbd53e7682940b4673d3917b440dd13e3d45",
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/report.json": "aba6dd97db22d89eecb02925bdb788f22436f10945e5a2ff12d0246df7453287",
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/frames.json": "a2b88f65341a6a615b4eea95475558a5e2b6dad6e856cfa562ab3e1a8b265bac",
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "0bb6300658febb74ddd0381e6e4f302b8bbb6a14438a7ef2444c6e64b57dcfac",
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/experiment_result.json": "5c9367b6e709c50b5282be273de0fe1d7b1cc06e2239ba36d41f85f8276a71cc",
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/report.json": "d206a0f07c709c70700045be586f290b936570a3f95e53130044872543de5e7a",
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/frames.json": "9cefa706a8d539a3596a5d1f9c2b691531fb1b77216f93b08b48c5cf6fc495fe",
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "89d508d0869ebb49160b500f59943d797b8befd79648e0f3b1e909f99ba51a43",
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/experiment_result.json": "82c7af1b5917799ae0c251467998e2e477b0c7f6a0e8a93c4ee051cda20465e0",
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/report.json": "d021b6bf6c07aa77b1de2c60919fcb04098a0d6455d999b70858271fe4de81bc",
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/frames.json": "1aec8e359430c569a7c541d0c1e382c1f7ec3a798c4a6bff1e01c26b04aee483",
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "0bb6300658febb74ddd0381e6e4f302b8bbb6a14438a7ef2444c6e64b57dcfac",
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/experiment_result.json": "454e3bde3093ff4cc06dc7d53c4c1a128b105294a84c2775dd13fcc2f5be0e49",
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/report.json": "49697218e37b11e6db86f46d9c5f47445b84924eb3279492342c00513b494f6b",
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/frames.json": "45d25853c342805b0ae5068b1526bc0ff3617d6ed63a51a2715090f41ccb136a",
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "0af3f272b6799ec453073cbabc9b314ad5f629798882cfec4dbeba481151e3a7",
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/experiment_result.json": "ddafb0d2926a21a36dcf329c46bb99c46dc6a91b5be8103a59b95f2fb5f22343",
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/report.json": "f04a76167114c18a77e06006cd3e0c3784a21f531bb46acf2ba540a94a9706c9",
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/frames.json": "469276a69917ae40c53815859242195eaad5055f2974a48309aa3c0b1c992cec",
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "0bb6300658febb74ddd0381e6e4f302b8bbb6a14438a7ef2444c6e64b57dcfac",
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/experiment_result.json": "fc869e694fc376a2e0c72dda1fa50c7cc04696e31b9401c43de7dad179c6754f",
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/report.json": "a261ee75481da579c909b26beec8ce6005466c0ea2063b1b4e41104996115f8a",
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/frames.json": "c5315822c7981ee0d98969dd51e86a5fdac2ec8deb6b3e34e2aa7d7cf362d604",
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "d9e87b5a03b094d779a2d9befd5319d7c8854434fb824d785a9898db7ffffeaa",
+    "artifacts/vision_robustness/hold-gen-18143-r1-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/experiment_result.json": "4bf9d85bdb0a676d52a3d089675db49dd01d4f7ca93f34913d6e404e8e95fc09",
+    "artifacts/vision_robustness/hold-gen-18143-r1-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/report.json": "2b56645ea6c148810af861a81a3f566b08240b38a506787cf6a3c4da40101749",
+    "artifacts/vision_robustness/hold-gen-18143-r1-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/frames.json": "f2b336d50f6f81b648370645ed233a5615a309afc2871f1b3da154d758ce7d9f",
+    "artifacts/vision_robustness/hold-gen-18143-r1-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "d6d635f50a5974f7a45a95c0d8c49e01e57f431afb1d789dd9589a67f3e7d0e8",
+    "artifacts/vision_robustness/hold-gen-18143-r2-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/experiment_result.json": "78a455b4733f9092e2f7d5ba194ca10614e9d2308f04d3cc66b21ec8fe7db631",
+    "artifacts/vision_robustness/hold-gen-18143-r2-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/report.json": "ffd6e82fd9ff2d783185826b9c146976b41a7ae9d00384c23e956808944605d6",
+    "artifacts/vision_robustness/hold-gen-18143-r2-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/frames.json": "e82d2645d7c0e46d43945aa68886b42e507d462b732683eeab36e607523ea96a",
+    "artifacts/vision_robustness/hold-gen-18143-r2-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "b358de7b1ab6c2599bf2f0382748a42a1af41f48523a532c8ba221ecad96de3c",
+    "artifacts/vision_robustness/hold-gen-18143-r3-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/experiment_result.json": "a44d781761a161d359a986a00d1d06375aefedfea5821b6773ab6535a4e869f3",
+    "artifacts/vision_robustness/hold-gen-18143-r3-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/report.json": "9287436a4d114b1fdf797d45f229c9c6477118cb697314a586fca28f9d41de05",
+    "artifacts/vision_robustness/hold-gen-18143-r3-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/frames.json": "ea258aed193042b6bd526bcc0254611940d89746236ba19d24fd417ec8b3853a",
+    "artifacts/vision_robustness/hold-gen-18143-r3-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "b358de7b1ab6c2599bf2f0382748a42a1af41f48523a532c8ba221ecad96de3c",
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_00_source_tree0_v530_planned_pose_jaw_hold_gen/experiment_result.json": "f206d953697841f069cfc4ac141fbe99f632bd9e416e06b887e8cf297b795b80",
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_00_source_tree0_v530_planned_pose_jaw_hold_gen/report.json": "aad6722700700e5097df6e02bc500426c7840556bd725fdf77adbec47185d325",
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_00_source_tree0_v530_planned_pose_jaw_hold_gen/frames.json": "4a8f1fe1d334fa5882cb0cb34a1083de399139ed1d27e7eb8120f847ab768ff3",
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_00_source_tree0_v530_planned_pose_jaw_hold_gen/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "0efa95a65a1df49fc708d11465fd1a7c2f9a8fa8fa92235df2148324a9eef3e9",
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_01_source_tree1_v14944_planned_pose_jaw_hold_gen/experiment_result.json": "6f397bc65411e6fafe1c7f8249ccdcb787fdb555e75e05194f81fa7b79b46057",
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_01_source_tree1_v14944_planned_pose_jaw_hold_gen/report.json": "1098bdf570de75811cae854d2cb671ac5186a81b804f3c094535ab1c747b0537",
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_01_source_tree1_v14944_planned_pose_jaw_hold_gen/frames.json": "a9caba8da8fd321af7acbc9fb1e2c2613b4a896b3af37aca7e27b12b4cce7ec7",
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_01_source_tree1_v14944_planned_pose_jaw_hold_gen/frames/depth_*.npy (sha256 of '<name> <sha256>' lines in frame order)": "6ab51133d87c848b36dbfff1475943e0ff024bd9422bcca9cf4571518e325e11"
+  },
+  "grader_checks": [
+    "capture_complete_and_nonblank",
+    "ordered_contiguous_frame_indexes",
+    "strictly_increasing_capture_times",
+    "causal_previous_frame_commands",
+    "one_matching_detach_event_and_request",
+    "detach_has_completed_certified_closure",
+    "detached_state_consistent_with_event",
+    "selected_piece_pose_evidence_complete",
+    "piece_stationary_before_release",
+    "piece_dropped_after_release",
+    "robot_position_evidence_complete",
+    "post_detach_retreat_toward_home",
+    "returned_home_and_final_phase_complete",
+    "vision_commands_applied_and_counted",
+    "captured_contact_within_limit",
+    "no_recorded_stops",
+    "capture_did_not_advance_physics"
+  ],
+  "interpretations": [
+    "Plans: each plan must have been made from its registered register as committed (path and sha256), every row's strategy must have exactly the registered keys and values, and its planned orientation must equal the register's (None, the home orientation, for 14944).",
+    "Run set: the grade files must be exactly the 7 registered batches (any other file in the evidence directory refuses), each aggregated under this protocol by tools/validate_vision_sequence.py, with batch_dir exactly artifacts/vision_robustness/<batch>, holding the registered targets in plan order under their registered run labels and strategies; plans must be this protocol's, source light, 200 frames at 10 fps, with both arms on and the registered strategy fields. Otherwise nothing is scored.",
+    "Scored runs: a run is scored when it was graded (17 checks), configuration_matches is true, the capture is complete (all 200 frames recorded, in order), it is not refused, and its report shows no departure from the registered configuration. Any other run is listed in every table and decides nothing.",
+    "Scored code: as in tools/score_jaw_in_view.py, the scored modules are imported from the first batch's frozen snapshot, every batch's snapshot must equal its plan for the scored sources and the plans must freeze identical code; this scorer must itself be tracked, equal to HEAD and frozen in every plan.",
+    "Unscored runs: in H1 and H4 an unscored run is listed as not judged only for a target that does not already hold, since a target that holds on its scored runs holds whatever its unscored run would show; in H2, H3, H5 and H6 every unscored selected-target run keeps the prediction from being supported, because it might fall inside the population. A pass is graded with checks_passed == checks_total == 17; a row whose outcome disagrees refuses.",
+    "H1: a run starts closure when it has a frame whose cut phase is 'closing'. A target holds with at least 2 starts among its scored runs; it refutes with at least 2 scored runs and no start; otherwise it neither holds nor refutes. Each run that stopped before closure is listed with its cut stop frame and reason and the tracker state there.",
+    "H2: tools/score_jaw_in_view.py's P4 rule (mechanism, p4_category) over the selected targets' scored runs: predicted for runs whose gate mouth distance at closure start is at most 4 mm; a run with its first loss at k+1 is judged; a run whose cut left closing at k+1 for a non-vision reason never rendered the jaw closing and is untested for H2; runs above 4 mm or without a closure start in a settled recording are reported.",
+    "H3: tools/score_jaw_in_view.py's P5 rule (p5_category, hold_coverage) over the selected targets' scored runs: the population is the runs where H2's loss occurs (first closure loss at k+2, mask-attributable, cut still closing after k+1); coverage, tool and mouth are registered claims that cannot refute; a held frame that stops refutes, and so does detachment at another frame or no detachment once frame k+6 is recorded or the cut stopped by k+6.",
+    "H4: per selected target, a pass is the grader's class 'pass' (17/17) on a scored run. A target holds with at least one pass; it refutes when at least one of its scored runs started closure and none passed; a target whose scored runs never started closure is untested for H4. Supported when every target holds; untested when no target is judged.",
+    "H5: tools/score_jaw_in_view.py's P8 rule (static_branch) over the selected targets' scored runs that detached: the piece's PhysX origin and the true mouth-to-spur distance over [k, detach], both limits strict.",
+    "H6: tools/score_jaw_in_view.py's per-frame mask reconstruction over every scored run: the count clause refutes on any mismatch; the depth clause judges predicted jaw pixels as amended on October 2 (centre at least 0.01 px inside the undilated silhouette: depth_test's violations_outside_edge_band) and refutes on any; the literal count over every hit is reported; unscored runs are listed in a coverage clause that cannot refute.",
+    "H7: 530 holds when scored, a pass, held exactly k+2..k+6 with no held frame stopping, and detached at k+6; 14944 holds when scored, a pass, never held (tools/score_jaw_in_view.py control_window: closure_hold.held or a closure_hold certificate on any frame) and no patch element masked before detach (window 0..d). A scored control that failed a check refutes; 14944 holding or masking a patch element before detach refutes; a held frame of 530 that stops refutes. An unscored control withholds support.",
+    "Verdicts: refuted when any clause meets its registered refutation; otherwise 'untested' when the condition a prediction needs never arose (named in untested_reason); otherwise supported when every clause holds and partly supported when one does not."
+  ],
+  "runs": [
+    {
+      "batch": "hold-gen-a-r1-20261004",
+      "run_directory": "run_00_source_tree0_v3721_planned_pose_jaw_hold_gen",
+      "target": 3721,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_initial_target_not_visible",
+      "status": "graded",
+      "checks": "8/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete",
+        "vision_commands_applied_and_counted"
+      ],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": null,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": null,
+      "cut_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "shadow_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "node": "cn-r-4",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-a-r1-20261004",
+      "run_directory": "run_01_source_tree1_v36196_planned_pose_jaw_hold_gen",
+      "target": 36196,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_vision_invalid",
+      "status": "graded",
+      "checks": "9/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete"
+      ],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": null,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": null,
+      "cut_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "shadow_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "node": "cn-r-4",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-a-r2-20261004",
+      "run_directory": "run_00_source_tree0_v3721_planned_pose_jaw_hold_gen",
+      "target": 3721,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_initial_target_not_visible",
+      "status": "graded",
+      "checks": "8/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete",
+        "vision_commands_applied_and_counted"
+      ],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": null,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": null,
+      "cut_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "shadow_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "node": "cn-r-4",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-a-r2-20261004",
+      "run_directory": "run_01_source_tree1_v36196_planned_pose_jaw_hold_gen",
+      "target": 36196,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_vision_invalid",
+      "status": "graded",
+      "checks": "9/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete"
+      ],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": null,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": null,
+      "cut_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "shadow_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "node": "cn-r-4",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-a-r3-20261004",
+      "run_directory": "run_00_source_tree0_v3721_planned_pose_jaw_hold_gen",
+      "target": 3721,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_initial_target_not_visible",
+      "status": "graded",
+      "checks": "8/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete",
+        "vision_commands_applied_and_counted"
+      ],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": null,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": null,
+      "cut_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "shadow_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "node": "cn-r-4",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-a-r3-20261004",
+      "run_directory": "run_01_source_tree1_v36196_planned_pose_jaw_hold_gen",
+      "target": 36196,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_vision_invalid",
+      "status": "graded",
+      "checks": "9/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete"
+      ],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": null,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": null,
+      "cut_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "shadow_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "node": "cn-r-4",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-18143-r1-20261004",
+      "run_directory": "run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100",
+      "target": 18143,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_vision_invalid",
+      "status": "graded",
+      "checks": "9/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete"
+      ],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": null,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": null,
+      "cut_stop": [
+        23,
+        "vision_invalid"
+      ],
+      "shadow_stop": [
+        23,
+        "vision_invalid"
+      ],
+      "node": "cn-r-4",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-18143-r2-20261004",
+      "run_directory": "run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100",
+      "target": 18143,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_vision_invalid",
+      "status": "graded",
+      "checks": "9/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete"
+      ],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": null,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": null,
+      "cut_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "shadow_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "node": "cn-r-4",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-18143-r3-20261004",
+      "run_directory": "run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100",
+      "target": 18143,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "stopped_vision_invalid",
+      "status": "graded",
+      "checks": "9/17",
+      "failed_checks": [
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "no_recorded_stops",
+        "one_matching_detach_event_and_request",
+        "piece_dropped_after_release",
+        "piece_stationary_before_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete"
+      ],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": null,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": null,
+      "cut_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "shadow_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "node": "cn-r-5",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-ctl-20261004",
+      "run_directory": "run_00_source_tree0_v530_planned_pose_jaw_hold_gen",
+      "target": 530,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "pass",
+      "status": "graded",
+      "checks": "17/17",
+      "failed_checks": [],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": 74,
+      "first_loss_frame": 76,
+      "held_frames": [
+        76,
+        77,
+        78,
+        79,
+        80
+      ],
+      "detach_frame": 80,
+      "cut_stop": [
+        null,
+        null
+      ],
+      "shadow_stop": [
+        76,
+        "vision_invalid"
+      ],
+      "node": "cn-r-5",
+      "gpu_model": "A40"
+    },
+    {
+      "batch": "hold-gen-ctl-20261004",
+      "run_directory": "run_01_source_tree1_v14944_planned_pose_jaw_hold_gen",
+      "target": 14944,
+      "label": "known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames",
+      "outcome": "pass",
+      "status": "graded",
+      "checks": "17/17",
+      "failed_checks": [],
+      "configuration_matches": true,
+      "scored": true,
+      "unscored_reason": null,
+      "frames_recorded": 200,
+      "closure_start_frame": 71,
+      "first_loss_frame": null,
+      "held_frames": [],
+      "detach_frame": 77,
+      "cut_stop": [
+        null,
+        null
+      ],
+      "shadow_stop": [
+        null,
+        null
+      ],
+      "node": "cn-r-5",
+      "gpu_model": "A40"
+    }
+  ],
+  "predictions": [
+    {
+      "id": "H1",
+      "prediction": "(the planned approach reaches closure) Each selected target starts closure in at least 2 of its 3 runs. Refuted if a target with at least 2 scored runs starts closure in none of them.",
+      "clauses": [
+        {
+          "clause": "each selected target starts closure in at least 2 of its scored runs",
+          "observed": {
+            "targets": {
+              "3721": {
+                "scored_runs": 3,
+                "closure_starts": 0,
+                "stopped_before_closure": {
+                  "hold-gen-a-r1-20261004 3721": {
+                    "outcome": "stopped_initial_target_not_visible",
+                    "checks": "8/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete",
+                      "vision_commands_applied_and_counted"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "initial_target_not_visible"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "explicit_initialization_required"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-a-r2-20261004 3721": {
+                    "outcome": "stopped_initial_target_not_visible",
+                    "checks": "8/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete",
+                      "vision_commands_applied_and_counted"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "initial_target_not_visible"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "explicit_initialization_required"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-a-r3-20261004 3721": {
+                    "outcome": "stopped_initial_target_not_visible",
+                    "checks": "8/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete",
+                      "vision_commands_applied_and_counted"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "initial_target_not_visible"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "explicit_initialization_required"
+                    ],
+                    "gpu_model": "A40"
+                  }
+                }
+              },
+              "36196": {
+                "scored_runs": 3,
+                "closure_starts": 0,
+                "stopped_before_closure": {
+                  "hold-gen-a-r1-20261004 36196": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      69,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "jaw_mask_occluded",
+                      "too_few_unmasked_patch_pixels"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-a-r2-20261004 36196": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      69,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "jaw_mask_occluded",
+                      "too_few_unmasked_patch_pixels"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-a-r3-20261004 36196": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      69,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "jaw_mask_occluded",
+                      "too_few_unmasked_patch_pixels"
+                    ],
+                    "gpu_model": "A40"
+                  }
+                }
+              },
+              "18143": {
+                "scored_runs": 3,
+                "closure_starts": 0,
+                "stopped_before_closure": {
+                  "hold-gen-18143-r1-20261004 18143": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      23,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "invalid_depth",
+                      "depth_measurement_rejected"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-18143-r2-20261004 18143": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "optical_flow_failed"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-18143-r3-20261004 18143": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "optical_flow_failed"
+                    ],
+                    "gpu_model": "A40"
+                  }
+                }
+              }
+            },
+            "short": [
+              3721,
+              36196,
+              18143
+            ],
+            "refuting": [
+              3721,
+              36196,
+              18143
+            ]
+          },
+          "holds": false,
+          "refutes": true
+        },
+        {
+          "clause": "informational: every unscored selected-target run",
+          "observed": {
+            "none": true
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "refuted"
+    },
+    {
+      "id": "H2",
+      "prediction": "(mechanism, as P4) In selected-target runs whose closure starts at a gate mouth distance of at most 4 mm, the first closure loss comes at k+2 and is mask-attributable; the shadow controller stops there. Refuted if tracking continues at k+3, or the first loss comes at another frame or is not mask-attributable.",
+      "clauses": [
+        {
+          "clause": "the first closure loss comes at closure start + 2",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "tracking does not continue at closure start + 3",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "the first closure loss is mask-attributable",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "the shadow controller (cut_without_hold) stops at the loss; its reason is reported (not a refutation condition)",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "reported, not predicted: selected-target runs whose closure started above 4 mm or never started",
+          "observed": {
+            "hold-gen-a-r1-20261004 3721": {
+              "outcome": "stopped_initial_target_not_visible",
+              "gpu_model": "A40",
+              "closure_start_frame": null,
+              "closure_started_s": null,
+              "mouth_distance_at_start_m": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "scanned_through": null,
+              "cut_phase_k_plus_1": null,
+              "cut_stop": [
+                0,
+                "initial_target_not_visible"
+              ],
+              "state_at_loss": null,
+              "reason_at_loss": null,
+              "mask_explanation": null,
+              "attributable": false,
+              "recorded_hold_at_loss": null,
+              "shadow_stop_frame": 0,
+              "shadow_stop_reason": "initial_target_not_visible",
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r1-20261004 36196": {
+              "outcome": "stopped_vision_invalid",
+              "gpu_model": "A40",
+              "closure_start_frame": null,
+              "closure_started_s": null,
+              "mouth_distance_at_start_m": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "scanned_through": null,
+              "cut_phase_k_plus_1": null,
+              "cut_stop": [
+                69,
+                "vision_invalid"
+              ],
+              "state_at_loss": null,
+              "reason_at_loss": null,
+              "mask_explanation": null,
+              "attributable": false,
+              "recorded_hold_at_loss": null,
+              "shadow_stop_frame": 69,
+              "shadow_stop_reason": "vision_invalid",
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r2-20261004 3721": {
+              "outcome": "stopped_initial_target_not_visible",
+              "gpu_model": "A40",
+              "closure_start_frame": null,
+              "closure_started_s": null,
+              "mouth_distance_at_start_m": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "scanned_through": null,
+              "cut_phase_k_plus_1": null,
+              "cut_stop": [
+                0,
+                "initial_target_not_visible"
+              ],
+              "state_at_loss": null,
+              "reason_at_loss": null,
+              "mask_explanation": null,
+              "attributable": false,
+              "recorded_hold_at_loss": null,
+              "shadow_stop_frame": 0,
+              "shadow_stop_reason": "initial_target_not_visible",
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r2-20261004 36196": {
+              "outcome": "stopped_vision_invalid",
+              "gpu_model": "A40",
+              "closure_start_frame": null,
+              "closure_started_s": null,
+              "mouth_distance_at_start_m": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "scanned_through": null,
+              "cut_phase_k_plus_1": null,
+              "cut_stop": [
+                69,
+                "vision_invalid"
+              ],
+              "state_at_loss": null,
+              "reason_at_loss": null,
+              "mask_explanation": null,
+              "attributable": false,
+              "recorded_hold_at_loss": null,
+              "shadow_stop_frame": 69,
+              "shadow_stop_reason": "vision_invalid",
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r3-20261004 3721": {
+              "outcome": "stopped_initial_target_not_visible",
+              "gpu_model": "A40",
+              "closure_start_frame": null,
+              "closure_started_s": null,
+              "mouth_distance_at_start_m": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "scanned_through": null,
+              "cut_phase_k_plus_1": null,
+              "cut_stop": [
+                0,
+                "initial_target_not_visible"
+              ],
+              "state_at_loss": null,
+              "reason_at_loss": null,
+              "mask_explanation": null,
+              "attributable": false,
+              "recorded_hold_at_loss": null,
+              "shadow_stop_frame": 0,
+              "shadow_stop_reason": "initial_target_not_visible",
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r3-20261004 36196": {
+              "outcome": "stopped_vision_invalid",
+              "gpu_model": "A40",
+              "closure_start_frame": null,
+              "closure_started_s": null,
+              "mouth_distance_at_start_m": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "scanned_through": null,
+              "cut_phase_k_plus_1": null,
+              "cut_stop": [
+                69,
+                "vision_invalid"
+              ],
+              "state_at_loss": null,
+              "reason_at_loss": null,
+              "mask_explanation": null,
+              "attributable": false,
+              "recorded_hold_at_loss": null,
+              "shadow_stop_frame": 69,
+              "shadow_stop_reason": "vision_invalid",
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-18143-r1-20261004 18143": {
+              "outcome": "stopped_vision_invalid",
+              "gpu_model": "A40",
+              "closure_start_frame": null,
+              "closure_started_s": null,
+              "mouth_distance_at_start_m": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "scanned_through": null,
+              "cut_phase_k_plus_1": null,
+              "cut_stop": [
+                23,
+                "vision_invalid"
+              ],
+              "state_at_loss": null,
+              "reason_at_loss": null,
+              "mask_explanation": null,
+              "attributable": false,
+              "recorded_hold_at_loss": null,
+              "shadow_stop_frame": 23,
+              "shadow_stop_reason": "vision_invalid",
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-18143-r2-20261004 18143": {
+              "outcome": "stopped_vision_invalid",
+              "gpu_model": "A40",
+              "closure_start_frame": null,
+              "closure_started_s": null,
+              "mouth_distance_at_start_m": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "scanned_through": null,
+              "cut_phase_k_plus_1": null,
+              "cut_stop": [
+                0,
+                "vision_invalid"
+              ],
+              "state_at_loss": null,
+              "reason_at_loss": null,
+              "mask_explanation": null,
+              "attributable": false,
+              "recorded_hold_at_loss": null,
+              "shadow_stop_frame": 0,
+              "shadow_stop_reason": "vision_invalid",
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-18143-r3-20261004 18143": {
+              "outcome": "stopped_vision_invalid",
+              "gpu_model": "A40",
+              "closure_start_frame": null,
+              "closure_started_s": null,
+              "mouth_distance_at_start_m": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "scanned_through": null,
+              "cut_phase_k_plus_1": null,
+              "cut_stop": [
+                0,
+                "vision_invalid"
+              ],
+              "state_at_loss": null,
+              "reason_at_loss": null,
+              "mask_explanation": null,
+              "attributable": false,
+              "recorded_hold_at_loss": null,
+              "shadow_stop_frame": 0,
+              "shadow_stop_reason": "vision_invalid",
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "untested",
+      "untested_reason": "no scored selected-target run started closure at a gate mouth distance of at most 4 mm"
+    },
+    {
+      "id": "H3",
+      "prediction": "(hold to detachment, as P5) Where H2's loss occurs, the hold covers it to the deadline, the tool stays within 0.5 mm and 0.25 deg, held mouth distances stay within 0.05 mm of the closure-start value, and detachment comes at k+6. Refuted if any held frame stops or detachment comes at another frame.",
+      "clauses": [
+        {
+          "clause": "the hold covers every frame from H2's loss (k+2) to the deadline (not a refutation condition)",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "the tool stays within 0.5 mm and 0.25 deg over k+1..k+6 (not a refutation condition)",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "held mouth distances equal the closure-start value within 0.05 mm (not a refutation condition)",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "detachment comes at closure start + 6",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "no held frame stops",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "every held frame carries the protocol's definition of a held frame (not a refutation condition)",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "reported, not predicted: runs where H2's loss did not occur",
+          "observed": {
+            "hold-gen-a-r1-20261004 3721": {
+              "outcome": "stopped_initial_target_not_visible",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "initial_target_not_visible"
+              ],
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r1-20261004 36196": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                69,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r2-20261004 3721": {
+              "outcome": "stopped_initial_target_not_visible",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "initial_target_not_visible"
+              ],
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r2-20261004 36196": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                69,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r3-20261004 3721": {
+              "outcome": "stopped_initial_target_not_visible",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "initial_target_not_visible"
+              ],
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-a-r3-20261004 36196": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                69,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-18143-r1-20261004 18143": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                23,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-18143-r2-20261004 18143": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            },
+            "hold-gen-18143-r3-20261004 18143": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "no closure start"
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "untested",
+      "untested_reason": "no scored selected-target run had H2's loss"
+    },
+    {
+      "id": "H4",
+      "prediction": "(outcome) Each selected target passes all 17 checks in at least 1 of its runs. Refuted if a target with at least one scored run that started closure has no pass.",
+      "clauses": [
+        {
+          "clause": "each selected target passes all 17 checks in at least 1 of its runs",
+          "observed": {
+            "targets": {
+              "3721": {
+                "runs": {
+                  "hold-gen-a-r1-20261004 3721": {
+                    "outcome": "stopped_initial_target_not_visible",
+                    "checks": "8/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete",
+                      "vision_commands_applied_and_counted"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "initial_target_not_visible"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "explicit_initialization_required"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-a-r2-20261004 3721": {
+                    "outcome": "stopped_initial_target_not_visible",
+                    "checks": "8/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete",
+                      "vision_commands_applied_and_counted"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "initial_target_not_visible"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "explicit_initialization_required"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-a-r3-20261004 3721": {
+                    "outcome": "stopped_initial_target_not_visible",
+                    "checks": "8/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete",
+                      "vision_commands_applied_and_counted"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "initial_target_not_visible"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "explicit_initialization_required"
+                    ],
+                    "gpu_model": "A40"
+                  }
+                },
+                "passes": [],
+                "scored_runs_that_started_closure": 0
+              },
+              "36196": {
+                "runs": {
+                  "hold-gen-a-r1-20261004 36196": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      69,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "jaw_mask_occluded",
+                      "too_few_unmasked_patch_pixels"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-a-r2-20261004 36196": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      69,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "jaw_mask_occluded",
+                      "too_few_unmasked_patch_pixels"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-a-r3-20261004 36196": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      69,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "jaw_mask_occluded",
+                      "too_few_unmasked_patch_pixels"
+                    ],
+                    "gpu_model": "A40"
+                  }
+                },
+                "passes": [],
+                "scored_runs_that_started_closure": 0
+              },
+              "18143": {
+                "runs": {
+                  "hold-gen-18143-r1-20261004 18143": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      23,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "invalid_depth",
+                      "depth_measurement_rejected"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-18143-r2-20261004 18143": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "optical_flow_failed"
+                    ],
+                    "gpu_model": "A40"
+                  },
+                  "hold-gen-18143-r3-20261004 18143": {
+                    "outcome": "stopped_vision_invalid",
+                    "checks": "9/17",
+                    "failed_checks": [
+                      "detach_has_completed_certified_closure",
+                      "detached_state_consistent_with_event",
+                      "no_recorded_stops",
+                      "one_matching_detach_event_and_request",
+                      "piece_dropped_after_release",
+                      "piece_stationary_before_release",
+                      "post_detach_retreat_toward_home",
+                      "returned_home_and_final_phase_complete"
+                    ],
+                    "closure_start_frame": null,
+                    "cut_stop": [
+                      0,
+                      "vision_invalid"
+                    ],
+                    "tracker_at_stop": [
+                      "tracking_lost",
+                      "optical_flow_failed"
+                    ],
+                    "gpu_model": "A40"
+                  }
+                },
+                "passes": [],
+                "scored_runs_that_started_closure": 0
+              }
+            },
+            "without_a_pass_after_closure": [],
+            "untested": [
+              3721,
+              36196,
+              18143
+            ]
+          },
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "informational: every unscored selected-target run",
+          "observed": {
+            "none": true
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "untested",
+      "untested_reason": "no selected target had a scored run that passed or started closure"
+    },
+    {
+      "id": "H5",
+      "prediction": "(static-branch premise, as P8) In every selected-target run that detaches, the piece moves less than 0.1 mm and the true mouth-to-spur distance changes by less than 0.1 mm between closure start and detach.",
+      "clauses": [
+        {
+          "clause": "the selected piece moves less than 0.1 mm between closure start and detach",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "the true mouth-to-spur distance changes by less than 0.1 mm between closure start and detach",
+          "observed": {},
+          "holds": false,
+          "refutes": false
+        },
+        {
+          "clause": "reported, not predicted: runs that never detached",
+          "observed": {
+            "hold-gen-a-r1-20261004 3721": {
+              "outcome": "stopped_initial_target_not_visible",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "initial_target_not_visible"
+              ],
+              "last_recorded_frame": 199,
+              "why": "never detached"
+            },
+            "hold-gen-a-r1-20261004 36196": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                69,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "never detached"
+            },
+            "hold-gen-a-r2-20261004 3721": {
+              "outcome": "stopped_initial_target_not_visible",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "initial_target_not_visible"
+              ],
+              "last_recorded_frame": 199,
+              "why": "never detached"
+            },
+            "hold-gen-a-r2-20261004 36196": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                69,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "never detached"
+            },
+            "hold-gen-a-r3-20261004 3721": {
+              "outcome": "stopped_initial_target_not_visible",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "initial_target_not_visible"
+              ],
+              "last_recorded_frame": 199,
+              "why": "never detached"
+            },
+            "hold-gen-a-r3-20261004 36196": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                69,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "never detached"
+            },
+            "hold-gen-18143-r1-20261004 18143": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                23,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "never detached"
+            },
+            "hold-gen-18143-r2-20261004 18143": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "never detached"
+            },
+            "hold-gen-18143-r3-20261004 18143": {
+              "outcome": "stopped_vision_invalid",
+              "closure_start_frame": null,
+              "mouth_distance_at_start_mm": null,
+              "first_loss_frame": null,
+              "first_loss_offset": null,
+              "mask_explanation": null,
+              "held_frames": [],
+              "detach_frame": null,
+              "cut_stop": [
+                0,
+                "vision_invalid"
+              ],
+              "last_recorded_frame": 199,
+              "why": "never detached"
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "untested",
+      "untested_reason": "no selected-target run detached"
+    },
+    {
+      "id": "H6",
+      "prediction": "(mask fidelity, P1 as amended October 2) On every frame of all runs the recorded mask count equals the reconstruction, and no predicted jaw pixel (at least 0.01 px inside the silhouette) shows depth more than 1 mm beyond the box. Refuted by any mismatch.",
+      "clauses": [
+        {
+          "clause": "the recorded mask pixel count equals the offline reconstruction on every recorded frame",
+          "observed": {
+            "hold-gen-a-r1-20261004 3721": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5915
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": null,
+                "preview_observation_mask_pixel_count": 5915,
+                "reconstructed_with_rebuilt_camera": 5915,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-a-r1-20261004 36196": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5964
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5964,
+                "preview_observation_mask_pixel_count": 5964,
+                "reconstructed_with_rebuilt_camera": 5964,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-a-r2-20261004 3721": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5915
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": null,
+                "preview_observation_mask_pixel_count": 5915,
+                "reconstructed_with_rebuilt_camera": 5915,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-a-r2-20261004 36196": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5964
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5964,
+                "preview_observation_mask_pixel_count": 5964,
+                "reconstructed_with_rebuilt_camera": 5964,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-a-r3-20261004 3721": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5915
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": null,
+                "preview_observation_mask_pixel_count": 5915,
+                "reconstructed_with_rebuilt_camera": 5915,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-a-r3-20261004 36196": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5964
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5964,
+                "preview_observation_mask_pixel_count": 5964,
+                "reconstructed_with_rebuilt_camera": 5964,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-18143-r1-20261004 18143": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5731
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5731,
+                "preview_observation_mask_pixel_count": 5731,
+                "reconstructed_with_rebuilt_camera": 5731,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-18143-r2-20261004 18143": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5731
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5731,
+                "preview_observation_mask_pixel_count": 5731,
+                "reconstructed_with_rebuilt_camera": 5731,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-18143-r3-20261004 18143": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5731
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5731,
+                "preview_observation_mask_pixel_count": 5731,
+                "reconstructed_with_rebuilt_camera": 5731,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-ctl-20261004 530": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  5793
+                ],
+                "0.166667": [
+                  5796
+                ],
+                "0.333333": [
+                  5806
+                ],
+                "0.500000": [
+                  5752
+                ],
+                "0.666667": [
+                  5588
+                ],
+                "0.833333": [
+                  5348
+                ],
+                "1.000000": [
+                  5024
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 5793,
+                "preview_observation_mask_pixel_count": 5793,
+                "reconstructed_with_rebuilt_camera": 5793,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            },
+            "hold-gen-ctl-20261004 14944": {
+              "frames_checked": 200,
+              "count_mismatches": [],
+              "counts_by_rendered_progress": {
+                "0.000000": [
+                  3524
+                ],
+                "0.166667": [
+                  3458
+                ],
+                "0.333333": [
+                  3393
+                ],
+                "0.500000": [
+                  3341
+                ],
+                "0.666667": [
+                  3277
+                ],
+                "0.833333": [
+                  3222
+                ],
+                "1.000000": [
+                  3157
+                ]
+              },
+              "preview_not_judged": {
+                "initialization_mask_pixel_count": 3524,
+                "preview_observation_mask_pixel_count": 3524,
+                "reconstructed_with_rebuilt_camera": 3524,
+                "note": "not a recorded frame; its camera pose is rebuilt from the initial tool pose; not judged"
+              }
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "no predicted jaw pixel (centre at least 0.01 px inside the undilated silhouette) shows recorded depth more than 1 mm beyond the analytic box depth (as amended October 2)",
+          "observed": {
+            "amendment_label": "P1 amended October 2 (0.01 px outline band)",
+            "edge_band_listing_note": "depth_test lists the band hits beyond 1 mm (signed distance and depths) and counts every band hit; band hits within 1 mm are counted, not listed",
+            "runs": {
+              "hold-gen-a-r1-20261004 3721": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1000,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.942229303727679e-05,
+                "hit_pixels_min_max": [
+                  5068,
+                  5068
+                ],
+                "nearer_pixels_min_max": [
+                  0,
+                  0
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-a-r1-20261004 36196": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1600,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.156180239000555e-05,
+                "hit_pixels_min_max": [
+                  5116,
+                  5116
+                ],
+                "nearer_pixels_min_max": [
+                  998,
+                  1492
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-a-r2-20261004 3721": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1000,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.942229303727679e-05,
+                "hit_pixels_min_max": [
+                  5068,
+                  5068
+                ],
+                "nearer_pixels_min_max": [
+                  0,
+                  0
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-a-r2-20261004 36196": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1600,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.156180239000555e-05,
+                "hit_pixels_min_max": [
+                  5116,
+                  5116
+                ],
+                "nearer_pixels_min_max": [
+                  998,
+                  1491
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-a-r3-20261004 3721": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1000,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.942229303727679e-05,
+                "hit_pixels_min_max": [
+                  5068,
+                  5068
+                ],
+                "nearer_pixels_min_max": [
+                  0,
+                  0
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-a-r3-20261004 36196": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1600,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.156180239000555e-05,
+                "hit_pixels_min_max": [
+                  5116,
+                  5116
+                ],
+                "nearer_pixels_min_max": [
+                  998,
+                  1493
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-18143-r1-20261004 18143": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1000,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.652628213396852e-05,
+                "hit_pixels_min_max": [
+                  4897,
+                  4897
+                ],
+                "nearer_pixels_min_max": [
+                  1965,
+                  1965
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-18143-r2-20261004 18143": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1000,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.05119220129258e-05,
+                "hit_pixels_min_max": [
+                  4897,
+                  4897
+                ],
+                "nearer_pixels_min_max": [
+                  1965,
+                  1965
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-18143-r3-20261004 18143": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1000,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 9.05119220129258e-05,
+                "hit_pixels_min_max": [
+                  4897,
+                  4897
+                ],
+                "nearer_pixels_min_max": [
+                  1965,
+                  1965
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-ctl-20261004 530": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 721,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 0.00010548811724131468,
+                "hit_pixels_min_max": [
+                  4424,
+                  4969
+                ],
+                "nearer_pixels_min_max": [
+                  1096,
+                  2072
+                ],
+                "hit_outside_mask": 0
+              },
+              "hold-gen-ctl-20261004 14944": {
+                "frames_checked": 200,
+                "missing_depth_frames": [],
+                "unreadable_depth_frames": [],
+                "violations": 0,
+                "violation_frames": [],
+                "edge_band_sensitivity": {
+                  "edge_band_px": 0.01,
+                  "violations_outside_edge_band": 0,
+                  "edge_band_pixels": 1656,
+                  "edge_band_beyond": []
+                },
+                "max_excess_mm": 0.0009342221536923212,
+                "hit_pixels_min_max": [
+                  2379,
+                  2731
+                ],
+                "nearer_pixels_min_max": [
+                  0,
+                  61
+                ],
+                "hit_outside_mask": 0
+              }
+            },
+            "runs_with_violations": [],
+            "literal_reading_not_registered_here": {
+              "runs_with_violations": [],
+              "violations": 0
+            }
+          },
+          "holds": true,
+          "refutes": false
+        },
+        {
+          "clause": "every frame of all eleven planned runs was recorded and checked (coverage; not a refutation condition)",
+          "observed": {
+            "hold-gen-a-r1-20261004 3721": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-a-r1-20261004 36196": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-a-r2-20261004 3721": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-a-r2-20261004 36196": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-a-r3-20261004 3721": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-a-r3-20261004 36196": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-18143-r1-20261004 18143": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-18143-r2-20261004 18143": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-18143-r3-20261004 18143": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-ctl-20261004 530": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            },
+            "hold-gen-ctl-20261004 14944": {
+              "judged": true,
+              "frames_recorded": 200,
+              "missing_mask_record_frames": [],
+              "missing_depth_frames": []
+            }
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "H7",
+      "prediction": "(controls) 530 passes 17/17 with the hold over k+2..k+6 and detach at k+6; 14944 passes 17/17, never holds and has no patch element masked before detach. Refuted if either fails a check, 14944 holds or masks a patch element before detach, or a held frame of 530 stops.",
+      "clauses": [
+        {
+          "clause": "530 passes with the hold over k+2..k+6 and detach at k+6; 14944 passes, never holds and masks no patch element before detach",
+          "observed": {
+            "controls": {
+              "hold-gen-ctl-20261004 530": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "failed_checks": [],
+                "closure_start_frame": 74,
+                "cut_stop": [
+                  null,
+                  null
+                ],
+                "tracker_at_stop": [
+                  null,
+                  null
+                ],
+                "gpu_model": "A40",
+                "held_frames": [
+                  76,
+                  77,
+                  78,
+                  79,
+                  80
+                ],
+                "expected_held_frames": [
+                  76,
+                  77,
+                  78,
+                  79,
+                  80
+                ],
+                "detach_frame": 80,
+                "held_stop_frames": [],
+                "holds": true
+              },
+              "hold-gen-ctl-20261004 14944": {
+                "outcome": "pass",
+                "checks": "17/17",
+                "failed_checks": [],
+                "closure_start_frame": 71,
+                "cut_stop": [
+                  null,
+                  null
+                ],
+                "tracker_at_stop": [
+                  null,
+                  null
+                ],
+                "gpu_model": "A40",
+                "detach_frame": 77,
+                "window": [
+                  0,
+                  77
+                ],
+                "window_complete": true,
+                "masked": [],
+                "held_frames": []
+              }
+            },
+            "refuting": []
+          },
+          "holds": true,
+          "refutes": false
+        }
+      ],
+      "verdict": "supported"
+    }
+  ]
+}

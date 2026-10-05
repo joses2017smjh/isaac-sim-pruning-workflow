@@ -391,18 +391,22 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       frame-reuse checks waived on held frames*.
       [Result](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026) ·
       [verdicts](evidence/jaw_in_view_verdicts_2026-10-02.json).
-- [ ] Test the closure hold for generalization. It was designed on the same
-      three 530 recordings it then passed on, so the October 2 runs confirm it
-      in closed loop but do not test it on an unseen contact target.
-      - The lost known-map planner is rebuilt and passed its acceptance test
-        (October 4).
-      - 34 targets qualify. Only 3 of them (tree0 3721, tree1 18143, tree1
-        36196) have no checked plan that keeps the jaw out of view.
-      - Registered October 4 with H0–H7 on the 3 targets. P0 passed and the
-        blind-reviewed scorer was committed. Submitted: 11 runs, 495 GPU-min.
+- [x] Test the closure hold for generalization: run October 4, a negative
+      result. The rebuilt known-map planner passed its acceptance test and
+      selected 3 targets with no checked jaw-free plan, but none reached
+      closure in 9 runs, so the hold was not exercised (H1 refuted, H2–H5
+      untested). Each target failed on one of the planner's perception
+      predictions:
+      - 3721: the seed is occluded at home;
+      - 36196: the open jaw covered the patch on the approach;
+      - 18143: tracking was lost during the re-orientation.
 
-      [Scope and results](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md#steps-1-and-2--october-4-2026) ·
-      [protocol](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md).
+      The controls passed, and H6/H7 are supported.
+      [Result](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md#result--october-5-2026).
+- [ ] Perception-side target selection for any further hold test: check the
+      seed's rendered depth at home, the jaw mask with a margin on every
+      approach frame, and tracking through the re-orientation (a proposal; not
+      started, needs approval).
 - [x] Amended mask-fidelity check for future runs: pixels within 0.01 px of
       the jaw's outline are not judged. The user approved it on October 2,
       and it is registered in the

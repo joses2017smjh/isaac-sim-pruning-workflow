@@ -844,3 +844,17 @@ constraint `a40|rtx8000` and 45-minute tasks. The share's project usage was
 Every result carries the label *known-map plan; jaw self-mask; closure hold
 with freshness and frame-reuse checks waived on held frames*, and is never
 pooled with unchanged-gate runs.
+
+**Closure-hold generalization runs (October 4).** All 11 tasks ran on an A40
+and used 155 of the 495 reserved GPU-minutes. Slurm states: the 9
+selected-target runs FAILED (exit 1) and both controls COMPLETED. These
+reveal pass or fail; the scorer was committed before submission.
+
+Grading: CPU job `21552057` (`share`, October 4), `aggregate_eval.py` at
+`a5da1b1`, seven batches, all exit 0. The grades were committed unopened at
+`81bcfc8`. Scored by CPU job `21552075` at `81bcfc8`:
+- H1 refuted: 0 of 9 selected runs reached closure;
+- H2–H5 untested;
+- H6 and H7 supported.
+
+[Result](docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md#result--october-5-2026).

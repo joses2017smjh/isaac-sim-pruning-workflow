@@ -165,3 +165,70 @@ committed before submission, they are recorded as they arrive.
 GPU-minutes reserved** (approved October 4). About 5 GB of captures on the
 hpc-share, whose project quota is above the 1.5 TiB soft limit and below the
 2 TiB hard limit.
+
+## Result — October 5, 2026
+
+All 11 runs recorded 200 frames on an A40 and used 155 of the 495 reserved
+GPU-minutes. `tools/validate_vision_sequence.py` graded them, through
+`aggregate_eval.py` (CPU job `21552057`). The scorer
+`tools/score_hold_generalization.py` ran from a clean clone at `81bcfc8` (CPU
+job `21552075`). It, and every scoring module it imports, is byte-identical
+to the copy frozen in every batch's plan.
+
+Evidence: [verdicts](evidence/hold_gen_verdicts_2026-10-05.json) and the
+per-batch [grades](evidence/hold_gen_2026-10-04/).
+
+| Run | Grader's outcome | Where and why it stopped |
+|---|---|---|
+| tree0 3721, ×3 | 8/17 each | frame 0: initialization rejected at home. The seed pixel's depth is 0.347 m against the 0.393 m expected (`selected_branch_occluded_or_wrong_surface`) |
+| tree1 36196, ×3 | 9/17 each | frame 69, on the final leg: `jaw_mask_occluded`, the open jaw covering the patch |
+| tree1 18143, ×3 | 9/17 each | the re-orientation leg: tracking lost at frame 0 (optical flow, 2 runs) and frame 23 (depth rejected, 1 run) |
+| 530 (control) | pass 17/17 | none: held 76–80, detached at 80 |
+| 14944 (control) | pass 17/17 | none: never held |
+
+| | Registered | Measured | Verdict |
+|---|---|---|---|
+| **H0** | the P0 gate | [passed](evidence/hold_gen_p0_2026-10-04.json), checks A–D | passed |
+| **H1** | each target starts closure in at least 2 of 3 runs | 0 of 3 for every target | **refuted** |
+| **H2** | first closure loss at k + 2, mask-attributable | no selected run started closure | untested |
+| **H3** | hold to detachment | no run had H2's loss | untested |
+| **H4** | each target passes at least once | no selected run passed or started closure | untested |
+| **H5** | static-branch premise | no selected run detached | untested |
+| **H6** | mask fidelity (P1 as amended) | counts exact on every frame; no violation, with or without the 0.01 px band | supported |
+| **H7** | controls | 530 passed with the hold over 76–80 and detach at 80; 14944 passed and never held | supported |
+
+**Reading.** Every result carries the label *known-map plan; jaw self-mask;
+closure hold with freshness and frame-reuse checks waived on held frames*.
+- **The hold was never exercised on an unseen target.** None of the 9 runs
+  reached closure, so H2–H5 are untested. This experiment says nothing either
+  way about whether the hold generalizes.
+- **Each target failed on a planner prediction about perception, in all 3 of
+  its runs.** The planner's geometry passed its acceptance test (contacts,
+  time-of-flight and refusals). Its three perception predictions did not
+  transfer to the live runs:
+  - **3721, visibility at home.** The planner's line-of-sight check called the
+    seed visible, but the rendered depth shows a surface 47 mm in front of the
+    spur, and the tracker refuses to start. This happens at home, so it would
+    stop any approach to this target.
+  - **36196, the jaw on the approach.** Condition (b) predicted at least 148
+    of 169 patch elements kept on the approach, the smallest margin of the
+    three. Live, the open jaw covered the patch at frame 69, as it did 19444's.
+  - **18143, tracking through the re-orientation.** The tracker initialized,
+    then lost the target during the 38° re-orientation at the 100 mm standoff.
+    The scope listed this as untested.
+- **The controls confirm the code.** At this commit 530 passed with the hold
+  exactly as on October 2, and 14944 passed with no hold. The mask matched its
+  reconstruction on every frame of all 11 runs.
+
+**Seen before scoring.** The Slurm states (9 FAILED, 2 COMPLETED) were seen
+before the scorer ran. They reveal H4's and H7's pass clauses. The scorer was
+committed before submission and was not amended, so nothing seen could shape
+it.
+
+**What would be needed to test the hold on another target.** A selection that
+checks perception on the renderer, not by ray casting:
+- the seed's rendered depth at home;
+- the jaw mask on every approach frame, with a margin;
+- tracking through the re-orientation (a replay or a short render).
+
+That is a new proposal; nothing has been started.

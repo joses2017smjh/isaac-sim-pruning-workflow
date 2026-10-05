@@ -1,20 +1,16 @@
 # Pending work and stretch goals
 
-Updated October 4, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
+Updated October 5, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
 and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-- **Closure hold on unseen contact targets** (approved October 4, 495
-  GPU-min).
-  - Registered in its
-    [protocol](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md) with H0–H7.
-  - The P0 gate passed, and a blind-reviewed scorer was committed before
-    submission.
-  - Seven chained batches, `21546371` … `21546379`: tree0 3721, tree1 36196
-    and tree1 18143 ×3 each, plus controls 530 and 14944.
+Nothing is queued or running.
 
 Finished and published:
+- [closure hold on unseen targets](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md#result--october-5-2026):
+  a negative result. 0 of 9 runs reached closure, so the hold was not
+  exercised; the controls passed.
 - [agreement arm in closed loop](EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md#result--october-4-2026):
   evening 14944 passed 17/17 in 4 of 4 runs; A1–A5 supported.
 - [jaw in the camera's view](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#result--october-2-2026):
@@ -44,9 +40,14 @@ Finished and published:
 - **P1 with a 0.01 px outline band**, for future runs. Registered in the
   [jaw-in-view protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#registered-for-future-runs--october-2-2026).
   The October 2 verdict stays refuted.
-- **Generalize the closure hold**
-  ([scope](SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md#steps-1-and-2--october-4-2026)):
-  submitted October 4 (see Queued).
+- **Perception-side target selection** (the next step for testing the hold
+  on another target). Check on the renderer, not by ray casting:
+  - the seed's depth at home;
+  - the jaw mask with a margin on every approach frame;
+  - tracking through the re-orientation.
+
+  The October 4 test failed on exactly these three. This needs approval
+  before any work starts.
 - **Evening 14944: the registered agreement arm in closed loop**
   ([scope](SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md)): done October 4,
   4 of 4 passes (see Finished).

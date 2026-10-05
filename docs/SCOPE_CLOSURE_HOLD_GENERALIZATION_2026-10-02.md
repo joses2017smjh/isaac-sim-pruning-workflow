@@ -185,3 +185,15 @@ checked:
 | tree1 36196 | 38.3°, 60 mm standoff | 148 | 77 | 10.7 mm | 73 mm |
 
 The GPU experiment (step 3) needs the user's choice of target set and budget.
+
+## Step 3 — October 5, 2026
+
+[Result](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md#result--october-5-2026):
+none of the three targets reached closure in any of its 3 runs, so the hold
+was not exercised on an unseen target. Each stop is a planner prediction
+about perception that did not transfer:
+- 3721: the seed is occluded at home in the render;
+- 36196: the open jaw covered the patch on the approach;
+- 18143: tracking was lost during the re-orientation.
+
+The controls (530, 14944) passed as before.
