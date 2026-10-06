@@ -1,11 +1,15 @@
 # Pending work and stretch goals
 
-Updated October 5, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
+Updated October 6, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
 and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-Nothing is queued or running.
+- **[Closure-hold sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md)**: 30 runs,
+  1,350 GPU-minutes reserved, submitted October 6 from `1d2676e` (array jobs
+  `21600402`, then `21600403`). When they finish: grade per batch, commit the
+  grades unopened, score with `tools/score_hold_sweep.py` from a clean clone,
+  and publish.
 
 Finished and published:
 - [closure hold on unseen targets](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md#result--october-5-2026):
@@ -40,14 +44,10 @@ Finished and published:
 - **P1 with a 0.01 px outline band**, for future runs. Registered in the
   [jaw-in-view protocol](EVAL_PROTOCOL_JAW_IN_VIEW_2026-10-01.md#registered-for-future-runs--october-2-2026).
   The October 2 verdict stays refuted.
-- **Perception-side target selection** (the next step for testing the hold
-  on another target). Check on the renderer, not by ray casting:
-  - the seed's depth at home;
-  - the jaw mask with a margin on every approach frame;
-  - tracking through the re-orientation.
-
-  The October 4 test failed on exactly these three. This needs approval
-  before any work starts.
+- **Perception-side target selection**: tried on the CPU, October 5–6. Only
+  the home visibility check is reliable, and it is registered as S1 of the
+  closure-hold sweep. The tracking-prediction study is unfinished (partial
+  work in `pruning_work/perception_select_20261005/tracking/`).
 - **Evening 14944: the registered agreement arm in closed loop**
   ([scope](SCOPE_AGREEMENT_ARM_CLOSED_LOOP_2026-10-02.md)): done October 4,
   4 of 4 passes (see Finished).

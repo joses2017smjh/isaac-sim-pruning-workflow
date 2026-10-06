@@ -858,3 +858,28 @@ Grading: CPU job `21552057` (`share`, October 4), `aggregate_eval.py` at
 - H6 and H7 supported.
 
 [Result](docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md#result--october-5-2026).
+
+### Closure-hold sweep (submitted October 6)
+
+On October 6 the user asked for the remaining CPU and GPU work to run
+overnight. The budget, 1,350 GPU-minutes, was stated before submission. Before
+submission:
+- the P0 gate passed checks A–D
+  ([evidence](docs/evidence/hold_sweep_p0_2026-10-06.json), CPU job
+  `21600128` at `b130167`);
+- the S1–S7 scorer was committed with the
+  [protocol](docs/EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md) at `1d2676e`;
+- CI was green there (CPU job `21600310`: ruff clean, 1,128 passed, demo ran).
+
+Both batches were submitted from `1d2676e` and froze identical code. They are
+`afterany`-chained, one task at a time, on `gpu,ampere` with the constraint
+`a40|rtx8000` and 45-minute tasks. The share's project usage was 1.62 TiB.
+
+| Batch | Targets | Strategy | Array job |
+|---|---|---|---|
+| `hold-sweep-20261006` | the 28 registered targets | `planned_pose_jaw_hold_sweep` | `21600402` |
+| `hold-sweep-ctl-20261006` | 530, 14944 | `planned_pose_jaw_hold_sweep` | `21600403` |
+
+Every result carries the label *known-map plan; jaw self-mask; closure hold
+with freshness and frame-reuse checks waived on held frames*, and is never
+pooled with unchanged-gate runs.

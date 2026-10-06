@@ -403,10 +403,15 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
 
       The controls passed, and H6/H7 are supported.
       [Result](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md#result--october-5-2026).
-- [ ] Perception-side target selection for any further hold test: check the
-      seed's rendered depth at home, the jaw mask with a margin on every
-      approach frame, and tracking through the re-orientation (a proposal; not
-      started, needs approval).
+- [x] Perception-side target selection, tried on the CPU (October 5–6): only
+      the home visibility check is reliable (174 of 174 recorded
+      initializations reproduced). The jaw margin does not discriminate, and
+      the tracking study is unfinished, so no selection is made.
+- [ ] Closure-hold sweep: the arm, unchanged, once on each of the 28 remaining
+      planner-qualified targets plus the two controls (30 runs, 1,350
+      GPU-minutes reserved). The visibility check is registered as prediction
+      S1. Submitted October 6 (`21600402`, `21600403`).
+      [Protocol](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md).
 - [x] Amended mask-fidelity check for future runs: pixels within 0.01 px of
       the jaw's outline are not judged. The user approved it on October 2,
       and it is registered in the

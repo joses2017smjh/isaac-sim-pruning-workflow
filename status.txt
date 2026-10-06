@@ -1,14 +1,30 @@
-CURRENT CHECKPOINT — 2026-10-05 — ALL APPROVED EXPERIMENTS DONE AND PUBLISHED; NOTHING QUEUED
+CURRENT CHECKPOINT — 2026-10-06 — CLOSURE-HOLD SWEEP SUBMITTED (30 GPU RUNS OVERNIGHT)
 
 WHERE THIS IS
   Repo: /nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow (reachable as ~/hpc-share/...).
   Branch develop, pushed. User asked for updates to be pushed; never force-push.
   CPU environment: /nfs/hpc/share/sanchej7/miniforge3/envs/depth-env/bin/python
   (Python 3.10.19, numpy 2.2.6, opencv 4.11.0.86); CI-pinned ruff /nfs/hpc/share/sanchej7/ruff01410/bin/ruff.
-  Share project quota (lfs quota -p 30762): 1.504 TiB used, over the 1.5 TiB soft quota, under the 2 TiB hard
-  limit, grace 3w4d left on 2026-10-02.
+  Share project quota (lfs quota -p 30762): 1.62 TiB used on 2026-10-06, over the 1.5 TiB soft quota, under the
+  2 TiB hard limit, grace 3w1d left.
 
-LATEST — 2026-10-04 (read this first)
+LATEST — 2026-10-06 (read this first)
+  The user asked (2026-10-06) to finish the remaining CPU and GPU tasks overnight. Budget stated: 1,350 GPU-min.
+  PERCEPTION-SIDE SELECTION (CPU, exploratory): the home visibility check reproduces 174/174 recorded
+    initializations (docs/evidence/home_visibility_check_2026-10-05.json); the jaw margin does not discriminate;
+    the tracking study is unfinished (pruning_work/perception_select_20261005/tracking/). No selection made.
+  CLOSURE-HOLD SWEEP (docs/EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md): planned_pose_jaw_hold, unchanged, as
+    planned_pose_jaw_hold_sweep, once on each of 28 planner-qualified targets + controls 530 and 14944.
+    P0 passed at b130167 (CPU 21600128); scorer tools/score_hold_sweep.py committed with the protocol at 1d2676e
+    (S1/S4 new, not blind-reviewed: subagent limit until Oct 8; 9/9 mutations killed); CI green at 1d2676e
+    (CPU 21600310, 1,128 passed).
+    Submitted from 1d2676e: 21600402 (hold-sweep-20261006, 28 tasks) -> afterany 21600403 (hold-sweep-ctl-20261006).
+    NEXT: when both finish, run aggregate_eval.py --protocol per batch (CPU, share), copy the grade files into
+    docs/evidence/hold_sweep_2026-10-06/ and commit them unopened, then
+    pruning_work/grading/score.sbatch <commit> tools/score_hold_sweep.py <out>; publish the result section, README
+    bullet, ROADMAP, PENDING, SLURM_JOBS and this file. Slurm states reveal pass/fail; the scorer is already frozen.
+
+PREVIOUS — 2026-10-04/05
   AGREEMENT ARM RESULT: evening 14944 passed 17/17 in 4 of 4 (5 of 5 earlier shadowed runs had stopped at 67);
     A1-A5 supported; the controls stopped; live = offline 6/6. 91 of 270 GPU-min. Evidence
     docs/evidence/agreement_loop_verdicts_2026-10-04.json (scorer unamended since the freeze).

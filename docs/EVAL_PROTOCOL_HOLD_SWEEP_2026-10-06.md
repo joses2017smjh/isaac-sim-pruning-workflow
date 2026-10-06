@@ -222,3 +222,19 @@ sweep should take about 7–8 hours. Captures are about 0.47 GB per run, about
 14 GB in all. The hpc-share project quota held 1.62 TiB on October 6, above the
 1.5 TiB soft limit, with 3 weeks 1 day of grace left, and below the 2 TiB hard
 limit.
+
+## Submission — October 6, 2026
+
+Both batches were submitted from the registration commit `1d2676e` and froze
+identical code. Before submission:
+- the P0 gate passed at `b130167` (CPU job `21600128`);
+- CI was green at `1d2676e` (CPU job `21600310`: ruff clean, 1,128 passed, the
+  demo ran).
+
+| Batch | Runs | Array job | Reserved |
+|---|---|---|---|
+| `hold-sweep-20261006` | the 28 targets | `21600402` | 1,260 GPU-minutes |
+| `hold-sweep-ctl-20261006` | 530, 14944 | `21600403` (`afterany` `21600402`) | 90 GPU-minutes |
+
+The share's project usage was 1.62 TiB at submission. The storage preflight
+projected 1.65 TiB with its 20 GB reserve, under the 2 TiB hard limit.
