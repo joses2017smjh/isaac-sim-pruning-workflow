@@ -197,3 +197,15 @@ about perception that did not transfer:
 - 18143: tracking was lost during the re-orientation.
 
 The controls (530, 14944) passed as before.
+
+## Step 4 — October 6, 2026
+
+Of the three perception checks proposed after step 3, only the seed's depth at
+home could be made reliable on the CPU. A full-scene ray cast with the
+runner's rule reproduces all 174 recorded initializations
+([evidence](evidence/home_visibility_check_2026-10-05.json)). The jaw-margin
+emulation does not separate 530 from 36196, and the tracking study is
+unfinished. So no selection is made. The
+[closure-hold sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md) runs the arm once
+on each of the 28 remaining targets with an executable plan. The visibility
+check is registered there as a prediction.

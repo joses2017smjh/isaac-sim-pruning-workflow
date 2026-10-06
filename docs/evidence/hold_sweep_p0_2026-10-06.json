@@ -1,0 +1,985 @@
+{
+ "schema_version": 1,
+ "scope": "P0 pre-submission gate of the closure-hold sweep: controller replays of 141 published and 6 live jaw-in-view recordings, and the sweep register against the committed planner evidence. No live outcome.",
+ "protocol": "docs/EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md",
+ "code_revision": "b130167df9a55dfd09e4b4e02d54124121de70ab",
+ "code_tree_dirty": false,
+ "inputs_sha256": {
+  "docs/evidence/depth_heldout_replay_2026-10-01.json": "db16ecbe421777277c0618cef54fdb72d490d4df534ef97606139b7e65c35be6",
+  "docs/evidence/depth_regression_replay_2026-10-01.json": "5371650a2e782582b34398363bdc0f0d411e602e112d8d5a014d8420c57b9a80",
+  "docs/evidence/search_known_map_planner_2026-10-04.json": "a1d7a3e55fdd538b8a801fdbd31ed6f434edf423dbe54635fb37d95afea24d7d",
+  "docs/evidence/screened_pool_tree0_2026-10-04.json": "3e4b6f3e7e99c7599819e68877b75c03228ff0049874e0b2e7561ee49282fc4d",
+  "docs/evidence/screened_pool_tree1_2026-10-04.json": "eaf0bec789ec175867bfdfcbc39f40ddad8b18b3ef84a15fac2efcfe9da51298",
+  "docs/evidence/eval_targets_hold_sweep_2026-10-06.json": "06a0a404c0501318a88129fde1dfb315c6b66e42b9adf58524ba17a0762f71d0"
+ },
+ "checks": [
+  {
+   "id": "A",
+   "statement": "The controller with every arm off reproduces the 141 published recordings through each recorded stop.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-b-r1-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-b-r1-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-b-r2-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-eve-b-r2-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-mor-b-r1-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "jaw-shadow-mor-b-r2-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_00_source_raw": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_01_source_clahe": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_02_morning_raw": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_03_morning_clahe": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_04_evening_raw": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "lighting-20260919/run_05_evening_clahe": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_00_source_tree0_v530_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_01_source_tree0_v590_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_02_source_tree0_v7524_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_06_source_tree0_v12142_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_07_source_tree0_v18669_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree0-20260926/run_08_source_tree0_v22988_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_00_source_tree1_v14884_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_01_source_tree1_v14944_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_02_source_tree1_v15004_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_04_source_tree1_v19264_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_05_source_tree1_v19384_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-both-tree1-20260926/run_06_source_tree1_v19444_similarity_mount": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-mount-flip-20260926/run_00_source_tree0_v8353_mount_side": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-mount-flip-20260926/run_01_source_tree1_v19264_mount_side": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_00_source_tree0_v530_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_01_source_tree0_v590_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_02_source_tree0_v7524_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_03_source_tree0_v8353_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_06_source_tree0_v12142_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_07_source_tree0_v18669_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree0-20260926/run_08_source_tree0_v22988_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_00_source_tree1_v14884_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_01_source_tree1_v14944_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_02_source_tree1_v15004_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_04_source_tree1_v19264_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_05_source_tree1_v19384_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "perc-similarity-tree1-20260926/run_06_source_tree1_v19444_similarity_tracker": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r1-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r1-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r1-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r2-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r2-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r2-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r3-20260929/run_01_source_tree1_v19444_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r3-20260929/run_02_source_tree1_v14944_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "planned-pose-gpu-r3-20260929/run_03_source_tree1_v15004_planned_pose": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_00_source_tree0_v530_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_01_source_tree0_v590_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_02_source_tree0_v7524_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_03_source_tree0_v8353_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_06_source_tree0_v12142_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_07_source_tree0_v18669_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-fine-step-20260923/run_08_source_tree0_v22988_fine_step": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_00_source_tree0_v530_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_01_source_tree0_v590_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_02_source_tree0_v7524_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_03_source_tree0_v8353_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_06_source_tree0_v12142_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_07_source_tree0_v18669_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-horizontal-20260923/run_08_source_tree0_v22988_horizontal_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_00_source_tree0_v530_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_01_source_tree0_v590_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_02_source_tree0_v7524_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_03_source_tree0_v8353_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_06_source_tree0_v12142_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_07_source_tree0_v18669_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "strategy-tool-axis-20260923/run_08_source_tree0_v22988_tool_axis_standoff": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_00_morning_tree0_v530": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_01_morning_tree0_v590": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_02_morning_tree0_v7524": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_03_morning_tree0_v8353": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_06_morning_tree0_v12142": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_07_morning_tree0_v18669": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-morning-20260923/run_08_morning_tree0_v22988": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_00_source_tree0_v530": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_01_source_tree0_v590": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_02_source_tree0_v7524": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_03_source_tree0_v8353": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_06_source_tree0_v12142": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_07_source_tree0_v18669": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "targets-source-20260923/run_08_source_tree0_v22988": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_00_source_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_01_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_02_source_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_04_source_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_05_source_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-baseline-20260923/run_06_source_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_00_evening_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_04_evening_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_05_evening_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-evening-20260926/run_06_evening_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_00_morning_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_01_morning_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_04_morning_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_05_morning_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-morning-20260926/run_06_morning_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_00_source_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_02_source_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_04_source_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_05_source_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r1-20260926/run_06_source_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_00_source_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_01_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_02_source_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_04_source_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_05_source_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r2-20260926/run_06_source_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_00_source_tree1_v14884_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_01_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_02_source_tree1_v15004_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_04_source_tree1_v19264_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_05_source_tree1_v19384_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-listed-repeat-r3-20260926/run_06_source_tree1_v19444_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded-ten-20260926/run_05_source_tree1_v15599_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded-ten-20260926/run_08_source_tree1_v37023_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded-ten-20260926/run_09_source_tree1_v37796_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_05_source_tree1_v3493_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_12_source_tree1_v10737_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_13_source_tree1_v11094_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_15_source_tree1_v14944_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_16_source_tree1_v17723_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_17_source_tree1_v19504_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_23_source_tree1_v30283_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_24_source_tree1_v31828_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    },
+    "tree1-seeded30-20260926/run_25_source_tree1_v32536_baseline": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": []
+    }
+   }
+  },
+  {
+   "id": "B",
+   "statement": "The controller with the jaw self-mask and the closure hold reproduces the 6 live jaw-in-view recordings through each recorded stop, holds included.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": [
+      76,
+      77,
+      78,
+      79,
+      80
+     ]
+    },
+    "jaw-hold-a-20261001/run_01_source_tree1_v19444_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      67,
+      "vision_invalid"
+     ],
+     "held_frames": []
+    },
+    "jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": [
+      76,
+      77,
+      78,
+      79,
+      80
+     ]
+    },
+    "jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    },
+    "jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": [
+      76,
+      77,
+      78,
+      79,
+      80
+     ]
+    },
+    "jaw-hold-c-20261001/run_01_source_tree1_v15004_planned_pose_jaw_hold": {
+     "reproduces": true,
+     "tracker_config_matches": true,
+     "measurement_mismatch_frames": [],
+     "cut_mismatch_frames": [],
+     "recorded_stop": [
+      null,
+      null
+     ],
+     "held_frames": []
+    }
+   }
+  },
+  {
+   "id": "C",
+   "statement": "The sweep register is exactly the qualifying search targets minus the registered exclusions, with pool geometry and the qualifying variant's orientation at a 60 mm standoff and no shortening.",
+   "passed": true,
+   "problems": [],
+   "detail": {
+    "registered": 28,
+    "shortened_excluded": [
+     "tree1_22182",
+     "tree1_22242",
+     "tree1_34185"
+    ]
+   }
+  },
+  {
+   "id": "D",
+   "statement": "The sweep strategy is planned_pose_jaw_hold under its own name and protocol.",
+   "passed": true,
+   "problems": [],
+   "detail": {}
+  }
+ ],
+ "passed": true
+}
