@@ -1,0 +1,313 @@
+{
+ "schema_version": 1,
+ "kind": "exploratory_design_study",
+ "scope": "Home visibility check for planned-pose targets (CPU). A full-scene ray cast at the settled home pose (ground plane, orchard, both trees, the robot's render meshes, the visual jaw surrogate boxes, the runner's blender-mode wrist mount) applies the runner's own initialization rule: the depth at the seed pixel must be within 0.02 m of the expected optical Z. It explains the 3721 stop (its seed ray hits the ground 47 mm in front of the spur; the planner's line-of-sight model has no ground plane) and is validated on every recorded run with a recorded initialization. Exploratory: produced by scratch scripts (hashed below), not a committed tool; it is used here only to register predictions, which the October 6 sweep tests.",
+ "code_revision_read": "6e7882eab1fc8a5dd7de51ae922ce09c8ac8c086",
+ "scripts_sha256": {
+  "enumerate_runs.py": "958c29954106e040fe975e0855fd166c17a0508edee72f6e55a62bd55395e5e7",
+  "extract_series.py": "bfe1814ec315908cbb66c7233e7d4d99e4fabb1827f7fa8e8f7f165bbdb65c0f",
+  "fullscene.py": "d195d5c5204d3386d97b7f7f052196e666485f14d8eb2a3b0967a15ba9d07d60",
+  "geom_helper.py": "e079490653e27316591702735a817dc59e7ea89850a18cdaa4110f3f9827d19a",
+  "home_analysis.py": "b36a06ea764b65c17c8b584ed4c311bd999086c07ccaa2727ade753d9f467c8d",
+  "home_margin.py": "bc5664bf582fca15abb199dbf7e347d7575913766184ee783d5e1cf30ef64881",
+  "jaw_analysis.py": "38d350c22ba3adec9a8487873ec6b593f1ec5ac9ceb681615cd15b8b807a936d",
+  "jaw_rule.py": "2793eca73dd8cf06889caf6c84c150eb3a3bb7447507b81b49c5abc8be140a4f",
+  "jaw_rule_run.py": "49c8d379f8bccb720e99dcc3861e302cdc7810874b8c34750f95246ffc532416",
+  "list_robot_prims.py": "5c6a7e29f530301b316e8d946e15b1476c5a3cefbce2a8a8566847c03f4388e1"
+ },
+ "outputs_sha256": {
+  "home_margin.json": "e363711bce98fd1aa9c69861945f786b4b638350d22c5b56d28cd5d5cf1a1e3b",
+  "home_analysis.json": "6a3c60b294bffce7ce54b30708e45a0f4e04aa3614fe8cdab629f3a389bf8914"
+ },
+ "depth_fidelity_3721_home": {
+  "pixels": 153600,
+  "median_abs_m": 1.034511115105552e-07,
+  "frac_within_1mm": 0.9999802344197813,
+  "frac_within_5mm": 0.999986822946521
+ },
+ "rule": {
+  "tolerance_m": 0.02,
+  "pixel": "the runner's seed pixel",
+  "window": "the seed pixel (w1)"
+ },
+ "validation_on_recorded_runs": {
+  "runs": 174,
+  "recorded_visible_predicted_visible": 163,
+  "recorded_rejected_predicted_rejected": 11,
+  "mismatches": []
+ },
+ "candidates": {
+  "tree0_3721": {
+   "visible": false,
+   "first_hit": "ground",
+   "expected_z_m": 0.39335893954308815,
+   "measured_z_m": 0.3466181045179117,
+   "error_m": -0.04674083502517645,
+   "tested_on_2026_10_04": true
+  },
+  "tree0_4438": {
+   "visible": false,
+   "first_hit": "ground",
+   "expected_z_m": 0.39430952616098036,
+   "measured_z_m": 0.13971689376594856,
+   "error_m": -0.2545926323950318,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_7049": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3935722390597892,
+   "measured_z_m": 0.3859046212200129,
+   "error_m": -0.0076676178397763195,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_7644": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.39384730340564733,
+   "measured_z_m": 0.38846187469775695,
+   "error_m": -0.005385428707890383,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_7760": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3930703944432058,
+   "measured_z_m": 0.3874640746385626,
+   "error_m": -0.005606319804643212,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_8175": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.39421315633710413,
+   "measured_z_m": 0.38840501524185717,
+   "error_m": -0.005808141095246966,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_8532": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.39541919328795555,
+   "measured_z_m": 0.3911788618631743,
+   "error_m": -0.004240331424781252,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_11607": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.39298056970799194,
+   "measured_z_m": 0.38401183772553227,
+   "error_m": -0.008968731982459677,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_11727": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3925014442486131,
+   "measured_z_m": 0.3850519476469422,
+   "error_m": -0.00744949660167088,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_12261": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.38793503638190097,
+   "measured_z_m": 0.381725665808945,
+   "error_m": -0.006209370572955952,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_12321": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3864741291859135,
+   "measured_z_m": 0.3791600111518341,
+   "error_m": -0.0073141180340793865,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_12381": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3839191848659115,
+   "measured_z_m": 0.3770267195678593,
+   "error_m": -0.006892465298052153,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_13213": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.39475858327186153,
+   "measured_z_m": 0.38760524133108387,
+   "error_m": -0.007153341940777658,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_16660": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.39137833752762374,
+   "measured_z_m": 0.3884205604978073,
+   "error_m": -0.002957777029816422,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_21268": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.395483744689562,
+   "measured_z_m": 0.38890331242501763,
+   "error_m": -0.006580432264544356,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_21386": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3946211308289573,
+   "measured_z_m": 0.3896192511071108,
+   "error_m": -0.005001879721846458,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_28493": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.39264164727252415,
+   "measured_z_m": 0.38962244822860276,
+   "error_m": -0.0030191990439213945,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_28610": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3921608848075513,
+   "measured_z_m": 0.38871863313460164,
+   "error_m": -0.0034422516729496477,
+   "tested_on_2026_10_04": false
+  },
+  "tree0_29554": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3936117974811012,
+   "measured_z_m": 0.3865612912145103,
+   "error_m": -0.007050506266590872,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_3433": {
+   "visible": false,
+   "first_hit": "ground",
+   "expected_z_m": 0.39600888057818046,
+   "measured_z_m": 0.30118221588538374,
+   "error_m": -0.09482666469279671,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_3673": {
+   "visible": false,
+   "first_hit": "ground",
+   "expected_z_m": 0.38672377510015027,
+   "measured_z_m": 0.3036071329821141,
+   "error_m": -0.08311664211803615,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_18143": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3961188357868665,
+   "measured_z_m": 0.39014474687311373,
+   "error_m": -0.005974088913752784,
+   "tested_on_2026_10_04": true
+  },
+  "tree1_20698": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.38782872109911926,
+   "measured_z_m": 0.38316752405261767,
+   "error_m": -0.004661197046501586,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_20995": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.38799323510355255,
+   "measured_z_m": 0.3852043226913243,
+   "error_m": -0.0027889124122282283,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_21648": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.39605252198511487,
+   "measured_z_m": 0.3900758874600542,
+   "error_m": -0.005976634525060642,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_22182": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3961003114685343,
+   "measured_z_m": 0.38938927868799283,
+   "error_m": -0.0067110327805414705,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_22242": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3960949577012336,
+   "measured_z_m": 0.38252466815081687,
+   "error_m": -0.013570289550416725,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_26425": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3841951935557728,
+   "measured_z_m": 0.37880813592751617,
+   "error_m": -0.005387057628256642,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_27362": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3957352440154763,
+   "measured_z_m": 0.39008103953946666,
+   "error_m": -0.005654204476009617,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_33128": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3921951934714773,
+   "measured_z_m": 0.3842058609655648,
+   "error_m": -0.007989332505912494,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_34125": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.39502559176866836,
+   "measured_z_m": 0.38686631572897,
+   "error_m": -0.008159276039698349,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_34185": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3960419799848162,
+   "measured_z_m": 0.38696469405547473,
+   "error_m": -0.009077285929341483,
+   "tested_on_2026_10_04": false
+  },
+  "tree1_36196": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3949171598551312,
+   "measured_z_m": 0.39117669063586463,
+   "error_m": -0.0037404692192665734,
+   "tested_on_2026_10_04": true
+  },
+  "tree1_36786": {
+   "visible": true,
+   "first_hit": "TARGET",
+   "expected_z_m": 0.3961314363787114,
+   "measured_z_m": 0.3901804912628466,
+   "error_m": -0.005950945115864803,
+   "tested_on_2026_10_04": false
+  }
+ }
+}

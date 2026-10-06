@@ -506,6 +506,15 @@ def _jaw_hold_report(target_id, quat, jaw_block, hold_block, tracker_minimum=140
 
 
 HOLD_GEN_STRATEGIES = {"planned_pose_jaw_hold_gen": 0.06, "planned_pose_jaw_hold_gen_s100": 0.10}
+HOLD_SWEEP_PROTOCOL = "docs/EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md"
+
+
+def test_the_hold_sweep_strategy_is_the_jaw_hold_arm_under_its_own_protocol(scripts):
+    launcher, _ = scripts
+    reference = {k: v for k, v in launcher.STRATEGIES["planned_pose_jaw_hold"].items() if k != "name"}
+    sweep = {k: v for k, v in launcher.STRATEGIES["planned_pose_jaw_hold_sweep"].items() if k != "name"}
+    assert sweep == reference
+    assert launcher.STRATEGY_PROTOCOLS["planned_pose_jaw_hold_sweep"] == HOLD_SWEEP_PROTOCOL
 
 
 def test_hold_generalization_strategies_are_the_jaw_hold_arm_under_their_own_protocol(tmp_path, scripts):
@@ -548,7 +557,7 @@ def test_jaw_hold_strategy_forwards_both_flags_and_the_capture_must_show_them(tm
     assert run.run_label(0, row) == "run_00_source_tree0_v530_planned_pose_jaw_hold"
     # Every earlier strategy forwards neither flag, so the renderer keeps its default (off).
     for name in launcher.STRATEGIES:
-        if name in ("planned_pose_jaw_hold", *HOLD_GEN_STRATEGIES):
+        if name in ("planned_pose_jaw_hold", "planned_pose_jaw_hold_sweep", *HOLD_GEN_STRATEGIES):
             continue
         other = launcher.experiment_plan(targets, "source", "raw", name)
         other_env = run.run_environment(other, other["runs"][0], tmp_path, tmp_path, {})

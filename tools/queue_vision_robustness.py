@@ -193,6 +193,17 @@ STRATEGIES = {
         "closure_hold": True,
         "frames": 200,
     },
+    # The closure-hold sweep: the same arm once on every remaining qualifying planner target (60 mm standoff).
+    "planned_pose_jaw_hold_sweep": {
+        "name": "planned_pose_jaw_hold_sweep",
+        "mode": "planned_pose_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "max_rotation_deg": 1.5,
+        "jaw_self_mask": True,
+        "closure_hold": True,
+        "frames": 200,
+    },
     # The depth-aware appearance check D_strict + J (perception/depth_appearance.py) on three existing approaches.
     # It changes the 0.35 appearance gate's rule, so its results are never pooled with unchanged-gate runs. The
     # jaw keeps casting its shadow; nothing else changes.
@@ -258,6 +269,7 @@ STRATEGIES = {
 DEPTH_LOOP_PROTOCOL = "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-01.md"
 AGREEMENT_LOOP_PROTOCOL = "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md"
 HOLD_GEN_PROTOCOL = "docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md"
+HOLD_SWEEP_PROTOCOL = "docs/EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md"
 STRATEGY_PROTOCOLS = {
     "planned_pose": "docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md",
     "jaw_no_shadow": "docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md",
@@ -270,6 +282,7 @@ STRATEGY_PROTOCOLS = {
     "tool_axis_standoff_depth_agreement": AGREEMENT_LOOP_PROTOCOL,
     "planned_pose_jaw_hold_gen": HOLD_GEN_PROTOCOL,
     "planned_pose_jaw_hold_gen_s100": HOLD_GEN_PROTOCOL,
+    "planned_pose_jaw_hold_sweep": HOLD_SWEEP_PROTOCOL,
 }
 
 #: Keys a strategy row may carry and their baseline values; a row that omits
