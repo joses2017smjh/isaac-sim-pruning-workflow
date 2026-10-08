@@ -1,3 +1,14 @@
+ROS 2 SUBSCRIBED-INPUT REPAIR — 2026-10-06
+  Fixed the launched graph: received RGB/depth/intrinsics + tool-pose callbacks now
+  drive causal decisions; missing/malformed source bundles latch a no-pose hold.
+  Actual DDS graph: 199/199 decision states, maximum command delta 1.995 mm,
+  capture timestamps exact, 0 servo image-file reads, 0 manual step calls.
+  Eight real-capture fault scenarios: 80/80 affected decisions held; 0 authorized
+  motion states and nonzero deltas. ROS package 33 passed; Ruff and diff checks clean.
+  Evidence: docs/evidence/ros2_graph_parity_2026-10-06.json. Same one simulated capture;
+  target/camera/contact context remains metadata; ToF telemetry is not a ROS release gate.
+  Existing hold-sweep GPU jobs and frozen code were preserved; no duplicate GPU job.
+
 CURRENT CHECKPOINT — 2026-10-06 — CLOSURE-HOLD SWEEP SUBMITTED (30 GPU RUNS OVERNIGHT)
 
 WHERE THIS IS

@@ -1,9 +1,8 @@
-"""The node itself, driven over real ROS messages, must reproduce the recording.
+"""Explicit file-replay publication through a ROS node must reproduce the recording.
 
-These tests build the actual ``PruningServoNode``, publish recorded frames into
-it through a real ROS 2 graph, and read what it published back. That is a
-stronger statement than calling the controller as a library, because it also
-covers the message encoding, the QoS settings and the frame bookkeeping.
+These tests call ``step_frame`` and read the node's published output through
+ROS. They cover the explicit offline comparison path, not subscribed sensor
+consumption. ``test_stream_graph.py`` tests the incoming ROS sensor path.
 
 The procedural-fixture tests run anywhere. The one test that needs the recorded
 capture skips when the capture is absent, so a clean CI container without
@@ -45,10 +44,9 @@ class _Sink:
 
     def __init__(self, node_name="parity_sink"):
         from geometry_msgs.msg import PoseStamped
+        from pruning_sil.servo_node import COMMAND_QOS
         from rclpy.node import Node
         from std_msgs.msg import String
-
-        from pruning_sil.servo_node import COMMAND_QOS
 
         self.node = Node(node_name)
         self.poses, self.decisions = [], []

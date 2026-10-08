@@ -1,9 +1,14 @@
 # ROS 2 software-in-the-loop — September 23, 2026
 
-The perception-to-control loop runs as a ROS 2 Humble system on recorded sensor
-streams. The node adds no perception and no control law: it imports the existing
-`VisionPruningDemo`, which already owns the tracker, the bounded Cartesian
-command and the closure and geometry gates.
+Updated October 6, 2026. The ROS 2 Humble node consumes timestamp-matched
+RGB, optical-Z depth, camera intrinsics and tool poses from subscribed messages.
+A tool-pose message triggers the decision for its recorded frame using the
+preceding frame's camera bundle. It imports the existing `VisionPruningDemo`
+visual controller; no perception or control law is reimplemented.
+
+Target identity, camera world transforms and contact context remain recorded
+capture metadata. ToF topics are telemetry in this ROS node: the Isaac
+environment's ToF and release gates are outside this graph validation.
 
 **This is software-in-the-loop. It is not hardware-in-the-loop.** Every input is
 a recorded Isaac capture. No physical VL53L8CX, camera or UR5e has been driven
@@ -11,7 +16,9 @@ by this node, and proposed commands are published, never actuated.
 
 ## Result
 
-Replaying capture `21328323` through the node reproduces the recorded run:
+The September 23 controller-file replay of capture `21328323` reproduced the
+recorded run. That harness calls the controller directly; it did not establish
+subscribed-input graph behavior:
 
 | Measure | Result |
 |---|---|
@@ -35,6 +42,40 @@ The one frame not compared is frame 0, where the capture records
 `controller_source_frame_index = -1`: no image had been observed yet. The node
 publishes an explicit `hold` with reason `no_camera_observation` and **no pose**,
 rather than inventing a command.
+
+### October 6: subscribed-input graph validation
+
+The original node stored received images but its explicit `step_frame` read
+images from files; the launch had no callback that advanced the controller.
+The repair makes tool-pose callbacks drive the graph from incoming messages.
+It matches RGB, depth and intrinsics by capture timestamp, tolerates reordered
+delivery, rejects malformed images and latches a no-pose hold when a required
+source bundle remains incomplete for 250 ms. It never substitutes the latest
+available image or falls back to image files. A new replay is needed after a
+stream fault. Image decoding also respects padded rows and big-endian depth.
+
+Validation used actual ROS 2 publishers and subscribers on the same 200-frame
+capture, with the servo's image-file readers replaced by functions that fail:
+
+| Measure | Result |
+|---|---|
+| Received graph decisions | 200, including frame 0's no-image hold |
+| Decision-state agreement | **199 / 199** |
+| Maximum command delta error | **1.995 mm**, within the unchanged 2 mm reporting tolerance |
+| Published pose timestamps | 199 / 199 match capture time |
+| Servo image-file reads / manual `step_frame` calls | **0 / 0** |
+| Injected fault decisions held | **80 / 80**, zero authorized motion states or nonzero command deltas |
+| ROS 2 package tests | **33 passed** in the existing Humble container |
+
+Eight fault scenarios contributed 10 affected decisions each: RGB blackout,
+depth dropout, negative depth, missing depth, wrong depth timestamp, wrong
+optical frame, malformed depth payload and invalid intrinsics. Blackout and
+invalid-depth tracker decisions publish a stationary hold pose; missing or
+malformed source bundles publish the hold decision with no new pose.
+
+Evidence: [per-frame graph and fault results](evidence/ros2_graph_parity_2026-10-06.json).
+This validates the message path on one simulated capture, not robot deployment
+or general target success. The September 23 file-replay result remains separate.
 
 ### Where the small disagreement comes from
 
@@ -85,6 +126,11 @@ ros2 launch pruning_sil sil_replay.launch.py \
 python3 -m pruning_sil.parity \
   --capture-dir artifacts/isaac_render/job_21328323 \
   --output docs/evidence/ros2_sil_parity_<date>.json
+
+# Exercise actual subscribed messages and eight sensor-fault controls.
+python3 tools/validate_ros_stream.py \
+  --capture-dir artifacts/isaac_render/job_21328323 \
+  --output docs/evidence/ros2_graph_parity_<date>.json
 ```
 
 An RViz2 layout is at [`ros2/pruning_sil/config/pruning_sil.rviz`](../ros2/pruning_sil/config/pruning_sil.rviz):
@@ -119,7 +165,9 @@ mode, even in replay.
 Depth is `32FC1` in metres along the optical Z axis, not ray length, and not
 millimetres. Non-hits stay non-finite rather than becoming a plausible range.
 
-Every message is stamped with the capture's recorded time, not wall-clock time.
+Images, camera info, poses, joint states and TF retain capture timestamps.
+The ToF `MultiArray` messages have no header and are telemetry only in this
+node; this graph does not certify ToF freshness or synchronization.
 
 ### Mapping to the real rig
 

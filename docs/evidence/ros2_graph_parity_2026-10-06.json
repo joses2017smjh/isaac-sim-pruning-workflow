@@ -1,0 +1,2715 @@
+{
+  "schema_version": 1,
+  "evaluation_type": "actual_ros2_dds_graph_parity_and_fault_injection",
+  "capture_dir": "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/isaac_render/job_21328323",
+  "scope": "Advisory RGB-D visual servo ROS2 graph on one recorded simulator capture. Incoming ROS RGB, optical-Z depth, intrinsics and tool poses drive decisions. Target identity, camera world transforms and contact context remain recorded metadata. ToF is telemetry only in this ROS node; Isaac environment ToF/release gates are outside this test. No hardware or actuation.",
+  "normal_graph": {
+    "recorded_frames": 200,
+    "received_decisions": 200,
+    "frames_compared": 199,
+    "states_agree": 199,
+    "command_tolerance_m": 0.002,
+    "commands_within_tolerance": true,
+    "maximum_command_delta_error_m": 0.001995392559239405,
+    "published_poses": 199,
+    "pose_stamps_match_capture": true,
+    "file_image_reads_in_servo": 0,
+    "manual_step_frame_calls": 0,
+    "per_frame": [
+      {
+        "frame_index": 1,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 5.87383195090114e-06,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 2,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 1.8930581757155598e-06,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 3,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 3.899863211089685e-06,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 4,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 4.365927152480165e-06,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 5,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 4.604423650591443e-06,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 6,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 5.6058505241215675e-06,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 7,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 6.250941133619655e-06,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 8,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 9.491011573306832e-06,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 9,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 1.1019037299656394e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 10,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 1.4502821303509418e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 11,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 1.4773078030700991e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 12,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 1.7750680762061588e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 13,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 1.7960988104375222e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 14,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 1.9696373224901643e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 15,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 2.5117910098932245e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 16,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 2.5182778968577302e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 17,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 2.574438899473231e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 18,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 2.759214392210231e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 19,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 2.871366603989454e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 20,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 3.062551062360003e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 21,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 3.402365909341831e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 22,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 3.6849349958172195e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 23,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 4.091067528786639e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 24,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 4.0242329447059794e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 25,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 4.422528100448238e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 26,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 4.413247290063145e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 27,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 4.771798278108049e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 28,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 4.858306191201683e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 29,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 5.5408205025073926e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 30,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 5.408998270144835e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 31,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 5.705267462600417e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 32,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 6.463842625605741e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 33,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 6.41369619177297e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 34,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 7.063199495339934e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 35,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 7.428344622927245e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 36,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 7.602803554213271e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 37,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 7.599475252521592e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 38,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 8.893355766975403e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 39,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 9.221964628388561e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 40,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 9.987366300192811e-05,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 41,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00010340322738383757,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 42,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00011052234486611088,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 43,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00011246274371432283,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 44,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00012271939967500102,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 45,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00013421002989181792,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 46,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00013084796736912482,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 47,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0001354203552285239,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 48,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0001466684572754539,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 49,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0001612905035722095,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 50,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0001682841623485997,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 51,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00018208401863954786,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 52,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00021029054523443775,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 53,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00021232260663650284,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 54,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00023197755355581026,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 55,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0002545682032171153,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 56,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0002841320365416194,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 57,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0002930340217193684,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 58,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.00032160141190364224,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 59,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0003486215863212164,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 60,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0003867588521993497,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 61,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0004631688518007505,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 62,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0005026399465620552,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 63,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0006138883411041162,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 64,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0007041326564018073,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 65,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0008945149437759809,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 66,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.0013039647894706728,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 67,
+        "state_matches": true,
+        "proposed_state": "tracking",
+        "recorded_state": "tracking",
+        "reason_matches": true,
+        "delta_error_m": 0.001995392559239405,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 68,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 69,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 70,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 71,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 72,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 73,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 74,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 75,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 76,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 77,
+        "state_matches": true,
+        "proposed_state": "hold",
+        "recorded_state": "hold",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 78,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 79,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 80,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 81,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 82,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 83,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 84,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 85,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 86,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 87,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 88,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 89,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 90,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 91,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 92,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 93,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 94,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 95,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 96,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 97,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 98,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 99,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 100,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 101,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 102,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 103,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 104,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 105,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 106,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 107,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 108,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 109,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 110,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 111,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 112,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 113,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 114,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 115,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 116,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 117,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 118,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 119,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 120,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 121,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 122,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 123,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 124,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 125,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 126,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 127,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 128,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 129,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 130,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 131,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 132,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 133,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 134,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 135,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 136,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 137,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 138,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 139,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 140,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 141,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 142,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 143,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 144,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 145,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 146,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 147,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 148,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 149,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 150,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 151,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 152,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 153,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 154,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 155,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 156,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 157,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 158,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 159,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 160,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 161,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 162,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 163,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 164,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 165,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 166,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 167,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 168,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 169,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 170,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 171,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 172,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 173,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 174,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 175,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 176,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 177,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 178,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 179,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 180,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 181,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 182,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 183,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 184,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 185,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 186,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 187,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 188,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 189,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 190,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 191,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 192,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 193,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 194,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 195,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 196,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 197,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 198,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      },
+      {
+        "frame_index": 199,
+        "state_matches": true,
+        "proposed_state": "retreat",
+        "recorded_state": "retreat",
+        "reason_matches": true,
+        "delta_error_m": null,
+        "delta_matches": true,
+        "matches": true
+      }
+    ],
+    "passed": true
+  },
+  "fault_controls": [
+    {
+      "fault": "rgb_blackout",
+      "affected_frame_indices": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "received_decisions": 10,
+      "held": 10,
+      "authorized_motion_states": [],
+      "nonzero_command_deltas": [],
+      "published_poses": 11,
+      "per_frame": [
+        {
+          "frame_index": 2,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 3,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 4,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 5,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 6,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 7,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 8,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 9,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 10,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 11,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "fault": "depth_dropout",
+      "affected_frame_indices": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "received_decisions": 10,
+      "held": 10,
+      "authorized_motion_states": [],
+      "nonzero_command_deltas": [],
+      "published_poses": 11,
+      "per_frame": [
+        {
+          "frame_index": 2,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 3,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 4,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 5,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 6,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 7,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 8,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 9,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 10,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 11,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "fault": "negative_depth",
+      "affected_frame_indices": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "received_decisions": 10,
+      "held": 10,
+      "authorized_motion_states": [],
+      "nonzero_command_deltas": [],
+      "published_poses": 11,
+      "per_frame": [
+        {
+          "frame_index": 2,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 3,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 4,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 5,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 6,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 7,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 8,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 9,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 10,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        },
+        {
+          "frame_index": 11,
+          "input_mode": "ros_messages",
+          "phase": "stopped_failure",
+          "reason": "vision_invalid",
+          "state": "hold"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "fault": "missing_depth",
+      "affected_frame_indices": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "received_decisions": 10,
+      "held": 10,
+      "authorized_motion_states": [],
+      "nonzero_command_deltas": [],
+      "published_poses": 1,
+      "per_frame": [
+        {
+          "frame_index": 2,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 3,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 4,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 5,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 6,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 7,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 8,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 9,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 10,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 11,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "fault": "wrong_depth_stamp",
+      "affected_frame_indices": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "received_decisions": 10,
+      "held": 10,
+      "authorized_motion_states": [],
+      "nonzero_command_deltas": [],
+      "published_poses": 1,
+      "per_frame": [
+        {
+          "frame_index": 2,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 3,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 4,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 5,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 6,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 7,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 8,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 9,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 10,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        },
+        {
+          "frame_index": 11,
+          "input_mode": "ros_messages",
+          "reason": "synchronized_camera_observation_missing",
+          "state": "hold"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "fault": "wrong_camera_frame",
+      "affected_frame_indices": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "received_decisions": 10,
+      "held": 10,
+      "authorized_motion_states": [],
+      "nonzero_command_deltas": [],
+      "published_poses": 1,
+      "per_frame": [
+        {
+          "frame_index": 2,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        },
+        {
+          "frame_index": 3,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        },
+        {
+          "frame_index": 4,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        },
+        {
+          "frame_index": 5,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        },
+        {
+          "frame_index": 6,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        },
+        {
+          "frame_index": 7,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        },
+        {
+          "frame_index": 8,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        },
+        {
+          "frame_index": 9,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        },
+        {
+          "frame_index": 10,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        },
+        {
+          "frame_index": 11,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: camera_frame_mismatch",
+          "state": "hold"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "fault": "malformed_depth",
+      "affected_frame_indices": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "received_decisions": 10,
+      "held": 10,
+      "authorized_motion_states": [],
+      "nonzero_command_deltas": [],
+      "published_poses": 1,
+      "per_frame": [
+        {
+          "frame_index": 2,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        },
+        {
+          "frame_index": 3,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        },
+        {
+          "frame_index": 4,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        },
+        {
+          "frame_index": 5,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        },
+        {
+          "frame_index": 6,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        },
+        {
+          "frame_index": 7,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        },
+        {
+          "frame_index": 8,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        },
+        {
+          "frame_index": 9,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        },
+        {
+          "frame_index": 10,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        },
+        {
+          "frame_index": 11,
+          "input_mode": "ros_messages",
+          "reason": "invalid_depth: Malformed ROS image dimensions, row stride or payload length",
+          "state": "hold"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "fault": "invalid_intrinsics",
+      "affected_frame_indices": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "received_decisions": 10,
+      "held": 10,
+      "authorized_motion_states": [],
+      "nonzero_command_deltas": [],
+      "published_poses": 1,
+      "per_frame": [
+        {
+          "frame_index": 2,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        },
+        {
+          "frame_index": 3,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        },
+        {
+          "frame_index": 4,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        },
+        {
+          "frame_index": 5,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        },
+        {
+          "frame_index": 6,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        },
+        {
+          "frame_index": 7,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        },
+        {
+          "frame_index": 8,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        },
+        {
+          "frame_index": 9,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        },
+        {
+          "frame_index": 10,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        },
+        {
+          "frame_index": 11,
+          "input_mode": "ros_messages",
+          "reason": "invalid_camera_matrix: invalid_camera_intrinsics",
+          "state": "hold"
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "ros2/pruning_sil/pruning_sil/replay.py": "a0deb40390ea2a44406a8123119dce9c380c6685493b9ceba305d4a08942b9ca",
+    "ros2/pruning_sil/pruning_sil/servo_node.py": "bc701d8b9a8d28ddbef1b1f9ececd4f86e0cfdc919e5de5822d1da3a857058ec",
+    "ros2/pruning_sil/test/test_stream_graph.py": "4b07da66433775dad9febf646656305f34095cf845f86b0a023b8e59984d74d5",
+    "tools/validate_ros_stream.py": "d08dace722eefae5b7cd7bf3997926eae00c6ce99b74af06146b3c095f6edc62"
+  },
+  "passed": true
+}
