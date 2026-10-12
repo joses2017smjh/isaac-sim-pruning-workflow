@@ -13,8 +13,8 @@ The CPU quickstart below is a separate portable geometry/sensor demo.
 
 ## Portable CPU replay
 
-Run the four commands in the [README](../README.md), then open
-`pruning/demo-output/pruning_demo.html` in a browser. Keep the generated HTML, GIF,
+Run the CPU quickstart in the [README](../README.md), then open
+`demo-output/pruning_demo.html` from the repository root in a browser. Keep the generated HTML, GIF,
 and JSON together when sharing the folder. No web server is required.
 
 ## Capture sequence
