@@ -21,11 +21,29 @@ This workflow links perception, bounded commands, release gates, and recorded te
 | Experiment | Recorded result | What it establishes |
 | --- | --- | --- |
 | Selected baseline sequence | **17/17 checks**, 68 vision commands, release at 7.8 s | Inspectable behavior on one known target. [Artifact](docs/evidence/two_tree_summary_2026-09-14.json) |
-| Low-sun agreement variant | Target 14944 passed **4/4** trials; jaw/wire occlusion controls still stopped | Depth-consistent shadows can be accepted under this modified confidence gate. [Protocol](docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md) |
-| Closure hold on new targets | **0/9** runs reached closure | The known-target pass did not establish generalization. [Protocol](docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md) |
+| Low-sun agreement variant — Oct. 4 | Target 14944 passed **4/4** trials; jaw/wire occlusion controls still stopped | Depth-consistent shadows can be accepted under this modified confidence gate. [Protocol](docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md) |
+| Closure hold on new targets — Oct. 5 | **0/9** runs reached closure | The known-target pass did not establish generalization. [Protocol](docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md) |
 | ROS 2 software replay | **199/199** recorded decision states reproduced; max command delta **1.995 mm** | Agreement on recorded simulation, not hardware validation. [Method](docs/ROS2_SIL.md) |
 
 Population failures remain published: the original 40-trial study had no completions, including 20 invalid registrations. Later studies passed 2/7 listed targets and 1/30 seeded targets; those populations and modified gates are not pooled. [All results and visual comparisons](docs/RESULTS.md).
+
+**Latest artifact audit — October 14:** the October 6 closure-hold batch now has stored recordings, but capture-exit flags and the full preregistered verdict remain unresolved. A separate ROS 2 DDS receipt covers a frozen local source snapshot that differs from public code. [Flags, hashes, and scope](docs/ARTIFACT_AUDIT_2026-10-14.md). Neither audit establishes hardware performance.
+
+## Watch the control decisions
+
+### Same evening target: stop, then depth-agreement pass
+
+![Target 14944 stops under the earlier appearance-confidence gate](docs/demo/isaac_tree1_v14944_evening_vision_invalid.gif)
+
+![Target 14944 completes with the depth-agreement confidence variant](docs/demo/isaac_tree1_v14944_evening_agreement_pass.gif)
+
+*October 4 study, target 14944: the modified gate accepts a depth-consistent shadow; genuine occlusion controls still stop. These selected clips use simulator ground-truth depth. The four targeted passes are not a population success rate. [Protocol and controls](docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md).*
+
+### Keep the closure failure visible
+
+![Separate baseline attempt stops during closure without releasing the spur](docs/demo/isaac_two_trees_closure_failure.gif)
+
+*Separate recorded attempt: tracking is lost during closure, and release is withheld. This is not the same-target lighting comparison above.*
 
 ## How it works
 

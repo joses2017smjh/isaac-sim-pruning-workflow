@@ -1,0 +1,1431 @@
+{
+  "audit_date": "2026-10-14",
+  "scope": "Read-only inventory of existing October 6 batch artifacts; not an S1\u2013S7 protocol verdict or a population success-rate estimate. Capture exit flags remain unresolved.",
+  "batches": [
+    {
+      "name": "hold-sweep-20261006",
+      "records": 28,
+      "sequence_pass_records": 4,
+      "capture_exit_flagged_records": 8,
+      "runs": [
+        {
+          "run": "run_00_source_tree0_v4438_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 0,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 4438,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21600405",
+          "capture_exit_code": 1,
+          "capture_ok": false,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "initial_target_not_visible",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "vision_commands_applied_and_counted",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "a78b0928080d765f36a07d2ef1774b0e1e016d211f910215607ce6b2718f6655",
+            "sequence_grade.json": "20d02cf8ab0fe41c978c6d87ea6986599e08749cb344f5a6c394117673c76a54",
+            "report.json": "1df525655d77501ba9de3d7772e7322dd14cdc5c9f569194163474b6e56e62e0"
+          }
+        },
+        {
+          "run": "run_01_source_tree0_v7049_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 1,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 7049,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21600432",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "c76581e2bebe79665da5358bcb72151b0e3a3224279b36b6ad84e6bcbf5c0325",
+            "sequence_grade.json": "0ba72cc1806bec76ed289cc3d90f88bfaa9e1e59036d188ae10364103d1b5c28",
+            "report.json": "c17c9b07b78a878a1302b379c9d4cc751fb6745e3867e987fa2a8257b37a9b17"
+          }
+        },
+        {
+          "run": "run_02_source_tree0_v7644_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 2,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 7644,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21601131",
+          "capture_exit_code": 1,
+          "capture_ok": false,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "320c7cca05ab5aab4d2bee271b907481d4742965baa2a1123a51dd01a900b75c",
+            "sequence_grade.json": "3e24e43d0b4dad4c43a3ebdf181bfdd32d1fb26b28a038503ea15520418b7d58",
+            "report.json": "b2fff85b8f1a69b67bd9e61761a96fc750c427ff9473d72778bfb30cce2f4b30"
+          }
+        },
+        {
+          "run": "run_03_source_tree0_v7760_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 3,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 7760,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21601745",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "774ee4e66c28b39c770d543023e9e8df29e897c39547977e8f378f2b4e582a8b",
+            "sequence_grade.json": "785b478b8991e1c6182aebafbcb1e6f153338ca35e3bce87409fdff79bc28eb2",
+            "report.json": "beb888e2d987d4095627c76c72edb60719de8a68d1fbe92ea141874aa0b09275"
+          }
+        },
+        {
+          "run": "run_04_source_tree0_v8175_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 4,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 8175,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21602922",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": true,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": null,
+          "failed_checks": [],
+          "artifact_sha256": {
+            "experiment_result.json": "efe25902a1363b388682cea5214a12590822730396e792929062001efbca208d",
+            "sequence_grade.json": "2a0ab30dfab5efe63dd9055e6659a750164dfe9c6fdc426fa68cbc5a3c60406c",
+            "report.json": "767717c0851848d0838bdb933c7ba78c0f1ca4b35782031dfdd1fb32e2d74b24"
+          }
+        },
+        {
+          "run": "run_05_source_tree0_v8532_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 5,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 8532,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21603032",
+          "capture_exit_code": 1,
+          "capture_ok": false,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "dd0ad57e2d3d9e6e4a143cef59744ef2671e3d18d21e3ab226ba47d1c083ede0",
+            "sequence_grade.json": "08c23729e3cd51e7a4fe3f2d4bb9d94237d70eb2310d4c64cf282fe5c95a213b",
+            "report.json": "f6d77539ba7ebc9f0d811187888f83ad02b92bb982b10dc66872bddb4ce34345"
+          }
+        },
+        {
+          "run": "run_06_source_tree0_v11607_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 6,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 11607,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                0.5049670007288688,
+                -0.6845159827596796,
+                -0.013706543931646017,
+                0.5256028235986662
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21603148",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "cac624b008644dd092c97688f7be790442ffca952b8ab77903927ecd16522fdc",
+            "sequence_grade.json": "1dae2c0b230c3dbf0f9305af7292a3ffe294c48de1371645acfa6f6d26ce922b",
+            "report.json": "82b9d496fd950d39f9cd3d6baa773bb082de58f18abb1035b55044ef4343b1e4"
+          }
+        },
+        {
+          "run": "run_07_source_tree0_v11727_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 7,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 11727,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21603704",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "37e6a2a2cf76c970b30d1757b6ef75159eeae5b80a4acdd6cce84092dd8c3490",
+            "sequence_grade.json": "62917658569aade47537ea11d36a20aabb92c59459aa5a4a583a6149aa493fa1",
+            "report.json": "a65c68f4c441efcd05f004091d73dd408c80fbee0d4235404a8784dffa0d3616"
+          }
+        },
+        {
+          "run": "run_08_source_tree0_v12261_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 8,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 12261,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21604230",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": null,
+          "failed_checks": [
+            "piece_dropped_after_release"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "f8f17a4abb4a103f770c19598705f9ad9ffa4972754bb78828396dbe2dfa6229",
+            "sequence_grade.json": "e664d0dac047174546d64fdd38f82488dcd8d57cea8878705590860930497abf",
+            "report.json": "665af3f32f434de1163bbe3bf790385c8d7ead3968e9d7e400156755bd25a85f"
+          }
+        },
+        {
+          "run": "run_09_source_tree0_v12321_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 9,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 12321,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21604881",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": null,
+          "failed_checks": [
+            "piece_dropped_after_release"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "edb21fae9c2f4ef0b925b673f1edbd5488b7db6da5b81de810a4d47445b57fe3",
+            "sequence_grade.json": "29b335aec1d1ce187277a1a5ff63be61e4e02b5e53ab1e1322fee6d128004740",
+            "report.json": "8a91fb9b0b91e7f08a00b6c1f3162cdfc8e9358a3ac440cad9e91410950b1d2a"
+          }
+        },
+        {
+          "run": "run_10_source_tree0_v12381_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 10,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 12381,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21605466",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "8562d9be47c75d0b669aca5dfb996e02db8dc3e79914c2d360984d59b51ebd49",
+            "sequence_grade.json": "50e25ba418a25809b8cc4288812d39c540b8e66bebfac40e972298535d21e2e1",
+            "report.json": "87bff03375741a8e4dfe5b31fbbe8155b03f593503b7427a112864f39599b5fb"
+          }
+        },
+        {
+          "run": "run_11_source_tree0_v13213_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 11,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 13213,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21606074",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "c6e14a7340419f8d04eab5dfc1aa277789c5e98fbed2a4e730e396cde5283bbc",
+            "sequence_grade.json": "35042123735e0840528d5f16be56f57d16a78efd85c473a05865ab2209db63e5",
+            "report.json": "ff593e1664d83574b9c75dd237ebd53d56edef6383daa31127b528f15e880748"
+          }
+        },
+        {
+          "run": "run_12_source_tree0_v16660_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 12,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 16660,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21606629",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "ffffd39226d9a52fcabdc5c5a3af0c246da7d0020cee046856ea493556fab03b",
+            "sequence_grade.json": "321610eba61df76fcf910471c69f4adc56ed7b090d4ac4cde4af36cb7dee4929",
+            "report.json": "0f144b9b8022f7ace3e05f8b69a5e3b0531aa4912288ae329dabd3167ecdfc5b"
+          }
+        },
+        {
+          "run": "run_13_source_tree0_v21268_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 13,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 21268,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21607129",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "6ea9c4021bdc22d5e165d244374b4497493c328a91b076bce6dcd1133fa13f08",
+            "sequence_grade.json": "3a517a043a9b93efc2c2496cd746b1670c1e65b703a6e683d27991ebe78ea6ac",
+            "report.json": "5dfa71689a6accd9999de84186509efce7d7f1a5f696194e46e2578494f9643b"
+          }
+        },
+        {
+          "run": "run_14_source_tree0_v21386_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 14,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 21386,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21607642",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": true,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": null,
+          "failed_checks": [],
+          "artifact_sha256": {
+            "experiment_result.json": "13e79a43dc3817ffdd03c853ece8cabc6854460c5766a15c04913385d3736e88",
+            "sequence_grade.json": "662f120f5743b73f4b9c9058686f841c13c24957cb8c57fb62cf8202a853576c",
+            "report.json": "d649da36c529438a3c4131832a4544bd44f9177996c3518774a9e9168cdbb9e7"
+          }
+        },
+        {
+          "run": "run_15_source_tree0_v28493_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 15,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 28493,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21608120",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "b55d8f4542b0ebf9fd46ccf9defc39b0ee71cf53c96f4ec19bfb83fb2df2e4ca",
+            "sequence_grade.json": "14da3483fb829044c8b4ea07eec53ec283d714a5b1094ffdfbc3be6a723f2131",
+            "report.json": "e9393cd72cee85505742b8f0eff1deae074fb47f8ab187b8db18c1a80b0790bf"
+          }
+        },
+        {
+          "run": "run_16_source_tree0_v28610_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 16,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 28610,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21608663",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": true,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": null,
+          "failed_checks": [],
+          "artifact_sha256": {
+            "experiment_result.json": "a5c50fa8accdd3a820893ab4bf43c473a69dd1377e9423dee773d5c4be041812",
+            "sequence_grade.json": "e759c6960917f6568703f5208fa481ff772772697aaa18dbf798e43d99e0c39c",
+            "report.json": "30112df0a3efd05bf1a54997cf280051249b07c4a6cd51679c67332cb9a42cd2"
+          }
+        },
+        {
+          "run": "run_17_source_tree0_v29554_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 17,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 29554,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21609112",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "08cda0cfee93cae982574534f3adaa6f59a550e66662a6f7e20fee4f27339b1d",
+            "sequence_grade.json": "b74038d4ea013791e57e676cbc74a9ee04f47a2be5c4bc403d025657839245b6",
+            "report.json": "701d2ce0910140df51366f148669690c1696e01ee82fe8c474fe566185ef5055"
+          }
+        },
+        {
+          "run": "run_18_source_tree1_v3433_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 18,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 3433,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21609885",
+          "capture_exit_code": 1,
+          "capture_ok": false,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "initial_target_not_visible",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "vision_commands_applied_and_counted",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "6855cd0509740ce54a8ddf24e275a04858f1db8a0c8c786c416d1ab32053ef78",
+            "sequence_grade.json": "f12d7a1b0442256ce357e84e129b68816d282969c455f082078405ad24678c2b",
+            "report.json": "a744ebcdb2d1a08ac6f81a720b37fd76e4b281cc1173c9b9a07a4f803b7ae208"
+          }
+        },
+        {
+          "run": "run_19_source_tree1_v3673_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 19,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 3673,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21611276",
+          "capture_exit_code": 1,
+          "capture_ok": false,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "initial_target_not_visible",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "vision_commands_applied_and_counted",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "6345e1c89de7bc7fc18b33060897bdde95e77d48aa9f029a47d6dd8c26c946ea",
+            "sequence_grade.json": "2f03789fef87e4407f7b6687f4cbbf8557d21365d6289d33e814c7dca367e4c1",
+            "report.json": "0a0c6ae11f3702db44c88566448e02688914140b3b4919fed04dcc1f7694976b"
+          }
+        },
+        {
+          "run": "run_20_source_tree1_v20698_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 20,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 20698,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21612185",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "7056c1d63acbfacdc7ef44d8a3fc17e497e9d22c5572ecc13e57484fd05b593f",
+            "sequence_grade.json": "f028382a370f3604d502ac5b70cebd8836f79bc8468eba92850868fabd8069ef",
+            "report.json": "935e872797fd0a8a2062e1622b7f72d96a38ca1c95502febcb204f2edab1262f"
+          }
+        },
+        {
+          "run": "run_21_source_tree1_v20995_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 21,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 20995,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21612839",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "b83c629a24b74d1727c961c2c4794c7b4e67fe2f2d7e52415dfb08ee339cd193",
+            "sequence_grade.json": "85ea7384fcda646f7ad5e7bfe495c01c77bde160b886354cb3172966f611ac22",
+            "report.json": "6c5aed85f341606bcb2d09ed8e39373a963a7733405f14d5c9b409cd5c6f2abd"
+          }
+        },
+        {
+          "run": "run_22_source_tree1_v21648_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 22,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 21648,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21613314",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "c012fadfdf039027cbc5978877d1f18066a8f959520957dabe02ac76ee14eaa1",
+            "sequence_grade.json": "720cc69c2af2a7d95d441c853631031da0dc75b2d7c4bfe2e574abd8eadb8f0f",
+            "report.json": "e8e65767ed0c67af2e485f753c6af2c641e845971764d391b030e3190976cbae"
+          }
+        },
+        {
+          "run": "run_23_source_tree1_v26425_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 23,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 26425,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21613809",
+          "capture_exit_code": 1,
+          "capture_ok": false,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "8da824da99cca7edf55ef4501a48cd03a9a59531c323cf376f8facfb1e2260d4",
+            "sequence_grade.json": "3cde1b4a185cc8e91383846724a408702ed7de59a9d7c56d8f853cf70d086e56",
+            "report.json": "5d666c0f8cf465cc330c1245eb80c82eae04d4f7a676146eb4e145343180edf4"
+          }
+        },
+        {
+          "run": "run_24_source_tree1_v27362_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 24,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 27362,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21614295",
+          "capture_exit_code": 1,
+          "capture_ok": false,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "95170e454c24bddf0d467da8bab0bffca465eb3169b94ac658b4abad9c641c60",
+            "sequence_grade.json": "2ab39be654bd6dc3df9d5ba0cee8e0e0ded4e5335bd827483f49054ea4c81d2e",
+            "report.json": "0a3c1f032f904c78cb1b1892764f6123ee5813d0092199cd7124f9978c733d3f"
+          }
+        },
+        {
+          "run": "run_25_source_tree1_v33128_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 25,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 33128,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21614813",
+          "capture_exit_code": 1,
+          "capture_ok": false,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "173469b65d0f969f360f5fd54c73f6e8b5463a9bc084dd89b450eb009fda031a",
+            "sequence_grade.json": "5ac0ade7e00a0b9c34bc9f0d1a5e926253d18999c21e71243b3f7a8ff35bf43d",
+            "report.json": "b58e10a42e5a12660654abdd78a78017e19c49e850698a340d507a8fe2058706"
+          }
+        },
+        {
+          "run": "run_26_source_tree1_v34125_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 26,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 34125,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21615414",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "vision_invalid",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "9f6f05e0a3e2c4f18db34573b86cbefac9f4da6e884d639512ff28b99f59b5ae",
+            "sequence_grade.json": "5548420db2947e521692b65dc3ad91ea6dec4240985bd87fbce05744eac203e2",
+            "report.json": "a7ffaa02b93955e5ee72ea2ea276f7bf55c00212db0d72c9f2acc56225c449df"
+          }
+        },
+        {
+          "run": "run_27_source_tree1_v36786_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 27,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 36786,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.4820997058990949,
+                0.05816757737420268,
+                0.6579259327176701,
+                0.5756126072038436
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21600402",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": true,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": null,
+          "failed_checks": [],
+          "artifact_sha256": {
+            "experiment_result.json": "7514dd101dc396ee5b456209eb4fe0a4059a4afea5f7ea9a6de23fa4d35b908d",
+            "sequence_grade.json": "0f009c024a76adc2515c0ef1f96fbe2e26593b7eaa867bcec0112225829c4af7",
+            "report.json": "a4eefda7bc9d9d10b5637624b9532cce486920c9a74d6aae85b86d830953e9f6"
+          }
+        }
+      ]
+    },
+    {
+      "name": "hold-sweep-ctl-20261006",
+      "records": 2,
+      "sequence_pass_records": 1,
+      "capture_exit_flagged_records": 0,
+      "runs": [
+        {
+          "run": "run_00_source_tree0_v530_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 0,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 0,
+            "component_first_vertex": 530,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": [
+                -0.0036999055611158134,
+                -0.3523910053343818,
+                0.34939108190645,
+                0.8681778400434457
+              ]
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21617823",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": false,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": "gate_lost_during_closure",
+          "failed_checks": [
+            "one_matching_detach_event_and_request",
+            "detach_has_completed_certified_closure",
+            "detached_state_consistent_with_event",
+            "piece_stationary_before_release",
+            "piece_dropped_after_release",
+            "post_detach_retreat_toward_home",
+            "returned_home_and_final_phase_complete",
+            "no_recorded_stops"
+          ],
+          "artifact_sha256": {
+            "experiment_result.json": "e76ce8c9630130a1cfb39104ab21b58eaf4aba518569bd107eb06a43948c5f07",
+            "sequence_grade.json": "bc4af1b42f704a1f7f938a59f8aa6fdd30347e90a3a729cf0a3019f3e7f8b36f",
+            "report.json": "01ba333b475b416a1193e2870e00ccfdec3859d8188f2e878c07265353a2678b"
+          }
+        },
+        {
+          "run": "run_01_source_tree1_v14944_planned_pose_jaw_hold_sweep",
+          "condition": {
+            "index": 1,
+            "daylight": "source",
+            "photometric_normalization": "raw",
+            "target_tree_index": 1,
+            "component_first_vertex": 14944,
+            "strategy": {
+              "name": "planned_pose_jaw_hold_sweep",
+              "mode": "planned_pose_standoff",
+              "standoff_m": 0.06,
+              "max_step_m": 0.004,
+              "max_rotation_deg": 1.5,
+              "jaw_self_mask": true,
+              "closure_hold": true,
+              "planned_tool_quat_wxyz": null
+            }
+          },
+          "code_revision": "1d2676e881e3d31183ba16e3bd57bce4055b8766",
+          "job_id": "21600403",
+          "capture_exit_code": 0,
+          "capture_ok": true,
+          "configuration_matches": true,
+          "sequence_ok": true,
+          "recorded_frames": 200,
+          "capture_complete_and_nonblank": true,
+          "stop_reason": null,
+          "failed_checks": [],
+          "artifact_sha256": {
+            "experiment_result.json": "b32578f9eae32699deaf8a08c7c386de7a1aa4b9302c485718e9fcee24edaa18",
+            "sequence_grade.json": "dd6cb5032724dd3b0d4ecad34846dc3e1c1a88bc885a7bfd34b7c9676152fed1",
+            "report.json": "e5fb8d3a1ecaa4a0308a8136810ce9d490596fe7b0a052688439242500f699a2"
+          }
+        }
+      ]
+    }
+  ]
+}
