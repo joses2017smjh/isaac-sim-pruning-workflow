@@ -41,39 +41,48 @@ class ControllerReplay:
             kwargs["closing_axis_tool"] = tuple(float(value) for value in report_closing)
 
         self.controller = VisionPruningDemo(
-            target["id"], target["axis_w"], target["radius_m"], capture.home_pose(), **kwargs
+            target["id"],
+            target["axis_w"],
+            target["radius_m"],
+            capture.home_pose(),
+            **kwargs,
         )
         self.initialized = False
         self.observed_frames = []
 
-    def initialize(self):
+    def initialize(self, *, rgb=None, depth=None):
         """Seed the tracker from the one supplied pixel, as the recording did."""
-        rgb = self.capture.rgb(0)
-        depth = self.capture.depth(0)
+        rgb = self.capture.rgb(0) if rgb is None else rgb
+        depth = self.capture.depth(0) if depth is None else depth
         self.initialized = bool(self.controller.initialize(rgb, depth, self.capture.seed_pixel()))
         return self.initialized
 
-    def observe(self, index):
+    def observe(self, index, *, rgb=None, depth=None, camera_matrix=None, tool_pose=None):
         """Observe one recorded image. This is what a later command decides from."""
         frame = self.capture.frames[int(index)]
         self.controller.observe(
-            self.capture.rgb(index),
-            self.capture.depth(index),
-            self.capture.camera_matrix,
+            self.capture.rgb(index) if rgb is None else rgb,
+            self.capture.depth(index) if depth is None else depth,
+            self.capture.camera_matrix if camera_matrix is None else camera_matrix,
             self.capture.world_from_optical(index),
             float(frame["time_s"]),
-            np.asarray(frame["tool_pose_wxyz"], dtype=float),
+            np.asarray(frame["tool_pose_wxyz"] if tool_pose is None else tool_pose, dtype=float),
             hazard_contact=bool(frame.get("contact_force_n", 0.0) > 0.0),
         )
         self.observed_frames.append(int(index))
 
-    def command(self, index):
+    def command(self, index, *, tool_pose=None):
         """Ask the controller for the command it would propose at this frame."""
         frame = self.capture.frames[int(index)]
         pose, phase, decision = self.controller.command(
-            np.asarray(frame["tool_pose_wxyz"], dtype=float), float(frame["time_s"])
+            np.asarray(frame["tool_pose_wxyz"] if tool_pose is None else tool_pose, dtype=float),
+            float(frame["time_s"]),
         )
-        return {"pose_wxyz": np.asarray(pose, dtype=float), "phase": phase, "decision": decision or {}}
+        return {
+            "pose_wxyz": np.asarray(pose, dtype=float),
+            "phase": phase,
+            "decision": decision or {},
+        }
 
     def step(self, index):
         """Observe the image the recording says this frame's decision came from.
