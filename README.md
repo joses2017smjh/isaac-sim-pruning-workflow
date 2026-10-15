@@ -27,7 +27,7 @@ This workflow links perception, bounded commands, release gates, and recorded te
 
 Population failures remain published: the original 40-trial study had no completions, including 20 invalid registrations. Later studies passed 2/7 listed targets and 1/30 seeded targets; those populations and modified gates are not pooled. [All results and visual comparisons](docs/RESULTS.md).
 
-**Latest artifact audit — October 14:** the October 6 closure-hold batch now has stored recordings, but capture-exit flags and the full preregistered verdict remain unresolved. A separate ROS 2 DDS receipt covers a frozen local source snapshot that differs from public code. [Flags, hashes, and scope](docs/ARTIFACT_AUDIT_2026-10-14.md). Neither audit establishes hardware performance.
+**Latest artifact audit — October 14:** the October 6 closure-hold batch now has stored recordings, but capture-exit flags and the full preregistered verdict remain unresolved. The ROS 2 node source evaluated by the October 6 DDS receipt is now public (October 15 update). [Flags, hashes, and scope](docs/ARTIFACT_AUDIT_2026-10-14.md). Neither audit establishes hardware performance.
 
 ## Watch the control decisions
 
