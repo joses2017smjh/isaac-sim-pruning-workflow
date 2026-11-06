@@ -1,132 +1,134 @@
-// Operator panel: what the safety gate decided, why, and a way to stop the arm.
+// Operator panel: what the safety gate decided and why, how the run is going,
+// whether the panel itself is keeping up, and a way to stop the arm.
+//
+// Layout modes follow Theme breakpoints: compact (< 760 px), medium, wide (>= 1180 px).
+// The Hold button lives in the footer, outside every scroll area, at every size.
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
+import "."
 
-Window {
+ApplicationWindow {
     id: root
-    width: 1040
-    height: 560
+    width: 1280
+    height: 760
+    minimumWidth: 360
+    minimumHeight: 560
     visible: true
-    color: "#14171c"
+    color: Theme.background
     title: "Pruning operator panel (simulation)"
+    // Dark palette for the stock Controls (tabs, check boxes, sliders).
+    palette.window: Theme.surface
+    palette.windowText: Theme.text
+    palette.base: Theme.surfaceRaised
+    palette.text: Theme.text
+    palette.button: Theme.surfaceRaised
+    palette.buttonText: Theme.text
+    palette.highlight: Theme.accent
+    palette.mid: Theme.border
+    palette.dark: Theme.border
+    palette.light: Theme.surfaceRaised
+    palette.midlight: Theme.surfaceRaised
 
-    RowLayout {
+    readonly property string layoutMode: width < Theme.compactBelow ? "compact"
+                                         : width >= Theme.wideFrom ? "wide" : "medium"
+    property alias currentTab: tabs.currentIndex
+
+    Shortcut { sequence: "Space"; enabled: !backend.reviewMode; onActivated: backend.requestHold("keyboard") }
+    Shortcut { sequence: "Left"; enabled: backend.reviewMode; onActivated: backend.stepReview(-1) }
+    Shortcut { sequence: "Right"; enabled: backend.reviewMode; onActivated: backend.stepReview(1) }
+    Shortcut { sequence: "Ctrl+1"; onActivated: tabs.currentIndex = 0 }
+    Shortcut { sequence: "Ctrl+2"; onActivated: tabs.currentIndex = 1 }
+    Shortcut { sequence: "Ctrl+3"; onActivated: tabs.currentIndex = 2 }
+
+    ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 18
-        spacing: 18
+        spacing: 0
 
-        ColumnLayout {
-            Layout.preferredWidth: 480
-            Layout.alignment: Qt.AlignTop
-            spacing: 8
-            Text { text: "Wrist camera"; color: "#8b949e"; font.pixelSize: 14 }
-            Rectangle {
-                Layout.preferredWidth: 480
-                Layout.preferredHeight: 320
-                color: "black"
-                Image {
-                    anchors.fill: parent
-                    cache: false
-                    asynchronous: false
-                    fillMode: Image.PreserveAspectFit
-                    source: backend.frameCounter > 0 ? "image://wrist/" + backend.frameCounter : ""
-                }
+        // Header: identity, mode and health at a glance.
+        Rectangle {
+            Layout.fillWidth: true
+            implicitHeight: 48
+            color: Theme.surface
+            RowLayout {
+                anchors.fill: parent
+                anchors.leftMargin: Theme.spaceL
+                anchors.rightMargin: Theme.spaceL
+                spacing: Theme.spaceS
                 Text {
-                    anchors.centerIn: parent
-                    visible: backend.frameCounter === 0
-                    text: "waiting for /pruning/wrist/image_raw"
-                    color: "#8b949e"
+                    text: root.layoutMode === "compact" ? "Pruning panel" : "Pruning operator panel"
+                    color: Theme.text
+                    font.pixelSize: Theme.textTitle
+                    font.bold: true
+                    Layout.fillWidth: true
+                    elide: Text.ElideRight
                 }
-            }
-            Text {
-                text: "cycle " + backend.cycle + "    message delay " + backend.delayMs.toFixed(1) + " ms (modelled)"
-                color: "#c9d1d9"
-                font.pixelSize: 15
-            }
-            Text {
-                text: "Simulated UR5e in Isaac Sim. Not connected to hardware."
-                color: "#8b949e"
-                font.pixelSize: 12
+                Repeater {
+                    model: [
+                        { label: backend.reviewMode ? "REVIEW " + backend.reviewRun : "LIVE",
+                          tone: backend.reviewMode ? Theme.review : Theme.pass, show: true },
+                        { label: "STALE", tone: Theme.stale, show: backend.stale },
+                        { label: "HOLD LATCHED", tone: Theme.hold, show: backend.latchedReason !== "" },
+                        { label: "SIMULATION", tone: Theme.waiting, show: root.layoutMode !== "compact" }
+                    ]
+                    Rectangle {
+                        visible: modelData.show
+                        radius: Theme.radiusS
+                        color: modelData.tone
+                        implicitHeight: 24
+                        implicitWidth: Math.min(chip.implicitWidth + 2 * Theme.spaceS, root.width * 0.4)
+                        Text {
+                            id: chip
+                            anchors.centerIn: parent
+                            width: Math.min(implicitWidth, root.width * 0.4 - 2 * Theme.spaceS)
+                            elide: Text.ElideMiddle
+                            text: modelData.label
+                            color: "white"
+                            font.pixelSize: Theme.textCaption
+                            font.bold: true
+                        }
+                    }
+                }
             }
         }
 
-        ColumnLayout {
+        TabBar {
+            id: tabs
+            objectName: "tabs"
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
-            spacing: 14
+            TabButton { text: "Live" }
+            TabButton { text: "Timeline" }
+            TabButton { text: "Diagnostics" }
+        }
 
-            Rectangle {
-                objectName: "banner"
-                Layout.fillWidth: true
-                Layout.preferredHeight: 120
-                radius: 10
-                color: !backend.haveDecision ? "#3a3f47" : (backend.passed ? "#1f7a3a" : "#b3261e")
-                Column {
-                    anchors.centerIn: parent
-                    spacing: 4
-                    Text {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: !backend.haveDecision ? "WAITING" : (backend.passed ? "PASS" : "HOLD")
-                        color: "white"
-                        font.pixelSize: 48
-                        font.bold: true
-                    }
-                    Text {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: !backend.haveDecision ? "no safety decision yet"
-                              : (backend.passed ? "command forwarded to the arm" : backend.reason)
-                        color: "white"
-                        font.pixelSize: 17
-                    }
+        StackLayout {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            currentIndex: tabs.currentIndex
+            LivePage { objectName: "livePage"; layoutMode: root.layoutMode }
+            TimelinePage { objectName: "timelinePage"; layoutMode: root.layoutMode }
+            DiagnosticsPage { objectName: "diagnosticsPage"; layoutMode: root.layoutMode }
+        }
+
+        // Footer: the safety control, always visible.
+        Rectangle {
+            Layout.fillWidth: true
+            implicitHeight: holdButton.implicitHeight + 2 * Theme.spaceM
+            color: Theme.surface
+            RowLayout {
+                anchors.fill: parent
+                anchors.margins: Theme.spaceM
+                spacing: Theme.spaceM
+                Text {
+                    visible: root.layoutMode !== "compact"
+                    text: "Simulated UR5e in Isaac Sim. Not connected to hardware. A hold latches for the run."
+                    color: Theme.textMuted
+                    font.pixelSize: Theme.textCaption
+                    wrapMode: Text.WordWrap
+                    Layout.preferredWidth: 260
                 }
-            }
-            Text {
-                visible: backend.latchedReason !== ""
-                text: "latched for this run: " + backend.latchedReason
-                color: "#ffb4a9"
-                font.pixelSize: 14
-            }
-            RangeBar {
-                Layout.fillWidth: true
-                label: "ToF left"
-                value: backend.tofLeftM
-                stopLine: backend.clearanceM
-            }
-            RangeBar {
-                Layout.fillWidth: true
-                label: "ToF right"
-                value: backend.tofRightM
-                stopLine: backend.clearanceM
-            }
-            Text {
-                text: "stop line " + (backend.clearanceM * 100).toFixed(0) + " cm    mouth to target "
-                      + (isNaN(backend.mouthDistanceM) ? "n/a" : (backend.mouthDistanceM * 1000).toFixed(1) + " mm")
-                color: "#8b949e"
-                font.pixelSize: 13
-            }
-            Button {
-                id: holdButton
-                objectName: "holdButton"
-                Layout.fillWidth: true
-                Layout.preferredHeight: 76
-                text: backend.holdRequested ? "HOLD SENT" : "HOLD"
-                onClicked: backend.requestHold("button")
-                contentItem: Text {
-                    text: holdButton.text
-                    color: "white"
-                    font.pixelSize: 30
-                    font.bold: true
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-                background: Rectangle {
-                    radius: 10
-                    color: holdButton.down ? "#8e1c14" : (backend.holdRequested ? "#5c1a15" : "#d32f2f")
-                    border.color: "#ffcdd2"
-                    border.width: 2
-                }
+                HoldButton { id: holdButton; Layout.fillWidth: true }
             }
         }
     }

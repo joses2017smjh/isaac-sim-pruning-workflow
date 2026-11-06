@@ -20,7 +20,9 @@ find_package(Qt5 REQUIRED COMPONENTS Core Gui Qml Quick)
 add_library(panel_backend
   src/panel_backend.cpp
   src/panel_model.cpp
-  include/pruning_operator_panel/panel_backend.hpp)
+  src/panel_items.cpp
+  include/pruning_operator_panel/panel_backend.hpp
+  include/pruning_operator_panel/panel_items.hpp)
 target_include_directories(panel_backend PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)

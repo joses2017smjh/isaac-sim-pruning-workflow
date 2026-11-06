@@ -1,18 +1,24 @@
 // Qt/QML operator panel for the live pruning loop.
 //
 //   operator_panel [--record FILE] [--screenshot-dir DIR] [--screenshot-every N]
-//                  [--auto-hold-after-cycles N] [--exit-after-s S]
+//                  [--auto-hold-after-cycles N] [--exit-after-s S] [--stale-after-s S]
+//                  [--size WxH] [--tab N] [--screenshot-all-tabs]
+//                  [--review RUN_DIR] [--review-index N]
 //
+// Live mode subscribes to the ROS 2 graph. --review opens a recorded live-loop run
+// instead (no graph): the gate's decision log, frames.json and the wrist images.
 // --auto-hold-after-cycles synthesizes a mouse click on the QML Hold button after N
-// gate decisions have been shown, so a headless run exercises the real button and
-// its handler rather than a shortcut. Headless: QT_QPA_PLATFORM=offscreen.
+// gate decisions, so a headless run exercises the real button and its handler.
+// Headless: QT_QPA_PLATFORM=offscreen QT_QUICK_BACKEND=software.
 
 #include <QCommandLineParser>
 #include <QDir>
+#include <QEventLoop>
 #include <QGuiApplication>
 #include <QMouseEvent>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQmlProperty>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QTimer>
@@ -22,6 +28,7 @@
 #include <vector>
 
 #include "pruning_operator_panel/panel_backend.hpp"
+#include "pruning_operator_panel/panel_items.hpp"
 
 using pruning_operator_panel::PanelBackend;
 using pruning_operator_panel::WristImageProvider;
@@ -47,6 +54,13 @@ bool click(QQuickWindow * window, const char * object_name)
   return true;
 }
 
+void settle(int ms)
+{
+  QEventLoop loop;
+  QTimer::singleShot(ms, &loop, &QEventLoop::quit);
+  loop.exec();
+}
+
 }  // namespace
 
 int main(int argc, char ** argv)
@@ -63,12 +77,18 @@ int main(int argc, char ** argv)
 
   QCommandLineParser parser;
   parser.addHelpOption();
-  QCommandLineOption record(QStringLiteral("record"), "JSONL record of decisions, frames, repaints and holds.", "file");
-  QCommandLineOption shots(QStringLiteral("screenshot-dir"), "Save window screenshots here.", "dir");
-  QCommandLineOption every(QStringLiteral("screenshot-every"), "Screenshot every N decisions (0: off).", "n", "25");
-  QCommandLineOption hold(QStringLiteral("auto-hold-after-cycles"), "Click Hold after N decisions (0: never).", "n", "0");
-  QCommandLineOption limit(QStringLiteral("exit-after-s"), "Quit after S seconds (0: never).", "s", "0");
-  parser.addOptions({record, shots, every, hold, limit});
+  const QCommandLineOption record(QStringLiteral("record"), "JSONL record of decisions, frames, repaints, holds.", "file");
+  const QCommandLineOption shots(QStringLiteral("screenshot-dir"), "Save window screenshots here.", "dir");
+  const QCommandLineOption every(QStringLiteral("screenshot-every"), "Screenshot every N decisions (0: off).", "n", "25");
+  const QCommandLineOption hold(QStringLiteral("auto-hold-after-cycles"), "Click Hold after N decisions (0: never).", "n", "0");
+  const QCommandLineOption limit(QStringLiteral("exit-after-s"), "Quit after S seconds (0: never).", "s", "0");
+  const QCommandLineOption stale(QStringLiteral("stale-after-s"), "Warn when no decision for S seconds.", "s", "10");
+  const QCommandLineOption size(QStringLiteral("size"), "Window size, e.g. 1280x760.", "WxH", "1280x760");
+  const QCommandLineOption tab(QStringLiteral("tab"), "Tab to open: 0 live, 1 timeline, 2 diagnostics.", "n", "0");
+  const QCommandLineOption all_tabs(QStringLiteral("screenshot-all-tabs"), "Screenshots of every tab, not only the open one.");
+  const QCommandLineOption review(QStringLiteral("review"), "Open a recorded live-loop run instead of the graph.", "dir");
+  const QCommandLineOption review_index(QStringLiteral("review-index"), "Decision to open in review (-1: last).", "n", "0");
+  parser.addOptions({record, shots, every, hold, limit, stale, size, tab, all_tabs, review, review_index});
   parser.process(app);
   const QString shot_dir = parser.value(shots);
   const int shot_every = parser.value(every).toInt();
@@ -77,8 +97,9 @@ int main(int argc, char ** argv)
     QDir().mkpath(shot_dir);
   }
 
+  pruning_operator_panel::registerPanelTypes();
   auto * provider = new WristImageProvider();  // owned by the engine
-  PanelBackend backend(provider, parser.value(record).toStdString());
+  PanelBackend backend(provider, parser.value(record).toStdString(), nullptr, parser.value(stale).toDouble());
   QQmlApplicationEngine engine;
   engine.addImageProvider(QStringLiteral("wrist"), provider);
   engine.rootContext()->setContextProperty(QStringLiteral("backend"), &backend);
@@ -90,11 +111,14 @@ int main(int argc, char ** argv)
   if (!window) {
     return 2;
   }
+  const QStringList dims = parser.value(size).split(QLatin1Char('x'));
+  if (dims.size() == 2) {
+    window->resize(dims[0].toInt(), dims[1].toInt());
+  }
+  QQmlProperty::write(window, QStringLiteral("currentTab"), parser.value(tab).toInt());
 
-  auto grab = [&](const QString & name) {
-      if (shot_dir.isEmpty()) {
-        return;
-      }
+  const QStringList tab_names{QStringLiteral("live"), QStringLiteral("timeline"), QStringLiteral("diagnostics")};
+  auto save = [&](const QString & name) {
       const QString path = shot_dir + "/" + name + ".png";
       const QImage shot = pruning_operator_panel::grab(window);
       if (shot.isNull() || !shot.save(path)) {
@@ -105,8 +129,48 @@ int main(int argc, char ** argv)
       backend.noteEvent("{\"event\":\"screenshot\",\"wall_ns\":" + std::to_string(wall_ns()) + ",\"file\":\"" +
         name.toStdString() + ".png\",\"shown_decision_stamp_ns\":" + std::to_string(backend.shownStampNs()) + "}");
     };
+  auto grab = [&](const QString & name) {
+      if (shot_dir.isEmpty()) {
+        return;
+      }
+      if (!parser.isSet(all_tabs)) {
+        save(name);
+        return;
+      }
+      const int open = QQmlProperty::read(window, QStringLiteral("currentTab")).toInt();
+      for (int i = 0; i < tab_names.size(); ++i) {
+        QQmlProperty::write(window, QStringLiteral("currentTab"), i);
+        settle(150);
+        save(name + "_" + tab_names[i]);
+      }
+      QQmlProperty::write(window, QStringLiteral("currentTab"), open);
+    };
 
   QObject::connect(window, &QQuickWindow::frameSwapped, &backend, [&backend]() {backend.noteRendered();});
+  const double exit_after = parser.value(limit).toDouble();
+  if (exit_after > 0) {
+    QTimer::singleShot(static_cast<int>(exit_after * 1000), &app, &QGuiApplication::quit);
+  }
+
+  if (parser.isSet(review)) {
+    if (!backend.loadReview(parser.value(review))) {
+      return 3;
+    }
+    const int index = parser.value(review_index).toInt();
+    backend.setReviewIndex(index < 0 ? backend.reviewCount() - 1 : index);
+    if (!shot_dir.isEmpty()) {
+      // Wait for the offscreen window to be exposed and painted, then capture.
+      for (int i = 0; i < 100 && !window->isExposed(); ++i) {
+        settle(20);
+      }
+      settle(300);
+      grab(QStringLiteral("review_%1").arg(backend.reviewIndex(), 4, 10, QLatin1Char('0')));
+    }
+    const int status = exit_after > 0 || shot_dir.isEmpty() ? app.exec() : 0;
+    rclcpp::shutdown();
+    return status;
+  }
+
   bool clicked = false;
   bool hold_shot = false;
   QObject::connect(&backend, &PanelBackend::decisionChanged, &app, [&]() {
@@ -115,12 +179,13 @@ int main(int argc, char ** argv)
         grab(QStringLiteral("panel_first_decision"));
       }
       if (shot_every > 0 && shown % shot_every == 0) {
-        grab(QStringLiteral("panel_cycle_%1").arg(backend.cycle(), 4, 10, QLatin1Char('0')));
+        save(QStringLiteral("panel_cycle_%1").arg(backend.cycle(), 4, 10, QLatin1Char('0')));
       }
       if (hold_after > 0 && !clicked && shown >= hold_after) {
         clicked = true;
         backend.noteEvent("{\"event\":\"synthesized_click\",\"wall_ns\":" + std::to_string(wall_ns()) +
           ",\"after_decisions\":" + std::to_string(shown) + "}");
+        // The button lives in the footer of every tab, so this works whichever tab is open.
         if (!click(window, "holdButton")) {
           backend.noteEvent("{\"event\":\"click_failed\",\"wall_ns\":" + std::to_string(wall_ns()) + "}");
         }
@@ -141,10 +206,6 @@ int main(int argc, char ** argv)
       }
     });
   watchdog.start(200);
-  const double exit_after = parser.value(limit).toDouble();
-  if (exit_after > 0) {
-    QTimer::singleShot(static_cast<int>(exit_after * 1000), &app, &QGuiApplication::quit);
-  }
 
   backend.start();
   const int status = app.exec();

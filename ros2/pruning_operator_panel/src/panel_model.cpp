@@ -4,6 +4,7 @@
 #include <QPixmap>
 #include <QScreen>
 
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstring>
@@ -17,6 +18,18 @@ int64_t wall_ns()
 {
   return std::chrono::duration_cast<std::chrono::nanoseconds>(
     std::chrono::system_clock::now().time_since_epoch()).count();
+}
+
+double percentile(std::vector<double> values, double p)
+{
+  if (values.empty()) {
+    return std::numeric_limits<double>::quiet_NaN();
+  }
+  std::sort(values.begin(), values.end());
+  const double rank = std::clamp(p, 0.0, 100.0) / 100.0 * static_cast<double>(values.size() - 1);
+  const auto low = static_cast<std::size_t>(std::floor(rank));
+  const auto high = static_cast<std::size_t>(std::ceil(rank));
+  return values[low] + (values[high] - values[low]) * (rank - static_cast<double>(low));
 }
 
 QImage grab(QQuickWindow * window)
@@ -40,11 +53,14 @@ RangeSummary summarize_range_image(const sensor_msgs::msg::Image & image)
     return summary;  // malformed: no reading, never a plausible one
   }
   summary.valid_message = true;
+  summary.zones.reserve(64);
   for (uint32_t row = 0; row < image.height; ++row) {
     for (uint32_t col = 0; col < image.width; ++col) {
       float value;
       std::memcpy(&value, &image.data[row * image.step + col * 4], 4);
-      if (!std::isfinite(value) || !(value > 0.0f)) {
+      const bool usable = std::isfinite(value) && value > 0.0f;
+      summary.zones.push_back(usable ? static_cast<double>(value) : std::numeric_limits<double>::quiet_NaN());
+      if (!usable) {
         continue;
       }
       ++summary.usable_zones;

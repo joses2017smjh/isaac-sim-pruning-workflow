@@ -137,6 +137,7 @@ def main(argv=None):
     if args.panel:
         panel = ["--panel", args.panel, "--auto-hold-after-cycles", str(args.panel_hold_after)]
         panel += ["--record", "{output_dir}/operator_panel_record.jsonl", "--screenshot-dir", "{output_dir}/panel"]
+        panel += ["--screenshot-all-tabs", "--size", "1440x860"]
     bringup = subprocess.Popen(
         [sys.executable, "-m", "pruning_sil.live_bringup", "--gate", args.gate, "--output-dir", str(work),
          "--config-timeout-s", "120", "--input-timeout-s", "10", *panel],

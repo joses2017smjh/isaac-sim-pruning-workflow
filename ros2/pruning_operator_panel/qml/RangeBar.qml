@@ -1,5 +1,6 @@
 // One time-of-flight sensor: its nearest usable return against the stop line.
 import QtQuick 2.15
+import "."
 
 Item {
     id: bar
@@ -9,36 +10,35 @@ Item {
     property real fullScale: 0.40     // metres shown across the bar
     readonly property bool known: !isNaN(value)
     readonly property bool tooClose: known && value < stopLine
-    implicitHeight: 54
+    implicitHeight: 48
 
     Text {
         id: caption
         text: bar.label + ":  " + (bar.known ? (bar.value * 100).toFixed(1) + " cm" : "no usable zone")
-        color: bar.tooClose ? "#ff8a80" : "#c9d1d9"
-        font.pixelSize: 15
+        color: bar.tooClose ? "#ff8a80" : Theme.text
+        font.pixelSize: Theme.textBody
     }
     Rectangle {
         id: track
         anchors.top: caption.bottom
-        anchors.topMargin: 6
+        anchors.topMargin: Theme.spaceXs
         width: parent.width
-        height: 22
+        height: 18
         radius: 4
-        color: "#262b33"
-        border.color: "#3a414b"
+        color: Theme.surfaceRaised
+        border.color: Theme.border
         Rectangle {
             width: bar.known ? Math.min(1.0, bar.value / bar.fullScale) * track.width : 0
             height: parent.height
             radius: 4
-            color: bar.tooClose ? "#d32f2f" : "#2e7d4f"
+            color: bar.tooClose ? Theme.holdAction : Theme.pass
         }
         Rectangle {
-            // The stop line: a return left of it stops the arm.
             x: Math.min(1.0, bar.stopLine / bar.fullScale) * track.width - width / 2
             width: 3
             height: parent.height + 8
             y: -4
-            color: "#ffcc00"
+            color: Theme.limit
         }
     }
 }

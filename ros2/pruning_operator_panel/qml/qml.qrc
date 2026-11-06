@@ -1,6 +1,16 @@
 <RCC>
   <qresource prefix="/qml">
     <file>main.qml</file>
+    <file>qmldir</file>
+    <file>Theme.qml</file>
+    <file>StatusBanner.qml</file>
+    <file>MetricTile.qml</file>
+    <file>SectionCard.qml</file>
+    <file>HoldButton.qml</file>
     <file>RangeBar.qml</file>
+    <file>DecisionList.qml</file>
+    <file>LivePage.qml</file>
+    <file>TimelinePage.qml</file>
+    <file>DiagnosticsPage.qml</file>
   </qresource>
 </RCC>
