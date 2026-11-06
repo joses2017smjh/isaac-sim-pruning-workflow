@@ -143,3 +143,9 @@ resubmitted once without the dependency (`resubmission.json` in the batch). It
 is reported here and never pooled with the registered runs.
 
 The registered batch is submitted from the commit that adds this section.
+
+**Concurrency change (November 5, 20:58 PST).** At the user's request, after
+tasks 0–7 had finished and while task 8 was running, the array's limit was
+raised from one GPU to five (`ArrayTaskThrottle=5`) so tasks 9–12 could run in
+parallel. Each run is independent, and code, plan, GPU-minutes and scoring are
+unchanged. The batch records it in `throttle_change.json`.
