@@ -182,6 +182,19 @@ void TimeSeriesItem::paint(QPainter * painter)
 
   double t_end = store_ ? store_->latestTime() : 0.0;
   double t_start = window_s_ > 0 ? t_end - window_s_ : 0.0;
+  if (store_ && window_s_ > 0) {
+    // A window longer than the run so far starts at the first point, not before it.
+    double first = std::numeric_limits<double>::infinity();
+    for (const auto & channel : channels_) {
+      const auto points = store_->points(channel);
+      if (!points.isEmpty()) {
+        first = std::min(first, points.front().x());
+      }
+    }
+    if (std::isfinite(first)) {
+      t_start = std::max(t_start, first);
+    }
+  }
   if (store_ && window_s_ <= 0) {
     t_start = std::numeric_limits<double>::infinity();
     for (const auto & channel : channels_) {
