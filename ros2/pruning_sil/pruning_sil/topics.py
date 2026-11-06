@@ -17,7 +17,11 @@ rather than vendored, and this package builds without them.
 from __future__ import annotations
 
 # Frames. These names come from the pinned mock-pruner description, so a later
-# hardware bring-up does not have to rename anything.
+# hardware bring-up does not have to rename anything. Recorded tool poses, camera
+# poses, targets and controller commands are world-frame values; the UR5e root
+# (base_link) sits at a recorded fixed pose in world (0.7 m up on the bench).
+# Until November 5, 2026 the replay labelled world-frame tool poses base_link.
+FRAME_WORLD = "world"
 FRAME_BASE = "base_link"
 FRAME_TOOL = "mock_pruner__tool0"
 FRAME_WRIST_OPTICAL = "mock_pruner__wrist_camera_optical_frame"
@@ -44,6 +48,26 @@ TOPIC_RECORDED_RELEASE = "/pruning/recorded/release"
 # actuated, and on a real rig these would be reviewed before reaching a driver.
 TOPIC_PROPOSED_COMMAND = "/pruning/proposed/command_pose"
 TOPIC_DECISION = "/pruning/proposed/decision"
+
+# The safety gate (ros2/pruning_sil_cpp safety_gate_node). Its inputs are stamped
+# per control cycle; its gated outputs are the only commands the simulated arm obeys.
+TOPIC_TOF_LEFT_RANGE = "/pruning/tof/left/range_image"
+TOPIC_TOF_RIGHT_RANGE = "/pruning/tof/right/range_image"
+TOPIC_CONTACT_WRENCH = "/pruning/contact/wrench"
+TOPIC_TARGET_ESTIMATE = "/pruning/perception/target"
+TOPIC_PROPOSAL = "/pruning/proposed/proposal"
+TOPIC_SAFETY_DECISION = "/pruning/safety/decision"
+TOPIC_SAFETY_DECISION_JSON = "/pruning/safety/decision_json"
+TOPIC_GATED_COMMAND = "/pruning/gated/command_pose"
+TOPIC_GATED_JAW = "/pruning/gated/jaw"
+TOPIC_OPERATOR_HOLD = "/pruning/operator/hold"
+JAW_JOINT = "mock_pruner__jaw_closure"
+
+# The live Isaac loop: what the simulator publishes besides the replayed topics.
+TOPIC_WRIST_CAMERA_POSE = "/pruning/wrist/camera_pose"
+TOPIC_SIM_CYCLE = "/pruning/sim/cycle"
+TOPIC_CONTROLLER_CONFIG = "/pruning/controller/config"
+TOPIC_CONTROLLER_EVIDENCE = "/pruning/controller/evidence"
 
 # 8x8 grid layout, mirroring vl53l8cx_msgs/Config8x8.
 TOF_ROWS = 8

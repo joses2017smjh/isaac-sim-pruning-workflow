@@ -166,6 +166,15 @@ class Capture:
             raise CaptureError("Capture records no initial tool pose")
         return np.asarray(pose, dtype=float)
 
+    def root_pose_w(self):
+        """The fixed UR5e root (base_link) in world as x y z qx qy qz qw, or None if unrecorded."""
+        state = self.report.get("initial_control_state") or {}
+        pose = state.get("root_pose_w_xyzw")
+        if not pose:
+            return None
+        values = pose[0] if isinstance(pose[0], (list, tuple)) else pose
+        return [float(value) for value in values] if len(values) == 7 else None
+
     def photometric_normalization(self):
         return str(self.report.get("photometric_normalization", "raw"))
 

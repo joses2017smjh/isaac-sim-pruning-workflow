@@ -2,16 +2,22 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>pruning_sil_cpp</name>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <description>
-    C++ port of the time-of-flight deprojection used by the pruning baselines,
-    checked against the Python original on recorded frames. Geometry only: it
-    contains no control law and drives no hardware.
+    C++17 parts of the pruning loop: the time-of-flight deprojection and the
+    safety gate every simulated arm command passes through (ToF clearance and the
+    cut check), each checked against the Python original on recorded cycles. It
+    drives no hardware.
   </description>
   <maintainer email="joseszgz2021@gmail.com">Jose Sanchez</maintainer>
   <license>BSD-3-Clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>pruning_sil_msgs</depend>
   <test_depend>ament_cmake_gtest</test_depend>
 
   <export>

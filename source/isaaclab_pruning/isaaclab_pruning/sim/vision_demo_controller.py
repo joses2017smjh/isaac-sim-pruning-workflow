@@ -48,6 +48,21 @@ from isaaclab_pruning.task.simulated_cut import (
     tool_mouth_geometry,
 )
 
+#: The tool-frame mouth offset of the zero-offset jaw proxy (metres).
+DEMO_MOUTH_OFFSET_TOOL_M = (0.0, 0.0, 0.070)
+
+
+def demo_cut_config(target_id):
+    """The cut-gate limits this demo runs with; the C++ safety gate defaults to the same values."""
+    return CutConfig(
+        selected_target_id=str(target_id),
+        max_branch_radius_m=0.012,
+        mouth_position_tolerance_m=0.008,
+        stable_frames=4,
+        closure_duration_s=0.6,
+    )
+
+
 APPROACH_MODES = ("straight", "tool_axis_standoff", "horizontal_standoff", "planned_pose_standoff")
 STANDOFF_REACHED_M = 0.005
 ORIENTATION_REACHED_DEG = 1.0
@@ -197,7 +212,7 @@ class VisionPruningDemo:
         self.planned_quat = None
         self.standoff_point_w = None
         self.retreat_phase = None
-        self.mouth_offset = (0.0, 0.0, 0.070)
+        self.mouth_offset = DEMO_MOUTH_OFFSET_TOOL_M
         self.closing_axis_tool = tuple(closing_axis_tool)
         tool_mouth_geometry(self.home, self.mouth_offset, self.closing_axis_tool)
         # Retain more initial same-depth texture corners on the thin Blender
@@ -218,15 +233,7 @@ class VisionPruningDemo:
             if depth_appearance
             else VisualServoTracker(tracker_config)
         )
-        self.cutter = SimulatedCutController(
-            CutConfig(
-                selected_target_id=self.target_id,
-                max_branch_radius_m=0.012,
-                mouth_position_tolerance_m=0.008,
-                stable_frames=4,
-                closure_duration_s=0.6,
-            )
-        )
+        self.cutter = SimulatedCutController(demo_cut_config(self.target_id))
         self.measurement = None
         self.measurement_time = None
         self.cut_step = None
@@ -235,6 +242,7 @@ class VisionPruningDemo:
         self.vision_command_request_count = 0
         self.hazard_contact = False
         self.external_stop_reason = None
+        self.last_cut_observation = None
         # Labelled arms; nothing below is touched when both are off.
         self.jaw_self_mask = jaw_self_mask
         self.closure_hold = closure_hold
@@ -319,11 +327,14 @@ class VisionPruningDemo:
             hazard_contact=self.hazard_contact,
         )
         if not self.closure_hold:
+            self.last_cut_observation = observation
             self.cut_step = self.cutter.update(observation)
             return self.evidence()
         honest = observation
         observation, self.hold_record = self._closure_hold(honest, tool_pose_wxyz, float(time_s))
         was_closing = self.cutter.phase == "closing"
+        # What the cutter is given; a ROS 2 controller publishes it for the C++ safety gate.
+        self.last_cut_observation = observation
         self.cut_step = self.cutter.update(observation)
         if self.cut_step.phase == "closing" and not was_closing:
             self.closure_pose = np.asarray(tool_pose_wxyz, dtype=float).copy()

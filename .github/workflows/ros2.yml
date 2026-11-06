@@ -34,7 +34,7 @@ jobs:
           set -ex
           source /opt/ros/humble/setup.bash
           mkdir -p ws/src
-          cp -r ros2/pruning_sil ros2/pruning_sil_cpp ws/src/
+          cp -r ros2/pruning_sil_msgs ros2/pruning_sil ros2/pruning_sil_cpp ws/src/
           cd ws
           colcon build
 

@@ -207,7 +207,7 @@ class PruningServoNode(Node):
             dtype=float,
         )
         if (
-            message.header.frame_id != T.FRAME_BASE
+            message.header.frame_id != T.FRAME_WORLD
             or not np.isfinite(pose).all()
             or abs(np.linalg.norm(pose[3:]) - 1) > 1e-3
         ):
@@ -326,7 +326,7 @@ class PruningServoNode(Node):
     def _publish_proposal(self, proposal, index, stamp, input_mode):
         pose = PoseStamped()
         pose.header.stamp = stamp
-        pose.header.frame_id = T.FRAME_BASE
+        pose.header.frame_id = T.FRAME_WORLD
         pose.pose.position.x, pose.pose.position.y, pose.pose.position.z = (
             float(value) for value in proposal["pose_wxyz"][:3]
         )

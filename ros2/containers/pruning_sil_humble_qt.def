@@ -1,0 +1,42 @@
+# Operator-panel layer on top of the software-in-the-loop image.
+#
+# Built from pruning_sil_humble.sif, so the ROS 2 Humble packages, numpy, OpenCV
+# and torch that produced the October 6 replay evidence stay byte-identical.
+# This layer only adds Qt 5 (Ubuntu 22.04's 5.15) for ros2/pruning_operator_panel:
+#   qtbase5-dev, qtdeclarative5-dev     Qt Core/Gui/Quick headers and CMake configs
+#   qml-module-qtquick*                 the QML types the panel imports
+#   fonts-dejavu-core                   so offscreen screenshots render text
+#
+# The panel runs headless here with QT_QPA_PLATFORM=offscreen and the software
+# Qt Quick backend; on a desktop it opens a normal window.
+#
+# Build (fakeroot works unprivileged on this cluster), from the directory that
+# holds pruning_sil_humble.sif:
+#   APPTAINER_CACHEDIR=/nfs/hpc/share/$USER/apptainer-cache \
+#   APPTAINER_TMPDIR=/nfs/hpc/share/$USER/apptainer-tmp \
+#   apptainer build --fakeroot pruning_sil_humble_qt.sif pruning_sil_humble_qt.def
+
+Bootstrap: localimage
+From: pruning_sil_humble.sif
+
+%post
+    set -eux
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        qtbase5-dev \
+        qtdeclarative5-dev \
+        qml-module-qtquick2 \
+        qml-module-qtquick-window2 \
+        qml-module-qtquick-controls2 \
+        qml-module-qtquick-layouts \
+        fonts-dejavu-core
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export ROS_DISTRO=humble
+    # Loopback only: nothing in this image may reach a real rig.
+    export ROS_LOCALHOST_ONLY=1
+
+%labels
+    Purpose Software-in-the-loop graph plus the Qt/QML operator panel
+    NotHIL  Drives only the simulated UR5e in Isaac Sim, never hardware

@@ -51,7 +51,7 @@ def _multiarray(values, message_type, dtype):
 
 def build_messages(capture, index):
     """Every message for one recorded frame, as (topic, message) pairs."""
-    from geometry_msgs.msg import PoseStamped, TransformStamped
+    from geometry_msgs.msg import PoseStamped, TransformStamped, WrenchStamped
     from sensor_msgs.msg import CameraInfo, Image, JointState
     from std_msgs.msg import Float32MultiArray, String, UInt8MultiArray
     from tf2_msgs.msg import TFMessage
@@ -95,7 +95,9 @@ def build_messages(capture, index):
         safe = np.where(np.isfinite(metres), metres, -1.0).astype(np.float32)
         out.append((distance_topic, _multiarray(safe, Float32MultiArray, np.float32)))
         out.append((valid_topic, _multiarray(mask.astype(np.uint8), UInt8MultiArray, np.uint8)))
-        del frame_id
+        # The same grid stamped, for the safety gate: 32FC1 metres, NaN = no usable zone.
+        range_topic = T.TOPIC_TOF_LEFT_RANGE if side == "left" else T.TOPIC_TOF_RIGHT_RANGE
+        out.append((range_topic, array_to_image(metres.astype(np.float32), "32FC1", frame_id, stamp)))
 
     joints = JointState()
     joints.header.stamp = stamp
@@ -105,7 +107,7 @@ def build_messages(capture, index):
     out.append((T.TOPIC_JOINT_STATES, joints))
 
     pose = PoseStamped()
-    pose.header.stamp, pose.header.frame_id = stamp, T.FRAME_BASE
+    pose.header.stamp, pose.header.frame_id = stamp, T.FRAME_WORLD
     tool = frame.get("tool_pose_wxyz") or []
     if len(tool) >= 3:
         pose.pose.position.x, pose.pose.position.y, pose.pose.position.z = (float(v) for v in tool[:3])
@@ -116,7 +118,7 @@ def build_messages(capture, index):
     out.append((T.TOPIC_TOOL_POSE, pose))
 
     transform = TransformStamped()
-    transform.header.stamp, transform.header.frame_id = stamp, T.FRAME_BASE
+    transform.header.stamp, transform.header.frame_id = stamp, T.FRAME_WORLD
     transform.child_frame_id = T.FRAME_TOOL
     if len(tool) >= 3:
         transform.transform.translation.x, transform.transform.translation.y, transform.transform.translation.z = (
@@ -127,7 +129,24 @@ def build_messages(capture, index):
         transform.transform.rotation.y, transform.transform.rotation.z = float(tool[5]), float(tool[6])
     else:
         transform.transform.rotation.w = 1.0
-    out.append(("/tf", TFMessage(transforms=[transform])))
+    transforms = [transform]
+    root = capture.root_pose_w()
+    if root is not None:
+        # The recorded command below is in the robot root frame; place it in world.
+        base = TransformStamped()
+        base.header.stamp, base.header.frame_id = stamp, T.FRAME_WORLD
+        base.child_frame_id = T.FRAME_BASE
+        base.transform.translation.x, base.transform.translation.y, base.transform.translation.z = root[:3]
+        rotation = base.transform.rotation
+        rotation.x, rotation.y, rotation.z, rotation.w = root[3:7]
+        transforms.append(base)
+    out.append(("/tf", TFMessage(transforms=transforms)))
+
+    wrench = WrenchStamped()
+    wrench.header.stamp, wrench.header.frame_id = stamp, T.FRAME_WORLD
+    # Largest net contact force over the arm bodies, as the recorder thresholds it.
+    wrench.wrench.force.x = float(frame.get("contact_force_n") or 0.0)
+    out.append((T.TOPIC_CONTACT_WRENCH, wrench))
 
     command = PoseStamped()
     command.header.stamp, command.header.frame_id = stamp, T.FRAME_BASE
@@ -161,6 +180,9 @@ TOPIC_TYPES = {
     T.TOPIC_TOF_RIGHT: "std_msgs/msg/Float32MultiArray",
     T.TOPIC_TOF_LEFT_VALID: "std_msgs/msg/UInt8MultiArray",
     T.TOPIC_TOF_RIGHT_VALID: "std_msgs/msg/UInt8MultiArray",
+    T.TOPIC_TOF_LEFT_RANGE: "sensor_msgs/msg/Image",
+    T.TOPIC_TOF_RIGHT_RANGE: "sensor_msgs/msg/Image",
+    T.TOPIC_CONTACT_WRENCH: "geometry_msgs/msg/WrenchStamped",
     T.TOPIC_JOINT_STATES: "sensor_msgs/msg/JointState",
     T.TOPIC_TOOL_POSE: "geometry_msgs/msg/PoseStamped",
     "/tf": "tf2_msgs/msg/TFMessage",

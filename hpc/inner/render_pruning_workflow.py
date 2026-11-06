@@ -25,17 +25,14 @@ TARGET_POSITION_M = (0.25123947, 0.63413405, 0.81517712)
 
 
 def sensor_guard(ranges, valid, consecutive_missing, *, minimum_clearance_m=0.06):
-    """Safety gate on measured live ToF; the scripted goal is still geometry-derived."""
-    import numpy as np
+    """Safety gate on measured live ToF; the scripted goal is still geometry-derived.
 
-    ranges, valid = np.asarray(ranges, dtype=float), np.asarray(valid, dtype=bool)
-    samples = ranges[valid & np.isfinite(ranges) & (ranges > 0.0)]
-    missing = consecutive_missing + 1 if not samples.size else 0
-    if samples.size and samples.min() < minimum_clearance_m:
-        return "tof_minimum_clearance", missing
-    if missing >= 4:
-        return "both_tof_missing_4_frames", missing
-    return None, missing
+    Defined once in isaaclab_pruning.task.safety_gate, where the C++ gate's parity
+    check imports it; imported lazily so nothing loads before the Isaac app.
+    """
+    from isaaclab_pruning.task.safety_gate import sensor_guard as guard
+
+    return guard(ranges, valid, consecutive_missing, minimum_clearance_m=minimum_clearance_m)
 
 
 def manual_capture_interval(current_step, frame_count, physics_steps_per_frame):
