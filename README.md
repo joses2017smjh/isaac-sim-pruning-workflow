@@ -2,11 +2,17 @@
 
 **A simulated UR5e that tracks a branch, gates its approach and release, and records enough evidence to check what happened.**
 
-I built the RGB-D controller, dual-ToF/contact gates, recording pipeline, and independent sequence grader. Controlled lighting and occlusion studies expose where the system works and where it stops.
+I built the RGB-D controller, dual-ToF/contact gates, recording pipeline, and independent sequence grader, then moved the gates into a C++17 ROS 2 safety node that every arm command passes through and added a Qt/QML operator panel to watch and stop the loop. Controlled lighting and occlusion studies expose where the system works and where it stops.
 
-[![UR5e approach, surrogate spur release, fall, and return in Isaac Sim](docs/demo/isaac_two_trees_vision_sequence.gif)](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4)
+<p align="center">
+  <a href="docs/OPERATOR_PANEL.md"><img src="docs/demo/operator_panel_live_wide.png" width="900" alt="Qt/QML operator panel: wrist camera, PASS banner from the C++ safety gate, 8x8 time-of-flight zone heatmaps and nearest-return bars against the 6 cm stop line, and the Hold button"></a>
+</p>
+<p align="center"><em>Qt/QML operator panel with a C++ ROS 2 backend: the safety gate's pass/hold call, wrist camera, both ToF sensors' 8×8 zones against the 6 cm stop line, and a Hold button that stopped the simulated arm within one control cycle. Shown reviewing a recorded run in which ROS 2 drove the arm. <a href="docs/OPERATOR_PANEL.md">Panel, layouts and tests</a></em></p>
 
-*Selected 20-second simulation: one known target, 17/17 sequence checks. Release uses a discrete rigid-piece surrogate; the jaws do not model wood fracture.*
+<p align="center">
+  <a href="https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence.mp4"><img src="docs/demo/isaac_two_trees_vision_sequence.gif" width="900" alt="UR5e approach, surrogate spur release, fall, and return in Isaac Sim"></a>
+</p>
+<p align="center"><em>Selected 20-second simulation: one known target, 17/17 sequence checks. Release uses a discrete rigid-piece surrogate; the jaws do not model wood fracture.</em></p>
 
 [Replay studio](https://joses2017smjh.github.io/isaac-sim-pruning-workflow/) · [Visual case study](https://jose-sanchez-portfolio-com.vercel.app/projects/isaac-pruning-workflow/) · [Wrist-camera video](https://github.com/joses2017smjh/isaac-sim-pruning-workflow/releases/download/isaac-vision-2026-09-13/isaac_two_trees_vision_sequence_wrist.mp4) · [Detailed results](docs/RESULTS.md)
 
