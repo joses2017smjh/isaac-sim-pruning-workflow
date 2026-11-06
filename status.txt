@@ -1,3 +1,30 @@
+C++ SAFETY GATE + LIVE ROS 2 LOOP + OPERATOR PANEL — 2026-11-05 (in progress)
+  User asked (2026-11-05) for the three additions behind the four resume bullets: (1) the ToF and cut
+  checks as a C++ ROS 2 node every arm command passes through, (2) ROS 2 driving the simulated arm live
+  with a message-delay test, (3) a Qt/QML operator panel with a Hold button. Approved: ~500 GPU-min;
+  commit and push to develop.
+  (1) 025c1d4: ros2/pruning_sil_cpp safety_gates + safety_gate_node, ros2/pruning_sil_msgs, Python
+      reference isaaclab_pruning.task.safety_gate. Pre-commit graph run: 43,623/43,623 recorded cycles
+      (217 captures) matched the Python checks, 24,817 holds; 22 of 23 stopping faults held, the 23rd a
+      harness start-up race (fixed with a settle wait). Evidence regenerating at 025c1d4 (CPU job 22039665).
+  (2) 8cbe170: PRUNING_ROS2_LOOP=1 recorder mode, live_controller, live_bringup, Isaac-side bridge,
+      tools/queue_ros2_live_loop.py. CPU rehearsal on the 14944 baseline capture: 201/201 bundles
+      answered, 200/200 decision states. Known target is tree1 14944 baseline (7/7 in-process passes);
+      the Sept 14 21328323 configuration no longer exists (jaw proxy axis corrected since).
+  Share at 1.537 TiB on 2026-11-05, over the 1.5 TiB soft quota with 1w11h of grace left: writes stop
+  around 2026-11-12 unless usage drops (needs the user).
+
+ROS 2 SUBSCRIBED-INPUT REPAIR — 2026-10-06
+  Fixed the launched graph: received RGB/depth/intrinsics + tool-pose callbacks now
+  drive causal decisions; missing/malformed source bundles latch a no-pose hold.
+  Actual DDS graph: 199/199 decision states, maximum command delta 1.995 mm,
+  capture timestamps exact, 0 servo image-file reads, 0 manual step calls.
+  Eight real-capture fault scenarios: 80/80 affected decisions held; 0 authorized
+  motion states and nonzero deltas. ROS package 33 passed; Ruff and diff checks clean.
+  Evidence: docs/evidence/ros2_graph_parity_2026-10-06.json. Same one simulated capture;
+  target/camera/contact context remains metadata; ToF telemetry is not a ROS release gate.
+  Existing hold-sweep GPU jobs and frozen code were preserved; no duplicate GPU job.
+
 CURRENT CHECKPOINT — 2026-10-06 — CLOSURE-HOLD SWEEP SUBMITTED (30 GPU RUNS OVERNIGHT)
 
 WHERE THIS IS
