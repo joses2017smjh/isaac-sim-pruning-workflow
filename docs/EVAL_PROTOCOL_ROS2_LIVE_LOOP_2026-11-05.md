@@ -125,3 +125,21 @@ At most 13 × 35 = 455 GPU-minutes reserved (time limits); recent 200-frame runs
 took 20–30 minutes. Storage about 450 MB per run. The share is above its soft
 quota (1.537 TiB used of 1.5 TiB, grace ending around November 12); the
 preflight's refusal line is the 2 TiB hard limit, as set on September 27.
+
+## Smoke run and submission — November 5, 2026
+
+The exploratory smoke run (`ros2-loop-smoke-20261105`, frozen at `37b92d5`, GPU
+job 22039692, 16.8 GPU-minutes) **passed**: capture complete, 17/17 sequence
+checks, configuration including the ROS 2 loop confirmed, outcome
+`vision_guided_simulated_detachment_and_retreat`. The piece dropped 0.809 m
+and the arm returned within 0.25 µm of home. Against R1, all 200 frames
+carried a gate decision, none timed out, the in-process ToF guard was off, and
+frames 1–199 applied exactly the gated command. Frame 0 could not be checked:
+that code did not yet record the t = 0 cycle's gated answer, which `da918c5`
+adds. The gate held no cycle. The median sensor-to-gated-command round trip was
+1.9 ms (wall clock, lockstep; not simulated time). The smoke's first workspace
+build exited 1 after building, on a hash of the absent panel; its trial was
+resubmitted once without the dependency (`resubmission.json` in the batch). It
+is reported here and never pooled with the registered runs.
+
+The registered batch is submitted from the commit that adds this section.
