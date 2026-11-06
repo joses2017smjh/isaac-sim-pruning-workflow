@@ -149,3 +149,32 @@ tasks 0–7 had finished and while task 8 was running, the array's limit was
 raised from one GPU to five (`ArrayTaskThrottle=5`) so tasks 9–12 could run in
 parallel. Each run is independent, and code, plan, GPU-minutes and scoring are
 unchanged. The batch records it in `throttle_change.json`.
+
+## Result — November 5, 2026
+
+Scored with the committed scorer ([verdicts](evidence/ros2_live_loop_verdicts_2026-11-05.json)).
+All 13 runs completed; 233 GPU-minutes were used including the smoke run, of about
+500 approved.
+
+| Prediction | Verdict |
+|---|---|
+| R1, ROS 2 drove the arm | **Supported, 13/13.** In every run every frame applied exactly the gate's command (frame 0 included), with no timeouts and the in-process ToF guard off |
+| R2, same result at 0 ms | **Supported, 3/3** passed all 17 sequence checks |
+| R3, what delay does | 0 ms **3/3**, 33.3 ms **3/3**, 66.7 ms **0/3**, 100 ms **0/3**. First failing delay: **66.7 ms** |
+| R4, Hold stops the arm | **Supported.** The gate held from the cycle after the press with reason `operator_hold`. No passing decision followed the press; one command already in flight was applied; every later frame held |
+| R5, the panel keeps up | **Supported.** 201/201 decisions shown, every pass/hold change repainted before the next decision, 201/201 wrist frames received |
+
+**What delay did.** Every one of the 12 delay runs made the cut; delay never
+caused a stop, a contact or a gate hold. Delay slowed the approach: the cut came at
+frame 77 at 0 ms, 97–98 at 33 ms, 120 at 67 ms and 142 at 100 ms. At 67 and 100 ms
+the fixed 20 s episode ended while the arm was still retreating, 79 mm and 154 mm
+from home, so each failed exactly one check, `returned_home_and_final_phase_complete`.
+The repeats were near identical (same cut frame, home error within 0.1 mm), so three
+runs per delay show little run-to-run variation here. The threshold is a time-budget
+threshold for this episode length, not a safety threshold.
+
+**The Hold timing.** From the press to the simulator applying the first held command
+took 4.7 s of wall-clock time. That is the lockstep simulator's path-traced render
+time for one 0.1 s frame, not the panel's or the gate's latency. In control cycles,
+the arm stopped within **one** cycle, as registered. Gate-to-panel delivery measured
+0.03 ms at p50 and 0.12 ms at p95 on the same node.

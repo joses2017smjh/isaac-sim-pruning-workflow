@@ -1,0 +1,486 @@
+{
+  "provenance": {
+    "scorer": "tools/score_ros2_live_loop.py (committed at da918c5, before any registered run)",
+    "batch": "artifacts/vision_robustness/ros2-loop-delay-20261105 (frozen at f0d57a2)",
+    "gpu_array": "22040411",
+    "gpu_minutes_used_with_smoke": 233.2
+  },
+  "schema_version": 1,
+  "protocol": "docs/EVAL_PROTOCOL_ROS2_LIVE_LOOP_2026-11-05.md",
+  "batch": "ros2-loop-delay-20261105",
+  "code_revision": "f0d57a2430b7cd2a5d046f923e33182b2b75455d",
+  "verdicts": {
+    "R1_ros2_drove_the_arm": {
+      "supported": true,
+      "runs_ok": 13,
+      "runs": 13
+    },
+    "R2_same_result_at_0ms": {
+      "supported": true,
+      "passes": 3,
+      "runs": 3
+    },
+    "R3_delay": {
+      "pass_counts_by_delay_ms": {
+        "0.0": {
+          "passes": 3,
+          "runs": 3
+        },
+        "33.3": {
+          "passes": 3,
+          "runs": 3
+        },
+        "66.7": {
+          "passes": 0,
+          "runs": 3
+        },
+        "100.0": {
+          "passes": 0,
+          "runs": 3
+        }
+      },
+      "first_failing_delay_ms": 66.7
+    },
+    "R4_hold_stops_the_arm": {
+      "supported": true,
+      "synthesized_click": true,
+      "hold_published": true,
+      "first_held_cycle_stamp_ns": 6000000000,
+      "first_held_reason": "operator_hold",
+      "passing_decisions_after_press": 0,
+      "press_to_applied_hold_ms": 4737.237636,
+      "passing_commands_applied_after_press": 1,
+      "control_cycles_to_hold": 1,
+      "frames_from_first_hold": 140,
+      "frames_not_held_after_first_hold": [],
+      "ok": true
+    },
+    "R5_panel_keeps_up": {
+      "supported": true,
+      "decisions_logged_while_panel_ran": 201,
+      "decisions_missing_from_panel": [],
+      "pass_hold_changes": 2,
+      "changes_without_a_repaint_before_the_next_decision": [],
+      "wrist_frames_received": 201,
+      "wrist_frames_published": 201,
+      "decision_receive_latency_ms": {
+        "p50": 0.034144,
+        "p95": 0.116649
+      },
+      "ok": true
+    }
+  },
+  "runs": [
+    {
+      "index": 0,
+      "run": "run_00_source_tree1_v14944_baseline_ros2_delay0",
+      "delay_steps": 0,
+      "delay_ms": 0.0,
+      "panel": false,
+      "pass": true,
+      "failed_checks": [],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.0018310910000000002,
+          "p95": 0.012804030000000001,
+          "max": 1.573193303
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 1,
+      "run": "run_01_source_tree1_v14944_baseline_ros2_delay2",
+      "delay_steps": 2,
+      "delay_ms": 33.3,
+      "panel": false,
+      "pass": true,
+      "failed_checks": [],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.0032610950000000003,
+          "p95": 0.006331252000000001,
+          "max": 0.968242071
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 2,
+      "run": "run_02_source_tree1_v14944_baseline_ros2_delay4",
+      "delay_steps": 4,
+      "delay_ms": 66.7,
+      "panel": false,
+      "pass": false,
+      "failed_checks": [
+        "returned_home_and_final_phase_complete"
+      ],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.003446666,
+          "p95": 0.010777992,
+          "max": 1.397486207
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 3,
+      "run": "run_03_source_tree1_v14944_baseline_ros2_delay6",
+      "delay_steps": 6,
+      "delay_ms": 100.0,
+      "panel": false,
+      "pass": false,
+      "failed_checks": [
+        "returned_home_and_final_phase_complete"
+      ],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.003767551,
+          "p95": 0.013171325000000001,
+          "max": 1.632686845
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 4,
+      "run": "run_04_source_tree1_v14944_baseline_ros2_delay0",
+      "delay_steps": 0,
+      "delay_ms": 0.0,
+      "panel": false,
+      "pass": true,
+      "failed_checks": [],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.001966134,
+          "p95": 0.015018709000000002,
+          "max": 1.502688518
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 5,
+      "run": "run_05_source_tree1_v14944_baseline_ros2_delay2",
+      "delay_steps": 2,
+      "delay_ms": 33.3,
+      "panel": false,
+      "pass": true,
+      "failed_checks": [],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.003876374,
+          "p95": 0.011315204,
+          "max": 1.2808302580000002
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 6,
+      "run": "run_06_source_tree1_v14944_baseline_ros2_delay4",
+      "delay_steps": 4,
+      "delay_ms": 66.7,
+      "panel": false,
+      "pass": false,
+      "failed_checks": [
+        "returned_home_and_final_phase_complete"
+      ],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.0038882850000000004,
+          "p95": 0.008454343000000001,
+          "max": 1.52044464
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 7,
+      "run": "run_07_source_tree1_v14944_baseline_ros2_delay6",
+      "delay_steps": 6,
+      "delay_ms": 100.0,
+      "panel": false,
+      "pass": false,
+      "failed_checks": [
+        "returned_home_and_final_phase_complete"
+      ],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.003918912,
+          "p95": 0.013283465000000001,
+          "max": 1.518852706
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 8,
+      "run": "run_08_source_tree1_v14944_baseline_ros2_delay0",
+      "delay_steps": 0,
+      "delay_ms": 0.0,
+      "panel": false,
+      "pass": true,
+      "failed_checks": [],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.0018200500000000001,
+          "p95": 0.006198932000000001,
+          "max": 1.5347993500000001
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 9,
+      "run": "run_09_source_tree1_v14944_baseline_ros2_delay2",
+      "delay_steps": 2,
+      "delay_ms": 33.3,
+      "panel": false,
+      "pass": true,
+      "failed_checks": [],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.003238594,
+          "p95": 0.012523823000000002,
+          "max": 1.4777382060000002
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 10,
+      "run": "run_10_source_tree1_v14944_baseline_ros2_delay4",
+      "delay_steps": 4,
+      "delay_ms": 66.7,
+      "panel": false,
+      "pass": false,
+      "failed_checks": [
+        "returned_home_and_final_phase_complete"
+      ],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.0038691880000000004,
+          "p95": 0.013088359,
+          "max": 1.399302529
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 11,
+      "run": "run_11_source_tree1_v14944_baseline_ros2_delay6",
+      "delay_steps": 6,
+      "delay_ms": 100.0,
+      "panel": false,
+      "pass": false,
+      "failed_checks": [
+        "returned_home_and_final_phase_complete"
+      ],
+      "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+      "first_stop": {
+        "frame": null,
+        "reason": null
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.0037584940000000002,
+          "p95": 0.012167301,
+          "max": 1.404949843
+        },
+        "gate_held_cycles": 0
+      }
+    },
+    {
+      "index": 12,
+      "run": "run_12_source_tree1_v14944_baseline_ros2_delay0_panel_hold",
+      "delay_steps": 0,
+      "delay_ms": 0.0,
+      "panel": true,
+      "pass": false,
+      "failed_checks": [
+        "one_matching_detach_event_and_request",
+        "detach_has_completed_certified_closure",
+        "detached_state_consistent_with_event",
+        "piece_stationary_before_release",
+        "piece_dropped_after_release",
+        "post_detach_retreat_toward_home",
+        "returned_home_and_final_phase_complete",
+        "no_recorded_stops"
+      ],
+      "task_outcome": "vision_stopped_failure",
+      "first_stop": {
+        "frame": 60,
+        "reason": "operator_hold"
+      },
+      "r1": {
+        "ok": true,
+        "problems": [],
+        "frames": 200,
+        "frames_without_gate_decision": [],
+        "applied_not_gated_frames": [],
+        "simulator_stop_overrides": [],
+        "round_trip_s": {
+          "p50": 0.003913852000000001,
+          "p95": 0.007927952,
+          "max": 0.9006114650000001
+        },
+        "gate_held_cycles": 141
+      },
+      "r4": {
+        "synthesized_click": true,
+        "hold_published": true,
+        "first_held_cycle_stamp_ns": 6000000000,
+        "first_held_reason": "operator_hold",
+        "passing_decisions_after_press": 0,
+        "press_to_applied_hold_ms": 4737.237636,
+        "passing_commands_applied_after_press": 1,
+        "control_cycles_to_hold": 1,
+        "frames_from_first_hold": 140,
+        "frames_not_held_after_first_hold": [],
+        "ok": true
+      },
+      "r5": {
+        "decisions_logged_while_panel_ran": 201,
+        "decisions_missing_from_panel": [],
+        "pass_hold_changes": 2,
+        "changes_without_a_repaint_before_the_next_decision": [],
+        "wrist_frames_received": 201,
+        "wrist_frames_published": 201,
+        "decision_receive_latency_ms": {
+          "p50": 0.034144,
+          "p95": 0.116649
+        },
+        "ok": true
+      }
+    }
+  ]
+}

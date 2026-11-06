@@ -13,12 +13,13 @@ C++ SAFETY GATE + LIVE ROS 2 LOOP + OPERATOR PANEL — 2026-11-05
       configuration no longer exists (jaw proxy axis corrected since).
   (3) Panel (da918c5): ros2/pruning_operator_panel, docs/OPERATOR_PANEL.md; gtest 6/6; CPU rehearsal: Hold
       held the next cycle (operator_hold), 201/201 decisions and frames shown.
-  REGISTERED SWEEP SUBMITTED from f0d57a2 (protocol docs/EVAL_PROTOCOL_ROS2_LIVE_LOOP_2026-11-05.md):
-      batch artifacts/vision_robustness/ros2-loop-delay-20261105, build 22040410 (done), trials 22040411
-      (13 tasks %1: 3 x {0,33.3,66.7,100} ms + panel Hold run 12), <= 455 GPU-min reserved.
-      NEXT when 22040411 ends: python tools/score_ros2_live_loop.py --batch <batch> --output
-      docs/evidence/ros2_live_loop_verdicts_2026-11-05.json (depth-env python; scorer committed at da918c5),
-      then write the protocol's result section, README row, ROS2_SIL/OPERATOR_PANEL results, this file.
+  SWEEP DONE (array 22040411, scored with the committed scorer): docs/evidence/ros2_live_loop_verdicts_2026-11-05.json.
+      R1 13/13 ROS drove the arm; R2 3/3 at 0 ms; R3 33 ms 3/3, 67 ms 0/3, 100 ms 0/3 (cut every time; episode ran
+      out in the retreat, 79/154 mm from home); R4 Hold within 1 control cycle (4.7 s wall = one path-traced frame);
+      R5 panel 201/201. 233 GPU-min used of ~500. Tasks 9-12 ran in parallel at the user's request (throttle_change.json).
+  (3b) Panel rebuilt as a responsive Qt/QML app (521ff2e, 64f4dcf): tokens + components, Live/Timeline/Diagnostics,
+      C++ models and painted items, review mode, 18 gtests incl. layout at 1440/960/420 px. User is targeting a
+      Qt/QML UI engineer role (mixed Python/C++).
   Share at 1.537 TiB on 2026-11-05, over the 1.5 TiB soft quota with 1w11h of grace left: writes stop
   around 2026-11-12 unless usage drops (needs the user).
 
