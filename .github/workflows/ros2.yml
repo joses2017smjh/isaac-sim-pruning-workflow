@@ -20,7 +20,9 @@ jobs:
             ros-humble-rosbag2-storage-mcap \
             ros-humble-ament-cmake-gtest \
             python3-opencv \
-            python3-pip
+            python3-pip \
+            qtbase5-dev qtdeclarative5-dev qml-module-qtquick2 qml-module-qtquick-window2 \
+            qml-module-qtquick-controls2 qml-module-qtquick-layouts fonts-dejavu-core
           rm -rf /var/lib/apt/lists/*
           python3 -m pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch
           # Keeps colcon's setuptools metadata path working; see
@@ -34,7 +36,7 @@ jobs:
           set -ex
           source /opt/ros/humble/setup.bash
           mkdir -p ws/src
-          cp -r ros2/pruning_sil_msgs ros2/pruning_sil ros2/pruning_sil_cpp ws/src/
+          cp -r ros2/pruning_sil_msgs ros2/pruning_sil ros2/pruning_sil_cpp ros2/pruning_operator_panel ws/src/
           cd ws
           colcon build
 
@@ -47,6 +49,8 @@ jobs:
         env:
           ROS_LOCALHOST_ONLY: "1"
           PYTHONNOUSERSITE: "1"
+          QT_QPA_PLATFORM: offscreen
+          QT_QUICK_BACKEND: software
         run: |
           # ROS setup scripts read unset variables, so -u is off while sourcing them.
           set -ex

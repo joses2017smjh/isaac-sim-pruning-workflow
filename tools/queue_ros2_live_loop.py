@@ -37,7 +37,7 @@ from queue_vision_robustness import (  # noqa: E402
 )
 from vision_experiment_assets import inventory_assets  # noqa: E402
 
-#: The known target: seven of seven in-process passes (17/17) under exactly this condition.
+#: The known target: five of five in-process passes (17/17) under exactly this condition.
 KNOWN_TARGET = {
     "daylight": "source",
     "photometric_normalization": "raw",

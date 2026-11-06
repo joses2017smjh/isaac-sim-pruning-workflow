@@ -22,7 +22,7 @@ apptainer exec --cleanenv --no-home --bind /nfs/hpc/share/$USER --env PYTHONNOUS
     --event-handlers console_direct- --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=OFF
 "
 test -x "$BATCH/ros2_ws/install/pruning_sil_cpp/lib/pruning_sil_cpp/safety_gate_node"
-sha256sum "$BATCH"/ros2_ws/install/pruning_sil_cpp/lib/pruning_sil_cpp/safety_gate_node \
-  "$BATCH"/ros2_ws/install/pruning_operator_panel/lib/pruning_operator_panel/operator_panel 2>/dev/null \
-  | tee "$BATCH/ros2_ws/executables.sha256"
+# Hash what was built; the operator panel exists only in batches whose code includes it.
+find "$BATCH/ros2_ws/install" -path "*/lib/pruning_sil_cpp/safety_gate_node" -o -path "*/lib/pruning_operator_panel/operator_panel" \
+  | sort | xargs sha256sum | tee "$BATCH/ros2_ws/executables.sha256"
 echo "end $(date -Is)"

@@ -78,6 +78,9 @@ def run_environment(plan, row, batch, output, inherited):
             PRUNING_ROS2_LOOP="1",
             PRUNING_ROS2_DELAY_STEPS=str(int(row["ros2_loop"]["delay_steps"])),
         )
+        if row["ros2_loop"].get("operator_hold_after_cycles") is not None:
+            # The operator panel must be listening before the first frame, or it would miss it.
+            env["PRUNING_ROS2_EXPECT_PANEL"] = "1"
     return env
 
 

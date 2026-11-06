@@ -36,7 +36,9 @@ if [ "$CYCLES" != "-" ]; then
 fi
 if [ -n "${REHEARSE_CAPTURE:-}" ]; then
   echo "== live-loop rehearsal on $REHEARSE_CAPTURE $(date -Is)"
+  PANEL_ARGS=()
+  [ "$WITH_PANEL" = panel ] && PANEL_ARGS=(--panel $WS/install/pruning_operator_panel/lib/pruning_operator_panel/operator_panel)
   python3 $REPO/tools/rehearse_ros2_loop.py --capture "$REHEARSE_CAPTURE" \
-    --gate $WS/install/pruning_sil_cpp/lib/pruning_sil_cpp/safety_gate_node --output "$REHEARSE_OUT" 2>&1 | tail -40
+    --gate $WS/install/pruning_sil_cpp/lib/pruning_sil_cpp/safety_gate_node --output "$REHEARSE_OUT" "${PANEL_ARGS[@]}" 2>&1 | tail -60
 fi
 echo "== done $(date -Is)"

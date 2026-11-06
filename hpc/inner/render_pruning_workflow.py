@@ -747,7 +747,10 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 }
                 ros_bridge.publish_config(ros_config)
                 waited = time_module.monotonic()
-                ros_bridge.wait_for_graph(float(os.environ.get("PRUNING_ROS2_GRAPH_WAIT_S", "900")))
+                ros_bridge.wait_for_graph(
+                    float(os.environ.get("PRUNING_ROS2_GRAPH_WAIT_S", "900")),
+                    expect_panel=os.environ.get("PRUNING_ROS2_EXPECT_PANEL") == "1",
+                )
                 report["ros2_loop"] = {
                     "enabled": True,
                     "delay_steps": ros2_delay_steps,
@@ -760,6 +763,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                     "in_process_sensor_guard": "disabled; the C++ gate checks ToF",
                 }
                 demo = RosControllerProxy(ros_bridge, demo)
+                demo.delay_ms = ros2_delay_steps * env.step_dt * 1000.0
 
                 def ros_sensor_snapshot():
                     """ToF grids, the largest arm contact force vector and joints, measured with this frame."""
@@ -966,6 +970,14 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             )
             if ros_bridge is not None:
                 report["vision_initialization"]["tracker"] = demo.initialization
+                first = demo.last_result or {}
+                # The t = 0 cycle's gated answer: the command the first frame applies.
+                report["ros2_loop"]["initial_cycle"] = {
+                    "gate_decision": first.get("decision"),
+                    "gated_command_wxyz": first.get("command"),
+                    "gated_jaw": first.get("jaw"),
+                    "round_trip_s": first.get("round_trip_s"),
+                }
                 if demo.timed_out:
                     sim_stop_reason = "ros2_loop_timeout"
         report["artifact_inventory"]["preview"] = [

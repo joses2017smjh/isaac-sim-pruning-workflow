@@ -156,15 +156,19 @@ class RosLoopBridge:
         message.data = json.dumps(config, sort_keys=True)
         self.config_publisher.publish(message)
 
-    def wait_for_graph(self, timeout_s):
-        """Block until the controller and the safety gate are connected, or raise."""
+    def wait_for_graph(self, timeout_s, expect_panel=False):
+        """Block until the controller, the safety gate (and the panel, if expected) are connected."""
         node, deadline = self.node, time.monotonic() + float(timeout_s)
         while time.monotonic() < deadline:
             gate = node.count_publishers("/pruning/gated/command_pose") >= 1
             controller = node.count_publishers("/pruning/controller/evidence") >= 1
             # Both the controller and the gate read the tool pose.
             readers = self.pub["tool_pose"].get_subscription_count() >= 2
-            if gate and controller and readers and self.pub["tof_left"].get_subscription_count() >= 1:
+            # The panel also reads the camera and the cycle markers, beside the controller.
+            panel = not expect_panel or (
+                self.pub["rgb"].get_subscription_count() >= 2 and self.pub["cycle"].get_subscription_count() >= 2
+            )
+            if gate and controller and readers and panel and self.pub["tof_left"].get_subscription_count() >= 1:
                 return time.monotonic()
             self.rclpy.spin_once(node, timeout_sec=0.2)
         raise RosLoopTimeout("ROS 2 controller and safety gate did not connect")
@@ -301,6 +305,7 @@ class RosControllerProxy:
         self.cycle_log = []
         self.timed_out = None
         self.last_result = None
+        self.delay_ms = 0.0  # the modelled message delay, shown on the operator panel
         self._seed = None
         self._pending_stop = None
         self._index = -1
@@ -327,6 +332,7 @@ class RosControllerProxy:
             "time_s": float(time_s),
             "index": self._index,
             "world_from_optical": np.asarray(world_from_optical).tolist(),
+            "delay_ms": self.delay_ms,
         }
         if self._index == -1:
             marker.update(

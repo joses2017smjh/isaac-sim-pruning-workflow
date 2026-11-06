@@ -59,13 +59,40 @@ def grid(frame, side):
     return {"ranges": ranges, "valid": np.asarray(frame[f"tof_{side}_valid"], dtype=bool)}
 
 
+def panel_summary(work, rows):
+    """What the panel recorded: the press, the gate's answer to it, and whether it missed anything."""
+    record_path = work / "operator_panel_record.jsonl"
+    if not record_path.exists():
+        return {"record": None}
+    events = [json.loads(line) for line in record_path.read_text().splitlines() if line.strip()]
+    decisions = [json.loads(line) for line in (work / "ros2_loop_decisions.jsonl").read_text().splitlines() if line]
+    shown = {e["stamp_ns"] for e in events if e.get("event") == "decision"}
+    press = next((e["wall_ns"] for e in events if e.get("event") == "hold_pressed"), None)
+    first_hold = next((d for d in decisions if d.get("operator_hold")), None)
+    return {
+        "synthesized_click": any(e.get("event") == "synthesized_click" for e in events),
+        "hold_pressed": press is not None,
+        "first_operator_hold_reason": first_hold and first_hold["reason"],
+        "passing_decisions_after_press": None
+        if press is None
+        else sum(1 for d in decisions if d["publish_wall_ns"] > press and d["passed"]),
+        "decisions_logged": len(decisions),
+        "decisions_missing_from_panel": sum(1 for d in decisions if d["stamp_ns"] not in shown),
+        "repaints": sum(1 for e in events if e.get("event") == "rendered"),
+        "wrist_frames_received": sum(1 for e in events if e.get("event") == "frame"),
+        "wrist_frames_published": len(rows),
+        "screenshots": sorted(p.name for p in (work / "panel").glob("*.png")) if (work / "panel").exists() else [],
+    }
+
+
 def config_from(report):
     target = report["blender_scene"]["target"]
     approach = report.get("approach_strategy") or {}
     tracker = report.get("tracker_config") or {}
-    closing = report["blender_scene"].get("visual_proxy_closing_axis_tool") or report["camera_mount_selection"][
-        "closing_axis_tool"
-    ]
+    closing = (
+        report["blender_scene"].get("visual_proxy_closing_axis_tool")
+        or report["camera_mount_selection"]["closing_axis_tool"]
+    )
     return {
         "target_id": target["id"],
         "target_axis_w": target["axis_w"],
@@ -96,6 +123,8 @@ def main(argv=None):
     parser.add_argument("--gate", required=True)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--frames", type=int, default=None)
+    parser.add_argument("--panel", help="operator_panel executable: also run the panel, which clicks Hold")
+    parser.add_argument("--panel-hold-after", type=int, default=60)
     args = parser.parse_args(argv)
     report = json.loads((args.capture / "report.json").read_text())
     frames = json.loads((args.capture / "frames.json").read_text())["frames"]
@@ -104,15 +133,19 @@ def main(argv=None):
     work.mkdir(parents=True, exist_ok=True)
 
     bringup_log = open(work / "bringup.log", "w")  # noqa: SIM115 - the child writes to it until the end
+    panel = []
+    if args.panel:
+        panel = ["--panel", args.panel, "--auto-hold-after-cycles", str(args.panel_hold_after)]
+        panel += ["--record", "{output_dir}/operator_panel_record.jsonl", "--screenshot-dir", "{output_dir}/panel"]
     bringup = subprocess.Popen(
         [sys.executable, "-m", "pruning_sil.live_bringup", "--gate", args.gate, "--output-dir", str(work),
-         "--config-timeout-s", "120", "--input-timeout-s", "10"],
+         "--config-timeout-s", "120", "--input-timeout-s", "10", *panel],
         stdout=bringup_log, stderr=subprocess.STDOUT,
     )  # fmt: skip
     bridge = RosLoopBridge(wait_s=60.0)
     config = config_from(report)
     bridge.publish_config(config)
-    connect = bridge.wait_for_graph(120.0)
+    connect = bridge.wait_for_graph(120.0, expect_panel=bool(args.panel))
     del connect
 
     camera = report["camera"]
@@ -228,6 +261,8 @@ def main(argv=None):
         if (work / "ros2_loop_bringup.json").exists()
         else None,
     }
+    if args.panel:
+        summary["panel"] = panel_summary(work, rows)
     args.output.write_text(json.dumps(summary, indent=2, default=str) + "\n")
     print(json.dumps({k: v for k, v in summary.items() if k not in ("disagreements", "bringup")}, indent=2))
     return 0

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>pruning_operator_panel</name>
+  <version>0.1.0</version>
+  <description>
+    Qt/QML operator panel for the live pruning loop: wrist camera, the safety gate's
+    pass/hold call and reason, one bar per time-of-flight sensor against the 6 cm stop
+    line, the modelled message delay, and a Hold button the C++ safety gate obeys.
+    C++ backend (an rclcpp node), QML screen. It drives only the simulated arm.
+  </description>
+  <maintainer email="joseszgz2021@gmail.com">Jose Sanchez</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>pruning_sil_msgs</depend>
+  <depend>qtbase5-dev</depend>
+  <depend>qtdeclarative5-dev</depend>
+  <exec_depend>qml-module-qtquick2</exec_depend>
+  <exec_depend>qml-module-qtquick-controls2</exec_depend>
+  <exec_depend>qml-module-qtquick-layouts</exec_depend>
+  <exec_depend>qml-module-qtquick-window2</exec_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
