@@ -753,3 +753,63 @@ def test_depth_loop_registers_copy_their_sources_unchanged(scripts):
         "planned_pose_depth_appearance",
     )
     assert planned["runs"][0]["strategy"]["planned_tool_quat_wxyz"] is not None
+
+
+def _ros2_row(delay_steps, hold_after=None):
+    return {
+        "daylight": "source",
+        "photometric_normalization": "raw",
+        "target_tree_index": 1,
+        "component_first_vertex": 14944,
+        "strategy": {"name": "baseline", "mode": "straight", "standoff_m": 0.0, "max_step_m": 0.004},
+        "ros2_loop": {"delay_steps": delay_steps, "operator_hold_after_cycles": hold_after},
+    }
+
+
+def test_ros2_loop_rows_turn_the_live_loop_on_and_name_their_delay(scripts, tmp_path):
+    _, run = scripts
+    plan = {"render_samples": 64, "overview_width": 1280, "frames": 200}
+    env = run.run_environment(plan, _ros2_row(4), tmp_path, tmp_path / "out", {"PRUNING_ROS2_LOOP": "stale"})
+    assert (env["PRUNING_ROS2_LOOP"], env["PRUNING_ROS2_DELAY_STEPS"]) == ("1", "4")
+    without = {k: v for k, v in _ros2_row(0).items() if k != "ros2_loop"}
+    assert "PRUNING_ROS2_LOOP" not in run.run_environment(plan, without, tmp_path, tmp_path / "p", {})
+    assert run.run_label(3, _ros2_row(6)) == "run_03_source_tree1_v14944_baseline_ros2_delay6"
+    assert run.run_label(12, _ros2_row(0, 60)).endswith("_ros2_delay0_panel_hold")
+
+
+def test_ros2_loop_capture_must_show_the_loop_and_its_delay(scripts):
+    _, run = scripts
+    plan = {"frames": 200}
+
+    def report(loop):
+        return {
+            "photometric_normalization": "raw",
+            "frame_count": 200,
+            "blender_scene": {"daylight": {"preset": "source"}, "target": {"id": "tree1_SPUR_component_14944"}},
+            "approach_strategy": {"mode": "straight", "standoff_m": 0.0, "max_step_m": 0.004},
+            **({"ros2_loop": loop} if loop is not None else {}),
+        }
+
+    assert run.configuration_matches(report({"enabled": True, "delay_steps": 2}), _ros2_row(2), plan) is True
+    assert run.configuration_matches(report({"enabled": True, "delay_steps": 0}), _ros2_row(2), plan) is False
+    assert run.configuration_matches(report(None), _ros2_row(0), plan) is False
+    in_process = {k: v for k, v in _ros2_row(0).items() if k != "ros2_loop"}
+    assert run.configuration_matches(report({"enabled": True, "delay_steps": 0}), in_process, plan) is False
+
+
+def test_ros2_live_loop_plans_stay_inside_the_approved_gpu_budget(monkeypatch):
+    tools = Path(__file__).resolve().parents[1] / "tools"
+    monkeypatch.syspath_prepend(str(tools))
+    spec = importlib.util.spec_from_file_location("queue_ros2_live_loop", tools / "queue_ros2_live_loop.py")
+    queue = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(queue)
+    smoke, sweep = queue.experiment_plan("smoke"), queue.experiment_plan("delay_sweep")
+    # The user approved about 500 GPU-minutes on 2026-11-05; the time limits bound the worst case.
+    assert smoke["maximum_gpu_minutes"] + sweep["maximum_gpu_minutes"] <= 500
+    loops = [run["ros2_loop"] for run in sweep["runs"]]
+    delays = [loop["delay_steps"] for loop in loops if loop["operator_hold_after_cycles"] is None]
+    assert sorted(delays) == [0, 0, 0, 2, 2, 2, 4, 4, 4, 6, 6, 6]
+    assert delays[:4] == [0, 2, 4, 6], "delays interleave so none runs at a different queue position"
+    assert [run["ros2_loop"]["operator_hold_after_cycles"] for run in sweep["runs"]].count(60) == 1
+    assert all(run["component_first_vertex"] == 14944 for run in sweep["runs"])
+    assert all(run["strategy"]["name"] == "baseline" for run in sweep["runs"])

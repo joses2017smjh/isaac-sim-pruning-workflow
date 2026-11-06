@@ -208,6 +208,9 @@ def _live_gate_fixture(range_m, *, permit_detach=True):
         "sensor_guard": guard,
         "missing_sensor_frames": 0,
         "stopped_reason": None,
+        # In-process run: the ROS 2 loop is off (PRUNING_ROS2_LOOP=0).
+        "ros_bridge": None,
+        "sim_stop_reason": None,
         "report": {},
         "index": 9,
         "fps": 10,
@@ -275,6 +278,9 @@ def test_renderer_acknowledges_applied_vision_only_after_physics_steps(fail_step
     namespace = {
         "steps_per_frame": 3,
         "action": "issued action",
+        "previous_action": "previous action",
+        "delayed": False,
+        "ros2_delay_steps": 0,
         "env": SimpleNamespace(step=step),
         "demo": SimpleNamespace(command_applied=lambda *args: events.append("applied")),
         "phase": "vision_approach",
@@ -287,6 +293,48 @@ def test_renderer_acknowledges_applied_vision_only_after_physics_steps(fail_step
     else:
         _execute_capture_nodes([physics, acknowledge], namespace)
         assert events == ["step", "step", "step", "applied"]
+
+
+def test_ros2_loop_skips_the_in_process_tof_guard_and_records_the_gates_stop():
+    """With PRUNING_ROS2_LOOP=1 the C++ gate checks ToF; the recorder only forwards the measured sensors."""
+    live_block = next(node for node in _capture_loop().body if isinstance(node, ast.If) and _calls(node, "observe"))
+    namespace, events = _live_gate_fixture(0.03)
+    sensors = {"tof": "measured with this frame"}
+
+    class GateDemo:
+        timed_out = None
+        last_result = {"decision": {"tof_missing_frames": 0}}
+        next_sensors = None
+
+        def stop(self, reason):
+            events.append("stop")
+
+        def observe(self, *args, **kwargs):
+            events.append("observe")
+            assert self.next_sensors is sensors
+            self.cut_step = SimpleNamespace(phase="stopped", stopped_reason="tof_minimum_clearance", detach_event=False)
+            return {"cut": {"detached": False}}
+
+    namespace.update(ros_bridge=object(), demo=GateDemo(), ros_sensor_snapshot=lambda: sensors)
+    _execute_capture_nodes([live_block], namespace)
+    assert events == ["observe"], "the recorder's own ToF guard must not run in the ROS 2 loop"
+    assert namespace["stopped_reason"] == "tof_minimum_clearance"
+    assert namespace["report"]["sensor_stop_frame"] == 9
+
+
+def test_ros2_delay_keeps_the_previous_command_for_the_first_steps():
+    physics = next(node for node in _capture_loop().body if isinstance(node, ast.For) and _calls(node, "step"))
+    applied = []
+    namespace = {
+        "steps_per_frame": 6,
+        "action": "new",
+        "previous_action": "old",
+        "delayed": True,
+        "ros2_delay_steps": 2,
+        "env": SimpleNamespace(step=applied.append),
+    }
+    _execute_capture_nodes([physics], namespace)
+    assert applied == ["old", "old", "new", "new", "new", "new"]
 
 
 def test_live_return_error_uses_home_before_first_command_not_first_captured_pose():

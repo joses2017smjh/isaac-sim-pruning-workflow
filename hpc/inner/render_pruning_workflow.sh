@@ -18,6 +18,16 @@ if [[ "${PRUNING_SMOKE_ONLY:-0}" == 1 ]]; then
     "$PY" -c 'import json,os,sys; r=json.load(open(os.environ["BENCH_OUT"])); print("Environment smoke ok:",r.get("ok")); sys.exit(0 if r.get("ok") is True else 1)'
     exit 0
 fi
+if [[ "${PRUNING_ROS2_LOOP:-0}" == 1 ]]; then
+    # Isaac Sim's bundled ROS 2 Humble (rclpy for its own Python), appended so nothing it ships
+    # shadows the simulator's packages. The controller and the C++ gate run in the SIL container.
+    ROS_CORE="$(dirname "$PY")/../lib/python3.12/site-packages/isaacsim/exts/isaacsim.ros2.core/humble"
+    [[ -d "$ROS_CORE/rclpy" ]] || { echo "Isaac Sim bundled ROS 2 not found at $ROS_CORE" >&2; exit 2; }
+    export ROS_DISTRO=humble RMW_IMPLEMENTATION=rmw_fastrtps_cpp ROS_LOCALHOST_ONLY=1
+    export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$ROS_CORE/lib"
+    export PYTHONPATH="${PYTHONPATH:+$PYTHONPATH:}$ROS_CORE/rclpy"
+    export ROS_LOG_DIR="${ROS_LOG_DIR:-$PRUNING_RENDER_DIR/ros_log}"
+fi
 "$PY" hpc/inner/render_pruning_workflow.py
 
 # Kit can close the interpreter with exit 0 after an application error.

@@ -16,7 +16,7 @@ setup(
     zip_safe=True,
     maintainer="Jose Sanchez",
     maintainer_email="joseszgz2021@gmail.com",
-    description="Software-in-the-loop replay of recorded pruning captures.",
+    description="ROS 2 replay of recorded pruning captures, and the controller side of the live Isaac loop.",
     license="BSD-3-Clause",
     tests_require=["pytest"],
     entry_points={
@@ -25,6 +25,8 @@ setup(
             "export_rosbag2 = pruning_sil.export_rosbag2:main",
             "parity = pruning_sil.parity:main",
             "replay_player = pruning_sil.replay_player:main",
+            "live_controller = pruning_sil.live_controller:main",
+            "live_bringup = pruning_sil.live_bringup:main",
         ],
     },
 )

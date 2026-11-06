@@ -71,12 +71,23 @@ def run_environment(plan, row, batch, output, inherited):
             env["PRUNING_DEPTH_APPEARANCE"] = (
                 ("agreement" if arm == "agreement" else "1") if strategy["depth_appearance"] else "0"
             )
+    # A ROS 2 live-loop row: the controller and the C++ safety gate run as ROS 2 nodes beside Isaac,
+    # and the arm moves only on the gated command (hpc/slurm/ros2_live_loop.sbatch starts them).
+    if "ros2_loop" in row:
+        env.update(
+            PRUNING_ROS2_LOOP="1",
+            PRUNING_ROS2_DELAY_STEPS=str(int(row["ros2_loop"]["delay_steps"])),
+        )
     return env
 
 
 def run_label(index, row):
     """Name the output directory after the condition that produced it."""
     suffix = f"_{row['strategy']['name']}" if "strategy" in row else ""
+    if "ros2_loop" in row:
+        suffix += f"_ros2_delay{int(row['ros2_loop']['delay_steps'])}"
+        if row["ros2_loop"].get("operator_hold_after_cycles") is not None:
+            suffix += "_panel_hold"
     if "component_first_vertex" in row:
         label = f"run_{index:02d}_{row['daylight']}_tree{row['target_tree_index']}_v{row['component_first_vertex']}"
         return label + suffix
@@ -166,6 +177,11 @@ def configuration_matches(report, row, plan):
                     and recorded_quat is not None
                     and all(abs(float(a) - float(b)) < 1e-6 for a, b in zip(recorded_quat, wanted_quat, strict=True))
                 )
+    loop = report.get("ros2_loop") or {}
+    if "ros2_loop" in row:
+        matches = matches and loop.get("enabled") is True and loop.get("delay_steps") == row["ros2_loop"]["delay_steps"]
+    else:
+        matches = matches and loop.get("enabled") is not True
     return matches
 
 

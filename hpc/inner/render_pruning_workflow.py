@@ -15,6 +15,7 @@ import json
 import math
 import os
 import sys
+import time as time_module
 import traceback
 from pathlib import Path
 
@@ -199,6 +200,17 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
     if depth_appearance != "0" and (not blender_mode or "1" in (jaw_self_mask, closure_hold)):
         raise ValueError("PRUNING_DEPTH_APPEARANCE needs blender_vision and runs without the jaw self-mask or hold")
     depth_appearance_arm = "agreement" if depth_appearance == "agreement" else "strict"
+    # ROS 2 live loop, default off: the controller and the C++ safety gate run as ROS 2 nodes, and the arm
+    # moves only on the gated command. The first PRUNING_ROS2_DELAY_STEPS control steps of each frame still
+    # apply the previous command: message delay modelled in simulated time (hpc/inner/ros2_loop_bridge.py).
+    ros2_loop = os.environ.get("PRUNING_ROS2_LOOP", "0")
+    if ros2_loop not in ("0", "1"):
+        raise ValueError("PRUNING_ROS2_LOOP must be 0 or 1")
+    ros2_delay_steps = int(os.environ.get("PRUNING_ROS2_DELAY_STEPS", "0"))
+    if ros2_loop == "1" and not blender_mode:
+        raise ValueError("PRUNING_ROS2_LOOP needs PRUNING_RENDER_MODE=blender_vision")
+    if ros2_loop == "0" and ros2_delay_steps:
+        raise ValueError("PRUNING_ROS2_DELAY_STEPS applies only with PRUNING_ROS2_LOOP=1")
     planned_quat = os.environ.get("PRUNING_PLANNED_TOOL_QUAT")
     approach = ApproachStrategy(
         mode=os.environ.get("PRUNING_APPROACH_MODE", "straight"),
@@ -332,6 +344,8 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         report["learned_depth_controls_robot"] = False
     simulation_app = None
     env = None
+    ros_bridge = None
+    sim_stop_reason = None
     try:
         from isaaclab.app import AppLauncher
 
@@ -710,6 +724,62 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             )
             report["tracker_config"] = demo.evidence()["tracker_config"]
             report["blender_scene"] = env.blender_scene.evidence
+            if ros2_loop == "1":
+                from ros2_loop_bridge import RosControllerProxy, RosLoopBridge
+
+                ros_bridge = RosLoopBridge(wait_s=float(os.environ.get("PRUNING_ROS2_WAIT_S", "120")))
+                ros_config = {
+                    "target_id": env.blender_scene.target_id,
+                    "target_axis_w": np.asarray(env.blender_scene.target_axis_w, dtype=float).tolist(),
+                    "target_radius_m": float(env.blender_scene.target_radius_m),
+                    "home_pose_wxyz": initial_tool[0].detach().cpu().numpy().astype(float).tolist(),
+                    "closing_axis_tool": np.asarray(proxy_closing_tool, dtype=float).tolist(),
+                    "mouth_offset_tool_m": [float(v) for v in demo.mouth_offset],
+                    "photometric_normalization": photometric_normalization,
+                    "approach": json.loads(json.dumps(asdict(approach))),
+                    "motion_model": motion_model,
+                    "jaw_self_mask": jaw_self_mask == "1",
+                    "closure_hold": closure_hold == "1",
+                    "depth_appearance": depth_appearance != "0",
+                    "depth_appearance_arm": depth_appearance_arm,
+                    "fps": fps,
+                    "output_dir": str(output),
+                }
+                ros_bridge.publish_config(ros_config)
+                waited = time_module.monotonic()
+                ros_bridge.wait_for_graph(float(os.environ.get("PRUNING_ROS2_GRAPH_WAIT_S", "900")))
+                report["ros2_loop"] = {
+                    "enabled": True,
+                    "delay_steps": ros2_delay_steps,
+                    "controller": "pruning_sil live_controller (VisionPruningDemo) in the SIL container",
+                    "safety_gate": "pruning_sil_cpp safety_gate_node (C++17)",
+                    "bridge": "Isaac Sim bundled rclpy (ROS 2 Humble), standard messages only",
+                    "lockstep": "simulation waits for each gated command; transport time is not simulated time",
+                    "config": ros_config,
+                    "graph_connect_wait_s": time_module.monotonic() - waited,
+                    "in_process_sensor_guard": "disabled; the C++ gate checks ToF",
+                }
+                demo = RosControllerProxy(ros_bridge, demo)
+
+                def ros_sensor_snapshot():
+                    """ToF grids, the largest arm contact force vector and joints, measured with this frame."""
+                    sensors = getattr(env, "contact_sensors", {"legacy_contact": env.contact})
+                    forces = np.concatenate(
+                        [as_torch(c.data.net_forces_w).detach().cpu().numpy().reshape(-1, 3) for c in sensors.values()]
+                    )
+                    largest = forces[int(np.argmax(np.linalg.norm(forces, axis=1)))] if len(forces) else np.zeros(3)
+
+                    def grid(ranges, valid):
+                        return {"ranges": ranges.detach().cpu().numpy()[0], "valid": valid.detach().cpu().numpy()[0]}
+
+                    return {
+                        "tof": {"left": grid(env.tof0, env.tof0_valid), "right": grid(env.tof1, env.tof1_valid)},
+                        "contact_force_w": largest.astype(float),
+                        "joints": {
+                            "position": as_torch(env.robot.data.joint_pos).detach().cpu().numpy()[0][:6],
+                            "velocity": as_torch(env.robot.data.joint_vel).detach().cpu().numpy()[0][:6],
+                        },
+                    }
             report["camera_mount_selection"] = {
                 "method": "fixed offset perpendicular to proxy closing axis; looks along jaw opening",
                 "closing_axis_tool": proxy_closing_tool.tolist(),
@@ -884,6 +954,8 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 if visibility["visible"]
                 else {"state": "initialization_rejected", "reason": visibility["reason"]},
             }
+            if ros_bridge is not None:
+                demo.next_sensors = ros_sensor_snapshot()
             report["initial_live_vision"] = demo.observe(
                 preview_rgb,
                 preview_depth,
@@ -892,6 +964,10 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 0.0,
                 initial_tool[0].detach().cpu().numpy(),
             )
+            if ros_bridge is not None:
+                report["vision_initialization"]["tracker"] = demo.initialization
+                if demo.timed_out:
+                    sim_stop_reason = "ros2_loop_timeout"
         report["artifact_inventory"]["preview"] = [
             "preview_overview.png",
             "preview_close.png",
@@ -903,6 +979,8 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         steps_per_frame = round(1.0 / (fps * env.step_dt))
         if abs(steps_per_frame * env.step_dt - 1.0 / fps) > 1.0e-8:
             raise ValueError("Capture cadence must be an integer multiple of environment dt.")
+        if not 0 <= ros2_delay_steps <= steps_per_frame:
+            raise ValueError(f"PRUNING_ROS2_DELAY_STEPS must be in [0, {steps_per_frame}] (one frame)")
         report["capture_dt_s"] = steps_per_frame * env.step_dt
         if quality:
             # DirectRLEnv checks cfg.sim.render_interval at every physics step.
@@ -921,6 +999,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         stopped_reason = None
         missing_sensor_frames = 0
         last_safe_command = hold.clone()
+        previous_action = hold.clone()
         first_overview = None
         max_overview_change = 0.0
         for index in range(frame_count):
@@ -946,7 +1025,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                     quaternion_wxyz_to_xyzw(command_w[:, 3:7]),
                 )
                 action = pose_xyzw_to_wxyz(torch.cat((command_p, command_q), dim=-1)).contiguous()
-            if stopped_reason is None and (demo is None or index == 0):
+            if stopped_reason is None and ros_bridge is None and (demo is None or index == 0):
                 guard_reason, missing_sensor_frames = sensor_guard(
                     np.concatenate((env.tof0.detach().cpu().numpy(), env.tof1.detach().cpu().numpy())),
                     np.concatenate((env.tof0_valid.detach().cpu().numpy(), env.tof1_valid.detach().cpu().numpy())),
@@ -955,10 +1034,13 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 if guard_reason is not None:
                     stopped_reason = guard_reason
                     report["sensor_stop_frame"] = index
-            if stopped_reason is not None:
+            # In the ROS 2 loop a gate hold arrives as the gated command itself; only stops the simulator
+            # detects (tracking error, a silent ROS graph) override it here.
+            hold_reason = stopped_reason if ros_bridge is None else sim_stop_reason
+            if hold_reason is not None:
                 phase, action = "stopped_failure", last_safe_command
                 if demo:
-                    demo.stop(stopped_reason)
+                    demo.stop(hold_reason)
                     measured_w = env._control_tool_pose_w()
                     held_p, held_q = subtract_frame_transforms(
                         root_pose[:, :3],
@@ -967,10 +1049,13 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                         quaternion_wxyz_to_xyzw(measured_w[:, 3:7]),
                     )
                     action = pose_xyzw_to_wxyz(torch.cat((held_p, held_q), dim=-1)).contiguous()
-                    vision_decision = {"state": "hold", "reason": stopped_reason}
+                    vision_decision = {"state": "hold", "reason": hold_reason}
             render_generation_before_physics = env.sim.render_generation
-            for _ in range(steps_per_frame):
-                env.step(action)
+            delayed = ros_bridge is not None and hold_reason is None and ros2_delay_steps > 0
+            applied_wall_ns = time_module.time_ns()
+            for step in range(steps_per_frame):
+                env.step(previous_action if delayed and step < ros2_delay_steps else action)
+            previous_action = action
             automatic_render_calls = env.sim.render_generation - render_generation_before_physics
             if demo:
                 demo.command_applied(phase, vision_decision)
@@ -987,6 +1072,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             )
             if error_m > 0.25 and stopped_reason is None:
                 stopped_reason = f"tool_tracking_error_{error_m:.3f}m"
+                sim_stop_reason = stopped_reason
                 phase = "stopped_failure"
                 if hasattr(env, "control_state"):
                     report["failure_control_state"] = env.control_state()
@@ -1040,16 +1126,21 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                 # Validate the freshly captured range sample before authorizing
                 # closure/detachment, not on the next command frame. For live
                 # mode the pre-step guard runs only on the initial sample.
-                fresh_guard_reason, missing_sensor_frames = sensor_guard(
-                    np.concatenate((env.tof0.detach().cpu().numpy(), env.tof1.detach().cpu().numpy())),
-                    np.concatenate((env.tof0_valid.detach().cpu().numpy(), env.tof1_valid.detach().cpu().numpy())),
-                    missing_sensor_frames,
-                )
-                if fresh_guard_reason and stopped_reason is None:
-                    stopped_reason = fresh_guard_reason
-                    report["sensor_stop_frame"] = index
-                if stopped_reason:
-                    demo.stop(stopped_reason)
+                if ros_bridge is None:
+                    fresh_guard_reason, missing_sensor_frames = sensor_guard(
+                        np.concatenate((env.tof0.detach().cpu().numpy(), env.tof1.detach().cpu().numpy())),
+                        np.concatenate((env.tof0_valid.detach().cpu().numpy(), env.tof1_valid.detach().cpu().numpy())),
+                        missing_sensor_frames,
+                    )
+                    if fresh_guard_reason and stopped_reason is None:
+                        stopped_reason = fresh_guard_reason
+                        report["sensor_stop_frame"] = index
+                    if stopped_reason:
+                        demo.stop(stopped_reason)
+                else:
+                    if sim_stop_reason:
+                        demo.stop(sim_stop_reason)
+                    demo.next_sensors = ros_sensor_snapshot()
                 live_vision = demo.observe(
                     wrist.copy(),
                     depth.copy(),
@@ -1063,6 +1154,13 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                     detach_requested = env.blender_scene.detach()
                 if demo.cut_step.phase == "stopped" and stopped_reason is None:
                     stopped_reason = demo.cut_step.stopped_reason
+                if ros_bridge is not None:
+                    if demo.timed_out and sim_stop_reason is None:
+                        sim_stop_reason = stopped_reason = stopped_reason or "ros2_loop_timeout"
+                    gate = (demo.last_result or {}).get("decision") or {}
+                    missing_sensor_frames = int(gate.get("tof_missing_frames", missing_sensor_frames))
+                    if stopped_reason and stopped_reason.startswith(("tof_", "both_tof")):
+                        report.setdefault("sensor_stop_frame", index)
             record = {
                 "index": index,
                 "time_s": (index + 1) * steps_per_frame * env.step_dt,
@@ -1111,6 +1209,20 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                     detachment_requested_after_capture=detach_requested,
                     selected_piece_pose_wxyz=env.blender_scene.measured_piece_pose_wxyz(),
                 )
+            if ros_bridge is not None:
+                result = demo.last_result or {}
+                record["ros2_loop"] = {
+                    "delay_steps": ros2_delay_steps,
+                    "delayed_steps_applied": ros2_delay_steps if delayed else 0,
+                    "gate_decision_next_cycle": result.get("decision"),
+                    "gated_command_next_cycle_wxyz": result.get("command"),
+                    "gated_jaw_next_cycle": result.get("jaw"),
+                    "round_trip_s": result.get("round_trip_s"),
+                    "publish_wall_ns": result.get("publish_wall_ns"),
+                    "command_arrival_wall_ns": result.get("command_arrival_wall_ns"),
+                    "applied_command_wall_ns": applied_wall_ns,
+                    "timed_out": demo.timed_out,
+                }
             if shadow is not None:
                 tracker = (live_vision or {}).get("measurement", {})
                 pixel = tracker.get("pixel_xy") if tracker.get("state") == "tracking" else None
@@ -1209,6 +1321,21 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
             report["final_control_state"] = env.control_state()
         if quality:
             report["capture_quality_at_end"] = settings_readback(carb.settings.get_settings(), quality.carb_settings())
+        if ros_bridge is not None:
+            trips = np.asarray([c["round_trip_s"] for c in demo.cycle_log if c["round_trip_s"] is not None] or [np.nan])
+            held = [c for c in demo.cycle_log if c["passed"] is False]
+            report["ros2_loop"].update(
+                cycles=len(demo.cycle_log),
+                timed_out=demo.timed_out,
+                round_trip_s={
+                    "p50": float(np.nanpercentile(trips, 50)),
+                    "p95": float(np.nanpercentile(trips, 95)),
+                    "max": float(np.nanmax(trips)),
+                },
+                gate_held_cycles=len(held),
+                first_gate_hold_reason=held[0]["reason"] if held else None,
+                delay_s=ros2_delay_steps * env.step_dt,
+            )
         stage.GetRootLayer().Export(str(output / "scene.usda"))
         flush()
         (output / "manifest.json").write_text(json.dumps(_json_safe(report), indent=2, allow_nan=False) + "\n")
@@ -1222,6 +1349,10 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         print(report["traceback"], flush=True)
         return 1
     finally:
+        if ros_bridge is not None:
+            # Tell the ROS 2 side the run is over, even after a failure.
+            with contextlib.suppress(Exception):
+                ros_bridge.end()
         if env is not None:
             with contextlib.suppress(Exception):
                 env.close()
