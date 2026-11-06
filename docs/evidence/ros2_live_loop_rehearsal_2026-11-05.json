@@ -1,0 +1,492 @@
+{
+  "schema_version": 1,
+  "scope": "CPU rehearsal of the live loop's ROS 2 side: hpc/inner/ros2_loop_bridge.RosLoopBridge (the class Isaac Sim uses) publishes a recorded capture's bundles in the recorder's causal order to the live controller, the C++ safety gate and (second run) the operator panel. Open loop: recorded poses do not respond to commands. Not closed-loop evidence.",
+  "open_loop": {
+    "code_revision": "f0d57a2430b7cd2a5d046f923e33182b2b75455d",
+    "cpu_job": "22040419",
+    "schema_version": 1,
+    "tool": "tools/rehearse_ros2_loop.py",
+    "capture": "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline",
+    "scope": "open-loop rehearsal of the live graph on recorded bundles; not closed-loop evidence",
+    "cycles_published": 201,
+    "cycles_answered": 201,
+    "decision_state_agreement": [
+      200,
+      200
+    ],
+    "motion_phase_agreement": [
+      200,
+      200
+    ],
+    "cut_phase_agreement": [
+      200,
+      200
+    ],
+    "gate_held_cycles": [],
+    "cycle_wall_s": {
+      "p50": 0.22969452198594809,
+      "p95": 0.3952817730605602,
+      "max": 1.5158791160210967
+    },
+    "sensor_to_gated_command_s": {
+      "p50": 0.005293173,
+      "p95": 0.013988944000000001,
+      "max": 1.336562513
+    },
+    "disagreements": [],
+    "bringup": {
+      "schema_version": 1,
+      "config_received": true,
+      "target_id": "tree1_SPUR_component_14944",
+      "ended_by_marker": true,
+      "controller_cycles": 201,
+      "controller_cycle_s": {
+        "p50": 0.002940039150416851,
+        "p95": 0.010846656747162342,
+        "max": 0.32849269872531295
+      },
+      "decisions_logged": 201,
+      "gate_returncode": 0,
+      "panel_returncode": null,
+      "input_timeout_s": 10.0
+    }
+  },
+  "with_panel_hold": {
+    "code_revision": "da918c5fdc0656b23a82270ff755b20080e897e2",
+    "cpu_job": "22040394",
+    "note": "The panel clicks its own Hold button after 60 decisions. The controller matched the recording on every cycle until it learned of the hold, then held for the rest of the run; agreement counts after that point are expected to fall.",
+    "schema_version": 1,
+    "tool": "tools/rehearse_ros2_loop.py",
+    "capture": "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline",
+    "scope": "open-loop rehearsal of the live graph on recorded bundles; not closed-loop evidence",
+    "cycles_published": 201,
+    "cycles_answered": 201,
+    "decision_state_agreement": [
+      71,
+      200
+    ],
+    "motion_phase_agreement": [
+      61,
+      200
+    ],
+    "cut_phase_agreement": [
+      60,
+      200
+    ],
+    "gate_held_cycles": [
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199
+    ],
+    "cycle_wall_s": {
+      "p50": 0.14067930728197098,
+      "p95": 0.14480666164308786,
+      "max": 1.3672709837555885
+    },
+    "sensor_to_gated_command_s": {
+      "p50": 0.002903872,
+      "p95": 0.006064074,
+      "max": 1.22227482
+    },
+    "disagreements": [
+      {
+        "after_frame": 60,
+        "state": [
+          "hold",
+          "tracking"
+        ],
+        "phase": [
+          "stopped_failure",
+          "vision_approach"
+        ]
+      },
+      {
+        "after_frame": 61,
+        "state": [
+          "hold",
+          "tracking"
+        ],
+        "phase": [
+          "stopped_failure",
+          "vision_approach"
+        ]
+      },
+      {
+        "after_frame": 62,
+        "state": [
+          "hold",
+          "tracking"
+        ],
+        "phase": [
+          "stopped_failure",
+          "vision_approach"
+        ]
+      },
+      {
+        "after_frame": 63,
+        "state": [
+          "hold",
+          "tracking"
+        ],
+        "phase": [
+          "stopped_failure",
+          "vision_approach"
+        ]
+      },
+      {
+        "after_frame": 64,
+        "state": [
+          "hold",
+          "tracking"
+        ],
+        "phase": [
+          "stopped_failure",
+          "vision_approach"
+        ]
+      },
+      {
+        "after_frame": 65,
+        "state": [
+          "hold",
+          "tracking"
+        ],
+        "phase": [
+          "stopped_failure",
+          "vision_approach"
+        ]
+      },
+      {
+        "after_frame": 66,
+        "state": [
+          "hold",
+          "tracking"
+        ],
+        "phase": [
+          "stopped_failure",
+          "vision_approach"
+        ]
+      },
+      {
+        "after_frame": 67,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "align"
+        ]
+      },
+      {
+        "after_frame": 68,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "align"
+        ]
+      },
+      {
+        "after_frame": 69,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "align"
+        ]
+      },
+      {
+        "after_frame": 70,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "align"
+        ]
+      },
+      {
+        "after_frame": 71,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "simulated_closure"
+        ]
+      },
+      {
+        "after_frame": 72,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "simulated_closure"
+        ]
+      },
+      {
+        "after_frame": 73,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "simulated_closure"
+        ]
+      },
+      {
+        "after_frame": 74,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "simulated_closure"
+        ]
+      },
+      {
+        "after_frame": 75,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "simulated_closure"
+        ]
+      },
+      {
+        "after_frame": 76,
+        "state": [
+          "hold",
+          "hold"
+        ],
+        "phase": [
+          "stopped_failure",
+          "simulated_closure"
+        ]
+      },
+      {
+        "after_frame": 77,
+        "state": [
+          "hold",
+          "retreat"
+        ],
+        "phase": [
+          "stopped_failure",
+          "retreat"
+        ]
+      },
+      {
+        "after_frame": 78,
+        "state": [
+          "hold",
+          "retreat"
+        ],
+        "phase": [
+          "stopped_failure",
+          "retreat"
+        ]
+      },
+      {
+        "after_frame": 79,
+        "state": [
+          "hold",
+          "retreat"
+        ],
+        "phase": [
+          "stopped_failure",
+          "retreat"
+        ]
+      }
+    ],
+    "bringup": {
+      "schema_version": 1,
+      "config_received": true,
+      "target_id": "tree1_SPUR_component_14944",
+      "ended_by_marker": true,
+      "controller_cycles": 201,
+      "controller_cycle_s": {
+        "p50": 0.0013747760094702244,
+        "p95": 0.00473356619477272,
+        "max": 0.3540653991512954
+      },
+      "decisions_logged": 201,
+      "gate_returncode": 0,
+      "panel_returncode": 0,
+      "input_timeout_s": 10.0
+    },
+    "panel": {
+      "synthesized_click": true,
+      "hold_pressed": true,
+      "first_operator_hold_reason": "operator_hold",
+      "passing_decisions_after_press": 0,
+      "decisions_logged": 201,
+      "decisions_missing_from_panel": 0,
+      "repaints": 480,
+      "wrist_frames_received": 201,
+      "wrist_frames_published": 201,
+      "screenshots": [
+        "panel_cycle_0024.png",
+        "panel_cycle_0049.png",
+        "panel_cycle_0074.png",
+        "panel_cycle_0099.png",
+        "panel_cycle_0124.png",
+        "panel_cycle_0149.png",
+        "panel_cycle_0174.png",
+        "panel_cycle_0199.png",
+        "panel_final.png",
+        "panel_first_decision.png",
+        "panel_operator_hold.png"
+      ]
+    }
+  }
+}

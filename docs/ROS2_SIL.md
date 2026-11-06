@@ -160,6 +160,52 @@ labelled them `base_link`. The replay now labels them `world`, publishes
 `world → base_link` from the recorded root pose, and the RViz fixed frame is
 `world`.
 
+### November 5: ROS 2 drives the simulated arm
+
+With `PRUNING_ROS2_LOOP=1` the Isaac recorder keeps rendering, stepping and
+grading as before, but the controller and the safety gate run as ROS 2 nodes
+in this container. The simulated UR5e moves **only** on
+`/pruning/gated/command_pose`:
+
+```
+Isaac Sim ──RGB, depth, ToF, contact, tool pose, joints──► live_controller ──proposal, target──► safety_gate_node (C++)
+    ▲                                                                                                  │
+    └──────────────────────────── /pruning/gated/command_pose, /pruning/gated/jaw ◄────────────────────┘
+```
+
+Isaac Sim joins the graph through its bundled ROS 2 Humble `rclpy` (standard
+messages only). The loop is lockstep: the simulator waits for each gated
+command, so transport time never becomes simulated time. Message delay is
+modelled in simulated time instead, as described in the
+[protocol](EVAL_PROTOCOL_ROS2_LIVE_LOOP_2026-11-05.md).
+
+**Smoke run (exploratory).** On the known target (14944, source light,
+baseline controller), the first ROS 2-driven run passed all 17 sequence checks.
+The piece dropped 0.809 m and the arm returned within 0.25 µm of home. Every
+frame carried a gate decision, and frames 1–199 applied exactly the gated
+command (frame 0's answer was not recorded by that revision). The median
+round trip from sensor publish to gated command was 1.9 ms. The registered
+delay sweep and the panel Hold run are in the protocol.
+
+#### Live-loop rehearsal on CPU
+
+`tools/rehearse_ros2_loop.py` drives the same bridge class Isaac Sim uses, on
+CPU, with a recorded capture's bundles in the recorder's causal order. This is
+open loop (recorded poses do not respond), so it checks the message path, not
+control. On the 14944 baseline repeat at `f0d57a2`:
+
+- all 201 bundles were answered;
+- the ROS 2 controller matched the recorded in-process decision state, motion
+  phase and cut phase on **200/200** cycles;
+- the gate held none.
+
+With the operator panel running and clicking its own Hold button after 60
+decisions (`da918c5`), the gate held the next cycle with reason `operator_hold`.
+No passing decision followed the press. The panel showed 201/201 decisions and
+received 201/201 wrist frames.
+[Evidence](evidence/ros2_live_loop_rehearsal_2026-11-05.json) ·
+[panel](OPERATOR_PANEL.md).
+
 ### Where the small disagreement comes from
 
 The evidence reports two errors, because they mean different things. The
