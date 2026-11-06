@@ -1,0 +1,3597 @@
+{
+  "provenance": {
+    "code_revision": "025c1d46af18fa59f90d923b1763e9ad9f4db047",
+    "cpu_job": "22039665",
+    "tool": "tools/export_gate_parity.py --roots artifacts"
+  },
+  "captures": {
+    "artifacts/generalization/phase-20260920/shadow_job_21370047": {
+      "certificate_compared": 30,
+      "certificate_match": 30,
+      "cycles": 30,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 30,
+      "tof_counter_match": 30
+    },
+    "artifacts/isaac_render/job_21222710": {
+      "certificate_compared": 60,
+      "certificate_match": 60,
+      "cycles": 60,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 60,
+      "tof_counter_match": 45
+    },
+    "artifacts/isaac_render/job_21247873": {
+      "certificate_compared": 60,
+      "certificate_match": 60,
+      "cycles": 60,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 60,
+      "tof_counter_match": 60
+    },
+    "artifacts/isaac_render/job_21298152": {
+      "certificate_compared": 31,
+      "certificate_match": 31,
+      "cycles": 31,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 31,
+      "tof_counter_match": 31
+    },
+    "artifacts/isaac_render/job_21300015": {
+      "certificate_compared": 71,
+      "certificate_match": 71,
+      "cycles": 71,
+      "first_recorded_stop": [
+        54,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        54,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 71,
+      "tof_counter_match": 71
+    },
+    "artifacts/isaac_render/job_21316823": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        62,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        62,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/isaac_render/job_21317169": {
+      "certificate_compared": 111,
+      "certificate_match": 111,
+      "cycles": 111,
+      "first_recorded_stop": [
+        78,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        78,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 111,
+      "tof_counter_match": 111
+    },
+    "artifacts/isaac_render/job_21317409": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        76,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        76,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/isaac_render/job_21328323": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/isaac_render/job_21329420": {
+      "certificate_compared": 30,
+      "certificate_match": 30,
+      "cycles": 30,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 30,
+      "tof_counter_match": 30
+    },
+    "artifacts/isaac_render/job_21329421": {
+      "certificate_compared": 30,
+      "certificate_match": 30,
+      "cycles": 30,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 30,
+      "tof_counter_match": 30
+    },
+    "artifacts/isaac_render/job_21358986": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/isaac_render/job_21358987": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/agree-ctl-12142-20261003/run_00_source_tree0_v12142_tool_axis_standoff_depth_agreement": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        29,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        29,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/agree-ctl-19444-20261003/run_00_source_tree1_v19444_planned_pose_depth_agreement": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/agree-eve-r1-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/agree-eve-r2-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/agree-eve-r3-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/agree-eve-r4-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-ctl-12142-20261001/run_00_source_tree0_v12142_tool_axis_standoff_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        29,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        29,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-ctl-19444-20261001/run_00_source_tree1_v19444_planned_pose_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        70,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        70,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-eve-r1-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-eve-r1-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-eve-r2-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-eve-r2-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-mor-r1-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-mor-r2-20261001/run_00_morning_tree1_v15004_baseline_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-src-20261001/run_00_source_tree1_v14944_baseline_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/depth-loop-src-20261001/run_01_source_tree1_v15004_baseline_depth_appearance": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-18143-r1-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        23,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        23,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-18143-r2-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-18143-r3-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        69,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        69,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_01_source_tree1_v36196_planned_pose_jaw_hold_gen": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        69,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_00_source_tree0_v530_planned_pose_jaw_hold_gen": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-gen-ctl-20261004/run_01_source_tree1_v14944_planned_pose_jaw_hold_gen": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_00_source_tree0_v4438_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_01_source_tree0_v7049_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_02_source_tree0_v7644_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_03_source_tree0_v7760_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        21,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        21,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_04_source_tree0_v8175_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_05_source_tree0_v8532_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_06_source_tree0_v11607_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        59,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        59,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_07_source_tree0_v11727_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        9,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        9,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_08_source_tree0_v12261_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_09_source_tree0_v12321_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_10_source_tree0_v12381_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        61,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        61,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_11_source_tree0_v13213_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        5,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        5,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_12_source_tree0_v16660_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        62,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        62,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_13_source_tree0_v21268_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        71,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        71,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_14_source_tree0_v21386_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_15_source_tree0_v28493_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        11,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        11,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_16_source_tree0_v28610_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_17_source_tree0_v29554_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        68,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        68,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_18_source_tree1_v3433_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_19_source_tree1_v3673_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_20_source_tree1_v20698_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        17,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        17,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_21_source_tree1_v20995_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        69,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        69,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_22_source_tree1_v21648_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        23,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        23,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_23_source_tree1_v26425_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_24_source_tree1_v27362_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_25_source_tree1_v33128_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_26_source_tree1_v34125_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        66,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        66,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-20261006/run_27_source_tree1_v36786_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-ctl-20261006/run_00_source_tree0_v530_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        76,
+        "gate_lost_during_closure"
+      ],
+      "first_reference_latch": [
+        76,
+        "gate_lost_during_closure"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/hold-sweep-ctl-20261006/run_01_source_tree1_v14944_planned_pose_jaw_hold_sweep": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-hold-a-20261001/run_01_source_tree1_v19444_planned_pose_jaw_hold": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-hold-c-20261001/run_01_source_tree1_v15004_planned_pose_jaw_hold": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-eve-a-r1-20260930/run_01_evening_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-eve-a-r2-20260930/run_01_evening_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-eve-b-r1-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-eve-b-r1-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-eve-b-r2-20260930/run_00_evening_tree1_v14944_jaw_no_shadow": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-eve-b-r2-20260930/run_01_evening_tree1_v15004_jaw_no_shadow": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-mor-a-r1-20260930/run_00_morning_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        75,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        75,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-mor-a-r2-20260930/run_00_morning_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        75,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        75,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-mor-b-r1-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/jaw-shadow-mor-b-r2-20260930/run_00_morning_tree1_v15004_jaw_no_shadow": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/lighting-20260919/run_00_source_raw": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/lighting-20260919/run_01_source_clahe": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/lighting-20260919/run_02_morning_raw": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/lighting-20260919/run_03_morning_clahe": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/lighting-20260919/run_04_evening_raw": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/lighting-20260919/run_05_evening_clahe": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_00_source_tree0_v530_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        60,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        60,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_01_source_tree0_v590_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        62,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        62,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_02_source_tree0_v7524_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        9,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        9,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        54,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        54,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_06_source_tree0_v12142_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        30,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        30,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_07_source_tree0_v18669_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        28,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        28,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_08_source_tree0_v22988_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree1-20260926/run_00_source_tree1_v14884_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree1-20260926/run_01_source_tree1_v14944_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree1-20260926/run_02_source_tree1_v15004_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree1-20260926/run_04_source_tree1_v19264_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        36,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        36,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree1-20260926/run_05_source_tree1_v19384_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-both-tree1-20260926/run_06_source_tree1_v19444_similarity_mount": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-mount-flip-20260926/run_00_source_tree0_v8353_mount_side": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        73,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        73,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-mount-flip-20260926/run_01_source_tree1_v19264_mount_side": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        36,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        36,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_00_source_tree0_v530_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        60,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        60,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_01_source_tree0_v590_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        62,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        62,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_02_source_tree0_v7524_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        9,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        9,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_03_source_tree0_v8353_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        1,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        1,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_06_source_tree0_v12142_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        30,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        30,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_07_source_tree0_v18669_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        28,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        28,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_08_source_tree0_v22988_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        22,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        22,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_00_source_tree1_v14884_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_01_source_tree1_v14944_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_02_source_tree1_v15004_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_04_source_tree1_v19264_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_05_source_tree1_v19384_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_06_source_tree1_v19444_similarity_tracker": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        79,
+        "gate_lost_during_closure"
+      ],
+      "first_reference_latch": [
+        79,
+        "gate_lost_during_closure"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r1-20260929/run_01_source_tree1_v19444_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        68,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        68,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r1-20260929/run_02_source_tree1_v14944_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r1-20260929/run_03_source_tree1_v15004_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        79,
+        "gate_lost_during_closure"
+      ],
+      "first_reference_latch": [
+        79,
+        "gate_lost_during_closure"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r2-20260929/run_01_source_tree1_v19444_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        68,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        68,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r2-20260929/run_02_source_tree1_v14944_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r2-20260929/run_03_source_tree1_v15004_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        79,
+        "gate_lost_during_closure"
+      ],
+      "first_reference_latch": [
+        79,
+        "gate_lost_during_closure"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r3-20260929/run_01_source_tree1_v19444_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        70,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        70,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r3-20260929/run_02_source_tree1_v14944_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/planned-pose-gpu-r3-20260929/run_03_source_tree1_v15004_planned_pose": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_00_source_tree0_v530_fine_step": {
+      "certificate_compared": 400,
+      "certificate_match": 400,
+      "cycles": 400,
+      "first_recorded_stop": [
+        130,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        130,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 400,
+      "tof_counter_match": 400
+    },
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_01_source_tree0_v590_fine_step": {
+      "certificate_compared": 400,
+      "certificate_match": 400,
+      "cycles": 400,
+      "first_recorded_stop": [
+        41,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        41,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 400,
+      "tof_counter_match": 400
+    },
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_02_source_tree0_v7524_fine_step": {
+      "certificate_compared": 400,
+      "certificate_match": 400,
+      "cycles": 400,
+      "first_recorded_stop": [
+        50,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        50,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 400,
+      "tof_counter_match": 400
+    },
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_03_source_tree0_v8353_fine_step": {
+      "certificate_compared": 400,
+      "certificate_match": 400,
+      "cycles": 400,
+      "first_recorded_stop": [
+        6,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        6,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 400,
+      "tof_counter_match": 400
+    },
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_06_source_tree0_v12142_fine_step": {
+      "certificate_compared": 400,
+      "certificate_match": 400,
+      "cycles": 400,
+      "first_recorded_stop": [
+        59,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        59,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 400,
+      "tof_counter_match": 400
+    },
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_07_source_tree0_v18669_fine_step": {
+      "certificate_compared": 400,
+      "certificate_match": 400,
+      "cycles": 400,
+      "first_recorded_stop": [
+        55,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        55,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 400,
+      "tof_counter_match": 400
+    },
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_08_source_tree0_v22988_fine_step": {
+      "certificate_compared": 400,
+      "certificate_match": 400,
+      "cycles": 400,
+      "first_recorded_stop": [
+        44,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        44,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 400,
+      "tof_counter_match": 400
+    },
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_00_source_tree0_v530_horizontal_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        58,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        58,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_01_source_tree0_v590_horizontal_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        16,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        16,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_02_source_tree0_v7524_horizontal_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        10,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        10,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_03_source_tree0_v8353_horizontal_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_06_source_tree0_v12142_horizontal_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        30,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        30,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_07_source_tree0_v18669_horizontal_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        21,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        21,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_08_source_tree0_v22988_horizontal_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        21,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        21,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_00_source_tree0_v530_tool_axis_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        60,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        60,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_01_source_tree0_v590_tool_axis_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        20,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        20,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_02_source_tree0_v7524_tool_axis_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        10,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        10,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_03_source_tree0_v8353_tool_axis_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        2,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        2,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_06_source_tree0_v12142_tool_axis_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        29,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        29,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_07_source_tree0_v18669_tool_axis_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        25,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        25,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_08_source_tree0_v22988_tool_axis_standoff": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        22,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        22,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-morning-20260923/run_00_morning_tree0_v530": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        59,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        59,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-morning-20260923/run_01_morning_tree0_v590": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        12,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        12,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-morning-20260923/run_02_morning_tree0_v7524": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        9,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        9,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-morning-20260923/run_03_morning_tree0_v8353": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        1,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        1,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-morning-20260923/run_06_morning_tree0_v12142": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        30,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        30,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-morning-20260923/run_07_morning_tree0_v18669": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        27,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        27,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-morning-20260923/run_08_morning_tree0_v22988": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        22,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        22,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-source-20260923/run_00_source_tree0_v530": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        59,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        59,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-source-20260923/run_01_source_tree0_v590": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        24,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        24,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-source-20260923/run_02_source_tree0_v7524": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        9,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        9,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-source-20260923/run_03_source_tree0_v8353": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        1,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        1,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-source-20260923/run_06_source_tree0_v12142": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        30,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        30,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-source-20260923/run_07_source_tree0_v18669": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        28,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        28,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/targets-source-20260923/run_08_source_tree0_v22988": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        22,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        22,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-baseline-20260923/run_00_source_tree1_v14884_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-baseline-20260923/run_01_source_tree1_v14944_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-baseline-20260923/run_02_source_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-baseline-20260923/run_04_source_tree1_v19264_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-baseline-20260923/run_05_source_tree1_v19384_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-baseline-20260923/run_06_source_tree1_v19444_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-evening-20260926/run_00_evening_tree1_v14884_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-evening-20260926/run_02_evening_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        67,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        67,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-evening-20260926/run_04_evening_tree1_v19264_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-evening-20260926/run_05_evening_tree1_v19384_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-evening-20260926/run_06_evening_tree1_v19444_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-morning-20260926/run_00_morning_tree1_v14884_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-morning-20260926/run_01_morning_tree1_v14944_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-morning-20260926/run_02_morning_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        75,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        75,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-morning-20260926/run_04_morning_tree1_v19264_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-morning-20260926/run_05_morning_tree1_v19384_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-morning-20260926/run_06_morning_tree1_v19444_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_00_source_tree1_v14884_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_02_source_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_04_source_tree1_v19264_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_05_source_tree1_v19384_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_06_source_tree1_v19444_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_00_source_tree1_v14884_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_01_source_tree1_v14944_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_02_source_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_04_source_tree1_v19264_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_05_source_tree1_v19384_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_06_source_tree1_v19444_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_00_source_tree1_v14884_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_01_source_tree1_v14944_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_02_source_tree1_v15004_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_04_source_tree1_v19264_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_05_source_tree1_v19384_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        44,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_06_source_tree1_v19444_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        43,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_05_source_tree1_v15599_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        65,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        65,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_08_source_tree1_v37023_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        16,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        16,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_09_source_tree1_v37796_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        3,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        3,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_05_source_tree1_v3493_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        64,
+        "tof_minimum_clearance"
+      ],
+      "first_reference_latch": [
+        64,
+        "tof_minimum_clearance"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_12_source_tree1_v10737_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "initial_target_not_visible"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "controller_or_runner",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_13_source_tree1_v11094_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        38,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        38,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_15_source_tree1_v14944_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": null,
+      "first_reference_latch": null,
+      "first_stop_agrees": true,
+      "recorded_stop_class": "no_stop",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_16_source_tree1_v17723_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        1,
+        "hazard_contact"
+      ],
+      "first_reference_latch": [
+        1,
+        "hazard_contact"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_17_source_tree1_v19504_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_23_source_tree1_v30283_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        43,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        43,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_24_source_tree1_v31828_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        0,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        0,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    },
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_25_source_tree1_v32536_baseline": {
+      "certificate_compared": 200,
+      "certificate_match": 200,
+      "cycles": 200,
+      "first_recorded_stop": [
+        5,
+        "vision_invalid"
+      ],
+      "first_reference_latch": [
+        5,
+        "vision_invalid"
+      ],
+      "first_stop_agrees": true,
+      "recorded_stop_class": "gate_derived",
+      "seeded_tof_missing_frames": 0,
+      "tof_counter_compared": 200,
+      "tof_counter_match": 200
+    }
+  },
+  "cycles_path": "pruning_work/ros2_gate_20261105/cycles_025c1d4.jsonl.gz (not committed; 9.9 MB)",
+  "cycles_sha256": "8475d280dabe657a446bfc02e577499f5b32309b64a8e9b4870998c3b0b577d3",
+  "notes": [
+    "Python = isaaclab_pruning.task.safety_gate.SafetyGateReference on inputs rebuilt from frames.json.",
+    "Recorded = what the Isaac recorder logged at run time, possibly under an older frozen code copy.",
+    "The pre-loop ToF guard state is not recorded; frame 0's counter seeds it (see capture_cycles)."
+  ],
+  "schema_version": 1,
+  "skipped": {
+    "artifacts/generalization/phase-20260920/shadow_job_21370040": "no_frames",
+    "artifacts/isaac_render/alloc_21208115_step2": "no_selected_target",
+    "artifacts/isaac_render/job_21201586": "no_frames",
+    "artifacts/isaac_render/job_21201622": "no_selected_target",
+    "artifacts/isaac_render/job_21208215": "no_selected_target",
+    "artifacts/isaac_render/job_21222688": "no_selected_target",
+    "artifacts/isaac_render/job_21224517": "no_frames",
+    "artifacts/isaac_render/job_21227646": "no_frames",
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_04_source_tree0_v10001_similarity_mount": "no_frames",
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_05_source_tree0_v10061_similarity_mount": "no_frames",
+    "artifacts/vision_robustness/perc-both-tree0-20260926/run_09_source_tree0_v23167_similarity_mount": "no_frames",
+    "artifacts/vision_robustness/perc-both-tree1-20260926/run_03_source_tree1_v19145_similarity_mount": "no_frames",
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_04_source_tree0_v10001_similarity_tracker": "no_frames",
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_05_source_tree0_v10061_similarity_tracker": "no_frames",
+    "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_09_source_tree0_v23167_similarity_tracker": "no_frames",
+    "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_03_source_tree1_v19145_similarity_tracker": "no_frames",
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_04_source_tree0_v10001_fine_step": "no_frames",
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_05_source_tree0_v10061_fine_step": "no_frames",
+    "artifacts/vision_robustness/strategy-fine-step-20260923/run_09_source_tree0_v23167_fine_step": "no_frames",
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_04_source_tree0_v10001_horizontal_standoff": "no_frames",
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_05_source_tree0_v10061_horizontal_standoff": "no_frames",
+    "artifacts/vision_robustness/strategy-horizontal-20260923/run_09_source_tree0_v23167_horizontal_standoff": "no_frames",
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_04_source_tree0_v10001_tool_axis_standoff": "no_frames",
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_05_source_tree0_v10061_tool_axis_standoff": "no_frames",
+    "artifacts/vision_robustness/strategy-tool-axis-20260923/run_09_source_tree0_v23167_tool_axis_standoff": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_04_morning_tree0_v10001": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_05_morning_tree0_v10061": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_09_morning_tree0_v23167": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_10_morning_tree1_v1012": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_11_morning_tree1_v1353": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_12_morning_tree1_v5395": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_13_morning_tree1_v5753": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_14_morning_tree1_v13820": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_15_morning_tree1_v15599": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_16_morning_tree1_v35897": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_17_morning_tree1_v36666": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_18_morning_tree1_v37023": "no_frames",
+    "artifacts/vision_robustness/targets-morning-20260923/run_19_morning_tree1_v37796": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_04_source_tree0_v10001": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_05_source_tree0_v10061": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_09_source_tree0_v23167": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_10_source_tree1_v1012": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_11_source_tree1_v1353": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_12_source_tree1_v5395": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_13_source_tree1_v5753": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_14_source_tree1_v13820": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_15_source_tree1_v15599": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_16_source_tree1_v35897": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_17_source_tree1_v36666": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_18_source_tree1_v37023": "no_frames",
+    "artifacts/vision_robustness/targets-source-20260923/run_19_source_tree1_v37796": "no_frames",
+    "artifacts/vision_robustness/tree1-listed-baseline-20260923/run_03_source_tree1_v19145_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-listed-evening-20260926/run_03_evening_tree1_v19145_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-listed-morning-20260926/run_03_morning_tree1_v19145_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_03_source_tree1_v19145_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_03_source_tree1_v19145_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_03_source_tree1_v19145_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_00_source_tree1_v1012_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_01_source_tree1_v1353_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_02_source_tree1_v5395_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_03_source_tree1_v5753_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_04_source_tree1_v13820_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_06_source_tree1_v35897_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_07_source_tree1_v36666_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_00_source_tree1_v654_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_01_source_tree1_v1189_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_02_source_tree1_v2065_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_03_source_tree1_v2243_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_04_source_tree1_v3015_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_06_source_tree1_v4261_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_07_source_tree1_v5932_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_08_source_tree1_v6939_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_09_source_tree1_v8721_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_10_source_tree1_v9546_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_11_source_tree1_v10557_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_14_source_tree1_v11688_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_18_source_tree1_v20099_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_19_source_tree1_v22885_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_20_source_tree1_v25652_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_21_source_tree1_v26545_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_22_source_tree1_v29869_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_26_source_tree1_v35546_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_27_source_tree1_v35837_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_28_source_tree1_v35957_baseline": "no_frames",
+    "artifacts/vision_robustness/tree1-seeded30-20260926/run_29_source_tree1_v36017_baseline": "no_frames"
+  },
+  "tool": "tools/export_gate_parity.py",
+  "totals": {
+    "certificate_compared": 43623,
+    "certificate_match": 43623,
+    "cycles": 43623,
+    "first_stop_agrees_True": 217,
+    "python_hold_cycles": 24817,
+    "python_reason_gate_lost_during_closure": 487,
+    "python_reason_hazard_contact": 4387,
+    "python_reason_tof_minimum_clearance": 5103,
+    "python_reason_vision_invalid": 14840,
+    "skipped_no_frames": 81,
+    "skipped_no_selected_target": 4,
+    "stop_class_controller_or_runner": 14,
+    "stop_class_gate_derived": 131,
+    "stop_class_no_stop": 72,
+    "tof_counter_compared": 43623,
+    "tof_counter_match": 43608
+  }
+}

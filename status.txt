@@ -3,13 +3,16 @@ C++ SAFETY GATE + LIVE ROS 2 LOOP + OPERATOR PANEL — 2026-11-05 (in progress)
   checks as a C++ ROS 2 node every arm command passes through, (2) ROS 2 driving the simulated arm live
   with a message-delay test, (3) a Qt/QML operator panel with a Hold button. Approved: ~500 GPU-min;
   commit and push to develop.
-  (1) 025c1d4: ros2/pruning_sil_cpp safety_gates + safety_gate_node, ros2/pruning_sil_msgs, Python
-      reference isaaclab_pruning.task.safety_gate. Pre-commit graph run: 43,623/43,623 recorded cycles
-      (217 captures) matched the Python checks, 24,817 holds; 22 of 23 stopping faults held, the 23rd a
-      harness start-up race (fixed with a settle wait). Evidence regenerating at 025c1d4 (CPU job 22039665).
+  (1) DONE. 025c1d4: ros2/pruning_sil_cpp safety_gates + safety_gate_node, ros2/pruning_sil_msgs, Python
+      reference isaaclab_pruning.task.safety_gate. Evidence at 025c1d4 (CPU job 22039665):
+      docs/evidence/cpp_safety_gate_parity_2026-11-05.json: 43,623/43,623 recorded cycles (217 captures)
+      same call as Python, 24,817 holds; 23/23 stopping faults held, 0 motion after; one dead sensor alone
+      does not stop (pooled rule, documented). Rebuilt inputs vs recordings: 43,623/43,623 certificates,
+      217/217 first stops (docs/evidence/safety_gate_input_rebuild_2026-11-05.json). Pre-commit run had one
+      fault-run cycle lost to a harness start-up race; fixed with a 1.5 s settle before the commit.
   (2) 8cbe170: PRUNING_ROS2_LOOP=1 recorder mode, live_controller, live_bringup, Isaac-side bridge,
       tools/queue_ros2_live_loop.py. CPU rehearsal on the 14944 baseline capture: 201/201 bundles
-      answered, 200/200 decision states. Known target is tree1 14944 baseline (7/7 in-process passes);
+      answered, 200/200 decision states. Known target is tree1 14944 baseline (5/5 source-light in-process passes);
       the Sept 14 21328323 configuration no longer exists (jaw proxy axis corrected since).
   Share at 1.537 TiB on 2026-11-05, over the 1.5 TiB soft quota with 1w11h of grace left: writes stop
   around 2026-11-12 unless usage drops (needs the user).

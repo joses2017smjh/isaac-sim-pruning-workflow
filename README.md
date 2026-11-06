@@ -24,6 +24,7 @@ This workflow links perception, bounded commands, release gates, and recorded te
 | Low-sun agreement variant — Oct. 4 | Target 14944 passed **4/4** trials; jaw/wire occlusion controls still stopped | Depth-consistent shadows can be accepted under this modified confidence gate. [Protocol](docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md) |
 | Closure hold on new targets — Oct. 5 | **0/9** runs reached closure | The known-target pass did not establish generalization. [Protocol](docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md) |
 | ROS 2 software replay | **199/199** recorded decision states reproduced; max command delta **1.995 mm** | Agreement on recorded simulation, not hardware validation. [Method](docs/ROS2_SIL.md) |
+| C++17 safety gate in ROS 2 — Nov. 5 | Same pass/hold call as the Python checks on **43,623/43,623** recorded cycles (217 captures); **23/23** injected faults held the arm | The ToF and cut checks now run as the C++ node every arm command passes through; recorded and injected inputs, not hardware. [Method](docs/ROS2_SIL.md#november-5-c-safety-gate) |
 
 Population failures remain published: the original 40-trial study had no completions, including 20 invalid registrations. Later studies passed 2/7 listed targets and 1/30 seeded targets; those populations and modified gates are not pooled. [All results and visual comparisons](docs/RESULTS.md).
 
@@ -94,7 +95,7 @@ Open `demo-output/pruning_demo.html` to inspect the replay and sensor frames. Ke
 .venv/bin/python -m pytest -q -m 'not isaacsim_ci'
 ```
 
-[CPU CI](.github/workflows/foundation.yml) runs lint, formatting, tests, and demo generation. [ROS 2 CI](.github/workflows/ros2.yml) exercises the software replay. Neither certifies a fresh GPU setup or physical operation.
+[CPU CI](.github/workflows/foundation.yml) runs lint, formatting, tests, and demo generation. [ROS 2 CI](.github/workflows/ros2.yml) builds the ROS 2 packages and runs their tests, including the C++ gate's parity fixture. Neither certifies a fresh GPU setup or physical operation.
 
 ## Isaac setup and scope
 
