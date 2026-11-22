@@ -477,6 +477,7 @@ def _shift_vision(seconds):
 def _set_frame(frame):
     return lambda m: setattr(m.header, "frame_id", frame)
 
+
 # name -> (record mutation or None, message mutation or None, expected reason, first-hold offset, Python-visible)
 FAULTS = {
     "tof_both_sensors_dead": (lambda r: _tof(r, [None] * 64, [None] * 64), None, "both_tof_missing_4_frames", 3, True),
