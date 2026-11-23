@@ -1,0 +1,57 @@
+{
+ "schema_version": 1,
+ "tool": "tools/measure_pixel_convention.py",
+ "scope": "A bound on the tracker's half-pixel convention mismatch over every tracking frame of the 129 registered runs. Simulation with exact depth. Nothing is changed or replayed.",
+ "runs": 129,
+ "runs_with_tracking_frames": 118,
+ "tracking_frames": 17261,
+ "focal_px": 320.0,
+ "principal_points_px": [
+  [
+   240.0,
+   160.0
+  ]
+ ],
+ "depth_m": {
+  "p0": 0.15706081688404083,
+  "p5": 0.16751526296138763,
+  "p50": 0.2921642065048218,
+  "p95": 0.37512895464897156,
+  "p100": 0.3895736336708069
+ },
+ "offset_per_axis_mm": {
+  "p0": 0.2454075263813138,
+  "p5": 0.2617425983771682,
+  "p50": 0.456506572663784,
+  "p95": 0.5861389916390181,
+  "p100": 0.6087088026106358
+ },
+ "offset_total_mm": {
+  "p0": 0.34705865211688713,
+  "p5": 0.3701599324757653,
+  "p50": 0.6455977863735822,
+  "p95": 0.8289257114115894,
+  "p100": 0.8608442441878484
+ },
+ "mask_fidelity_with_u_plus_half": {
+  "source": "docs/evidence/hold_sweep_verdicts_2026-11-22.json",
+  "verdict": "supported",
+  "runs": 30,
+  "frames": 6000,
+  "count_mismatches": 0,
+  "depth_violations": 0
+ },
+ "conventions": {
+  "jaw_self_mask": "source/isaaclab_pruning/isaaclab_pruning/perception/jaw_self_mask.py PIXEL_CENTRE = 0.5",
+  "depth_appearance": "source/isaaclab_pruning/isaaclab_pruning/perception/depth_appearance.py PIXEL_CENTRE = 0.5",
+  "tracker": "source/isaaclab_pruning/isaaclab_pruning/perception/visual_servo.py project_depth_to_world back-projects the OpenCV pixel with no offset",
+  "seed": "hpc/inner/render_pruning_workflow.py seeds the tracker with the continuous projection K X / Z"
+ },
+ "reading": "The offsets are upper bounds of a fixed half-pixel ray shift, not measured tracking errors. Changing the tracker to u + 0.5 would change every baseline replay, so it belongs in a labelled, registered arm.",
+ "provenance": {
+  "code_revision": "e1c01b6ee5a0ad62051767edc30cb7ca76919a35",
+  "tracked_tree_clean": true,
+  "host": "cn-a12.hpc.engr.oregonstate.edu",
+  "python": "3.10.19"
+ }
+}

@@ -37,6 +37,15 @@ Finished and published:
 - **Storage.** On November 22 the share held 1.71 TiB against the 1.5 TiB soft
   quota, with 3 weeks 6 days of grace left (to about December 19). This
   repository's directory is about 139 GiB of that.
+- **Pixel-centre convention (measured November 22).** The jaw self-mask and
+  the depth-aware check treat pixel index u as continuous u + 0.5, which the
+  renderer's camera and every mask-fidelity check support. The point tracker
+  uses OpenCV centres and back-projects with no offset, so its 3D target sits on
+  a ray half a pixel away: 0.26 to 0.59 mm per axis over 95% of 17,261 tracking
+  frames (0.61 mm at most), against the 8 mm mouth tolerance
+  ([evidence](evidence/pixel_convention_2026-11-22.json)). Moving the tracker to
+  u + 0.5 would change every baseline replay, so it needs a labelled,
+  registered arm, not a silent fix.
 - **Repository housekeeping.** Decide what to do with the uncommitted
   `studio/src` prototype and add repository topics.
 
