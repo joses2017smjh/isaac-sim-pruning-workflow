@@ -1,0 +1,23 @@
+#!/bin/sh
+# Runs the Foundation workflow's two lint steps before each commit, so a formatting slip
+# cannot reach develop and stop CI before its tests run (as it did from Nov 6 to Nov 22, 2026).
+#
+# Enable once per clone:   git config core.hooksPath .githooks
+# Choose the ruff binary:  RUFF=/path/to/ruff, or git config pruning.ruff /path/to/ruff
+# CI pins the version in source/isaaclab_pruning/pyproject.toml; a different version may
+# format differently, so the hook refuses one. Skip once with: git commit --no-verify
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+RUFF=${RUFF:-$(git config --get pruning.ruff || echo ruff)}
+if ! command -v "$RUFF" >/dev/null 2>&1; then
+    echo "pre-commit: ruff not found (set RUFF or git config pruning.ruff)" >&2
+    exit 1
+fi
+PIN=$(sed -n 's/.*"ruff==\([0-9.]*\)".*/\1/p' source/isaaclab_pruning/pyproject.toml | head -n 1)
+HAVE=$("$RUFF" --version | awk '{print $2}')
+if [ -n "$PIN" ] && [ "$HAVE" != "$PIN" ]; then
+    echo "pre-commit: ruff $HAVE differs from the CI pin $PIN" >&2
+    exit 1
+fi
+"$RUFF" check source/isaaclab_pruning tests tools
+"$RUFF" format --check source/isaaclab_pruning tests tools

@@ -105,7 +105,7 @@ Open `demo-output/pruning_demo.html` to inspect the replay and sensor frames. Ke
 .venv/bin/python -m pytest -q -m 'not isaacsim_ci'
 ```
 
-[CPU CI](.github/workflows/foundation.yml) runs lint, formatting, tests, and demo generation. [ROS 2 CI](.github/workflows/ros2.yml) builds the ROS 2 packages and runs their tests, including the C++ gate's parity fixture. Neither certifies a fresh GPU setup or physical operation.
+[CPU CI](.github/workflows/foundation.yml) runs lint, formatting, tests, and demo generation. To run the same lint and format checks before each commit, enable the tracked hook with `git config core.hooksPath .githooks`. [ROS 2 CI](.github/workflows/ros2.yml) builds the ROS 2 packages and runs their tests, including the C++ gate's parity fixture. Neither certifies a fresh GPU setup or physical operation.
 
 ## Isaac setup and scope
 
