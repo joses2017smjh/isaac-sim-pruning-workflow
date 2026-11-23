@@ -1,4 +1,4 @@
-"""Two numbers the November 5 safety-gate results leave out, computed from the recorded data.
+"""Three things the November 5 safety-gate results leave out, computed from the recorded data.
 
 1. **What the parity count is made of.** ``docs/evidence/cpp_safety_gate_parity_2026-11-05.json``
    reports 43,623 matching cycles. A hold latches for the rest of a run, so every cycle after a
@@ -14,7 +14,13 @@
    own capture time, so the age is zero in every decision: the delay test delayed commands, not
    sensor data, and the freshness check never fired in closed loop.
 
-Neither changes a registered verdict; both are limits on what those verdicts mean.
+3. **How delay slowed the arm.** Per registered live-loop run: the modelled delay, how many frames
+   the approach took, the median tool motion per frame during it, and the frame of the cut, beside a
+   post-hoc model fitted after the result and not registered. Each command is the measured pose plus
+   one capped step, so a command that lands late overlaps the next: progress per frame is
+   step x 6 / (6 + delay steps). This reports the measurements beside the model; it does not test it.
+
+None changes a registered verdict; each is a limit on what those verdicts mean.
 
 CPU only. Reads files; writes one new JSON file outside the repository and never overwrites.
 """
@@ -113,6 +119,38 @@ def vision_ages(batch_dir):
     return runs
 
 
+def delay_mechanism(batch_dir, step_mm=4.0, steps_per_frame=6):
+    """Per run: delay, approach length, median tool motion per approach frame, cut frame, and the post-hoc model."""
+    rows = []
+    for run in sorted(Path(batch_dir).glob("run_*")):
+        frames = json.loads((run / "frames.json").read_text())["frames"]
+        delay = int(json.loads((run / "report.json").read_text())["ros2_loop"]["delay_steps"])
+        positions = [frame["tool_position_m"] for frame in frames]
+        approach = [i for i, f in enumerate(frames) if f["phase"] == "vision_approach" and i + 1 < len(frames)]
+        steps = sorted(1000.0 * math.dist(positions[i], positions[i + 1]) for i in approach)
+        middle = len(steps) // 2
+        median = None
+        if steps:
+            median = steps[middle] if len(steps) % 2 else (steps[middle - 1] + steps[middle]) / 2
+        cut = next(
+            (i for i, f in enumerate(frames) if ((f.get("live_vision") or {}).get("cut") or {}).get("detach_event")),
+            None,
+        )
+        rows.append(
+            {
+                "run": run.name,
+                "delay_steps": delay,
+                "delay_ms": round(delay * 1000.0 / 60.0, 1),
+                "approach_frames": len(approach),
+                "median_approach_mm_per_frame": None if median is None else round(median, 3),
+                "post_hoc_model_mm_per_frame": round(step_mm * steps_per_frame / (steps_per_frame + delay), 3),
+                "cut_frame": cut,
+                "frames": len(frames),
+            }
+        )
+    return rows
+
+
 def revision():
     head = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True, check=True)
     dirty = subprocess.run(
@@ -146,6 +184,7 @@ def build(root=ROOT, share=SHARE):
     for run in runs.values():
         every_age.update(run["ages_s"])
     over_limit = sum(count for age, count in every_age.items() if age > VISION_MAX_AGE_S)
+    mechanism = delay_mechanism(root / batch)
     return {
         "schema_version": 1,
         "tool": "tools/audit_gate_evidence.py",
@@ -181,6 +220,17 @@ def build(root=ROOT, share=SHARE):
                 "not fired in closed loop."
             ),
         },
+        "delay_mechanism": {
+            "source": LIVE_LOOP_VERDICTS,
+            "batch": batch,
+            "runs": mechanism,
+            "post_hoc_model": (
+                "Fitted after the registered result and not registered: each command is the measured pose plus a step "
+                "capped at 4 mm. With d of the 6 physics steps per frame still applying the previous command, the arm "
+                "is short of the last command when the next pose is measured, so progress per frame is 4 x 6 / (6 + d) "
+                "mm. It predicts, untested, that the 66.7 and 100 ms runs would pass with a longer episode."
+            ),
+        },
     }
 
 
@@ -207,6 +257,12 @@ def main(argv=None):
         f"{composition['first_holds']} first holds + {composition['cycles_after_a_latch']} after a latch; "
         f"live loop: {ages['decisions']} decisions in {ages['runs']} runs, ages {ages['distinct_ages_s']}"
     )
+    for row in document["delay_mechanism"]["runs"]:
+        print(
+            f"  {row['run']}: delay {row['delay_ms']} ms, approach {row['approach_frames']} frames at "
+            f"{row['median_approach_mm_per_frame']} mm/frame (model {row['post_hoc_model_mm_per_frame']}), "
+            f"cut at {row['cut_frame']}"
+        )
     return 0
 
 

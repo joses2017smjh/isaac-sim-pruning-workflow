@@ -81,3 +81,21 @@ def test_the_output_must_be_new_and_outside_the_repository(audit, tmp_path):
     for path in (existing, ROOT / "docs/evidence/new.json"):
         with pytest.raises(SystemExit):
             audit.main(["--output", str(path)])
+
+
+def test_delay_mechanism_measures_approach_speed_beside_the_post_hoc_model(audit, tmp_path):
+    run = tmp_path / "run_00_x"
+    run.mkdir()
+    frames = [
+        {"phase": "vision_approach", "tool_position_m": [0.0, 0.0, 0.0]},
+        {"phase": "vision_approach", "tool_position_m": [0.003, 0.0, 0.0]},
+        {"phase": "vision_approach", "tool_position_m": [0.006, 0.0, 0.0]},
+        {"phase": "align", "tool_position_m": [0.009, 0.0, 0.0], "live_vision": {"cut": {"detach_event": True}}},
+    ]
+    (run / "frames.json").write_text(json.dumps({"frames": frames}))
+    (run / "report.json").write_text(json.dumps({"ros2_loop": {"delay_steps": 2}}))
+    (row,) = audit.delay_mechanism(tmp_path)
+    assert row["delay_steps"] == 2 and row["delay_ms"] == 33.3
+    assert row["approach_frames"] == 3 and row["median_approach_mm_per_frame"] == 3.0
+    assert row["post_hoc_model_mm_per_frame"] == 3.0
+    assert row["cut_frame"] == 3
