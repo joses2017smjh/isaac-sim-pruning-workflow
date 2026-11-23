@@ -225,6 +225,58 @@ version the capture was recorded with, produced **identical** numbers, so the
 OpenCV version is not the cause. Decision states agree exactly in every frame,
 so the divergence never changes a decision.
 
+### November 22: what the November 5 numbers contain
+
+Three limits found on re-reading the November 5 work. None changes a
+registered verdict. [Evidence](evidence/gate_evidence_audit_2026-11-22.json),
+written by `tools/audit_gate_evidence.py` at `2da51ce`.
+
+**How many parity cycles carried a decision.** A hold latches for the run, so
+once a run has held, every later cycle is a hold whose outcome was already
+fixed. Of the 43,623 matching cycles:
+
+| Cycles | Count |
+|---|---|
+| Passing, before any hold | 18,806 |
+| The first hold of a run | 145 (87 vision invalid, 30 ToF clearance, 24 hazard contact, 4 lost during closure) |
+| **Cycles where the gate had a decision to make** | **18,951** |
+| After a latch | 24,672 |
+
+72 of the 217 captures never held. The recordings contain only those four
+first-hold reasons; every other rule is covered by the 23 injected faults alone.
+
+**The freshness check never fired in the live loop.** The gate holds when
+vision is more than 0.25 s old. In all 2,613 decisions of the 13 registered
+live-loop runs the age was 0 s. The controller stamps each target estimate with
+the capture time of its own frame (`vision_timestamp_s=float(time_s)` in
+`VisionPruningDemo.observe`), and the modelled delay held back arm commands,
+not images. The check is exercised by two injected faults (300 ms stale, 50 ms
+in the future) and has not fired in closed loop.
+
+**Which gate inputs are independent of the controller.**
+
+| Input | Comes from | Independent of the controller |
+|---|---|---|
+| ToF ranges | the simulator's sensors | yes |
+| Tool pose | the simulator's arm state | yes |
+| Contact force | the simulator's contact sensing | yes |
+| Target position, vision valid, vision time | the controller's tracker | no |
+| Target id, label, axis, radius | configuration, passed through the controller | no: the id and label checks compare a configured value with itself |
+| Cut phase and detached flag | the controller's own report | no |
+
+So the gate catches a controller that crashes, goes silent, sends malformed or
+wrong-frame messages, or reports a lost or stale track. It cannot catch a
+tracker that confidently reports the wrong place, because the mouth-distance
+check compares the measured pose with the controller's own estimate. The
+October 6 sweep's 530 control shows the case: during closure the tracked target
+drifted about 5.5 mm while the tracker still reported tracking
+([result](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026)).
+That drift pushed the mouth distance past 8 mm and the cut stopped; had it
+stayed inside the tolerance, nothing in the gate could have told. The next step
+is an input the controller does not produce, such as requiring the ToF zones
+nearest the mouth to see an object at the predicted range before the jaw may
+close.
+
 ## Running it
 
 Everything runs in an Apptainer image built from the official ROS 2 Humble
@@ -365,10 +417,13 @@ Those are different numbers and neither is a latency claim.
 
 - Not hardware-in-the-loop, and never described as such.
 - No physical sensor or robot has been driven.
-- Proposed commands are advisory and are never actuated.
+- In the replays, proposed commands are advisory and never actuated. In the
+  November 5 live loop the gated command moves the simulated arm in Isaac Sim;
+  nothing here drives hardware.
 - Replay timings are replay timings, not latency or real-time guarantees.
-- Parity is against **one** capture, `21328323`. It says nothing about captures
-  the node has not replayed.
+- The October 6 graph parity is against **one** capture, `21328323`; the
+  November 5 gate parity covers 217 captures. Neither says anything about
+  captures it has not replayed.
 - Agreement of a replay with its own recording is reproducibility, not evidence
   that either is correct.
 

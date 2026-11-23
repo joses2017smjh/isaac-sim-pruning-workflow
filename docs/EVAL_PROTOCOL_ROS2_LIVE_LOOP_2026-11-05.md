@@ -178,3 +178,23 @@ took 4.7 s of wall-clock time. That is the lockstep simulator's path-traced rend
 time for one 0.1 s frame, not the panel's or the gate's latency. In control cycles,
 the arm stopped within **one** cycle, as registered. Gate-to-panel delivery measured
 0.03 ms at p50 and 0.12 ms at p95 on the same node.
+
+## Addendum — November 22, 2026 (after the result, not registered)
+
+Two notes from re-reading the runs. Neither changes a verdict.
+[Evidence](evidence/gate_evidence_audit_2026-11-22.json), written by
+`tools/audit_gate_evidence.py` at `2da51ce`.
+
+- **Only commands were delayed.** The vision age the gate checked was 0 s in
+  all 2,613 decisions of the 13 runs. Images reached the controller at once,
+  and the controller stamps each estimate with its frame's capture time, so the
+  0.25 s freshness check could not fire. R3 measures command delay only.
+- **Why delay slowed the arm (a model fitted afterwards).** Each command is the
+  measured tool position plus a step of at most 4 mm. When d of the 6 physics
+  steps in a frame still apply the previous command, the arm has not finished
+  that step when the next pose is measured, and the next command starts from
+  where it actually is. The steps overlap, and progress per frame falls to
+  4 × 6 / (6 + d) mm: 4.0, 3.0, 2.4 and 2.0 mm for the four delays, against
+  measured medians of 3.91, 3.00, 2.37 and 1.98 mm. The approach took 68,
+  88–89, 112 and 134 frames. The model predicts that the 66.7 and 100 ms runs
+  would pass all 17 checks with a 30 s episode. That prediction is untested.

@@ -1,0 +1,274 @@
+{
+ "schema_version": 1,
+ "tool": "tools/audit_gate_evidence.py",
+ "scope": "Addendum to the November 5 gate evidence. It recounts recorded data and changes no registered verdict. Simulation only.",
+ "parity_composition": {
+  "source": "docs/evidence/cpp_safety_gate_parity_2026-11-05.json",
+  "cycles_file": "pruning_work/ros2_gate_20261105/cycles_025c1d4.jsonl.gz",
+  "cycles_sha256": "8475d280dabe657a446bfc02e577499f5b32309b64a8e9b4870998c3b0b577d3",
+  "cycles_sha256_convention": "sha256 over each decompressed line without its newline, as the parity run",
+  "captures": 217,
+  "cycles": 43623,
+  "passing_before_any_hold": 18806,
+  "first_holds": 145,
+  "first_hold_reasons": {
+   "gate_lost_during_closure": 4,
+   "hazard_contact": 24,
+   "tof_minimum_clearance": 30,
+   "vision_invalid": 87
+  },
+  "cycles_with_a_decision": 18951,
+  "cycles_after_a_latch": 24672,
+  "captures_that_never_held": 72,
+  "reading": "A hold latches for the run, so cycles after a run's first hold were already decided. The cycles where the gate still had a decision to make are the passing cycles plus each run's first hold."
+ },
+ "live_loop_vision_age": {
+  "source": "docs/evidence/ros2_live_loop_verdicts_2026-11-05.json",
+  "batch": "artifacts/vision_robustness/ros2-loop-delay-20261105",
+  "runs": 13,
+  "decisions": 2613,
+  "decisions_without_age": 0,
+  "distinct_ages_s": [
+   0.0
+  ],
+  "decisions_over_limit": 0,
+  "limit_s": 0.25,
+  "per_run": {
+   "run_00_source_tree1_v14944_baseline_ros2_delay0": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_01_source_tree1_v14944_baseline_ros2_delay2": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_02_source_tree1_v14944_baseline_ros2_delay4": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_03_source_tree1_v14944_baseline_ros2_delay6": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_04_source_tree1_v14944_baseline_ros2_delay0": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_05_source_tree1_v14944_baseline_ros2_delay2": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_06_source_tree1_v14944_baseline_ros2_delay4": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_07_source_tree1_v14944_baseline_ros2_delay6": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_08_source_tree1_v14944_baseline_ros2_delay0": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_09_source_tree1_v14944_baseline_ros2_delay2": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_10_source_tree1_v14944_baseline_ros2_delay4": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_11_source_tree1_v14944_baseline_ros2_delay6": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   },
+   "run_12_source_tree1_v14944_baseline_ros2_delay0_panel_hold": {
+    "decisions": 201,
+    "ages_s": {
+     "0.0": 201
+    },
+    "without_age": 0
+   }
+  },
+  "reading": "The controller stamps its vision with the frame's capture time, so the age the gate checks is zero. The registered delay held back arm commands; images reached the controller undelayed. The 0.25 s freshness check is covered by injected faults (vision_stale_300ms, vision_from_future_50ms) and has not fired in closed loop."
+ },
+ "delay_mechanism": {
+  "source": "docs/evidence/ros2_live_loop_verdicts_2026-11-05.json",
+  "batch": "artifacts/vision_robustness/ros2-loop-delay-20261105",
+  "runs": [
+   {
+    "run": "run_00_source_tree1_v14944_baseline_ros2_delay0",
+    "delay_steps": 0,
+    "delay_ms": 0.0,
+    "approach_frames": 68,
+    "median_approach_mm_per_frame": 3.91,
+    "post_hoc_model_mm_per_frame": 4.0,
+    "cut_frame": 77,
+    "frames": 200
+   },
+   {
+    "run": "run_01_source_tree1_v14944_baseline_ros2_delay2",
+    "delay_steps": 2,
+    "delay_ms": 33.3,
+    "approach_frames": 88,
+    "median_approach_mm_per_frame": 2.996,
+    "post_hoc_model_mm_per_frame": 3.0,
+    "cut_frame": 97,
+    "frames": 200
+   },
+   {
+    "run": "run_02_source_tree1_v14944_baseline_ros2_delay4",
+    "delay_steps": 4,
+    "delay_ms": 66.7,
+    "approach_frames": 112,
+    "median_approach_mm_per_frame": 2.372,
+    "post_hoc_model_mm_per_frame": 2.4,
+    "cut_frame": 120,
+    "frames": 200
+   },
+   {
+    "run": "run_03_source_tree1_v14944_baseline_ros2_delay6",
+    "delay_steps": 6,
+    "delay_ms": 100.0,
+    "approach_frames": 134,
+    "median_approach_mm_per_frame": 1.978,
+    "post_hoc_model_mm_per_frame": 2.0,
+    "cut_frame": 142,
+    "frames": 200
+   },
+   {
+    "run": "run_04_source_tree1_v14944_baseline_ros2_delay0",
+    "delay_steps": 0,
+    "delay_ms": 0.0,
+    "approach_frames": 68,
+    "median_approach_mm_per_frame": 3.91,
+    "post_hoc_model_mm_per_frame": 4.0,
+    "cut_frame": 77,
+    "frames": 200
+   },
+   {
+    "run": "run_05_source_tree1_v14944_baseline_ros2_delay2",
+    "delay_steps": 2,
+    "delay_ms": 33.3,
+    "approach_frames": 89,
+    "median_approach_mm_per_frame": 2.996,
+    "post_hoc_model_mm_per_frame": 3.0,
+    "cut_frame": 98,
+    "frames": 200
+   },
+   {
+    "run": "run_06_source_tree1_v14944_baseline_ros2_delay4",
+    "delay_steps": 4,
+    "delay_ms": 66.7,
+    "approach_frames": 112,
+    "median_approach_mm_per_frame": 2.372,
+    "post_hoc_model_mm_per_frame": 2.4,
+    "cut_frame": 120,
+    "frames": 200
+   },
+   {
+    "run": "run_07_source_tree1_v14944_baseline_ros2_delay6",
+    "delay_steps": 6,
+    "delay_ms": 100.0,
+    "approach_frames": 134,
+    "median_approach_mm_per_frame": 1.979,
+    "post_hoc_model_mm_per_frame": 2.0,
+    "cut_frame": 142,
+    "frames": 200
+   },
+   {
+    "run": "run_08_source_tree1_v14944_baseline_ros2_delay0",
+    "delay_steps": 0,
+    "delay_ms": 0.0,
+    "approach_frames": 68,
+    "median_approach_mm_per_frame": 3.91,
+    "post_hoc_model_mm_per_frame": 4.0,
+    "cut_frame": 77,
+    "frames": 200
+   },
+   {
+    "run": "run_09_source_tree1_v14944_baseline_ros2_delay2",
+    "delay_steps": 2,
+    "delay_ms": 33.3,
+    "approach_frames": 89,
+    "median_approach_mm_per_frame": 2.996,
+    "post_hoc_model_mm_per_frame": 3.0,
+    "cut_frame": 98,
+    "frames": 200
+   },
+   {
+    "run": "run_10_source_tree1_v14944_baseline_ros2_delay4",
+    "delay_steps": 4,
+    "delay_ms": 66.7,
+    "approach_frames": 112,
+    "median_approach_mm_per_frame": 2.372,
+    "post_hoc_model_mm_per_frame": 2.4,
+    "cut_frame": 120,
+    "frames": 200
+   },
+   {
+    "run": "run_11_source_tree1_v14944_baseline_ros2_delay6",
+    "delay_steps": 6,
+    "delay_ms": 100.0,
+    "approach_frames": 134,
+    "median_approach_mm_per_frame": 1.979,
+    "post_hoc_model_mm_per_frame": 2.0,
+    "cut_frame": 142,
+    "frames": 200
+   },
+   {
+    "run": "run_12_source_tree1_v14944_baseline_ros2_delay0_panel_hold",
+    "delay_steps": 0,
+    "delay_ms": 0.0,
+    "approach_frames": 60,
+    "median_approach_mm_per_frame": 3.911,
+    "post_hoc_model_mm_per_frame": 4.0,
+    "cut_frame": null,
+    "frames": 200
+   }
+  ],
+  "post_hoc_model": "Fitted after the registered result and not registered: each command is the measured pose plus a step capped at 4 mm. With d of the 6 physics steps per frame still applying the previous command, the arm is short of the last command when the next pose is measured, so progress per frame is 4 x 6 / (6 + d) mm. It predicts, untested, that the 66.7 and 100 ms runs would pass with a longer episode."
+ },
+ "provenance": {
+  "code_revision": "2da51ce25353a37abe70985811e25e7866a9faaa",
+  "tracked_tree_clean": true,
+  "host": "submit-a",
+  "python": "3.10.19"
+ }
+}
