@@ -1,3 +1,20 @@
+PHASE 0 OF THE LONG-TERM PLAN — 2026-11-22
+  User asked (2026-11-22) to start on the milestone plans. Commits are local; push waits for the user.
+  P0.1 DONE: Oct 6 closure-hold sweep scored. Grades committed unopened (38ac49c), frozen scorer run
+      (CPU 22137062): 4/28 passed 17/17; 6 reached closure, all detached under the hold; 19 of 25
+      initialized stopped on the tracker first; S1,S3-S6 supported, S2 untested, S7 refuted (530 drifted
+      ~5.5 mm in closure while tracking). 702 of 1,350 GPU-min. docs/evidence/hold_sweep_verdicts_2026-11-22.json.
+  P0.2 PARTLY: Foundation CI was red Nov 6-22 on one format slip (fixed 2f60f1b, pushed). Tracked hook
+      .githooks/pre-commit runs CI's ruff steps (enable: git config core.hooksPath .githooks). Branch
+      protection needs the user.
+  P0.3 DONE: tools/audit_gate_evidence.py -> docs/evidence/gate_evidence_audit_2026-11-22.json: 18,951 of
+      43,623 parity cycles carried a decision; vision age 0 s in all 2,613 live-loop decisions; approach
+      speed beside the post-hoc delay model. Dated addenda in docs/ROS2_SIL.md and the live-loop protocol.
+  P0.4 NEEDS THE USER: share 1.71 TiB vs 1.5 TiB soft, grace to ~2026-12-19. This repo is ~139 GiB.
+      Candidates measured (nothing deleted) in pruning_work/storage_20261122/.
+  P0.5 DONE: replay tools pinned to the committed 129-run list (68f0afa; they had drifted to 200/190).
+      Half-pixel mismatch measured, not changed: 0.26-0.59 mm per axis (docs/evidence/pixel_convention_2026-11-22.json).
+
 C++ SAFETY GATE + LIVE ROS 2 LOOP + OPERATOR PANEL — 2026-11-05
   User asked (2026-11-05) for the three additions behind the four resume bullets: (1) the ToF and cut
   checks as a C++ ROS 2 node every arm command passes through, (2) ROS 2 driving the simulated arm live
