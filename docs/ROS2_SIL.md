@@ -269,7 +269,8 @@ wrong-frame messages, or reports a lost or stale track. It cannot catch a
 tracker that confidently reports the wrong place, because the mouth-distance
 check compares the measured pose with the controller's own estimate. The
 October 6 sweep's 530 control shows the case: during closure the tracked target
-drifted about 5.5 mm while the tracker still reported tracking
+drifted about 5.5 mm while the tracker still reported tracking and the
+recorded piece pose did not move
 ([result](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026)).
 That drift pushed the mouth distance past 8 mm and the cut stopped; had it
 stayed inside the tolerance, nothing in the gate could have told. The next step

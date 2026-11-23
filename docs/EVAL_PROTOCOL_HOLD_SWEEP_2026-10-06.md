@@ -298,7 +298,8 @@ frames in order, which is what the scorer requires.
 **Control 530 (exploratory reading, not scored).** In 530's recorded frames
 the tracker never lost the target. Closure started at frame 73 at 6.0 mm. As
 the jaw closed, the tracked target moved about 2.6 mm by frame 75 and about
-5.5 mm by frame 76 while the branch stayed still. The gate's mouth distance
+5.5 mm by frame 76 while the branch stayed still: the selected piece's recorded
+pose (`selected_piece_pose_wxyz`) is identical in every frame from 60 to 79. The gate's mouth distance
 rose to 9.7 mm, past the 8 mm tolerance, and the cut stopped. The hold covers a
 *loss* the jaw mask explains; it does not cover a tracker that keeps reporting
 a target that has drifted. The cut controller stopped, which is the safe
