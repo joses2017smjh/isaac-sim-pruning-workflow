@@ -46,9 +46,10 @@ from isaaclab_pruning.sim.vision_demo_controller import ApproachStrategy, Vision
 from isaaclab_pruning.task.simulated_cut import tool_mouth_geometry
 
 VISION_ROBUSTNESS = ROOT / "artifacts/vision_robustness"
-#: Batches recorded after the jaw-in-view study (with other scenes or with the labelled arms on); --all leaves
-#: them out, so --all is always the 129 earlier runs.
-EXCLUDED_BATCH_PREFIXES = ("jaw-shadow-", "jaw-hold-", "depth-loop-")
+#: --all is the 129 earlier runs, by name: the run list of the regression replay committed on October 1, before any
+#: later batch existed. It is the set the jaw-in-view P0 gates replayed (every batch added since is dated October 3
+#: or later). Globbing every batch drifted as batches were added (190 runs by November 22).
+REGISTERED_RUNS_EVIDENCE = ROOT / "docs/evidence/depth_regression_replay_2026-10-01.json"
 CORRELATION_TOLERANCE = 1e-6
 #: Commands within 1 um of the recorded one count as the recorded command. The replay rebuilds the preview
 #: camera pose from the initial tool pose, which moves the frozen standoff point, and so every planned step, by
@@ -65,17 +66,17 @@ SOURCE_FILES = (
 )
 
 
-def discover_runs(base=VISION_ROBUSTNESS):
-    """Every recorded run with frames under the vision batches, except the excluded batches."""
-    runs = []
-    for path in sorted(Path(base).glob("*/run_*")):
-        if path.parent.name.startswith(EXCLUDED_BATCH_PREFIXES):
-            continue
+def discover_runs(base=VISION_ROBUSTNESS, evidence=REGISTERED_RUNS_EVIDENCE):
+    """The 129 registered earlier runs. A listed run that is missing or has no frames is an error, never skipped."""
+    names = [row["run"] for row in json.loads(Path(evidence).read_text())["runs"]]
+    if len(set(names)) != len(names):
+        raise ValueError(f"{evidence}: a run is listed twice")
+    runs = [Path(base) / name for name in names]
+    for path in runs:
         if not ((path / "report.json").is_file() and (path / "frames.json").is_file()):
-            continue
+            raise FileNotFoundError(f"registered run {path} has no report or frames record")
         if not (path / "frames").is_dir() or not any((path / "frames").glob("wrist_*.png")):
-            continue  # refused at startup: no frame was ever recorded
-        runs.append(path)
+            raise FileNotFoundError(f"registered run {path} has no recorded wrist frame")
     return runs
 
 
@@ -503,7 +504,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     selection = parser.add_mutually_exclusive_group(required=True)
     selection.add_argument("--run-dir", type=Path, action="append", help="A recorded run directory (repeatable)")
-    selection.add_argument("--all", action="store_true", help="Every recorded run with frames, except jaw-shadow-*")
+    selection.add_argument("--all", action="store_true", help="The 129 registered earlier runs")
     parser.add_argument("--output", type=Path, required=True, help="New JSON file outside the repository")
     parser.add_argument("--jaw-self-mask", action="store_true", help="Enable the jaw self-mask arm")
     parser.add_argument("--closure-hold", action="store_true", help="Enable the closure-hold arm")
@@ -523,7 +524,10 @@ def main(argv=None):
     import cv2
 
     cv2.setNumThreads(1)
-    runs = discover_runs() if args.all else [Path(path) for path in args.run_dir]
+    try:
+        runs = discover_runs() if args.all else [Path(path) for path in args.run_dir]
+    except (FileNotFoundError, ValueError) as error:
+        parser.error(str(error))
     results = []
     for path in runs:
         try:

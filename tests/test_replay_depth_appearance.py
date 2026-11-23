@@ -151,16 +151,43 @@ def test_conditions_without_a_value_are_not_evaluated_and_give_no_reason(depth_r
     assert event["reasons"] == ["unverifiable_depth"]
 
 
-def test_discovery_is_pinned_to_the_registered_batches(depth_replay, tmp_path):
-    for batch in ("jaw-shadow-eve-a-r1-20260930", "tree1-listed-baseline-20260923", "jaw-hold-a-20261001"):
-        run = tmp_path / batch / "run_00_x"
-        (run / "frames").mkdir(parents=True)
+def _recorded_run(base, name, frames=True):
+    run = base / name
+    (run / "frames").mkdir(parents=True)
+    if frames:
         (run / "frames/wrist_00000.png").write_bytes(b"")
-        (run / "report.json").write_text("{}")
-        (run / "frames.json").write_text("{}")
+    (run / "report.json").write_text("{}")
+    (run / "frames.json").write_text("{}")
+    return run
+
+
+def test_discovery_is_pinned_to_the_registered_batches(depth_replay, tmp_path):
+    for batch in ("jaw-shadow-eve-a-r1-20260930", "tree1-listed-baseline-20260923", "hold-sweep-20261006"):
+        _recorded_run(tmp_path, f"{batch}/run_00_x")
+    evidence = tmp_path / "evidence.json"
+    evidence.write_text(json.dumps({"runs": [{"run": "tree1-listed-baseline-20260923/run_00_x"}]}))
     assert [p.parent.name for p in depth_replay.discover_heldout(tmp_path)] == ["jaw-shadow-eve-a-r1-20260930"]
-    assert [p.parent.name for p in depth_replay.discover_regression(tmp_path)] == ["tree1-listed-baseline-20260923"]
+    # A batch recorded later (hold-sweep) is never picked up: the regression set is the registered list.
+    found = depth_replay.discover_regression(tmp_path, evidence)
+    assert [p.parent.name for p in found] == ["tree1-listed-baseline-20260923"]
     assert depth_replay.EXPECTED_RUNS == {"heldout": 12, "regression": 129}
+
+
+def test_a_registered_run_without_frames_is_an_error_not_a_skip(depth_replay, tmp_path):
+    _recorded_run(tmp_path, "tree1-listed-baseline-20260923/run_00_x", frames=False)
+    evidence = tmp_path / "evidence.json"
+    evidence.write_text(json.dumps({"runs": [{"run": "tree1-listed-baseline-20260923/run_00_x"}]}))
+    with pytest.raises(FileNotFoundError):
+        depth_replay.discover_regression(tmp_path, evidence)
+    evidence.write_text(json.dumps({"runs": [{"run": "a/run_00"}, {"run": "a/run_00"}]}))
+    with pytest.raises(ValueError):
+        depth_replay.registered_run_names(evidence)
+
+
+def test_the_committed_regression_list_is_the_129_registered_runs(depth_replay):
+    names = depth_replay.registered_run_names()
+    assert len(names) == len(set(names)) == depth_replay.EXPECTED_RUNS["regression"]
+    assert not [name for name in names if name.startswith(("jaw-shadow-", "jaw-hold-", "depth-loop-"))]
 
 
 @pytest.mark.parametrize(

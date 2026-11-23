@@ -60,7 +60,7 @@ def test_only_outside_stops_are_injected_never_the_runner_echo_of_the_cutters_ow
     }
 
 
-def test_discovery_skips_running_batches_and_runs_without_frames(replay, tmp_path):
+def test_discovery_is_the_registered_list_and_refuses_a_listed_run_without_frames(replay, tmp_path):
     for batch, run, frames in (
         ("planned-pose-gpu-r1-20260929", "run_00_a", True),
         ("jaw-shadow-eve-a-r1-20260930", "run_00_b", True),
@@ -72,7 +72,12 @@ def test_discovery_skips_running_batches_and_runs_without_frames(replay, tmp_pat
         (path / "frames.json").write_text('{"fps": 10, "frames": []}')
         if frames:
             (path / "frames/wrist_00000.png").write_bytes(b"")
-    assert [p.name for p in replay.discover_runs(tmp_path)] == ["run_00_a"]
+    evidence = tmp_path / "evidence.json"
+    evidence.write_text(json.dumps({"runs": [{"run": "planned-pose-gpu-r1-20260929/run_00_a"}]}))
+    assert [p.name for p in replay.discover_runs(tmp_path, evidence)] == ["run_00_a"]
+    evidence.write_text(json.dumps({"runs": [{"run": "targets-source-20260923/run_04_refused"}]}))
+    with pytest.raises(FileNotFoundError):
+        replay.discover_runs(tmp_path, evidence)
 
 
 def test_measurement_criterion_is_exact_except_the_correlation_tolerance(replay):

@@ -109,8 +109,9 @@ from isaaclab_pruning.task.simulated_cut import tool_mouth_geometry
 
 VISION_ROBUSTNESS = ROOT / "artifacts/vision_robustness"
 HELDOUT_BATCH_GLOB = "jaw-shadow-*-20260930"
-#: Batches recorded after the protocol (the held-out counterfactual and the live jaw-in-view runs).
-REGRESSION_EXCLUDED_PREFIXES = ("jaw-shadow-", "jaw-hold-")
+#: The registered regression runs, by name: the run list of the regression replay committed on October 1, before
+#: any later batch existed. Globbing every batch drifted as batches were added (200 runs by November 22).
+REGRESSION_RUNS_EVIDENCE = ROOT / "docs/evidence/depth_regression_replay_2026-10-01.json"
 #: The registered data sets: 12 held-out recordings and the 129 earlier runs with frames.
 EXPECTED_RUNS = {"heldout": 12, "regression": 129}
 CORRELATION_TOLERANCE = 1e-6
@@ -163,13 +164,21 @@ def discover_heldout(base=VISION_ROBUSTNESS):
     return [path for path in sorted(Path(base).glob(f"{HELDOUT_BATCH_GLOB}/run_*")) if _has_frames(path)]
 
 
-def discover_regression(base=VISION_ROBUSTNESS):
-    """Every earlier recorded run with frames (outside the batches recorded after the protocol)."""
-    return [
-        path
-        for path in sorted(Path(base).glob("*/run_*"))
-        if not path.parent.name.startswith(REGRESSION_EXCLUDED_PREFIXES) and _has_frames(path)
-    ]
+def registered_run_names(evidence=REGRESSION_RUNS_EVIDENCE):
+    """The registered regression runs as 'batch/run' names, in the committed evidence's order."""
+    names = [row["run"] for row in json.loads(Path(evidence).read_text())["runs"]]
+    if len(set(names)) != len(names):
+        raise ValueError(f"{evidence}: a run is listed twice")
+    return names
+
+
+def discover_regression(base=VISION_ROBUSTNESS, evidence=REGRESSION_RUNS_EVIDENCE):
+    """The registered earlier runs. A listed run that is missing or has no frames is an error, never skipped."""
+    runs = [Path(base) / name for name in registered_run_names(evidence)]
+    missing = [str(path) for path in runs if not _has_frames(path)]
+    if missing:
+        raise FileNotFoundError(f"{len(missing)} registered runs have no recorded frames, e.g. {missing[0]}")
+    return runs
 
 
 def output_refusal(path):
@@ -502,7 +511,10 @@ def main(argv=None):
     if args.heldout:
         selection_name, runs = "heldout", discover_heldout()
     elif args.regression:
-        selection_name, runs = "regression", discover_regression()
+        try:
+            selection_name, runs = "regression", discover_regression()
+        except (FileNotFoundError, ValueError) as error:
+            parser.error(str(error))
     else:
         selection_name, runs = "run_dir", [Path(path) for path in args.run_dir]
     if selection_name in EXPECTED_RUNS and len(runs) != EXPECTED_RUNS[selection_name]:

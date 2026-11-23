@@ -61,8 +61,9 @@ CHECKER = "tools/check_jaw_p0.py"
 VISION_ROBUSTNESS = ROOT / "artifacts/vision_robustness"
 #: The commit that registered the protocol; P0's replays are regenerated from it.
 REGISTRATION_COMMIT = "a6e8266ed64b0589d98241954b036a3a529389ec"
-#: Batches recorded after the study (the counterfactual and the live experiment); P0 covers the earlier runs.
-EXCLUDED_BATCH_PREFIXES = ("jaw-shadow-", "jaw-hold-", "depth-loop-")
+#: P0 covers the 129 earlier runs, by name: the run list of the regression replay committed on October 1, before any
+#: later batch existed. Globbing every batch drifted as batches were added (190 runs by November 22).
+REGISTERED_RUNS_EVIDENCE = ROOT / "docs/evidence/depth_regression_replay_2026-10-01.json"
 EXPECTED_RUNS = 129
 TOLERANCE = 1e-6
 #: The four checks the protocol lets a held frame waive.
@@ -96,14 +97,16 @@ def manifest_digest(paths, base):
     return {"files": len(lines), "sha256": hashlib.sha256("\n".join(lines).encode()).hexdigest()}
 
 
-def recorded_runs(base=VISION_ROBUSTNESS):
-    """Every run directory with at least one recorded wrist frame, except the excluded batches."""
+def recorded_runs(base=VISION_ROBUSTNESS, evidence=REGISTERED_RUNS_EVIDENCE):
+    """The registered runs, name -> directory. A listed run without a recorded wrist frame is an error."""
     runs = {}
-    for path in sorted(Path(base).glob("*/run_*")):
-        if path.parent.name.startswith(EXCLUDED_BATCH_PREFIXES):
-            continue
-        if (path / "frames").is_dir() and any((path / "frames").glob("wrist_*.png")):
-            runs[f"{path.parent.name}/{path.name}"] = path
+    for row in json.loads(Path(evidence).read_text())["runs"]:
+        name, path = row["run"], Path(base) / row["run"]
+        if name in runs:
+            raise ValueError(f"{evidence}: {name} is listed twice")
+        if not ((path / "frames").is_dir() and any((path / "frames").glob("wrist_*.png"))):
+            raise FileNotFoundError(f"registered run {path} has no recorded wrist frame")
+        runs[name] = path
     return runs
 
 
