@@ -1,17 +1,17 @@
 # Pending work and stretch goals
 
-Updated October 6, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
+Updated November 22, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
 and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-- **[Closure-hold sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md)**: 30 runs,
-  1,350 GPU-minutes reserved, submitted October 6 from `1d2676e` (array jobs
-  `21600402`, then `21600403`). When they finish: grade per batch, commit the
-  grades unopened, score with `tools/score_hold_sweep.py` from a clean clone,
-  and publish.
+Nothing is queued.
 
 Finished and published:
+- [closure-hold sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026),
+  scored November 22: 4 of 28 targets passed 17/17; the hold carried all 6
+  closures to detachment; S1, S3–S6 supported, S2 untested, S7 refuted
+  (control 530 failed on tracker drift during closure).
 - [closure hold on unseen targets](EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md#result--october-5-2026):
   a negative result. 0 of 9 runs reached closure, so the hold was not
   exercised; the controls passed.
@@ -34,8 +34,9 @@ Finished and published:
 
 ## Needs a decision (no GPU)
 
-- **Storage.** The share is over its 1.5 TiB soft quota and the grace clock is
-  running (about four weeks left).
+- **Storage.** On November 22 the share held 1.71 TiB against the 1.5 TiB soft
+  quota, with 3 weeks 6 days of grace left (to about December 19). This
+  repository's directory is about 139 GiB of that.
 - **Repository housekeeping.** Decide what to do with the uncommitted
   `studio/src` prototype and add repository topics.
 

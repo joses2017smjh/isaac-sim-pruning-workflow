@@ -238,3 +238,84 @@ identical code. Before submission:
 
 The share's project usage was 1.62 TiB at submission. The storage preflight
 projected 1.65 TiB with its 20 GB reserve, under the 2 TiB hard limit.
+
+## Result — November 22, 2026
+
+Scored with the scorer committed at `1d2676e`, unchanged since, from a clean
+clone at `38ac49c` (CPU job `22137062`):
+[verdicts](evidence/hold_sweep_verdicts_2026-11-22.json). The grades are the
+files `aggregate_eval.py` wrote on October 6 (CPU job `21600437` at `ca21b69`),
+committed byte for byte at `38ac49c` before the scorer ran
+([grades](evidence/hold_sweep_2026-10-06/)). All 30 runs were scored. The
+sweep used 702 GPU-minutes of the 1,350 reserved, all on RTX 8000.
+
+Every number below carries the label *known-map plan; jaw self-mask; closure
+hold with freshness and frame-reuse checks waived on held frames*. One run per
+target, two trees, source light, simulation. It is never pooled with another
+population.
+
+| Prediction | Verdict |
+|---|---|
+| S1, home visibility | **Supported.** The 3 targets the check rejects (4438, 3433, 3673) stopped at frame 0 with `initial_target_not_visible`; the other 25 initialized |
+| S2, the mechanism at ≤ 4 mm | **Untested.** No closure started with the gate's mouth distance at or below 4 mm; all six started between 5.0 and 6.5 mm |
+| S3, hold to detachment | **Supported** in all 6 runs where the loss occurred: held from k + 2 to k + 6, tool still within 0.001 mm and 0.0001°, detached at k + 6 |
+| S4, outcome where the hold engaged | **Supported.** 4 of those 6 passed all 17 checks |
+| S5, static branch | **Supported.** The piece moved 0.0 mm and the true mouth distance changed by at most 0.0004 mm between closure start and detach |
+| S6, mask fidelity | **Supported.** Every frame of all 30 runs: no count mismatch, no depth violation |
+| S7, controls | **Refuted.** 14944 passed 17/17. 530 stopped at frame 76 with `gate_lost_during_closure`; its hold never engaged |
+
+**How far the 28 targets got.**
+
+| Outcome | Runs | Targets |
+|---|---|---|
+| Passed all 17 checks | **4** | tree0 8175, 21386, 28610; tree1 36786 |
+| Detached, but the piece did not fall 20 mm | 2 | tree0 12261 (fell 0.9 mm), 12321 (1.5 mm) |
+| Tracker stopped before closure | 19 | below |
+| Seed not visible from home, as S1 predicted | 3 | tree0 4438; tree1 3433, 3673 |
+
+The 19 vision stops, by the tracker's own reason at the stop:
+
+| Tracker reason | Runs | Stop frames |
+|---|---|---|
+| `depth_measurement_rejected` | 7 | 5 to 69 |
+| `too_few_unmasked_patch_pixels` (the open jaw covers the patch) | 5 | 62 to 71 |
+| `optical_flow_failed` | 4 | all at frame 0 |
+| `appearance_changed_or_occluded` | 2 | 59 and 61 |
+| `low_confidence` | 1 | frame 0 |
+
+So 6 of the 25 initialized targets reached closure, and in every one the hold
+did what S3 predicted. In all six the first closure loss came at k + 2 and was
+mask-attributable, the pattern S2 describes, but at mouth distances outside
+S2's registered range, so S2 itself stays untested.
+
+**The eight flagged captures.** The October 14 inventory found eight records
+with `capture_ok=false`. They are exactly the eight runs that stopped at frame
+0 (the three S1 rejections and five first-update tracking losses). The arm
+never moved, so the capture's `robot_physically_moved` check (more than 20 mm
+of motion) failed and the job exited 1 by design. Each still recorded 200
+frames in order, which is what the scorer requires.
+
+**Control 530 (exploratory reading, not scored).** In 530's recorded frames
+the tracker never lost the target. Closure started at frame 73 at 6.0 mm. As
+the jaw closed, the tracked target moved about 2.6 mm by frame 75 and about
+5.5 mm by frame 76 while the branch stayed still. The gate's mouth distance
+rose to 9.7 mm, past the 8 mm tolerance, and the cut stopped. The hold covers a
+*loss* the jaw mask explains; it does not cover a tracker that keeps reporting
+a target that has drifted. The cut controller stopped, which is the safe
+outcome. Under the same arm 530 passed in the 3 runs of October 2 and as the
+October 4 control; this is its first failure, and one run cannot say how often
+it happens.
+
+**Exposure before scoring.** The grades sat uncommitted from October 6 to
+November 22. In that time, Slurm states (as registered), the October 14
+artifact inventory and an October 15 read-only audit all showed outcomes. The
+scorer was committed before any run was submitted and has not changed, so
+nothing seen afterwards could shape the verdicts.
+
+**What this does and does not show.** Where a planner that sees the exact
+scene chose the target and pose, and the tracker reached closure, the hold
+carried the cut to detachment every time (6 of 6) and 4 of those 6 passed every
+check. Getting to closure is the bottleneck: 19 of the 25 initialized targets
+stopped on perception first. The positive control failed once, on tracker
+drift during closure rather than a loss. Jaws are visual only, release is a
+kinematic detach, depth is exact, and the plans are known-map plans.

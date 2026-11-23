@@ -407,11 +407,14 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       the home visibility check is reliable (174 of 174 recorded
       initializations reproduced). The jaw margin does not discriminate, and
       the tracking study is unfinished, so no selection is made.
-- [ ] Closure-hold sweep: the arm, unchanged, once on each of the 28 remaining
-      planner-qualified targets plus the two controls (30 runs, 1,350
-      GPU-minutes reserved). The visibility check is registered as prediction
-      S1. Submitted October 6 (`21600402`, `21600403`).
-      [Protocol](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md).
+- [x] Closure-hold sweep: the arm, unchanged, once on each of the 28 remaining
+      planner-qualified targets plus the two controls (30 runs, 702 of 1,350
+      GPU-minutes used). Scored November 22 with the frozen scorer: 4 of 28
+      passed 17/17; 6 reached closure and the hold carried all 6 to
+      detachment; 19 of the 25 initialized targets stopped on the tracker
+      first. S1 and S3–S6 supported, S2 untested, S7 refuted (530 failed on
+      tracker drift during closure).
+      [Protocol and result](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026).
 - [x] Amended mask-fidelity check for future runs: pixels within 0.01 px of
       the jaw's outline are not judged. The user approved it on October 2,
       and it is registered in the

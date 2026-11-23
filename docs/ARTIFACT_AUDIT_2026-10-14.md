@@ -4,6 +4,13 @@ This is a documentation audit of existing local evidence. No experiment, control
 
 ## October 6 closure-hold sweep: aggregate verdict still open
 
+**Resolved November 22, 2026.** The frozen scorer has run
+([result](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026)).
+The eight `capture_ok=false` records are exactly the eight runs that stopped at
+frame 0: the arm never moved, so the capture's `robot_physically_moved` check
+failed by design, and each still recorded 200 frames in order. The text below
+is kept as written on October 14.
+
 The [registered sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md) has 28 target records and two controls. Every stored sequence grade reports 200 frames and complete/nonblank capture. All 30 experiment records match their registered configuration and identify source commit `1d2676e881e3d31183ba16e3bd57bce4055b8766`.
 
 Four target records pass the stored sequence grader, but eight target records also retain nonzero capture exit codes and `capture_ok=false`. Those flags must be reconciled before treating the sweep as a scored population. The 530 control stops with `gate_lost_during_closure`; the 14944 control passes. Earlier targeted passes therefore do not establish consistent control behavior in this sweep.

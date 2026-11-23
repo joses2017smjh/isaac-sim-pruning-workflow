@@ -880,6 +880,13 @@ Both batches were submitted from `1d2676e` and froze identical code. They are
 | `hold-sweep-20261006` | the 28 registered targets | `planned_pose_jaw_hold_sweep` | `21600402` |
 | `hold-sweep-ctl-20261006` | 530, 14944 | `planned_pose_jaw_hold_sweep` | `21600403` |
 
+**Outcome (recorded November 22).** All 30 tasks ran on RTX 8000, 702
+GPU-minutes in all. Slurm `COMPLETED` marks a 17/17 pass with a matching
+configuration: tasks 4, 14, 16 and 27 of `21600402` and task 1 of `21600403`
+(14944). Graded by CPU job `21600437` at `ca21b69`; scored by CPU job
+`22137062` at `38ac49c`.
+[Result](docs/EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026).
+
 Every result carries the label *known-map plan; jaw self-mask; closure hold
 with freshness and frame-reuse checks waived on held frames*, and is never
 pooled with unchanged-gate runs.
