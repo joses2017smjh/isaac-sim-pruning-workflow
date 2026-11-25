@@ -33,6 +33,10 @@ inline constexpr double kHazardContactForceN = 5.0;
 
 inline const char * const kOperatorHold = "operator_hold";
 inline const char * const kGateLostDuringClosure = "gate_lost_during_closure";
+/// The jaw-presence channel is required and this cycle has no usable reading.
+inline const char * const kJawPresenceMissing = "jaw_presence_missing";
+/// The cutter is closing and fewer beams than required are blocked.
+inline const char * const kJawEmptyDuringClosure = "jaw_empty_during_closure";
 
 /// Result of one time-of-flight check. `reason` is empty when the check passes.
 struct SensorGuardResult
@@ -116,6 +120,8 @@ struct GateInputs
   std::string prior_cut_phase{"approach"};
   bool prior_detached{false};
   bool operator_hold{false};
+  /// Blocked beams of the jaw-gap grid this cycle; empty when there is no reading.
+  std::optional<int> jaw_beams_blocked;
 };
 
 struct GateVerdict
@@ -126,10 +132,17 @@ struct GateVerdict
   SensorGuardResult tof;
   CutCertificate certificate;
   bool closure_authorized{false};
+  /// Empty when the jaw-presence channel is off; otherwise whether enough beams were blocked.
+  std::optional<bool> jaw_presence_ok;
 };
 
 /// Combines the two checks as the Isaac recorder and SimulatedCutController do, and
 /// latches the first hold. Precedence: operator, then ToF, then the cut check.
+///
+/// Jaw presence is optional and off at `jaw_presence_min_beams` 0. With it on, closure
+/// is authorized only while at least that many beams of the jaw-gap grid are blocked,
+/// and a closure that continues with fewer stops. It is an input the controller does
+/// not produce. With it off, every verdict is what it was before the rule existed.
 class SafetyGate
 {
 public:
@@ -137,7 +150,8 @@ public:
     CutConfig config,
     double minimum_clearance_m = kMinimumClearanceM,
     int initial_missing = 0,
-    std::string initial_latched_reason = {});
+    std::string initial_latched_reason = {},
+    int jaw_presence_min_beams = 0);
 
   GateVerdict step(const GateInputs & inputs);
 
@@ -147,6 +161,7 @@ public:
   const std::string & latched_reason() const {return latched_reason_;}
   bool latched() const {return !latched_reason_.empty();}
   int consecutive_missing() const {return missing_;}
+  int jaw_presence_min_beams() const {return jaw_presence_min_beams_;}
   const CutConfig & config() const {return config_;}
 
 private:
@@ -154,6 +169,7 @@ private:
   double minimum_clearance_m_;
   int missing_;
   std::string latched_reason_;
+  int jaw_presence_min_beams_;
 };
 
 }  // namespace pruning_sil_cpp

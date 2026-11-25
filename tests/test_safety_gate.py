@@ -10,6 +10,8 @@ import pytest
 
 from isaaclab_pruning.sim.vision_demo_controller import DEMO_MOUTH_OFFSET_TOOL_M, demo_cut_config
 from isaaclab_pruning.task.safety_gate import (
+    JAW_EMPTY_DURING_CLOSURE,
+    JAW_PRESENCE_MISSING,
     MINIMUM_CLEARANCE_M,
     GateCycle,
     SafetyGateReference,
@@ -39,7 +41,8 @@ def observation(**changes):
 
 
 def cycle(ranges=0.3, **changes):
-    kwargs = {k: changes.pop(k) for k in ("prior_cut_phase", "prior_detached", "operator_hold") if k in changes}
+    names = ("prior_cut_phase", "prior_detached", "operator_hold", "jaw_beams_blocked")
+    kwargs = {k: changes.pop(k) for k in names if k in changes}
     grid = np.full(128, ranges, dtype=float)
     return GateCycle(tof_ranges=grid, tof_valid=np.isfinite(grid), observation=observation(**changes), **kwargs)
 
@@ -127,3 +130,69 @@ def test_parity_fixture_is_present_and_has_holds():
     expects = [line.split() for line in fixture if line.startswith("expect ")]
     assert len(expects) >= 50
     assert {line[2] for line in expects if line[1] == "0"} >= {"tof_minimum_clearance", "vision_invalid"}
+
+
+# ---- jaw presence: an input the controller does not produce -------------------------------------------------
+
+
+def test_jaw_presence_is_off_by_default_and_then_changes_nothing():
+    plain, ignoring = SafetyGateReference(demo_cut_config(TARGET)), SafetyGateReference(demo_cut_config(TARGET))
+    for blocked in (None, 0, 3):
+        left = plain.step(cycle(prior_cut_phase="closing"))
+        right = ignoring.step(cycle(prior_cut_phase="closing", jaw_beams_blocked=blocked))
+        assert left == right and left.passed and left.closure_authorized and left.jaw_presence_ok is None
+
+
+def test_closure_is_authorized_only_with_enough_blocked_beams():
+    gate = SafetyGateReference(demo_cut_config(TARGET), jaw_presence_min_beams=2)
+    empty = gate.step(cycle(jaw_beams_blocked=0))
+    # A confident, in-tolerance target with nothing between the jaws: no hold while approaching, and no closure.
+    assert empty.passed and empty.certificate.ready_to_close and not empty.closure_authorized
+    assert empty.jaw_presence_ok is False
+    assert not gate.step(cycle(jaw_beams_blocked=1)).closure_authorized
+    full = gate.step(cycle(jaw_beams_blocked=2))
+    assert full.passed and full.closure_authorized and full.jaw_presence_ok is True
+
+
+def test_closing_on_an_empty_jaw_stops_and_latches():
+    gate = SafetyGateReference(demo_cut_config(TARGET), jaw_presence_min_beams=1)
+    assert gate.step(cycle(prior_cut_phase="closing", jaw_beams_blocked=3)).passed
+    verdict = gate.step(cycle(prior_cut_phase="closing", jaw_beams_blocked=0))
+    assert (verdict.passed, verdict.reason, verdict.closure_authorized) == (False, JAW_EMPTY_DURING_CLOSURE, False)
+    later = gate.step(cycle(prior_cut_phase="closing", jaw_beams_blocked=3))
+    assert not later.passed and later.latched_reason == JAW_EMPTY_DURING_CLOSURE
+
+
+def test_a_required_reading_that_is_absent_holds():
+    for blocked in (None, -1):
+        gate = SafetyGateReference(demo_cut_config(TARGET), jaw_presence_min_beams=1)
+        verdict = gate.step(cycle(jaw_beams_blocked=blocked))
+        assert (verdict.passed, verdict.reason) == (False, JAW_PRESENCE_MISSING)
+
+
+def test_jaw_presence_keeps_the_existing_precedence():
+    config = demo_cut_config(TARGET)
+    # The checks that came first still come first.
+    gate = SafetyGateReference(config, jaw_presence_min_beams=1)
+    assert gate.step(cycle(vision_valid=False, jaw_beams_blocked=None)).reason == "vision_invalid"
+    gate = SafetyGateReference(config, jaw_presence_min_beams=1)
+    lost = gate.step(cycle(prior_cut_phase="closing", mouth_position_w=(0.27, 0.63, 0.81), jaw_beams_blocked=0))
+    assert lost.reason == "gate_lost_during_closure"
+    # After detachment the piece has left the mouth, so an empty jaw is expected and only contact stops.
+    gate = SafetyGateReference(config, jaw_presence_min_beams=1)
+    released = gate.step(cycle(prior_cut_phase="released", prior_detached=True, jaw_beams_blocked=0))
+    assert released.passed and released.closure_authorized
+    gate = SafetyGateReference(config, jaw_presence_min_beams=1)
+    assert gate.step(cycle(prior_detached=True, jaw_beams_blocked=None)).passed
+
+
+def test_jaw_presence_rejects_a_bad_threshold():
+    for bad in (-1, 1.5, True):
+        with pytest.raises(ValueError):
+            SafetyGateReference(demo_cut_config(TARGET), jaw_presence_min_beams=bad)
+
+
+def test_the_cpp_gate_names_the_same_jaw_presence_reasons():
+    header = (ROOT / "ros2/pruning_sil_cpp/include/pruning_sil_cpp/safety_gates.hpp").read_text()
+    for reason in (JAW_PRESENCE_MISSING, JAW_EMPTY_DURING_CLOSURE):
+        assert f'"{reason}"' in header

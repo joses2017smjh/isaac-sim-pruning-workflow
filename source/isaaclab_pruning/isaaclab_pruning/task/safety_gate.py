@@ -11,6 +11,16 @@ The reference covers only the stops these two checks cause. The cutter's own
 temporal stops (instability or a reused frame during closure, timestamp
 regression, closure-hold source checks) stay in the Python controller; the gate
 never turns a controller hold into motion, and it does not need to repeat them.
+
+Jaw presence (optional, off by default). Everything above takes the target's
+position from the controller it gates, so a tracker that is confidently wrong
+passes. ``jaw_presence_min_beams`` adds one input the controller does not
+produce: how many beams of a grid across the jaw gap are blocked
+(``sensors.jaw_beam_grid``). With it on, closure is authorized only while at
+least that many beams are blocked, and a closure that continues with fewer
+stops. The rule lives here and not in ``evaluate_cut_gate``, which stays a
+mirror of the controller's own check. With it off, every verdict is the same as
+before the rule existed.
 """
 
 from __future__ import annotations
@@ -28,6 +38,11 @@ MISSING_FRAMES_LIMIT = 4
 TOF_REASONS = ("tof_minimum_clearance", "both_tof_missing_4_frames")
 OPERATOR_HOLD = "operator_hold"
 GATE_LOST_DURING_CLOSURE = "gate_lost_during_closure"
+#: The jaw-presence channel is required and this cycle has no usable reading.
+JAW_PRESENCE_MISSING = "jaw_presence_missing"
+#: The cutter is closing and fewer beams than required are blocked.
+JAW_EMPTY_DURING_CLOSURE = "jaw_empty_during_closure"
+JAW_PRESENCE_REASONS = (JAW_PRESENCE_MISSING, JAW_EMPTY_DURING_CLOSURE)
 
 
 def sensor_guard(ranges, valid, consecutive_missing, *, minimum_clearance_m=MINIMUM_CLEARANCE_M):
@@ -60,6 +75,8 @@ class GateCycle:
     prior_cut_phase: str = "approach"
     prior_detached: bool = False
     operator_hold: bool = False
+    #: Blocked beams of the jaw-gap grid in this cycle; None when there is no reading.
+    jaw_beams_blocked: int | None = None
 
 
 @dataclass(frozen=True)
@@ -72,14 +89,28 @@ class GateVerdict:
     tof_min_range_m: float | None
     certificate: CutCertificate
     closure_authorized: bool
+    #: None when the jaw-presence channel is off; otherwise whether enough beams were blocked.
+    jaw_presence_ok: bool | None = None
 
 
 class SafetyGateReference:
     """Python reference for the gate call. Latches the first stop, as the recorder does."""
 
-    def __init__(self, config: CutConfig, *, minimum_clearance_m: float = MINIMUM_CLEARANCE_M):
+    def __init__(
+        self,
+        config: CutConfig,
+        *,
+        minimum_clearance_m: float = MINIMUM_CLEARANCE_M,
+        jaw_presence_min_beams: int = 0,
+    ):
+        if isinstance(jaw_presence_min_beams, bool) or not isinstance(jaw_presence_min_beams, int):
+            raise ValueError("jaw_presence_min_beams must be an integer")
+        if jaw_presence_min_beams < 0:
+            raise ValueError("jaw_presence_min_beams must be non-negative")
         self.config = config
         self.minimum_clearance_m = float(minimum_clearance_m)
+        #: 0 switches the jaw-presence channel off.
+        self.jaw_presence_min_beams = jaw_presence_min_beams
         self.missing = 0
         self.latched_reason: str | None = None
 
@@ -90,6 +121,10 @@ class SafetyGateReference:
         ranges = np.asarray(cycle.tof_ranges, dtype=float)
         usable = ranges[np.asarray(cycle.tof_valid, dtype=bool) & np.isfinite(ranges) & (ranges > 0.0)]
         certificate = evaluate_cut_gate(cycle.observation, self.config)
+        required = self.jaw_presence_min_beams > 0
+        blocked = cycle.jaw_beams_blocked
+        reading = blocked is not None and blocked >= 0
+        present = (reading and blocked >= self.jaw_presence_min_beams) if required else None
 
         # Precedence follows the recorder: the operator, then ToF (checked before the
         # observation), then the cut gate inside SimulatedCutController.update.
@@ -104,8 +139,12 @@ class SafetyGateReference:
                 reason = "hazard_contact"
         elif not certificate.safe_to_approach:
             reason = certificate.reasons[0]
+        elif required and not reading:
+            reason = JAW_PRESENCE_MISSING
         elif cycle.prior_cut_phase == "closing" and not certificate.ready_to_close:
             reason = GATE_LOST_DURING_CLOSURE
+        elif cycle.prior_cut_phase == "closing" and required and not present:
+            reason = JAW_EMPTY_DURING_CLOSURE
         if reason is not None and self.latched_reason is None:
             self.latched_reason = reason
         passed = self.latched_reason is None
@@ -117,5 +156,7 @@ class SafetyGateReference:
             tof_missing_frames=self.missing,
             tof_min_range_m=float(usable.min()) if usable.size else None,
             certificate=certificate,
-            closure_authorized=passed and (cycle.prior_detached or certificate.ready_to_close),
+            closure_authorized=passed
+            and (cycle.prior_detached or (certificate.ready_to_close and (not required or bool(present)))),
+            jaw_presence_ok=present,
         )

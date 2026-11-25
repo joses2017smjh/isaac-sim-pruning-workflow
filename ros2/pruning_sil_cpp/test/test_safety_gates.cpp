@@ -14,7 +14,9 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -27,6 +29,7 @@ using pruning_sil_cpp::CutConfig;
 using pruning_sil_cpp::CutObservation;
 using pruning_sil_cpp::GateInputs;
 using pruning_sil_cpp::SafetyGate;
+using pruning_sil_cpp::kMinimumClearanceM;
 
 constexpr double kNan = std::numeric_limits<double>::quiet_NaN();
 
@@ -179,6 +182,101 @@ TEST(SafetyGate, LosingReadinessDuringClosureStops)
   const auto verdict = gate.step(inputs);
   EXPECT_EQ(verdict.reason, "gate_lost_during_closure");
   EXPECT_FALSE(verdict.closure_authorized);
+}
+
+TEST(SafetyGate, JawPresenceIsOffByDefault)
+{
+  SafetyGate plain(demo_config());
+  SafetyGate ignoring(demo_config());
+  auto inputs = clear_inputs();
+  inputs.prior_cut_phase = "closing";
+  const auto left = plain.step(inputs);
+  inputs.jaw_beams_blocked = 0;  // an empty jaw is ignored while the channel is off
+  const auto right = ignoring.step(inputs);
+  EXPECT_TRUE(left.passed && right.passed);
+  EXPECT_TRUE(left.closure_authorized && right.closure_authorized);
+  EXPECT_FALSE(right.jaw_presence_ok.has_value());
+  EXPECT_EQ(plain.jaw_presence_min_beams(), 0);
+}
+
+TEST(SafetyGate, ClosureNeedsEnoughBlockedBeams)
+{
+  SafetyGate gate(demo_config(), kMinimumClearanceM, 0, {}, 2);
+  auto inputs = clear_inputs();
+  inputs.jaw_beams_blocked = 0;
+  auto verdict = gate.step(inputs);
+  // A confident, in-tolerance target with nothing between the jaws: no hold on approach, no closure.
+  EXPECT_TRUE(verdict.passed);
+  EXPECT_TRUE(verdict.certificate.ready_to_close);
+  EXPECT_FALSE(verdict.closure_authorized);
+  ASSERT_TRUE(verdict.jaw_presence_ok.has_value());
+  EXPECT_FALSE(*verdict.jaw_presence_ok);
+  inputs.jaw_beams_blocked = 1;
+  EXPECT_FALSE(gate.step(inputs).closure_authorized);
+  inputs.jaw_beams_blocked = 2;
+  verdict = gate.step(inputs);
+  EXPECT_TRUE(verdict.passed && verdict.closure_authorized && *verdict.jaw_presence_ok);
+}
+
+TEST(SafetyGate, ClosingOnAnEmptyJawStopsAndLatches)
+{
+  SafetyGate gate(demo_config(), kMinimumClearanceM, 0, {}, 1);
+  auto inputs = clear_inputs();
+  inputs.prior_cut_phase = "closing";
+  inputs.jaw_beams_blocked = 3;
+  EXPECT_TRUE(gate.step(inputs).passed);
+  inputs.jaw_beams_blocked = 0;
+  auto verdict = gate.step(inputs);
+  EXPECT_FALSE(verdict.passed);
+  EXPECT_EQ(verdict.reason, "jaw_empty_during_closure");
+  EXPECT_FALSE(verdict.closure_authorized);
+  inputs.jaw_beams_blocked = 3;
+  verdict = gate.step(inputs);
+  EXPECT_FALSE(verdict.passed) << "a hold must latch";
+  EXPECT_EQ(verdict.latched_reason, "jaw_empty_during_closure");
+}
+
+TEST(SafetyGate, ARequiredJawReadingThatIsAbsentHolds)
+{
+  for (const std::optional<int> blocked : {std::optional<int>{}, std::optional<int>{-1}}) {
+    SafetyGate gate(demo_config(), kMinimumClearanceM, 0, {}, 1);
+    auto inputs = clear_inputs();
+    inputs.jaw_beams_blocked = blocked;
+    const auto verdict = gate.step(inputs);
+    EXPECT_FALSE(verdict.passed);
+    EXPECT_EQ(verdict.reason, "jaw_presence_missing");
+  }
+}
+
+TEST(SafetyGate, JawPresenceKeepsTheExistingPrecedence)
+{
+  {
+    SafetyGate gate(demo_config(), kMinimumClearanceM, 0, {}, 1);
+    auto inputs = clear_inputs();
+    inputs.observation.vision_valid = false;
+    EXPECT_EQ(gate.step(inputs).reason, "vision_invalid");
+  }
+  {
+    SafetyGate gate(demo_config(), kMinimumClearanceM, 0, {}, 1);
+    auto inputs = clear_inputs();
+    inputs.prior_cut_phase = "closing";
+    inputs.observation.mouth_position_w = {0.27, 0.63, 0.81};
+    inputs.jaw_beams_blocked = 0;
+    EXPECT_EQ(gate.step(inputs).reason, "gate_lost_during_closure");
+  }
+  {
+    // After detachment the piece has left the mouth: an empty jaw is expected, and only contact stops.
+    SafetyGate gate(demo_config(), kMinimumClearanceM, 0, {}, 1);
+    auto inputs = clear_inputs();
+    inputs.prior_cut_phase = "released";
+    inputs.prior_detached = true;
+    inputs.jaw_beams_blocked = 0;
+    const auto verdict = gate.step(inputs);
+    EXPECT_TRUE(verdict.passed && verdict.closure_authorized);
+    inputs.jaw_beams_blocked.reset();
+    EXPECT_TRUE(gate.step(inputs).passed);
+  }
+  EXPECT_THROW(SafetyGate(demo_config(), kMinimumClearanceM, 0, {}, -1), std::invalid_argument);
 }
 
 TEST(SafetyGate, OperatorHoldWinsAndLatches)

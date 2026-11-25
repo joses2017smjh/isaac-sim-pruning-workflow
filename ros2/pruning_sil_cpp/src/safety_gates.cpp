@@ -234,12 +234,16 @@ std::pair<Vec3, Vec3> tool_mouth_geometry(
 
 SafetyGate::SafetyGate(
   CutConfig config, double minimum_clearance_m, int initial_missing,
-  std::string initial_latched_reason)
+  std::string initial_latched_reason, int jaw_presence_min_beams)
 : config_(std::move(config)),
   minimum_clearance_m_(minimum_clearance_m),
   missing_(initial_missing),
-  latched_reason_(std::move(initial_latched_reason))
+  latched_reason_(std::move(initial_latched_reason)),
+  jaw_presence_min_beams_(jaw_presence_min_beams)
 {
+  if (jaw_presence_min_beams_ < 0) {
+    throw std::invalid_argument("jaw_presence_min_beams must be non-negative");
+  }
   config_.validate();
   if (!std::isfinite(minimum_clearance_m_) || minimum_clearance_m_ <= 0.0) {
     throw std::invalid_argument("minimum_clearance_m must be finite and positive");
@@ -265,6 +269,12 @@ GateVerdict SafetyGate::step(const GateInputs & inputs)
   verdict.tof = sensor_guard(inputs.tof_ranges, inputs.tof_valid, missing_, minimum_clearance_m_);
   missing_ = verdict.tof.consecutive_missing;
   verdict.certificate = evaluate_cut_gate(inputs.observation, config_);
+  const bool required = jaw_presence_min_beams_ > 0;
+  const bool reading = inputs.jaw_beams_blocked && *inputs.jaw_beams_blocked >= 0;
+  const bool present = reading && *inputs.jaw_beams_blocked >= jaw_presence_min_beams_;
+  if (required) {
+    verdict.jaw_presence_ok = present;
+  }
 
   std::string reason;
   if (inputs.operator_hold) {
@@ -278,8 +288,12 @@ GateVerdict SafetyGate::step(const GateInputs & inputs)
     }
   } else if (!verdict.certificate.safe_to_approach) {
     reason = verdict.certificate.reasons.front();
+  } else if (required && !reading) {
+    reason = kJawPresenceMissing;
   } else if (inputs.prior_cut_phase == "closing" && !verdict.certificate.ready_to_close) {
     reason = kGateLostDuringClosure;
+  } else if (inputs.prior_cut_phase == "closing" && required && !present) {
+    reason = kJawEmptyDuringClosure;
   }
   if (!reason.empty()) {
     latch(reason);
@@ -289,8 +303,8 @@ GateVerdict SafetyGate::step(const GateInputs & inputs)
   if (!verdict.passed) {
     verdict.reason = reason.empty() ? latched_reason_ : reason;
   }
-  verdict.closure_authorized =
-    verdict.passed && (inputs.prior_detached || verdict.certificate.ready_to_close);
+  verdict.closure_authorized = verdict.passed &&
+    (inputs.prior_detached || (verdict.certificate.ready_to_close && (!required || present)));
   return verdict;
 }
 

@@ -9,6 +9,7 @@ find_package(std_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ControllerProposal.msg"
+  "msg/JawPresence.msg"
   "msg/OperatorHold.msg"
   "msg/SafetyDecision.msg"
   "msg/TargetEstimate.msg"

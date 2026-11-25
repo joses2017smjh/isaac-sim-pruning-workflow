@@ -6,6 +6,8 @@
 //   /pruning/contact/wrench                geometry_msgs/WrenchStamped, largest arm contact force
 //   /pruning/perception/target             pruning_sil_msgs/TargetEstimate
 //   /pruning/proposed/proposal             pruning_sil_msgs/ControllerProposal
+//   /pruning/jaw/presence                  pruning_sil_msgs/JawPresence, only when the parameter
+//                                          jaw_presence_min_beams is above 0 (off by default)
 // runs the two checks (SafetyGate: ToF clearance, then the cut check), and publishes
 //   /pruning/gated/command_pose            the proposal if it passes, else the measured pose
 //   /pruning/gated/jaw                     sensor_msgs/JointState, jaw closure in [0, 1]
@@ -35,6 +37,7 @@
 #include "pruning_sil_cpp/safety_gates.hpp"
 #include "pruning_sil_cpp/tof_deprojection.hpp"
 #include "pruning_sil_msgs/msg/controller_proposal.hpp"
+#include "pruning_sil_msgs/msg/jaw_presence.hpp"
 #include "pruning_sil_msgs/msg/operator_hold.hpp"
 #include "pruning_sil_msgs/msg/safety_decision.hpp"
 #include "pruning_sil_msgs/msg/target_estimate.hpp"
@@ -49,6 +52,7 @@ namespace pruning_sil_cpp
 using geometry_msgs::msg::PoseStamped;
 using geometry_msgs::msg::WrenchStamped;
 using pruning_sil_msgs::msg::ControllerProposal;
+using pruning_sil_msgs::msg::JawPresence;
 using pruning_sil_msgs::msg::OperatorHold;
 using pruning_sil_msgs::msg::SafetyDecision;
 using pruning_sil_msgs::msg::TargetEstimate;
@@ -175,7 +179,14 @@ public:
     if (!(input_timeout_s_ > 0.0) || !std::isfinite(input_timeout_s_)) {
       throw std::invalid_argument("input_timeout_s must be finite and positive");
     }
-    gate_ = std::make_unique<SafetyGate>(config, clearance, initial_missing);
+    // Jaw presence: 0 (the default) leaves the channel off and the topic unsubscribed.
+    jaw_min_beams_ = static_cast<int>(declare_parameter<int64_t>("jaw_presence_min_beams", 0));
+    jaw_frame_ = declare_parameter<std::string>("jaw_presence_frame", "mock_pruner__tool0");
+    if (jaw_min_beams_ < 0) {
+      throw std::invalid_argument("jaw_presence_min_beams must be non-negative");
+    }
+    gate_ = std::make_unique<SafetyGate>(
+      config, clearance, initial_missing, std::string(), jaw_min_beams_);
 
     // Commands and decisions must not be dropped, so every gate input is reliable;
     // a reliable publisher also serves the best-effort RViz and servo subscribers.
@@ -206,6 +217,13 @@ public:
       [this](ControllerProposal::ConstSharedPtr m) {
         store(stamp_ns(m->header.stamp)).proposal = m; process();
       });
+    if (jaw_min_beams_ > 0) {
+      jaw_subscription_ = create_subscription<JawPresence>(
+        "/pruning/jaw/presence", reliable,
+        [this](JawPresence::ConstSharedPtr m) {
+          store(stamp_ns(m->header.stamp)).jaw = m; process();
+        });
+    }
     hold_subscription_ = create_subscription<OperatorHold>(
       "/pruning/operator/hold", latched, [this](OperatorHold::ConstSharedPtr m) {on_hold(*m);});
 
@@ -237,12 +255,15 @@ private:
     WrenchStamped::ConstSharedPtr contact;
     TargetEstimate::ConstSharedPtr target;
     ControllerProposal::ConstSharedPtr proposal;
+    JawPresence::ConstSharedPtr jaw;
+    /// Set when the jaw-presence channel is on; the cycle then waits for a reading too.
+    bool need_jaw{false};
     rclcpp::Time first_seen;
     rclcpp::Time last_seen;
 
     bool complete() const
     {
-      return tof[0] && tof[1] && pose && contact && target && proposal;
+      return tof[0] && tof[1] && pose && contact && target && proposal && (!need_jaw || jaw);
     }
 
     std::string missing() const
@@ -252,7 +273,8 @@ private:
       if (!tof[0]) {return "tof_left";}
       if (!tof[1]) {return "tof_right";}
       if (!contact) {return "contact";}
-      return "target";
+      if (!target) {return "target";}
+      return "jaw_presence";
     }
   };
 
@@ -268,6 +290,7 @@ private:
     auto [it, inserted] = pending_.try_emplace(stamp);
     if (inserted) {
       it->second.first_seen = now;
+      it->second.need_jaw = jaw_min_beams_ > 0;
     }
     it->second.last_seen = now;
     return it->second;
@@ -328,6 +351,7 @@ private:
   void decide_fault(int64_t stamp, const Pending & cycle, const std::string & reason)
   {
     gate_->latch(reason);
+    last_jaw_blocked_ = -1;
     SafetyDecision decision;
     decision.header.stamp = rclcpp::Time(stamp);
     decision.header.frame_id = world_frame_;
@@ -376,6 +400,18 @@ private:
     if (proposal.has_pose && proposal.header.frame_id != world_frame_) {
       return decide_fault(stamp, cycle, "proposal_frame_mismatch");
     }
+    std::optional<int> jaw_blocked;
+    if (jaw_min_beams_ > 0) {
+      const auto & reading = *cycle.jaw;
+      if (reading.header.frame_id != jaw_frame_ || reading.blocked.empty() ||
+        reading.blocked.size() != reading.beams ||
+        reading.blocked.size() < static_cast<std::size_t>(jaw_min_beams_))
+      {
+        return decide_fault(stamp, cycle, "invalid_jaw_presence");
+      }
+      jaw_blocked = static_cast<int>(std::count(reading.blocked.begin(), reading.blocked.end(), true));
+    }
+    last_jaw_blocked_ = jaw_blocked.value_or(-1);
 
     GateInputs inputs;
     inputs.tof_ranges = ranges;
@@ -407,6 +443,7 @@ private:
     inputs.prior_cut_phase = prior_phase_;
     inputs.prior_detached = prior_detached_;
     inputs.operator_hold = operator_hold_;
+    inputs.jaw_beams_blocked = jaw_blocked;
 
     auto verdict = gate_->step(inputs);
     last_good_pose_ = pose_message;
@@ -542,6 +579,8 @@ private:
         << ",\"operator_hold\":" << (d.operator_hold ? "true" : "false")
         << ",\"closure_authorized\":" << (d.closure_authorized ? "true" : "false")
         << ",\"gated_jaw\":" << json_number(gated_closure_)
+        << ",\"jaw_presence_min_beams\":" << jaw_min_beams_
+        << ",\"jaw_beams_blocked\":" << last_jaw_blocked_
         << ",\"evaluation_latency_s\":" << json_number(d.evaluation_latency_s)
         << ",\"operator_hold_stamp_ns\":" << operator_hold_stamp_ns_
         << ",\"publish_wall_ns\":" << wall << "}";
@@ -562,6 +601,10 @@ private:
   std::string world_frame_;
   std::array<std::string, 2> tof_frames_;
   double gated_closure_{0.0};
+  int jaw_min_beams_{0};
+  std::string jaw_frame_;
+  /// Blocked beams in the last decided cycle; -1 when the channel is off or the reading was unusable.
+  int last_jaw_blocked_{-1};
 
   std::map<int64_t, Pending> pending_;
   Pending scratch_;
@@ -577,6 +620,7 @@ private:
   rclcpp::Subscription<WrenchStamped>::SharedPtr contact_subscription_;
   rclcpp::Subscription<TargetEstimate>::SharedPtr target_subscription_;
   rclcpp::Subscription<ControllerProposal>::SharedPtr proposal_subscription_;
+  rclcpp::Subscription<JawPresence>::SharedPtr jaw_subscription_;
   rclcpp::Subscription<OperatorHold>::SharedPtr hold_subscription_;
   rclcpp::Publisher<SafetyDecision>::SharedPtr decision_publisher_;
   rclcpp::Publisher<PoseStamped>::SharedPtr command_publisher_;
