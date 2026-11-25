@@ -274,9 +274,17 @@ recorded piece pose did not move
 ([result](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026)).
 That drift pushed the mouth distance past 8 mm and the cut stopped; had it
 stayed inside the tolerance, nothing in the gate could have told. The next step
-is an input the controller does not produce, such as requiring the ToF zones
-nearest the mouth to see an object at the predicted range before the jaw may
-close.
+is an input the controller does not produce.
+
+**Correction, November 25.** The November 22 version of this paragraph proposed
+the ToF zones nearest the mouth as that input. They cannot be: both sensors sit
+144 mm along the pruner's axis and look forward along it
+(`sensors/tof_raycaster.py`, `TOF_SITE_OFFSETS_M`), while the jaw mouth is at
+70 mm (`DEMO_MOUTH_OFFSET_TOOL_M`), so the mouth is behind them and never in
+view. In the November 5 runs the nearest return at closure was 81 mm ahead of
+the sensors and stayed there through the release (run 0, cycles 68–79). An
+independent check of the mouth needs a sensor that sees it, such as a short beam
+across the jaw gap, or a cross-check against the raw depth image.
 
 ## Running it
 
