@@ -50,6 +50,18 @@ def test_beam_codes_name_what_each_beam_hits_first(cast):
     assert cast.blocked(codes) and cast.on_target(target) and not cast.blocked(".........")
 
 
+def test_ranges_say_where_along_the_gap_the_obstruction_is(cast):
+    scene = _scene(cast)
+    gap = cast.jsm.JAW_OPEN_GAP_M
+    ranges = cast.read_ranges(_rig(cast), gap, scene)
+    assert len(ranges) == 9 and ranges[0] == [-1.0, -1.0]
+    # The target is a sheet in the plane x = 0: every tip-row beam meets it in the middle of the 32 mm gap.
+    assert ranges[6] == ranges[7] == ranges[8] == [16.0, 16.0]
+    # The twig sits at x = +4 mm: 20 mm from the first jaw face and 12 mm from the second.
+    assert ranges[2] == [20.0, 12.0]
+    assert all(pair == [-1.0, -1.0] for pair in cast.read_ranges(_rig(cast).shifted([0, 0, -0.05]), gap, scene))
+
+
 def test_the_ground_is_a_code_of_its_own_and_sets_the_beneath_flags(cast):
     sheet = _quad([-1, -1, 0.0], [1, -1, 0.14], [1, 1, 0.14], [-1, 1, 0.0])  # crosses the gap at the mouth height
     scene = _scene(cast, ground=sheet)
@@ -92,6 +104,8 @@ def test_a_capture_is_cast_cycle_by_cycle_and_tallied(cast):
     assert reading["beams"][0] == "........." and reading["target_beams"][1] == "000000111"
     assert reading["gap_mm"] == [32.0, 32.0, 32.0, 21.0]
     assert len(reading["displaced_at_first_ready"]) == 3 * 2 * len(cast.study.OFFSETS_M)
+    assert reading["ranges"][1][7] == [16.0, 16.0] and reading["back_ranges"][1][7] == [-1.0, -1.0]
+    assert len(reading["displaced_at_first_ready"][0]["ranges"]) == 9
     assert reading["pose_digest"][1] == cast.pose_digest(IDENTITY) != reading["pose_digest"][0]
     row = cast.summarise_capture("demo", records, reading)
     assert row["first_closing_index"] == 2 and not row["tool_beneath_the_ground"]

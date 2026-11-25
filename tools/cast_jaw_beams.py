@@ -18,6 +18,10 @@ and, at the first cycle whose certificate was ready to close, the reading at eac
 A capture in which the tool point is beneath the ground at any cycle is not a physical scene. It is listed
 and kept out of every count about the sensor.
 
+Since schema 2 each reading also carries ``ranges``: per beam, how far from each jaw face the first obstruction
+is, in millimetres (-1 when that side sees nothing). ``--split`` limits the cast to one side of
+tools/jaw_reading_split.py, so that a reading can be designed on some captures before the others are cast.
+
 Writes two new files into a new directory outside the repository: ``jaw_beams.jsonl.gz`` (one line per capture,
 the per-cycle readings) and ``jaw_beams_summary.json`` (numbers only).
 """
@@ -43,6 +47,7 @@ for extra in (ROOT / "tools", ROOT / "source/isaaclab_pruning"):
         sys.path.insert(0, str(extra))
 
 import export_gate_parity as egp  # noqa: E402
+import jaw_reading_split  # noqa: E402
 import known_map_planner as kmp  # noqa: E402
 import study_mouth_evidence as study  # noqa: E402
 from gate_replay import pose_digest  # noqa: E402
@@ -50,7 +55,7 @@ from gate_replay import pose_digest  # noqa: E402
 from isaaclab_pruning.perception import jaw_self_mask as jsm  # noqa: E402
 from isaaclab_pruning.sensors import jaw_beam_grid as jbg  # noqa: E402
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 #: How far short of the recorded pose the "jaw stopped before the spur" reading is taken.
 BACKOFF_M = 0.020
 CLEAR, TARGET, WOOD, GROUND = ".", "T", "W", "G"
@@ -89,6 +94,21 @@ def read_beams(rig, gap, scene):
     return "".join(codes), "".join("1" if flag else "0" for flag in jbg.blocked_beams(t_target, gap))
 
 
+def read_ranges(rig, gap, scene):
+    """Per beam ``[near, far]`` in mm: distance from the first jaw face, and from the second, to an obstruction.
+
+    -1 where that side sees nothing within the gap. An obstruction spans ``near`` to ``gap - far`` along the beam."""
+    origins = jbg.beam_origins(rig.p, rig.RJ, gap)
+    axis = rig.RJ[:, 0]
+    forward, _, _ = scene.all.cast(origins, np.repeat(axis[None], len(origins), 0))
+    backward, _, _ = scene.all.cast(origins + gap * axis, np.repeat(-axis[None], len(origins), 0))
+    out = []
+    for near, far in zip(np.asarray(forward, float), np.asarray(backward, float)):
+        pair = [round(1000 * float(t), 1) if np.isfinite(t) and 0.0 <= t < gap else -1.0 for t in (near, far)]
+        out.append(pair)
+    return out
+
+
 def beneath_flags(rig, scene, has_camera):
     relief = study.ground_relief(rig, scene)
     if relief is None:
@@ -105,7 +125,7 @@ def cast_capture(records, frames, report, scene):
     roll, radius = float(b["visual_proxy_roll_rad"]), float(b["target"]["radius_m"])
     back = np.array([0.0, 0.0, -BACKOFF_M])
     out = {key: [] for key in ("index", "stamp_ns", "pose_digest", "gap_mm", "beams", "target_beams")}
-    out.update({key: [] for key in ("back_beams", "back_target_beams", "beneath")})
+    out.update({key: [] for key in ("back_beams", "back_target_beams", "beneath", "ranges", "back_ranges")})
     first_ready, displaced = None, []
     for record, frame in zip(records, frames):
         pose = frame["tool_pose_wxyz"]
@@ -132,6 +152,8 @@ def cast_capture(records, frames, report, scene):
         out["back_beams"].append(back_beams)
         out["back_target_beams"].append(back_target)
         out["beneath"].append(beneath_flags(rig, scene, has_camera))
+        out["ranges"].append(read_ranges(rig, gap, scene))
+        out["back_ranges"].append(read_ranges(rig.shifted(back), gap, scene))
         if first_ready is None and record["python"]["certificate"]["ready_to_close"]:
             first_ready = record["index"]
             for axis, label in enumerate(study.AXES):
@@ -139,13 +161,15 @@ def cast_capture(records, frames, report, scene):
                     for offset in study.OFFSETS_M:
                         vector = np.zeros(3)
                         vector[axis] = sign * offset
-                        codes, flags = read_beams(rig.shifted(vector), gap, scene)
+                        moved = rig.shifted(vector)
+                        codes, flags = read_beams(moved, gap, scene)
                         displaced.append(
                             {
                                 "axis": label,
                                 "offset_mm": round(1000 * sign * offset, 1),
                                 "beams": codes,
                                 "target": flags,
+                                "ranges": read_ranges(moved, gap, scene),
                             }
                         )
     out["first_ready"], out["displaced_at_first_ready"] = first_ready, displaced
@@ -246,6 +270,9 @@ def main(argv=None):
     parser.add_argument("--output", type=Path, required=True, help="New directory outside the repository")
     parser.add_argument("--roots", nargs="+", default=[str(ROOT / "artifacts")])
     parser.add_argument("--only", nargs="*", help="Limit to captures whose path contains one of these strings")
+    parser.add_argument(
+        "--split", choices=("all", *jaw_reading_split.SIDES), default="all", help="One side of the split"
+    )
     args = parser.parse_args(argv)
     output = args.output.expanduser().resolve()
     if output.exists() or ROOT.resolve() in output.parents:
@@ -273,6 +300,9 @@ def main(argv=None):
                 or Path(report["blender_scene"].get("export_dir", "")).name != kmp.EXPORT_DEFAULT.name
             ):
                 skipped["no_orchard_placement"] += 1
+                continue
+            if args.split != "all" and jaw_reading_split.side(label, records[0]["target"]["id"]) != args.split:
+                skipped["other_side_of_the_split"] += 1
                 continue
             document = json.loads((directory / "frames.json").read_text(encoding="utf-8"))
             frames = document["frames"] if isinstance(document, dict) else document
@@ -314,6 +344,7 @@ def main(argv=None):
             "jaw_gap": "the drawn jaw's closure in that frame (visual_jaw_closure_progress)",
             "ground_triangles": int(len(ground[1])),
         },
+        "split": args.split,
         "captures_cast": len(rows),
         "skipped": dict(skipped),
         "scenes_built": len(scenes),
