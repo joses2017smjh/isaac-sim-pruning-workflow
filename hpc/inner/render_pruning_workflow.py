@@ -393,7 +393,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
         import carb
         import omni.replicator.core as rep
         import omni.timeline
-        from pxr import Gf, Sdf, UsdGeom, UsdLux, UsdPhysics, UsdShade
+        from pxr import Gf, Sdf, Usd, UsdGeom, UsdLux, UsdPhysics, UsdShade
 
         from isaaclab.sim import RenderCfg
         from isaaclab.utils.math import matrix_from_quat, subtract_frame_transforms
@@ -450,6 +450,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                     from isaaclab.sensors import MultiMeshRayCasterCfg
 
                     from isaaclab_pruning.sim.blender_demo_scene import spawn_blender_demo_scene
+                    from isaaclab_pruning.sim.tof_targets import tof_ground_requested, tof_ray_targets
 
                     self.blender_scene = spawn_blender_demo_scene(
                         stage,
@@ -466,13 +467,28 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                         tree_count=2,
                     )
                     selected = self.blender_scene.selected_mesh_prim_path
-                    targets = [path for path in self.blender_scene.evidence["collision_mesh_paths"] if path != selected]
-                    targets.append(
+                    # Off by default: the ground relief joins the ToF mesh set only when asked for
+                    # (isaaclab_pruning.sim.tof_targets). Without it the list is what every earlier run used.
+                    ground_paths = []
+                    if tof_ground_requested(os.environ):
+                        ground_root = stage.GetPrimAtPath("/World/Orchard/ground")
+                        ground_paths = [
+                            str(prim.GetPath())
+                            for prim in (Usd.PrimRange(ground_root) if ground_root.IsValid() else ())
+                            if prim.IsA(UsdGeom.Mesh)
+                        ]
+                        if not ground_paths:
+                            raise RuntimeError("PRUNING_TOF_GROUND=1, but the orchard has no ground mesh")
+                        self.blender_scene.evidence["tof_ground_mesh_paths"] = ground_paths
+                    targets = tof_ray_targets(
+                        self.blender_scene.evidence["collision_mesh_paths"],
+                        selected,
                         MultiMeshRayCasterCfg.RaycastTargetCfg(
                             prim_expr=str(self.blender_scene.body.GetPath()),
                             merge_prim_meshes=True,
                             track_mesh_transforms=True,
-                        )
+                        ),
+                        ground_paths,
                     )
                     self.cfg.tof0_cfg.mesh_prim_paths = targets
                     self.cfg.tof1_cfg.mesh_prim_paths = targets
@@ -784,6 +800,7 @@ def main() -> int:  # noqa: C901 - the simulator is imported only after AppLaunc
                             "velocity": as_torch(env.robot.data.joint_vel).detach().cpu().numpy()[0][:6],
                         },
                     }
+
             report["camera_mount_selection"] = {
                 "method": "fixed offset perpendicular to proxy closing axis; looks along jaw opening",
                 "closing_axis_tool": proxy_closing_tool.tolist(),

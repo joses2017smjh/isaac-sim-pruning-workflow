@@ -148,3 +148,70 @@ def test_the_summary_counts_classes_and_targets(audit):
         "agree_with_ground": 4,
     }
     assert summary["kinematics"] == {"captures_checked": 3, "captures_ok": 3, "max_tool_point_error_mm": 0.4}
+
+
+# ---- tools/screen_ground.py: the same test at the home pose, for a spur placed at the target point ----------------
+
+
+@pytest.fixture(scope="module")
+def screen():
+    sys.path.insert(0, str(TOOLS))
+    spec = importlib.util.spec_from_file_location("screen_ground", TOOLS / "screen_ground.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class _HomeKinematics(_Kinematics):
+    def fk(self, joints):
+        return {"ur5e__base_link_inertia": super().fk(joints)["arm"]}
+
+    def tool_pose(self, joints):
+        return np.array([0.3, 0.0, joints[0] + 0.1]), np.eye(3)
+
+
+class _HomeRobot(_Robot):
+    links = ["ur5e__base_link_inertia"]
+    kin = _HomeKinematics()
+
+
+def test_a_low_spur_puts_the_ground_above_the_robot(screen):
+    kmp = screen.kmp
+    # In the export's frame the ground is the plane z = 0. A spur 5 cm above it and one 2 m above it.
+    sheet = _quad([-9, -9, 0.0], [9, -9, 0.0], [9, 9, 0.0], [-9, 9, 0.0])
+    index = kmp.NumpyMeshIndex([sheet])
+    robot, q_home = _HomeRobot(), [0.6]
+    low = {"tree": 0, "first_vertex": 530, "center": [1.0, 2.0, 0.05], "axis": [0.0, 1.0, 0.0]}
+    high = {"tree": 1, "first_vertex": 14944, "center": [1.0, 2.0, 2.0], "axis": [0.0, 1.0, 0.0]}
+    under = screen.screen_spur(index, robot, q_home, low)
+    # Moving the low spur up to the target point (z = 0.815 m) lifts the ground to 0.765 m, above the home tool point.
+    assert under["any_beneath"] and under["base_link_beneath"] and under["tool_point_beneath"]
+    assert under["ground_above_tool_point_mm"] == pytest.approx(1000 * (kmp.TARGET_W[2] - 0.05 - 0.7), abs=0.1)
+    clear = screen.screen_spur(index, robot, q_home, high)
+    assert not clear["any_beneath"] and clear["beneath"] == [] and clear["ground_above_tool_point_mm"] < 0
+    summary = screen.summarise([under, clear])
+    assert summary["all"]["any_part_beneath"] == 1 and summary["tree0"]["first_vertices_beneath"] == [530]
+    assert summary["tree1"] == {
+        "spurs": 1,
+        "any_part_beneath": 0,
+        "base_link_beneath": 0,
+        "tool_point_beneath": 0,
+        "first_vertices_beneath": [],
+    }
+    audit = {
+        "rows": [
+            {"target": "tree0_SPUR_component_530", "class": "tool"},
+            {"target": "tree1_SPUR_component_14944", "class": "above"},
+            {"target": "tree1_SPUR_component_15004", "class": "above"},
+        ]
+    }
+    check = screen.against_audit([under, clear], audit)
+    assert check == {
+        "recorded_targets": 3,
+        "agree": 2,
+        "agree_beneath": 1,
+        "differ": [],
+        "not_in_pool": ["tree1_15004"],
+    }
+    wrong = screen.against_audit([{**under, "any_beneath": False, "beneath": []}, clear], audit)
+    assert wrong["agree"] == 1 and wrong["differ"][0]["target"] == "tree0_530"
