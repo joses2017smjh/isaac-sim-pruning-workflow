@@ -209,3 +209,16 @@ unfinished. So no selection is made. The
 [closure-hold sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md) runs the arm once
 on each of the 28 remaining targets with an executable plan. The visibility
 check is registered there as a prediction.
+
+## Addendum — November 25, 2026: the ground audit
+
+An audit of every recorded capture ([ground audit](GROUND_AUDIT_2026-11-25.md)) found the robot beneath the
+orchard's visual ground relief, base link included, in every recorded run on
+targets 530 and 3721.
+
+The known-map planner used throughout this document casts against the trees
+only. Its finding that exactly 530 and 19444 have a clear re-oriented path, and
+its choice of 3721 among the new targets, were made without the ground. For 530
+and 3721 the planned path is one a real arm could not take. How many of the
+screened spurs put the robot beneath the ground when they are moved to the
+target point has not been measured yet. Nothing above is edited.

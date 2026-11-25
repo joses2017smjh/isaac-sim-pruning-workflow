@@ -357,3 +357,16 @@ field was the unused scene-construction config, now labelled (commit
 same runs with the surrogate jaw set to cast no shadow, against unchanged
 runs. See the roadmap. It needs a small scene option, its own registration and
 a GPU approval.
+
+## Addendum — November 25, 2026: the ground audit
+
+An audit of every recorded capture ([ground audit](GROUND_AUDIT_2026-11-25.md)) found the robot beneath the
+orchard's visual ground relief, base link included, in every frame of five
+captures here: 530 and 590 under the similarity tracker and under the combined
+variant, and target 3493 in the seeded tree1 draw.
+
+P1's supporting observation, that 590 tracks to a ToF stop under the similarity
+model, was made on one of those scenes. It stands as a record of the tracker on
+those recorded frames; it is not evidence about a reachable spur. The seeded
+draw's count does not change, because 3493 already counts as a failure. The
+other captures in these batches have nothing beneath the ground. No verdict above is edited, and this note does not re-explain any recorded stop.

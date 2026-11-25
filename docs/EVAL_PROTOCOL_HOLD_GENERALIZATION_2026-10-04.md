@@ -232,3 +232,16 @@ checks perception on the renderer, not by ray casting:
 - tracking through the re-orientation (a replay or a short render).
 
 That is a new proposal; nothing has been started.
+
+## Addendum — November 25, 2026: the ground audit
+
+An audit of every recorded capture ([ground audit](GROUND_AUDIT_2026-11-25.md)) found the robot beneath the
+orchard's visual ground relief, base link included, in every frame of four
+captures here: the three runs on target 3721 and the control run on 530.
+
+3721's runs stopped at frame 0 and the arm never moved; the October 5 cast had
+already found the ground in front of its seed pixel. What is new is that the
+robot itself was beneath the ground there, and that the same holds for control
+530, which passed. H7 stands as registered. Of its two controls, only 14944 was
+recorded in a scene a real arm could be in. Targets 36196 and 18143 are not
+affected. No verdict above is edited, and this note does not re-explain any recorded stop.

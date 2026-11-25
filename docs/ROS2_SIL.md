@@ -298,8 +298,8 @@ Exploratory: no threshold here is final, and nothing in the gate changed.
 **Two of the eleven runs are not physical scenes.** Both are on target 530. That
 spur lies in the orchard's ground relief, and in both runs the wrist camera, the
 tool point and the jaw mouth are beneath the ground surface: the ground is
-5.9 and 6.6 mm above the mouth and about 161 mm above the camera. Nothing
-in the simulation notices, because the relief is drawn and nothing collides with
+5.9 and 6.6 mm above the mouth and about 161 mm above the camera. The
+simulation does not react to it: the relief is drawn and nothing collides with
 it, and the simulated ToF sensors cast against the trees only. In the other
 nine runs the ground is 350 mm or more below the mouth. The counts below
 are for those nine runs (8 distinct targets, 333 poses); the two 530 runs are
@@ -415,9 +415,10 @@ recorded closure through. One blocked beam says something is in the gap, not
 that it is the target.
 
 The same cast put the ground relief in the mesh set and checked every capture:
-in 28 of 233 the tool is beneath the orchard's visual ground, on six
+in 28 of 233 the tool point is beneath the orchard's visual ground, on six
 targets including 530. Those captures were set aside here and are listed in the
-result.
+result. A fuller [audit](GROUND_AUDIT_2026-11-25.md) followed: it adds the arm's
+links, checks every capture against its own depth images, and counts 29.
 
 ## Running it
 

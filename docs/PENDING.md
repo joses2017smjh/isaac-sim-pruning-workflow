@@ -58,16 +58,12 @@ Finished and published:
   runs of the mouth study the spur's centre was 9.4 to 12.8 mm ahead of the mouth
   centre when the cut became ready. Whether to change the approach so it closes
   on the centre is on the roadmap, not started.
-- **Recorded captures with the tool beneath the ground (audited November 25).**
-  28 of 233 cast captures, on targets 530, 590, 3721, 3433, 3493 and 3673
-  ([audit](EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026)).
-  The ground relief is visual only, and the ToF sensors and the known-map
-  planner cast against the trees. Open, in this order: (1) a dated note on each
-  result that used an affected capture, starting with the October 2 jaw-aware
-  closure and the October 6 sweep, whose control is 530; (2) decide whether the
-  planner and the ToF mesh set should include the ground; (3) only then, whether
-  to rerun a control on a spur that can be reached from above the ground, which
-  needs GPU time. No registered verdict has been edited.
+- **Recorded captures with the robot beneath the ground (audited November 25).**
+  29 of 233 captures, on targets 530, 590, 3721, 3433, 3493, 3673 and 4438
+  ([audit](GROUND_AUDIT_2026-11-25.md)). Each affected result carries a dated
+  note, and no registered verdict has been edited. Open: whether to rerun a
+  control on a spur that can be reached from above the ground, which needs GPU
+  time and has not been approved.
 - **Blind ToF cycles per sensor.** One dead sensor is invisible to the gate
   today (the documented non-stopping fault). Listed with the jaw-presence
   milestone and deferred to its own change.

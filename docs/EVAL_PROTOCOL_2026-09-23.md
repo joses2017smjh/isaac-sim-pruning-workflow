@@ -273,3 +273,18 @@ pre-registered target set after seeing results would defeat the registration.
 A tree1 evaluation needs a new registration: either sample tree1 from the listed
 candidates only, of which seven pass the jaw-fit screen, or first extend the
 export's candidate list through the geometry audit the renderer asks for.
+
+## Addendum — November 25, 2026: the ground audit
+
+An audit of every recorded capture ([ground audit](GROUND_AUDIT_2026-11-25.md)) found the robot beneath the
+orchard's visual ground relief, base link included, in every frame of the
+trials on tree0 targets 530 and 590, in both lights: 4 of the 14 trials that
+recorded frames. The ground is drawn and collides with nothing, and neither the
+ToF sensors nor the controller take it into account, so those trials ran. A real
+arm could not have been where the simulated one was.
+
+The rates above do not change: all four trials already count as failures, and
+the headline stays 0 of 40. What changes is what those four say. They are
+records of the simulated system in a scene that is not physical, not attempts on
+a reachable spur. Nothing is beneath the ground in the other ten trials that
+recorded frames. No verdict above is edited, and this note does not re-explain any recorded stop.

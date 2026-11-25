@@ -320,3 +320,21 @@ check. Getting to closure is the bottleneck: 19 of the 25 initialized targets
 stopped on perception first. The positive control failed once, on tracker
 drift during closure rather than a loss. Jaws are visual only, release is a
 kinematic detach, depth is exact, and the plans are known-map plans.
+
+## Addendum — November 25, 2026: the ground audit
+
+An audit of every recorded capture ([ground audit](GROUND_AUDIT_2026-11-25.md)) found part of the robot beneath
+the orchard's visual ground relief in every frame of four captures here.
+
+- **3433 and 3673:** the whole robot, base link included. Both stopped at
+  frame 0, as S1 predicted.
+- **4438:** the wrist camera and the tool body; the tool point, the mouth and
+  the base link are above the ground. It also stopped at frame 0.
+- **Control 530:** the whole robot, base link included. This is the run S7
+  scores and the one the exploratory reading above describes.
+
+S1 and S7 stand as registered. S7's failed control was recorded in a scene a
+real arm could not be in, so it says nothing about how often the drift it shows
+would occur on a reachable target. The 25 targets that initialized, the six
+closures and the four passes are not affected: nothing is beneath the ground in
+any of those captures, and control 14944 passed in such a scene. No verdict above is edited, and this note does not re-explain any recorded stop.

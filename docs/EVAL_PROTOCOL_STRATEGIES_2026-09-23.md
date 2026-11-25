@@ -200,3 +200,16 @@ and breaking the Stage A pass, other arm configurations 0 of 7, a 34-axis grid
 83.6° of re-orientation. That is a known-map plan, and it is registered as its
 own experiment.
 
+## Addendum — November 25, 2026: the ground audit
+
+An audit of every recorded capture ([ground audit](GROUND_AUDIT_2026-11-25.md)) found the robot beneath the
+orchard's visual ground relief, base link included, in the captures on tree0
+targets 530 and 590: their baseline runs and their runs under all three
+strategies, ten captures in all. In nine of them the tool point is beneath the
+ground in most or all frames; in 530's horizontal-standoff run it is for 30 of
+200 frames, with the camera and the base link beneath throughout.
+
+The tree0 table and the verdicts stand as a record of what the simulated system
+did. Its rows for 530 and 590, and P1's reading of 530, describe scenes a real
+arm could not be in. The other five tree0 targets and the tree1 population are
+not affected: nothing is beneath the ground in any of their captures. No verdict above is edited, and this note does not re-explain any recorded stop.

@@ -1,3 +1,13 @@
+USER SAID "do all 4 recommended steps" — 2026-11-25 afternoon (read this first)
+  The four: (1) dated notes on affected results, (2) ground in planner + ToF mesh sets as a default-off option,
+  (3) a next jaw reading tested offline, registered first, (4) rerun a control on a reachable spur (GPU: needs an
+  exact budget approved in a question dialog BEFORE anything is submitted; "do all 4" is not a budget).
+  STEP 1 DONE: tools/audit_ground.py (clean clone 42194b2, CPU 22151498), docs/GROUND_AUDIT_2026-11-25.md,
+  docs/evidence/ground_audit_2026-11-25.json. 29 of 233 captures have part of the robot beneath the ground in every
+  frame (base link in 28): 530 x15, 590 x7, 3721 x3, 3433, 3493, 3673, 4438. 204 have nothing beneath, no arm link
+  included. FK matches recorded tool point to 0.008 mm; depth images confirm every affected capture (median 95% of
+  pixels agree with ground in the mesh set vs 7% without). Dated addenda written on 9 documents; no verdict edited.
+
 P2.1 REPLAY RESULT — 2026-11-25 (read this first)
   Jaw-presence input for the gate, built offline (user chose "beam grid, offline first"; CPU only, no GPU).
   Registered at 72493fb BEFORE any run; clean-clone jobs: cast 22150835, harness off 22150836, harness jaw 22150837,

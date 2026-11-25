@@ -176,3 +176,16 @@ user's approval of a budget.
   are the same two targets and the same two low suns as the events that set
   the thresholds.
 - **Same-depth occluders remain untested.**
+
+## Addendum — November 25, 2026: the ground audit
+
+An audit of every recorded capture ([ground audit](GROUND_AUDIT_2026-11-25.md)) found the robot beneath the
+orchard's visual ground relief in 18 of the 129 regression runs: every run on
+targets 530 and 590 in the register, and the one on 3493. The later offline
+replays that read the same register
+([register](evidence/depth_regression_replay_2026-10-01.json)) include them too.
+
+H4 stands: the replays reproduce what was recorded on those frames. Those 18
+recordings are of scenes a real arm could not be in, and their backgrounds
+include the underside of the ground. The 12 held-out recordings are not
+affected. No verdict above is edited, and this note does not re-explain any recorded stop.

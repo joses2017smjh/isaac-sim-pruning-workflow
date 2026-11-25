@@ -296,3 +296,19 @@ refuted.
   fixed here, before any run that will use them.
 - **Label.** A protocol that uses the amendment says so: *P1 amended October
   2 (0.01 px outline band)*.
+
+## Addendum — November 25, 2026: the ground audit
+
+An audit of every recorded capture ([ground audit](GROUND_AUDIT_2026-11-25.md)) found the robot beneath the
+orchard's visual ground relief, base link included, in every frame of all three
+runs on target 530. Those three runs are the whole population of P4 to P8 and
+the "3 of 3" pass.
+
+The verdicts stand as registered: under this labelled arm the simulated system
+carried 530 through closure to detachment three times. They are not evidence
+that a contact target can be cut from a reachable pose, because 530's pose is
+not reachable. The same arm later passed once each, with nothing beneath the
+ground, on targets 8175, 21386, 28610 and 36786 and on control 14944
+([October 6 sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026)).
+The runs on 19444, 14944 and 15004 in these batches are not affected.
+No verdict above is edited, and this note does not re-explain any recorded stop.

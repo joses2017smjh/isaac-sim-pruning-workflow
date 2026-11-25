@@ -144,3 +144,14 @@ depth).**
 Both stops are the robot's own jaw in its camera's view, not the orchard. A
 fix would be a labelled perception experiment; see the roadmap. It is proposed,
 not registered.
+
+## Addendum — November 25, 2026: the ground audit
+
+An audit of every recorded capture ([ground audit](GROUND_AUDIT_2026-11-25.md)) found the robot beneath the
+orchard's visual ground relief, base link included, in every frame of all three
+runs on target 530. The re-oriented path the planner found for 530 was planned
+against the trees alone, with no ground.
+
+Everything this result says about 530, including Q1's "reaches align in 3 of 3
+with no contact", is a record of the simulated arm following a path a real arm
+could not take. Target 19444's runs have nothing beneath the ground. No verdict above is edited, and this note does not re-explain any recorded stop.
