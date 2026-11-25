@@ -7,7 +7,8 @@ P2.1 REPLAY RESULT — 2026-11-25 (read this first)
   J4 REFUTED: jaw 20 mm short -> 82/87 refused, 5 ACCEPTED (all target 8235; other wood blocks a beam).
   One blocked beam is not evidence of the target. A beam-count threshold does not separate these recordings.
   GROUND AUDIT: tool beneath the visual ground in 28/233 captures: 530 (15), 590 (7), 3721 (3), 3433, 3493, 3673.
-  Includes every 530 run (Oct 2 jaw-hold 3/3, planned-pose r1-r3, sweep control). NO registered verdict edited.
+  Includes all 15 recorded 530 captures (Oct 2 jaw-hold 3/3, planned-pose r1-r3, sweep control). NO registered verdict
+  edited. Only 2 of the 28 (both 530) were confirmed against recorded depth images; the rest rely on the same cast.
   OPEN (docs/PENDING.md): dated notes per affected result; ground in planner/ToF mesh set?; a reading that
   separates target from other wood; simulated sensor + live run need GPU approval (NOT asked). P1.6 stays on roadmap.
   Not done: per-sensor blind ToF count (deferred).

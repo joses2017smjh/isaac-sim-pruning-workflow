@@ -164,7 +164,7 @@ worst displacement was 50 mm along the jaw (64 of 94).
 the orchard's ground relief: target 530 in 15, 590 in 7, 3721 in 3, and 3433,
 3493 and 3673 in one each. In 26 of them it is beneath the ground in every
 cycle, the start pose included; in two captures on 530 it is for part of the
-run (30 and 192 of 200 cycles). 8 of the 28 reach closing, all on 530, and
+run (30 and 192 of 200 cycles). No capture that was left uncast is on 530, so these 15 are every recorded capture on it. The cast was checked against recorded depth images on eleven runs, two of them on 530; the other 26 captures rest on the same cast. 8 of the 28 reach closing, all on 530, and
 4 detach. The batches: `hold-gen-a-r1-20261004`, `hold-gen-a-r2-20261004`, `hold-gen-a-r3-20261004`, `hold-gen-ctl-20261004`, `hold-sweep-20261006`, `hold-sweep-ctl-20261006`, `jaw-hold-a-20261001`, `jaw-hold-b-20261001`, `jaw-hold-c-20261001`, `perc-both-tree0-20260926`, `perc-similarity-tree0-20260926`, `planned-pose-gpu-r1-20260929`, `planned-pose-gpu-r2-20260929`, `planned-pose-gpu-r3-20260929`, `strategy-fine-step-20260923`, `strategy-horizontal-20260923`, `strategy-tool-axis-20260923`, `targets-morning-20260923`, `targets-source-20260923`, `tree1-seeded30-20260926`.
 
 ### What this shows
