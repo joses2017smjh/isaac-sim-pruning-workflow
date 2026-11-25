@@ -26,6 +26,13 @@ can be re-cast offline at recorded poses and at poses displaced from them. This 
 Exploratory: nothing here is a registered result and no threshold is final. Simulator geometry: the jaws are
 not in the ToF or camera mesh sets, depth is exact, and the meshes are the exported orchard, as rendered.
 
+The mesh set. The simulated ToF sensors cast against the trees only, and so does tools/known_map_planner.py's
+export, which skips the orchard's ground relief. The renderer draws that relief, and it is visual only: nothing
+collides with it. The first passes of this study used the trees alone and could not explain the depth image on
+target 530. This version adds the ground relief to every channel and to the depth check, keeps the trees-only
+set for validating the caster against the recorded ToF grids, and reports where the tool is relative to the
+ground surface.
+
 CPU only. Writes one new JSON file outside the repository; numbers only.
 """
 
@@ -85,6 +92,70 @@ OFFSETS_M = (0.005, 0.010, 0.015, 0.020, 0.030, 0.050)
 DEPTH_NEIGHBOURHOOD_PX = 4
 DEPTH_AGREE_M = 0.0005
 DEPTH_AGREE_FRACTION = 0.95
+GROUND = "GROUND"
+UP_W = np.array([0.0, 0.0, 1.0])
+
+_GROUND_HELPER = r"""
+import io, json, sys
+import numpy as np
+from pxr import Usd, UsdGeom
+
+stage = Usd.Stage.Open(sys.argv[1] + "/environment.usdc")
+cache = UsdGeom.XformCache()
+vertices, triangles, offset = [], [], 0
+for prim in stage.Traverse():
+    if not prim.IsA(UsdGeom.Mesh) or "/ground/" not in str(prim.GetPath()):
+        continue
+    mesh = UsdGeom.Mesh(prim)
+    pts = np.asarray(mesh.GetPointsAttr().Get(), dtype=np.float64)
+    counts = np.asarray(mesh.GetFaceVertexCountsAttr().Get())
+    idx = np.asarray(mesh.GetFaceVertexIndicesAttr().Get())
+    M = np.asarray(cache.GetLocalToWorldTransform(prim), dtype=np.float64)
+    vertices.append((np.c_[pts, np.ones(len(pts))] @ M)[:, :3])
+    off = 0
+    for c in counts:
+        face = idx[off:off + c]
+        for k in range(1, c - 1):
+            triangles.append((face[0] + offset, face[k] + offset, face[k + 1] + offset))
+        off += c
+    offset += len(pts)
+buffer = io.BytesIO()
+np.savez(buffer, v=np.concatenate(vertices), t=np.asarray(triangles, dtype=np.int64))
+blob = buffer.getvalue()
+sys.stdout.buffer.write(sys.argv[2].encode() + b"\n" + json.dumps({"npz_bytes": len(blob)}).encode() + b"\n" + blob)
+"""
+
+
+def stream_ground(export_dir=None, isaac_python=None):
+    """The orchard's ground relief from the export (file-local world frame), which the planner's export skips.
+
+    Call after ``kmp.stream_export`` on the same directory: that call verifies environment.usdc against the
+    export manifest."""
+    import io
+    import os
+
+    export_dir = Path(export_dir or kmp.EXPORT_DEFAULT).resolve()
+    marker = "@@MOUTH_STUDY_GROUND@@"
+    env = {k: v for k, v in os.environ.items() if not k.startswith("PYTHON")}
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    done = subprocess.run(
+        [isaac_python or kmp.ISAAC_PYTHON_DEFAULT, "-c", _GROUND_HELPER, str(export_dir), marker],
+        capture_output=True,
+        env=env,
+        timeout=3600,
+    )
+    head = marker.encode() + b"\n"
+    if done.returncode != 0 or head not in done.stdout:
+        raise RuntimeError(
+            f"ground streaming failed ({done.returncode}): {done.stderr.decode(errors='replace')[-600:]}"
+        )
+    line, _, blob = done.stdout[done.stdout.index(head) + len(head) :].partition(b"\n")
+    if len(blob) != json.loads(line)["npz_bytes"]:
+        raise RuntimeError("streamed ground geometry is truncated")
+    with np.load(io.BytesIO(blob), allow_pickle=False) as data:
+        return np.asarray(data["v"], float), np.asarray(data["t"], np.int64)
+
+
 AXES = ("closing", "lateral", "tool")
 TOF_KEYS = (("tof0", "tof_left"), ("tof1", "tof_right"))
 
@@ -127,10 +198,15 @@ class Scene:
         self.target_triangles = int(len(meshes[k][2]))
         self.all = index_cls([(m[1], m[2]) for m in meshes])
         self.target = index_cls([(meshes[k][1], meshes[k][2])])
+        ground = [(m[1], m[2]) for m in meshes if m[0] == GROUND]
+        self.ground = index_cls(ground) if ground else None
 
 
-def build_scene(export, names, report, index_cls=None):
-    """The exported orchard placed as the renderer places it; the target component keeps its own triangles."""
+def build_scene(export, names, report, index_cls=None, ground=None):
+    """The exported orchard placed as the renderer places it; the target component keeps its own triangles.
+
+    ``ground`` is the ground relief's (vertices, triangles) in the export's frame. The renderer gives it the
+    trees' rigid transform (sim/blender_demo_scene.py), so it gets the same one here."""
     b = report["blender_scene"]
     tree = b.get("target_tree_index", 1 if b.get("tree_path", "").endswith("Tree1") else 0)
     t, R = kmp.placement_from_report(report)
@@ -148,7 +224,24 @@ def build_scene(export, names, report, index_cls=None):
             meshes.append(("TARGET", V, F[on_target]))
         else:
             meshes.append((label, V, F))
+    if ground is not None:
+        meshes.append((GROUND, np.asarray(ground[0], float) @ R.T + t, np.asarray(ground[1], np.int64)))
     return Scene(meshes, index_cls)
+
+
+def ground_relief(rig, scene):
+    """Where the camera, the jaw mouth and the tool point are relative to the ground surface, by vertical casts."""
+    if scene.ground is None:
+        return None
+    out = {}
+    for name, point in (("camera", rig.cam_p), ("mouth", rig.mouth), ("tool_point", rig.p)):
+        reading = {}
+        for side, direction in (("above", UP_W), ("below", -UP_W)):
+            t, _, _ = scene.ground.cast(np.asarray(point, float)[None], direction[None])
+            reading[f"ground_{side}_mm"] = round(1000 * float(t[0]), 1) if np.isfinite(t[0]) else None
+        reading["beneath_the_surface"] = reading["ground_above_mm"] is not None and reading["ground_below_mm"] is None
+        out[name] = reading
+    return out
 
 
 class Rig:
@@ -333,10 +426,12 @@ def validate_depth(run_dir, frame_index, rig, scene):
     }
 
 
-def study_run(name, export, names, runs_root=RUNS_ROOT, index_cls=None):
+def study_run(name, export, names, runs_root=RUNS_ROOT, index_cls=None, ground=None):
     run_dir = Path(runs_root) / name
     report, frames = kmp.load_run(run_dir)
-    scene = build_scene(export, names, report, index_cls)
+    # The simulated ToF sensors cast against the trees only, so the caster is validated on that set.
+    sensor_scene = build_scene(export, names, report, index_cls)
+    scene = sensor_scene if ground is None else build_scene(export, names, report, index_cls, ground)
     b = report["blender_scene"]
     roll, radius = float(b["visual_proxy_roll_rad"]), float(b["target"]["radius_m"])
     target_centre = report["target_position_m"]
@@ -362,7 +457,7 @@ def study_run(name, export, names, runs_root=RUNS_ROOT, index_cls=None):
         "radius_mm": round(1000 * radius, 2),
         "target_triangles": scene.target_triangles,
         "frames": {"ready": ready, "closing": closing, "detach": detach, "stop": stop, "last_compared": last},
-        "tof_validation": validate_tof(frames, last, scene),
+        "tof_validation": validate_tof(frames, last, sensor_scene),
         "timeline": [],
     }
     for fr in frames[: last + 1]:
@@ -386,6 +481,14 @@ def study_run(name, export, names, runs_root=RUNS_ROOT, index_cls=None):
         depth = validate_depth(run_dir, ready, rig, scene)
         out["depth_validation_at_ready"] = depth
         out["camera_line_of_sight_verified"] = bool(depth and depth["line_of_sight_verified"])
+        relief = ground_relief(rig, scene)
+        simulated, rendered = tof_channel(rig, sensor_scene), tof_channel(rig, scene)
+        out["ground_at_ready"] = {
+            "relief": relief,
+            "tool_beneath_the_ground_surface": bool(relief and relief["tool_point"]["beneath_the_surface"]),
+            "tof_nearest_trees_only": [simulated["nearest_label"], simulated["nearest_mm"]],
+            "tof_nearest_with_ground": [rendered["nearest_label"], rendered["nearest_mm"]],
+        }
         out["displacements"] = [{"axis": "none", "offset_mm": 0.0, **read_channels(rig, gap, scene, target_centre)}]
         for axis, label in enumerate(AXES):
             for sign in (-1, 1):
@@ -477,6 +580,22 @@ def summarise(runs):
                 [row for row in rows if row.get("camera_line_of_sight_verified", True)], "truth_between_jaws"
             )["C_camera_surface_in_mouth_box"],
         },
+        "ground_relief": {
+            "in_the_mesh_set": any((run.get("ground_at_ready") or {}).get("relief") for run in runs),
+            "runs_with_the_tool_beneath_the_surface": [
+                run["run"] for run in runs if (run.get("ground_at_ready") or {}).get("tool_beneath_the_ground_surface")
+            ],
+            "camera_surface_at_recorded_pose": dict(
+                Counter(
+                    str(row["camera"]["surface_label"])
+                    for row in rows
+                    if row["axis"] == "none" and row["camera"]["surface_in_mouth"]
+                )
+            ),
+            "beam_hits_at_recorded_pose": dict(
+                sum((Counter(row["beam_hits"]) for row in rows if row["axis"] == "none"), Counter())
+            ),
+        },
         "response_to_displacement": response(rows),
     }
 
@@ -484,6 +603,9 @@ def summarise(runs):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--output", type=Path, required=True, help="New JSON file outside the repository")
+    parser.add_argument(
+        "--trees-only", action="store_true", help="Leave the ground relief out, as the first passes did"
+    )
     args = parser.parse_args(argv)
     output = args.output.expanduser().resolve()
     if output.exists() or ROOT.resolve() in output.parents:
@@ -492,11 +614,12 @@ def main(argv=None):
     inputs = {}
     export = kmp.stream_export(kmp.EXPORT_DEFAULT, kmp.ISAAC_PYTHON_DEFAULT, inputs)
     names = [str(n) for n in export["names"]]
+    ground = None if args.trees_only else stream_ground()
     runs = []
     for name in RUNS:
         for part in ("report.json", "frames.json"):
             inputs[f"runs/{name}/{part}"] = kmp.sha256(RUNS_ROOT / name / part)
-        runs.append(study_run(name, export, names))
+        runs.append(study_run(name, export, names, ground=ground))
         print(f"{name}: ready {runs[-1]['frames']['ready']}, closing {runs[-1]['frames']['closing']}", flush=True)
     head = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True, check=True)
     dirty = subprocess.run(
@@ -524,6 +647,11 @@ def main(argv=None):
             "tof_in_base_m": {k: v.tolist() for k, v in kmp.TOF_IN_BASE.items()},
             "tool_in_base_m": kmp.TOOL_IN_BASE.tolist(),
             "mouth_in_tool_m": kmp.MOUTH_IN_TOOL.tolist(),
+            "mesh_set": (
+                "channels and the depth check: the exported trees plus the orchard's ground relief "
+                f"({0 if ground is None else len(ground[1])} triangles); caster validation against the recorded ToF "
+                "grids: the trees only, as the simulated sensors cast"
+            ),
         },
         **summarise(runs),
         "runs": runs,

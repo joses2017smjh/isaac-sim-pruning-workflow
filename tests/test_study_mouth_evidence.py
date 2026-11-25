@@ -176,3 +176,35 @@ def test_depth_validation_flags_a_line_of_sight_the_mesh_set_cannot_explain(stud
     np.save(tmp_path / "frames/depth_00008.npy", np.full_like(cast, 0.05))
     blocked = study.validate_depth(tmp_path, 8, rig, scene)
     assert blocked["neighbourhood_agree"] == 0 and not blocked["line_of_sight_verified"]
+
+
+def test_ground_relief_joins_the_channels_and_reports_a_tool_beneath_it(study):
+    vertices = np.array([[0, 0, 0], [1, 0, 0], [0, 1, 0], [5, 0, 0], [6, 0, 0], [5, 1, 0]], float)
+    export = {"v0": vertices, "t0": np.array([[0, 1, 2], [3, 4, 5]])}
+    report = {
+        "blender_scene": {
+            "target_tree_index": 0,
+            "translation_w_m": [0.0, 0.0, 0.0],
+            "yaw_degrees": 0.0,
+            "target": {"source_component": {"source_vertex_indices": [3, 4, 5]}},
+        }
+    }
+    names = ["tree0:/root/tree0_SPUR/Shape"]
+    # A horizontal sheet 8 mm above the jaw mouth, wide enough to cover the camera too.
+    sheet = _quad([-1, -1, 0.078], [1, -1, 0.078], [1, 1, 0.078], [-1, 1, 0.078])
+    trees = study.build_scene(export, names, report, study.kmp.NumpyMeshIndex)
+    full = study.build_scene(export, names, report, study.kmp.NumpyMeshIndex, ground=sheet)
+    assert trees.ground is None and study.ground_relief(_rig(study), trees) is None
+    assert full.labels[-1] == study.GROUND
+    relief = study.ground_relief(_rig(study), full)
+    assert relief["mouth"] == {"ground_above_mm": 8.0, "ground_below_mm": None, "beneath_the_surface": True}
+    assert relief["camera"]["beneath_the_surface"] and relief["tool_point"]["beneath_the_surface"]
+    above = study.ground_relief(_rig(study).shifted([0, 0, 0.2]), full)
+    assert above["mouth"]["ground_below_mm"] == pytest.approx(192.0) and not above["mouth"]["beneath_the_surface"]
+    # The sheet crosses the jaw gap, so the beam grid reports it; the truth, which is the target alone, does not.
+    reading = study.beams(_rig(study), study.jsm.JAW_OPEN_GAP_M, full)
+    assert reading["beam_hits"].get(study.GROUND, 0) == 0  # a beam parallel to the sheet does not cross it
+    tilted = _quad([-1, -1, 0.0], [1, -1, 0.14], [1, 1, 0.14], [-1, 1, 0.0])
+    crossing = study.build_scene(export, names, report, study.kmp.NumpyMeshIndex, ground=tilted)
+    reading = study.beams(_rig(study), study.jsm.JAW_OPEN_GAP_M, crossing)
+    assert reading["beam_hits"].get(study.GROUND, 0) > 0 and not reading["truth_between_jaws"]
