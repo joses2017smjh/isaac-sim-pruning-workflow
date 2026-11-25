@@ -208,3 +208,48 @@ def test_ground_relief_joins_the_channels_and_reports_a_tool_beneath_it(study):
     crossing = study.build_scene(export, names, report, study.kmp.NumpyMeshIndex, ground=tilted)
     reading = study.beams(_rig(study), study.jsm.JAW_OPEN_GAP_M, crossing)
     assert reading["beam_hits"].get(study.GROUND, 0) > 0 and not reading["truth_between_jaws"]
+
+
+def test_summary_separates_runs_whose_tool_is_beneath_the_ground(study):
+    def run(name, beneath):
+        row = {
+            "axis": "none",
+            "offset_mm": 0.0,
+            "truth_between_jaws": True,
+            "truth_at_mouth_centre": False,
+            "tof": {"returns_in_mouth": 1, "returns_in_mouth_by_label": {"TARGET": 1}},
+            "beams_blocked": 2,
+            "beam_centre_blocked": False,
+            "camera": {"surface_in_mouth": beneath, "surface_label": study.GROUND if beneath else None},
+            "beam_hits": {"TARGET": 2},
+            "camera_line_of_sight_verified": True,
+        }
+        return {
+            "run": name,
+            "tof_validation": {
+                "zones": 4,
+                "both_valid": 2,
+                "validity_same": 4,
+                "within_1mm_as_ray_length": 2,
+                "within_1mm_as_axis_depth": 0,
+            },
+            "timeline": [{**row, "cut_phase": "closing"}],
+            "displacements": [row],
+            "camera_line_of_sight_verified": True,
+            "ground_at_ready": {"relief": {}, "tool_beneath_the_ground_surface": beneath},
+        }
+
+    summary = study.summarise([run("a", False), run("b", False), run("c", True)])
+    assert summary["ground_relief"]["runs_with_the_tool_beneath_the_surface"] == ["c"]
+    above, beneath = summary["runs_with_the_tool_above_the_ground"], summary["runs_with_the_tool_beneath_the_ground"]
+    assert (above["runs"], beneath["runs"], summary["poses"]) == (2, 1, 3)
+    assert above["at_recorded_pose"]["camera_surface_when_it_says_in"] == {}
+    assert beneath["at_recorded_pose"]["camera_surface_when_it_says_in"] == {study.GROUND: 1}
+    assert above["closing_frames"] == {
+        "frames": 2,
+        "target_between_jaws": 2,
+        "target_on_mouth_centre_segment": 0,
+        "any_beam_blocked": 2,
+        "tof_return_in_mouth_box": 2,
+    }
+    assert summary["caster_validation"]["met"]

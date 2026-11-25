@@ -543,27 +543,12 @@ def response(rows):
     return table
 
 
-def summarise(runs):
+def tables(runs):
+    """Every count that depends on which runs are pooled."""
     rows = [row for run in runs for row in run.get("displacements", [])]
-    zones = sum(run["tof_validation"]["zones"] for run in runs)
-    both = sum(run["tof_validation"]["both_valid"] for run in runs)
-    validity = sum(run["tof_validation"]["validity_same"] for run in runs) / max(zones, 1)
-    within = sum(run["tof_validation"]["within_1mm_as_ray_length"] for run in runs) / max(both, 1)
+    closing = [row for run in runs for row in run["timeline"] if row["cut_phase"] == "closing"]
     return {
-        "caster_validation": {
-            "criterion": {
-                "within_m": TOF_AGREE_M,
-                "fraction_of_both_valid": TOF_AGREE_FRACTION,
-                "validity_agreement": VALIDITY_AGREE_FRACTION,
-            },
-            "zones": zones,
-            "both_valid": both,
-            "validity_agreement": validity,
-            "within_1mm_as_ray_length": within,
-            "within_1mm_as_axis_depth": sum(r["tof_validation"]["within_1mm_as_axis_depth"] for r in runs)
-            / max(both, 1),
-            "met": bool(within >= TOF_AGREE_FRACTION and validity >= VALIDITY_AGREE_FRACTION),
-        },
+        "runs": len(runs),
         "poses": len(rows),
         "against_truth_between_jaws": confusion(rows, "truth_between_jaws"),
         "against_truth_at_mouth_centre": confusion(rows, "truth_at_mouth_centre"),
@@ -580,23 +565,66 @@ def summarise(runs):
                 [row for row in rows if row.get("camera_line_of_sight_verified", True)], "truth_between_jaws"
             )["C_camera_surface_in_mouth_box"],
         },
-        "ground_relief": {
-            "in_the_mesh_set": any((run.get("ground_at_ready") or {}).get("relief") for run in runs),
-            "runs_with_the_tool_beneath_the_surface": [
-                run["run"] for run in runs if (run.get("ground_at_ready") or {}).get("tool_beneath_the_ground_surface")
-            ],
-            "camera_surface_at_recorded_pose": dict(
+        "at_recorded_pose": {
+            "camera_surface_when_it_says_in": dict(
                 Counter(
                     str(row["camera"]["surface_label"])
                     for row in rows
                     if row["axis"] == "none" and row["camera"]["surface_in_mouth"]
                 )
             ),
-            "beam_hits_at_recorded_pose": dict(
-                sum((Counter(row["beam_hits"]) for row in rows if row["axis"] == "none"), Counter())
+            "beam_hits": dict(sum((Counter(row["beam_hits"]) for row in rows if row["axis"] == "none"), Counter())),
+            "tof_zones_in_mouth": dict(
+                sum(
+                    (Counter(row["tof"]["returns_in_mouth_by_label"]) for row in rows if row["axis"] == "none"),
+                    Counter(),
+                )
             ),
         },
+        "closing_frames": {
+            "frames": len(closing),
+            "target_between_jaws": sum(bool(row["truth_between_jaws"]) for row in closing),
+            "target_on_mouth_centre_segment": sum(bool(row["truth_at_mouth_centre"]) for row in closing),
+            "any_beam_blocked": sum(row["beams_blocked"] > 0 for row in closing),
+            "tof_return_in_mouth_box": sum(row["tof"]["returns_in_mouth"] > 0 for row in closing),
+        },
         "response_to_displacement": response(rows),
+    }
+
+
+def summarise(runs):
+    zones = sum(run["tof_validation"]["zones"] for run in runs)
+    both = sum(run["tof_validation"]["both_valid"] for run in runs)
+    validity = sum(run["tof_validation"]["validity_same"] for run in runs) / max(zones, 1)
+    within = sum(run["tof_validation"]["within_1mm_as_ray_length"] for run in runs) / max(both, 1)
+    beneath = [run for run in runs if (run.get("ground_at_ready") or {}).get("tool_beneath_the_ground_surface")]
+    above = [run for run in runs if run not in beneath]
+    pooled = tables(runs)
+    pooled.pop("runs")
+    return {
+        "caster_validation": {
+            "criterion": {
+                "within_m": TOF_AGREE_M,
+                "fraction_of_both_valid": TOF_AGREE_FRACTION,
+                "validity_agreement": VALIDITY_AGREE_FRACTION,
+            },
+            "zones": zones,
+            "both_valid": both,
+            "validity_agreement": validity,
+            "within_1mm_as_ray_length": within,
+            "within_1mm_as_axis_depth": sum(r["tof_validation"]["within_1mm_as_axis_depth"] for r in runs)
+            / max(both, 1),
+            "met": bool(within >= TOF_AGREE_FRACTION and validity >= VALIDITY_AGREE_FRACTION),
+        },
+        "ground_relief": {
+            "in_the_mesh_set": any((run.get("ground_at_ready") or {}).get("relief") for run in runs),
+            "runs_with_the_tool_beneath_the_surface": [run["run"] for run in beneath],
+            "note": "a tool beneath the visual ground is not a physical scene; read the counts under "
+            "runs_with_the_tool_above_the_ground, and the pooled ones only for comparison with earlier passes",
+        },
+        **pooled,
+        "runs_with_the_tool_above_the_ground": tables(above),
+        "runs_with_the_tool_beneath_the_ground": tables(beneath),
     }
 
 
@@ -669,7 +697,10 @@ def main(argv=None):
         f"caster: validity {validation['validity_agreement']:.5f}, "
         f"within 1 mm {validation['within_1mm_as_ray_length']:.5f}, criterion met: {validation['met']}"
     )
-    for row in document["response_to_displacement"]:
+    relief = document["ground_relief"]
+    print(f"tool beneath the ground surface in: {relief['runs_with_the_tool_beneath_the_surface']}")
+    print("runs with the tool above the ground:")
+    for row in document["runs_with_the_tool_above_the_ground"]["response_to_displacement"]:
         print(
             f"  {row['axis']:8} {row['offset_mm']:6.1f} mm: "
             f"between jaws {row['truth_between_jaws']:2d}/{row['runs']} | "
