@@ -55,6 +55,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "source/isaaclab_pruning"))
 
 import known_map_planner as kmp  # noqa: E402
+import orchard_ground  # noqa: E402
 
 from isaaclab_pruning.perception import jaw_self_mask as jsm  # noqa: E402
 
@@ -95,65 +96,13 @@ DEPTH_AGREE_FRACTION = 0.95
 GROUND = "GROUND"
 UP_W = np.array([0.0, 0.0, 1.0])
 
-_GROUND_HELPER = r"""
-import io, json, sys
-import numpy as np
-from pxr import Usd, UsdGeom
-
-stage = Usd.Stage.Open(sys.argv[1] + "/environment.usdc")
-cache = UsdGeom.XformCache()
-vertices, triangles, offset = [], [], 0
-for prim in stage.Traverse():
-    if not prim.IsA(UsdGeom.Mesh) or "/ground/" not in str(prim.GetPath()):
-        continue
-    mesh = UsdGeom.Mesh(prim)
-    pts = np.asarray(mesh.GetPointsAttr().Get(), dtype=np.float64)
-    counts = np.asarray(mesh.GetFaceVertexCountsAttr().Get())
-    idx = np.asarray(mesh.GetFaceVertexIndicesAttr().Get())
-    M = np.asarray(cache.GetLocalToWorldTransform(prim), dtype=np.float64)
-    vertices.append((np.c_[pts, np.ones(len(pts))] @ M)[:, :3])
-    off = 0
-    for c in counts:
-        face = idx[off:off + c]
-        for k in range(1, c - 1):
-            triangles.append((face[0] + offset, face[k] + offset, face[k + 1] + offset))
-        off += c
-    offset += len(pts)
-buffer = io.BytesIO()
-np.savez(buffer, v=np.concatenate(vertices), t=np.asarray(triangles, dtype=np.int64))
-blob = buffer.getvalue()
-sys.stdout.buffer.write(sys.argv[2].encode() + b"\n" + json.dumps({"npz_bytes": len(blob)}).encode() + b"\n" + blob)
-"""
-
 
 def stream_ground(export_dir=None, isaac_python=None):
     """The orchard's ground relief from the export (file-local world frame), which the planner's export skips.
 
     Call after ``kmp.stream_export`` on the same directory: that call verifies environment.usdc against the
-    export manifest."""
-    import io
-    import os
-
-    export_dir = Path(export_dir or kmp.EXPORT_DEFAULT).resolve()
-    marker = "@@MOUTH_STUDY_GROUND@@"
-    env = {k: v for k, v in os.environ.items() if not k.startswith("PYTHON")}
-    env["PYTHONDONTWRITEBYTECODE"] = "1"
-    done = subprocess.run(
-        [isaac_python or kmp.ISAAC_PYTHON_DEFAULT, "-c", _GROUND_HELPER, str(export_dir), marker],
-        capture_output=True,
-        env=env,
-        timeout=3600,
-    )
-    head = marker.encode() + b"\n"
-    if done.returncode != 0 or head not in done.stdout:
-        raise RuntimeError(
-            f"ground streaming failed ({done.returncode}): {done.stderr.decode(errors='replace')[-600:]}"
-        )
-    line, _, blob = done.stdout[done.stdout.index(head) + len(head) :].partition(b"\n")
-    if len(blob) != json.loads(line)["npz_bytes"]:
-        raise RuntimeError("streamed ground geometry is truncated")
-    with np.load(io.BytesIO(blob), allow_pickle=False) as data:
-        return np.asarray(data["v"], float), np.asarray(data["t"], np.int64)
+    export manifest. The streaming itself lives in tools/orchard_ground.py, shared with the other offline tools."""
+    return orchard_ground.stream_ground(export_dir or kmp.EXPORT_DEFAULT, isaac_python or kmp.ISAAC_PYTHON_DEFAULT)
 
 
 AXES = ("closing", "lateral", "tool")
