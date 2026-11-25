@@ -3,8 +3,14 @@ P2.3 RESULT — 2026-11-25 (read this first)
   a 30 s episode; cut at 120/142, home at 233/277 exactly as registered; 148 of 240 GPU-min; no resubmission.
   docs/evidence/delay_episode_verdicts_2026-11-25.json. The Nov 5 "first failing delay 66.7 ms" was the 20 s
   episode running out. Vision age still 0 s in all 1,806 decisions (commands delayed, not sensors).
-  NEXT (lane order from the user: robotics software first): P2.1, an independent check of the jaw mouth. The ToF
-  sensors cannot see the mouth (144 mm vs 70 mm along the tool axis; corrected in docs/ROS2_SIL.md at 58def13).
+  NEXT (lane order from the user: robotics software first): P2.1, an independent check of the jaw mouth.
+  The 58def13 "correction" (ToF cannot see the mouth) was WRONG (two frames mixed) and is withdrawn: the mouth is
+  86 mm ahead of the sensors, 29 deg off axis. Exploratory CPU study (tools/study_mouth_evidence.py at 6790548,
+  docs/evidence/mouth_evidence_study_2026-11-25.json; offline caster matches recorded ToF to 0.03 mm): at the
+  ready frame the target is between the jaws in 11/11 but never on the mouth-centre segment (7.5-12.8 mm ahead,
+  near the tips); ToF sees it in 11/11 there but loses it when centred; a beam grid follows geometry (16/161
+  blocked by other wood); one camera ray is fragile. Channel choice and "centre the cut" are the user's call.
+  No gate, message or sim-tool change was made.
   GitHub Pages deploys failed three times on Nov 25 around 12:00 UTC (deploy step cannot find the uploaded
   artifact); the live site is unchanged.
 

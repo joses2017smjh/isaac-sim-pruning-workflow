@@ -41,6 +41,15 @@ Finished and published:
 - **Storage.** On November 22 the share held 1.71 TiB against the 1.5 TiB soft
   quota, with 3 weeks 6 days of grace left (to about December 19). This
   repository's directory is about 139 GiB of that.
+- **An independent witness for the jaw mouth (studied November 25).** The gate
+  takes the target from the controller. An exploratory CPU study
+  ([write-up](ROS2_SIL.md#november-25-what-could-witness-the-target-in-the-mouth-exploratory))
+  found the existing ToF sensors see the target at closure but lose it when it is
+  centred, a beam grid across the jaw gap follows the geometry, and one camera
+  ray is fragile. Which channel to build is undecided. The same study found that
+  the cut closes with the spur 7.5 to 12.8 mm ahead of the mouth centre, near the
+  jaw tips; whether to change the approach so it closes on the centre is a
+  separate open question.
 - **Pixel-centre convention (measured November 22).** The jaw self-mask and
   the depth-aware check treat pixel index u as continuous u + 0.5, which the
   renderer's camera and every mask-fidelity check support. The point tracker

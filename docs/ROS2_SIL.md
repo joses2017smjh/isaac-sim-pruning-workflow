@@ -276,15 +276,76 @@ That drift pushed the mouth distance past 8 mm and the cut stopped; had it
 stayed inside the tolerance, nothing in the gate could have told. The next step
 is an input the controller does not produce.
 
-**Correction, November 25.** The November 22 version of this paragraph proposed
-the ToF zones nearest the mouth as that input. They cannot be: both sensors sit
-144 mm along the pruner's axis and look forward along it
-(`sensors/tof_raycaster.py`, `TOF_SITE_OFFSETS_M`), while the jaw mouth is at
-70 mm (`DEMO_MOUTH_OFFSET_TOOL_M`), so the mouth is behind them and never in
-view. In the November 5 runs the nearest return at closure was 81 mm ahead of
-the sensors and stayed there through the release (run 0, cycles 68–79). An
-independent check of the mouth needs a sensor that sees it, such as a short beam
-across the jaw gap, or a cross-check against the raw depth image.
+**A correction made here on November 25 was wrong and is withdrawn.** It said
+the ToF sensors cannot see the jaw mouth because they sit 144 mm along the
+pruner's axis and the mouth is at 70 mm. Those two offsets are in different
+frames. The sensor sites are 144 mm from `mock_pruner__base`
+(`TOF_SITE_OFFSETS_M`); the mouth is 70 mm from the control-tool frame
+(`DEMO_MOUTH_OFFSET_TOOL_M`), and that frame is itself 160 mm from the same base
+(`ur5e_pruner.yaml`). In one frame the mouth is 86 mm **ahead** of the sensors
+and 47 mm to the side of each: about 29° off each sensor's axis, at the inner
+edge of its field of view (24° half-width, 32.5° on the diagonal). The recorded
+sensor positions confirm it.
+
+### November 25: what could witness the target in the mouth (exploratory)
+
+`tools/study_mouth_evidence.py` re-casts candidate sensor readings on the CPU at
+recorded tool poses, and at poses displaced from them, against the exported
+orchard meshes ([evidence](evidence/mouth_evidence_study_2026-11-25.json), at
+`6790548`). Eleven runs that reached closure, nine distinct targets. Exploratory:
+no threshold here is final, and nothing in the gate changed.
+
+**The offline caster reproduces the simulated sensors.** Its criterion was fixed
+before the first run. Re-cast at the recorded sensor poses, the two ToF grids
+agreed on validity in 110,207 of 110,208 zones, and all 29,350 zones valid in
+both agreed within 1 mm (the largest difference was 0.03 mm). The recorded
+depth image at the mouth pixel matched the cast in 9 of 11 runs to 0.01 mm; in
+the two runs on target 530 that pixel lies on the spur's silhouette edge.
+
+**Truth, from geometry only.** Nine segments cross the jaw gap. *Between the
+jaws*: any of them intersects the target. *At the mouth centre*: the middle one
+does. The second definition alone was the first pass; both are reported because
+of what it showed, so neither is a registered definition.
+
+At the frame the cut became ready, in all 11 runs:
+
+| | Result |
+|---|---|
+| Target between the jaws | 11 of 11 |
+| Target on the segment through the mouth centre | **0 of 11** |
+| Where the target centre was | 7.5 to 12.8 mm ahead of the mouth centre along the tool axis, toward the jaw tips |
+| ToF: a first return inside the mouth box | 11 of 11, from 1 to 3 zones, all but one of them on the target |
+| Camera: the surface along the ray through the mouth centre is in the mouth box | 7 of 11 |
+
+Then the whole tool was displaced along the jaw's three axes (407 poses):
+
+- **The cut closes near the jaw tips.** Moving the tool 10 mm forward puts the
+  target on the centre segment in 11 of 11. Moving it 5 mm back leaves the target
+  between the jaws in 8 of 11, and 10 mm back in 1 of 11.
+- **The ToF sensors are a weak witness.** They see the target at closure only
+  because it sits ahead of the mouth centre. With the tool 15 and 20 mm forward
+  they report a return in the mouth box in 3 and 1 of 11 runs, although the
+  target is between the jaws in 10 and 11: the mouth centre lies in the strip
+  between the two fields of view. With the tool 10 mm back they still report one
+  in 9 of 11, where the target is between the jaws in 1.
+- **A beam grid across the gap follows the geometry**, as it must: it is the same
+  nine segments against every mesh. It never missed the target, and in 16 of the
+  161 poses where the target was not between the jaws a beam was blocked by
+  other wood. A single beam through the mouth centre would have refused every
+  recorded cut.
+- **One camera ray is fragile.** It agreed in 134 of the 246 poses with the
+  target between the jaws, and a 5 mm shift along the closing axis changes its
+  answer in most runs. It also shares the camera with the tracker.
+
+**Control 530 again.** In its failed closure the target was between the jaws
+from frame 68 to the stop at frame 76, and one ToF zone returned from it inside
+the mouth box in every one of those frames, while the tracker's mouth distance
+rose from 6.0 to 9.7 mm. An independent witness would have contradicted the
+tracker there in the other direction: the spur had not left the mouth.
+
+**Limits.** Eleven runs and one family of approach poses. The displacements are
+pure translations. The jaws are not in the ToF sensors' mesh set, so a real
+sensor may also see its own jaws. Depth is exact. Counts, not rates.
 
 ## Running it
 
