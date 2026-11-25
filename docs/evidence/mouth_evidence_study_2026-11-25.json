@@ -124,6 +124,21 @@
    "out_and_says_out": 260
   }
  },
+ "camera_line_of_sight": {
+  "verified_runs": 9,
+  "runs": 11,
+  "unverified": [
+   "hold-sweep-ctl-20261006/run_00_source_tree0_v530_planned_pose_jaw_hold_sweep",
+   "hold-gen-ctl-20261004/run_00_source_tree0_v530_planned_pose_jaw_hold_gen"
+  ],
+  "verified_runs_at_recorded_pose_camera_says_in": 7,
+  "C_camera_against_truth_between_jaws_verified_runs_only": {
+   "in_and_says_in": 115,
+   "in_and_says_out": 88,
+   "out_and_says_in": 11,
+   "out_and_says_out": 119
+  }
+ },
  "response_to_displacement": [
   {
    "axis": "none",
@@ -1146,8 +1161,12 @@
     ],
     "recorded_depth_mm": 168.16,
     "cast_depth_mm": 168.16,
-    "cast_label": "TARGET"
+    "cast_label": "TARGET",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 81,
+    "line_of_sight_verified": true
    },
+   "camera_line_of_sight_verified": true,
    "displacements": [
     {
      "axis": "none",
@@ -1186,7 +1205,8 @@
       4.24,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1224,7 +1244,8 @@
       9.24,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1262,7 +1283,8 @@
       14.24,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1298,7 +1320,8 @@
       19.24,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1331,7 +1354,8 @@
       24.24,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1364,7 +1388,8 @@
       34.24,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1397,7 +1422,8 @@
       54.24,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1435,7 +1461,8 @@
       -0.76,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1474,7 +1501,8 @@
       -5.76,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1511,7 +1539,8 @@
       -10.76,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1547,7 +1576,8 @@
       -15.76,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1580,7 +1610,8 @@
       -25.76,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -1613,7 +1644,8 @@
       -45.76,
       -8.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1652,7 +1684,8 @@
       4.24,
       -3.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1691,7 +1724,8 @@
       4.24,
       1.87,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1729,7 +1763,8 @@
       4.24,
       6.87,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1766,7 +1801,8 @@
       4.24,
       11.87,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1804,7 +1840,8 @@
       4.24,
       21.87,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1841,7 +1878,8 @@
       4.24,
       41.87,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1879,7 +1917,8 @@
       4.24,
       -13.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1918,7 +1957,8 @@
       4.24,
       -18.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1957,7 +1997,8 @@
       4.24,
       -23.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -1996,7 +2037,8 @@
       4.24,
       -28.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -2033,7 +2075,8 @@
       4.24,
       -38.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -2070,7 +2113,8 @@
       4.24,
       -58.13,
       12.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2107,7 +2151,8 @@
       4.24,
       -8.13,
       17.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2140,7 +2185,8 @@
       4.24,
       -8.13,
       22.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2173,7 +2219,8 @@
       4.24,
       -8.13,
       27.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2206,7 +2253,8 @@
       4.24,
       -8.13,
       32.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2239,7 +2287,8 @@
       4.24,
       -8.13,
       42.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2272,7 +2321,8 @@
       4.24,
       -8.13,
       62.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2309,7 +2359,8 @@
       4.24,
       -8.13,
       7.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2347,7 +2398,8 @@
       4.24,
       -8.13,
       2.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2384,7 +2436,8 @@
       4.24,
       -8.13,
       -2.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2422,7 +2475,8 @@
       4.24,
       -8.13,
       -7.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2455,7 +2509,8 @@
       4.24,
       -8.13,
       -17.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -2488,7 +2543,8 @@
       4.24,
       -8.13,
       -37.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     }
    ]
   },
@@ -3045,8 +3101,12 @@
     ],
     "recorded_depth_mm": 167.11,
     "cast_depth_mm": 167.11,
-    "cast_label": "TARGET"
+    "cast_label": "TARGET",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 81,
+    "line_of_sight_verified": true
    },
+   "camera_line_of_sight_verified": true,
    "displacements": [
     {
      "axis": "none",
@@ -3083,7 +3143,8 @@
       3.53,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3120,7 +3181,8 @@
       8.53,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3157,7 +3219,8 @@
       13.53,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3194,7 +3257,8 @@
       18.53,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3227,7 +3291,8 @@
       23.53,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3260,7 +3325,8 @@
       33.53,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3293,7 +3359,8 @@
       53.53,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3330,7 +3397,8 @@
       -1.47,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3367,7 +3435,8 @@
       -6.47,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3404,7 +3473,8 @@
       -11.47,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3441,7 +3511,8 @@
       -16.47,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3474,7 +3545,8 @@
       -26.47,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -3507,7 +3579,8 @@
       -46.47,
       -4.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3544,7 +3617,8 @@
       3.53,
       0.66,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3581,7 +3655,8 @@
       3.53,
       5.66,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3618,7 +3693,8 @@
       3.53,
       10.66,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3655,7 +3731,8 @@
       3.53,
       15.66,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3694,7 +3771,8 @@
       3.53,
       25.66,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3731,7 +3809,8 @@
       3.53,
       45.66,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3768,7 +3847,8 @@
       3.53,
       -9.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3805,7 +3885,8 @@
       3.53,
       -14.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3844,7 +3925,8 @@
       3.53,
       -19.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3883,7 +3965,8 @@
       3.53,
       -24.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3920,7 +4003,8 @@
       3.53,
       -34.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -3957,7 +4041,8 @@
       3.53,
       -54.34,
       12.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -3992,7 +4077,8 @@
       3.53,
       -4.34,
       17.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4027,7 +4113,8 @@
       3.53,
       -4.34,
       22.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4060,7 +4147,8 @@
       3.53,
       -4.34,
       27.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4093,7 +4181,8 @@
       3.53,
       -4.34,
       32.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4126,7 +4215,8 @@
       3.53,
       -4.34,
       42.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4159,7 +4249,8 @@
       3.53,
       -4.34,
       62.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4196,7 +4287,8 @@
       3.53,
       -4.34,
       7.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4233,7 +4325,8 @@
       3.53,
       -4.34,
       2.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4268,7 +4361,8 @@
       3.53,
       -4.34,
       -2.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4303,7 +4397,8 @@
       3.53,
       -4.34,
       -7.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4336,7 +4431,8 @@
       3.53,
       -4.34,
       -17.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -4369,7 +4465,8 @@
       3.53,
       -4.34,
       -37.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     }
    ]
   },
@@ -4926,8 +5023,12 @@
     ],
     "recorded_depth_mm": 485.8,
     "cast_depth_mm": 485.8,
-    "cast_label": "tree0_BRANCH"
+    "cast_label": "tree0_BRANCH",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 81,
+    "line_of_sight_verified": true
    },
+   "camera_line_of_sight_verified": true,
    "displacements": [
     {
      "axis": "none",
@@ -4964,7 +5065,8 @@
       2.58,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5001,7 +5103,8 @@
       7.58,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5038,7 +5141,8 @@
       12.58,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5073,7 +5177,8 @@
       17.58,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5106,7 +5211,8 @@
       22.58,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5139,7 +5245,8 @@
       32.58,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5172,7 +5279,8 @@
       52.58,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5209,7 +5317,8 @@
       -2.42,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5246,7 +5355,8 @@
       -7.42,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5283,7 +5393,8 @@
       -12.42,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5318,7 +5429,8 @@
       -17.42,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5351,7 +5463,8 @@
       -27.42,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -5384,7 +5497,8 @@
       -47.42,
       -4.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5421,7 +5535,8 @@
       2.58,
       0.45,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5458,7 +5573,8 @@
       2.58,
       5.45,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5495,7 +5611,8 @@
       2.58,
       10.45,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5532,7 +5649,8 @@
       2.58,
       15.45,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5571,7 +5689,8 @@
       2.58,
       25.45,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5606,7 +5725,8 @@
       2.58,
       45.45,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5643,7 +5763,8 @@
       2.58,
       -9.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5681,7 +5802,8 @@
       2.58,
       -14.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5720,7 +5842,8 @@
       2.58,
       -19.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5759,7 +5882,8 @@
       2.58,
       -24.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5797,7 +5921,8 @@
       2.58,
       -34.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -5834,7 +5959,8 @@
       2.58,
       -54.55,
       12.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -5871,7 +5997,8 @@
       2.58,
       -4.55,
       17.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -5906,7 +6033,8 @@
       2.58,
       -4.55,
       22.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -5939,7 +6067,8 @@
       2.58,
       -4.55,
       27.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -5972,7 +6101,8 @@
       2.58,
       -4.55,
       32.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -6005,7 +6135,8 @@
       2.58,
       -4.55,
       42.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -6038,7 +6169,8 @@
       2.58,
       -4.55,
       62.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -6075,7 +6207,8 @@
       2.58,
       -4.55,
       7.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -6112,7 +6245,8 @@
       2.58,
       -4.55,
       2.85
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -6147,7 +6281,8 @@
       2.58,
       -4.55,
       -2.15
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -6182,7 +6317,8 @@
       2.58,
       -4.55,
       -7.15
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -6215,7 +6351,8 @@
       2.58,
       -4.55,
       -17.15
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -6248,7 +6385,8 @@
       2.58,
       -4.55,
       -37.15
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     }
    ]
   },
@@ -6805,8 +6943,12 @@
     ],
     "recorded_depth_mm": 169.04,
     "cast_depth_mm": 169.04,
-    "cast_label": "TARGET"
+    "cast_label": "TARGET",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 81,
+    "line_of_sight_verified": true
    },
+   "camera_line_of_sight_verified": true,
    "displacements": [
     {
      "axis": "none",
@@ -6843,7 +6985,8 @@
       4.59,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -6880,7 +7023,8 @@
       9.59,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -6917,7 +7061,8 @@
       14.59,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -6954,7 +7099,8 @@
       19.59,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -6987,7 +7133,8 @@
       24.59,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -7020,7 +7167,8 @@
       34.59,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -7053,7 +7201,8 @@
       54.59,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -7090,7 +7239,8 @@
       -0.41,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -7127,7 +7277,8 @@
       -5.41,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -7164,7 +7315,8 @@
       -10.41,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -7201,7 +7353,8 @@
       -15.41,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -7234,7 +7387,8 @@
       -25.41,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -7267,7 +7421,8 @@
       -45.41,
       -11.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7304,7 +7459,8 @@
       4.59,
       -6.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7341,7 +7497,8 @@
       4.59,
       -1.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7378,7 +7535,8 @@
       4.59,
       3.89,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7415,7 +7573,8 @@
       4.59,
       8.89,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7454,7 +7613,8 @@
       4.59,
       18.89,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7491,7 +7651,8 @@
       4.59,
       38.89,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7528,7 +7689,8 @@
       4.59,
       -16.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7565,7 +7727,8 @@
       4.59,
       -21.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7602,7 +7765,8 @@
       4.59,
       -26.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7639,7 +7803,8 @@
       4.59,
       -31.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7672,7 +7837,8 @@
       4.59,
       -41.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -7705,7 +7871,8 @@
       4.59,
       -61.11,
       11.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -7740,7 +7907,8 @@
       4.59,
       -11.11,
       16.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -7775,7 +7943,8 @@
       4.59,
       -11.11,
       21.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -7808,7 +7977,8 @@
       4.59,
       -11.11,
       26.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -7841,7 +8011,8 @@
       4.59,
       -11.11,
       31.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -7874,7 +8045,8 @@
       4.59,
       -11.11,
       41.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -7907,7 +8079,8 @@
       4.59,
       -11.11,
       61.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -7944,7 +8117,8 @@
       4.59,
       -11.11,
       6.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -7981,7 +8155,8 @@
       4.59,
       -11.11,
       1.83
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -8018,7 +8193,8 @@
       4.59,
       -11.11,
       -3.17
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -8053,7 +8229,8 @@
       4.59,
       -11.11,
       -8.17
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -8086,7 +8263,8 @@
       4.59,
       -11.11,
       -18.17
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -8119,7 +8297,8 @@
       4.59,
       -11.11,
       -38.17
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     }
    ]
   },
@@ -8676,8 +8855,12 @@
     ],
     "recorded_depth_mm": 167.72,
     "cast_depth_mm": 167.72,
-    "cast_label": "TARGET"
+    "cast_label": "TARGET",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 81,
+    "line_of_sight_verified": true
    },
+   "camera_line_of_sight_verified": true,
    "displacements": [
     {
      "axis": "none",
@@ -8714,7 +8897,8 @@
       3.46,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -8751,7 +8935,8 @@
       8.46,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -8786,7 +8971,8 @@
       13.46,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -8821,7 +9007,8 @@
       18.46,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -8854,7 +9041,8 @@
       23.46,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -8887,7 +9075,8 @@
       33.46,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -8920,7 +9109,8 @@
       53.46,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -8957,7 +9147,8 @@
       -1.54,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -8994,7 +9185,8 @@
       -6.54,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -9031,7 +9223,8 @@
       -11.54,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -9066,7 +9259,8 @@
       -16.54,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -9099,7 +9293,8 @@
       -26.54,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -9132,7 +9327,8 @@
       -46.54,
       -0.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9169,7 +9365,8 @@
       3.46,
       4.98,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9206,7 +9403,8 @@
       3.46,
       9.98,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9244,7 +9442,8 @@
       3.46,
       14.98,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9283,7 +9482,8 @@
       3.46,
       19.98,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9322,7 +9522,8 @@
       3.46,
       29.98,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9357,7 +9558,8 @@
       3.46,
       49.98,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9394,7 +9596,8 @@
       3.46,
       -5.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9431,7 +9634,8 @@
       3.46,
       -10.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9468,7 +9672,8 @@
       3.46,
       -15.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9505,7 +9710,8 @@
       3.46,
       -20.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9542,7 +9748,8 @@
       3.46,
       -30.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -9575,7 +9782,8 @@
       3.46,
       -50.02,
       9.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9610,7 +9818,8 @@
       3.46,
       -0.02,
       14.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9645,7 +9854,8 @@
       3.46,
       -0.02,
       19.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9678,7 +9888,8 @@
       3.46,
       -0.02,
       24.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9711,7 +9922,8 @@
       3.46,
       -0.02,
       29.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9744,7 +9956,8 @@
       3.46,
       -0.02,
       39.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9777,7 +9990,8 @@
       3.46,
       -0.02,
       59.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9810,7 +10024,8 @@
       3.46,
       -0.02,
       4.43
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9845,7 +10060,8 @@
       3.46,
       -0.02,
       -0.57
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9878,7 +10094,8 @@
       3.46,
       -0.02,
       -5.57
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9913,7 +10130,8 @@
       3.46,
       -0.02,
       -10.57
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9946,7 +10164,8 @@
       3.46,
       -0.02,
       -20.57
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -9979,7 +10198,8 @@
       3.46,
       -0.02,
       -40.57
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     }
    ]
   },
@@ -10536,8 +10756,12 @@
     ],
     "recorded_depth_mm": null,
     "cast_depth_mm": null,
-    "cast_label": null
+    "cast_label": null,
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 81,
+    "line_of_sight_verified": true
    },
+   "camera_line_of_sight_verified": true,
    "displacements": [
     {
      "axis": "none",
@@ -10574,7 +10798,8 @@
       -0.33,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10611,7 +10836,8 @@
       4.67,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10648,7 +10874,8 @@
       9.67,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10685,7 +10912,8 @@
       14.67,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10720,7 +10948,8 @@
       19.67,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10753,7 +10982,8 @@
       29.67,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10786,7 +11016,8 @@
       49.67,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10823,7 +11054,8 @@
       -5.33,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10860,7 +11092,8 @@
       -10.33,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10897,7 +11130,8 @@
       -15.33,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10934,7 +11168,8 @@
       -20.33,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -10967,7 +11202,8 @@
       -30.33,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -11000,7 +11236,8 @@
       -50.33,
       -3.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11037,7 +11274,8 @@
       -0.33,
       1.05,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11074,7 +11312,8 @@
       -0.33,
       6.05,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11111,7 +11350,8 @@
       -0.33,
       11.05,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11148,7 +11388,8 @@
       -0.33,
       16.05,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11185,7 +11426,8 @@
       -0.33,
       26.05,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11222,7 +11464,8 @@
       -0.33,
       46.05,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11259,7 +11502,8 @@
       -0.33,
       -8.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11296,7 +11540,8 @@
       -0.33,
       -13.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11333,7 +11578,8 @@
       -0.33,
       -18.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11370,7 +11616,8 @@
       -0.33,
       -23.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11407,7 +11654,8 @@
       -0.33,
       -33.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -11442,7 +11690,8 @@
       -0.33,
       -53.95,
       11.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11479,7 +11728,8 @@
       -0.33,
       -3.95,
       16.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11512,7 +11762,8 @@
       -0.33,
       -3.95,
       21.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11545,7 +11796,8 @@
       -0.33,
       -3.95,
       26.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11578,7 +11830,8 @@
       -0.33,
       -3.95,
       31.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11611,7 +11864,8 @@
       -0.33,
       -3.95,
       41.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11644,7 +11898,8 @@
       -0.33,
       -3.95,
       61.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11679,7 +11934,8 @@
       -0.33,
       -3.95,
       6.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11714,7 +11970,8 @@
       -0.33,
       -3.95,
       1.81
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11749,7 +12006,8 @@
       -0.33,
       -3.95,
       -3.19
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11784,7 +12042,8 @@
       -0.33,
       -3.95,
       -8.19
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11817,7 +12076,8 @@
       -0.33,
       -3.95,
       -18.19
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -11850,7 +12110,8 @@
       -0.33,
       -3.95,
       -38.19
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     }
    ]
   },
@@ -12287,8 +12548,12 @@
     ],
     "recorded_depth_mm": 167.52,
     "cast_depth_mm": 613.84,
-    "cast_label": "tree0_SPUR(other spurs)"
+    "cast_label": "tree0_SPUR(other spurs)",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 2,
+    "line_of_sight_verified": false
    },
+   "camera_line_of_sight_verified": false,
    "displacements": [
     {
      "axis": "none",
@@ -12325,7 +12590,8 @@
       -1.08,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12360,7 +12626,8 @@
       3.92,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12397,7 +12664,8 @@
       8.92,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12434,7 +12702,8 @@
       13.92,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12469,7 +12738,8 @@
       18.92,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12502,7 +12772,8 @@
       28.92,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12535,7 +12806,8 @@
       48.92,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12572,7 +12844,8 @@
       -6.08,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12609,7 +12882,8 @@
       -11.08,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12644,7 +12918,8 @@
       -16.08,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12679,7 +12954,8 @@
       -21.08,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12714,7 +12990,8 @@
       -31.08,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -12751,7 +13028,8 @@
       -51.08,
       2.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -12788,7 +13066,8 @@
       -1.08,
       7.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -12825,7 +13104,8 @@
       -1.08,
       12.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -12860,7 +13140,8 @@
       -1.08,
       17.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -12895,7 +13176,8 @@
       -1.08,
       22.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -12928,7 +13210,8 @@
       -1.08,
       32.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -12961,7 +13244,8 @@
       -1.08,
       52.02,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -12998,7 +13282,8 @@
       -1.08,
       -2.98,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -13035,7 +13320,8 @@
       -1.08,
       -7.98,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -13073,7 +13359,8 @@
       -1.08,
       -12.98,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -13111,7 +13398,8 @@
       -1.08,
       -17.98,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -13147,7 +13435,8 @@
       -1.08,
       -27.98,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -13180,7 +13469,8 @@
       -1.08,
       -47.98,
       11.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13217,7 +13507,8 @@
       -1.08,
       2.02,
       16.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13252,7 +13543,8 @@
       -1.08,
       2.02,
       21.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13285,7 +13577,8 @@
       -1.08,
       2.02,
       26.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13318,7 +13611,8 @@
       -1.08,
       2.02,
       31.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13351,7 +13645,8 @@
       -1.08,
       2.02,
       41.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13384,7 +13679,8 @@
       -1.08,
       2.02,
       61.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13421,7 +13717,8 @@
       -1.08,
       2.02,
       6.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13458,7 +13755,8 @@
       -1.08,
       2.02,
       1.31
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13495,7 +13793,8 @@
       -1.08,
       2.02,
       -3.69
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13530,7 +13829,8 @@
       -1.08,
       2.02,
       -8.69
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13565,7 +13865,8 @@
       -1.08,
       2.02,
       -18.69
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -13598,7 +13899,8 @@
       -1.08,
       2.02,
       -38.69
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     }
    ]
   },
@@ -14155,8 +14457,12 @@
     ],
     "recorded_depth_mm": 167.74,
     "cast_depth_mm": 167.74,
-    "cast_label": "TARGET"
+    "cast_label": "TARGET",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 81,
+    "line_of_sight_verified": true
    },
+   "camera_line_of_sight_verified": true,
    "displacements": [
     {
      "axis": "none",
@@ -14193,7 +14499,8 @@
       -2.21,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14230,7 +14537,8 @@
       2.79,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14267,7 +14575,8 @@
       7.79,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14304,7 +14613,8 @@
       12.79,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14339,7 +14649,8 @@
       17.79,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14372,7 +14683,8 @@
       27.79,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14405,7 +14717,8 @@
       47.79,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14442,7 +14755,8 @@
       -7.21,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14479,7 +14793,8 @@
       -12.21,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14514,7 +14829,8 @@
       -17.21,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14549,7 +14865,8 @@
       -22.21,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14582,7 +14899,8 @@
       -32.21,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -14615,7 +14933,8 @@
       -52.21,
       5.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14652,7 +14971,8 @@
       -2.21,
       10.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14689,7 +15009,8 @@
       -2.21,
       15.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14727,7 +15048,8 @@
       -2.21,
       20.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14765,7 +15087,8 @@
       -2.21,
       25.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14800,7 +15123,8 @@
       -2.21,
       35.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14835,7 +15159,8 @@
       -2.21,
       55.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14872,7 +15197,8 @@
       -2.21,
       0.28,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14909,7 +15235,8 @@
       -2.21,
       -4.72,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14946,7 +15273,8 @@
       -2.21,
       -9.72,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -14983,7 +15311,8 @@
       -2.21,
       -14.72,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -15021,7 +15350,8 @@
       -2.21,
       -24.72,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -15056,7 +15386,8 @@
       -2.21,
       -44.72,
       10.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15093,7 +15424,8 @@
       -2.21,
       5.28,
       15.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15128,7 +15460,8 @@
       -2.21,
       5.28,
       20.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15161,7 +15494,8 @@
       -2.21,
       5.28,
       25.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15194,7 +15528,8 @@
       -2.21,
       5.28,
       30.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15227,7 +15562,8 @@
       -2.21,
       5.28,
       40.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15260,7 +15596,8 @@
       -2.21,
       5.28,
       60.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15297,7 +15634,8 @@
       -2.21,
       5.28,
       5.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15334,7 +15672,8 @@
       -2.21,
       5.28,
       0.9
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15369,7 +15708,8 @@
       -2.21,
       5.28,
       -4.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15404,7 +15744,8 @@
       -2.21,
       5.28,
       -9.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15439,7 +15780,8 @@
       -2.21,
       5.28,
       -19.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -15472,7 +15814,8 @@
       -2.21,
       5.28,
       -39.1
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     }
    ]
   },
@@ -16031,8 +16374,12 @@
     ],
     "recorded_depth_mm": 166.78,
     "cast_depth_mm": 167.97,
-    "cast_label": "TARGET"
+    "cast_label": "TARGET",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 36,
+    "line_of_sight_verified": false
    },
+   "camera_line_of_sight_verified": false,
    "displacements": [
     {
      "axis": "none",
@@ -16069,7 +16416,8 @@
       -0.54,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16104,7 +16452,8 @@
       4.46,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16141,7 +16490,8 @@
       9.46,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16178,7 +16528,8 @@
       14.46,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16215,7 +16566,8 @@
       19.46,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16248,7 +16600,8 @@
       29.46,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16281,7 +16634,8 @@
       49.46,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16316,7 +16670,8 @@
       -5.54,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16353,7 +16708,8 @@
       -10.54,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16388,7 +16744,8 @@
       -15.54,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16421,7 +16778,8 @@
       -20.54,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16456,7 +16814,8 @@
       -30.54,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "closing",
@@ -16491,7 +16850,8 @@
       -50.54,
       2.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16528,7 +16888,8 @@
       -0.54,
       7.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16565,7 +16926,8 @@
       -0.54,
       12.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16602,7 +16964,8 @@
       -0.54,
       17.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16637,7 +17000,8 @@
       -0.54,
       22.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16672,7 +17036,8 @@
       -0.54,
       32.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16705,7 +17070,8 @@
       -0.54,
       52.8,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16742,7 +17108,8 @@
       -0.54,
       -2.2,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16779,7 +17146,8 @@
       -0.54,
       -7.2,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16817,7 +17185,8 @@
       -0.54,
       -12.2,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16855,7 +17224,8 @@
       -0.54,
       -17.2,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16891,7 +17261,8 @@
       -0.54,
       -27.2,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "lateral",
@@ -16924,7 +17295,8 @@
       -0.54,
       -47.2,
       7.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -16961,7 +17333,8 @@
       -0.54,
       2.8,
       12.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -16998,7 +17371,8 @@
       -0.54,
       2.8,
       17.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17033,7 +17407,8 @@
       -0.54,
       2.8,
       22.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17066,7 +17441,8 @@
       -0.54,
       2.8,
       27.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17099,7 +17475,8 @@
       -0.54,
       2.8,
       37.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17132,7 +17509,8 @@
       -0.54,
       2.8,
       57.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17169,7 +17547,8 @@
       -0.54,
       2.8,
       2.51
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17206,7 +17585,8 @@
       -0.54,
       2.8,
       -2.49
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17241,7 +17621,8 @@
       -0.54,
       2.8,
       -7.49
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17276,7 +17657,8 @@
       -0.54,
       2.8,
       -12.49
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17309,7 +17691,8 @@
       -0.54,
       2.8,
       -22.49
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     },
     {
      "axis": "tool",
@@ -17342,7 +17725,8 @@
       -0.54,
       2.8,
       -42.49
-     ]
+     ],
+     "camera_line_of_sight_verified": false
     }
    ]
   },
@@ -17899,8 +18283,12 @@
     ],
     "recorded_depth_mm": 166.58,
     "cast_depth_mm": 166.58,
-    "cast_label": "TARGET"
+    "cast_label": "TARGET",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 81,
+    "line_of_sight_verified": true
    },
+   "camera_line_of_sight_verified": true,
    "displacements": [
     {
      "axis": "none",
@@ -17937,7 +18325,8 @@
       -2.24,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -17974,7 +18363,8 @@
       2.76,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18011,7 +18401,8 @@
       7.76,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18048,7 +18439,8 @@
       12.76,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18083,7 +18475,8 @@
       17.76,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18116,7 +18509,8 @@
       27.76,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18149,7 +18543,8 @@
       47.76,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18186,7 +18581,8 @@
       -7.24,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18223,7 +18619,8 @@
       -12.24,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18258,7 +18655,8 @@
       -17.24,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18293,7 +18691,8 @@
       -22.24,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18326,7 +18725,8 @@
       -32.24,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -18359,7 +18759,8 @@
       -52.24,
       5.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18396,7 +18797,8 @@
       -2.24,
       10.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18434,7 +18836,8 @@
       -2.24,
       15.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18472,7 +18875,8 @@
       -2.24,
       20.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18510,7 +18914,8 @@
       -2.24,
       25.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18545,7 +18950,8 @@
       -2.24,
       35.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18580,7 +18986,8 @@
       -2.24,
       55.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18617,7 +19024,8 @@
       -2.24,
       0.92,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18654,7 +19062,8 @@
       -2.24,
       -4.08,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18691,7 +19100,8 @@
       -2.24,
       -9.08,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18728,7 +19138,8 @@
       -2.24,
       -14.08,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18766,7 +19177,8 @@
       -2.24,
       -24.08,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -18801,7 +19213,8 @@
       -2.24,
       -44.08,
       9.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -18838,7 +19251,8 @@
       -2.24,
       5.92,
       14.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -18873,7 +19287,8 @@
       -2.24,
       5.92,
       19.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -18906,7 +19321,8 @@
       -2.24,
       5.92,
       24.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -18939,7 +19355,8 @@
       -2.24,
       5.92,
       29.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -18972,7 +19389,8 @@
       -2.24,
       5.92,
       39.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -19005,7 +19423,8 @@
       -2.24,
       5.92,
       59.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -19042,7 +19461,8 @@
       -2.24,
       5.92,
       4.79
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -19079,7 +19499,8 @@
       -2.24,
       5.92,
       -0.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -19114,7 +19535,8 @@
       -2.24,
       5.92,
       -5.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -19149,7 +19571,8 @@
       -2.24,
       5.92,
       -10.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -19184,7 +19607,8 @@
       -2.24,
       5.92,
       -20.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -19217,7 +19641,8 @@
       -2.24,
       5.92,
       -40.21
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     }
    ]
   },
@@ -19776,8 +20201,12 @@
     ],
     "recorded_depth_mm": 165.31,
     "cast_depth_mm": 165.31,
-    "cast_label": "TARGET"
+    "cast_label": "TARGET",
+    "neighbourhood_pixels": 81,
+    "neighbourhood_agree": 81,
+    "line_of_sight_verified": true
    },
+   "camera_line_of_sight_verified": true,
    "displacements": [
     {
      "axis": "none",
@@ -19814,7 +20243,8 @@
       1.28,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -19851,7 +20281,8 @@
       6.28,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -19888,7 +20319,8 @@
       11.28,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -19925,7 +20357,8 @@
       16.28,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -19960,7 +20393,8 @@
       21.28,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -19993,7 +20427,8 @@
       31.28,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -20026,7 +20461,8 @@
       51.28,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -20063,7 +20499,8 @@
       -3.72,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -20100,7 +20537,8 @@
       -8.72,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -20137,7 +20575,8 @@
       -13.72,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -20172,7 +20611,8 @@
       -18.72,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -20205,7 +20645,8 @@
       -28.72,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "closing",
@@ -20238,7 +20679,8 @@
       -48.72,
       -1.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20275,7 +20717,8 @@
       1.28,
       3.18,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20310,7 +20753,8 @@
       1.28,
       8.18,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20345,7 +20789,8 @@
       1.28,
       13.18,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20380,7 +20825,8 @@
       1.28,
       18.18,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20415,7 +20861,8 @@
       1.28,
       28.18,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20448,7 +20895,8 @@
       1.28,
       48.18,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20485,7 +20933,8 @@
       1.28,
       -6.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20522,7 +20971,8 @@
       1.28,
       -11.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20559,7 +21009,8 @@
       1.28,
       -16.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20594,7 +21045,8 @@
       1.28,
       -21.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20629,7 +21081,8 @@
       1.28,
       -31.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "lateral",
@@ -20662,7 +21115,8 @@
       1.28,
       -51.82,
       10.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -20699,7 +21153,8 @@
       1.28,
       -1.82,
       15.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -20734,7 +21189,8 @@
       1.28,
       -1.82,
       20.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -20769,7 +21225,8 @@
       1.28,
       -1.82,
       25.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -20802,7 +21259,8 @@
       1.28,
       -1.82,
       30.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -20835,7 +21293,8 @@
       1.28,
       -1.82,
       40.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -20868,7 +21327,8 @@
       1.28,
       -1.82,
       60.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -20903,7 +21363,8 @@
       1.28,
       -1.82,
       5.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -20938,7 +21399,8 @@
       1.28,
       -1.82,
       0.67
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -20973,7 +21435,8 @@
       1.28,
       -1.82,
       -4.33
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -21008,7 +21471,8 @@
       1.28,
       -1.82,
       -9.33
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -21043,7 +21507,8 @@
       1.28,
       -1.82,
       -19.33
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     },
     {
      "axis": "tool",
@@ -21076,7 +21541,8 @@
       1.28,
       -1.82,
       -39.33
-     ]
+     ],
+     "camera_line_of_sight_verified": true
     }
    ]
   }
@@ -21110,9 +21576,9 @@
   "runs/depth-loop-eve-r1-20261001/run_01_evening_tree1_v15004_baseline_depth_appearance/frames.json": "90468da9a0ae7486910a69343ec73a6ab30b50e5446021ed9ed2c88aa6c41b57"
  },
  "provenance": {
-  "code_revision": "67905488d09e688f749406154b84411b3943b738",
+  "code_revision": "8ab5b6ffa464cc7fdde9d7fb0f932b4f77d1cfc1",
   "tracked_tree_clean": true,
-  "host": "cn-e04.hpc.engr.oregonstate.edu",
-  "elapsed_s": 9.2
+  "host": "cn-e11.hpc.engr.oregonstate.edu",
+  "elapsed_s": 17.3
  }
 }

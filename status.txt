@@ -11,6 +11,11 @@ P2.3 RESULT — 2026-11-25 (read this first)
   near the tips); ToF sees it in 11/11 there but loses it when centred; a beam grid follows geometry (16/161
   blocked by other wood); one camera ray is fragile. Channel choice and "centre the cut" are the user's call.
   No gate, message or sim-tool change was made.
+  REVISED same day (tool 8ab5b6f): depth image vs cast agrees on a 9x9 patch in 9/11 runs; in the two 530 runs it
+  does not (2 and 36 of 81 px): a soil-textured surface ~7 mm past the mouth that the tree meshes lack. NOT yet
+  identified (docs/PENDING.md); a scratch plane fit suggests the visual ground relief with the camera on its far
+  side. Control 530's stop came from the tracker (spur stayed between the jaws), so it is NOT an example of the
+  blind spot a veto-only witness closes.
   GitHub Pages deploys failed three times on Nov 25 around 12:00 UTC (deploy step cannot find the uploaded
   artifact); the live site is unchanged.
 
