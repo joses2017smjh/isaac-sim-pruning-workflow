@@ -101,3 +101,28 @@ frames on A40s, so these should take about 25 minutes each, about 150
 GPU-minutes in all. Storage about 0.7 GB per run, about 4 GB in all. The share held 1.72 TiB on
 November 24, under the 2 TiB hard limit; it is over the 1.5 TiB soft limit, with
 grace to about December 19, and these runs finish long before that.
+
+## Submission — November 25, 2026
+
+Submitted from the registration commit `bfd086a`, pushed to `develop` before
+submission, with the scorer above already committed. The batch froze that code
+in `artifacts/vision_robustness/delay-episode-20261125/code`.
+
+| Job | What |
+|---|---|
+| `22149695` | CPU: build the ROS 2 workspace for the batch |
+| `22149696` | GPU array, tasks 0–5, one at a time (`%1`), A40 only, 40 minutes each, `afterok` the build |
+
+**Scoring, once the array has finished.** Each run writes its own
+`sequence_grade.json`, so no aggregation step is needed. From a clean clone at
+the registration commit:
+
+```bash
+cd /nfs/hpc/share/sanchej7/pruning_work/grading
+sbatch score.sbatch bfd086a tools/score_delay_episode.py \
+  /nfs/hpc/share/sanchej7/pruning_work/grading/delay_episode_verdicts_bfd086a.json \
+  --batch artifacts/vision_robustness/delay-episode-20261125
+```
+
+Then copy the verdict file into `docs/evidence/` byte for byte and publish the
+result here, including any failed run's failed checks.

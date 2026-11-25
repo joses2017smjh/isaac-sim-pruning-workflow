@@ -5,7 +5,10 @@ and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-Nothing is queued.
+- **[Longer episode at 66.7 and 100 ms delay](EVAL_PROTOCOL_DELAY_EPISODE_2026-11-25.md)**:
+  6 runs, 240 GPU-minutes reserved, submitted November 25 from `bfd086a`
+  (build `22149695`, then array `22149696`). Tests whether the November 5
+  delay failures were only the 20 s episode running out.
 
 Finished and published:
 - [closure-hold sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026),

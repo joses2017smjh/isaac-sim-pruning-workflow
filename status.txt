@@ -1,3 +1,16 @@
+P2.3 LONG-EPISODE DELAY TEST — SUBMITTED 2026-11-25 (read this first)
+  User approved (2026-11-24) ~240 GPU-min; Phase 0 pushed (02c1b2f, CI green); lane order: robotics software,
+  perception, deployment, test & validation. Storage: user says don't worry (2 TiB hard limit).
+  Protocol + scorer registered and pushed at bfd086a: docs/EVAL_PROTOCOL_DELAY_EPISODE_2026-11-25.md,
+  tools/score_delay_episode.py (D0 ROS drove the arm; D1 all 6 pass; D2 home within 10 of 233/277; D3 cut
+  within 2 of 120/142). Batch artifacts/vision_robustness/delay-episode-20261125: build 22149695 (CPU),
+  array 22149696 (6 x 300 frames, delays 4,6,4,6,4,6; A40 only; %1; 40 min each).
+  NEXT when 22149696 finishes: pruning_work/grading: sbatch score.sbatch bfd086a tools/score_delay_episode.py
+    /nfs/hpc/share/sanchej7/pruning_work/grading/delay_episode_verdicts_bfd086a.json
+    --batch artifacts/vision_robustness/delay-episode-20261125
+  then copy the verdicts into docs/evidence/ unchanged and publish the result section. One resubmission per
+  index allowed only for timeouts or node failures, within 240 GPU-min (record resubmission.json).
+
 PHASE 0 OF THE LONG-TERM PLAN — 2026-11-22
   User asked (2026-11-22) to start on the milestone plans. Commits are local; push waits for the user.
   P0.1 DONE: Oct 6 closure-hold sweep scored. Grades committed unopened (38ac49c), frozen scorer run
