@@ -198,3 +198,6 @@ Two notes from re-reading the runs. Neither changes a verdict.
   measured medians of 3.91, 3.00, 2.37 and 1.98 mm. The approach took 68,
   88–89, 112 and 134 frames. The model predicts that the 66.7 and 100 ms runs
   would pass all 17 checks with a 30 s episode. That prediction is untested.
+- **Tested November 25.** Registered and run as a separate experiment: all six
+  30 s runs passed, with the arm home at the predicted frames
+  ([result](EVAL_PROTOCOL_DELAY_EPISODE_2026-11-25.md#result--november-25-2026)).

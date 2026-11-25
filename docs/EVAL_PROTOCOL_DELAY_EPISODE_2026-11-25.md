@@ -126,3 +126,36 @@ sbatch score.sbatch bfd086a tools/score_delay_episode.py \
 
 Then copy the verdict file into `docs/evidence/` byte for byte and publish the
 result here, including any failed run's failed checks.
+
+## Result — November 25, 2026
+
+Scored with the committed scorer from a clean clone at the registration commit
+`bfd086a` (CPU job `22150537`):
+[verdicts](evidence/delay_episode_verdicts_2026-11-25.json). All six runs
+completed on A40 nodes and all six were scored. 148 GPU-minutes were used of the
+240 reserved. No run was resubmitted.
+
+| Prediction | Verdict |
+|---|---|
+| D0, ROS 2 drove the arm | **Supported, 6/6.** Every frame applied exactly the gate's command, with no timeouts and no gate hold |
+| D1, all six pass with a 30 s episode | **Supported.** All six runs passed all 17 checks |
+| D2, home when the model says | **Supported.** The arm was home at frame **233** in all three 66.7 ms runs and at frame **277** in all three 100 ms runs, the registered frames exactly |
+| D3, the first 200 frames repeat November 5 | **Supported.** The cut came at frame 120 (66.7 ms) and 142 (100 ms) in every run |
+
+**What this settles.** The six November 5 failures at 66.7 and 100 ms were the
+20 s episode ending during the retreat, and nothing else. Under the same
+condition with 30 s, the run completes: approach 112 or 134 frames, align 3,
+closing 6, and a retreat exactly as long as the approach. "First failing delay:
+66.7 ms" in the November 5 result is therefore a time budget for a 20 s
+episode. It is not a latency limit.
+
+**What it does not add.**
+- The agreement is exact because the loop is close to deterministic. D2's
+  frames were computed from November 5's own approach lengths, and D3 confirms
+  these runs repeat November 5 up to the cut. The new information is the
+  retreat: it mirrors the approach and the arm gets home.
+- Three runs per delay are one observation repeated, not a rate.
+- Only commands were delayed. The vision age the gate checked was 0 s in all
+  1,806 decisions, as on November 5, so the 0.25 s freshness check still has
+  not fired in closed loop.
+- One target, one light, simulation, loopback on one node.

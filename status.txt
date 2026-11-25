@@ -1,3 +1,13 @@
+P2.3 RESULT — 2026-11-25 (read this first)
+  Long-episode delay test scored (CPU 22150537, clean clone at bfd086a): D0-D3 all supported. 6/6 passed 17/17 with
+  a 30 s episode; cut at 120/142, home at 233/277 exactly as registered; 148 of 240 GPU-min; no resubmission.
+  docs/evidence/delay_episode_verdicts_2026-11-25.json. The Nov 5 "first failing delay 66.7 ms" was the 20 s
+  episode running out. Vision age still 0 s in all 1,806 decisions (commands delayed, not sensors).
+  NEXT (lane order from the user: robotics software first): P2.1, an independent check of the jaw mouth. The ToF
+  sensors cannot see the mouth (144 mm vs 70 mm along the tool axis; corrected in docs/ROS2_SIL.md at 58def13).
+  GitHub Pages deploys failed three times on Nov 25 around 12:00 UTC (deploy step cannot find the uploaded
+  artifact); the live site is unchanged.
+
 P2.3 LONG-EPISODE DELAY TEST — SUBMITTED 2026-11-25 (read this first)
   User approved (2026-11-24) ~240 GPU-min; Phase 0 pushed (02c1b2f, CI green); lane order: robotics software,
   perception, deployment, test & validation. Storage: user says don't worry (2 TiB hard limit).

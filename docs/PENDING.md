@@ -1,16 +1,17 @@
 # Pending work and stretch goals
 
-Updated November 22, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
+Updated November 25, 2026. Job details are in [SLURM_JOBS.md](../SLURM_JOBS.md)
 and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-- **[Longer episode at 66.7 and 100 ms delay](EVAL_PROTOCOL_DELAY_EPISODE_2026-11-25.md)**:
-  6 runs, 240 GPU-minutes reserved, submitted November 25 from `bfd086a`
-  (build `22149695`, then array `22149696`). Tests whether the November 5
-  delay failures were only the 20 s episode running out.
+Nothing is queued.
 
 Finished and published:
+- [longer episode at 66.7 and 100 ms delay](EVAL_PROTOCOL_DELAY_EPISODE_2026-11-25.md#result--november-25-2026),
+  November 25: all six 30 s runs passed 17/17 with the arm home at the
+  registered frames (D0–D3 supported), so the November 5 delay failures were
+  the 20 s episode running out.
 - [closure-hold sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026),
   scored November 22: 4 of 28 targets passed 17/17; the hold carried all 6
   closures to detachment; S1, S3–S6 supported, S2 untested, S7 refuted
