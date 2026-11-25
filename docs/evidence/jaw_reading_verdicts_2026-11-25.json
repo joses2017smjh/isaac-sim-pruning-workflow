@@ -1,0 +1,2424 @@
+{
+ "captures": 90,
+ "closure_captures": 48,
+ "inputs_sha256": {
+  "beams:test_cb0952a": "63ae40b93a7dd0f71a39c543ec07b247586e5e69d0d27224271d34eeff464ca9",
+  "cycles": "2d9e1f4bb3c2f0a7903a2bfd2a81e6d2d115074422f5d7266acf37ef4879aa08"
+ },
+ "protocol": "docs/EVAL_PROTOCOL_JAW_READING_2026-11-25.md",
+ "provenance": {
+  "code_revision": "cb0952ae243f69182e99f821655516c69628a63b",
+  "tracked_tree_clean": true
+ },
+ "rows": [
+  {
+   "capture": "artifacts/generalization/phase-20260920/shadow_job_21370047",
+   "divided": true,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8235"
+  },
+  {
+   "capture": "artifacts/isaac_render/job_21316823",
+   "divided": true,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8235"
+  },
+  {
+   "capture": "artifacts/isaac_render/job_21317169",
+   "divided": true,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 2,
+      "with_target_refused": 19,
+      "without_target_accepted": 1,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      72,
+      "jaw_empty_during_closure"
+     ],
+     "recorded_kept": false,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 21,
+      "without_target_accepted": 5,
+      "without_target_refused": 10
+     },
+     "recorded_first_hold": [
+      78,
+      "vision_invalid"
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree0_SPUR_component_8235"
+  },
+  {
+   "capture": "artifacts/isaac_render/job_21317409",
+   "divided": true,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 2,
+      "with_target_refused": 19,
+      "without_target_accepted": 1,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      72,
+      "jaw_empty_during_closure"
+     ],
+     "recorded_kept": false,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 21,
+      "without_target_accepted": 5,
+      "without_target_refused": 10
+     },
+     "recorded_first_hold": [
+      76,
+      "vision_invalid"
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree0_SPUR_component_8235"
+  },
+  {
+   "capture": "artifacts/isaac_render/job_21328323",
+   "divided": true,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 1,
+      "with_target_refused": 20,
+      "without_target_accepted": 1,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      72,
+      "jaw_empty_during_closure"
+     ],
+     "recorded_kept": false,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 21,
+      "without_target_accepted": 6,
+      "without_target_refused": 9
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree0_SPUR_component_8235"
+  },
+  {
+   "capture": "artifacts/isaac_render/job_21329420",
+   "divided": true,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8235"
+  },
+  {
+   "capture": "artifacts/isaac_render/job_21329421",
+   "divided": true,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8235"
+  },
+  {
+   "capture": "artifacts/isaac_render/job_21358986",
+   "divided": true,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 1,
+      "with_target_refused": 20,
+      "without_target_accepted": 1,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      72,
+      "jaw_empty_during_closure"
+     ],
+     "recorded_kept": false,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 21,
+      "without_target_accepted": 9,
+      "without_target_refused": 6
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": false
+    }
+   },
+   "target": "tree0_SPUR_component_8235"
+  },
+  {
+   "capture": "artifacts/isaac_render/job_21358987",
+   "divided": true,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_refused": 22,
+      "without_target_accepted": 1,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      72,
+      "jaw_empty_during_closure"
+     ],
+     "recorded_kept": false,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 8,
+      "without_target_refused": 6
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": false
+    }
+   },
+   "target": "tree0_SPUR_component_8235"
+  },
+  {
+   "capture": "artifacts/vision_robustness/agree-eve-r1-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/agree-eve-r2-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/agree-eve-r3-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/agree-eve-r4-20261003/run_00_evening_tree1_v14944_baseline_depth_agreement",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/delay-episode-20261125/run_00_source_tree1_v14944_baseline_ros2_delay4",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 8,
+      "without_target_accepted": 1,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 3,
+      "without_target_refused": 11
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/delay-episode-20261125/run_01_source_tree1_v14944_baseline_ros2_delay6",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 12,
+      "with_target_refused": 10,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 2,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/delay-episode-20261125/run_02_source_tree1_v14944_baseline_ros2_delay4",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 8,
+      "without_target_accepted": 1,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 3,
+      "without_target_refused": 11
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/delay-episode-20261125/run_03_source_tree1_v14944_baseline_ros2_delay6",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 11,
+      "with_target_refused": 10,
+      "without_target_refused": 15
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 21,
+      "without_target_accepted": 3,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/delay-episode-20261125/run_04_source_tree1_v14944_baseline_ros2_delay4",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 8,
+      "without_target_accepted": 1,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 3,
+      "without_target_refused": 11
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/delay-episode-20261125/run_05_source_tree1_v14944_baseline_ros2_delay6",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 11,
+      "with_target_refused": 10,
+      "without_target_refused": 15
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 21,
+      "without_target_accepted": 3,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/depth-loop-eve-r1-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/depth-loop-eve-r2-20261001/run_00_evening_tree1_v14944_baseline_depth_appearance",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/depth-loop-src-20261001/run_00_source_tree1_v14944_baseline_depth_appearance",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-gen-18143-r1-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_18143"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-gen-18143-r2-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_18143"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-gen-18143-r3-20261004/run_00_source_tree1_v18143_planned_pose_jaw_hold_gen_s100",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_18143"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-gen-ctl-20261004/run_01_source_tree1_v14944_planned_pose_jaw_hold_gen",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_01_source_tree0_v7049_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 12,
+      "with_target_refused": 10,
+      "without_target_refused": 14
+     }
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_refused": 14
+     }
+    }
+   },
+   "target": "tree0_SPUR_component_7049"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_04_source_tree0_v8175_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 9,
+      "with_target_refused": 12,
+      "without_target_refused": 15
+     },
+     "recorded_first_hold": [
+      72,
+      "jaw_empty_during_closure"
+     ],
+     "recorded_kept": false,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 21,
+      "without_target_accepted": 3,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree0_SPUR_component_8175"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_06_source_tree0_v11607_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_11607"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_07_source_tree0_v11727_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_11727"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_09_source_tree0_v12321_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 7,
+      "without_target_accepted": 2,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 21,
+      "without_target_accepted": 2,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree0_SPUR_component_12321"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_10_source_tree0_v12381_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_12381"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_11_source_tree0_v13213_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_13213"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_15_source_tree0_v28493_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_28493"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_16_source_tree0_v28610_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 12,
+      "with_target_refused": 7,
+      "without_target_refused": 17
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 19,
+      "without_target_refused": 17
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree0_SPUR_component_28610"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_21_source_tree1_v20995_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 8,
+      "with_target_refused": 11,
+      "without_target_accepted": 1,
+      "without_target_refused": 16
+     }
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 19,
+      "without_target_accepted": 2,
+      "without_target_refused": 15
+     }
+    }
+   },
+   "target": "tree1_SPUR_component_20995"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_23_source_tree1_v26425_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_26425"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_26_source_tree1_v34125_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 9,
+      "with_target_refused": 9,
+      "without_target_accepted": 1,
+      "without_target_refused": 17
+     }
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 18,
+      "without_target_accepted": 5,
+      "without_target_refused": 13
+     }
+    }
+   },
+   "target": "tree1_SPUR_component_34125"
+  },
+  {
+   "capture": "artifacts/vision_robustness/hold-sweep-ctl-20261006/run_01_source_tree1_v14944_planned_pose_jaw_hold_sweep",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/jaw-hold-b-20261001/run_01_source_tree1_v14944_planned_pose_jaw_hold",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/jaw-shadow-eve-a-r1-20260930/run_00_evening_tree1_v14944_baseline",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/jaw-shadow-eve-a-r2-20260930/run_00_evening_tree1_v14944_baseline",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/jaw-shadow-eve-b-r1-20260930/run_00_evening_tree1_v14944_jaw_no_shadow",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/jaw-shadow-eve-b-r2-20260930/run_00_evening_tree1_v14944_jaw_no_shadow",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/perc-both-tree0-20260926/run_03_source_tree0_v8353_similarity_mount",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8353"
+  },
+  {
+   "capture": "artifacts/vision_robustness/perc-both-tree0-20260926/run_07_source_tree0_v18669_similarity_mount",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_18669"
+  },
+  {
+   "capture": "artifacts/vision_robustness/perc-both-tree1-20260926/run_01_source_tree1_v14944_similarity_mount",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/perc-mount-flip-20260926/run_00_source_tree0_v8353_mount_side",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8353"
+  },
+  {
+   "capture": "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_03_source_tree0_v8353_similarity_tracker",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8353"
+  },
+  {
+   "capture": "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_07_source_tree0_v18669_similarity_tracker",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_18669"
+  },
+  {
+   "capture": "artifacts/vision_robustness/perc-similarity-tree1-20260926/run_01_source_tree1_v14944_similarity_tracker",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/planned-pose-gpu-r1-20260929/run_02_source_tree1_v14944_planned_pose",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/planned-pose-gpu-r2-20260929/run_02_source_tree1_v14944_planned_pose",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/planned-pose-gpu-r3-20260929/run_02_source_tree1_v14944_planned_pose",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_00_source_tree1_v14944_baseline_ros2_delay0",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_01_source_tree1_v14944_baseline_ros2_delay2",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 13,
+      "with_target_refused": 10,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_02_source_tree1_v14944_baseline_ros2_delay4",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 2,
+      "without_target_refused": 11
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_03_source_tree1_v14944_baseline_ros2_delay6",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 8,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 2,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_04_source_tree1_v14944_baseline_ros2_delay0",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_05_source_tree1_v14944_baseline_ros2_delay2",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 15,
+      "with_target_refused": 7,
+      "without_target_accepted": 1,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 2,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_06_source_tree1_v14944_baseline_ros2_delay4",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 15,
+      "with_target_refused": 8,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 2,
+      "without_target_refused": 11
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_07_source_tree1_v14944_baseline_ros2_delay6",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 11,
+      "with_target_refused": 10,
+      "without_target_refused": 15
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 21,
+      "without_target_accepted": 3,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_08_source_tree1_v14944_baseline_ros2_delay0",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_09_source_tree1_v14944_baseline_ros2_delay2",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 15,
+      "with_target_refused": 7,
+      "without_target_accepted": 1,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 2,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_10_source_tree1_v14944_baseline_ros2_delay4",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 15,
+      "with_target_refused": 8,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 2,
+      "without_target_refused": 11
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_11_source_tree1_v14944_baseline_ros2_delay6",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 8,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 2,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-delay-20261105/run_12_source_tree1_v14944_baseline_ros2_delay0_panel_hold",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/ros2-loop-smoke-20261105/run_00_source_tree1_v14944_baseline_ros2_delay0",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 8,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 1,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/strategy-fine-step-20260923/run_03_source_tree0_v8353_fine_step",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8353"
+  },
+  {
+   "capture": "artifacts/vision_robustness/strategy-fine-step-20260923/run_07_source_tree0_v18669_fine_step",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_18669"
+  },
+  {
+   "capture": "artifacts/vision_robustness/strategy-horizontal-20260923/run_03_source_tree0_v8353_horizontal_standoff",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8353"
+  },
+  {
+   "capture": "artifacts/vision_robustness/strategy-horizontal-20260923/run_07_source_tree0_v18669_horizontal_standoff",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_18669"
+  },
+  {
+   "capture": "artifacts/vision_robustness/strategy-tool-axis-20260923/run_03_source_tree0_v8353_tool_axis_standoff",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8353"
+  },
+  {
+   "capture": "artifacts/vision_robustness/strategy-tool-axis-20260923/run_07_source_tree0_v18669_tool_axis_standoff",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_18669"
+  },
+  {
+   "capture": "artifacts/vision_robustness/targets-morning-20260923/run_03_morning_tree0_v8353",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8353"
+  },
+  {
+   "capture": "artifacts/vision_robustness/targets-morning-20260923/run_07_morning_tree0_v18669",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_18669"
+  },
+  {
+   "capture": "artifacts/vision_robustness/targets-source-20260923/run_03_source_tree0_v8353",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_8353"
+  },
+  {
+   "capture": "artifacts/vision_robustness/targets-source-20260923/run_07_source_tree0_v18669",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree0_SPUR_component_18669"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-listed-baseline-20260923/run_01_source_tree1_v14944_baseline",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-listed-evening-20260926/run_01_evening_tree1_v14944_baseline",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-listed-morning-20260926/run_01_morning_tree1_v14944_baseline",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 15,
+      "with_target_refused": 8,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-listed-repeat-r1-20260926/run_01_source_tree1_v14944_baseline",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 8,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 1,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-listed-repeat-r2-20260926/run_01_source_tree1_v14944_baseline",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-listed-repeat-r3-20260926/run_01_source_tree1_v14944_baseline",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 9,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 23,
+      "without_target_accepted": 1,
+      "without_target_refused": 12
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_05_source_tree1_v15599_baseline",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_15599"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-seeded-ten-20260926/run_08_source_tree1_v37023_baseline",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_37023"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-seeded30-20260926/run_12_source_tree1_v10737_baseline",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_10737"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-seeded30-20260926/run_15_source_tree1_v14944_baseline",
+   "divided": false,
+   "reaches_closing": true,
+   "rules": {
+    "centred_spur": {
+     "displaced": {
+      "with_target_accepted": 14,
+      "with_target_refused": 8,
+      "without_target_refused": 14
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    },
+    "one_beam": {
+     "displaced": {
+      "with_target_accepted": 22,
+      "without_target_accepted": 1,
+      "without_target_refused": 13
+     },
+     "recorded_first_hold": [
+      null,
+      null
+     ],
+     "recorded_kept": true,
+     "short_refused": true
+    }
+   },
+   "target": "tree1_SPUR_component_14944"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-seeded30-20260926/run_16_source_tree1_v17723_baseline",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_17723"
+  },
+  {
+   "capture": "artifacts/vision_robustness/tree1-seeded30-20260926/run_23_source_tree1_v30283_baseline",
+   "divided": false,
+   "reaches_closing": false,
+   "rules": {
+    "centred_spur": {
+     "displaced": {}
+    },
+    "one_beam": {
+     "displaced": {}
+    }
+   },
+   "target": "tree1_SPUR_component_30283"
+  }
+ ],
+ "rule": {
+  "centre_max_mm": 6.0,
+  "min_spur_beams": 2,
+  "thickness_slack_mm": 2.0
+ },
+ "schema_version": 1,
+ "side": "test",
+ "skipped": {
+  "tool_beneath_the_ground": 6
+ },
+ "summary": {
+  "centred_spur": {
+   "all": {
+    "closure_captures": 48,
+    "displaced": {
+     "with_target_accepted": 613,
+     "with_target_refused": 516,
+     "without_target_accepted": 14,
+     "without_target_refused": 693
+    },
+    "recorded_kept": 42,
+    "recorded_refused": [
+     "artifacts/isaac_render/job_21317169",
+     "artifacts/isaac_render/job_21317409",
+     "artifacts/isaac_render/job_21328323",
+     "artifacts/isaac_render/job_21358986",
+     "artifacts/isaac_render/job_21358987",
+     "artifacts/vision_robustness/hold-sweep-20261006/run_04_source_tree0_v8175_planned_pose_jaw_hold_sweep"
+    ],
+    "short_accepted": [],
+    "short_refused": 48
+   },
+   "other_targets": {
+    "closure_captures": 43,
+    "displaced": {
+     "with_target_accepted": 607,
+     "with_target_refused": 416,
+     "without_target_accepted": 9,
+     "without_target_refused": 624
+    },
+    "recorded_kept": 42,
+    "recorded_refused": [
+     "artifacts/vision_robustness/hold-sweep-20261006/run_04_source_tree0_v8175_planned_pose_jaw_hold_sweep"
+    ],
+    "short_accepted": [],
+    "short_refused": 43
+   },
+   "target_8235": {
+    "closure_captures": 5,
+    "displaced": {
+     "with_target_accepted": 6,
+     "with_target_refused": 100,
+     "without_target_accepted": 5,
+     "without_target_refused": 69
+    },
+    "recorded_kept": 0,
+    "recorded_refused": [
+     "artifacts/isaac_render/job_21317169",
+     "artifacts/isaac_render/job_21317409",
+     "artifacts/isaac_render/job_21328323",
+     "artifacts/isaac_render/job_21358986",
+     "artifacts/isaac_render/job_21358987"
+    ],
+    "short_accepted": [],
+    "short_refused": 5
+   }
+  },
+  "one_beam": {
+   "all": {
+    "closure_captures": 48,
+    "displaced": {
+     "with_target_accepted": 1129,
+     "without_target_accepted": 105,
+     "without_target_refused": 602
+    },
+    "recorded_kept": 48,
+    "recorded_refused": [],
+    "short_accepted": [
+     "artifacts/isaac_render/job_21358986",
+     "artifacts/isaac_render/job_21358987"
+    ],
+    "short_refused": 46
+   },
+   "other_targets": {
+    "closure_captures": 43,
+    "displaced": {
+     "with_target_accepted": 1023,
+     "without_target_accepted": 72,
+     "without_target_refused": 561
+    },
+    "recorded_kept": 43,
+    "recorded_refused": [],
+    "short_accepted": [],
+    "short_refused": 43
+   },
+   "target_8235": {
+    "closure_captures": 5,
+    "displaced": {
+     "with_target_accepted": 106,
+     "without_target_accepted": 33,
+     "without_target_refused": 41
+    },
+    "recorded_kept": 5,
+    "recorded_refused": [],
+    "short_accepted": [
+     "artifacts/isaac_render/job_21358986",
+     "artifacts/isaac_render/job_21358987"
+    ],
+    "short_refused": 3
+   }
+  }
+ },
+ "targets": {
+  "tree0_SPUR_component_12321": 1,
+  "tree0_SPUR_component_28610": 1,
+  "tree0_SPUR_component_8175": 1,
+  "tree0_SPUR_component_8235": 5,
+  "tree1_SPUR_component_14944": 40
+ },
+ "tool": "tools/score_jaw_reading.py",
+ "verdicts": {
+  "K1": {
+   "changed": [
+    "artifacts/vision_robustness/hold-sweep-20261006/run_04_source_tree0_v8175_planned_pose_jaw_hold_sweep"
+   ],
+   "kept": 42,
+   "of": 43,
+   "prediction": "every recorded closure on a target other than 8235 is unchanged",
+   "verdict": "refuted"
+  },
+  "K2": {
+   "accepted": [],
+   "of": 48,
+   "one_beam_accepted": [
+    "artifacts/isaac_render/job_21358986",
+    "artifacts/isaac_render/job_21358987"
+   ],
+   "prediction": "with the tool 20 mm short every closure is refused",
+   "refused": 48,
+   "verdict": "supported"
+  },
+  "K3": {
+   "of": 5,
+   "prediction": "every recorded closure on target 8235, which has other wood in the gap, is refused",
+   "refused": 5,
+   "verdict": "supported"
+  },
+  "K4": {
+   "accepted": 14,
+   "one_beam_accepted": 105,
+   "poses_without_the_target": 707,
+   "prediction": "fewer displaced poses without the target are accepted than under the one-beam rule",
+   "verdict": "supported"
+  }
+ }
+}

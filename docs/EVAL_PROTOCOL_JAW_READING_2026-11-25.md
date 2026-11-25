@@ -130,3 +130,49 @@ the rule accepts.
   designed on. No other target has a known failure to hold out.
 - If K1, K2 and K4 hold, the rule is worth building into the gate. Whether to
   build it with the K3 cost is the user's decision.
+
+## Result — November 25, 2026
+
+The test side was cast and scored from a clean clone at the registration commit
+`cb0952a` (CPU jobs `22151866` and `22151867`): 90 captures, 48 reaching
+closing. Verdicts:
+[jaw_reading_verdicts_2026-11-25.json](evidence/jaw_reading_verdicts_2026-11-25.json),
+copied byte for byte.
+
+| Prediction | Verdict | Measured on the test side |
+|---|---|---|
+| K1 — keeps recorded cuts where the gap is clear | **refuted** | 42 of 43 unchanged. The one changed capture is on target 8175: the rule stops its closure with `jaw_empty_during_closure` |
+| K2 — refuses the jaw that stopped short | **supported** | 48 of 48 refused, including the 2 on 8235 that the one-beam rule accepted |
+| K3 — refuses recorded cuts with other wood in the gap | **supported** | 5 of 5 on 8235 refused |
+| K4 — fewer false acceptances | **supported** | 14 of 707 displaced poses without the target accepted, against 105 for the one-beam rule |
+
+Without a prediction: of the 1,129 displaced poses that still have the target
+between the jaws, the rule accepts 613.
+
+### What this shows
+
+- **The rule fixes what the one-beam rule got wrong.** On captures it was not
+  designed on, it refuses every jaw that stopped short and accepts about one
+  displaced pose in fifty without the target, where the one-beam rule accepted
+  about one in seven.
+- **It is too strict to build as it stands.** It stopped a recorded cut on a
+  spur with a clear gap. In that capture the spur sits 6.0 to 6.4 mm from the
+  middle of the gap during closure, and the rule's limit is 6 mm. The limit was
+  chosen on the design side, where no recorded spur was more than 5.9 mm off
+  centre. The gate's own mouth tolerance is 8 mm, so a spur that far off centre
+  is one the controller is allowed to cut.
+- **Its cost held up as registered.** It refuses every recorded cut on 8235,
+  where other wood is between the jaws.
+
+### After the result, not registered
+
+A centre limit at the gate's 8 mm mouth tolerance would keep the 8175 cut. On
+the design side that limit accepted a few more poses without the target than
+6 mm did. It cannot be tested as registered here: both sides of the split have
+now been seen. A fair test of a revised limit needs recordings that do not
+exist yet, on targets neither side used.
+
+### What was not built
+
+Nothing in the gate, the messages or the C++ node changed. The ranged reading
+is still a calculation on recorded geometry.

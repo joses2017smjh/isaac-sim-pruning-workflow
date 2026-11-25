@@ -414,6 +414,15 @@ crossed a beam with the jaw 20 mm short of the spur, and the gate let the
 recorded closure through. One blocked beam says something is in the gap, not
 that it is the target.
 
+A second rule was then designed on half of the recordings and tested on the
+other half, registered first ([protocol and result](EVAL_PROTOCOL_JAW_READING_2026-11-25.md#result--november-25-2026)). It reads how far
+across the gap each beam's obstruction is and asks for one centred spur and
+nothing else. On held-out captures it refused 48 of 48 jaws that stopped short and
+accepted 14 of 707 displaced poses without the target (the one-beam rule: 105).
+It also stopped one recorded cut on a clear spur (42 of 43 kept; the prediction
+was all), and it refuses every recorded cut that has other wood between the
+jaws. It is Python only and was not built into the gate.
+
 The same cast put the ground relief in the mesh set and checked every capture:
 in 28 of 233 the tool point is beneath the orchard's visual ground, on six
 targets including 530. Those captures were set aside here and are listed in the

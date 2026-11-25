@@ -45,15 +45,19 @@ Finished and published:
 - **Storage.** On November 22 the share held 1.71 TiB against the 1.5 TiB soft
   quota, with 3 weeks 6 days of grace left (to about December 19). This
   repository's directory is about 139 GiB of that.
-- **A reading that tells the target from other wood (after the November 25 replay).**
-  The gate now has an optional jaw-presence input, off by default
-  ([result](EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026)).
-  The rule held up. The reading did not: with the jaw 20 mm short of the spur,
-  other wood blocked a beam in 5 of 87 closures and the gate accepted them. A
-  count of blocked beams does not separate the cases on these recordings. Open:
-  which beams are blocked, or a ranged reading along the gap, registered and
-  replayed before any simulated sensor is built. Publishing the reading from the
-  simulated tool and a live run need GPU time that has not been asked for.
+- **A reading that tells the target from other wood (tested November 25).**
+  The one-beam jaw-presence rule accepted 5 of 87 closures with the jaw 20 mm
+  short. A ranged rule (one centred spur and nothing else in the gap) was then
+  designed on half of the recordings and tested on the other half
+  ([result](EVAL_PROTOCOL_JAW_READING_2026-11-25.md#result--november-25-2026)).
+  It refused all 48 short jaws and cut false acceptances from 105 to 14 poses, but
+  stopped 1 of 43 recorded cuts on a clear spur and, as registered, every cut
+  with other wood between the jaws. Not built into the gate. Open, and yours to
+  decide: whether a cut with other wood in the jaw should be refused at all, and
+  whether to widen the centre limit to the gate's 8 mm tolerance. A fair test of
+  any revision needs recordings on targets neither half used, which means GPU
+  time. Publishing a reading from the simulated tool also needs GPU time. None
+  has been asked for.
 - **The cut closes near the jaw tips (found November 25).** In the nine usable
   runs of the mouth study the spur's centre was 9.4 to 12.8 mm ahead of the mouth
   centre when the cut became ready. Whether to change the approach so it closes
