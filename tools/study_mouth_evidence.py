@@ -80,6 +80,11 @@ BEAM_Y_M = (-0.008, 0.0, 0.008)
 BEAM_Z_M = (jsm.JAW_HEIGHT_M - 0.010, jsm.JAW_HEIGHT_M, jsm.JAW_HEIGHT_M + 0.010)
 CENTRE_BEAM = 4  # y = 0 at the jaw height, in the z-major order beams() builds
 OFFSETS_M = (0.005, 0.010, 0.015, 0.020, 0.030, 0.050)
+# ---- added after the first pass, when the depth image disagreed with the cast in the two runs on target 530 ----
+#: The camera's line of sight counts as verified when this share of the pixels around the mouth pixel agree.
+DEPTH_NEIGHBOURHOOD_PX = 4
+DEPTH_AGREE_M = 0.0005
+DEPTH_AGREE_FRACTION = 0.95
 AXES = ("closing", "lateral", "tool")
 TOF_KEYS = (("tof0", "tof_left"), ("tof1", "tof_right"))
 
@@ -288,21 +293,43 @@ def validate_tof(frames, last, scene):
 
 
 def validate_depth(run_dir, frame_index, rig, scene):
-    """The recorded depth image against a cast through the centre of the pixel the mouth centre falls in."""
+    """The recorded depth image against casts through pixel centres, at and around the mouth-centre pixel.
+
+    The offline mesh set holds the orchard only. Where the recorded image shows something else on the line of
+    sight to the mouth (the tool's own drawn jaw proxy, for one), the cast and the image disagree over a whole
+    neighbourhood, and the camera channel's offline reading is not valid for that run.
+    """
     path = Path(run_dir) / "frames" / f"depth_{frame_index:05d}.npy"
     optical = rig.cam_R.T @ (rig.mouth - rig.cam_p)
-    u, v = (int(math.floor(c)) for c in (kmp.K_CAM @ optical)[:2] / optical[2])
-    if not path.is_file() or not (0 <= u < kmp.IMAGE_W and 0 <= v < kmp.IMAGE_H):
+    u0, v0 = (int(math.floor(c)) for c in (kmp.K_CAM @ optical)[:2] / optical[2])
+    reach = DEPTH_NEIGHBOURHOOD_PX
+    inside = reach <= u0 < kmp.IMAGE_W - reach and reach <= v0 < kmp.IMAGE_H - reach
+    if not path.is_file() or not inside:
         return None
-    ray = rig.cam_R @ np.linalg.solve(kmp.K_CAM, [u + 0.5, v + 0.5, 1.0])
-    t, g, _ = scene.all.cast(rig.cam_p[None], (ray / np.linalg.norm(ray))[None])
-    recorded = float(np.asarray(np.load(path, mmap_mode="r")[v, u]).reshape(-1)[0])
-    cast = float(t[0]) * float((ray / np.linalg.norm(ray)) @ rig.cam_R[:, 2]) if np.isfinite(t[0]) else None
+    depth = np.load(path, mmap_mode="r")
+    centre, agree, pixels = None, 0, 0
+    for v in range(v0 - reach, v0 + reach + 1):
+        for u in range(u0 - reach, u0 + reach + 1):
+            ray = rig.cam_R @ np.linalg.solve(kmp.K_CAM, [u + 0.5, v + 0.5, 1.0])
+            ray /= np.linalg.norm(ray)
+            t, g, _ = scene.all.cast(rig.cam_p[None], ray[None])
+            cast = float(t[0]) * float(ray @ rig.cam_R[:, 2]) if np.isfinite(t[0]) else None
+            recorded = float(np.asarray(depth[v, u]).reshape(-1)[0])
+            recorded = recorded if math.isfinite(recorded) else None
+            same = (cast is None and recorded is None) or (
+                cast is not None and recorded is not None and abs(cast - recorded) <= DEPTH_AGREE_M
+            )
+            agree, pixels = agree + int(same), pixels + 1
+            if (u, v) == (u0, v0):
+                centre = (recorded, cast, scene.labels[int(g[0])] if cast is not None else None)
     return {
-        "pixel_uv": [u, v],
-        "recorded_depth_mm": round(1000 * recorded, 2) if math.isfinite(recorded) else None,
-        "cast_depth_mm": None if cast is None else round(1000 * cast, 2),
-        "cast_label": scene.labels[int(g[0])] if cast is not None else None,
+        "pixel_uv": [u0, v0],
+        "recorded_depth_mm": None if centre[0] is None else round(1000 * centre[0], 2),
+        "cast_depth_mm": None if centre[1] is None else round(1000 * centre[1], 2),
+        "cast_label": centre[2],
+        "neighbourhood_pixels": pixels,
+        "neighbourhood_agree": agree,
+        "line_of_sight_verified": bool(agree >= DEPTH_AGREE_FRACTION * pixels),
     }
 
 
@@ -356,7 +383,9 @@ def study_run(name, export, names, runs_root=RUNS_ROOT, index_cls=None):
     if ready is not None:
         fr = frames[ready]
         rig, gap = rig_of(fr), gap_of(fr)
-        out["depth_validation_at_ready"] = validate_depth(run_dir, ready, rig, scene)
+        depth = validate_depth(run_dir, ready, rig, scene)
+        out["depth_validation_at_ready"] = depth
+        out["camera_line_of_sight_verified"] = bool(depth and depth["line_of_sight_verified"])
         out["displacements"] = [{"axis": "none", "offset_mm": 0.0, **read_channels(rig, gap, scene, target_centre)}]
         for axis, label in enumerate(AXES):
             for sign in (-1, 1):
@@ -365,6 +394,8 @@ def study_run(name, export, names, runs_root=RUNS_ROOT, index_cls=None):
                     vector[axis] = sign * offset
                     reading = read_channels(rig.shifted(vector), gap, scene, target_centre)
                     out["displacements"].append({"axis": label, "offset_mm": round(1000 * sign * offset, 1), **reading})
+        for row in out["displacements"]:
+            row["camera_line_of_sight_verified"] = out["camera_line_of_sight_verified"]
     return out
 
 
@@ -433,6 +464,19 @@ def summarise(runs):
         "poses": len(rows),
         "against_truth_between_jaws": confusion(rows, "truth_between_jaws"),
         "against_truth_at_mouth_centre": confusion(rows, "truth_at_mouth_centre"),
+        "camera_line_of_sight": {
+            "verified_runs": sum(bool(run.get("camera_line_of_sight_verified")) for run in runs),
+            "runs": len(runs),
+            "unverified": [run["run"] for run in runs if not run.get("camera_line_of_sight_verified")],
+            "verified_runs_at_recorded_pose_camera_says_in": sum(
+                bool(row["camera"]["surface_in_mouth"])
+                for row in rows
+                if row["axis"] == "none" and row.get("camera_line_of_sight_verified", True)
+            ),
+            "C_camera_against_truth_between_jaws_verified_runs_only": confusion(
+                [row for row in rows if row.get("camera_line_of_sight_verified", True)], "truth_between_jaws"
+            )["C_camera_surface_in_mouth_box"],
+        },
         "response_to_displacement": response(rows),
     }
 

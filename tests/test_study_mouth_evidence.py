@@ -148,3 +148,31 @@ def test_summary_counts_each_channel_against_both_truths(study):
     response = {(r["axis"], r["offset_mm"]): r for r in study.response(rows)}
     assert response[("lateral", 30.0)]["beam_blocked_by_other_wood"] == 1
     assert response[("none", 0.0)]["truth_between_jaws"] == 1
+
+
+def test_depth_validation_flags_a_line_of_sight_the_mesh_set_cannot_explain(study, tmp_path):
+    scene = _scene(study)
+    # A camera level with the mouth, looking along +y at it: optical x = world x, y = world -z, z = world y.
+    looking_at_mouth = np.array([[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]])
+    rig = study.Rig(IDENTITY, 0.0, [0.0, -0.14, 0.070], looking_at_mouth)
+    optical = rig.cam_R.T @ (rig.mouth - rig.cam_p)
+    u0, v0 = (int(np.floor(c)) for c in (study.kmp.K_CAM @ optical)[:2] / optical[2])
+    assert (u0, v0) == (240, 160)
+    reach = study.DEPTH_NEIGHBOURHOOD_PX
+    cast = np.full((study.kmp.IMAGE_H, study.kmp.IMAGE_W), np.inf)
+    for v in range(v0 - reach, v0 + reach + 1):
+        for u in range(u0 - reach, u0 + reach + 1):
+            ray = rig.cam_R @ np.linalg.solve(study.kmp.K_CAM, [u + 0.5, v + 0.5, 1.0])
+            ray /= np.linalg.norm(ray)
+            t, _, _ = scene.all.cast(rig.cam_p[None], ray[None])
+            if np.isfinite(t[0]):
+                cast[v, u] = t[0] * (ray @ rig.cam_R[:, 2])
+    (tmp_path / "frames").mkdir()
+    np.save(tmp_path / "frames/depth_00007.npy", cast)
+    same = study.validate_depth(tmp_path, 7, rig, scene)
+    assert same["neighbourhood_agree"] == same["neighbourhood_pixels"] == (2 * reach + 1) ** 2
+    assert same["line_of_sight_verified"]
+    # Something the mesh set does not hold, drawn in front of the mouth across the whole neighbourhood.
+    np.save(tmp_path / "frames/depth_00008.npy", np.full_like(cast, 0.05))
+    blocked = study.validate_depth(tmp_path, 8, rig, scene)
+    assert blocked["neighbourhood_agree"] == 0 and not blocked["line_of_sight_verified"]
