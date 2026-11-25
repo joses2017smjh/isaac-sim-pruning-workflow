@@ -52,8 +52,21 @@ DESIGNS = {
     # Registered (docs/EVAL_PROTOCOL_ROS2_LIVE_LOOP_2026-11-05.md): three repeats of four delays,
     # interleaved so no delay runs on a different day or queue position than the others, then the panel.
     "delay_sweep": [(delay, None) for _ in range(3) for delay in (0, 2, 4, 6)] + [(0, 60)],
+    # Registered (docs/EVAL_PROTOCOL_DELAY_EPISODE_2026-11-25.md): the two delays that failed on November 5,
+    # three repeats each, interleaved, with a 30 s episode instead of 20 s. Nothing else changes.
+    "long_episode": [(delay, None) for _ in range(3) for delay in (4, 6)],
 }
 PROTOCOL = "docs/EVAL_PROTOCOL_ROS2_LIVE_LOOP_2026-11-05.md"
+#: Per-design episode length (frames at 10 fps), task time limit and protocol; other designs use the defaults.
+DESIGN_SETTINGS = {
+    "long_episode": {
+        "frames": 300,
+        "minutes_per_task": 40,
+        # All November 5 runs ran on A40 nodes; an RTX 8000 renders about 1.8x slower and would not fit 40 min.
+        "constraint": "a40",
+        "protocol": "docs/EVAL_PROTOCOL_DELAY_EPISODE_2026-11-25.md",
+    },
+}
 REQUIRED = (
     "hpc/slurm/ros2_live_loop.sbatch",
     "hpc/slurm/ros2_ws_build.sbatch",
@@ -65,7 +78,22 @@ REQUIRED = (
 )
 DEFAULT_IMAGE = "/nfs/hpc/share/sanchej7/containers/pruning_sil_humble_qt.sif"
 MINUTES_PER_TASK = 35
+FRAMES = 200
 PROJECT_ID = "30762"
+
+
+def design_settings(design):
+    """Episode length, task time limit and protocol for a design."""
+    settings = {
+        "frames": FRAMES,
+        "minutes_per_task": MINUTES_PER_TASK,
+        "constraint": "a40|rtx8000",
+        "protocol": PROTOCOL,
+    }
+    settings.update(DESIGN_SETTINGS.get(design, {}))
+    if design == "smoke":
+        settings["protocol"] = "exploratory smoke run; not part of the registered result"
+    return settings
 
 
 def experiment_plan(design):
@@ -84,11 +112,12 @@ def experiment_plan(design):
                 },
             }
         )
+    settings = design_settings(design)
     return {
         "schema_version": 1,
         "design": design,
         "max_concurrent_gpus": 1,
-        "frames": 200,
+        "frames": settings["frames"],
         "fps": 10,
         "render_samples": 64,
         "overview_width": 1280,
@@ -96,8 +125,8 @@ def experiment_plan(design):
             "The known target driven through a live ROS 2 loop in Isaac Sim, with modelled message delay. "
             "Simulation only; one target and one light; not a hardware or latency-guarantee result."
         ),
-        "protocol": PROTOCOL if design != "smoke" else "exploratory smoke run; not part of the registered result",
-        "maximum_gpu_minutes": MINUTES_PER_TASK * len(runs),
+        "protocol": settings["protocol"],
+        "maximum_gpu_minutes": settings["minutes_per_task"] * len(runs),
         "runs": runs,
     }
 
@@ -126,7 +155,8 @@ def queue(root, batch_id, design, image, after=None, submit=False):
         raise ValueError("batch-id must be a short letters/digits/underscore/dash identifier")
     plan = experiment_plan(design)
     plan["sil_image"] = str(image)
-    plan["placement"] = {"partition": "gpu,ampere", "constraint": "a40|rtx8000", "minutes_per_task": MINUTES_PER_TASK}
+    minutes, constraint = design_settings(design)["minutes_per_task"], design_settings(design)["constraint"]
+    plan["placement"] = {"partition": "gpu,ampere", "constraint": constraint, "minutes_per_task": minutes}
     if not submit:
         print(json.dumps(plan, indent=2))
         return None
@@ -169,7 +199,7 @@ def queue(root, batch_id, design, image, after=None, submit=False):
         raise RuntimeError(f"Build submission failed; inspect {batch}/submission_receipt.json before any retry")
     trials = [
         "sbatch", "--parsable", "--array", f"0-{len(plan['runs']) - 1}%1",
-        "--time", f"00:{MINUTES_PER_TASK:02d}:00", "--partition", "gpu,ampere", "--constraint", "a40|rtx8000",
+        "--time", f"00:{minutes:02d}:00", "--partition", "gpu,ampere", "--constraint", constraint,
         "--dependency", f"afterok:{build_id}", "--chdir", str(batch / "code"),
         "--output", str(batch / "logs/%x-%A_%a.out"), "--error", str(batch / "logs/%x-%A_%a.out"),
         str(batch / "code/hpc/slurm/ros2_live_loop.sbatch"), str(batch),

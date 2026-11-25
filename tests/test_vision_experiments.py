@@ -813,3 +813,26 @@ def test_ros2_live_loop_plans_stay_inside_the_approved_gpu_budget(monkeypatch):
     assert [run["ros2_loop"]["operator_hold_after_cycles"] for run in sweep["runs"]].count(60) == 1
     assert all(run["component_first_vertex"] == 14944 for run in sweep["runs"])
     assert all(run["strategy"]["name"] == "baseline" for run in sweep["runs"])
+
+
+def test_long_episode_design_changes_only_the_episode_and_fits_the_approved_budget(monkeypatch):
+    tools = Path(__file__).resolve().parents[1] / "tools"
+    monkeypatch.syspath_prepend(str(tools))
+    spec = importlib.util.spec_from_file_location("queue_ros2_live_loop_long", tools / "queue_ros2_live_loop.py")
+    queue = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(queue)
+    plan, sweep = queue.experiment_plan("long_episode"), queue.experiment_plan("delay_sweep")
+    # The user approved about 240 GPU-minutes for this on 2026-11-24.
+    assert plan["maximum_gpu_minutes"] <= 240
+    assert plan["frames"] == 300 and sweep["frames"] == 200
+    # Like-for-like with November 5 (all A40), and a 300-frame run fits 40 minutes only on an A40.
+    assert queue.design_settings("long_episode")["constraint"] == "a40"
+    assert queue.design_settings("delay_sweep")["constraint"] == "a40|rtx8000"
+    assert plan["protocol"] == "docs/EVAL_PROTOCOL_DELAY_EPISODE_2026-11-25.md"
+    assert [run["ros2_loop"]["delay_steps"] for run in plan["runs"]] == [4, 6, 4, 6, 4, 6]
+    assert all(run["ros2_loop"]["operator_hold_after_cycles"] is None for run in plan["runs"])
+    keep = ("daylight", "photometric_normalization", "target_tree_index", "component_first_vertex", "strategy")
+    assert all({k: run[k] for k in keep} == {k: sweep["runs"][0][k] for k in keep} for run in plan["runs"])
+    assert {k: plan[k] for k in ("fps", "render_samples", "overview_width")} == {
+        k: sweep[k] for k in ("fps", "render_samples", "overview_width")
+    }
