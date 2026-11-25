@@ -63,6 +63,10 @@ def run_environment(plan, row, batch, output, inherited):
             env["PRUNING_JAW_SELF_MASK"] = "1" if strategy["jaw_self_mask"] else "0"
         if "closure_hold" in strategy:
             env["PRUNING_CLOSURE_HOLD"] = "1" if strategy["closure_hold"] else "0"
+        if "tof_ground" in strategy:
+            # The ground relief in the ToF sensors' mesh list (isaaclab_pruning.sim.tof_targets). A row that
+            # does not name it leaves the variable unset, and the recorder's default is off.
+            env["PRUNING_TOF_GROUND"] = "1" if strategy["tof_ground"] else "0"
         if "depth_appearance" in strategy:
             arm = strategy.get("depth_appearance_arm", "strict")
             if arm not in ("strict", "agreement"):
@@ -164,6 +168,9 @@ def configuration_matches(report, row, plan):
             else:
                 # A row that does not ask for the arm must not have run with it.
                 matches = matches and (report.get(flag) or {}).get("enabled") is not True
+        # The ToF mesh list: the recorder lists the ground meshes only when the switch was on.
+        ground_paths = (report.get("blender_scene") or {}).get("tof_ground_mesh_paths")
+        matches = matches and (bool(ground_paths) if wanted.get("tof_ground") else not ground_paths)
         if wanted.get("jaw_self_mask"):
             # The tracker's own minimum is the one that decided, not only the reported constant.
             tracker = report.get("tracker_config") or {}

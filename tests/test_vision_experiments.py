@@ -509,6 +509,52 @@ HOLD_GEN_STRATEGIES = {"planned_pose_jaw_hold_gen": 0.06, "planned_pose_jaw_hold
 HOLD_SWEEP_PROTOCOL = "docs/EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md"
 
 
+CONTROL_RERUN_STRATEGIES = ("planned_pose_jaw_hold_ctl", "planned_pose_jaw_hold_ctl_tof_ground")
+CONTROL_RERUN_PROTOCOL = "docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md"
+
+
+def test_the_control_rerun_strategies_are_the_jaw_hold_arm_and_only_one_adds_the_tof_ground(tmp_path, scripts):
+    from isaaclab_pruning.perception.jaw_self_mask import registered_closure_hold, registered_jaw_self_mask
+
+    launcher, run = scripts
+    reference = {k: v for k, v in launcher.STRATEGIES["planned_pose_jaw_hold"].items() if k != "name"}
+    plain = {k: v for k, v in launcher.STRATEGIES["planned_pose_jaw_hold_ctl"].items() if k != "name"}
+    ground = {k: v for k, v in launcher.STRATEGIES["planned_pose_jaw_hold_ctl_tof_ground"].items() if k != "name"}
+    assert plain == reference and ground == {**reference, "tof_ground": True}
+    quat = [-0.4821, 0.0582, 0.6579, 0.5756]
+    targets = [{"target_tree_index": 0, "component_first_vertex": 21386, "planned_final_tool_quat_wxyz": quat}]
+    jaw = {"enabled": True, "constants": registered_jaw_self_mask(), "model": "two-box visual surrogate"}
+    hold = {"enabled": True, "thresholds": registered_closure_hold()}
+    for name in CONTROL_RERUN_STRATEGIES:
+        assert launcher.STRATEGY_PROTOCOLS[name] == CONTROL_RERUN_PROTOCOL
+        plan = launcher.experiment_plan(targets, "source", "raw", name)
+        row = plan["runs"][0]
+        assert plan["protocol"] == CONTROL_RERUN_PROTOCOL and plan["frames"] == 200
+        env = run.run_environment(plan, row, tmp_path, tmp_path / "out", {"PRUNING_TOF_GROUND": "1"})
+        assert env["PRUNING_JAW_SELF_MASK"] == "1" and env["PRUNING_CLOSURE_HOLD"] == "1"
+        assert run.run_label(0, row) == f"run_00_source_tree0_v21386_{name}"
+        report = _jaw_hold_report("tree0_SPUR_component_21386", quat, jaw, hold)
+        with_ground = json.loads(json.dumps(report))
+        with_ground["blender_scene"]["tof_ground_mesh_paths"] = ["/World/Orchard/ground/ground_mesh"]
+        if name.endswith("tof_ground"):
+            assert env["PRUNING_TOF_GROUND"] == "1"
+            # The capture must show the ground among the ToF meshes, or it did not run the registered condition.
+            assert run.configuration_matches(with_ground, row, plan) and not run.configuration_matches(
+                report, row, plan
+            )
+        else:
+            # The plain arm never sets the switch, even when the caller's environment carries it, and a capture
+            # that used it is not this condition.
+            assert "PRUNING_TOF_GROUND" not in env
+            assert run.configuration_matches(report, row, plan) and not run.configuration_matches(
+                with_ground, row, plan
+            )
+    # No earlier strategy asks for the ground.
+    assert [name for name, row in launcher.STRATEGIES.items() if "tof_ground" in row] == [
+        "planned_pose_jaw_hold_ctl_tof_ground"
+    ]
+
+
 def test_the_hold_sweep_strategy_is_the_jaw_hold_arm_under_its_own_protocol(scripts):
     launcher, _ = scripts
     reference = {k: v for k, v in launcher.STRATEGIES["planned_pose_jaw_hold"].items() if k != "name"}
@@ -557,7 +603,12 @@ def test_jaw_hold_strategy_forwards_both_flags_and_the_capture_must_show_them(tm
     assert run.run_label(0, row) == "run_00_source_tree0_v530_planned_pose_jaw_hold"
     # Every earlier strategy forwards neither flag, so the renderer keeps its default (off).
     for name in launcher.STRATEGIES:
-        if name in ("planned_pose_jaw_hold", "planned_pose_jaw_hold_sweep", *HOLD_GEN_STRATEGIES):
+        if name in (
+            "planned_pose_jaw_hold",
+            "planned_pose_jaw_hold_sweep",
+            *HOLD_GEN_STRATEGIES,
+            *CONTROL_RERUN_STRATEGIES,
+        ):
             continue
         other = launcher.experiment_plan(targets, "source", "raw", name)
         other_env = run.run_environment(other, other["runs"][0], tmp_path, tmp_path, {})

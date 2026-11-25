@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "scope": "Control rerun (docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md): the jaw self-mask and closure-hold arm, unchanged, repeated on one spur the robot reaches from above the orchard's ground. The launcher refuses a repeated target inside one plan, so the three repeats are three batches that all read this register. Label: known-map plan; jaw self-mask; closure hold with freshness and frame-reuse checks waived on held frames. Never pooled with unchanged-gate runs.",
+  "selection_rule": "Of the four October 6 sweep targets that passed 17/17 with nothing beneath the ground (8175, 21386, 28610, 36786), those whose recorded closure the centred-spur jaw reading accepts as one spur and nothing else in the jaw (21386, 28610, 36786; 8175 has another spur crossing a beam and sits up to 6.5 mm off centre), then the lowest component number. Entry copied unchanged from the sweep register, including planned_final_tool_quat_wxyz.",
+  "seed": null,
+  "derived_from": [
+    {
+      "path": "docs/evidence/eval_targets_hold_sweep_2026-10-06.json",
+      "sha256": "06a0a404c0501318a88129fde1dfb315c6b66e42b9adf58524ba17a0762f71d0"
+    }
+  ],
+  "targets": [
+    {
+      "target_tree_index": 0,
+      "component_first_vertex": 21386,
+      "max_radius_m": 0.006622648922021299,
+      "length_m": 0.04951437074465925,
+      "axis": [
+        -0.03381041526207652,
+        0.1830847935452112,
+        0.9825155541732218
+      ],
+      "source_center_m": [
+        0.9802016665538152,
+        0.764726015118514,
+        2.1335847330899242
+      ],
+      "planned_final_tool_quat_wxyz": [
+        -0.4820997058990949,
+        0.05816757737420268,
+        0.6579259327176701,
+        0.5756126072038436
+      ]
+    }
+  ],
+  "target_count": 1
+}

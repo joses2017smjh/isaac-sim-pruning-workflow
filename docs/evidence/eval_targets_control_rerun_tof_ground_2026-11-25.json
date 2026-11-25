@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "scope": "Control rerun (docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md): one run of the same arm with the ground relief added to the ToF sensors' mesh list (PRUNING_TOF_GROUND=1), the first simulator run of that switch. Same label as the arm; never pooled with unchanged-gate runs.",
+  "selection_rule": "Of the reachable spurs this arm has passed on (8175, 21386, 28610, 36786 and control 14944), the one whose October 6 capture gains the most ToF zones from the ground in the offline replay (docs/evidence/tof_ground_replay_2026-11-25.json): 14944, with 4,638 zones over 200 frames. For 21386, 28610 and 36786 the ground is in no zone, so a run there would not exercise the switch. Entry copied unchanged from the jaw-hold batch B register.",
+  "seed": null,
+  "derived_from": [
+    {
+      "path": "docs/evidence/eval_targets_jaw_hold_b_2026-09-30.json",
+      "sha256": "c0f53023a2aa3faa7e4edb12debbe60735f4d0a418659dba07a0fbc0bbc6674b"
+    }
+  ],
+  "targets": [
+    {
+      "target_tree_index": 1,
+      "component_first_vertex": 14944,
+      "max_radius_m": 0.006743434528356521,
+      "length_m": 0.0499773861245249,
+      "axis": [
+        0.5616836785147071,
+        0.6359413333272389,
+        -0.5292353596049308
+      ],
+      "source_center_m": [
+        -2.121083335081736,
+        -0.4009110900757491,
+        1.1044705358404185
+      ],
+      "planned_final_tool_quat_wxyz": null
+    }
+  ],
+  "target_count": 1
+}

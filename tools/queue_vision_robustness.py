@@ -204,6 +204,31 @@ STRATEGIES = {
         "closure_hold": True,
         "frames": 200,
     },
+    # The control rerun of November 25: the same arm again, on a spur the robot reaches from above the orchard's
+    # ground (docs/GROUND_AUDIT_2026-11-25.md). The first differs from planned_pose_jaw_hold in name only. The
+    # second also adds the ground relief to the ToF sensors' mesh list (isaaclab_pruning.sim.tof_targets), for the
+    # first simulator run of that switch; it changes no gate, tracker or controller setting.
+    "planned_pose_jaw_hold_ctl": {
+        "name": "planned_pose_jaw_hold_ctl",
+        "mode": "planned_pose_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "max_rotation_deg": 1.5,
+        "jaw_self_mask": True,
+        "closure_hold": True,
+        "frames": 200,
+    },
+    "planned_pose_jaw_hold_ctl_tof_ground": {
+        "name": "planned_pose_jaw_hold_ctl_tof_ground",
+        "mode": "planned_pose_standoff",
+        "standoff_m": 0.06,
+        "max_step_m": 0.004,
+        "max_rotation_deg": 1.5,
+        "jaw_self_mask": True,
+        "closure_hold": True,
+        "tof_ground": True,
+        "frames": 200,
+    },
     # The depth-aware appearance check D_strict + J (perception/depth_appearance.py) on three existing approaches.
     # It changes the 0.35 appearance gate's rule, so its results are never pooled with unchanged-gate runs. The
     # jaw keeps casting its shadow; nothing else changes.
@@ -270,6 +295,7 @@ DEPTH_LOOP_PROTOCOL = "docs/EVAL_PROTOCOL_DEPTH_APPEARANCE_CLOSED_LOOP_2026-10-0
 AGREEMENT_LOOP_PROTOCOL = "docs/EVAL_PROTOCOL_AGREEMENT_ARM_CLOSED_LOOP_2026-10-03.md"
 HOLD_GEN_PROTOCOL = "docs/EVAL_PROTOCOL_HOLD_GENERALIZATION_2026-10-04.md"
 HOLD_SWEEP_PROTOCOL = "docs/EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md"
+CONTROL_RERUN_PROTOCOL = "docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md"
 STRATEGY_PROTOCOLS = {
     "planned_pose": "docs/EVAL_PROTOCOL_PLANNED_APPROACH_2026-09-27.md",
     "jaw_no_shadow": "docs/EVAL_PROTOCOL_JAW_SHADOW_2026-09-30.md",
@@ -283,6 +309,8 @@ STRATEGY_PROTOCOLS = {
     "planned_pose_jaw_hold_gen": HOLD_GEN_PROTOCOL,
     "planned_pose_jaw_hold_gen_s100": HOLD_GEN_PROTOCOL,
     "planned_pose_jaw_hold_sweep": HOLD_SWEEP_PROTOCOL,
+    "planned_pose_jaw_hold_ctl": CONTROL_RERUN_PROTOCOL,
+    "planned_pose_jaw_hold_ctl_tof_ground": CONTROL_RERUN_PROTOCOL,
 }
 
 #: Keys a strategy row may carry and their baseline values; a row that omits
