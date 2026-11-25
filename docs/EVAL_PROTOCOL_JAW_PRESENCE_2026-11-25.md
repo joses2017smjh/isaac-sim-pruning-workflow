@@ -130,3 +130,73 @@ Reported without a prediction:
 
 Counting blind ToF cycles per sensor was listed with this milestone. It touches
 the ToF path and is deferred to its own change.
+
+## Result — November 25, 2026
+
+Run from a clean clone at the registration commit `72493fb`, on CPU: the cycles
+and the readings by job `22150835`, the default harness by `22150836`, the jaw
+harness by `22150837`, and the scorer by `22150888`. Verdicts:
+[jaw_presence_verdicts_2026-11-25.json](evidence/jaw_presence_verdicts_2026-11-25.json),
+copied byte for byte, with the
+[beam summary](evidence/jaw_beams_summary_2026-11-25.json), the
+[jaw harness](evidence/jaw_presence_harness_2026-11-25.json) and the
+[default harness](evidence/cpp_safety_gate_parity_2026-11-25.json).
+
+237 captures rebuilt into 48,223 cycles. 233 have a reading. In 28 the
+tool is beneath the ground, which leaves **205 usable captures**, 87 of
+which reach closing, on 10 distinct targets.
+
+| Prediction | Verdict | Measured |
+|---|---|---|
+| J1 — off changes nothing | **supported** | The node matched the stored verdict on 43,623 of 43,623 cycles (217 captures), with 24,817 holds as on November 5. 23 of 23 faults held with the same first hold and reason. The new reference reproduced every stored verdict. |
+| J2 — on changes no recorded cut | **supported** | No usable capture changed in any cycle (205 captures, 42,001 cycles). A beam was blocked in all 1,079 cycles whose certificate was ready, all 516 closing cycles and all 511 cycles in which the jaw advanced. Through the node: 87 captures, 17,911 cycles, every field matched and the jaw output reached the recorded maximum. |
+| J3 — an empty jaw cannot close | **supported** | In 87 of 87 captures the jaw output stayed at 0. The node held with `jaw_empty_during_closure` one cycle after the controller announced closing, in every capture, where the reference said it would. |
+| J4 — a jaw 20 mm short cannot close | **refuted** | The gate refused 82 of 87 closures and **accepted 5**. All five are on target 8235 (5 of its 11 closure captures): with the tool 20 mm short, other wood blocked one or two beams in every ready or closing cycle. The target was between the jaws in none of the 940 cycles. |
+| J6 — a bad reading holds | **supported** | A dropped reading, a reading with four flags and a reading in the wrong frame each held from the faulted cycle to the end, with the registered reason. |
+
+**J5, counts only.** At the first ready cycle of 95 usable captures, over the
+study's 36 displacements (3,420 poses): the target was between the jaws in
+2,080, and a beam was blocked in every one of those. In 178 of the 1,340
+poses without the target a beam was blocked anyway, always by other wood. The
+worst displacement was 50 mm along the jaw (64 of 94).
+
+**Ground audit.** In 28 of the 233 cast captures the tool point is beneath
+the orchard's ground relief: target 530 in 15, 590 in 7, 3721 in 3, and 3433,
+3493 and 3673 in one each. In 26 of them it is beneath the ground in every
+cycle, the start pose included; in two captures on 530 it is for part of the
+run (30 and 192 of 200 cycles). 8 of the 28 reach closing, all on 530, and
+4 detach. The batches: `hold-gen-a-r1-20261004`, `hold-gen-a-r2-20261004`, `hold-gen-a-r3-20261004`, `hold-gen-ctl-20261004`, `hold-sweep-20261006`, `hold-sweep-ctl-20261006`, `jaw-hold-a-20261001`, `jaw-hold-b-20261001`, `jaw-hold-c-20261001`, `perc-both-tree0-20260926`, `perc-similarity-tree0-20260926`, `planned-pose-gpu-r1-20260929`, `planned-pose-gpu-r2-20260929`, `planned-pose-gpu-r3-20260929`, `strategy-fine-step-20260923`, `strategy-horizontal-20260923`, `strategy-tool-axis-20260923`, `targets-morning-20260923`, `targets-source-20260923`, `tree1-seeded30-20260926`.
+
+### What this shows
+
+- The rule does what it was built for on recorded cycles. Off, nothing
+  changes. On, no recorded cut changes, and a closure with nothing reported
+  between the jaws stops before the jaw moves.
+- **One blocked beam is not evidence of the target.** It says something crosses
+  the gap. Near target 8235 that something is neighbouring wood, 20 mm from
+  where the spur should be, and the gate let the closure through. J5 says the
+  same more broadly: about one displaced pose in eight without the target still
+  blocks a beam.
+- The four supported predictions are about the rule. J4 is about the reading,
+  and it is the one that failed.
+
+### After the result, not registered
+
+Counting blocked beams does not fix J4 on these recordings. At the recorded
+pose the fewest blocked beams in any ready or closing cycle was 2 in 8 captures,
+3 in 68, 5 in 7 and 7 in 4. With the tool short the most was 0 in 82 captures,
+1 in 2 and 2 in 3. A threshold of two keeps all 87 recorded closures and still
+accepts 3 of the short ones; a threshold of three refuses all 87 short ones and
+would have stopped 8 recorded closures. Which beams are blocked, or a reading
+that says how far along the gap the obstruction is, may separate them; neither
+was tested.
+
+### Departures
+
+- The protocol expected the excluded scenes to be on target 530. The audit
+  found six targets and 28 captures.
+- 4 early `isaac_render` captures carry no orchard placement and have no
+  reading. None reaches closing. They are in neither J2's 205 nor the 28.
+- The cycles rebuilt today include captures recorded after November 5, so a
+  regenerated C++ fixture differs from the committed one. The committed fixture
+  was left in place and its gtest passes.

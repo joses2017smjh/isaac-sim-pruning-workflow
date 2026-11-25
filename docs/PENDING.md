@@ -8,6 +8,10 @@ and results in the [roadmap](ROADMAP.md).
 Nothing is queued.
 
 Finished and published:
+- [jaw-presence input for the gate](EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026),
+  November 25: four of five registered predictions supported on a CPU replay;
+  the one about the reading itself was refuted (5 of 87 closures accepted with
+  the jaw 20 mm short).
 - [longer episode at 66.7 and 100 ms delay](EVAL_PROTOCOL_DELAY_EPISODE_2026-11-25.md#result--november-25-2026),
   November 25: all six 30 s runs passed 17/17 with the arm home at the
   registered frames (D0–D3 supported), so the November 5 delay failures were
@@ -41,26 +45,32 @@ Finished and published:
 - **Storage.** On November 22 the share held 1.71 TiB against the 1.5 TiB soft
   quota, with 3 weeks 6 days of grace left (to about December 19). This
   repository's directory is about 139 GiB of that.
-- **An independent witness for the jaw mouth (studied November 25).** The gate
-  takes the target from the controller. An exploratory CPU study
-  ([write-up](ROS2_SIL.md#november-25-what-could-witness-the-target-in-the-mouth-exploratory))
-  found the existing ToF sensors see the target at closure but lose it when it is
-  centred, a beam grid across the jaw gap follows the geometry, and one camera
-  ray is fragile. Which channel to build is undecided. The same study found that
-  the cut closes with the spur 9.4 to 12.8 mm ahead of the mouth centre, near the
-  jaw tips; whether to change the approach so it closes on the centre is a
-  separate open question.
-- **Target 530 is approached from beneath the ground (found November 25).**
-  Target 530 lies in the orchard's ground relief. In both runs on it that the
-  mouth study covers, the wrist camera, the tool point and the jaw mouth are
-  beneath the ground surface when the cut becomes ready
-  ([study](ROS2_SIL.md#november-25-what-could-witness-the-target-in-the-mouth-exploratory)).
-  Nothing in the simulation notices: the relief is visual only, and the ToF
-  sensors and the known-map planner cast against the trees. Open, in this order:
-  (1) check every recorded run, not two, for a tool beneath the ground; (2) add
-  dated notes to the results that used 530 as their control, once (1) says which
-  are affected; (3) decide whether the planner and the ToF mesh set should
-  include the ground. No registered result has been restated.
+- **A reading that tells the target from other wood (after the November 25 replay).**
+  The gate now has an optional jaw-presence input, off by default
+  ([result](EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026)).
+  The rule held up. The reading did not: with the jaw 20 mm short of the spur,
+  other wood blocked a beam in 5 of 87 closures and the gate accepted them. A
+  count of blocked beams does not separate the cases on these recordings. Open:
+  which beams are blocked, or a ranged reading along the gap, registered and
+  replayed before any simulated sensor is built. Publishing the reading from the
+  simulated tool and a live run need GPU time that has not been asked for.
+- **The cut closes near the jaw tips (found November 25).** In the nine usable
+  runs of the mouth study the spur's centre was 9.4 to 12.8 mm ahead of the mouth
+  centre when the cut became ready. Whether to change the approach so it closes
+  on the centre is on the roadmap, not started.
+- **Recorded captures with the tool beneath the ground (audited November 25).**
+  28 of 233 cast captures, on targets 530, 590, 3721, 3433, 3493 and 3673
+  ([audit](EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026)).
+  The ground relief is visual only, and the ToF sensors and the known-map
+  planner cast against the trees. Open, in this order: (1) a dated note on each
+  result that used an affected capture, starting with the October 2 jaw-aware
+  closure and the October 6 sweep, whose control is 530; (2) decide whether the
+  planner and the ToF mesh set should include the ground; (3) only then, whether
+  to rerun a control on a spur that can be reached from above the ground, which
+  needs GPU time. No registered verdict has been edited.
+- **Blind ToF cycles per sensor.** One dead sensor is invisible to the gate
+  today (the documented non-stopping fault). Listed with the jaw-presence
+  milestone and deferred to its own change.
 - **Pixel-centre convention (measured November 22).** The jaw self-mask and
   the depth-aware check treat pixel index u as continuous u + 0.5, which the
   renderer's camera and every mask-fidelity check support. The point tracker

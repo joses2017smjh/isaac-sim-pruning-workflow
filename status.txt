@@ -1,3 +1,17 @@
+P2.1 REPLAY RESULT — 2026-11-25 (read this first)
+  Jaw-presence input for the gate, built offline (user chose "beam grid, offline first"; CPU only, no GPU).
+  Registered at 72493fb BEFORE any run; clean-clone jobs: cast 22150835, harness off 22150836, harness jaw 22150837,
+  scorer 22150888. docs/EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md, docs/evidence/jaw_presence_verdicts_2026-11-25.json.
+  J1 supported (off: 43,623/43,623 cycles, 23/23 faults unchanged) | J2 supported (on: 0/205 captures changed)
+  J3 supported (all clear: 87/87 closures stopped before the jaw moved) | J6 supported (3/3 bad readings hold)
+  J4 REFUTED: jaw 20 mm short -> 82/87 refused, 5 ACCEPTED (all target 8235; other wood blocks a beam).
+  One blocked beam is not evidence of the target. A beam-count threshold does not separate these recordings.
+  GROUND AUDIT: tool beneath the visual ground in 28/233 captures: 530 (15), 590 (7), 3721 (3), 3433, 3493, 3673.
+  Includes every 530 run (Oct 2 jaw-hold 3/3, planned-pose r1-r3, sweep control). NO registered verdict edited.
+  OPEN (docs/PENDING.md): dated notes per affected result; ground in planner/ToF mesh set?; a reading that
+  separates target from other wood; simulated sensor + live run need GPU approval (NOT asked). P1.6 stays on roadmap.
+  Not done: per-sensor blind ToF count (deferred).
+
 P2.3 RESULT — 2026-11-25 (read this first)
   Long-episode delay test scored (CPU 22150537, clean clone at bfd086a): D0-D3 all supported. 6/6 passed 17/17 with
   a 30 s episode; cut at 120/142, home at 233/277 exactly as registered; 148 of 240 GPU-min; no resubmission.

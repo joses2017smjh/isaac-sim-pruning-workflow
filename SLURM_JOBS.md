@@ -890,3 +890,17 @@ configuration: tasks 4, 14, 16 and 27 of `21600402` and task 1 of `21600403`
 Every result carries the label *known-map plan; jaw self-mask; closure hold
 with freshness and frame-reuse checks waived on held frames*, and is never
 pooled with unchanged-gate runs.
+
+### Jaw-presence replay (CPU, November 25)
+
+No GPU. Everything ran from a clean clone at the registration commit `72493fb`.
+
+| Job | What | Result |
+|---|---|---|
+| `22150805` | Build and test the ROS packages with the new rule (working tree, before registration) | 41 tests, 0 failures |
+| `22150835` | Rebuild today's cycles; cast the jaw beams | 237 captures, 48,223 cycles; 233 cast |
+| `22150836` | Default harness on the November 5 cycles, jaw presence off | 43,623 of 43,623 cycles matched; 23 of 23 faults held |
+| `22150837` | Jaw harness: 87 captures, three readings each, three input faults | 261 replays, no field mismatched |
+| `22150888` | `tools/score_jaw_presence.py` | J1, J2, J3, J6 supported; J4 refuted |
+
+[Result](docs/EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026).

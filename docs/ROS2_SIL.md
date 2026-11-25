@@ -391,6 +391,34 @@ The second (`7c5673a`) reported the mismatch as an unidentified surface. This
 version identifies it as the ground relief and separates the two 530 runs. The
 caster validation and the truth tables for the nine runs did not change.
 
+### November 25: a jaw-presence input for the gate (replay)
+
+The gate gained one optional input the controller does not produce: how many
+beams of a nine-beam grid across the jaw gap are blocked. It is off by default.
+With `jaw_presence_min_beams` above 0, closure is authorized only while that
+many beams are blocked, and a closure that continues with fewer stops. Nothing
+in the simulation publishes the reading yet; `tools/cast_jaw_beams.py` computes
+it offline at recorded tool poses. The predictions were registered before the
+replay ([protocol and result](EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026)).
+
+| | Result |
+|---|---|
+| Off: the node against the November 5 verdicts | 43,623 of 43,623 cycles; 23 of 23 faults as before |
+| On, recorded-pose reading: recorded cuts changed | 0 of 205 captures (42,001 cycles) |
+| On, every beam clear: closures stopped before the jaw moved | 87 of 87 |
+| On, tool 20 mm short of the spur: closures refused | **82 of 87** (registered prediction: all; refuted) |
+| A dropped or malformed reading holds | 3 of 3 |
+
+The refuted row matters most. In 5 captures, all on target 8235, other wood
+crossed a beam with the jaw 20 mm short of the spur, and the gate let the
+recorded closure through. One blocked beam says something is in the gap, not
+that it is the target.
+
+The same cast put the ground relief in the mesh set and checked every capture:
+in 28 of 233 the tool is beneath the orchard's visual ground, on six
+targets including 530. Those captures were set aside here and are listed in the
+result.
+
 ## Running it
 
 Everything runs in an Apptainer image built from the official ROS 2 Humble
@@ -466,6 +494,7 @@ viewer should never mistake it for something the robot executed.
 | `/pruning/contact/wrench` | `geometry_msgs/WrenchStamped` (largest arm contact force) | `world` | reliable |
 | `/pruning/perception/target` | `pruning_sil_msgs/TargetEstimate` | `world` | reliable |
 | `/pruning/proposed/proposal` | `pruning_sil_msgs/ControllerProposal` | `world` | reliable |
+| `/pruning/jaw/presence` | `pruning_sil_msgs/JawPresence` (nine beam flags); read only when `jaw_presence_min_beams` is above 0 | `mock_pruner__tool0` | reliable |
 | `/pruning/safety/decision` | `pruning_sil_msgs/SafetyDecision` (+ `decision_json` mirror) | — | reliable |
 | `/pruning/gated/command_pose` | `geometry_msgs/PoseStamped`, the only command the simulated arm obeys | `world` | reliable |
 | `/pruning/gated/jaw` | `sensor_msgs/JointState` (`mock_pruner__jaw_closure`, 0–1) | — | reliable |
@@ -540,6 +569,8 @@ Those are different numbers and neither is a latency claim.
   captures it has not replayed.
 - Agreement of a replay with its own recording is reproducibility, not evidence
   that either is correct.
+- The jaw-presence input is a gate rule tested on readings computed offline. No
+  simulated or physical sensor produces it, and no live run has used it.
 
 ## C++ component
 

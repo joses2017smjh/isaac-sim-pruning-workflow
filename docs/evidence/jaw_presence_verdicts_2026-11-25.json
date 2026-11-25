@@ -1,0 +1,898 @@
+{
+ "captures": {
+  "above_the_ground_reaching_closing": 87,
+  "above_the_ground_targets": {
+   "tree0_SPUR_component_11607": 1,
+   "tree0_SPUR_component_11727": 1,
+   "tree0_SPUR_component_12142": 9,
+   "tree0_SPUR_component_12261": 1,
+   "tree0_SPUR_component_12321": 1,
+   "tree0_SPUR_component_12381": 1,
+   "tree0_SPUR_component_13213": 1,
+   "tree0_SPUR_component_16660": 1,
+   "tree0_SPUR_component_18669": 7,
+   "tree0_SPUR_component_21268": 1,
+   "tree0_SPUR_component_21386": 1,
+   "tree0_SPUR_component_22988": 7,
+   "tree0_SPUR_component_28493": 1,
+   "tree0_SPUR_component_28610": 1,
+   "tree0_SPUR_component_29554": 1,
+   "tree0_SPUR_component_4438": 1,
+   "tree0_SPUR_component_7049": 1,
+   "tree0_SPUR_component_7524": 7,
+   "tree0_SPUR_component_7644": 1,
+   "tree0_SPUR_component_7760": 1,
+   "tree0_SPUR_component_8175": 1,
+   "tree0_SPUR_component_8235": 15,
+   "tree0_SPUR_component_8353": 8,
+   "tree0_SPUR_component_8532": 1,
+   "tree1_SPUR_component_10737": 1,
+   "tree1_SPUR_component_11094": 1,
+   "tree1_SPUR_component_14884": 8,
+   "tree1_SPUR_component_14944": 46,
+   "tree1_SPUR_component_15004": 25,
+   "tree1_SPUR_component_15599": 1,
+   "tree1_SPUR_component_17723": 1,
+   "tree1_SPUR_component_18143": 3,
+   "tree1_SPUR_component_19264": 9,
+   "tree1_SPUR_component_19384": 8,
+   "tree1_SPUR_component_19444": 14,
+   "tree1_SPUR_component_19504": 1,
+   "tree1_SPUR_component_20698": 1,
+   "tree1_SPUR_component_20995": 1,
+   "tree1_SPUR_component_21648": 1,
+   "tree1_SPUR_component_26425": 1,
+   "tree1_SPUR_component_27362": 1,
+   "tree1_SPUR_component_30283": 1,
+   "tree1_SPUR_component_31828": 1,
+   "tree1_SPUR_component_32536": 1,
+   "tree1_SPUR_component_33128": 1,
+   "tree1_SPUR_component_34125": 1,
+   "tree1_SPUR_component_36196": 3,
+   "tree1_SPUR_component_36786": 1,
+   "tree1_SPUR_component_37023": 1,
+   "tree1_SPUR_component_37796": 1
+  },
+  "cycles": 48223,
+  "rebuilt": 237,
+  "tool_above_the_ground": 205,
+  "tool_beneath_the_ground": 28,
+  "with_a_beam_reading": 233,
+  "without_a_beam_reading": [
+   "artifacts/isaac_render/job_21222710",
+   "artifacts/isaac_render/job_21247873",
+   "artifacts/isaac_render/job_21298152",
+   "artifacts/isaac_render/job_21300015"
+  ]
+ },
+ "descriptive": {
+  "J5_displaced_at_first_ready": {
+   "by_displacement": [
+    {
+     "any_beam_blocked": 0,
+     "axis": "closing",
+     "blocked_without_the_target": 0,
+     "offset_mm": -50.0,
+     "poses": 95,
+     "target_between_jaws": 0,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 10,
+     "axis": "closing",
+     "blocked_by_W_without_the_target": 30,
+     "blocked_without_the_target": 10,
+     "offset_mm": -30.0,
+     "poses": 95,
+     "target_between_jaws": 0,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 79,
+     "axis": "closing",
+     "blocked_by_W_without_the_target": 59,
+     "blocked_without_the_target": 12,
+     "offset_mm": -20.0,
+     "poses": 95,
+     "target_between_jaws": 67,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "closing",
+     "blocked_without_the_target": 0,
+     "offset_mm": -15.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "closing",
+     "blocked_without_the_target": 0,
+     "offset_mm": -10.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "closing",
+     "blocked_without_the_target": 0,
+     "offset_mm": -5.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "closing",
+     "blocked_without_the_target": 0,
+     "offset_mm": 5.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "closing",
+     "blocked_without_the_target": 0,
+     "offset_mm": 10.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "closing",
+     "blocked_without_the_target": 0,
+     "offset_mm": 15.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 91,
+     "axis": "closing",
+     "blocked_without_the_target": 0,
+     "offset_mm": 20.0,
+     "poses": 95,
+     "target_between_jaws": 91,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 8,
+     "axis": "closing",
+     "blocked_by_W_without_the_target": 12,
+     "blocked_without_the_target": 8,
+     "offset_mm": 30.0,
+     "poses": 95,
+     "target_between_jaws": 0,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 5,
+     "axis": "closing",
+     "blocked_by_W_without_the_target": 5,
+     "blocked_without_the_target": 5,
+     "offset_mm": 50.0,
+     "poses": 95,
+     "target_between_jaws": 0,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 11,
+     "axis": "lateral",
+     "blocked_by_W_without_the_target": 32,
+     "blocked_without_the_target": 10,
+     "offset_mm": -50.0,
+     "poses": 95,
+     "target_between_jaws": 1,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 56,
+     "axis": "lateral",
+     "blocked_by_W_without_the_target": 44,
+     "blocked_without_the_target": 18,
+     "offset_mm": -30.0,
+     "poses": 95,
+     "target_between_jaws": 38,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 93,
+     "axis": "lateral",
+     "blocked_by_W_without_the_target": 14,
+     "blocked_without_the_target": 9,
+     "offset_mm": -20.0,
+     "poses": 95,
+     "target_between_jaws": 84,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 94,
+     "axis": "lateral",
+     "blocked_without_the_target": 0,
+     "offset_mm": -15.0,
+     "poses": 95,
+     "target_between_jaws": 94,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "lateral",
+     "blocked_without_the_target": 0,
+     "offset_mm": -10.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "lateral",
+     "blocked_without_the_target": 0,
+     "offset_mm": -5.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "lateral",
+     "blocked_without_the_target": 0,
+     "offset_mm": 5.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "lateral",
+     "blocked_without_the_target": 0,
+     "offset_mm": 10.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 92,
+     "axis": "lateral",
+     "blocked_without_the_target": 0,
+     "offset_mm": 15.0,
+     "poses": 95,
+     "target_between_jaws": 92,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 73,
+     "axis": "lateral",
+     "blocked_by_W_without_the_target": 5,
+     "blocked_without_the_target": 1,
+     "offset_mm": 20.0,
+     "poses": 95,
+     "target_between_jaws": 72,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 70,
+     "axis": "lateral",
+     "blocked_by_W_without_the_target": 45,
+     "blocked_without_the_target": 14,
+     "offset_mm": 30.0,
+     "poses": 95,
+     "target_between_jaws": 56,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 65,
+     "axis": "lateral",
+     "blocked_by_W_without_the_target": 240,
+     "blocked_without_the_target": 64,
+     "offset_mm": 50.0,
+     "poses": 95,
+     "target_between_jaws": 1,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 0,
+     "axis": "tool",
+     "blocked_without_the_target": 0,
+     "offset_mm": -50.0,
+     "poses": 95,
+     "target_between_jaws": 0,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 0,
+     "axis": "tool",
+     "blocked_without_the_target": 0,
+     "offset_mm": -30.0,
+     "poses": 95,
+     "target_between_jaws": 0,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 5,
+     "axis": "tool",
+     "blocked_by_W_without_the_target": 5,
+     "blocked_without_the_target": 5,
+     "offset_mm": -20.0,
+     "poses": 95,
+     "target_between_jaws": 0,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 6,
+     "axis": "tool",
+     "blocked_by_W_without_the_target": 10,
+     "blocked_without_the_target": 6,
+     "offset_mm": -15.0,
+     "poses": 95,
+     "target_between_jaws": 0,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 15,
+     "axis": "tool",
+     "blocked_by_W_without_the_target": 30,
+     "blocked_without_the_target": 11,
+     "offset_mm": -10.0,
+     "poses": 95,
+     "target_between_jaws": 4,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 91,
+     "axis": "tool",
+     "blocked_by_W_without_the_target": 5,
+     "blocked_without_the_target": 2,
+     "offset_mm": -5.0,
+     "poses": 95,
+     "target_between_jaws": 89,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 94,
+     "axis": "tool",
+     "blocked_without_the_target": 0,
+     "offset_mm": 5.0,
+     "poses": 95,
+     "target_between_jaws": 94,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "tool",
+     "blocked_without_the_target": 0,
+     "offset_mm": 10.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 94,
+     "axis": "tool",
+     "blocked_without_the_target": 0,
+     "offset_mm": 15.0,
+     "poses": 95,
+     "target_between_jaws": 94,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 95,
+     "axis": "tool",
+     "blocked_without_the_target": 0,
+     "offset_mm": 20.0,
+     "poses": 95,
+     "target_between_jaws": 95,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 66,
+     "axis": "tool",
+     "blocked_by_W_without_the_target": 3,
+     "blocked_without_the_target": 3,
+     "offset_mm": 30.0,
+     "poses": 95,
+     "target_between_jaws": 63,
+     "target_without_a_blocked_beam": 0
+    },
+    {
+     "any_beam_blocked": 0,
+     "axis": "tool",
+     "blocked_without_the_target": 0,
+     "offset_mm": 50.0,
+     "poses": 95,
+     "target_between_jaws": 0,
+     "target_without_a_blocked_beam": 0
+    }
+   ],
+   "captures_with_a_ready_cycle": 95,
+   "total": {
+    "any_beam_blocked": 2258,
+    "blocked_by_W_without_the_target": 539,
+    "blocked_without_the_target": 178,
+    "poses": 3420,
+    "target_between_jaws": 2080,
+    "target_without_a_blocked_beam": 0
+   }
+  },
+  "ground_audit": {
+   "by_target": {
+    "tree0_SPUR_component_3721": 3,
+    "tree0_SPUR_component_530": 15,
+    "tree0_SPUR_component_590": 7,
+    "tree1_SPUR_component_3433": 1,
+    "tree1_SPUR_component_3493": 1,
+    "tree1_SPUR_component_3673": 1
+   },
+   "captures": [
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/hold-gen-a-r1-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_3721",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/hold-gen-a-r2-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_3721",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/hold-gen-a-r3-20261004/run_00_source_tree0_v3721_planned_pose_jaw_hold_gen",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_3721",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/hold-gen-ctl-20261004/run_00_source_tree0_v530_planned_pose_jaw_hold_gen",
+     "cycles": 200,
+     "detached": true,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": true,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_18_source_tree1_v3433_planned_pose_jaw_hold_sweep",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree1_SPUR_component_3433",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/hold-sweep-20261006/run_19_source_tree1_v3673_planned_pose_jaw_hold_sweep",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree1_SPUR_component_3673",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/hold-sweep-ctl-20261006/run_00_source_tree0_v530_planned_pose_jaw_hold_sweep",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": true,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/jaw-hold-a-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold",
+     "cycles": 200,
+     "detached": true,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": true,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/jaw-hold-b-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold",
+     "cycles": 200,
+     "detached": true,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": true,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/jaw-hold-c-20261001/run_00_source_tree0_v530_planned_pose_jaw_hold",
+     "cycles": 200,
+     "detached": true,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": true,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/perc-both-tree0-20260926/run_00_source_tree0_v530_similarity_mount",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/perc-both-tree0-20260926/run_01_source_tree0_v590_similarity_mount",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_590",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_00_source_tree0_v530_similarity_tracker",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/perc-similarity-tree0-20260926/run_01_source_tree0_v590_similarity_tracker",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_590",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/planned-pose-gpu-r1-20260929/run_00_source_tree0_v530_planned_pose",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": true,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/planned-pose-gpu-r2-20260929/run_00_source_tree0_v530_planned_pose",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": true,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/planned-pose-gpu-r3-20260929/run_00_source_tree0_v530_planned_pose",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": true,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 400,
+     "capture": "artifacts/vision_robustness/strategy-fine-step-20260923/run_00_source_tree0_v530_fine_step",
+     "cycles": 400,
+     "detached": false,
+     "mouth_beneath_cycles": 400,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 400
+    },
+    {
+     "camera_beneath_cycles": 400,
+     "capture": "artifacts/vision_robustness/strategy-fine-step-20260923/run_01_source_tree0_v590_fine_step",
+     "cycles": 400,
+     "detached": false,
+     "mouth_beneath_cycles": 400,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_590",
+     "tool_point_beneath_cycles": 400
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/strategy-horizontal-20260923/run_00_source_tree0_v530_horizontal_standoff",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 34,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 30
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/strategy-horizontal-20260923/run_01_source_tree0_v590_horizontal_standoff",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_590",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/strategy-tool-axis-20260923/run_00_source_tree0_v530_tool_axis_standoff",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 192
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/strategy-tool-axis-20260923/run_01_source_tree0_v590_tool_axis_standoff",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_590",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/targets-morning-20260923/run_00_morning_tree0_v530",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/targets-morning-20260923/run_01_morning_tree0_v590",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_590",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/targets-source-20260923/run_00_source_tree0_v530",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_530",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/targets-source-20260923/run_01_source_tree0_v590",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree0_SPUR_component_590",
+     "tool_point_beneath_cycles": 200
+    },
+    {
+     "camera_beneath_cycles": 200,
+     "capture": "artifacts/vision_robustness/tree1-seeded30-20260926/run_05_source_tree1_v3493_baseline",
+     "cycles": 200,
+     "detached": false,
+     "mouth_beneath_cycles": 200,
+     "reaches_closing": false,
+     "target": "tree1_SPUR_component_3493",
+     "tool_point_beneath_cycles": 200
+    }
+   ],
+   "captures_with_the_tool_beneath_the_ground": 28,
+   "reaching_closing": 8
+  }
+ },
+ "inputs_consistent": {
+  "jaw_harness_captures_are_above_the_ground": true,
+  "jaw_harness_min_beams": true,
+  "jaw_harness_used_these_beams": true,
+  "jaw_harness_used_these_cycles": true
+ },
+ "inputs_sha256": {
+  "baseline": "f9209b45d1b7d5c0883acd28c3078fe3f87329db1f848dbcc34de2292a8ea675",
+  "baseline_cycles": "8475d280dabe657a446bfc02e577499f5b32309b64a8e9b4870998c3b0b577d3",
+  "beams": "0cd00303952045523b6f9bf45b5c713fb4c40002ab2559086c352d0df756564f",
+  "cycles": "7946cb037984c34f0c374e1930fdf79dda37c97301a02d632ea53437c58b2882",
+  "harness_jaw": "2f6a272aeea28e7faa18ac6494ef1f845e5e944d60b0e6b21747f980f9fc5d54",
+  "harness_off": "ee7ee680de2ae2e8b40d3957c2ae9cccb0209e82062067f0b9f3117699f77759"
+ },
+ "min_beams": 1,
+ "protocol": "docs/EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md",
+ "provenance": {
+  "code_revision": "72493fb3173834cca12c4502c7a500e289e64fdc",
+  "tracked_tree_clean": true
+ },
+ "schema_version": 1,
+ "tool": "tools/score_jaw_presence.py",
+ "verdicts": {
+  "J1": {
+   "captures": 217,
+   "cycles": 43623,
+   "faults": {
+    "changed": [],
+    "held": 23,
+    "stopping": 23
+   },
+   "holds": {
+    "every_fault_as_before": true,
+    "no_forwarding_problem": true,
+    "node_holds_as_before": true,
+    "node_matches_stored_verdicts_on_every_cycle": true,
+    "reference_matches_stored_verdicts_on_every_cycle": true,
+    "same_cycles_file": true
+   },
+   "node": {
+    "captures": 217,
+    "cpp_holds": 24817,
+    "cycles": 43623,
+    "matched_cycles": 43623,
+    "mismatched_cycles": null
+   },
+   "node_on_november_5": {
+    "captures": 217,
+    "cpp_holds": 24817,
+    "cycles": 43623,
+    "matched_cycles": 43623
+   },
+   "prediction": "J1",
+   "reference_fields_differing": {},
+   "verdict": "supported"
+  },
+  "J2": {
+   "captures": 205,
+   "captures_changed": [],
+   "captures_reaching_closing": 87,
+   "cycles": 42001,
+   "holds": {
+    "no_capture_changes": true,
+    "node_jaw_output_equals_the_recorded_jaw": true,
+    "node_matches_the_reference_on_every_cycle": true,
+    "node_ran_every_closure_capture": true
+   },
+   "node": {
+    "captures": 87,
+    "captures_whose_jaw_output_differs": [],
+    "captures_with_mismatched_fields": {},
+    "cycles": 17911
+   },
+   "prediction": "J2",
+   "ready_cycles_without_a_blocked_beam": 0,
+   "verdict": "supported"
+  },
+  "J3": {
+   "captures": 87,
+   "captures_not_held": [],
+   "captures_whose_jaw_advanced": [],
+   "cycles_from_first_closing_to_hold": {
+    "1": 87
+   },
+   "first_hold_reasons": {
+    "jaw_empty_during_closure": 87
+   },
+   "holds": {
+    "held_wherever_the_recorded_jaw_advanced": true,
+    "jaw_never_advanced": true,
+    "node_as_the_reference_expects": true,
+    "outputs_clean": true
+   },
+   "prediction": "J3",
+   "verdict": "supported"
+  },
+  "J4": {
+   "captures": 87,
+   "captures_with_a_blocked_beam": {
+    "artifacts/isaac_render/job_21358986": {
+     "by": {
+      "W": 17
+     },
+     "cycles": 11
+    },
+    "artifacts/isaac_render/job_21358987": {
+     "by": {
+      "W": 16
+     },
+     "cycles": 11
+    },
+    "artifacts/vision_robustness/lighting-20260919/run_02_morning_raw": {
+     "by": {
+      "W": 11
+     },
+     "cycles": 11
+    },
+    "artifacts/vision_robustness/lighting-20260919/run_04_evening_raw": {
+     "by": {
+      "W": 16
+     },
+     "cycles": 11
+    },
+    "artifacts/vision_robustness/lighting-20260919/run_05_evening_clahe": {
+     "by": {
+      "W": 11
+     },
+     "cycles": 11
+    }
+   },
+   "captures_with_the_target_still_between_the_jaws": {},
+   "closures_accepted": [
+    "artifacts/isaac_render/job_21358986",
+    "artifacts/isaac_render/job_21358987",
+    "artifacts/vision_robustness/lighting-20260919/run_02_morning_raw",
+    "artifacts/vision_robustness/lighting-20260919/run_04_evening_raw",
+    "artifacts/vision_robustness/lighting-20260919/run_05_evening_clahe"
+   ],
+   "first_hold_reasons": {
+    "None": 5,
+    "jaw_empty_during_closure": 82
+   },
+   "holds": {
+    "every_closure_refused": false,
+    "no_beam_blocked_in_a_ready_or_closing_cycle": false,
+    "node_as_the_reference_expects": true
+   },
+   "prediction": "J4",
+   "ready_or_closing_cycles": 940,
+   "verdict": "refuted"
+  },
+  "J6": {
+   "capture": "artifacts/isaac_render/job_21317169",
+   "holds": {
+    "jaw_reading_dropped": true,
+    "jaw_wrong_beam_count": true,
+    "jaw_wrong_frame": true
+   },
+   "prediction": "J6",
+   "scenarios": {
+    "jaw_reading_dropped": {
+     "expected_reason": "input_missing:jaw_presence",
+     "first_hold_index": 20,
+     "first_hold_reason": "input_missing:jaw_presence",
+     "held_through_end": true
+    },
+    "jaw_wrong_beam_count": {
+     "expected_reason": "invalid_jaw_presence",
+     "first_hold_index": 20,
+     "first_hold_reason": "invalid_jaw_presence",
+     "held_through_end": true
+    },
+    "jaw_wrong_frame": {
+     "expected_reason": "invalid_jaw_presence",
+     "first_hold_index": 20,
+     "first_hold_reason": "invalid_jaw_presence",
+     "held_through_end": true
+    }
+   },
+   "verdict": "supported"
+  }
+ }
+}
