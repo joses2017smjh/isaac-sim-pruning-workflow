@@ -42,13 +42,16 @@ import numpy as np
 import rclpy
 from builtin_interfaces.msg import Time
 from geometry_msgs.msg import PoseStamped, WrenchStamped
-from pruning_sil_msgs.msg import ControllerProposal, OperatorHold, SafetyDecision, TargetEstimate
+from pruning_sil_msgs.msg import ControllerProposal, JawPresence, OperatorHold, SafetyDecision, TargetEstimate
 from rclpy.node import Node
 from rclpy.qos import QoSDurabilityPolicy, QoSHistoryPolicy, QoSProfile, QoSReliabilityPolicy
 from sensor_msgs.msg import Image, JointState
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "source/isaaclab_pruning"))
+sys.path.insert(0, str(REPO / "tools"))
+
+import gate_replay  # noqa: E402
 
 from isaaclab_pruning.task.safety_gate import GateCycle, SafetyGateReference  # noqa: E402
 from isaaclab_pruning.task.simulated_cut import CutConfig, CutObservation, tool_mouth_geometry  # noqa: E402
@@ -73,6 +76,12 @@ FAULT_CYCLES = 10
 FAULT_TAIL = 6
 PROPOSAL_SHIFT_M = 0.001
 SETTLE_S = 1.5
+# Jaw presence (off in everything above; see docs/EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md).
+JAW_FRAME = "mock_pruner__tool0"
+JAW_MIN_BEAMS = 1
+JAW_ALL_CLEAR = "........."
+JAW_FAULT_START = 20
+JAW_FAULT_RECORDS = 40
 
 
 def to_time(ns):
@@ -184,6 +193,8 @@ class Harness(Node):
             "target": self.create_publisher(TargetEstimate, "/pruning/perception/target", RELIABLE),
             "proposal": self.create_publisher(ControllerProposal, "/pruning/proposed/proposal", RELIABLE),
         }
+        # Not in self.pubs: the node subscribes to it only when jaw presence is switched on.
+        self.jaw_pub = self.create_publisher(JawPresence, "/pruning/jaw/presence", RELIABLE)
         self.decisions, self.commands, self.jaws = {}, {}, {}
         self.subs = [
             self.create_subscription(SafetyDecision, "/pruning/safety/decision", self._decision, RELIABLE),
@@ -205,10 +216,12 @@ class Harness(Node):
         self.commands.clear()
         self.jaws.clear()
 
-    def connected(self):
+    def connected(self, need_jaw=False):
         # Humble's Subscription has no publisher count; ask the graph by topic instead.
-        return all(p.get_subscription_count() >= 1 for p in self.pubs.values()) and all(
-            self.count_publishers(s.topic_name) >= 1 for s in self.subs
+        return (
+            all(p.get_subscription_count() >= 1 for p in self.pubs.values())
+            and all(self.count_publishers(s.topic_name) >= 1 for s in self.subs)
+            and (not need_jaw or self.jaw_pub.get_subscription_count() >= 1)
         )
 
     def spin_until(self, predicate, timeout_s):
@@ -220,7 +233,7 @@ class Harness(Node):
         return predicate()
 
 
-def start_gate(executable, record, *, input_timeout_s, initial_missing):
+def start_gate(executable, record, *, input_timeout_s, initial_missing, jaw_min_beams=0):
     target = record["target"]
     offset, closing = record["mouth_offset_tool_m"], record["closing_axis_tool"]
 
@@ -238,6 +251,8 @@ def start_gate(executable, record, *, input_timeout_s, initial_missing):
         "-p", f"initial_missing:={int(initial_missing)}",
         "-p", f"input_timeout_s:={input_timeout_s}",
     ]  # fmt: skip
+    if jaw_min_beams:
+        command += ["-p", f"jaw_presence_min_beams:={int(jaw_min_beams)}"]
     return subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
 
@@ -257,14 +272,20 @@ def seeded_missing(first):
     return python["tof_missing_frames"] - 1 if python["tof_min_range_m"] is None else 0
 
 
-def run_cycles(harness, executable, records, messages, *, input_timeout_s=5.0, before_cycle=None, wait_s=8.0):
+def run_cycles(
+    harness, executable, records, messages, *, input_timeout_s=5.0, before_cycle=None, wait_s=8.0, jaw_min_beams=0
+):
     """Publish each cycle in order and collect what the node decided. Returns (rows, gate log)."""
     harness.reset()
     process = start_gate(
-        executable, records[0], input_timeout_s=input_timeout_s, initial_missing=seeded_missing(records[0])
+        executable,
+        records[0],
+        input_timeout_s=input_timeout_s,
+        initial_missing=seeded_missing(records[0]),
+        jaw_min_beams=jaw_min_beams,
     )
     try:
-        if not harness.spin_until(harness.connected, 30.0):
+        if not harness.spin_until(lambda: harness.connected(need_jaw=bool(jaw_min_beams)), 30.0):
             raise RuntimeError("safety_gate_node did not connect within 30 s")
         # Matching is reported per side; give the node's readers time to match every writer, or the
         # first reliable samples can be published before the node is listening.
@@ -277,7 +298,7 @@ def run_cycles(harness, executable, records, messages, *, input_timeout_s=5.0, b
             started = time.monotonic()
             for name, message in cycle.items():
                 if message is not None:
-                    harness.pubs[name].publish(message)
+                    (harness.jaw_pub if name == "jaw_presence" else harness.pubs[name]).publish(message)
             got = harness.spin_until(lambda: stamp in harness.decisions and stamp in harness.jaws, wait_s)
             rows.append(
                 {
@@ -604,6 +625,157 @@ def run_fault(harness, executable, records, name, spec):
     return outcome
 
 
+# ----------------------------------------------------------------------------- jaw presence
+
+
+def jaw_message(record):
+    """The beam grid's reading for one cycle, from the record's nine-character ``jaw_beams``."""
+    message = JawPresence()
+    message.header.stamp, message.header.frame_id = to_time(record["stamp_ns"]), JAW_FRAME
+    message.blocked = [code != gate_replay.CLEAR for code in record["jaw_beams"]]
+    message.beams = len(message.blocked)
+    return message
+
+
+def jaw_cycles(records):
+    out = []
+    for record in records:
+        cycle = cycle_messages(record)
+        cycle["jaw_presence"] = jaw_message(record)
+        out.append(cycle)
+    return out
+
+
+def run_jaw_scenario(harness, executable, records):
+    """Replay one capture with jaw presence on; compare the node with the reference plus the node's jaw rule."""
+    rows, log = run_cycles(harness, executable, records, jaw_cycles(records), jaw_min_beams=JAW_MIN_BEAMS)
+    expected = gate_replay.replay(records, jaw_min_beams=JAW_MIN_BEAMS, jaw_key="jaw_beams", node_rules=True)
+    differ = Counter()
+    for row, verdict in zip(rows, expected):
+        for key in compare_decision(row["decision"], verdict):
+            differ[key] += 1
+    forwarding, moved_while_held = check_outputs(rows)
+    held = [row for row in rows if row["decision"] is not None and not row["decision"].passed]
+    jaws = [row["jaw"].position[0] for row in rows if row["jaw"] is not None]
+    expected_index, expected_reason = gate_replay.first_hold(expected, records)
+    return {
+        "cycles": len(rows),
+        "missing_outputs": sum(row["decision"] is None or row["jaw"] is None for row in rows),
+        "mismatched_fields": dict(differ),
+        "first_hold_index": held[0]["record"]["index"] if held else None,
+        "first_hold_reason": held[0]["decision"].reason if held else None,
+        "expected_first_hold_index": expected_index,
+        "expected_first_hold_reason": expected_reason,
+        "max_gated_jaw": max(jaws) if jaws else None,
+        "expected_max_gated_jaw": max(verdict["gated_jaw"] for verdict in expected),
+        "recorded_max_jaw": max(float(record["proposal"]["closure_progress"]) for record in records),
+        "blocked_cycles": sum(gate_replay.blocked_count(record["jaw_beams"]) > 0 for record in records),
+        "forwarding_problems": dict(forwarding),
+        "held_cycles_commanding_motion": moved_while_held,
+        "gate_returncode": log["returncode"],
+    }
+
+
+def _jaw_short(message):
+    message.blocked = list(message.blocked)[:4]
+
+
+JAW_INPUT_FAULTS = {
+    "jaw_reading_dropped": ("drop", "input_missing:jaw_presence"),
+    "jaw_wrong_beam_count": (_jaw_short, "invalid_jaw_presence"),
+    "jaw_wrong_frame": (_set_frame("world"), "invalid_jaw_presence"),
+}
+
+
+def run_jaw_input_fault(harness, executable, records, action, reason):
+    """A missing or malformed reading from cycle JAW_FAULT_START on must hold there and stay held."""
+    selected = records[:JAW_FAULT_RECORDS]
+    messages = jaw_cycles(selected)
+    for record, cycle in zip(selected, messages):
+        if record["index"] >= selected[JAW_FAULT_START]["index"]:
+            if action == "drop":
+                cycle["jaw_presence"] = None
+            else:
+                action(cycle["jaw_presence"])
+    rows, log = run_cycles(harness, executable, selected, messages, input_timeout_s=0.5, jaw_min_beams=JAW_MIN_BEAMS)
+    forwarding, moved_while_held = check_outputs(rows)
+    held = [row for row in rows if row["decision"] is not None and not row["decision"].passed]
+    first = held[0] if held else None
+    expected_index = selected[JAW_FAULT_START]["index"]
+    outcome = {
+        "expected_reason": reason,
+        "expected_first_hold_index": expected_index,
+        "first_hold_index": first["record"]["index"] if first else None,
+        "first_hold_reason": first["decision"].reason if first else None,
+        "held_through_end": bool(first)
+        and all(
+            row["decision"] is not None and not row["decision"].passed
+            for row in rows
+            if row["record"]["index"] >= first["record"]["index"]
+        ),
+        "forwarding_problems": dict(forwarding),
+        "held_cycles_commanding_motion": moved_while_held,
+        "gate_returncode": log["returncode"],
+    }
+    outcome["ok"] = (
+        outcome["first_hold_index"] == expected_index
+        and outcome["first_hold_reason"] == reason
+        and outcome["held_through_end"]
+        and not outcome["forwarding_problems"]
+        and moved_while_held == 0
+    )
+    return outcome
+
+
+def run_jaw_presence(harness, executable, captures, beams_path):
+    """Every capture that reaches closing with the tool above the ground: three readings through the node."""
+    readings = {}
+    with gzip.open(beams_path, "rt", encoding="utf-8") as stream:
+        for line in stream:
+            reading = json.loads(line)
+            readings[reading["capture"]] = reading
+    out = {"min_beams": JAW_MIN_BEAMS, "captures": {}, "skipped": Counter(), "input_faults": {}}
+    fault_records = None
+    for label, records in sorted(captures.items()):
+        reading = readings.get(label)
+        if reading is None:
+            out["skipped"]["no_beam_reading"] += 1
+            continue
+        if not any(record["proposal"]["cut_phase"] == "closing" for record in records):
+            out["skipped"]["never_closing"] += 1
+            continue
+        if not gate_replay.tool_above_the_ground(reading):
+            out["skipped"]["tool_beneath_the_ground"] += 1
+            continue
+        scenarios = {}
+        for name, key in (("recorded", "beams"), ("all_clear", JAW_ALL_CLEAR), ("tool_short", "back_beams")):
+            scenarios[name] = run_jaw_scenario(harness, executable, gate_replay.attach_beams(records, reading, key))
+        out["captures"][label] = scenarios
+        if fault_records is None and len(records) >= JAW_FAULT_RECORDS:
+            fault_records = gate_replay.attach_beams(records, reading, "beams")
+            out["input_fault_capture"] = label
+        print(
+            f"jaw {label}: recorded mismatches {sum(scenarios['recorded']['mismatched_fields'].values())}, "
+            f"all clear held at {scenarios['all_clear']['first_hold_index']} "
+            f"({scenarios['all_clear']['first_hold_reason']}), max jaw {scenarios['all_clear']['max_gated_jaw']}",
+            flush=True,
+        )
+    if fault_records is not None:
+        for name, (action, reason) in JAW_INPUT_FAULTS.items():
+            out["input_faults"][name] = run_jaw_input_fault(harness, executable, fault_records, action, reason)
+            print(f"jaw fault {name}: ok={out['input_faults'][name]['ok']}", flush=True)
+    out["skipped"] = dict(out["skipped"])
+    scenarios = [s for capture in out["captures"].values() for s in capture.values()]
+    out["harness_ok"] = bool(scenarios) and all(
+        not s["mismatched_fields"]
+        and not s["missing_outputs"]
+        and not s["forwarding_problems"]
+        and s["gate_returncode"] in (0, -2, None)
+        for s in scenarios
+    )
+    return out
+
+
 # ----------------------------------------------------------------------------- main
 
 
@@ -628,6 +800,8 @@ def main(argv=None):
     parser.add_argument("--fault-capture", default="artifacts/isaac_render/job_21328323")
     parser.add_argument("--only", nargs="*", help="limit the parity sweep to these captures")
     parser.add_argument("--skip-parity", action="store_true")
+    parser.add_argument("--skip-faults", action="store_true", help="skip the injected faults of the default gate")
+    parser.add_argument("--jaw-beams", help="jaw_beams.jsonl.gz from cast_jaw_beams.py: also run jaw presence")
     args = parser.parse_args(argv)
 
     captures, digest = load_captures(args.cycles, set(args.only) if args.only else None)
@@ -691,23 +865,29 @@ def main(argv=None):
             "mismatch_examples": mismatch_examples,
         }
 
+        if args.jaw_beams:
+            evidence["jaw_presence"] = run_jaw_presence(harness, args.gate, captures, args.jaw_beams)
+            evidence["jaw_beams_sha256"] = hashlib.sha256(Path(args.jaw_beams).read_bytes()).hexdigest()
+
         fault_records = captures[args.fault_capture]
         faults = {}
-        for name, spec in {**FAULTS, **NON_STOPPING}.items():
+        scenarios = {} if args.skip_faults else {**FAULTS, **NON_STOPPING}
+        for name, spec in scenarios.items():
             faults[name] = run_fault(harness, args.gate, fault_records, name, spec)
             print(
                 f"fault {name}: ok={faults[name]['ok']} first={faults[name]['first_hold_index']} "
                 f"reason={faults[name]['first_hold_reason']}",
                 flush=True,
             )
-        stopping = [name for name in FAULTS]
+        stopping = [name for name in FAULTS if name in faults]
         evidence["faults"] = {
             "capture": args.fault_capture,
             "window": {"first_index": FAULT_START, "cycles": FAULT_CYCLES, "clean_tail_cycles": FAULT_TAIL},
             "scenarios": faults,
             "stopping_faults": len(stopping),
             "stopping_faults_held": sum(1 for name in stopping if faults[name]["ok"]),
-            "non_stopping_documented": list(NON_STOPPING),
+            "non_stopping_documented": [name for name in NON_STOPPING if name in faults],
+            "skipped": bool(args.skip_faults),
         }
     finally:
         harness.destroy_node()
@@ -719,7 +899,8 @@ def main(argv=None):
         and totals["cycles"] > 0
     )
     faults_ok = all(item["ok"] for item in evidence["faults"]["scenarios"].values())
-    evidence["passed"] = bool(parity_ok and faults_ok)
+    jaw_ok = "jaw_presence" not in evidence or evidence["jaw_presence"]["harness_ok"]
+    evidence["passed"] = bool(parity_ok and faults_ok and jaw_ok)
     Path(args.output).write_text(json.dumps(evidence, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8")
     print(
         json.dumps(

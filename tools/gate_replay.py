@@ -16,6 +16,8 @@ the reference's jaw-presence rule on and feeds it the count of blocked beams.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import math
 import sys
 from pathlib import Path
@@ -52,6 +54,36 @@ def demo_config(target_id):
 def seeded_missing(first):
     python = first["python"]
     return python["tof_missing_frames"] - 1 if python["tof_min_range_m"] is None else 0
+
+
+def pose_digest(pose):
+    """A short digest of a tool pose, to check that a beam reading and a record are the same cycle."""
+    return hashlib.sha256(json.dumps([float(v) for v in pose]).encode()).hexdigest()[:16]
+
+
+def attach_beams(records, reading, key="beams", jaw_key="jaw_beams"):
+    """Copies of ``records`` carrying one capture's beam reading (a line of jaw_beams.jsonl.gz) under ``jaw_key``.
+
+    ``key`` is the reading to attach, or a nine-character string to use in every cycle. The join is checked on
+    the cycle index, the stamp and the tool pose."""
+    if len(reading["index"]) != len(records):
+        raise ValueError("the beam reading and the records have different lengths")
+    out = []
+    for i, record in enumerate(records):
+        same = (
+            reading["index"][i] == record["index"]
+            and reading["stamp_ns"][i] == record["stamp_ns"]
+            and reading["pose_digest"][i] == pose_digest(record["tool_pose_wxyz"])
+        )
+        if not same:
+            raise ValueError(f"cycle {record['index']}: the beam reading belongs to a different cycle")
+        out.append({**record, jaw_key: reading[key][i] if key in reading else key})
+    return out
+
+
+def tool_above_the_ground(reading):
+    """False when the tool point is beneath the ground relief in any cycle: not a physical scene."""
+    return not any(flags[0] == "1" for flags in reading["beneath"])
 
 
 def blocked_count(codes):

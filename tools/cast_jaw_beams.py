@@ -45,6 +45,7 @@ for extra in (ROOT / "tools", ROOT / "source/isaaclab_pruning"):
 import export_gate_parity as egp  # noqa: E402
 import known_map_planner as kmp  # noqa: E402
 import study_mouth_evidence as study  # noqa: E402
+from gate_replay import pose_digest  # noqa: E402
 
 from isaaclab_pruning.perception import jaw_self_mask as jsm  # noqa: E402
 from isaaclab_pruning.sensors import jaw_beam_grid as jbg  # noqa: E402
@@ -53,10 +54,6 @@ SCHEMA_VERSION = 1
 #: How far short of the recorded pose the "jaw stopped before the spur" reading is taken.
 BACKOFF_M = 0.020
 CLEAR, TARGET, WOOD, GROUND = ".", "T", "W", "G"
-
-
-def pose_digest(pose):
-    return hashlib.sha256(json.dumps([float(v) for v in pose]).encode()).hexdigest()[:16]
 
 
 def castable(report):
@@ -246,11 +243,11 @@ def totals(rows):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--output-dir", type=Path, required=True, help="New directory outside the repository")
+    parser.add_argument("--output", type=Path, required=True, help="New directory outside the repository")
     parser.add_argument("--roots", nargs="+", default=[str(ROOT / "artifacts")])
     parser.add_argument("--only", nargs="*", help="Limit to captures whose path contains one of these strings")
     args = parser.parse_args(argv)
-    output = args.output_dir.expanduser().resolve()
+    output = args.output.expanduser().resolve()
     if output.exists() or ROOT.resolve() in output.parents:
         parser.error(f"refusing {output}: it exists or is inside the repository")
     t0 = time.time()

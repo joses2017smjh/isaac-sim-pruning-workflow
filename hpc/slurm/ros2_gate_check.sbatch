@@ -21,5 +21,6 @@ trap 'rm -rf "$LOGS"' EXIT
 apptainer exec --cleanenv --no-home \
   --env PYTHONNOUSERSITE=1,ROS_LOCALHOST_ONLY=1,ROS_DOMAIN_ID=$ROS_DOMAIN_ID,ROS_LOG_DIR=$LOGS/log,ROS_HOME=$LOGS,HOME=$LOGS,QT_QPA_PLATFORM=offscreen,QT_QUICK_BACKEND=software \
   --env REHEARSE_CAPTURE=${REHEARSE_CAPTURE:-},REHEARSE_OUT=${REHEARSE_OUT:-} \
+  --env "GATE_HARNESS_ARGS=${GATE_HARNESS_ARGS:-}" --env GATE_HARNESS_TAIL=${GATE_HARNESS_TAIL:-60} \
   --bind /nfs/hpc/share/$USER \
   $IMAGE bash $REPO/hpc/inner/ros2_gate_check.sh $REPO "$CYCLES" "$OUT" $PANEL

@@ -32,7 +32,8 @@ colcon test-result >/dev/null 2>&1 || { echo "colcon tests failed"; exit 3; }
 if [ "$CYCLES" != "-" ]; then
   echo "== safety gate harness $(date -Is)"
   python3 $REPO/tools/validate_safety_gate.py --cycles "$CYCLES" \
-    --gate $WS/install/pruning_sil_cpp/lib/pruning_sil_cpp/safety_gate_node --output "$OUT" 2>&1 | tail -60
+    --gate $WS/install/pruning_sil_cpp/lib/pruning_sil_cpp/safety_gate_node --output "$OUT" \
+    ${GATE_HARNESS_ARGS:-} 2>&1 | tail -${GATE_HARNESS_TAIL:-60}
 fi
 if [ -n "${REHEARSE_CAPTURE:-}" ]; then
   echo "== live-loop rehearsal on $REHEARSE_CAPTURE $(date -Is)"

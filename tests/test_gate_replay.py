@@ -119,3 +119,24 @@ def test_helpers(replay):
     assert replay.blocked_count(".T.WG....") == 3
     assert replay.jaw_advances(closure(None)) == [3, 4, 5]
     assert replay.first_hold(replay.replay(closure(None)), closure(None)) == (None, None)
+
+
+def test_a_beam_reading_is_attached_only_to_its_own_cycles(replay):
+    rows = closure(None)
+    reading = {
+        "index": [row["index"] for row in rows],
+        "stamp_ns": [row["stamp_ns"] for row in rows],
+        "pose_digest": [replay.pose_digest(row["tool_pose_wxyz"]) for row in rows],
+        "beams": ["....T...."] * len(rows),
+        "beneath": ["000"] * len(rows),
+    }
+    joined = replay.attach_beams(rows, reading)
+    assert [row["jaw_beams"] for row in joined] == ["....T...."] * 6 and "jaw_beams" not in rows[0]
+    assert {row["jaw_beams"] for row in replay.attach_beams(rows, reading, ".........")} == {"........."}
+    assert replay.tool_above_the_ground(reading)
+    assert not replay.tool_above_the_ground({**reading, "beneath": ["000", "100"] + ["000"] * 4})
+    moved = {**reading, "pose_digest": [replay.pose_digest([9.0] * 7)] + reading["pose_digest"][1:]}
+    with pytest.raises(ValueError, match="different cycle"):
+        replay.attach_beams(rows, moved)
+    with pytest.raises(ValueError, match="different lengths"):
+        replay.attach_beams(rows[:3], reading)
