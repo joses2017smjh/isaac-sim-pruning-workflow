@@ -38,7 +38,95 @@ unregistered note that a count threshold does not separate the cases. Which
 beams were blocked, and where along the gap, had not been opened for any
 capture.
 
-## Step 2 — the reading and its predictions
+## Step 2 — the reading and its predictions (committed before any test-side reading was cast)
 
-Not written yet. It will be added here, and pushed, before any test-side
-reading is cast or opened.
+### The reading
+
+Each of the nine beams reports two ranges: how far from each jaw face its first
+obstruction is. An obstruction then has a thickness along the closing axis and
+a centre relative to the middle of the gap. `tools/cast_jaw_beams.py` casts the
+ranges; the design side was cast at `95c56f5` (CPU job `22151802`).
+
+### The rule (`tools/jaw_reading_rules.py`)
+
+A beam is **spur-like** when its obstruction is centred within 6 mm of the
+middle of the gap and no thicker than the claimed spur's diameter plus 2 mm.
+The claimed radius comes with the target estimate, from the scene's description
+of the selected spur, not from the tracker. The rule **accepts** when at least
+two beams are spur-like and no beam sees anything that is not. In words: one
+spur where the controller says it is, and nothing else between the jaws.
+
+The three numbers (6 mm, 2 mm, two beams) were chosen on the design side.
+
+### What the design side showed
+
+Scored at `8d0f841` (CPU job `22151857`,
+[evidence](evidence/jaw_reading_design_2026-11-25.json)): 115 design captures
+with the tool point above the ground, 39 of which reach closing.
+
+| | One-beam rule | This rule |
+|---|---|---|
+| Recorded closures kept, targets other than 8235 | 33 of 33 | 33 of 33 |
+| Recorded closures kept, target 8235 | 6 of 6 | **0 of 6** |
+| Closures refused with the tool 20 mm short | 36 of 39 | 39 of 39 |
+| Displaced poses without the target, accepted | 73 of 633 | 21 of 633 |
+| Displaced poses with the target, accepted | 951 of 951 | 487 of 951 |
+
+Two things in that table are costs, and they are stated here so they are not
+tuned away.
+
+- **It refuses every recorded cut on target 8235.** Those cuts have other wood
+  between the jaws beside the target. A rule strict enough to reject a
+  neighbour cannot accept them. Whether a cut with other wood in the jaw should
+  go ahead is a decision about the product, not about this rule.
+- **It refuses about half of the displaced poses that still have the target
+  between the jaws.** Those are poses where the spur is off centre.
+
+The 21 accepted poses without the target are jaws displaced 30 or 50 mm along
+the jaw onto other wood that is itself centred and spur-sized. This reading
+cannot tell that from the target.
+
+### Method
+
+`tools/score_jaw_reading.py`, Python only. For each capture the rule turns every
+reading into accept or refuse, that is fed to the reference gate as its
+jaw-presence input, and the capture is replayed with the node's jaw rule
+(`tools/gate_replay.py`), exactly as the one-beam rule was. No message, node or
+C++ change is made unless the rule survives this test. Captures with the tool
+point beneath the ground are left out, as before.
+
+### Pre-registered predictions, test side
+
+The test side is 90 captures with the tool point above the ground; 48 reach
+closing: 40 on target 14944, one each on 8175, 12321 and 28610, and 5 on 8235.
+Its readings are cast only after this section is pushed.
+
+- **K1 — it keeps recorded cuts where the gap is clear.** Every test-side
+  closure capture on a target other than 8235 (43) replays unchanged: same
+  verdict, reason, latch and jaw output in every cycle. *Refuted* by one changed
+  capture.
+- **K2 — it refuses the jaw that stopped short.** With the tool-short reading,
+  the jaw output stays at 0 in every test-side closure capture (48), including
+  the two on 8235 that the one-beam rule accepted. *Refuted* by one accepted
+  closure.
+- **K3 — it refuses recorded cuts with other wood in the gap.** Every test-side
+  closure capture on 8235 (5) is refused. This is the cost stated above,
+  registered as an expected outcome. *Refuted* by one kept capture, which would
+  mean the design side's picture of 8235 does not hold on these captures.
+- **K4 — fewer false acceptances.** Of the test side's displaced poses without
+  the target between the jaws, the rule accepts fewer than the one-beam rule.
+  *Refuted* if it accepts as many or more.
+
+Reported without a prediction: how many displaced poses that do have the target
+the rule accepts.
+
+### What a result would and would not show
+
+- It is the same replay as before: recorded controller messages, exact
+  geometry, beams as lines, jaws in no mesh set.
+- The ranged reading assumes a sensor in each jaw face that measures distance
+  across the gap. No such sensor is modelled in the simulator.
+- K2 on target 8235 tests two held-out captures of a target the rule was
+  designed on. No other target has a known failure to hold out.
+- If K1, K2 and K4 hold, the rule is worth building into the gate. Whether to
+  build it with the K3 cost is the user's decision.
