@@ -1,0 +1,4838 @@
+{
+ "schema_version": 1,
+ "tool": "tools/screen_ground.py",
+ "scope": "For every spur of the jaw-fit pool: with that spur moved to the target point, which parts of the robot at the reference home pose are beneath the orchard's ground relief. Offline geometry; home pose only.",
+ "definitions": {
+  "beneath": "a vertical ray from the point meets the ground above it and none below it",
+  "parts": "each link hull (surface samples), the tool point, the jaw mouth, the planner's home camera",
+  "home": "the settled home of the reference recording, as the planner uses it",
+  "target_point_w_m": [
+   0.25123947,
+   0.63413405,
+   0.81517712
+  ],
+  "link_samples": 80,
+  "ground_triangles": 29282
+ },
+ "pool": {
+  "tree0": {
+   "measured": 310,
+   "screened_in": 185,
+   "matches_register": true
+  },
+  "tree1": {
+   "measured": 399,
+   "screened_in": 259,
+   "matches_register": true
+  }
+ },
+ "summary": {
+  "tree0": {
+   "spurs": 185,
+   "any_part_beneath": 29,
+   "base_link_beneath": 21,
+   "tool_point_beneath": 20,
+   "first_vertices_beneath": [
+    60,
+    120,
+    180,
+    530,
+    590,
+    650,
+    768,
+    946,
+    1596,
+    1834,
+    2600,
+    2660,
+    2720,
+    2839,
+    2899,
+    2959,
+    3368,
+    3721,
+    3781,
+    3899,
+    3959,
+    4019,
+    4079,
+    4139,
+    4199,
+    4259,
+    4378,
+    4438,
+    4614
+   ]
+  },
+  "tree1": {
+   "spurs": 259,
+   "any_part_beneath": 34,
+   "base_link_beneath": 26,
+   "tool_point_beneath": 25,
+   "first_vertices_beneath": [
+    119,
+    179,
+    299,
+    594,
+    654,
+    1353,
+    1591,
+    1651,
+    1711,
+    1887,
+    1947,
+    2065,
+    2662,
+    3433,
+    3493,
+    3553,
+    3613,
+    3673,
+    3846,
+    3906,
+    4441,
+    4560,
+    4680,
+    4798,
+    4977,
+    5395,
+    5513,
+    5633,
+    5693,
+    5753,
+    5813,
+    6704,
+    8249,
+    8367
+   ]
+  },
+  "all": {
+   "spurs": 444,
+   "any_part_beneath": 63,
+   "base_link_beneath": 47,
+   "tool_point_beneath": 45,
+   "parts": {
+    "rotation_correction_plate__body": 52,
+    "dovetail_male_mount__body": 52,
+    "dovetail_female_mount__body": 53,
+    "mock_pruner__base": 61,
+    "ur5e__base_link_inertia": 47,
+    "ur5e__shoulder_link": 17,
+    "ur5e__upper_arm_link": 15,
+    "ur5e__forearm_link": 21,
+    "ur5e__wrist_1_link": 29,
+    "ur5e__wrist_2_link": 52,
+    "ur5e__wrist_3_link": 53,
+    "tool_point": 45,
+    "mouth": 45,
+    "camera": 61
+   }
+  }
+ },
+ "against_recorded_captures": {
+  "recorded_targets": 56,
+  "agree": 56,
+  "agree_beneath": 7,
+  "differ": [],
+  "not_in_pool": []
+ },
+ "rows": [
+  {
+   "tree": 0,
+   "first_vertex": 60,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 124.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 120,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 99.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 180,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 69.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 530,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 20.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 590,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 46.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 650,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 76.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 768,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 116.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 946,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 26.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 1596,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 48.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 1834,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 44.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 2600,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 5.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 2660,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 16.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 2720,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 39.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 2839,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 10.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 2899,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 29.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 2959,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 16.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 3252,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -109.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 3368,
+   "beneath": [
+    "mock_pruner__base"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -75.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 3721,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 38.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 3781,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -5.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 3899,
+   "beneath": [
+    "mock_pruner__base",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -61.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 3959,
+   "beneath": [
+    "mock_pruner__base",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -90.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4019,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 17.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4079,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -15.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4139,
+   "beneath": [
+    "mock_pruner__base",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -48.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4199,
+   "beneath": [
+    "mock_pruner__base"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -76.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4259,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 24.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4378,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4438,
+   "beneath": [
+    "mock_pruner__base",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -73.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4554,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -146.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4614,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 23.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4852,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -137.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 4971,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -166.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 5150,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -226.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 5210,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -268.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 5270,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -311.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 5506,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -142.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 5738,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -387.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 5858,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -379.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 5918,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -332.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 5978,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -288.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 6098,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -460.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 6216,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -444.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 6454,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -631.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 6633,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -536.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 6693,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -557.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 6813,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -411.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 7049,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -275.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 7227,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -348.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 7287,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -338.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 7524,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -368.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 7644,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -230.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 7760,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -157.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 8056,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -251.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 8175,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -322.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 8235,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -370.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 8353,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -158.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 8532,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -297.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 8822,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -602.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 9529,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -614.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 9649,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -627.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 10001,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -817.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 10061,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -728.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 10240,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -621.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 10300,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -694.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 10479,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -510.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 10598,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -452.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 10718,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -555.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 10778,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -514.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 10956,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -719.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 11074,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -695.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 11194,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -923.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 11607,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -897.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 11667,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -914.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 11727,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -930.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 11787,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -931.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 11906,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -903.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 12142,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -855.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 12261,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1063.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 12321,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1090.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 12381,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1106.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 12501,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1082.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 12620,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1129.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 12855,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -879.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 12974,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -815.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 13094,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1012.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 13213,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -988.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 13568,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1128.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 13628,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1123.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 13688,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1124.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 13926,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -944.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14105,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -754.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14165,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -707.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14285,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -944.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14404,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1011.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14524,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -918.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14584,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -939.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14644,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -950.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14763,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -958.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14823,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -971.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 14942,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1039.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 15002,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1087.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 15122,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -875.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 15241,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -845.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 15361,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -919.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 15479,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -891.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 15599,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1124.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 15834,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1026.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 15952,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1067.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 16072,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1126.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 16367,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1085.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 16542,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1103.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 16660,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1098.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 16897,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1007.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 17251,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1026.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 17724,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1273.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 17844,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1430.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 18196,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1560.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 18373,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1629.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 18669,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1329.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 18789,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1436.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 18908,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1400.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 19145,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1579.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 19265,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1501.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 19736,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1547.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 19796,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1536.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 19908,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1531.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 19968,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1552.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 20088,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1692.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 20207,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1645.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 20444,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1627.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 20564,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1688.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 20915,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1954.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 21148,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1937.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 21268,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1696.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 21386,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1622.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 21506,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1793.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 21566,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1798.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 21626,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1804.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 21862,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1634.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 22100,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1908.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 22337,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1849.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 22691,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1770.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 22810,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1721.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 22988,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1942.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 23167,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1859.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 23285,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1931.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 23405,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1698.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 23519,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1723.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 23934,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1795.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 24113,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1782.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 24231,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1778.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 24703,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1949.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 25178,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1737.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 25238,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1672.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 25534,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2375.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 25654,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2314.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 25888,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2487.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 25948,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2526.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 26008,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2566.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 26364,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2312.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 26602,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2290.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 26958,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2748.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 27018,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2738.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 27551,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2731.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 27906,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2720.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 27966,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2757.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 28026,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2798.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 28375,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2272.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 28493,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2185.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 28610,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2119.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 29434,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2720.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 29494,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2674.9
+  },
+  {
+   "tree": 0,
+   "first_vertex": 29554,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2628.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 29792,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2825.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 29912,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2849.0
+  },
+  {
+   "tree": 0,
+   "first_vertex": 29972,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2813.3
+  },
+  {
+   "tree": 0,
+   "first_vertex": 30269,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -3041.1
+  },
+  {
+   "tree": 0,
+   "first_vertex": 30506,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2780.8
+  },
+  {
+   "tree": 0,
+   "first_vertex": 30626,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2817.2
+  },
+  {
+   "tree": 0,
+   "first_vertex": 30686,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2774.4
+  },
+  {
+   "tree": 0,
+   "first_vertex": 30746,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2732.6
+  },
+  {
+   "tree": 0,
+   "first_vertex": 30866,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2918.7
+  },
+  {
+   "tree": 0,
+   "first_vertex": 30926,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2931.5
+  },
+  {
+   "tree": 0,
+   "first_vertex": 30986,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2937.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 119,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 251.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 179,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 217.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 299,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 305.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 594,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 143.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 654,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 186.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 832,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -152.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 892,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -168.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 1012,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -171.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 1189,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -260.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 1249,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -187.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 1353,
+   "beneath": [
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -115.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 1591,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 27.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 1651,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 72.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 1711,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 116.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 1887,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -53.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 1947,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 10.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2065,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 73.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2183,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -127.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2243,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -172.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2303,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -218.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2363,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -261.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2423,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -305.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2483,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -193.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2662,
+   "beneath": [
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -123.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2781,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -190.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 2841,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -233.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3015,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -266.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3075,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -237.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3135,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -281.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3433,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 33.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3493,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 71.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3553,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 85.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3613,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 75.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3673,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 48.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3846,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -57.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 3906,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 14.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 4143,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -218.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 4261,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -282.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 4321,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -314.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 4441,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 338.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 4560,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 407.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 4680,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 52.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 4798,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 16.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 4977,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 48.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 5215,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -175.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 5275,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -215.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 5395,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 78.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 5513,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__shoulder_link",
+    "ur5e__upper_arm_link",
+    "ur5e__forearm_link",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 151.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 5633,
+   "beneath": [
+    "mock_pruner__base",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -53.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 5693,
+   "beneath": [
+    "mock_pruner__base",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -48.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 5753,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -3.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 5813,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_1_link",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 61.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 5932,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -123.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 6109,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -192.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 6347,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -183.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 6704,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__base_link_inertia",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "tool_point",
+    "mouth",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": true,
+   "tool_point_beneath": true,
+   "ground_above_tool_point_mm": 11.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 6939,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -146.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 7234,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -187.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 7354,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -259.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 7414,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -300.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 7474,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -343.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 7534,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -385.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 7712,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -326.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 7772,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -396.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 7891,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -460.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 8011,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -214.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 8129,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -280.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 8249,
+   "beneath": [
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__wrist_3_link",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -51.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 8367,
+   "beneath": [
+    "rotation_correction_plate__body",
+    "dovetail_male_mount__body",
+    "dovetail_female_mount__body",
+    "mock_pruner__base",
+    "ur5e__wrist_2_link",
+    "ur5e__wrist_3_link",
+    "camera"
+   ],
+   "any_beneath": true,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -9.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 8721,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -374.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 8957,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -589.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 9194,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -525.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 9313,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -567.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 9486,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -475.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 9546,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -493.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 9902,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -434.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 10021,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -377.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 10201,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -426.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 10557,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -333.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 10617,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -289.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 10737,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -527.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 10856,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -568.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 11094,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -343.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 11273,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -409.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 11688,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -393.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 11748,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -363.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 11808,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -317.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 11925,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -266.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 11985,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -369.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 12045,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -350.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 12164,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -309.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 12284,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -623.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 12638,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -358.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 13166,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -413.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 13285,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -363.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 13404,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -416.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 13464,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -382.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 13760,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -338.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 13820,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -294.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 13940,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -517.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 14177,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -497.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 14414,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -530.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 14474,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -488.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 14534,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -446.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 14884,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -654.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 14944,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -682.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 15004,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -713.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 15124,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -854.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 15184,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -842.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 15359,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -811.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 15419,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -869.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 15479,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -882.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 15539,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -905.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 15599,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -933.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 15956,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -913.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 16187,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -918.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 16417,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1037.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 16535,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -673.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 16887,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -614.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17066,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -474.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17126,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -429.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17186,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -613.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17246,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -653.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17306,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -693.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17366,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -737.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17426,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -545.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17605,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -697.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17723,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -637.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17843,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -776.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17903,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -742.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 17963,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -711.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 18083,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -879.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 18143,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -925.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 18203,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -968.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 18323,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -920.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 18442,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -986.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 18562,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -728.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19026,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1095.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19085,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1120.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19145,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1145.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19264,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1173.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19384,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -879.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19444,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -889.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19504,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -910.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19740,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1284.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19919,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1293.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 19979,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1337.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 20099,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1238.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 20218,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1219.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 20338,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1402.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 20398,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1448.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 20458,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1492.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 20518,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1536.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 20578,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1582.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 20698,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1310.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 20995,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1339.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 21055,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1361.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 21115,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1369.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 21588,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1428.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 21648,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1473.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 21766,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1417.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 22004,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1235.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 22064,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1348.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 22182,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1281.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 22242,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1242.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 22415,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1510.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 22474,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1542.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 22825,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1299.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 22885,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1228.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 23063,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1283.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 24591,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1682.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 24948,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1804.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 25008,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1854.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 25128,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1683.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 25188,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1676.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 25592,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1728.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 25652,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1735.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 25712,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1747.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 26127,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1646.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 26187,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1613.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 26307,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1753.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 26425,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1768.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 26545,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1707.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 26605,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1665.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 26665,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1629.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 26845,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2224.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 26905,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2294.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 27123,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2154.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 27183,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2117.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 27362,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2227.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 27658,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2621.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 27778,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2569.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 27838,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2572.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 27898,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2612.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 27958,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2651.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28018,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2691.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28078,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2528.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28197,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2495.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28257,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2459.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28317,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2451.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28377,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2493.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28495,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2535.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28615,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2701.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28675,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2631.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28853,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2554.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 28973,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2679.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 29033,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2680.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 29093,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2681.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 29153,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2666.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 29213,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2633.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 29333,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2544.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 29570,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2757.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 29689,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2826.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 29809,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2668.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 29869,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2711.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 30046,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2757.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 30106,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2671.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 30283,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2683.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 30403,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2816.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 30875,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1920.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 31470,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2142.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 31588,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2170.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 31708,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2190.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 31768,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2233.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 31828,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2276.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 32008,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2271.0
+  },
+  {
+   "tree": 1,
+   "first_vertex": 32068,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2238.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 32183,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2202.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 32360,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2352.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 32536,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2340.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 32654,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2375.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 33128,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2293.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 33188,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2421.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 33366,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2287.9
+  },
+  {
+   "tree": 1,
+   "first_vertex": 33475,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2339.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 33710,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2307.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 34006,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2039.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 34125,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1970.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 34185,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -1923.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 34659,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2441.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 34719,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2423.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 35546,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2632.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 35662,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2605.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 35837,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2556.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 35897,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2625.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 35957,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2579.3
+  },
+  {
+   "tree": 1,
+   "first_vertex": 36017,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2532.5
+  },
+  {
+   "tree": 1,
+   "first_vertex": 36077,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2491.4
+  },
+  {
+   "tree": 1,
+   "first_vertex": 36196,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2717.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 36316,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2588.2
+  },
+  {
+   "tree": 1,
+   "first_vertex": 36554,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2542.7
+  },
+  {
+   "tree": 1,
+   "first_vertex": 36666,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2544.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 36786,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2648.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 37023,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2594.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 37083,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2648.8
+  },
+  {
+   "tree": 1,
+   "first_vertex": 37616,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2640.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 37736,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2635.1
+  },
+  {
+   "tree": 1,
+   "first_vertex": 37796,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2670.6
+  },
+  {
+   "tree": 1,
+   "first_vertex": 37856,
+   "beneath": [],
+   "any_beneath": false,
+   "base_link_beneath": false,
+   "tool_point_beneath": false,
+   "ground_above_tool_point_mm": -2703.3
+  }
+ ],
+ "inputs_sha256": {
+  "docs/SCOPE_CLOSURE_HOLD_GENERALIZATION_2026-10-02.md": "26dac61760a67bdeb1f8d6a7c5ba9f603d114f22e880ff399ae89fb69b30af28",
+  "docs/evidence/contact_diagnosis_2026-09-27.json": "2ac64fe785b9e33d02b1ab14ead60d47ad4de918dc102241a1e6cde353ce32e5",
+  "docs/evidence/tree1_swept_path_predictions_2026-09-27.json": "0bd58b6d0df9a13298703867eb377cc5042686e4c581404093eee97dead819af",
+  "docs/evidence/eval_targets_planned_pose_2026-09-27.json": "9ceb188111cc3a6c827be52571d63758e22929530c4715ac66b0cffb01c5ec3e",
+  "docs/evidence/eval_targets_2026-09-23.json": "d8c21ee06a61e5e68ac9e709acfecb8f7679865816669dfce6b9b6e46fe07ce8",
+  "docs/evidence/eval_targets_tree0_2026-09-23.json": "3d34ec70c040d6ffa1f441b9e423657de60f29628e59d5422f1d9f4838ba6b02",
+  "docs/evidence/eval_targets_tree1_listed_2026-09-23.json": "e428ed18c3d16153388c5b97f01ee4d37bc4b3c5d6a591bfa06dbeadd44b7b11",
+  "docs/evidence/eval_targets_tree1_seeded_2026-09-26.json": "563c0e900816d6a243f975100bcf93a9bc072e579452bcd9c34376e5fd9cba00",
+  "docs/evidence/eval_targets_tree1_seeded30_2026-09-26.json": "eb6043c108a603e24d93e796f30c8e6dbdfc2046b2bad674e759c7d88f9b2233",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/urdf/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be/ur5e_mock_pruner_bdsdfede4c0_ur18e6f603_calib_3941312424972580002_urdf6b02ce9330be_abs.urdf": "a5c04da197c7de2588f1716bb7b25fee47b500ee98856bdc4d640fea90218f44",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/branch_detection_system/branch_detection_system_description/meshes/end_effectors/rotation_correction_plate/RotationCorrectionPlate.STL": "b4396f982506d99bf68e0dde412080b3aa7197ef251485231c65e4a14e941c25",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/branch_detection_system/branch_detection_system_description/meshes/end_effectors/dovetail/DovetailMale.STL": "a238a87bfd1cfec889f91b8b074b7da1898a9211e09f5dc179042ca804424a58",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/branch_detection_system/branch_detection_system_description/meshes/end_effectors/dovetail/DovetailFemale.STL": "9a9c1a5782d0f6c591e3f34d81cba02ea7f4d2faadf3faa34183a60075b8b76f",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/branch_detection_system/branch_detection_system_description/meshes/end_effectors/mock_pruner/MockPruner.STL": "3e8dd876588f9b60b20f3752a45be6699d38aa5d22b5d0bc1d606fcb689133ca",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/base.stl": "9a145e0d46f2130afdf2a2e8825a00a929870c4c3d6d8e4d1adc5f04db3aac1b",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/shoulder.stl": "ceb92532177daa77682f5fbd628e01c2137d168f949a7a706ce1dabe9f002387",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/upperarm.stl": "ee893044caf00075cb55b4cf666d1f1311c7979786212a501009f33bee945209",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/forearm.stl": "2e7423cab807c34160ec4f770daee5e747d70e777eb01b7beeace2b8c5751816",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/wrist1.stl": "f8c9f9337b6fd98c75f052e96de10e14a107ddb6874ba6b904e546f8a4e4f43a",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/wrist2.stl": "2964a63f60ce3e3cf3ad55bcf190d7876d50e373cb64b70a57cea5885eaf3c86",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/third_party/src/universal_robots_ros2_description/meshes/ur5e/collision/wrist3.stl": "83b3666b4ae2badd54af0d2c25a921682ecbc29e849eec646c3ed55fb74c78a3",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/blender_scene/orchard_two_trees_v1/manifest.json": "b81dac17066f1c99acee64c34ff7a5f765dd6c6da024d73f79933f406464e678",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/blender_scene/orchard_two_trees_v1/tree0.usdc": "0009894fd16426c548571ef1fc94f3920b2984e5e4f040782515b63be7ec0df0",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/blender_scene/orchard_two_trees_v1/tree1.usdc": "d1d6e7dcd82f076d8a3f2c0621bef3f889960ee1433f9106c0e7187ee2dcac5b",
+  "/nfs/hpc/share/sanchej7/isaac-sim-pruning-workflow/artifacts/blender_scene/orchard_two_trees_v1/environment.usdc": "f8007fe5670f64c60fe1e2e904e3dda8217a4eca69407ddd959893083b2801cd",
+  "runs/tree1-listed-baseline-20260923/run_01_source_tree1_v14944_baseline/report.json": "eaee19665db12d8388484ee061540f09ec79ff9d1f56c6c7a2748d1f036aa392",
+  "docs/evidence/ground_audit_2026-11-25.json": "e05614e91c16b2abbc3febe77eb9506fe44042c1b51dd7e45cc62a5cff9b91b2"
+ },
+ "provenance": {
+  "code_revision": "65c307d7612e3f536fbe5d7adce823a27d91b67d",
+  "tracked_tree_clean": true,
+  "host": "cn-e06.hpc.engr.oregonstate.edu",
+  "elapsed_s": 17.2
+ }
+}

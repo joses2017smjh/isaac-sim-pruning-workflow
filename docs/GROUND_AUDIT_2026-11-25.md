@@ -85,6 +85,61 @@ captures aside when they ran. The replay's criterion was the tool point alone,
 which kept the 4438 capture; it stops at frame 0 and reaches no prediction about
 closure.
 
+## Ground in the mesh sets — added November 25, off by default
+
+Three things were added so that this cannot happen unseen again. None changes
+what an earlier recording would do, and none has been run in the simulator.
+
+**A screen for the spur pool.** `tools/screen_ground.py` asks, for every spur of
+the jaw-fit pool: with this spur at the target point, is any part of the robot
+at its home pose beneath the ground? 63 of the 444 spurs fail it
+(29 of 185 on tree0, 34 of 259 on tree1), and for 47 the robot's base
+link is beneath the ground ([evidence](evidence/ground_screen_2026-11-25.json),
+clean clone at `65c307d`, CPU job `22151776`). On the 56 targets that have
+recorded captures the screen agrees with the audit on every one, 7 beneath and
+49 above.
+
+It is a separate tool, not an option inside `tools/known_map_planner.py`,
+because the planner refuses acceptance evidence made by a different version of
+its own file. Editing it would have invalidated the committed acceptance. The
+screen uses the planner's own pool, placement, kinematics and home pose, and
+tests the home pose only. It does not check a planned path.
+
+**A switch for the ToF sensors.** `PRUNING_TOF_GROUND=1` adds the ground relief
+to the simulated ToF sensors' mesh list
+(`isaaclab_pruning.sim.tof_targets`). Without it the list is exactly the one
+every earlier recording used. It has unit tests only: no simulator run has used
+it.
+
+**What the switch would have changed, measured offline.**
+`tools/replay_tof_ground.py` re-cast both ToF grids at every recorded sensor
+pose with and without the ground and replayed the reference gate on each
+([evidence](evidence/tof_ground_replay_2026-11-25.json), CPU job `22151777`).
+The trees-only cast reproduces the recorded first hold in all 233 captures.
+
+| | Robot above the ground (204 captures) | Robot beneath the ground (29) |
+|---|---|---|
+| Captures with the ground in a ToF zone | 156 | 29 |
+| Nearest ground return | 337 mm | 30 mm |
+| Captures whose first hold changes | **0** | **19** |
+
+- **Above the ground, nothing changes.** The ground gives 558,775 zone readings
+  a return they did not have, and no capture's first hold moves.
+- **On target 530, the existing clearance check would have refused every run.**
+  With the ground in the mesh set all 15 captures on 530 hold at frame 0 with
+  `tof_minimum_clearance`: the ground is 30 mm from a sensor at the home pose,
+  against a 60 mm limit. That includes the four runs that cut and detached.
+- **Elsewhere beneath the ground** the hold comes earlier in four captures (590
+  twice, 3493 and 3433) and is unchanged in ten, where a vision stop comes first.
+
+This is a replay: the controller's messages are the recorded ones, so only the
+first difference in each capture means anything. Over whole captures the
+trees-only cast agrees with the recorded grids on 99.8% of zones for validity;
+the difference was not investigated and moves no first hold.
+
+**Not done.** No simulator run with the switch on. No ground check of a planned
+path for a spur that has not been recorded. The planner's own file is unchanged.
+
 ## What this audit does not say
 
 - **It does not explain any recorded stop.** No hazard contact, ToF stop or

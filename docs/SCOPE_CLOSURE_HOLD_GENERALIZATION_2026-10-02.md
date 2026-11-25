@@ -219,6 +219,8 @@ targets 530 and 3721.
 The known-map planner used throughout this document casts against the trees
 only. Its finding that exactly 530 and 19444 have a clear re-oriented path, and
 its choice of 3721 among the new targets, were made without the ground. For 530
-and 3721 the planned path is one a real arm could not take. How many of the
-screened spurs put the robot beneath the ground when they are moved to the
-target point has not been measured yet. Nothing above is edited.
+and 3721 the planned path is one a real arm could not take. A screen run
+the same day found that 63 of the 444 pool spurs put part of the robot beneath the
+ground at home when they are moved to the target point
+([audit](GROUND_AUDIT_2026-11-25.md#ground-in-the-mesh-sets--added-november-25-off-by-default)).
+Nothing above is edited.

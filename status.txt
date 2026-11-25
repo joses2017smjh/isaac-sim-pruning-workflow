@@ -7,6 +7,15 @@ USER SAID "do all 4 recommended steps" — 2026-11-25 afternoon (read this first
   frame (base link in 28): 530 x15, 590 x7, 3721 x3, 3433, 3493, 3673, 4438. 204 have nothing beneath, no arm link
   included. FK matches recorded tool point to 0.008 mm; depth images confirm every affected capture (median 95% of
   pixels agree with ground in the mesh set vs 7% without). Dated addenda written on 9 documents; no verdict edited.
+  STEP 2 DONE (off by default, nothing run in sim): tools/screen_ground.py: 63/444 pool spurs put the robot beneath
+  the ground at home (agrees with the audit on 56/56 recorded targets). PRUNING_TOF_GROUND=1 adds the ground to the
+  ToF mesh list (unit tests only). tools/replay_tof_ground.py offline: first hold changes in 0/204 above-ground
+  captures; all 15 captures on 530 would hold at frame 0 (ground 30 mm from a sensor). Planner file NOT edited (its
+  acceptance is gated on its own file hash). Evidence: docs/evidence/ground_screen_2026-11-25.json,
+  tof_ground_replay_2026-11-25.json (clean clone 65c307d, CPU 22151776/22151777).
+  STEP 3 IN PROGRESS: split fixed and pushed at 7b03da6 BEFORE opening any beam pattern/range
+  (tools/jaw_reading_split.py, docs/EVAL_PROTOCOL_JAW_READING_2026-11-25.md). Design-side ranged cast: CPU 22151802.
+  Do NOT open test-side readings until Step 2 of that protocol (rule + predictions) is pushed.
 
 P2.1 REPLAY RESULT — 2026-11-25 (read this first)
   Jaw-presence input for the gate, built offline (user chose "beam grid, offline first"; CPU only, no GPU).

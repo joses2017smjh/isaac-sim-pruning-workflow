@@ -61,9 +61,14 @@ Finished and published:
 - **Recorded captures with the robot beneath the ground (audited November 25).**
   29 of 233 captures, on targets 530, 590, 3721, 3433, 3493, 3673 and 4438
   ([audit](GROUND_AUDIT_2026-11-25.md)). Each affected result carries a dated
-  note, and no registered verdict has been edited. Open: whether to rerun a
-  control on a spur that can be reached from above the ground, which needs GPU
-  time and has not been approved.
+  note, and no registered verdict has been edited. A pool screen
+  (`tools/screen_ground.py`: 63 of 444 spurs fail) and a default-off ToF switch
+  (`PRUNING_TOF_GROUND=1`) now exist; offline, the switch changes no first hold
+  in the 204 captures above the ground and stops all 15 runs on 530 at frame 0.
+  Open: a simulator run with the switch on, whether it should become the
+  default, a ground check for planned paths, and whether to rerun a control on a
+  spur that can be reached from above the ground. The first and the last need
+  GPU time that has not been approved.
 - **Blind ToF cycles per sensor.** One dead sensor is invisible to the gate
   today (the documented non-stopping fault). Listed with the jaw-presence
   milestone and deferred to its own change.
