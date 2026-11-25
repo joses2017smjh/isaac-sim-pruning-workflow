@@ -364,8 +364,8 @@ Then the whole tool was displaced from that pose along the jaw's three axes:
 **Target 530.** With the ground in the mesh set, every channel on 530 reads the
 ground as well as the spur: two of the nine beams are blocked by ground at the
 ready pose in both runs, the camera ray through the mouth centre ends on ground
-in both, and the nearest ToF return would be the ground at 30 mm, where the
-trees-only sensor recorded 70 to 71 mm. The gate's clearance limit is 60 mm, so
+in both, and the nearest usable ToF return would be the ground at the sensor's
+30 mm minimum range, where the trees-only sensor recorded 70 to 71 mm. The gate's clearance limit is 60 mm, so
 a ToF sensor that saw the ground would have stopped the arm before the cut.
 In control 530's failed closure the target was between the jaws from frame 68 to
 the stop at frame 76, and at least one ToF zone returned from it inside the
@@ -419,8 +419,8 @@ other half, registered first ([protocol and result](EVAL_PROTOCOL_JAW_READING_20
 across the gap each beam's obstruction is and asks for one centred spur and
 nothing else. On held-out captures it refused 48 of 48 jaws that stopped short and
 accepted 14 of 707 displaced poses without the target (the one-beam rule: 105).
-It also stopped one recorded cut on a clear spur (42 of 43 kept; the prediction
-was all), and it refuses every recorded cut that has other wood between the
+It also stopped one recorded cut on a target other than 8235 (42 of 43 kept; the
+prediction was all), and it refuses every recorded cut that has other wood between the
 jaws. It is Python only and was not built into the gate.
 
 The same cast put the ground relief in the mesh set and checked every capture:

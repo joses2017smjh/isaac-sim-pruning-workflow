@@ -904,3 +904,19 @@ No GPU. Everything ran from a clean clone at the registration commit `72493fb`.
 | `22150888` | `tools/score_jaw_presence.py` | J1, J2, J3, J6 supported; J4 refuted |
 
 [Result](docs/EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026).
+
+### Ground audit, mesh-set options and the ranged jaw reading (CPU, November 25)
+
+No GPU. Each job ran a committed tool from a clean clone at the commit named.
+
+| Job | Commit | What | Result |
+|---|---|---|---|
+| `22151498` | `42194b2` | `tools/audit_ground.py` | 233 captures, 48,001 frames; part of the robot beneath the ground in 29 |
+| `22151776` | `65c307d` | `tools/screen_ground.py` | 63 of 444 pool spurs fail; agrees with the audit on 56 of 56 recorded targets |
+| `22151777` | `65c307d` | `tools/replay_tof_ground.py` | First hold changes in 0 of 204 captures above the ground; all 15 on 530 hold at frame 0 |
+| `22151802` | `95c56f5` | `tools/cast_jaw_beams.py --split design` | 137 design captures cast with ranges |
+| `22151857` | `8d0f841` | `tools/score_jaw_reading.py --side design` | Design-side numbers for the protocol |
+| `22151866` | `cb0952a` | `tools/cast_jaw_beams.py --split test` | 96 test captures cast, after the predictions were pushed |
+| `22151867` | `cb0952a` | `tools/score_jaw_reading.py --side test` | K1 refuted; K2, K3, K4 supported |
+
+[Ground audit](docs/GROUND_AUDIT_2026-11-25.md) · [ranged reading](docs/EVAL_PROTOCOL_JAW_READING_2026-11-25.md#result--november-25-2026).

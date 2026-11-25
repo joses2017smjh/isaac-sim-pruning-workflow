@@ -120,15 +120,16 @@ The trees-only cast reproduces the recorded first hold in all 233 captures.
 | | Robot above the ground (204 captures) | Robot beneath the ground (29) |
 |---|---|---|
 | Captures with the ground in a ToF zone | 156 | 29 |
-| Nearest ground return | 337 mm | 30 mm |
+| Nearest usable ground return | 337 mm | 30 mm, the sensor's minimum range |
 | Captures whose first hold changes | **0** | **19** |
 
 - **Above the ground, nothing changes.** The ground gives 558,775 zone readings
   a return they did not have, and no capture's first hold moves.
 - **On target 530, the existing clearance check would have refused every run.**
   With the ground in the mesh set all 15 captures on 530 hold at frame 0 with
-  `tof_minimum_clearance`: the ground is 30 mm from a sensor at the home pose,
-  against a 60 mm limit. That includes the four runs that cut and detached.
+  `tof_minimum_clearance`: at the home pose the nearest usable ground return is
+  at the sensor's 30 mm minimum range, against a 60 mm limit, so the ground may
+  be nearer still. That includes the four runs that cut and detached.
 - **Elsewhere beneath the ground** the hold comes earlier in four captures (590
   twice, 3493 and 3433) and is unchanged in ten, where a vision stop comes first.
 

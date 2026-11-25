@@ -51,7 +51,8 @@ Finished and published:
   designed on half of the recordings and tested on the other half
   ([result](EVAL_PROTOCOL_JAW_READING_2026-11-25.md#result--november-25-2026)).
   It refused all 48 short jaws and cut false acceptances from 105 to 14 poses, but
-  stopped 1 of 43 recorded cuts on a clear spur and, as registered, every cut
+  stopped 1 of 43 recorded cuts on targets other than 8235 and, as registered,
+  every cut
   with other wood between the jaws. Not built into the gate. Open, and yours to
   decide: whether a cut with other wood in the jaw should be refused at all, and
   whether to widen the centre limit to the gate's 8 mm tolerance. A fair test of

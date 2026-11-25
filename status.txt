@@ -10,7 +10,7 @@ USER SAID "do all 4 recommended steps" — 2026-11-25 afternoon (read this first
   STEP 2 DONE (off by default, nothing run in sim): tools/screen_ground.py: 63/444 pool spurs put the robot beneath
   the ground at home (agrees with the audit on 56/56 recorded targets). PRUNING_TOF_GROUND=1 adds the ground to the
   ToF mesh list (unit tests only). tools/replay_tof_ground.py offline: first hold changes in 0/204 above-ground
-  captures; all 15 captures on 530 would hold at frame 0 (ground 30 mm from a sensor). Planner file NOT edited (its
+  captures; all 15 captures on 530 would hold at frame 0 (nearest usable ground return at the sensor's 30 mm minimum range). Planner file NOT edited (its
   acceptance is gated on its own file hash). Evidence: docs/evidence/ground_screen_2026-11-25.json,
   tof_ground_replay_2026-11-25.json (clean clone 65c307d, CPU 22151776/22151777).
   STEP 3 DONE (Python only, nothing built into the gate): split pushed at 7b03da6, rule + predictions at cb0952a,
@@ -19,7 +19,19 @@ USER SAID "do all 4 recommended steps" — 2026-11-25 afternoon (read this first
   and nothing else in the gap. Test side: K1 REFUTED (42/43 recorded cuts kept; 8175 stopped, spur 6.4 mm off centre),
   K2 supported (48/48 short jaws refused), K3 supported (5/5 cuts on 8235 refused: other wood in gap; a COST),
   K4 supported (14/707 false accepts vs 105). Both halves are now seen: a revised limit needs new recordings.
-  STEP 4 NEXT: prepare protocol + scorer for a control rerun on a reachable spur, then ASK for an exact GPU budget.
+  STEP 4 PENDING THE USER'S ANSWER (nothing submitted, no GPU used): a question dialog asks whether to rerun the arm's
+  hold-engaging control on a reachable spur. Options: none (cite the single sweep passes on 8175, 21386, 28610, 36786
+  and control 14944); 3 repeats on 21386 (cap 135 GPU-min = 3 x 45, expect 70-90); 3 repeats on each of 21386, 28610,
+  36786 (cap 405, expect 210-270). 8175 is excluded by rule: another spur crosses its jaw and its spur sits 6.4 mm
+  off centre. Optional: one extra task with PRUNING_TOF_GROUND=1 (cap 45). IF APPROVED, BEFORE SUBMITTING: write and
+  push docs/EVAL_PROTOCOL_CONTROL_RERUN_*.md, a scorer, a target register and a new arm name registered to that
+  protocol (same settings as planned_pose_jaw_hold_sweep). Registered checks must include: tools/audit_ground.py
+  finds nothing beneath the ground in any frame of the new captures, and the recorded ToF mesh list equals the
+  October 6 capture's for the same target (first simulator run since the recorder was edited at 65c307d).
+  Queue with tools/queue_vision_robustness.py --strategy <arm> --targets-file <register> --submit; grade and score
+  from a clean clone via pruning_work/grading/score.sbatch <commit> <scorer> <out>.
+  OPEN DECISIONS FOR THE USER (not blocking): accept that the ranged rule refuses cuts with other wood in the jaw?
+  make new recordings to test a wider centre limit (8 mm)?
 
 P2.1 REPLAY RESULT — 2026-11-25 (read this first)
   Jaw-presence input for the gate, built offline (user chose "beam grid, offline first"; CPU only, no GPU).

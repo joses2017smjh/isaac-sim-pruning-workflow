@@ -141,7 +141,7 @@ copied byte for byte.
 
 | Prediction | Verdict | Measured on the test side |
 |---|---|---|
-| K1 — keeps recorded cuts where the gap is clear | **refuted** | 42 of 43 unchanged. The one changed capture is on target 8175: the rule stops its closure with `jaw_empty_during_closure` |
+| K1 — keeps recorded cuts on targets other than 8235 | **refuted** | 42 of 43 unchanged. The one changed capture is on target 8175: the rule stops its closure with `jaw_empty_during_closure` |
 | K2 — refuses the jaw that stopped short | **supported** | 48 of 48 refused, including the 2 on 8235 that the one-beam rule accepted |
 | K3 — refuses recorded cuts with other wood in the gap | **supported** | 5 of 5 on 8235 refused |
 | K4 — fewer false acceptances | **supported** | 14 of 707 displaced poses without the target accepted, against 105 for the one-beam rule |
@@ -156,8 +156,12 @@ between the jaws, the rule accepts 613.
   displaced pose in fifty without the target, where the one-beam rule accepted
   about one in seven.
 - **It is too strict to build as it stands.** It stopped a recorded cut on a
-  spur with a clear gap. In that capture the spur sits 6.0 to 6.4 mm from the
-  middle of the gap during closure, and the rule's limit is 6 mm. The limit was
+  target other than 8235. In that capture, on 8175, three beams are blocked: one
+  by another spur and two by the target, and the target sits 6.0 to 6.5 mm from
+  the middle of the gap during closure. The rule's limit is 6 mm. K1's title
+  assumed the gap is clear on every target other than 8235; on 8175 it is not,
+  although the other spur's beam passed the rule and the target's did not. The
+  limit was
   chosen on the design side, where no recorded spur was more than 5.9 mm off
   centre. The gate's own mouth tolerance is 8 mm, so a spur that far off centre
   is one the controller is allowed to cut.
