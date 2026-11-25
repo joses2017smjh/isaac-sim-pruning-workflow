@@ -5,7 +5,9 @@ and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-Nothing is queued.
+Queued on November 25: the [control rerun on a reachable spur](EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md#submission--november-25-2026),
+four GPU tasks (array jobs `22152681` to `22152684`), reserved 180 GPU-minutes.
+Not scored yet.
 
 Finished and published:
 - [jaw-presence input for the gate](EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026),

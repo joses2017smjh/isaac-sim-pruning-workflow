@@ -920,3 +920,21 @@ No GPU. Each job ran a committed tool from a clean clone at the commit named.
 | `22151867` | `cb0952a` | `tools/score_jaw_reading.py --side test` | K1 refuted; K2, K3, K4 supported |
 
 [Ground audit](docs/GROUND_AUDIT_2026-11-25.md) · [ranged reading](docs/EVAL_PROTOCOL_JAW_READING_2026-11-25.md#result--november-25-2026).
+
+### Control rerun on a reachable spur (submitted November 25)
+
+On November 25 the user approved three repeats on one spur (cap 135
+GPU-minutes) and one run with the ToF ground switch on (cap 45). The
+[protocol](docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md), the scorer, both arm
+names and both target registers were pushed at `d351016`, CI was green there,
+and all four batches froze that commit. One task at a time, `afterany`-chained,
+on `gpu,ampere` with the constraint `a40|rtx8000` and 45-minute tasks.
+
+| Batch | Target | Strategy | Array job |
+|---|---|---|---|
+| `control-rerun-a-20261125` | 21386 | `planned_pose_jaw_hold_ctl` | `22152681` |
+| `control-rerun-b-20261125` | 21386 | `planned_pose_jaw_hold_ctl` | `22152682` |
+| `control-rerun-c-20261125` | 21386 | `planned_pose_jaw_hold_ctl` | `22152683` |
+| `control-rerun-tof-ground-20261125` | 14944 | `planned_pose_jaw_hold_ctl_tof_ground` | `22152684` |
+
+Outcome: not recorded yet.

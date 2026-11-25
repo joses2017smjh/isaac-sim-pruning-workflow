@@ -109,3 +109,32 @@ and keeps a prediction from being supported without refuting it.
 Four tasks at a 45-minute limit reserve 180 GPU-minutes. The October runs of
 this arm took 23 to 30 minutes each on an RTX 8000, so about 95 to 120 are
 expected. Storage is about 0.7 GB per run. Scoring is one CPU job.
+
+## Submission — November 25, 2026
+
+All four batches were submitted from the registration commit `d351016` and
+froze identical code. CI was green there (Foundation, ROS 2 SIL and Pages).
+
+| Batch | Target | Array job | Reserved |
+|---|---|---|---|
+| `control-rerun-a-20261125` | 21386 | `22152681` | 45 GPU-minutes |
+| `control-rerun-b-20261125` | 21386 | `22152682` (`afterany` `22152681`) | 45 GPU-minutes |
+| `control-rerun-c-20261125` | 21386 | `22152683` (`afterany` `22152682`) | 45 GPU-minutes |
+| `control-rerun-tof-ground-20261125` | 14944 | `22152684` (`afterany` `22152683`) | 45 GPU-minutes |
+
+The share's project usage was 1.73 TiB at submission (`lfs quota`), over the
+1.5 TiB soft limit and under the 2 TiB hard limit; the storage preflight passed.
+
+To score, once all four have ended, from a clean clone on a node with `pxr`:
+
+```
+cd /nfs/hpc/share/sanchej7/pruning_work/grading
+sbatch --constraint=el9 --mem=20G score.sbatch d351016 tools/score_control_rerun.py \
+  /nfs/hpc/share/sanchej7/pruning_work/control_rerun_20261125/control_rerun_verdicts_d351016.json \
+  --batches artifacts/vision_robustness/control-rerun-a-20261125 \
+            artifacts/vision_robustness/control-rerun-b-20261125 \
+            artifacts/vision_robustness/control-rerun-c-20261125 \
+            artifacts/vision_robustness/control-rerun-tof-ground-20261125
+```
+
+Nothing above this line changes after submission.

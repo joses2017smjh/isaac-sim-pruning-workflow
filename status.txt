@@ -19,17 +19,20 @@ USER SAID "do all 4 recommended steps" — 2026-11-25 afternoon (read this first
   and nothing else in the gap. Test side: K1 REFUTED (42/43 recorded cuts kept; 8175 stopped, spur 6.4 mm off centre),
   K2 supported (48/48 short jaws refused), K3 supported (5/5 cuts on 8235 refused: other wood in gap; a COST),
   K4 supported (14/707 false accepts vs 105). Both halves are now seen: a revised limit needs new recordings.
-  STEP 4 PENDING THE USER'S ANSWER (nothing submitted, no GPU used): a question dialog asks whether to rerun the arm's
-  hold-engaging control on a reachable spur. Options: none (cite the single sweep passes on 8175, 21386, 28610, 36786
-  and control 14944); 3 repeats on 21386 (cap 135 GPU-min = 3 x 45, expect 70-90); 3 repeats on each of 21386, 28610,
-  36786 (cap 405, expect 210-270). 8175 is excluded by rule: another spur crosses its jaw and its spur sits 6.4 mm
-  off centre. Optional: one extra task with PRUNING_TOF_GROUND=1 (cap 45). IF APPROVED, BEFORE SUBMITTING: write and
-  push docs/EVAL_PROTOCOL_CONTROL_RERUN_*.md, a scorer, a target register and a new arm name registered to that
-  protocol (same settings as planned_pose_jaw_hold_sweep). Registered checks must include: tools/audit_ground.py
-  finds nothing beneath the ground in any frame of the new captures, and the recorded ToF mesh list equals the
-  October 6 capture's for the same target (first simulator run since the recorder was edited at 65c307d).
-  Queue with tools/queue_vision_robustness.py --strategy <arm> --targets-file <register> --submit; grade and score
-  from a clean clone via pruning_work/grading/score.sbatch <commit> <scorer> <out>.
+  STEP 4 SUBMITTED, NOT SCORED: the user approved 3 repeats on one spur (cap 135 GPU-min) + 1 run with the ToF ground
+  switch on (cap 45). Registered and pushed at d351016 (docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md,
+  tools/score_control_rerun.py, arms planned_pose_jaw_hold_ctl and ..._ctl_tof_ground), CI green, then submitted:
+    control-rerun-a/b/c-20261125 (target 21386): array jobs 22152681, 22152682, 22152683
+    control-rerun-tof-ground-20261125 (target 14944, PRUNING_TOF_GROUND=1): array job 22152684
+  One task at a time, afterany-chained, 45-min limit each, gpu,ampere a40|rtx8000. Do NOT resubmit.
+  TO SCORE when all four have ended (clean clone, needs an el9 node for pxr):
+    cd /nfs/hpc/share/sanchej7/pruning_work/grading
+    sbatch --constraint=el9 --mem=20G score.sbatch d351016 tools/score_control_rerun.py \
+      /nfs/hpc/share/sanchej7/pruning_work/control_rerun_20261125/control_rerun_verdicts_d351016.json \
+      --batches artifacts/vision_robustness/control-rerun-{a,b,c,tof-ground}-20261125   (spell all four out)
+  THEN: copy the verdict file byte-for-byte to docs/evidence/control_rerun_verdicts_2026-11-25.json, add a
+  "Result" section to the protocol, record GPU minutes used (sacct) against the 180 cap, update SLURM_JOBS.md,
+  README/RESULTS/PENDING, the GROUND_AUDIT doc (switch now exercised or not) and the study guide.
   OPEN DECISIONS FOR THE USER (not blocking): accept that the ranged rule refuses cuts with other wood in the jaw?
   make new recordings to test a wider centre limit (8 mm)?
 
