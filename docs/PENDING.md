@@ -47,18 +47,20 @@ Finished and published:
   found the existing ToF sensors see the target at closure but lose it when it is
   centred, a beam grid across the jaw gap follows the geometry, and one camera
   ray is fragile. Which channel to build is undecided. The same study found that
-  the cut closes with the spur 7.5 to 12.8 mm ahead of the mouth centre, near the
+  the cut closes with the spur 9.4 to 12.8 mm ahead of the mouth centre, near the
   jaw tips; whether to change the approach so it closes on the centre is a
   separate open question.
-- **An unidentified surface beside the mouth on target 530 (found November 25).**
-  In both studied runs on target 530 the recorded depth image shows a
-  soil-textured surface about 7 mm past the mouth centre that the tree meshes do
-  not contain. A scratch plane fit, not in a committed tool, puts the target's
-  centre within 1 mm of a nearly planar surface with the wrist camera about
-  160 mm on its other side. If that is the orchard's visual-only ground relief,
-  the approach to 530 passes through it, and no check would notice: the ground is
-  not a collider there and is not in the ToF mesh set. Unconfirmed. It needs the
-  ground mesh cast offline before anything about 530 is restated.
+- **Target 530 is approached from beneath the ground (found November 25).**
+  Target 530 lies in the orchard's ground relief. In both runs on it that the
+  mouth study covers, the wrist camera, the tool point and the jaw mouth are
+  beneath the ground surface when the cut becomes ready
+  ([study](ROS2_SIL.md#november-25-what-could-witness-the-target-in-the-mouth-exploratory)).
+  Nothing in the simulation notices: the relief is visual only, and the ToF
+  sensors and the known-map planner cast against the trees. Open, in this order:
+  (1) check every recorded run, not two, for a tool beneath the ground; (2) add
+  dated notes to the results that used 530 as their control, once (1) says which
+  are affected; (3) decide whether the planner and the ToF mesh set should
+  include the ground. No registered result has been restated.
 - **Pixel-centre convention (measured November 22).** The jaw self-mask and
   the depth-aware check treat pixel index u as continuous u + 0.5, which the
   renderer's camera and every mask-fidelity check support. The point tracker

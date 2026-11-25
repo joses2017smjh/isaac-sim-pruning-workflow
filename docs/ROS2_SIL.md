@@ -291,91 +291,105 @@ sensor positions confirm it.
 
 `tools/study_mouth_evidence.py` re-casts candidate sensor readings on the CPU at
 recorded tool poses, and at poses displaced from them, against the exported
-orchard tree meshes ([evidence](evidence/mouth_evidence_study_2026-11-25.json),
-at `8ab5b6f`). Eleven runs that reached closure, nine distinct targets.
+orchard ([evidence](evidence/mouth_evidence_study_2026-11-25.json), at
+`b144d6c`). Eleven runs that reached closure, nine distinct targets.
 Exploratory: no threshold here is final, and nothing in the gate changed.
 
-*Revised later the same day.* The first version of this section (`64aa8c5`) said
-the depth image matched the cast in 9 of 11 runs and blamed a silhouette edge
-for the two runs on target 530. That reason was never tested and is wrong; see
-the depth check below. It also said one ToF zone saw the target in every frame
-of control 530's closure; it was at least one. The other counts are unchanged.
+**Two of the eleven runs are not physical scenes.** Both are on target 530. That
+spur lies in the orchard's ground relief, and in both runs the wrist camera, the
+tool point and the jaw mouth are beneath the ground surface: the ground is
+5.9 and 6.6 mm above the mouth and about 161 mm above the camera. Nothing
+in the simulation notices, because the relief is drawn and nothing collides with
+it, and the simulated ToF sensors cast against the trees only. In the other
+nine runs the ground is 350 mm or more below the mouth. The counts below
+are for those nine runs (8 distinct targets, 333 poses); the two 530 runs are
+described separately.
 
 **The offline caster reproduces the simulated ToF sensors.** Its criterion was
-fixed before the first run. Re-cast at the recorded sensor poses, the two ToF
-grids agreed on validity in 110,207 of 110,208 zones, and all 29,350 zones
-valid in both agreed within 1 mm (the largest difference was 0.03 mm).
+fixed before the first run. Re-cast at the recorded sensor poses against the
+trees, the two ToF grids agreed on validity in 110,207 of 110,208 zones, and
+all 29,350 zones valid in both agreed within 1 mm (the largest difference was
+0.03 mm).
 
-**The depth image agrees in 9 of 11 runs, and not on target 530.** Around the
-pixel the mouth centre projects to, a 9 × 9 pixel patch of the recorded depth
-image was compared with casts through the pixel centres. In 9 runs all 81
-pixels agreed within 0.5 mm. In the two runs on target 530 only 2 and 36 did:
-the recorded image holds a surface about 7 mm past the mouth centre that the
-tree meshes do not contain, and the colour image shows soil texture there. The
-camera reading is therefore not verified for those two runs, and the camera
-counts below leave them out. What that surface is has not been established
-(see [PENDING.md](PENDING.md)).
+**The depth image agrees in all eleven runs once the ground is in the mesh
+set.** Around the pixel the mouth centre projects to, a 9 × 9 pixel patch of the
+recorded depth image was compared with casts through the pixel centres. With
+the trees alone, nine runs agreed on all 81 pixels and the two on target 530
+agreed on 2 and 36. With the ground relief added, all eleven agree on all 81.
+That is how the ground was found.
 
 **Truth, from geometry only.** Nine segments cross the jaw gap. *Between the
 jaws*: any of them intersects the target. *At the mouth centre*: the middle one
 does. The second definition alone was the first pass; both are reported because
 of what it showed, so neither is a registered definition.
 
-At the frame the cut became ready:
+At the frame the cut became ready, in the nine runs:
 
 | | Result |
 |---|---|
-| Target between the jaws | 11 of 11 |
-| Target on the segment through the mouth centre | **0 of 11** |
-| Where the target centre was | 7.5 to 12.8 mm ahead of the mouth centre along the tool axis, toward the jaw tips |
-| ToF: a first return inside the mouth box | 11 of 11, from 1 to 3 zones, all but one of them on the target |
-| Camera: the surface along the ray through the mouth centre is in the mouth box | 7 of the 9 verified runs |
+| Target between the jaws | 9 of 9 |
+| Target on the segment through the mouth centre | **0 of 9** |
+| Where the target centre was | 9.4 to 12.8 mm ahead of the mouth centre along the tool axis, toward the jaw tips |
+| ToF: a first return inside the mouth box | 9 of 9, from 1 to 3 zones, all but one of them on the target |
+| Beam grid: any beam blocked | 9 of 9 |
+| Camera: the surface along the ray through the mouth centre is in the mouth box | 7 of 9 |
 
-Then the whole tool was displaced from that pose along the jaw's three axes
-(407 poses):
+Then the whole tool was displaced from that pose along the jaw's three axes:
 
 - **The cut closes near the jaw tips.** The tool advances about another 2 mm
-  before the jaws start to move, which leaves the target centre 5.3 to
-  11.1 mm ahead of the mouth centre. In the closest run that is 0.4 mm more
-  than the spur's radius. Across all 63 recorded closing frames the target was
-  between the jaws in every one and on the centre segment in none. From the
-  ready pose, moving the tool 10 mm forward puts the target on the centre segment
-  in 11 of 11 (3 at 5 mm, 9 at 15 mm, 0 at 20 mm, where it has passed the centre).
-  Moving it 5 mm back leaves the target between the jaws in 8 of 11, and 10 mm
-  back in 1.
+  before the jaws start to move, which leaves the target centre 7.7 to
+  11.1 mm ahead of the mouth centre; the closest spur has a 4.5 mm radius.
+  Across all 54 recorded closing frames the target was between the jaws in every
+  one and on the centre segment in none. From the ready pose, moving the tool
+  10 mm forward puts the target on the centre segment in 9 of 9 (2 at 5 mm,
+  8 at 15 mm, 0 at 20 mm, where it has passed the centre). Moving it 5 mm back
+  leaves the target between the jaws in 6 of 9, and 10 mm back in 0.
 - **The ToF sensors are a weak witness.** They see the target at closure only
   because it sits ahead of the mouth centre. With the tool 15 and 20 mm forward
-  they report a return in the mouth box in 3 and 1 of 11 runs, although the
-  target is between the jaws in 10 and 11. The likely cause is that the mouth
+  they report a return in the mouth box in 2 and 1 of 9 runs, although the
+  target is between the jaws in 8 and 9. The likely cause is that the mouth
   centre lies in the strip between the two fields of view; that was not tested
-  separately. With the tool 10 mm back they still report one in 9 of 11, where
-  the target is between the jaws in 1.
+  separately. With the tool 10 mm back they still report one in 7 of 9, where
+  the target is between the jaws in 0.
 - **A beam grid across the gap follows the geometry**, as it must: it is the same
-  nine segments against every tree mesh. It reported the target in all 246 poses
-  that had it between the jaws, and in 16 of the 161 poses that did not, a beam
-  was blocked by other wood. A single beam through the mouth centre would have
+  nine segments against every mesh. It reported the target in all 203 poses
+  that had it between the jaws. In 11 of the 130 poses that did not, a beam was
+  blocked by other wood. A single beam through the mouth centre would have
   refused every recorded cut.
-- **One camera ray is fragile.** On the verified runs it agreed in 115 of the 203
-  poses with the target between the jaws. At the ready pose it says in for 7 of
-  9; shift the tool 5 mm along the closing axis and that becomes 9 of 9 one
-  way and 1 of 9 the other. It also shares the camera with the tracker.
+- **One camera ray is fragile.** It agreed in 115 of the 203 poses with the
+  target between the jaws. At the ready pose it says in for 7 of 9; shift the
+  tool 5 mm along the closing axis and that becomes 9 of 9 one way and 1 of 9
+  the other. It also shares the camera with the tracker.
 
-**Control 530 again.** In its failed closure the target was between the jaws
-from frame 68 to the stop at frame 76, and at least one ToF zone returned from
-it inside the mouth box in every one of those frames, while the tracker's mouth
-distance rose from 6.0 to 9.7 mm. The spur did not move relative to the jaws;
-the measurement did. So that stop came from the tracker, and a second witness
-that can only veto would not have changed the run. The case such a witness is
-for, a confident track with nothing between the jaws, is not in these
-recordings and has to be injected.
+**Target 530.** With the ground in the mesh set, every channel on 530 reads the
+ground as well as the spur: two of the nine beams are blocked by ground at the
+ready pose in both runs, the camera ray through the mouth centre ends on ground
+in both, and the nearest ToF return would be the ground at 30 mm, where the
+trees-only sensor recorded 70 to 71 mm. The gate's clearance limit is 60 mm, so
+a ToF sensor that saw the ground would have stopped the arm before the cut.
+In control 530's failed closure the target was between the jaws from frame 68 to
+the stop at frame 76, and at least one ToF zone returned from it inside the
+mouth box in every one of those frames, while the tracker's mouth distance rose
+from 6.0 to 9.7 mm. The spur did not move relative to the jaws; the measurement
+did. So that stop came from the tracker, and a second witness that can only
+veto would not have changed the run. What an approach from beneath the ground
+means for earlier results that used 530 as the control has not been assessed
+(see [PENDING.md](PENDING.md)).
 
-**Limits.** Eleven runs and one family of approach poses. The displacements are
-pure translations. The offline mesh set is the orchard's trees. So is the
-simulated ToF sensors' mesh set (`TREE_PRIM_EXPR`): neither holds the jaws or
-the ground, so a real sensor may see both, and the readings for target 530 do
-not include the surface found beside its mouth. The depth thresholds (0.5 mm,
-95% of the patch) were chosen after seeing the data. Depth is exact. Counts,
-not rates.
+**The case a second witness is for** is a confident track with nothing between
+the jaws. No recording contains one, so it has to be injected.
+
+**Limits.** Nine usable runs and one family of approach poses. The displacements
+are pure translations. The jaws are in no mesh set, so a real sensor may also
+see its own jaws. The depth thresholds (0.5 mm, 95% of the patch) were chosen
+after seeing the data. Depth is exact. Counts, not rates.
+
+*How this section changed on November 25.* The first version (`64aa8c5`) pooled
+all eleven runs, cast against the trees alone, and blamed a silhouette edge for
+the depth mismatch on target 530; that reason was never tested and was wrong.
+The second (`7c5673a`) reported the mismatch as an unidentified surface. This
+version identifies it as the ground relief and separates the two 530 runs. The
+caster validation and the truth tables for the nine runs did not change.
 
 ## Running it
 

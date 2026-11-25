@@ -16,6 +16,13 @@ P2.3 RESULT — 2026-11-25 (read this first)
   identified (docs/PENDING.md); a scratch plane fit suggests the visual ground relief with the camera on its far
   side. Control 530's stop came from the tracker (spur stayed between the jaws), so it is NOT an example of the
   blind spot a veto-only witness closes.
+  IDENTIFIED same day (tool b144d6c): the surface is the orchard's GROUND RELIEF. With it in the mesh set the depth
+  patch agrees in 11/11 runs. In BOTH 530 runs the camera, tool point and jaw mouth are BENEATH the ground surface
+  (ground 5.9 / 6.6 mm above the mouth); the relief is visual only and the ToF/planner mesh sets are trees only,
+  so nothing noticed. Study counts are now for the 9 runs above ground: 9/9 between jaws, 0/9 on the centre line,
+  spur 9.4-12.8 mm ahead; beam grid 0 misses, 11/130 blocked by other wood. OPEN: audit every recorded run for a tool
+  beneath the ground before any result that used 530 as control is restated (docs/PENDING.md).
+  USER DECISIONS Nov 25: P2.1 = beam grid, built offline first (CPU only); P1.6 stays on the roadmap; keep pushing.
   GitHub Pages deploys failed three times on Nov 25 around 12:00 UTC (deploy step cannot find the uploaded
   artifact); the live site is unchanged.
 
