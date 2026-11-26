@@ -178,7 +178,7 @@ the expected value there.
   from run to run. They say nothing about other spurs.
 - **It does not restore the 530 control.** The October 2 "3 of 3" on 530 stays
   as recorded, with its dated note. This is a different spur, and the first
-  repeated control of this arm in a scene with nothing beneath the ground.
+  repeat of a hold-engaging control with nothing beneath the ground.
 - **R2 says the hold engaged, not that it was needed.** The scorer checks which
   frames were held and when the piece detached. It does not test what the cut
   would have done without the hold.
@@ -197,8 +197,9 @@ the expected value there.
 
 ### Observations outside the registered scoring
 
-Computed after scoring, from the working tree, by ad hoc scripts. They are not
-part of any verdict.
+Computed after scoring, from the working tree, by an ad hoc script. They are not
+part of any verdict. The script is kept outside the repository, on the cluster
+share at `pruning_work/control_rerun_20261125/explore_after_scoring.py`.
 
 - **The repeats are not copies of each other.** Between repeats the recorded
   tool position differs by up to 2.2 mm and a joint position by up to

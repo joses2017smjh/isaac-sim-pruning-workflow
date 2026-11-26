@@ -7,9 +7,9 @@ surface that the camera could. An audit found recorded runs in which the robot w
 (docs/GROUND_AUDIT_2026-11-25.md).
 
 ``PRUNING_TOF_GROUND=1`` adds the ground relief to the list. It is off by default, so a run without it casts
-against exactly what every earlier recording did. As of November 25, 2026 the switch has unit tests only: no
-simulator run has used it, and what it would change in the recordings was measured offline
-(tools/replay_tof_ground.py).
+against exactly what every earlier recording did. What it would change in the recordings was measured offline
+(tools/replay_tof_ground.py). It has had one simulator run, with the robot above the ground, which changed no
+outcome (docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md); none with the robot beneath the ground.
 """
 
 from __future__ import annotations

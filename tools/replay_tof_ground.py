@@ -2,8 +2,8 @@
 """What the simulated ToF sensors would have read with the ground relief in their mesh set. CPU only.
 
 The simulated ToF sensors cast against the trees, posts and wires. The orchard's ground relief is drawn but was
-never in that list. ``PRUNING_TOF_GROUND=1`` can now add it (isaaclab_pruning.sim.tof_targets), and no simulator run
-has used that switch. This tool measures offline what it would change in the recordings.
+never in that list. ``PRUNING_TOF_GROUND=1`` can now add it (isaaclab_pruning.sim.tof_targets). This tool measures
+offline what that switch would change in the recordings; it was written before any simulator run had used it.
 
 For every recorded frame it casts both 8x8 grids twice at the recorded sensor poses: against the meshes the sensors
 used, and against those plus the ground. The first cast is the check: it must reproduce the recorded grids. Then it
@@ -240,7 +240,7 @@ def main(argv=None):
         "scope": (
             "Offline: both ToF grids re-cast at recorded sensor poses with and without the orchard's ground relief, "
             "and the Python reference gate replayed on each. A replay: only each capture's first difference counts. "
-            "No simulator run has used the ground in the ToF mesh set."
+            "It says what the recorded sensors would have read, not what a simulator run with the ground does."
         ),
         "definitions": {
             "range_m": list(kmp.TOF_RANGE_M),
