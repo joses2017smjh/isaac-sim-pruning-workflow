@@ -88,7 +88,9 @@ closure.
 ## Ground in the mesh sets — added November 25, off by default
 
 Three things were added so that this cannot happen unseen again. None changes
-what an earlier recording would do, and none has been run in the simulator.
+what an earlier recording would do. When this section was written none had been
+run in the simulator; the switch has since had one run
+([below](#after-the-audit-a-control-rerun-and-the-switchs-first-run)).
 
 **A screen for the spur pool.** `tools/screen_ground.py` asks, for every spur of
 the jaw-fit pool: with this spur at the target point, is any part of the robot
@@ -108,8 +110,9 @@ tests the home pose only. It does not check a planned path.
 **A switch for the ToF sensors.** `PRUNING_TOF_GROUND=1` adds the ground relief
 to the simulated ToF sensors' mesh list
 (`isaaclab_pruning.sim.tof_targets`). Without it the list is exactly the one
-every earlier recording used. It has unit tests only: no simulator run has used
-it.
+every earlier recording used. At the audit it had unit tests only. Later the
+same day it had one simulator run, on a spur reached from above the ground
+([below](#after-the-audit-a-control-rerun-and-the-switchs-first-run)).
 
 **What the switch would have changed, measured offline.**
 `tools/replay_tof_ground.py` re-cast both ToF grids at every recorded sensor
@@ -138,8 +141,32 @@ first difference in each capture means anything. Over whole captures the
 trees-only cast agrees with the recorded grids on 99.8% of zones for validity;
 the difference was not investigated and moves no first hold.
 
-**Not done.** No simulator run with the switch on. No ground check of a planned
-path for a spur that has not been recorded. The planner's own file is unchanged.
+**Not done.** No simulator run with the switch on and the robot beneath the
+ground. No ground check of a planned path for a spur that has not been
+recorded. The planner's own file is unchanged.
+
+## After the audit: a control rerun and the switch's first run
+
+Registered before submission and scored the same day
+([protocol and result](EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md#result--november-25-2026),
+[verdicts](evidence/control_rerun_verdicts_2026-11-25.json)). All six
+predictions were supported.
+
+- **A repeated control in a physical scene.** The labelled jaw-hold arm passed
+  17/17 in 3 of 3 repeats on target 21386, with nothing beneath the ground in
+  any frame and the hold engaging on the same frames each time. It is one spur
+  that the arm had already passed on once, so it is not a success rate, and it
+  does not restore the 530 control.
+- **The switch's first simulator run.** On target 14944 with
+  `PRUNING_TOF_GROUND=1` the recorded mesh list includes the ground, the offline
+  cast with the ground reproduces the recorded ToF grids up to the cut, and the
+  trees-only cast no longer does. The run passed 17/17 with no hold and no ToF
+  stop, as the October 6 capture of the same spur did.
+- **With the switch off the recorder is unchanged.** The three repeats list the
+  October 6 meshes and no ground mesh.
+- **Still a replay only:** that the switch would hold every run on 530 at
+  frame 0. In the one simulator run the ground was in view and far away, so the
+  switch had nothing to stop. It stays off by default.
 
 ## What this audit does not say
 

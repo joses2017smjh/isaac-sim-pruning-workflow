@@ -338,3 +338,11 @@ real arm could not be in, so it says nothing about how often the drift it shows
 would occur on a reachable target. The 25 targets that initialized, the six
 closures and the four passes are not affected: nothing is beneath the ground in
 any of those captures, and control 14944 passed in such a scene. No verdict above is edited, and this note does not re-explain any recorded stop.
+
+**Added later on November 25, 2026.** Sweep target 21386, one of the four
+passes, was rerun three times under the same arm with predictions registered
+first: 3 of 3 passed 17/17, with closure at frame 71, the hold on 73 to 77 and
+detachment at 77, as in the sweep's capture
+([control rerun](EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md#result--november-25-2026)).
+It is reported there, not pooled with the sweep, and it says nothing about the
+drift recorded on 530.

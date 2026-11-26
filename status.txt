@@ -1,4 +1,4 @@
-USER SAID "do all 4 recommended steps" — 2026-11-25 afternoon (read this first)
+USER SAID "do all 4 recommended steps" — 2026-11-25: ALL FOUR DONE (read this first)
   The four: (1) dated notes on affected results, (2) ground in planner + ToF mesh sets as a default-off option,
   (3) a next jaw reading tested offline, registered first, (4) rerun a control on a reachable spur (GPU: needs an
   exact budget approved in a question dialog BEFORE anything is submitted; "do all 4" is not a budget).
@@ -7,9 +7,9 @@ USER SAID "do all 4 recommended steps" — 2026-11-25 afternoon (read this first
   frame (base link in 28): 530 x15, 590 x7, 3721 x3, 3433, 3493, 3673, 4438. 204 have nothing beneath, no arm link
   included. FK matches recorded tool point to 0.008 mm; depth images confirm every affected capture (median 95% of
   pixels agree with ground in the mesh set vs 7% without). Dated addenda written on 9 documents; no verdict edited.
-  STEP 2 DONE (off by default, nothing run in sim): tools/screen_ground.py: 63/444 pool spurs put the robot beneath
+  STEP 2 DONE (off by default; the switch had its first simulator run in step 4): tools/screen_ground.py: 63/444 pool spurs put the robot beneath
   the ground at home (agrees with the audit on 56/56 recorded targets). PRUNING_TOF_GROUND=1 adds the ground to the
-  ToF mesh list (unit tests only). tools/replay_tof_ground.py offline: first hold changes in 0/204 above-ground
+  ToF mesh list (unit tests, plus the one run in step 4). tools/replay_tof_ground.py offline: first hold changes in 0/204 above-ground
   captures; all 15 captures on 530 would hold at frame 0 (nearest usable ground return at the sensor's 30 mm minimum range). Planner file NOT edited (its
   acceptance is gated on its own file hash). Evidence: docs/evidence/ground_screen_2026-11-25.json,
   tof_ground_replay_2026-11-25.json (clean clone 65c307d, CPU 22151776/22151777).
@@ -19,22 +19,20 @@ USER SAID "do all 4 recommended steps" — 2026-11-25 afternoon (read this first
   and nothing else in the gap. Test side: K1 REFUTED (42/43 recorded cuts kept; 8175 stopped, spur 6.4 mm off centre),
   K2 supported (48/48 short jaws refused), K3 supported (5/5 cuts on 8235 refused: other wood in gap; a COST),
   K4 supported (14/707 false accepts vs 105). Both halves are now seen: a revised limit needs new recordings.
-  STEP 4 SUBMITTED, NOT SCORED: the user approved 3 repeats on one spur (cap 135 GPU-min) + 1 run with the ToF ground
-  switch on (cap 45). Registered and pushed at d351016 (docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md,
-  tools/score_control_rerun.py, arms planned_pose_jaw_hold_ctl and ..._ctl_tof_ground), CI green, then submitted:
-    control-rerun-a/b/c-20261125 (target 21386): array jobs 22152681, 22152682, 22152683
-    control-rerun-tof-ground-20261125 (target 14944, PRUNING_TOF_GROUND=1): array job 22152684
-  One task at a time, afterany-chained, 45-min limit each, gpu,ampere a40|rtx8000. Do NOT resubmit.
-  TO SCORE when all four have ended (clean clone, needs an el9 node for pxr):
-    cd /nfs/hpc/share/sanchej7/pruning_work/grading
-    sbatch --constraint=el9 --mem=20G score.sbatch d351016 tools/score_control_rerun.py \
-      /nfs/hpc/share/sanchej7/pruning_work/control_rerun_20261125/control_rerun_verdicts_d351016.json \
-      --batches artifacts/vision_robustness/control-rerun-{a,b,c,tof-ground}-20261125   (spell all four out)
-  THEN: copy the verdict file byte-for-byte to docs/evidence/control_rerun_verdicts_2026-11-25.json, add a
-  "Result" section to the protocol, record GPU minutes used (sacct) against the 180 cap, update SLURM_JOBS.md,
-  README/RESULTS/PENDING, the GROUND_AUDIT doc (switch now exercised or not) and the study guide.
+  STEP 4 DONE AND SCORED (2026-11-25 evening): the user approved 3 repeats on one spur (cap 135 GPU-min) + 1 run with
+  the ToF ground switch on (cap 45). Registered and pushed at d351016 BEFORE submission; all four ran COMPLETED, no
+  resubmission. Scorer from a clean clone of d351016 (CPU 22153680): R0-R5 ALL SUPPORTED.
+  docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md (Result), docs/evidence/control_rerun_verdicts_2026-11-25.json.
+    control-rerun-a/b/c-20261125 (target 21386, jobs 22152681/2/3): 3 of 3 passed 17/17; closure 71, hold 73-77,
+      detach 77 in each; nothing beneath the ground in any frame. Labelled arm, one spur it had already passed on:
+      NOT a success rate, NOT pooled, does NOT restore the 530 control.
+    control-rerun-tof-ground-20261125 (target 14944, job 22152684, PRUNING_TOF_GROUND=1): 17/17, no hold, no ToF stop;
+      ground mesh in the recorded ToF mesh list; offline cast with ground reproduces the grids, trees-only does not.
+  GPU used: repeats 75 min 10 s of 135; switch run 27 min 11 s of 45 (one GPU per task). Unused caps do not carry over.
+  STILL REPLAY ONLY: the switch holding 530 at frame 0 (no simulator run with the robot beneath the ground + switch on).
+  The switch stays OFF by default; making it the default is the user's decision.
   OPEN DECISIONS FOR THE USER (not blocking): accept that the ranged rule refuses cuts with other wood in the jaw?
-  make new recordings to test a wider centre limit (8 mm)?
+  make new recordings to test a wider centre limit (8 mm)? should PRUNING_TOF_GROUND become the default?
 
 P2.1 REPLAY RESULT — 2026-11-25 (read this first)
   Jaw-presence input for the gate, built offline (user chose "beam grid, offline first"; CPU only, no GPU).

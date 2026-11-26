@@ -312,3 +312,11 @@ ground, on targets 8175, 21386, 28610 and 36786 and on control 14944
 ([October 6 sweep](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026)).
 The runs on 19444, 14944 and 15004 in these batches are not affected.
 No verdict above is edited, and this note does not re-explain any recorded stop.
+
+**Added later on November 25, 2026.** The same arm was then repeated on a spur
+the robot reaches from above the ground, with its predictions registered first:
+it passed 17/17 in 3 of 3 repeats on target 21386, with the hold engaging on the
+same frames each time
+([control rerun](EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md#result--november-25-2026)).
+That is a separate result on a different spur. It changes nothing above and is
+not pooled with the three runs on 530.

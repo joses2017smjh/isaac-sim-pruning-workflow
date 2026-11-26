@@ -138,3 +138,88 @@ sbatch --constraint=el9 --mem=20G score.sbatch d351016 tools/score_control_rerun
 ```
 
 Nothing above this line changes after submission.
+
+## Result — November 25, 2026
+
+All four runs ended `COMPLETED` and nothing was resubmitted. The registered
+scorer ran from a clean clone of the registration commit `d351016` on a node
+with `pxr` (CPU job `22153680`). Its verdict file is copied byte for byte to
+[`evidence/control_rerun_verdicts_2026-11-25.json`](evidence/control_rerun_verdicts_2026-11-25.json).
+All four runs were scored and **all six predictions are supported**.
+
+| Prediction | Verdict | Measured |
+|---|---|---|
+| **R0** the scenes are physical | supported | Nothing beneath the ground in any of the 800 frames; forward kinematics reproduces the recorded tool point within 0.007 mm |
+| **R1** three of three | supported | Each repeat on 21386 passed 17/17 |
+| **R2** the hold engages as before | supported | In each repeat closure started at frame 71, the hold covered 73 to 77 and the piece detached at 77 |
+| **R3** switch off, recorder unchanged | supported | Each repeat lists the October 6 collision meshes and no ground mesh, and the trees-only cast reproduces all 9,984 compared ToF zones |
+| **R4** switch on, the sensors see the ground | supported | The run on 14944 lists `/World/Orchard/ground/ground_mesh`; the cast with the ground reproduces all 9,984 zones; the trees-only cast agrees on validity in 82.7% of them, under the 98% bar |
+| **R5** the switch changes no outcome above the ground | supported | The run on 14944 passed 17/17, never held and had no ToF stop |
+
+| Batch | Target | Array job | Node (GPU) | Elapsed | Grader | Closure start | Held frames | Detached |
+|---|---|---|---|---|---|---|---|---|
+| `control-rerun-a-20261125` | 21386 | `22152681` | `cn-gpu5` (RTX 8000) | 27:18 | 17/17 | 71 | 73–77 | 77 |
+| `control-rerun-b-20261125` | 21386 | `22152682` | `cn-gpu7` (RTX 8000) | 24:03 | 17/17 | 71 | 73–77 | 77 |
+| `control-rerun-c-20261125` | 21386 | `22152683` | `cn-gpu7` (RTX 8000) | 23:49 | 17/17 | 71 | 73–77 | 77 |
+| `control-rerun-tof-ground-20261125` | 14944 | `22152684` | `cn-gpu7` (RTX 8000) | 27:11 | 17/17 | 71 | none | 77 |
+
+In the verdict file the switch run carries `as_registered: false`. That field
+tests the repeats' hold pattern; R5 predicted no hold on 14944, so `false` is
+the expected value there.
+
+### How to read it
+
+- **It is 3 of 3 on one spur under the labelled arm.** *Known-map plan; jaw
+  self-mask; closure hold with freshness and frame-reuse checks waived on held
+  frames.* It is not pooled with the October 6 pass on the same spur or with
+  any other result.
+- **It is not a success rate.** 21386 was chosen by rule from spurs this arm had
+  already passed on. Three repeats say the outcome on that spur did not change
+  from run to run. They say nothing about other spurs.
+- **It does not restore the 530 control.** The October 2 "3 of 3" on 530 stays
+  as recorded, with its dated note. This is a different spur, and the first
+  repeated control of this arm in a scene with nothing beneath the ground.
+- **R2 says the hold engaged, not that it was needed.** The scorer checks which
+  frames were held and when the piece detached. It does not test what the cut
+  would have done without the hold.
+- **R3 rests on the mesh list.** On 21386 the ground is in no ToF zone, so the
+  cast with the ground reproduces the repeats' grids just as well as the
+  trees-only cast does. What shows the switch was off is the recorded mesh
+  list, which is the October 6 one with no ground mesh.
+- **The ToF comparison covers frames 0 to 77**, up to the cut: 78 frames, two
+  sensors, 64 zones each, 9,984 zones per run. Later frames were not compared.
+- **R4 and R5 are one run, and the switch never had to stop anything.** The
+  ground was in view and far away. The offline replay's finding that the switch
+  would hold every run on 530 at frame 0 is still a replay; no simulator run
+  has put the robot beneath the ground with the switch on.
+- **The switch stays off by default.** Making it the default is a separate
+  decision that has not been made.
+
+### Observations outside the registered scoring
+
+Computed after scoring, from the working tree, by ad hoc scripts. They are not
+part of any verdict.
+
+- **The repeats are not copies of each other.** Between repeats the recorded
+  tool position differs by up to 2.2 mm and a joint position by up to
+  0.004 rad. The controller phase is the same in every frame of all three
+  repeats and of the October 6 capture.
+- **The switch added about as many ToF returns as the replay expected.** Over
+  200 frames the switch run has 10,039 valid zone readings of 25,600; the
+  October 6 capture of the same spur has 5,403. The difference is 4,636. The
+  offline replay had counted 4,638 zones gained from the ground at the October 6
+  poses.
+- **The clearance check was never approached.** The nearest valid ToF return is
+  83 mm in the switch run and in the October 6 capture, against the 60 mm limit.
+
+### Cost
+
+One GPU per task (`sacct`, `gres/gpu=1`).
+
+| | Used | Cap |
+|---|---|---|
+| Three repeats | 75 min 10 s | 135 GPU-minutes |
+| Switch run | 27 min 11 s | 45 GPU-minutes |
+
+The unused part of each cap is not carried over to anything else. Storage is
+about 0.34 GB per run, 1.4 GB in all, against the 0.7 GB per run estimated.

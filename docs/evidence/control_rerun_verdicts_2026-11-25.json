@@ -1,0 +1,252 @@
+{
+ "protocol": "docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md",
+ "registered": {
+  "detach_offset": 6,
+  "first_held_offset": 2,
+  "reference_captures": {
+   "tree0_SPUR_component_21386": "hold-sweep-20261006/run_14_source_tree0_v21386_planned_pose_jaw_hold_sweep",
+   "tree1_SPUR_component_14944": "hold-sweep-ctl-20261006/run_01_source_tree1_v14944_planned_pose_jaw_hold_sweep"
+  },
+  "repeat_batches": [
+   "control-rerun-a-20261125",
+   "control-rerun-b-20261125",
+   "control-rerun-c-20261125"
+  ],
+  "targets": {
+   "control-rerun-a-20261125": "tree0_SPUR_component_21386",
+   "control-rerun-b-20261125": "tree0_SPUR_component_21386",
+   "control-rerun-c-20261125": "tree0_SPUR_component_21386",
+   "control-rerun-tof-ground-20261125": "tree1_SPUR_component_14944"
+  },
+  "tof_ground_batch": "control-rerun-tof-ground-20261125",
+  "tof_validity": 0.98,
+  "tof_within_1mm": 0.95
+ },
+ "runs": [
+  {
+   "batch": "control-rerun-a-20261125",
+   "collision_meshes_as_on_october_6": true,
+   "failed_checks": [],
+   "first_tof_stop_frame": null,
+   "ground": {
+    "anything_beneath_frames": 0,
+    "class": "above",
+    "kinematics_ok": true,
+    "max_tool_point_error_mm": 0.007
+   },
+   "hold": {
+    "as_registered": true,
+    "closure_start": 71,
+    "detach_frame": 77,
+    "held_frames": [
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   },
+   "job_id": "22152681",
+   "node": "cn-gpu5",
+   "pass": true,
+   "run": "run_00_source_tree0_v21386_planned_pose_jaw_hold_ctl",
+   "scored": true,
+   "strategy": "planned_pose_jaw_hold_ctl",
+   "target": "tree0_SPUR_component_21386",
+   "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+   "tof_ground_mesh_paths": null,
+   "tof_trees_only": {
+    "reproduced": true,
+    "validity_agreement": 1.0,
+    "within_1mm": 1.0,
+    "zones": 9984
+   },
+   "tof_with_ground": {
+    "reproduced": true,
+    "validity_agreement": 1.0,
+    "within_1mm": 1.0,
+    "zones": 9984
+   },
+   "unscored_reasons": []
+  },
+  {
+   "batch": "control-rerun-b-20261125",
+   "collision_meshes_as_on_october_6": true,
+   "failed_checks": [],
+   "first_tof_stop_frame": null,
+   "ground": {
+    "anything_beneath_frames": 0,
+    "class": "above",
+    "kinematics_ok": true,
+    "max_tool_point_error_mm": 0.007
+   },
+   "hold": {
+    "as_registered": true,
+    "closure_start": 71,
+    "detach_frame": 77,
+    "held_frames": [
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   },
+   "job_id": "22152682",
+   "node": "cn-gpu7",
+   "pass": true,
+   "run": "run_00_source_tree0_v21386_planned_pose_jaw_hold_ctl",
+   "scored": true,
+   "strategy": "planned_pose_jaw_hold_ctl",
+   "target": "tree0_SPUR_component_21386",
+   "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+   "tof_ground_mesh_paths": null,
+   "tof_trees_only": {
+    "reproduced": true,
+    "validity_agreement": 1.0,
+    "within_1mm": 1.0,
+    "zones": 9984
+   },
+   "tof_with_ground": {
+    "reproduced": true,
+    "validity_agreement": 1.0,
+    "within_1mm": 1.0,
+    "zones": 9984
+   },
+   "unscored_reasons": []
+  },
+  {
+   "batch": "control-rerun-c-20261125",
+   "collision_meshes_as_on_october_6": true,
+   "failed_checks": [],
+   "first_tof_stop_frame": null,
+   "ground": {
+    "anything_beneath_frames": 0,
+    "class": "above",
+    "kinematics_ok": true,
+    "max_tool_point_error_mm": 0.007
+   },
+   "hold": {
+    "as_registered": true,
+    "closure_start": 71,
+    "detach_frame": 77,
+    "held_frames": [
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   },
+   "job_id": "22152683",
+   "node": "cn-gpu7",
+   "pass": true,
+   "run": "run_00_source_tree0_v21386_planned_pose_jaw_hold_ctl",
+   "scored": true,
+   "strategy": "planned_pose_jaw_hold_ctl",
+   "target": "tree0_SPUR_component_21386",
+   "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+   "tof_ground_mesh_paths": null,
+   "tof_trees_only": {
+    "reproduced": true,
+    "validity_agreement": 1.0,
+    "within_1mm": 1.0,
+    "zones": 9984
+   },
+   "tof_with_ground": {
+    "reproduced": true,
+    "validity_agreement": 1.0,
+    "within_1mm": 1.0,
+    "zones": 9984
+   },
+   "unscored_reasons": []
+  },
+  {
+   "batch": "control-rerun-tof-ground-20261125",
+   "collision_meshes_as_on_october_6": true,
+   "failed_checks": [],
+   "first_tof_stop_frame": null,
+   "ground": {
+    "anything_beneath_frames": 0,
+    "class": "above",
+    "kinematics_ok": true,
+    "max_tool_point_error_mm": 0.007
+   },
+   "hold": {
+    "as_registered": false,
+    "closure_start": 71,
+    "detach_frame": 77,
+    "held_frames": []
+   },
+   "job_id": "22152684",
+   "node": "cn-gpu7",
+   "pass": true,
+   "run": "run_00_source_tree1_v14944_planned_pose_jaw_hold_ctl_tof_ground",
+   "scored": true,
+   "strategy": "planned_pose_jaw_hold_ctl_tof_ground",
+   "target": "tree1_SPUR_component_14944",
+   "task_outcome": "vision_guided_simulated_detachment_and_retreat",
+   "tof_ground_mesh_paths": [
+    "/World/Orchard/ground/ground_mesh"
+   ],
+   "tof_trees_only": {
+    "reproduced": false,
+    "validity_agreement": 0.82652,
+    "within_1mm": 0.98313,
+    "zones": 9984
+   },
+   "tof_with_ground": {
+    "reproduced": true,
+    "validity_agreement": 1.0,
+    "within_1mm": 1.0,
+    "zones": 9984
+   },
+   "unscored_reasons": []
+  }
+ ],
+ "schema_version": 1,
+ "tool": "tools/score_control_rerun.py",
+ "verdicts": {
+  "R0_physical_scenes": {
+   "runs": 4,
+   "scored": 4,
+   "unscored": {},
+   "verdict": "supported"
+  },
+  "R1_three_repeats_pass": {
+   "departures": [],
+   "prediction": "each repeat on 21386 passes all 17 checks",
+   "runs": 3,
+   "scored": 3,
+   "verdict": "supported"
+  },
+  "R2_hold_engages_as_before": {
+   "departures": [],
+   "prediction": "the hold covers closure start + 2 to + 6 and the piece detaches at closure start + 6",
+   "runs": 3,
+   "scored": 3,
+   "verdict": "supported"
+  },
+  "R3_switch_off_changes_nothing": {
+   "departures": [],
+   "prediction": "the repeats list the October 6 collision meshes, no ground mesh, and their ToF grids are the trees-only cast",
+   "runs": 3,
+   "scored": 3,
+   "verdict": "supported"
+  },
+  "R4_switch_on_adds_the_ground": {
+   "departures": [],
+   "prediction": "the run on 14944 lists the ground mesh, its ToF grids are the cast with the ground, and the trees-only cast no longer reproduces them",
+   "runs": 1,
+   "scored": 1,
+   "verdict": "supported"
+  },
+  "R5_switch_on_changes_no_outcome": {
+   "departures": [],
+   "prediction": "the run on 14944 passes all 17 checks, never holds and has no ToF stop",
+   "runs": 1,
+   "scored": 1,
+   "verdict": "supported"
+  }
+ }
+}

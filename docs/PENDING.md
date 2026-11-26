@@ -5,11 +5,14 @@ and results in the [roadmap](ROADMAP.md).
 
 ## Queued
 
-Queued on November 25: the [control rerun on a reachable spur](EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md#submission--november-25-2026),
-four GPU tasks (array jobs `22152681` to `22152684`), reserved 180 GPU-minutes.
-Not scored yet.
+Nothing is queued.
 
 Finished and published:
+- [control rerun on a reachable spur](EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md#result--november-25-2026),
+  November 25: all six registered predictions supported. The labelled jaw-hold
+  arm passed 17/17 in 3 of 3 repeats on target 21386 with nothing beneath the
+  ground, and one run on 14944 with the ToF ground switch on passed 17/17 with
+  the ground in the sensors' view. 102 of the 180 reserved GPU-minutes used.
 - [jaw-presence input for the gate](EVAL_PROTOCOL_JAW_PRESENCE_2026-11-25.md#result--november-25-2026),
   November 25: four of five registered predictions supported on a CPU replay;
   the one about the reading itself was refuted (5 of 87 closures accepted with
@@ -72,10 +75,13 @@ Finished and published:
   (`tools/screen_ground.py`: 63 of 444 spurs fail) and a default-off ToF switch
   (`PRUNING_TOF_GROUND=1`) now exist; offline, the switch changes no first hold
   in the 204 captures above the ground and stops all 15 runs on 530 at frame 0.
-  Open: a simulator run with the switch on, whether it should become the
-  default, a ground check for planned paths, and whether to rerun a control on a
-  spur that can be reached from above the ground. The first and the last need
-  GPU time that has not been approved.
+  Done since (November 25): a [control rerun](EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md#result--november-25-2026)
+  on a spur reached from above the ground (3 of 3 on 21386, labelled arm) and
+  one simulator run with the switch on (14944, no outcome changed). Open:
+  whether the switch should become the default, a simulator run with the switch
+  on and the robot beneath the ground (the frame-0 stop on 530 is a replay
+  only; it needs GPU time that has not been approved), and a ground check for
+  planned paths.
 - **Blind ToF cycles per sensor.** One dead sensor is invisible to the gate
   today (the documented non-stopping fault). Listed with the jaw-presence
   milestone and deferred to its own change.

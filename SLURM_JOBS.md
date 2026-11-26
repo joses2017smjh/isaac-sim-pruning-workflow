@@ -921,7 +921,7 @@ No GPU. Each job ran a committed tool from a clean clone at the commit named.
 
 [Ground audit](docs/GROUND_AUDIT_2026-11-25.md) · [ranged reading](docs/EVAL_PROTOCOL_JAW_READING_2026-11-25.md#result--november-25-2026).
 
-### Control rerun on a reachable spur (submitted November 25)
+### Control rerun on a reachable spur (submitted and scored November 25)
 
 On November 25 the user approved three repeats on one spur (cap 135
 GPU-minutes) and one run with the ToF ground switch on (cap 45). The
@@ -937,4 +937,18 @@ on `gpu,ampere` with the constraint `a40|rtx8000` and 45-minute tasks.
 | `control-rerun-c-20261125` | 21386 | `planned_pose_jaw_hold_ctl` | `22152683` |
 | `control-rerun-tof-ground-20261125` | 14944 | `planned_pose_jaw_hold_ctl_tof_ground` | `22152684` |
 
-Outcome: not recorded yet.
+Outcome (November 25): all four tasks ended `COMPLETED` and nothing was
+resubmitted. One GPU per task.
+
+| Array job | Node (GPU) | Elapsed | Grader |
+|---|---|---|---|
+| `22152681` | `cn-gpu5` (RTX 8000) | 27:18 | 17/17 |
+| `22152682` | `cn-gpu7` (RTX 8000) | 24:03 | 17/17 |
+| `22152683` | `cn-gpu7` (RTX 8000) | 23:49 | 17/17 |
+| `22152684` | `cn-gpu7` (RTX 8000) | 27:11 | 17/17 |
+
+The repeats used 75 min 10 s of their 135 GPU-minute cap and the switch run
+27 min 11 s of its 45. The unused part of each cap is not carried over. The
+registered scorer ran from a clean clone of `d351016` as CPU job `22153680`
+(35 s, node `cn-e02`): R0 to R5 all supported
+([result](docs/EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md#result--november-25-2026)).

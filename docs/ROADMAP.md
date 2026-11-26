@@ -415,6 +415,14 @@ not the full autonomous pruning workflow. [Video and reproduction](ISAAC_RENDER.
       first. S1 and S3–S6 supported, S2 untested, S7 refuted (530 failed on
       tracker drift during closure).
       [Protocol and result](EVAL_PROTOCOL_HOLD_SWEEP_2026-10-06.md#result--november-22-2026).
+- [x] Control rerun on a spur reached from above the ground (November 25),
+      after the [ground audit](GROUND_AUDIT_2026-11-25.md) found the robot
+      beneath the visual ground in every recording of control 530. The same
+      arm passed 17/17 in 3 of 3 repeats on 21386, and one run on 14944 with
+      the ToF sensors casting against the ground passed 17/17. R0–R5
+      supported; 102 of 180 reserved GPU-minutes used. One spur, not a success
+      rate, not pooled.
+      [Protocol and result](EVAL_PROTOCOL_CONTROL_RERUN_2026-11-25.md#result--november-25-2026).
 - [x] Amended mask-fidelity check for future runs: pixels within 0.01 px of
       the jaw's outline are not judged. The user approved it on October 2,
       and it is registered in the
